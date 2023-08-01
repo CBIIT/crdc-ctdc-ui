@@ -5,7 +5,7 @@ cp nginx.conf /usr/local/etc/nginx/
 brew services restart nginx
 brew services info nginx
 cd bento-frontend
-REACT_APP_BACKEND_API=http://localhost:3000/v1/graphql/ \
+REACT_APP_BACKEND_API=https://api-dev.bento-tools.org/v1/graphql/ \
     REACT_APP_FILE_SERVICE_API=http://localhost:3000/api/files/ \
     REACT_APP_AUTH_SERVICE_API=http://localhost:3000/api/auth/ \
     REACT_APP_USER_SERVICE_API=http://localhost:3000/api/users/ \
