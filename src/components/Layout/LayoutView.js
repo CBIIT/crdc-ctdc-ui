@@ -2,19 +2,17 @@ import React from 'react';
 import { withStyles, CssBaseline } from '@material-ui/core';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import aboutPageRoutes from '../../bento/aboutPagesRoutes';
-import Header from '../Header/HeaderView';
-import NavBar from '../NavBar/NavBarContainer';
-import Footer from '../Footer/FooterView';
+import Header from '../Header';
+import Footer from '../Footer';
+import ScrollToTop from '../ScrollButton/ScrollButtonView';
 import Error from '../../pages/error/Error';
 import Home from '../../pages/landing/landingController';
 import About from '../../pages/about/aboutController';
-import DataDictonary from '../../pages/dataDictionary/dataDictonaryController';
 import Programs from '../../pages/programs/programsController';
 import ProgramDetail from '../../pages/programDetail/programDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import GlobalSearchController from '../../pages/search/searchViewController';
 import Login from '../../pages/login';
-import SysInfoView from '../../pages/sysInfo/view';
 import ProfileController from '../../pages/profile/profileController';
 import OverlayWindow from '../OverlayWindow/OverlayWindow';
 import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';
@@ -24,11 +22,6 @@ import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
 
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
-
-const ScrollToTop = () => {
-  window.scrollTo(0, 0);
-  return null;
-};
 
 const Layout = ({ classes, isSidebarOpened }) => {
   // Access control imports
@@ -43,13 +36,12 @@ const Layout = ({ classes, isSidebarOpened }) => {
         <AuthSessionTimeoutController />
         <Header />
         <OverlayWindow />
-        <NavBar />
         {/* Reminder: Ajay need to replace the ICDC with env variable and
           change build npm to read env variable */}
         <div
           className={classes.content}
         >
-          <Route component={ScrollToTop} />
+          <Route />
           <Switch>
             <MixedRoute exact path="/" component={Home} />
             <MixedRoute exact path="/home" component={Home} />
@@ -86,7 +78,8 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route component={Error} />
 
           </Switch>
-          <Footer data={{ isSidebarOpened }} />
+          <ScrollToTop />
+          <Footer />
         </div>
       </>
     </HashRouter>
