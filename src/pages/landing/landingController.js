@@ -1,17 +1,22 @@
+/* eslint-disable no-unused-vars */
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { useSelector } from 'react-redux';
 import LandingView from './landingView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { GET_LANDING_PAGE_DATA_QUERY } from '../../bento/landingPageData';
 
 const landingController = () => {
-  const isSignedIn = useSelector((state) => state.login.isSignedIn);
-  const { loading, error, data } = useQuery(GET_LANDING_PAGE_DATA_QUERY, {
-    context: { clientName: isSignedIn ? '' : 'publicService' },
+  const {
+    loading, error, data,
+  } = useQuery(GET_LANDING_PAGE_DATA_QUERY, {
+    context: {
+      clientName: 'ctdcOldService',
+    },
     fetchPolicy: 'no-cache',
   });
+
+
 
   if (loading) return <CircularProgress />;
   if (error) {
@@ -22,7 +27,7 @@ const landingController = () => {
     );
   }
 
-  return <LandingView statsData={data} />;
+  return <LandingView heroData={data.searchCases} />;
 };
 
 export default landingController;

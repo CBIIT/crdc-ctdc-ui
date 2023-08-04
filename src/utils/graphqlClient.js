@@ -12,11 +12,17 @@ const defaultOptions = {
 const BACKEND = env.REACT_APP_BACKEND_API;
 const PUBLIC_BACKEND = env.REACT_APP_BACKEND_PUBLIC_API;
 const MOCK = 'https://f20e5514-ae0a-4e09-b498-94283cdf9d2c.mock.pstmn.io/v1/graphql';
+const CTDC_OLD_SERVICE =  "https://trialcommons-dev.cancer.gov/v1/graphql/";
 const AUTH_SERVICE = `${env.REACT_APP_AUTH_SERVICE_API}graphql`;
 const USER_SERVICE = `${env.REACT_APP_USER_SERVICE_API}graphql`;
 
 const backendService = new HttpLink({
   uri: BACKEND,
+});
+
+
+const CTDC_OLD_BackendService = new HttpLink({
+  uri: CTDC_OLD_SERVICE,
 });
 
 const authService = new HttpLink({
@@ -55,7 +61,11 @@ const client = new ApolloClient({
           (operation) => operation.getContext().clientName === 'userService',
           // the string "userService" can be anything you want,
           userService, // <= apollo will send to this if clientName is "userService"
-          backendService, // <= otherwise will send to this
+           ApolloLink.split( // This is 2nd level of ApolloLink.
+          (operation) => operation.getContext().clientName === 'ctdcOldService',
+            CTDC_OLD_BackendService,
+            backendService, // <= otherwise will send to this
+          )
         ), // <= otherwise will send to this
       ),
     ),

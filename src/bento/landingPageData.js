@@ -70,11 +70,93 @@ export const landingPageData = {
 };
 
 // --------------- GraphQL query - Retrieve Landing page data --------------
-export const GET_LANDING_PAGE_DATA_QUERY = gql`{
-  numberOfPrograms
-  numberOfStudies
-  numberOfSubjects
-  numberOfSamples
-  numberOfFiles
-  }
-  `;
+export const GET_LANDING_PAGE_DATA_QUERY = gql`
+query search(
+    $clinical_trial_designation : [String],
+    $clinical_trial_id : [String],
+    $pubmed_id : [String],
+    $trial_arm : [String],
+    $disease : [String],
+    $gender : [String],
+    $race : [String],
+    $ethnicity : [String],
+    $file_type : [String],
+    $file_format : [String]
+){
+    searchCases(
+        clinical_trial_designation: $clinical_trial_designation
+        clinical_trial_id: $clinical_trial_id
+        pubmed_id: $pubmed_id
+        trial_arm: $trial_arm
+        disease: $disease
+        gender: $gender
+        race: $race
+        ethnicity: $ethnicity
+        file_type: $file_type
+        file_format: $file_format
+    ){
+        numberOfTrials
+        numberOfCases
+        numberOfFiles
+        numberOfArms
+        numberOfDiagnoses
+        numberOfFileTypes
+        diagnosisCountByArm{
+            arm_id
+            diagnoses
+        }
+        armCountByTrial{
+            group
+            subjects
+        }
+        trialsAndArms{
+            trials
+            caseSize
+            arms{
+                arm
+                caseSize
+            }
+        }
+        casesCountBaseOnTrialId{
+            group
+            subjects
+        }
+        casesCountBaseOnTrialCode{
+            group
+            subjects
+        }
+        casesCountBaseOnPubMedID{
+            group
+            subjects
+        }
+        casesCountBaseOnGender{
+            group
+            subjects
+        }
+        casesCountBaseOnRace{
+            group
+            subjects
+        }
+        casesCountBaseOnEthnicity{
+            group
+            subjects
+        }
+        casesCountBaseOnDiagnoses{
+            group
+            subjects
+        }
+        casesCountBaseOnFileType{
+            group
+            subjects
+        }
+        casesCountBaseOnFileFormat{
+            group
+            subjects
+        }
+        casesCountBaseOnTrialArm{
+            group
+            subjects
+        }
+    }
+}
+`;
