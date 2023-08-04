@@ -28,9 +28,9 @@ function receiveStats(json) {
   return {
     type: RECIEVE_STATS,
     payload:
-{
-  data: json.data,
-},
+    {
+      data: json.data ? json.data.searchCases : {},
+    },
   };
 }
 
@@ -41,11 +41,11 @@ function errorhandler(error, type) {
   };
 }
 
-function fetchStats(statQuery, state) {
+function fetchStats(statQuery) {
   return (dispatch) => client
     .query({
       query: statQuery,
-      context: { clientName: state && state.login.isSignedIn ? '' : 'publicService' },
+      context: { clientName: "ctdcOldService"},
     })
     .then((result) => dispatch(receiveStats(result)))
     .catch((error) => dispatch(errorhandler(error, STATS_QUERY_ERR)));
@@ -54,7 +54,7 @@ function fetchStats(statQuery, state) {
 export function fetchDataForStats() {
   return (dispatch, getState) => {
     if (shouldFetchDataForAllStats(getState())) {
-      return dispatch(fetchStats(STATS_QUERY, getState()));
+      return dispatch(fetchStats(STATS_QUERY));
     }
     return dispatch(readyStats());
   };
@@ -76,7 +76,7 @@ export default function dashboardReducer(state = initialState, action) {
         hasError: true,
         error: action.error,
         isLoading: false,
-        isFetched: false,
+        isFetched: true,
       };
     case READY_STATS:
       return {

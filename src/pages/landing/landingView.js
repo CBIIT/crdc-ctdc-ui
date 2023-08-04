@@ -147,9 +147,6 @@ const LandingController = ({ classes, heroData }) => (
   </div>
 );
 const styles = () => ({
-  page: {
-    marginTop: '-47px',
-  },
   heroImage: {
     width: '100%',
     height: '600px',
