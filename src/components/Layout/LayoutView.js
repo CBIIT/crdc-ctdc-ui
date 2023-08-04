@@ -23,6 +23,13 @@ import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
 
+
+const ScrollToTopComponent = () => {
+  window.scrollTo(0, 0);
+  return null;
+};
+
+
 const Layout = ({ classes, isSidebarOpened }) => {
   // Access control imports
   const { LoginRoute, MixedRoute, PrivateRoute, AdminRoute} = AuthenticationMiddlewareGenerator(AUTH_MIDDLEWARE_CONFIG);
@@ -41,7 +48,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
         <div
           className={classes.content}
         >
-          <Route />
+          <Route component={ScrollToTopComponent} />
           <Switch>
             <MixedRoute exact path="/" component={Home} />
             <MixedRoute exact path="/home" component={Home} />
@@ -97,7 +104,7 @@ const styles = (theme) => ({
     // width: `calc(100vw - 240px)`,   // Ajay need to add this on addung side bar
     width: 'calc(100%)', // Remove this on adding sidebar
     background: theme.custom.bodyBackGround,
-    marginTop: '194px',
+    marginTop: '50px',
   },
   '@global': {
     '*::-webkit-scrollbar': {
