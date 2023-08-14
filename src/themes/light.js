@@ -34,6 +34,7 @@ export default {
     footorBackground: '#325068',
     fontFamily: 'Lato,"Open Sans", sans-serif',
     fontFamilyRaleway: "'Raleway', sans-serif",
+    fontFamilyInter: '"Inter", sans-serif',
     drawerWidth: '240px',
     widgetDivider: '#E2E7EC',
   },
