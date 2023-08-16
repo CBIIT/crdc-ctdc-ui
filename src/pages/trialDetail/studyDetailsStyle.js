@@ -107,10 +107,10 @@ export default (theme) => ({
     borderTop: '1px solid #81a6b9',
   },
   container: {
-    paddingTop: '60px',
+    paddingTop: '42px',
     fontFamily: 'Raleway, sans-serif',
-    paddingLeft: '27px',
-    paddingRight: '27px',
+    paddingLeft: '32px',
+    paddingRight: '32px',
   },
   content: {
     fontSize: '12px',
@@ -236,7 +236,7 @@ export default (theme) => ({
     position: 'absolute',
     float: 'left',
     width: '94px',
-    top: '271px',
+    top: '253px',
     left: '-1px'
   },
   detailContainer: {

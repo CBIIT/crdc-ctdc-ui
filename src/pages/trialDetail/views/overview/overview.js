@@ -3,11 +3,6 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-
-// import {
-//   customSorting,
-//   studyDisposition,
-// } from '../../utils';
 import {
   // eslint-disable-next-line no-unused-vars
   externalIcon,
@@ -18,7 +13,7 @@ import classNames from 'classnames';
 
 const Overview = ({
   classes,
-  studyData = {},
+  studyData,
   diagnoses,
   caseFileTypes,
   data,
@@ -44,16 +39,18 @@ const Overview = ({
         <div className={classes.detailContainer}>
           <Grid container>
             <Grid item lg={6} md={6} sm={6} xs={12} className={classes.borderRight}>
-              <Grid container spacing={1} direction="row" className={classes.detailContainerLeft}>
-                <Grid item xs={12} className={classes.detailContainerItem}>
-                  <Grid item container direction="row">
-                    <Grid item xs={12} className={classes.title}>
-                      Trial Name:
-                    </Grid>
-                    <Grid item xs={12} className={classes.content}>
+              <Grid container direction="row" className={classes.detailContainerLeft}>
+                <Grid item xs={12} className={classes.containerHeader}>
+                  <span className={classes.detailContainerHeaderText}>Trial Name</span>
+                </Grid>
+                <Grid item xs={12} className={classes.studyDescription}>
+                  <div>
+                    <span className={classes.content}>
+                      {' '}
                       Cancer Moonshot Biobank
-                    </Grid>
-                  </Grid>
+                      {' '}
+                    </span>
+                  </div>
                 </Grid>
                 <Grid container className={classes.detailContainerItems}>
                   <Grid item xs={12} className={classes.detailContainerItem}>
@@ -106,177 +103,190 @@ const Overview = ({
                       </Grid>
                     </Grid>
                   </Grid>
-                  <Grid item xs={12} className={classes.detailContainerItem}>
-                    <Grid item container direction="row">
-                      <Grid item xs={12} sm={4} className={classes.title}>
-                      </Grid>
-                      <Grid item xs={12} sm={6} className={classes.content}>
-                      </Grid>
-                    </Grid>
-                  </Grid>
+                  
                 </Grid>
               </Grid>
             </Grid>
-            {
-              <Grid item lg={6} md={6} sm={6} xs={12}>
+            
+            {/* Right Container Detail */}
+            <Grid item lg={6} md={6} sm={6} xs={12}>
+              <Grid
+                container
+                spacing={1}
+                direction="row"
+                className={classes.detailContainerRight}
+              >
                 <Grid
-                  container
-                  spacing={1}
-                  direction="row"
-                  className={classes.detailContainerRight}
+                  item
+                  lg={6}
+                  md={6}
+                  sm={6}
+                  xs={12}
+                  className={classes.detailContainerRightTop}
                 >
-                  <Grid
-                    item
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className={classes.detailContainerRightTop}
-                  >
-                    <Grid container spacing={1}>
-                      <Grid item xs={12} className={classes.containerHeader}>
-                        <span className={classes.detailContainerHeaderText}>DIAGNOSES</span>
-                      </Grid>
-                    </Grid>
-                    <Grid container className={classes.paddingTop12}>
-                      
-                      <Grid item xs={12}>
-                        <span className={classes.content}>
-                          Acute Myeloid Leukemia Not Otherwise Specified
-                        </span>
-                      </Grid>
-
-                      <Grid item xs={12}>
-                        <span className={classes.content}>
-                          {' '}
-                          Colorectal Carcinoma
-                        </span>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <span className={classes.content}>
-                          {' '}
-                          Plasma Cell Myeloma
-                        </span>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <span className={classes.content}>
-                          {' '}
-                          Lung Non-Small Cell CarcinomaProstate Carcinoma
-                        </span>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <span className={classes.content}>
-                          {' '}
-                          Lung Small Cell Carcinoma
-                        </span>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <span className={classes.content}>
-                          {' '}
-                          Melanoma
-                        </span>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <span className={classes.content}>
-                          {' '}
-                          Gastroesophageal Junction Adenocarcinoma
-                        </span>
-                      </Grid>
-                      {/*{diagnoses.sort((a, b) => customSorting(a, b, 'alphabetical')).map((diagnosis, index) => ())} */}
+                  <Grid container spacing={1}>
+                    <Grid item xs={12} className={classes.containerHeader}>
+                      <span className={classes.detailContainerHeaderText}>DIAGNOSES</span>
                     </Grid>
                   </Grid>
-
-                  <Grid
-                    item
-                    lg={6}
-                    md={6}
-                    sm={6}
-                    xs={12}
-                    className={classes.detailContainerRightTop}
-                  >
-                    <Grid container spacing={1}>
-                      <Grid item xs={12} className={classes.containerHeader}>
-                        <span className={classes.detailContainerHeaderText}>PARTICIPANT FILE TYPES</span>
+                  <Grid container className={classes.paddingTop12}>
+                    <Grid item xs={12}>
+                      <span className={classes.content}>
+                        Acute Myeloid Leukemia Not Otherwise Specified
+                      </span>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <span className={classes.content}>
+                        {' '}
+                        Colorectal Carcinoma
+                      </span>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <span className={classes.content}>
+                        {' '}
+                        Plasma Cell Myeloma
+                      </span>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <span className={classes.content}>
+                        {' '}
+                        Lung Non-Small Cell CarcinomaProstate Carcinoma
+                      </span>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <span className={classes.content}>
+                        {' '}
+                        Lung Small Cell Carcinoma
+                      </span>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <span className={classes.content}>
+                        {' '}
+                        Melanoma
+                      </span>
+                    </Grid>
+                    <Grid item xs={12}>
+                      <span className={classes.content}>
+                        {' '}
+                        Gastroesophageal Junction Adenocarcinoma
+                      </span>
+                    </Grid>
+                    {/*diagnoses.sort((a, b) => customSorting(a, b, 'alphabetical')).map((diagnosis, index) => (
+                      <Grid item xs={12} key={index}>
+                        <span className={classes.content}>
+                          {' '}
+                          {diagnosis}
+                        </span>
                       </Grid>
-                    </Grid>
-                    <Grid container className={classes.paddingTop12}>
-                     
-                        <div className={classes.content}>
-                          Molecular Panel Variant Call File Clinical Report File
-                        </div>
-                    </Grid>
+                    ))*/}
                   </Grid>
-                  {/*<div><hr className={classNames(classes.hrLine, classes.hrLineRight)} /></div>*/}
                 </Grid>
-                <Grid container spacing={1} direction="row" className={classes.detailContainerRight}>
-                  <SampleProfile data={data} />
-
-                  {/* START: Image Collection */}
-                  <Grid item lg={6} md={6} sm={6} xs={12} className={classes.marginTop10}>
-                    <Grid container spacing={1}>
-                      <Grid item xs={12}>
-                        <span className={classes.detailContainerHeaderText}>
-                          Biospecimen PROFILE
-                        </span>
-                      </Grid>
-                    </Grid>
-                    <Grid container className={classes.detailContainerItems}>
-                      {/* eslint-disable-next-line no-constant-condition */}
-                      {supportingDataCount > 0 || nodeCount > 0 ? (
-                        <Grid item xs={12} className={classes.detailContainerItem}>
-                          {
-                            nodeCount > 0 && (
-                            <Grid item container direction="row">
-                              <Grid className={classes.titleCD}>
-                                Clinical Data in:
-                              </Grid>
-                              <Grid
-                                item
-                                className={classNames(classes.content, classes.marginTopN5)}
-                              >
-                                <button
-                                  type="button"
-                                  onClick={() => setCurrentTab(clinicalDataTabIndex)}
-                                  className={classes.additionalDataLink}
-                                >
-                                  {nodeCount > 1 ? `${nodeCount} Nodes` : `${nodeCount} Node`}
-                                </button>
-                              </Grid>
-                            </Grid>
-                            )
-                          }
-                          {
-                            supportingDataCount > 0 && (
-                            <Grid item container direction="row">
-                              <Grid item className={classes.titleCD}>
-                                Supporting Data in:
-                              </Grid>
-                              <Grid className={classes.content}>
-                                <button
-                                  type="button"
-                                  onClick={() => setCurrentTab(supportingDataTabIndex)}
-                                  className={classes.additionalDataLink}
-                                >
-                                  {supportingDataCount > 1 ? `${supportingDataCount} Repositories` : `${supportingDataCount} Repository`}
-                                </button>
-                              </Grid>
-                            </Grid>
-                            )
-                          }
-                        </Grid>
-                      ) : (
-                        <Grid item xs={12} sm={10} className={classes.content}>
-                          <div className={classes.content}>
-                            Under Development ...
-                          </div>
-                        </Grid>
-                      )}
+                <Grid
+                  item
+                  lg={6}
+                  md={6}
+                  sm={6}
+                  xs={12}
+                  className={classes.detailContainerRightTop}
+                >
+                  <Grid container spacing={1}>
+                    <Grid item xs={12} className={classes.containerHeader}>
+                      <span className={classes.detailContainerHeaderText}>Case File Types</span>
                     </Grid>
                   </Grid>
-                  {/* END: Image Collection */}
+                  <Grid container className={classes.paddingTop12}>
+                    <Grid item xs={12}>
+                      <span className={classes.content}>
+                        Molecular Panel Variant Call File Clinical Report File
+                      </span>
+                    </Grid>
+                    {/*(caseFileTypes.length > 0) ? caseFileTypes.sort((a, b) => customSorting(a, b, 'alphabetical')).map((fileType, index) => (
+                      <Grid item xs={12} key={index}>
+                        <span className={classes.content}>{fileType}</span>
+                      </Grid>
+                    )) : (
+                      <div className={classes.content}>
+                        This study currently has no Files associated with its cases
+                      </div>
+                    )*/}
+                  </Grid>
                 </Grid>
+                {/*<div><hr className={classNames(classes.hrLine, classes.hrLineRight)} /></div>*/}
               </Grid>
-            }
+              <Grid container spacing={1} direction="row" className={classes.detailContainerRight}>
+                <SampleProfile data={data} />
+
+                {/* START: Image Collection */}
+                <Grid item lg={6} md={6} sm={6} xs={12} className={classes.marginTop10}>
+                  <Grid container spacing={1}>
+                    <Grid item xs={12}>
+                      <span className={classes.detailContainerHeaderText}>
+                        IMAGE COLLECTIONS
+                      </span>
+                    </Grid>
+                  </Grid>
+                  <Grid container className={classes.detailContainerItems}>
+                    <Grid item xs={12} sm={10} className={classes.content}>
+                      <div className={classes.content}>
+                        This study currently has no Additional Data associated with it
+                      </div>
+                    </Grid>
+                    {/* eslint-disable-next-line no-constant-condition */}
+                    {/*supportingDataCount > 0 || nodeCount > 0 ? (
+                      <Grid item xs={12} className={classes.detailContainerItem}>
+                        {
+                          nodeCount > 0 && (
+                          <Grid item container direction="row">
+                            <Grid className={classes.titleCD}>
+                              Clinical Data in:
+                            </Grid>
+                            <Grid
+                              item
+                              className={classNames(classes.content, classes.marginTopN5)}
+                            >
+                              <button
+                                type="button"
+                                onClick={() => setCurrentTab(clinicalDataTabIndex)}
+                                className={classes.additionalDataLink}
+                              >
+                                {nodeCount > 1 ? `${nodeCount} Nodes` : `${nodeCount} Node`}
+                              </button>
+                            </Grid>
+                          </Grid>
+                          )
+                        }
+                        {
+                          supportingDataCount > 0 && (
+                          <Grid item container direction="row">
+                            <Grid item className={classes.titleCD}>
+                              Supporting Data in:
+                            </Grid>
+                            <Grid className={classes.content}>
+                              <button
+                                type="button"
+                                onClick={() => setCurrentTab(supportingDataTabIndex)}
+                                className={classes.additionalDataLink}
+                              >
+                                {supportingDataCount > 1 ? `${supportingDataCount} Repositories` : `${supportingDataCount} Repository`}
+                              </button>
+                            </Grid>
+                          </Grid>
+                          )
+                        }
+                      </Grid>
+                    ) : (
+                      <Grid item xs={12} sm={10} className={classes.content}>
+                        <div className={classes.content}>
+                          This study currently has no Additional Data associated with it
+                        </div>
+                      </Grid>
+                    )*/}
+                    
+                  </Grid>
+                </Grid>
+                {/* END: Image Collection */}
+              </Grid>
+            </Grid>
           </Grid>
         </div>
       </div>
@@ -339,7 +349,7 @@ const styles = (theme) => ({
   },
   detailContainerLeft: {
     display: 'block',
-    padding: '28px 20px 5px 10px',
+    padding: '30px 20px 5px 10px',
     minHeight: '500px',
     maxHeight: '500px',
     overflowY: 'auto',
@@ -348,28 +358,29 @@ const styles = (theme) => ({
     margin: '0px -8px',
   },
   containerHeader: {
-    marginBottom: '24px',
-    lineHeight: '9px',
+    // marginBottom: '10px',
+    // lineHeight: '9px',
   },
   detailContainerHeaderText: {
-    textTransform: 'uppercase',
-    fontFamily: theme.custom.fontFamilySans,
-    fontSize: '17px',
+    fontFamily: theme.custom.fontFamilyInter,
+    fontSize: '16px',
+    fontWeight: 400,
     letterSpacing: '0.017em',
-    color: '#0296c9',
+    color: '#0696C9',
+    textTransform: 'uppercase',
   },
   content: {
     fontSize: '12px',
   },
   detailContainerItems: {
-    paddingTop: '7px',
+    // paddingTop: '7px',
   },
   title: {
     color: '#0296c9',
-    fontFamily: theme.custom.fontFamilySans,
-    fontSize: '12px',
+    fontFamily: theme.custom.fontFamilyInter,
+    fontSize: '16px',
     letterSpacing: '0.017em',
-    fontWeight: '600',
+    fontWeight: '400',
     textTransform: 'uppercase',
   },
   titleCD: {
@@ -382,7 +393,7 @@ const styles = (theme) => ({
     marginRight: '4px',
   },
   detailContainerItem: {
-    paddingTop: '15px !important',
+    paddingTop: '16px !important',
     paddingLeft: '2px',
   },
   detailContainerRight: {
