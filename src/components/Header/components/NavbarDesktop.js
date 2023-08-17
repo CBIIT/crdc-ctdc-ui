@@ -1,8 +1,10 @@
+/* eslint-disable */
 import React, { useEffect, useState, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
-
+import CartContainer from '../../Cart/CartContainer';
 import { navMobileList, navbarSublists } from '../../../config/globalHeaderData';
+
 
 const Nav = styled.div`
     top: 0;
@@ -226,8 +228,7 @@ const DropdownContainer = styled.div`
 `;
 
 const StyledLoginLink = styled(Link)`
-  color: #007BBD;
-  text-align: right;
+  color: #00846A;
   font-size: 14px;
   font-family: Poppins;
   font-style: normal;
@@ -238,8 +239,13 @@ const StyledLoginLink = styled(Link)`
   text-transform: uppercase;
   padding: 10px 0 10px 0;
   margin-bottom: 4.5px;
-  margin-right: 32px;
+  margin-right: -1px;
 `;
+
+const CartSpan = styled.span`
+    display: flex;
+    flex-flow: row;
+    `
 
 const useOutsideAlerter = (ref) => {
   useEffect(() => {
@@ -280,6 +286,8 @@ const NavBar = () => {
       handleMenuClick(e);
     }
   };
+
+
 
   function shouldBeUnderlined(item) {
     const linkName = item.name;
@@ -351,9 +359,10 @@ const NavBar = () => {
             })
           }
         </UlContainer>
-        <StyledLoginLink id="header-navbar-login-button" to="/login">
-          Login
-        </StyledLoginLink>
+        <CartSpan>
+         <StyledLoginLink  id="header-navbar-login-button" to="/login">Login</StyledLoginLink>
+          <CartContainer />
+        </CartSpan> 
       </NavContainer>
       <Dropdown ref={dropdownSelection} className={clickedTitle === ''  ? "invisible" : ""}>
         <DropdownContainer>
