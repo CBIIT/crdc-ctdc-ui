@@ -13,7 +13,7 @@ export const title = {
 };
 
 export const headerIcon = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/trialDetail/ctdc/images/svg/Icon-TrialDetail.svg';
-export const externalIcon = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/master/icdc/images/svgs/cart_ExternalLink.svg';
+export const externalIcon = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/trialDetail/ctdc/images/svg/ExternalLinkIcon.svg';
 export const sampleProfile = {
   tabs: [
     {
@@ -45,6 +45,7 @@ export const tab = {
       index: 1,
       label: 'ADDITIONAL DETAILS',
       value: 'additional_details',
+      disable: true,
     },
   ],
 };

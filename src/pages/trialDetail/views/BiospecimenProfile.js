@@ -80,13 +80,13 @@ const SampleProfile = ({ classes, data }) => {
 
   return (
     <Grid item lg={6} md={6} sm={6} xs={12} className={classes.marginTop10}>
-      <Grid container spacing={1}>
+      <Grid container className={classes.detailContainerHL}>
         <Grid item xs={12}>
-          <span className={classes.detailContainerHeader}> IMAGE COLLECTIONS </span>
+          <span className={classes.detailContainerHeader}> Biospecimen PROFILE </span>
         </Grid>
       </Grid>
-      <Grid container spacing={1}>
-        <Grid item xs={12} sm={10} className={classes.detailContainerItems}>
+      <Grid container className={classes.detailContainerCL}>
+        <Grid item xs={12} sm={10}>
           <div className={classes.content}>
             Under Development ...
           </div>
@@ -100,15 +100,21 @@ const styles = (theme) => ({
   marginTop10: {
     marginTop: '10px',
   },
+  detailContainerHL: {
+    paddingRight: '30px',
+    marginRight: '30px',
+  },
+  detailContainerCL: {
+    paddingTop: '2px',
+    paddingRight: '30px',
+    marginRight: '30px',
+  },
   detailContainerHeader: {
     textTransform: 'uppercase',
-    fontFamily: theme.custom.fontFamilySans,
-    fontSize: '17px',
+    fontFamily: theme.custom.fontFamilyInter,
+    fontSize: '16px',
     letterSpacing: '0.017em',
-    color: '#0296c9',
-  },
-  detailContainerItems: {
-    paddingTop: '7px',
+    color: '#0696C9',
   },
   container: {
     fontFamily: 'Raleway, sans-serif',
@@ -117,7 +123,8 @@ const styles = (theme) => ({
     paddingBottom: '25px',
   },
   content: {
-    fontSize: '12px',
+    fontSize: '14px',
+    fontFamily: theme.custom.fontFamilyNunitoSansRegular,
   },
   tabHighlight: {
     color: '#0296c9',

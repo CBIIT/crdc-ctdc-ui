@@ -7,7 +7,7 @@ import {
   // eslint-disable-next-line no-unused-vars
   externalIcon,
 } from '../../../../bento/trialDetailData';
-import SampleProfile from '../SampleProfile';
+import SampleProfile from '../BiospecimenProfile';
 import OverviewThemeProvider from './overviewThemeConfig';
 import classNames from 'classnames';
 
@@ -33,12 +33,23 @@ const Overview = ({
   const getAccessTypeString = (accessType) => (accessType === 'Cloud'
     ? 'Available only via the Cloud' : 'Available for Download');
 
+  const ExternalLinkIcon = () => {
+    return (
+      <img 
+        src={externalIcon}
+        width={14}
+        height={14}
+        className={classes.externalLinkIcon}
+        alt='outbounnd web site icon'/>
+    )
+  }
+
   return (
     <OverviewThemeProvider>
       <div className={classes.container}>
         <div className={classes.detailContainer}>
           <Grid container>
-            <Grid item lg={6} md={6} sm={6} xs={12} className={classes.borderRight}>
+            <Grid item lg={5} md={5} sm={6} xs={12} className={classes.borderRight}>
               <Grid container direction="row" className={classes.detailContainerLeft}>
                 <Grid item xs={12} className={classes.containerHeader}>
                   <span className={classes.detailContainerHeaderText}>Trial Name</span>
@@ -59,8 +70,7 @@ const Overview = ({
                         TRIAL DESCRIPTION                     
                       </Grid>
                       <Grid item xs={12} className={classes.content}>
-                        Cancer Moonshot
-                        Biobank" is a longitudinal study. This means it
+                        "Cancer Moonshot Biobank" is a longitudinal study. This means it
                         collects and stores samples and information
                         over time, throughout the course of a
                         patient's cancer treatment. By looking at
@@ -98,8 +108,8 @@ const Overview = ({
                         ASSOCIATED LINKS
                       </Grid>
                       <Grid item xs={12} className={classes.content}>
-                        <a href='/'>ClinicalTrials.gov record</a> <br/>
-                        <a href='/'>About the Biobank</a>
+                        <a href='/' className={classes.link}>ClinicalTrials.gov record</a> <ExternalLinkIcon/> <br/>
+                        <a href='/' className={classes.link}>About the Biobank</a> <ExternalLinkIcon/>
                       </Grid>
                     </Grid>
                   </Grid>
@@ -109,10 +119,9 @@ const Overview = ({
             </Grid>
             
             {/* Right Container Detail */}
-            <Grid item lg={6} md={6} sm={6} xs={12}>
+            <Grid item lg={7} md={7} sm={6} xs={12}>
               <Grid
                 container
-                spacing={1}
                 direction="row"
                 className={classes.detailContainerRight}
               >
@@ -124,12 +133,12 @@ const Overview = ({
                   xs={12}
                   className={classes.detailContainerRightTop}
                 >
-                  <Grid container spacing={1}>
+                  <Grid container className={classes.detailContainerHL}>
                     <Grid item xs={12} className={classes.containerHeader}>
                       <span className={classes.detailContainerHeaderText}>DIAGNOSES</span>
                     </Grid>
                   </Grid>
-                  <Grid container className={classes.paddingTop12}>
+                  <Grid container className={classes.detailContainerCL}>
                     <Grid item xs={12}>
                       <span className={classes.content}>
                         Acute Myeloid Leukemia Not Otherwise Specified
@@ -189,13 +198,13 @@ const Overview = ({
                   xs={12}
                   className={classes.detailContainerRightTop}
                 >
-                  <Grid container spacing={1}>
+                  <Grid container className={classes.participantFile}>
                     <Grid item xs={12} className={classes.containerHeader}>
-                      <span className={classes.detailContainerHeaderText}>Case File Types</span>
+                      <span className={classes.detailContainerHeaderText}>PARTICIPANT FILE TYPES</span>
                     </Grid>
                   </Grid>
-                  <Grid container className={classes.paddingTop12}>
-                    <Grid item xs={12}>
+                  <Grid container className={classes.participantFile}>
+                    <Grid item xs={12} className={classes.paddingTop2}>
                       <span className={classes.content}>
                         Molecular Panel Variant Call File Clinical Report File
                       </span>
@@ -213,12 +222,12 @@ const Overview = ({
                 </Grid>
                 {/*<div><hr className={classNames(classes.hrLine, classes.hrLineRight)} /></div>*/}
               </Grid>
-              <Grid container spacing={1} direction="row" className={classes.detailContainerRight}>
+              <Grid container direction="row" className={classes.detailContainerRight}>
                 <SampleProfile data={data} />
 
                 {/* START: Image Collection */}
-                <Grid item lg={6} md={6} sm={6} xs={12} className={classes.marginTop10}>
-                  <Grid container spacing={1}>
+                <Grid item lg={6} md={6} sm={6} xs={12} className={classes.imageCollection}>
+                  <Grid container>
                     <Grid item xs={12}>
                       <span className={classes.detailContainerHeaderText}>
                         IMAGE COLLECTIONS
@@ -228,7 +237,7 @@ const Overview = ({
                   <Grid container className={classes.detailContainerItems}>
                     <Grid item xs={12} sm={10} className={classes.content}>
                       <div className={classes.content}>
-                        This study currently has no Additional Data associated with it
+                        Under Development ...
                       </div>
                     </Grid>
                     {/* eslint-disable-next-line no-constant-condition */}
@@ -297,8 +306,8 @@ const Overview = ({
 const styles = (theme) => ({
   container: {
     fontFamily: 'Raleway, sans-serif',
-    paddingLeft: '33px',
-    paddingRight: '33px',
+    paddingLeft: '32px',
+    paddingRight: '32px',
     paddingBottom: '25px',
   },
   additionalDataLink: {
@@ -320,11 +329,12 @@ const styles = (theme) => ({
   },
   studyDescription: {
     paddingTop: '0px !important',
+    paddingLeft: '2px'
   },
   detailContainer: {
     margin: 'auto',
-    paddingLeft: '36px',
-    paddingRight: '36px',
+    paddingLeft: '50px',
+    paddingRight: '50px',
     fontFamily: theme.custom.fontFamilySans,
     letterSpacing: '0.014em',
     color: '#000000',
@@ -345,17 +355,19 @@ const styles = (theme) => ({
     marginLeft: '4px',
   },
   borderRight: {
-    borderRight: '#81a6b9 1px solid',
+    borderRight: '#000000 1px solid',
   },
   detailContainerLeft: {
     display: 'block',
-    padding: '30px 20px 5px 10px',
+    padding: '0px 61px 5px 8px',
     minHeight: '500px',
     maxHeight: '500px',
     overflowY: 'auto',
     overflowX: 'hidden',
     width: 'calc(100% + 8px) !important',
-    margin: '0px -8px',
+    marginLeft: '-8px',
+    marginTop: '30px'
+    // margin: '0px -8px',
   },
   containerHeader: {
     // marginBottom: '10px',
@@ -368,15 +380,17 @@ const styles = (theme) => ({
     letterSpacing: '0.017em',
     color: '#0696C9',
     textTransform: 'uppercase',
+    paddingLeft: '2px',
   },
   content: {
-    fontSize: '12px',
+    fontSize: '14px',
+    fontFamily: theme.custom.fontFamilyNunitoSansRegular
   },
   detailContainerItems: {
     // paddingTop: '7px',
   },
   title: {
-    color: '#0296c9',
+    color: '#0696C9',
     fontFamily: theme.custom.fontFamilyInter,
     fontSize: '16px',
     letterSpacing: '0.017em',
@@ -397,7 +411,8 @@ const styles = (theme) => ({
     paddingLeft: '2px',
   },
   detailContainerRight: {
-    padding: '32px 20px 5px 10px',
+    margin: '30px 0px 0px 0px',
+    padding: '0px 50px 5px 65px',
     maxHeight: '500px',
     overflowY: 'auto',
     overflowX: 'hidden',
@@ -405,14 +420,24 @@ const styles = (theme) => ({
   },
   detailContainerRightTop: {
     maxHeight: '250px',
-    paddingRight: '0px',
     overflow: 'auto',
   },
-  marginTop10: {
-    marginTop: '10px',
+  participantFile: {
+    paddingLeft: '30px'
   },
-  paddingTop12: {
-    paddingTop: '4px',
+  detailContainerHL: {
+    paddingRight: '30px',
+  },
+  detailContainerCL: {
+    paddingTop: '2px',
+    paddingRight: '30px',
+  },
+  paddingTop2: {
+    paddingTop: '2px',
+  },
+  imageCollection: {
+    marginTop: '10px',
+    paddingLeft: '30px',
   },
   linkIcon: {
     width: '20px',
@@ -422,6 +447,14 @@ const styles = (theme) => ({
   },
   paddingLeft5: {
     paddingLeft: '5px',
+  },
+  link: {
+    color: '#990099',
+    textDecoration: 'none',
+    fontSize: '14px',
+  },
+  externalLinkIcon: {
+    marginLeft: '5px'
   },
   outLink: {
     color: '#DC762F',

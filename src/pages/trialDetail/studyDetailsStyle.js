@@ -104,7 +104,7 @@ export default (theme) => ({
   hrLine: {
     marginTop: '-2px',
     marginBottom: '0',
-    borderTop: '1px solid #81a6b9',
+    borderTop: '1px solid #000000',
   },
   container: {
     paddingTop: '42px',
