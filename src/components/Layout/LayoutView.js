@@ -6,6 +6,7 @@ import Header from '../Header';
 import Footer from '../Footer';
 import ScrollToTop from '../ScrollButton/ScrollButtonView';
 import Error from '../../pages/error/Error';
+import UnderDev from '../../pages/error/development';
 import Home from '../../pages/landing/landingController';
 import About from '../../pages/about/aboutController';
 import Programs from '../../pages/programs/programsController';
@@ -43,8 +44,6 @@ const Layout = ({ classes, isSidebarOpened }) => {
         <AuthSessionTimeoutController />
         <Header />
         <OverlayWindow />
-        {/* Reminder: Ajay need to replace the ICDC with env variable and
-          change build npm to read env variable */}
         <div
           className={classes.content}
         >
@@ -53,22 +52,17 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <MixedRoute exact path="/" component={Home} />
             <MixedRoute exact path="/home" component={Home} />
 
-            {/* START: Private Routes */}
-            <PrivateRoute path="/profile" requiuredSignIn access={['member', 'non-member', 'admin']} component={ProfileController} />
-            {/* END SECTION */}
 
             {/* SECTION: Member & Admin only Path */}
-            <PrivateRoute path="/programs" access={['admin', 'member']} component={Programs} />
-            <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={CarView} />
-            <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
+            <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={UnderDev} />
             {/* bento 4.0 template */}
-            <PrivateRoute path="/explore" access={['admin', 'member']} component={DashTemplate} />
+            <PrivateRoute path="/explore" access={['admin', 'member']} component={UnderDev} />
             {/* END SECTION */}
 
             {/* Psuedo Private routes where minor
             functionality can be accessed my unauthorized users */}
-            <Route exact path="/search" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
-            <Route path="/search/:id" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
+            <Route exact path="/search" access={['admin', 'member', 'non-member']} component={UnderDev} />
+            <Route path="/search/:id" access={['admin', 'member', 'non-member']} component={UnderDev} />
 
             {/* END: Private Routes */}
             {aboutPageRoutes.map(
@@ -76,12 +70,12 @@ const Layout = ({ classes, isSidebarOpened }) => {
                 <Route
                   key={index}
                   path={aboutPageRoute}
-                  component={About}
+                  component={UnderDev}
                 />
               ),
             )}
-            <Route path="/graphql" component={GraphqlClient} />
-            <LoginRoute path="/login" component={Login} />
+            <Route path="/graphql" component={UnderDev} />
+            <LoginRoute path="/login" component={UnderDev} />
             <Route component={Error} />
 
           </Switch>
