@@ -240,57 +240,6 @@ const Overview = ({
                         Under Development ...
                       </div>
                     </Grid>
-                    {/* eslint-disable-next-line no-constant-condition */}
-                    {/*supportingDataCount > 0 || nodeCount > 0 ? (
-                      <Grid item xs={12} className={classes.detailContainerItem}>
-                        {
-                          nodeCount > 0 && (
-                          <Grid item container direction="row">
-                            <Grid className={classes.titleCD}>
-                              Clinical Data in:
-                            </Grid>
-                            <Grid
-                              item
-                              className={classNames(classes.content, classes.marginTopN5)}
-                            >
-                              <button
-                                type="button"
-                                onClick={() => setCurrentTab(clinicalDataTabIndex)}
-                                className={classes.additionalDataLink}
-                              >
-                                {nodeCount > 1 ? `${nodeCount} Nodes` : `${nodeCount} Node`}
-                              </button>
-                            </Grid>
-                          </Grid>
-                          )
-                        }
-                        {
-                          supportingDataCount > 0 && (
-                          <Grid item container direction="row">
-                            <Grid item className={classes.titleCD}>
-                              Supporting Data in:
-                            </Grid>
-                            <Grid className={classes.content}>
-                              <button
-                                type="button"
-                                onClick={() => setCurrentTab(supportingDataTabIndex)}
-                                className={classes.additionalDataLink}
-                              >
-                                {supportingDataCount > 1 ? `${supportingDataCount} Repositories` : `${supportingDataCount} Repository`}
-                              </button>
-                            </Grid>
-                          </Grid>
-                          )
-                        }
-                      </Grid>
-                    ) : (
-                      <Grid item xs={12} sm={10} className={classes.content}>
-                        <div className={classes.content}>
-                          This study currently has no Additional Data associated with it
-                        </div>
-                      </Grid>
-                    )*/}
-                    
                   </Grid>
                 </Grid>
                 {/* END: Image Collection */}
@@ -329,7 +278,7 @@ const styles = (theme) => ({
   },
   studyDescription: {
     paddingTop: '0px !important',
-    paddingLeft: '2px'
+    // paddingLeft: '2px'
   },
   detailContainer: {
     margin: 'auto',
@@ -367,7 +316,6 @@ const styles = (theme) => ({
     width: 'calc(100% + 8px) !important',
     marginLeft: '-8px',
     marginTop: '30px'
-    // margin: '0px -8px',
   },
   containerHeader: {
     // marginBottom: '10px',
@@ -380,7 +328,6 @@ const styles = (theme) => ({
     letterSpacing: '0.017em',
     color: '#0696C9',
     textTransform: 'uppercase',
-    paddingLeft: '2px',
   },
   content: {
     fontSize: '14px',
@@ -408,7 +355,6 @@ const styles = (theme) => ({
   },
   detailContainerItem: {
     paddingTop: '16px !important',
-    paddingLeft: '2px',
   },
   detailContainerRight: {
     margin: '30px 0px 0px 0px',
