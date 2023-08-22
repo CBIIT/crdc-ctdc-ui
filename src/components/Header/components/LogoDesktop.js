@@ -7,7 +7,8 @@ const LogoArea = styled.div`
 
     img {
       width: fit-content;
-      height: 56px;
+      height: 100px;
+      margin-left: -23px;
     }
 
     .logoContainer {

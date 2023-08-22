@@ -119,7 +119,7 @@ export const navbarSublists = {
     },
     {
       name: 'GitHub',
-      link: 'https://github.com/CBIIT/crdc-ctdc-ui',
+      link: 'https://github.com/CBIIT/crdc-ctdc-starter-kit',
       id: 'navbar-dropdown-item-developers',
       className: 'navMobileSubItem',
     },

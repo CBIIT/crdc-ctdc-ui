@@ -36,7 +36,7 @@ export default {
       items: [
         {
           text: 'Release Notes',
-          link: 'https://github.com/CBIIT/bento-ctdc-frontend',
+          link: 'https://github.com/CBIIT/crdc-ctdc-starter-kit/releases',
         },
         {
           text: 'FE Version: v1.0.0',
