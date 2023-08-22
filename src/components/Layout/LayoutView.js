@@ -10,6 +10,7 @@ import Home from '../../pages/landing/landingController';
 import About from '../../pages/about/aboutController';
 import Programs from '../../pages/programs/programsController';
 import ProgramDetail from '../../pages/programDetail/programDetailController';
+import TrialDetail from '../../pages/trialDetail/trialDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import GlobalSearchController from '../../pages/search/searchViewController';
 import Login from '../../pages/login';
@@ -52,6 +53,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
           <Switch>
             <MixedRoute exact path="/" component={Home} />
             <MixedRoute exact path="/home" component={Home} />
+            <MixedRoute exact path="/trial/:id" component={TrialDetail} />
 
             {/* START: Private Routes */}
             <PrivateRoute path="/profile" requiuredSignIn access={['member', 'non-member', 'admin']} component={ProfileController} />
