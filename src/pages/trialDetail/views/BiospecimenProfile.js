@@ -6,47 +6,32 @@ import {
   Tab,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { BarChart } from 'bento-components';
 import {
-  sampleProfile,
+  biospecimenProfile,
   palette,
   valueConfiguration,
+  timePointArgumentConfiguration,
   argumentConfiguration,
 } from '../../../bento/trialDetailData';
-// import TabPanel from '../../../components/Tab/TabPanel';
+import TabPanel from '../../../components/Tab/TabPanel';
 // import { navigatedToDashboard } from '../../../utils/utils';
 
 const tooltipContent = ({ argument, originalValue }) => (
-  <>
-    <div>
-      <span
-        style={{
-          fontWeight: 600,
-          color: '#1C2023',
-        }}
-      >
-        {argument}
-        {', '}
-      </span>
-      <span
-        style={{
-          color: '#000000',
-          fontWeight: 900,
-        }}
-      >
-        {originalValue}
-      </span>
-    </div>
-  </>
+  <div>
+    <span style={{ fontWeight: 600, color: '#B1B1B1' }}>{argument}, </span>
+    <span style={{ color: '#444444', fontWeight: 900 }}>{originalValue}</span>
+  </div>
 );
 
-const SampleProfile = ({ classes, data }) => {
+const BiospecimenProfile = ({ classes, data }) => {
   // const studyCode = data.study[0].clinical_study_designation;
   const [currentTab, setCurrentTab] = useState(0);
   const handleTabChange = (event, value) => {
     setCurrentTab(value);
   };
-  // const tabCount = sampleProfile.tabs.filter((tab) => (data[tab.value]
-  //   && data[tab.value].length > 0));
+  const tabCount = biospecimenProfile.tabs.filter((tab) => (data[tab.value]
+    && data[tab.value].length > 0));
 
   // const linkToDashboard = () => {
   //   navigatedToDashboard(studyCode, 'Samples');
@@ -66,16 +51,25 @@ const SampleProfile = ({ classes, data }) => {
     >
       { items.map((item, index) => (
         <Tab
-          className={item.value}
-          classes={{
-            root: (item.value === 'studySamplePathologyCount') ? classes.tab2 : classes.tab,
-            labelContainer: classes.labelContainer,
-          }}
+          className={classes.tab}
+          classes={{ root: classes.tab, labelContainer: classes.labelContainer, }}
           label={item.label}
           key={index}
         />
       )) }
     </Tabs>
+  );
+
+  const renderTabContent = (item, index) => (
+    <TabPanel index={item.index} value={currentTab} key={index}>
+      <BarChart
+        data={data[item.value]}
+        palette={palette}
+        tooltipContent={tooltipContent}
+        argument={item.label === 'TIMEPOINT' ? timePointArgumentConfiguration : argumentConfiguration}
+        value={valueConfiguration}
+      />
+    </TabPanel>
   );
 
   return (
@@ -85,13 +79,40 @@ const SampleProfile = ({ classes, data }) => {
           <span className={classes.detailContainerHeader}> Biospecimen PROFILE </span>
         </Grid>
       </Grid>
-      <Grid container className={classes.detailContainerCL}>
-        <Grid item xs={12} sm={10}>
-          <div className={classes.content}>
-            Under Development ...
-          </div>
+      {(tabCount !== undefined && tabCount.length > 0) ? (
+        <>
+          <Grid container>
+            <div className={classes.headerButton}>
+              <span className={classes.headerButtonLinkSpan}>
+                <Link
+                  className={classes.headerButtonLink}
+                  to={(location) => ({ ...location, pathname: '/explore' })}
+                  // onClick={() => linkToDashboard()}
+                >
+                  <span className={classes.headerButtonLinkNumber}>
+                    {373 || data.sampleCountOfStudy}
+                  </span>
+                  <span className={classes.headerButtonLinkText}>Associated Samples</span>
+                </Link>
+              </span>
+            </div>
+          </Grid>
+          <Grid item xs={12} className={classes.tabContainer}>
+            { tabItem(biospecimenProfile.tabs) }
+          </Grid>
+          <Grid container className={classes.detailContainerItems}>
+            { biospecimenProfile.tabs.map((item, index) => renderTabContent(item, index)) }
+          </Grid>
+        </>
+      ) : (
+        <Grid container className={classes.detailContainerCL}>
+          <Grid item xs={12} sm={10}>
+            <div className={classes.content}>
+              This trial currently has no associated Biospecimen Profile
+            </div>
+          </Grid>
         </Grid>
-      </Grid>
+      )}
     </Grid>
   );
 };
@@ -130,14 +151,23 @@ const styles = (theme) => ({
     color: '#0296c9',
     outline: 'none !important',
   },
+  tabContainer: {
+    width: '320px',
+    marginTop: '10px',
+    padding: '0px 23px',
+    marginBottom: '30px',
+    borderBottom: '1px solid #42779A'
+  },
   tab: {
-    minWidth: '43px',
-    width: '43px',
-    padding: '0',
-    fontSize: '11px',
-    fontWeight: '700',
+    fontSize: '14px',
+    fontWeight: '600',
+    fontFamily: theme.custom.fontFamilyNunitoSans,
+    minWidth: '120px',
     paddingLeft: '2px',
+    padding: '0px !important',
     marginRight: '10px',
+    textAlign: 'center',
+    color: '#A7C1CE',
   },
   tab2: {
     minWidth: '90px',
@@ -149,38 +179,34 @@ const styles = (theme) => ({
   headerButton: {
     fontFamily: theme.custom.fontFamilySans,
     marginTop: '15px',
-    float: 'right',
+    textAlign: 'center',
     height: '33px',
     background: '#F6F4F4',
-    paddingLeft: '10px',
-    paddingRight: '10px',
-
+    padding: '2px 10px 0px 10px',
+    border: '3px solid #81A6B9',
+    width: '220px',
   },
   headerButtonLinkSpan: {
-    fontFamily: theme.custom.fontFamilySans,
+    fontFamily: theme.custom.fontFamilyInter,
     height: '50px',
-    background: '#F5F3EE',
+    background: '#F6F4F4',
     width: '200px',
     fontSize: '14px',
   },
   headerButtonLinkText: {
-    fontFamily: theme.custom.fontFamilySans,
+    fontFamily: theme.custom.fontFamilyInter,
     color: '#0B3556',
   },
   headerButtonLinkNumber: {
-    fontFamily: theme.custom.fontFamilySans,
-    borderBottom: 'solid',
-    lineHeight: '30px',
-    paddingBottom: '3px',
+    fontFamily: theme.custom.fontFamilyInter,
     margin: '0 4px',
     fontSize: '14px',
-    color: '#dc762f',
+    color: '#DC762F',
   },
   headerButtonLink: {
     textDecoration: 'none',
     lineHeight: '14px',
     fontSize: '12px',
-    fontWeight: 'bold',
     color: '#0296c9',
     '&:hover': {
       textDecoration: 'underline',
@@ -188,10 +214,12 @@ const styles = (theme) => ({
   },
   tabs: {
     '& .Mui-selected': {
-      color: '#0296c9',
-      fontWeight: '900',
+      color: '#000000',
+      fontWeight: '600',
+      borderBottom: '6px solid #0296C9'
     },
+    fontFamily: theme.custom.fontFamilyNunitoSansRegular,
   },
 });
 
-export default withStyles(styles, { withTheme: true })(SampleProfile);
+export default withStyles(styles, { withTheme: true })(BiospecimenProfile);
