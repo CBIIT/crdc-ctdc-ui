@@ -264,6 +264,7 @@ const styles = (theme) => ({
     lineHeight: '19px',
     padding: '10px, 15px, 10px, 15px',
     borderRadius: '5px',
+    boxShadow: '0px 4px 10px 0px #00000040',
   },
   customArrow: {
 
