@@ -30,7 +30,7 @@ const Overview = ({
       case 'Unrestricted':
         return 'Available both via the Cloud and via Download';
       default:
-        return 'Available';
+        return 'Available both via the Cloud and via Download';
     }
   };
 
