@@ -45,36 +45,22 @@ const LandingController = ({ classes, heroData }) => (
     <div className={classes.container}>
       <div className={classes.texture}>
         <Grid container spacing={16} direction="row" className={classes.landingContainer}>
-          <div className={classes.contentLeft}>
-            <div className={classes.about}>
-              <div className={classes.aboutImageSection}>
-                <img src={imgAbout} className={classes.aboutImage} alt="CTDC about" />
-              </div>
-              <div className={classes.CTDCWords}>
-                About the Clinical Trial Data Commons (CTDC)
-              </div>
-              <div className={classes.aboutContent}>
-                CTDC has been established to allow researchers to search, explore and select data
-                across
-                clinical trials from the Precision Medicine Initiative. Data in the CTDC is sourced
-                from multiple different programs and projects; all are focused on human subjects
-                and the data files are access controlled. As part of the NCI's Cancer Research Data
-                Commons (CRDC),
-                user selected data files are available for analysis in the CRDC's Cloud Resources.
-
-              </div>
-              <div className={classes.aboutButtonSection}>
-                <div className={classes.aboutButtonLeft}>
-                  <img src={iconAbout} className={classes.iconAbout} alt="CTDC about icon" />
-                </div>
-                <div className={classes.aboutButtonRight}>
-                  <Link to="/purpose" className={classes.aboutButton}>READ MORE</Link>
-                </div>
+          <div className={classes.mainLanding}>
+            <div className={classes.contentRightTop}>
+              <div className={classes.aboutContainer}>
+                <Link to='/purpose' className={classes.link}>
+                  <div className={classes.CTDCHeader}>
+                    About the Clinical Trial Data Commons <span className={classes.CTDCWords}>(CTDC)</span>
+                  </div>
+                  <div className={classes.aboutContent}>
+                    The Clinical Trial Data Commons (CTDC) was established to allow expanded access to,
+                    and exploration of, data collected from NCI-sponsored clinical trials to advance
+                    cancer research. The CTDC is part of NCI's Cancer Research Data Commons (CRDC).
+                  </div>
+                </Link>
               </div>
             </div>
-          </div>
-          <div className={classes.contentRight}>
-            <div className={classes.contentRightTop}>
+            <div className={classes.contentRightBottom}>
               <div className={classes.program}>
                 <div className={classes.programImg}>
                   <img className={classes.image} src={imgTrial} alt="CTDC  Trials" />
@@ -88,11 +74,11 @@ const LandingController = ({ classes, heroData }) => (
                 </div>
                 <div className={classes.blueButton}>
                   <div className={classes.blueButtonLeft}>
-                    <img className={classes.icon} src={icon} alt="CTDC about " />
+                    <img className={classes.icon} src={icon} alt="CTDC Trials" />
                     {' '}
                   </div>
                   <div className={classes.blueButtonRight}>
-                    <Link to="/trials" className={classes.blueButton}>EXPLORE</Link>
+                    <Link to="/trial/NCT04314401" className={classes.blueButton}>GO TO TRIALS LISTING</Link>
                   </div>
                 </div>
               </div>
@@ -101,10 +87,9 @@ const LandingController = ({ classes, heroData }) => (
                   <img className={classes.image} src={imgAccess} alt="CTDC Request ACCESS " />
                 </div>
                 <div className={classes.content}>
-                  <div className={classes.contentHeader}> REQUEST ACCESS</div>
+                  <div className={classes.contentHeader}> EXPLORE DATA</div>
                   <div className={classes.contentContainer}>
-                    Data and files in CTDC are not open access,
-                    they require users to have permission.
+                    Search and explore trial data
                   </div>
 
                 </div>
@@ -114,31 +99,13 @@ const LandingController = ({ classes, heroData }) => (
                     {' '}
                   </div>
                   <div className={classes.blueButtonRight}>
-                    <Link to="/request-access" className={classes.blueButton}>READ MORE</Link>
+                    <Link to="/explore" className={classes.blueButton}>START THE PROCESS</Link>
                   </div>
                 </div>
               </div>
 
             </div>
-            <div className={classes.contentRightBottom}>
-              <div className={classes.cases}>
-                <div className={classes.greyContentHeader}> Cases</div>
-                <div className={classes.greyContent}>
-                  Search all the Cases and build cohorts from all the
-                  Programs/Studies within the CTDC. The data files from
-                  these cohorts can then be analyzed in the Cloud Resources.
-                </div>
-                <div className={classes.greybuttonSection}>
-                  <div className={classes.blueButtonLeft}>
-                    <img className={classes.greyIcon} src={icon} alt="CTDC about " />
-                    {' '}
-                  </div>
-                  <div className={classes.blueButtonRight}>
-                    <Link to="/explore" className={classes.greybutton}>Explore</Link>
-                  </div>
-                </div>
-              </div>
-            </div>
+            
           </div>
         </Grid>
       </div>
@@ -265,22 +232,30 @@ const styles = () => ({
     marginTop: '13px',
     marginLeft: '23px',
   },
-
+  mainLanding: {
+    maxWidth: '596px'
+  },
   aboutImage: {
     width: '300px',
     padding: '14px',
   },
   aboutImageSection: {
   },
-  CTDCWords: {
-    height: '188px',
-    background: '#0B2731',
+  CTDCHeader: {
+    height: '87px',
+    background: '#067CA5',
     color: '#FFFFFF',
     fontSize: '26px',
+    fontWeight: '400',
     textTransform: 'uppercase',
-    lineHeight: '29px',
-    padding: '24px 75px 26px 26px',
+    lineHeight: '27px',
+    padding: '30px 20px 30px 20px',
     fontFamily: 'Oswald',
+    textAlign: 'center',
+  },
+  CTDCWords: {
+    fontWeight: '300',
+    fontSize: '24px',
   },
   landingContainer: {
     alignItems: 'center',
@@ -300,14 +275,16 @@ const styles = () => ({
     height: '251px',
   },
   aboutContent: {
-    background: '#20506A',
-    minHeight: '372px',
-    width: '300px',
-    padding: '30px 30px 32px 30px',
+    background: '#004D73',
+    padding: '30px 20px 32px 20px',
     color: '#fff',
     fontFamily: '"Open Sans"',
     fontSize: '14px',
     lineHeight: '22px',
+    textAlign: 'center',
+  },
+  link: {
+    textDecoration: 'none',
   },
   aboutButtonSection: {
     background: '#20506A',
@@ -343,8 +320,7 @@ const styles = () => ({
     width: '100%',
     background: '#fff',
     paddingLeft: '30px',
-    paddingTop: '6px',
-    minHeight: '130px',
+    minHeight: '116px',
   },
   contentHeader: {
     color: '#20506A',
@@ -375,19 +351,8 @@ const styles = () => ({
   studies: {
     float: 'left',
   },
-
-  contentRightBottom: {
-    float: 'left',
-    width: '597px',
-    background: '#fff',
-    backgroundImage: `url(${l9dg})`,
-    backgroundRepeat: 'no-repeat',
-    backgroundSize: 'cover',
-  },
-  cases: {
-    height: '438px',
-    paddingLeft: '370px',
-    paddingTop: '70px',
+  aboutContainer: {
+    paddingBottom: '10px',
   },
   greybuttonSection: {
     height: '46px',
