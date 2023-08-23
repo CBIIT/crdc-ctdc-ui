@@ -13,7 +13,6 @@ import OverviewThemeProvider from './overviewThemeConfig';
 const Overview = ({
   classes,
   studyData,
-  diagnoses,
   caseFileTypes,
   data,
   nodeCount,
@@ -43,6 +42,8 @@ const Overview = ({
     )
   }
   const associatedLinks = data.studyByStudyId.associated_link;
+  const diagnoses = data.studyByStudyId.diagnosis.list_diagnosis;
+  const participantFileTypes = data.studyByStudyId.data_file.list_type;
 
   const customSorting = (a, b) => {
     let val = 0
@@ -155,55 +156,13 @@ const Overview = ({
                     </Grid>
                   </Grid>
                   <Grid container className={classes.detailContainerCL}>
-                    <Grid item xs={12}>
-                      <span className={classes.content}>
-                        Acute Myeloid Leukemia Not Otherwise Specified
-                      </span>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <span className={classes.content}>
-                        {' '}
-                        Colorectal Carcinoma
-                      </span>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <span className={classes.content}>
-                        {' '}
-                        Plasma Cell Myeloma
-                      </span>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <span className={classes.content}>
-                        {' '}
-                        Lung Non-Small Cell CarcinomaProstate Carcinoma
-                      </span>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <span className={classes.content}>
-                        {' '}
-                        Lung Small Cell Carcinoma
-                      </span>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <span className={classes.content}>
-                        {' '}
-                        Melanoma
-                      </span>
-                    </Grid>
-                    <Grid item xs={12}>
-                      <span className={classes.content}>
-                        {' '}
-                        Gastroesophageal Junction Adenocarcinoma
-                      </span>
-                    </Grid>
-                    {/*diagnoses.sort((a, b) => customSorting(a, b, 'alphabetical')).map((diagnosis, index) => (
+                    {diagnoses.sort((a, b) => customSorting(a, b)).map((diagnosis, index) => (
                       <Grid item xs={12} key={index}>
                         <span className={classes.content}>
-                          {' '}
                           {diagnosis}
                         </span>
                       </Grid>
-                    ))*/}
+                    ))}
                   </Grid>
                 </Grid>
                 <Grid
@@ -220,23 +179,13 @@ const Overview = ({
                     </Grid>
                   </Grid>
                   <Grid container className={classes.participantFile}>
-                    <Grid item xs={12} className={classes.paddingTop2}>
-                      <span className={classes.content}>
-                        Molecular Panel Variant Call File Clinical Report File
-                      </span>
-                    </Grid>
-                    {/*(caseFileTypes.length > 0) ? caseFileTypes.sort((a, b) => customSorting(a, b, 'alphabetical')).map((fileType, index) => (
+                    {(participantFileTypes.length > 0) ? participantFileTypes.sort((a, b) => customSorting(a, b)).map((fileType, index) => (
                       <Grid item xs={12} key={index}>
                         <span className={classes.content}>{fileType}</span>
                       </Grid>
-                    )) : (
-                      <div className={classes.content}>
-                        This study currently has no Files associated with its cases
-                      </div>
-                    )*/}
+                    )): null}
                   </Grid>
                 </Grid>
-                {/*<div><hr className={classNames(classes.hrLine, classes.hrLineRight)} /></div>*/}
               </Grid>
               <Grid container direction="row" className={classes.detailContainerRight}>
                 <BiospecimenProfile data={data} />
