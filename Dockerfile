@@ -23,4 +23,5 @@ RUN sh -c "envsubst '\$PORT'  < /etc/nginx/conf.d/configfile.template > /etc/ngi
 
 EXPOSE 80
 
+RUN chmod +x /entrypoint.sh
 ENTRYPOINT [ "sh", "/entrypoint.sh" ]
