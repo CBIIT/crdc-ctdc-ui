@@ -161,9 +161,7 @@ const styles = () => ({
   container: {
     fontFamily: 'Raleway, sans-serif',
     margin: '0 auto',
-
   },
-
   bannerTexture: {
     color: '#4898B4',
     fontFamily: 'Raleway',
@@ -196,31 +194,6 @@ const styles = () => ({
     textTransform: 'uppercase',
     letterSpacing: '0.8px',
   },
-  headerTitle: {
-    paddingTop: '180px',
-    paddingBottom: '12px',
-    width: '208px',
-    color: '#FFFFFF',
-    fontFamily: 'Raleway, sans-serif',
-    fontSize: '40px',
-    fontWeight: 'bold',
-    lineHeight: '40px',
-
-  },
-  paddingLeft50: {
-    paddingLeft: '50px',
-  },
-  headerContent: {
-    height: '98px',
-    width: '194px',
-    color: '#CB8311',
-    fontFamily: 'Raleway',
-    fontSize: '16px',
-    fontWeight: '500',
-    lineHeight: '22px',
-    marginBottom: '40px',
-  },
-
   iconAbout: {
     height: '17px',
     width: '9px',
@@ -238,8 +211,6 @@ const styles = () => ({
   aboutImage: {
     width: '300px',
     padding: '14px',
-  },
-  aboutImageSection: {
   },
   CTDCHeader: {
     height: '87px',
@@ -262,10 +233,6 @@ const styles = () => ({
     justifyContent: 'center',
     paddingLeft: '15px',
   },
-  contentLeft: {
-    float: 'left',
-    paddingRight: '10px',
-  },
   about: {
     width: '300px',
     backgroundColor: '#20506A',
@@ -286,36 +253,6 @@ const styles = () => ({
   link: {
     textDecoration: 'none',
   },
-  aboutButtonSection: {
-    background: '#20506A',
-    height: '71px',
-  },
-  imgIconAbout: {
-    width: '49px',
-  },
-  aboutButtonLeft: {
-    float: 'left',
-    background: '#C53B27',
-    height: '45px',
-    width: '48px',
-  },
-  aboutButtonRight: {
-    background: '#894439',
-    float: 'left',
-    height: '45px',
-    width: '132px',
-  },
-  aboutButton: {
-    color: '#ffffff',
-    textDecoration: 'none',
-    textTransform: 'uppercase',
-    fontSize: '12px',
-    fontWeight: '600',
-    lineHeight: '45px',
-    paddingLeft: '20px',
-    boxShadow: 'none',
-  },
-
   content: {
     width: '100%',
     background: '#fff',
@@ -354,13 +291,6 @@ const styles = () => ({
   aboutContainer: {
     paddingBottom: '10px',
   },
-  greybuttonSection: {
-    height: '46px',
-    width: '176px',
-    backgroundColor: '#20506A',
-    marginTop: '20px',
-
-  },
   blueButton: {
     height: '45px',
     background: '#5396AA',
@@ -381,62 +311,8 @@ const styles = () => ({
     color: '#fff',
     textTransform: 'uppercase',
   },
-  greyContentHeader: {
-    color: '#20506A',
-    fontFamily: 'Oswald',
-    fontSize: '31px',
-    fontWeight: '500',
-    lineHeight: '32px',
-    padding: '15px 0',
-    textTransform: 'uppercase',
-  },
-  greyContent: {
-    height: '173px',
-    width: '166px',
-    color: '#010101',
-    fontFamily: 'Lato',
-    fontSize: '15px',
-    lineHeight: '22px',
-  },
-  greyIcon: {
-    width: '20px',
-    marginTop: '15px',
-    marginLeft: '28px',
-  },
-  greybutton: {
-    padding: '15px 5px 0 0',
-    height: '9px',
-    width: '71px',
-    color: '#FFFFFF',
-    fontFamily: 'Raleway',
-    fontSize: '12px',
-    fontWeight: '600',
-    lineHeight: '19.31px',
-    textDecoration: 'none',
-    marginLeft: '8px',
-    '&:hover': {
-      color: '#ffffff',
-    },
-  },
-  paddingBottom50: {
-    paddingBottom: '50px',
-  },
-  paddingTop30: {
-    paddingTop: '30px',
-  },
   bannerTextureContainer: {
     paddingTop: '30px',
   },
-  animationContainer: {
-    position: 'relative',
-    height: '800px',
-    maxHeight: '800px',
-    overflow: 'hidden',
-  },
-
-  paddingLeft2: {
-    paddingLeft: '2px',
-  },
-
 });
 export default withStyles(styles, { withTheme: true })(LandingController);
