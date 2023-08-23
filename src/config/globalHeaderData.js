@@ -103,6 +103,12 @@ export const navbarSublists = {
       id: 'navbar-dropdown-item-data-submission',
       className: 'navMobileSubItem',
     },
+    {
+      name: 'Data Harmonization',
+      link: '/harmonization',
+      id: 'navbar-dropdown-item-data-harmonization',
+      className: 'navMobileSubItem',
+    },
   ],
     "Resources": [
     {
