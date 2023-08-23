@@ -3,6 +3,7 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
+import ToolTip from '@bento-core/tool-tip';
 import {
   // eslint-disable-next-line no-unused-vars
   externalIcon,
@@ -12,14 +13,7 @@ import OverviewThemeProvider from './overviewThemeConfig';
 
 const Overview = ({
   classes,
-  studyData,
-  caseFileTypes,
   data,
-  nodeCount,
-  supportingDataCount,
-  clinicalDataTabIndex,
-  supportingDataTabIndex,
-  setCurrentTab,
 }) => {
   // eslint-disable-next-line no-unused-vars
   const getImageTypes = (typeString) => {
@@ -27,9 +21,18 @@ const Overview = ({
     return types.join(', ');
   };
 
-  // eslint-disable-next-line no-unused-vars
-  const getAccessTypeString = (accessType) => (accessType === 'Cloud'
-    ? 'Available only via the Cloud' : 'Available for Download');
+  const getAccessTypeString = (accessType) => {
+    switch (accessType) {
+      case 'Download':
+        return 'Available for Download';
+      case 'Cloud':
+        return 'Available only via the Cloud';
+      case 'Unrestricted':
+        return 'Available both via the Cloud and via Download';
+      default:
+        return 'Available both via the Cloud and via Download';
+    }
+  };
 
   const ExternalLinkIcon = () => {
     return (
@@ -44,12 +47,12 @@ const Overview = ({
   const associatedLinks = data.studyByStudyId.associated_link;
   const diagnoses = data.studyByStudyId.diagnosis.list_diagnosis;
   const participantFileTypes = data.studyByStudyId.data_file.list_type;
+  const imageCollection = data.studyByStudyId.image_collection;
 
   const customSorting = (a, b) => {
     let val = 0
     if(a < b) { val = -1; }
     if(a > b) { val = 1; }
-    console.log(`|| Data: a: ${a}; b: ${b}; Val: ${val}`)
     return val;
   }
 
@@ -58,7 +61,7 @@ const Overview = ({
       <div className={classes.container}>
         <div className={classes.detailContainer}>
           <Grid container>
-            <Grid item lg={5} md={5} sm={6} xs={12} className={classes.borderRight}>
+            <Grid item lg={5} md={4} sm={6} xs={12} className={classes.borderRight}>
               <Grid container direction="row" className={classes.detailContainerLeft}>
                 <Grid item xs={12} className={classes.containerHeader}>
                   <span className={classes.detailContainerHeaderText}>Trial Name</span>
@@ -125,7 +128,7 @@ const Overview = ({
                               rel="noopener noreferrer"
                               target="_blank">
                               {link.associated_link_name}
-                            </a> <ExternalLinkIcon/> <br/>
+                            </a>&nbsp;<ExternalLinkIcon/> <br/>
                           </Grid>
                       ))}
                     </Grid>
@@ -136,7 +139,7 @@ const Overview = ({
             </Grid>
             
             {/* Right Container Detail */}
-            <Grid item lg={7} md={7} sm={6} xs={12}>
+            <Grid item lg={7} md={8} sm={6} xs={12}>
               <Grid
                 container
                 direction="row"
@@ -191,19 +194,49 @@ const Overview = ({
                 <BiospecimenProfile data={data} />
 
                 {/* START: Image Collection */}
-                <Grid item lg={6} md={6} sm={6} xs={12} className={classes.imageCollection}>
-                  <Grid container>
+                <Grid item lg={6} md={6} sm={12} xs={12} className={classes.imageCollection}>
+                  <Grid container className={classes.imageCollectionHeader}>
                     <Grid item xs={12}>
                       <span className={classes.detailContainerHeaderText}>
                         IMAGE COLLECTIONS
                       </span>
                     </Grid>
                   </Grid>
-                  <Grid container className={classes.detailContainerItems}>
-                    <Grid item xs={12} sm={10} className={classes.content}>
-                      <div className={classes.content}>
-                        Under Development ...
+                  <Grid container>
+                    <Grid item xs={12}>
+                      <div className={classes.collection}>
+                      {imageCollection.sort((a, b) => customSorting(a.image_collection_name, b.image_collection_name)).map((image, index)=> (
+                        <div className={classes.collectionWrapper}>
+                          <span className={classes.imageKey}>
+                            COLLECTION:
+                          </span>
+                          <a
+                            href={image.image_collection_url}
+                            className={classes.link}
+                            rel="noopener noreferrer"
+                            target="_blank">
+                            <ToolTip 
+                              classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }}
+                              title={getAccessTypeString(image.collection_access)}
+                              placement="bottom"
+                            >
+                              <span className={classes.collectionAndRepositorySpan}>
+                                {image.image_collection_name} - {image.repository_name} 
+                              </span>
+                            </ToolTip>
+                          </a>&nbsp;<ExternalLinkIcon/> <br/>
+                          
+                          <span className={classes.imageKey}>
+                            IMAGE TYPES:
+                          </span>
+
+                          <span className={classes.imageValue}>
+                            {image.image_type_included}
+                          </span>
+                        </div>
+                      ))}
                       </div>
+                      <p className={classes.scrollDownText}>Scroll down to see more available</p>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -218,11 +251,42 @@ const Overview = ({
 };
 
 const styles = (theme) => ({
+  customTooltip: {
+    backgroundColor: '#FFFFFF',
+    color: '#223D4C',
+    width: 'fit-content',
+    maxWidth: '250px',
+    fontSize: '13px',
+    border: '1px solid #C3C3C3',
+    fontFamily: theme.custom.fontFamilySans,
+    fontWeight: '600',
+    textAlign: 'left',
+    lineHeight: '19px',
+    padding: '10px, 15px, 10px, 15px',
+    borderRadius: '5px',
+  },
+  customArrow: {
+
+  },
+  collection: {
+    maxHeight: '350px',
+    overflowY: 'auto',
+    overflowX: 'hidden',
+  },
+  collectionWrapper: {
+    marginBottom: '16px'
+  },
+  imageKey: {
+    color: '#0296C9',
+    paddingRight: '15px'
+    // fontFamily: theme.
+  },
+  imageValue: {
+    
+  },
   container: {
     fontFamily: 'Raleway, sans-serif',
-    paddingLeft: '32px',
-    paddingRight: '32px',
-    paddingBottom: '25px',
+    padding: '0px 32px 40px 32px',
   },
   additionalDataLink: {
     color: '#DC762F',
@@ -298,8 +362,10 @@ const styles = (theme) => ({
     fontSize: '14px',
     fontFamily: theme.custom.fontFamilyNunitoSansRegular
   },
-  detailContainerItems: {
-    // paddingTop: '7px',
+  scrollDownText: {
+    color: '#838383',
+    fontSize: '12px',
+    fontStyle: 'italic',
   },
   title: {
     color: '#0696C9',
@@ -323,8 +389,9 @@ const styles = (theme) => ({
   },
   detailContainerRight: {
     margin: '30px 0px 0px 0px',
-    padding: '0px 50px 5px 65px',
-    maxHeight: '500px',
+    padding: '0px 25px 5px 65px',
+    minHeight: '300px',
+    // maxHeight: '500px',
     overflowY: 'auto',
     overflowX: 'hidden',
     width: 'calc(100% + 8px)',
@@ -349,6 +416,9 @@ const styles = (theme) => ({
   imageCollection: {
     marginTop: '10px',
     paddingLeft: '30px',
+  },
+  imageCollectionHeader: {
+    marginBottom: '10px',
   },
   linkIcon: {
     width: '20px',

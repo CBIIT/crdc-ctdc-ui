@@ -73,7 +73,7 @@ const BiospecimenProfile = ({ classes, data }) => {
   );
 
   return (
-    <Grid item lg={6} md={6} sm={6} xs={12} className={classes.marginTop10}>
+    <Grid item lg={6} md={6} sm={12} xs={12} className={classes.marginTop10}>
       <Grid container className={classes.detailContainerHL}>
         <Grid item xs={12}>
           <span className={classes.detailContainerHeader}> Biospecimen PROFILE </span>

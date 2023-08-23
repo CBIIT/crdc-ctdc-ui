@@ -236,7 +236,7 @@ export default (theme) => ({
     position: 'absolute',
     float: 'left',
     width: '94px',
-    top: '253px',
+    top: '298px',
     left: '-1px'
   },
   detailContainer: {
