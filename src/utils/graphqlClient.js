@@ -39,9 +39,6 @@ const publicService = new HttpLink({
 
 const mockService = new HttpLink({
   uri: MOCK,
-  headers: {
-    'x-mock-match-request-body': true,
-  },
 });
 
 const client = new ApolloClient({

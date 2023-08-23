@@ -1,53 +1,50 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core';
 import HorseShoe from './HorseShoe';
-import ActiveCases from '../../assets/landing/animation/CasesActive.png';
-import InActiveCases from '../../assets/landing/animation/CasesInActive.png';
+import ActiveParticpants from '../../assets/landing/animation/PARTICIPANTS_Active.png';
+import InActiveParticpants from '../../assets/landing/animation/PARTICIPANTS_InActive.png';
+import ActiveDiagnoses from '../../assets/landing/animation/Diagnoses_Active.png';
+import InActiveDiagnoses from '../../assets/landing/animation/Diagnoses_InActive.png';
+import ActiveTHERAPIES from '../../assets/landing/animation/THERAPIES_Active.png';
+import InActiveTHERAPIES from '../../assets/landing/animation/THERAPIES_InActive.png';
+import ActiveReports from '../../assets/landing/animation/Reports_Active.png';
+import InActiveReports from '../../assets/landing/animation/Reports_InActive.png';
+
 import WhispInActive from '../../assets/landing/animation/Whisp-All_Active.png';
 import ActiveFiles from '../../assets/landing/animation/FilesActive.png';
 import InActiveFiles from '../../assets/landing/animation/FilesInActive.png';
 import ActiveTrials from '../../assets/landing/animation/TrialsActive.png';
 import InActiveTrials from '../../assets/landing/animation/TrialsInActive.png';
 import CircularIcon from './CircularIcon';
-import FacingDown from '../../assets/landing/animation/Dial_facing_down.svg';
-import FacingUp from '../../assets/landing/animation/Dial_facing_up.svg';
-import FacingRight from '../../assets/landing/animation/Dial_facing_right.svg';
+import Circle1 from '../../assets/landing/animation/circle1.png';
+import Circle2 from '../../assets/landing/animation/circle2.png';
+import Circle3 from '../../assets/landing/animation/circle3.png';
+import Circle4 from '../../assets/landing/animation/circle4.png';
 
-const CasesInActiveText = ({ classes, heroData }) => (
+
+const ParticipantsInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
-      {heroData ? heroData.numberOfCases : 'NA'}
-      {' '}
-      CASES
+      PARTICIPANTS
     </div>
   </div>
 );
 
-const CasesActiveText = ({ classes, heroData }) => (
+const ParticipantsActiveText = ({ classes, heroData }) => (
   <div className={classes.activeTextBG}>
     <div className={classes.whiteText}>
-      {heroData ? heroData.numberOfCases : 'NA'}
-      {' '}
-      CASES
+      PARTICIPANTS
     </div>
     <div className={classes.blueText}>
-      from
       {' '}
-      {heroData ? heroData.numberOfTrials : 'NA'}
+      {heroData ? heroData.numberOfParticipants : 'NA'}
       {' '}
-      TRIAL
-    </div>
-    <div className={classes.blueText}>
-      from
-      {' '}
-      {heroData ? heroData.numberOfArms : 'NA'}
-      {' '}
-      ARMs
+      PARTICIPANTS
     </div>
   </div>
 );
 
-const TrialsInActiveText = ({ classes, heroData }) => (
+const DiagnosesInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
       {heroData ? heroData.numberOfDiagnoses : 'NA'}
@@ -57,9 +54,8 @@ const TrialsInActiveText = ({ classes, heroData }) => (
   </div>
 );
 
-const TrialsActiveText = ({ classes, heroData }) => {
-  const diagnosisData = heroData.diagnosisCountByArm;
-  const sortedDiagnosis = diagnosisData.slice().sort((a, b) => a.diagnoses > b.diagnoses);
+const DiagnosesActiveText = ({ classes, heroData }) => {
+  const diagnosisData = heroData.specimenCountbySnomedDiseaseCode;
 
   return (
     <div className={classes.inActiveTextBG}>
@@ -67,49 +63,95 @@ const TrialsActiveText = ({ classes, heroData }) => {
         {heroData ? heroData.numberOfDiagnoses : 'NA'}
         {' '}
         DIAGNOSES
-        <span className={classes.whiteSmallText}>&nbsp;&nbsp; from 2 ARMS:</span>
       </div>
+      {diagnosisData[0] ? (
       <div className={classes.blueText}>
-        {sortedDiagnosis[0] && sortedDiagnosis[0].diagnoses}
+        {diagnosisData[0].subjects}
         {' '}
-        Diagnoses from ARM
-        {' '}
-        {sortedDiagnosis[0] && sortedDiagnosis[0].arm_id}
-      </div>
+        {diagnosisData[0].group}
+      </div>):""
+      }
+      
+       {diagnosisData[1] ? (
       <div className={classes.blueText}>
-        {sortedDiagnosis[1] && sortedDiagnosis[1].diagnoses}
+        {diagnosisData[1].subjects}
         {' '}
-        Diagnoses from ARM
+        {diagnosisData[1].group}
+      </div>):""
+      }
+       {diagnosisData[2] ? (
+      <div className={classes.blueText}>
+        {diagnosisData[2].subjects}
         {' '}
-        {sortedDiagnosis[1] && sortedDiagnosis[1].arm_id}
-      </div>
+        {diagnosisData[2].group}
+      </div>):""
+      }
     </div>
   );
 };
 
-const FilesInActiveText = ({ classes, heroData }) => (
+const TherapiesInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
-      {heroData ? heroData.numberOfFiles : 'NA'}
+      {heroData ? heroData.numberOfTherapies : 'NA'}
       {' '}
-      FILES
+      THERAPIES
     </div>
   </div>
 );
 
-const FilesActiveText = ({ classes, heroData }) => (
+const TherapiesActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteText}>
-      {heroData ? heroData.numberOfFiles : 'NA'}
+      {heroData ? heroData.numberOfTherapies : 'NA'}
       {' '}
-      FILES
+      ThERAPIES
     </div>
     <div className={classes.blueText}>
-      from
       {' '}
-      {heroData ? heroData.numberOfFileTypes : 'NA'}
+      {heroData ? heroData.numberOfTargeted : 'NA'}
       {' '}
-      File Types
+      Targeted
+    </div>
+     <div className={classes.blueText}>
+      {' '}
+      {heroData ? heroData.numberOfNonTargeted : 'NA'}
+      {' '}
+      Non-Targeted
+    </div>
+  </div>
+);
+
+
+const ReportsInActiveText = ({ classes, heroData }) => (
+  <div className={classes.inActiveTextBG}>
+    <div className={classes.whiteTextInactive}>
+      REPORTS
+    </div>
+  </div>
+);
+
+const ReportsActiveText = ({ classes, heroData }) => (
+  <div className={classes.inActiveTextBG}>
+    <div className={classes.whiteText}>
+      Reports
+    </div>
+     <div className={classes.blueText}>
+      {heroData ? heroData.numberOfBiomarker : 'NA'}
+      {' '}
+      participants with biomarker results
+    </div>
+    <div className={classes.blueText}>
+      {' '}
+      {heroData ? heroData.numberOfHistologyImages : 'NA'}
+      {' '}
+      histology images
+    </div>
+     <div className={classes.blueText}>
+      {' '}
+      {heroData ? heroData.numberOfRadiologyImages : 'NA'}
+      {' '}
+      radiology images
     </div>
   </div>
 );
@@ -117,29 +159,59 @@ const FilesActiveText = ({ classes, heroData }) => (
 const InteractiveHero = ({ classes, heroData }) => {
   const [activeState, setActiveState] = React.useState({
     isActive: '',
-    transformedHorseShoe: FacingRight,
+    transformedHorseShoe: Circle1,
   });
   return (
     <div className={classes.animationWrapper}>
-      <div className={classes.casesIcon} onMouseEnter={() => { setActiveState({ isActive: 'cases', transformedHorseShoe: FacingUp }); }} onMouseLeave={() => { setActiveState({ isActive: '', transformedHorseShoe: FacingUp }); }}>
-        <CircularIcon isActive={activeState.isActive === 'cases'} InactiveImage={InActiveCases} activeImage={ActiveCases} />
+      <div className={classes.participantsIcon} onMouseEnter={() => { setActiveState({ isActive: 'Participants', transformedHorseShoe: Circle1 }); }} onMouseLeave={() => { setActiveState({ isActive: '', transformedHorseShoe: Circle1 }); }}>
+        <CircularIcon isActive={activeState.isActive === 'Participants'} InactiveImage={InActiveParticpants} activeImage={ActiveParticpants} />
       </div>
-      <div className={classes.casesText}>
-        {activeState.isActive === 'cases' ? <CasesActiveText heroData={heroData} classes={classes} /> : <CasesInActiveText heroData={heroData} classes={classes} />}
-      </div>
+     
+        {activeState.isActive === 'Participants' ? 
+        ( <div className={classes.participantsActiveText}>
+            <ParticipantsActiveText heroData={heroData} classes={classes} /> 
+             </div>)
+        : (<div className={classes.participantsText}>
+            <ParticipantsInActiveText heroData={heroData} classes={classes} />
+           </div>)}
+     
       <HorseShoe transformedHorseShoe={activeState.transformedHorseShoe} />
-      <div className={classes.filesIcon} onMouseEnter={() => { setActiveState({ isActive: 'files', transformedHorseShoe: FacingRight }); }} onMouseLeave={() => { setActiveState({ isActive: '', transformedHorseShoe: FacingRight }); }}>
-        <CircularIcon isActive={activeState.isActive === 'files'} InactiveImage={InActiveFiles} activeImage={ActiveFiles} />
+      <div className={classes.diagnosesIcon} onMouseEnter={() => { setActiveState({ isActive: 'Diagnoses', transformedHorseShoe: Circle2 }); }} onMouseLeave={() => { setActiveState({ isActive: '', transformedHorseShoe: Circle2 }); }}>
+        <CircularIcon isActive={activeState.isActive === 'Diagnoses'} InactiveImage={InActiveDiagnoses} activeImage={ActiveDiagnoses} />
       </div>
-      <div className={classes.filesText}>
-        {activeState.isActive === 'files' ? <FilesActiveText heroData={heroData} classes={classes} /> : <FilesInActiveText heroData={heroData} classes={classes} />}
+      
+        {activeState.isActive === 'Diagnoses' ? (
+          <div className={classes.diagnosesActiveText}>
+            <DiagnosesActiveText heroData={heroData} classes={classes} />
+          </div>)  : (
+           <div className={classes.diagnosesText}>
+            <DiagnosesInActiveText heroData={heroData} classes={classes} />
+            </div>)
+        }
+      <div className={classes.therapiesIcon} onMouseEnter={() => { setActiveState({ isActive: 'Therapies', transformedHorseShoe: Circle3 }); }} onMouseLeave={() => { setActiveState({ isActive: '', transformedHorseShoe: Circle3 }); }}>
+        <CircularIcon isActive={activeState.isActive === 'Therapies'} InactiveImage={InActiveTHERAPIES} activeImage={ActiveTHERAPIES} />
       </div>
-      <div className={classes.trialsIcon} onMouseEnter={() => { setActiveState({ isActive: 'trials', transformedHorseShoe: FacingDown }); }} onMouseLeave={() => { setActiveState({ isActive: '', transformedHorseShoe: FacingDown }); }}>
-        <CircularIcon isActive={activeState.isActive === 'trials'} InactiveImage={InActiveTrials} activeImage={ActiveTrials} />
+     
+        {activeState.isActive === 'Therapies' ?(
+           <div className={classes.therapiesActiveText}>
+              <TherapiesActiveText heroData={heroData} classes={classes} />
+              </div>)
+               : (
+                 <div className={classes.therapiesText}>
+                  <TherapiesInActiveText heroData={heroData} classes={classes} />
+                  </div>)
+             }
+       <div className={classes.reportsIcon} onMouseEnter={() => { setActiveState({ isActive: 'Reports', transformedHorseShoe: Circle4 }); }} onMouseLeave={() => { setActiveState({ isActive: '', transformedHorseShoe: Circle4 }); }}>
+        <CircularIcon isActive={activeState.isActive === 'Reports'} InactiveImage={InActiveReports} activeImage={ActiveReports} />
       </div>
-      <div className={classes.trialsText}>
-        {activeState.isActive === 'trials' ? <TrialsActiveText heroData={heroData} classes={classes} /> : <TrialsInActiveText heroData={heroData} classes={classes} />}
-      </div>
+      
+        {activeState.isActive === 'Reports' ? (
+          <div className={classes.reportsActiveText}>
+            <ReportsActiveText heroData={heroData} classes={classes} /> 
+            </div>): (
+            <div className={classes.reportsText}>
+              <ReportsInActiveText heroData={heroData} classes={classes} />
+              </div>)}
     </div>
   );
 };
@@ -158,60 +230,118 @@ const styles = () => ({
       left: 'calc(70%)',
     },
   },
-  casesIcon: {
-    left: '48px',
+  participantsIcon: {
+    left: '76px',
     float: 'left',
-    width: 100,
+    width: 86,
     position: 'absolute',
-    marginTop: 16,
+    marginTop: 50,
   },
-  casesText: {
+  participantsText: {
     position: 'absolute',
     float: 'left',
-    marginTop: '52px',
-    left: '200px',
+    marginTop: '80px',
+    left: '162px',
     width: '150px',
-    // color: '#FFFFFF',
-    // fontFamily: 'Oswald',
-    // fontSize: 16,
-    // fontWeight: 500,
     color: '#FEFFFF',
     fontFamily: 'Oswald',
     fontSize: 18,
     fontWeight: 600,
     letterSpacing: 0,
     textAlign: 'center',
-    // background: `url(${background})`,
   },
-  filesIcon: {
-    left: '300px',
+  participantsActiveText: {
     position: 'absolute',
     float: 'left',
-    marginTop: '225px',
+    marginTop: '68px',
+    left: '162px',
+    width: '150px',
+    color: '#FEFFFF',
+    fontFamily: 'Oswald',
+    fontSize: 18,
+    fontWeight: 600,
+    letterSpacing: 0,
+    textAlign: 'center',
   },
-  filesText: {
+  diagnosesIcon: {
+    left: '255px',
     position: 'absolute',
     float: 'left',
-    marginTop: '370px',
-    left: '300px',
+    marginTop: '180px',
+  },
+  diagnosesText: {
+    position: 'absolute',
+    float: 'left',
+    marginTop: '215px',
+    left: '340px',
     width: '150px',
     color: '#FFFFFF',
     fontFamily: 'Oswald',
     fontSize: 16,
     fontWeight: 500,
   },
-  trialsIcon: {
-    marginTop: '450px',
+  diagnosesActiveText: {
     position: 'absolute',
     float: 'left',
-    left: '48px',
+    marginTop: '185px',
+    left: '340px',
+    width: '150px',
+    color: '#FFFFFF',
+    fontFamily: 'Oswald',
+    fontSize: 16,
+    fontWeight: 500,
   },
-  trialsText: {
+  therapiesIcon :{
+    left: '252px',
     position: 'absolute',
     float: 'left',
-    marginTop: '480px',
-    left: '200px',
-    width: '180px',
+    marginTop: '335px',
+  },
+  therapiesText :{
+    position: 'absolute',
+    float: 'left',
+    marginTop: '373px',
+    left: '345px',
+    width: '150px',
+    color: '#FFFFFF',
+    fontFamily: 'Oswald',
+    fontSize: 16,
+    fontWeight: 500,
+  },
+  therapiesActiveText :{
+    position: 'absolute',
+    float: 'left',
+    marginTop: '349px',
+    left: '345px',
+    width: '150px',
+    color: '#FFFFFF',
+    fontFamily: 'Oswald',
+    fontSize: 16,
+    fontWeight: 500,
+  },
+  reportsIcon: {
+    marginTop: '435px',
+    position: 'absolute',
+    float: 'left',
+    left: '75px',
+  },
+  reportsText: {
+    position: 'absolute',
+    float: 'left',
+    marginTop: '470px',
+    left: '142px',
+    width: '200px',
+    color: '#FFFFFF',
+    fontFamily: 'Oswald',
+    fontSize: 16,
+    fontWeight: 500,
+  },
+  reportsActiveText: {
+    position: 'absolute',
+    float: 'left',
+    marginTop: '447px',
+    left: '162px',
+    width: '250px',
     color: '#FFFFFF',
     fontFamily: 'Oswald',
     fontSize: 16,
@@ -226,7 +356,8 @@ const styles = () => ({
     fontSize: 18,
     fontWeight: 600,
     letterSpacing: 0,
-    textAlign: 'center',
+    textAlign: 'left',
+    marginLeft: '29px',
   },
   whiteSmallText: {
     color: '#FEFFFF',
@@ -250,7 +381,8 @@ const styles = () => ({
     fontSize: 14,
     fontWeight: 500,
     letterSpacing: 0,
-    textAlign: 'center',
+    textAlign: 'left',
+    marginLeft: '28px',
   },
   inActiveTextBG: {
     background: `url(${WhispInActive})`,

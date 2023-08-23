@@ -11,11 +11,10 @@ const landingController = () => {
     loading, error, data,
   } = useQuery(GET_LANDING_PAGE_DATA_QUERY, {
     context: {
-      clientName: 'ctdcOldService',
+      clientName: 'mockService',
     },
     fetchPolicy: 'no-cache',
   });
-
 
 
   if (loading) return <CircularProgress />;
@@ -27,7 +26,7 @@ const landingController = () => {
     );
   }
 
-  return <LandingView heroData={data.searchCases} />;
+  return <LandingView heroData={data.search} />;
 };
 
 export default landingController;
