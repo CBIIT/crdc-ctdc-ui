@@ -7,9 +7,8 @@ import {
   // eslint-disable-next-line no-unused-vars
   externalIcon,
 } from '../../../../bento/trialDetailData';
-import SampleProfile from '../BiospecimenProfile';
+import BiospecimenProfile from '../BiospecimenProfile';
 import OverviewThemeProvider from './overviewThemeConfig';
-import classNames from 'classnames';
 
 const Overview = ({
   classes,
@@ -42,6 +41,15 @@ const Overview = ({
         className={classes.externalLinkIcon}
         alt='outbounnd web site icon'/>
     )
+  }
+  const associatedLinks = data.studyByStudyId.associated_link;
+
+  const customSorting = (a, b) => {
+    let val = 0
+    if(a < b) { val = -1; }
+    if(a > b) { val = 1; }
+    console.log(`|| Data: a: ${a}; b: ${b}; Val: ${val}`)
+    return val;
   }
 
   return (
@@ -107,10 +115,18 @@ const Overview = ({
                       <Grid item xs={12} className={classes.title}>
                         ASSOCIATED LINKS
                       </Grid>
-                      <Grid item xs={12} className={classes.content}>
-                        <a href='/' className={classes.link}>ClinicalTrials.gov record</a> <ExternalLinkIcon/> <br/>
-                        <a href='/' className={classes.link}>About the Biobank</a> <ExternalLinkIcon/>
-                      </Grid>
+                      {associatedLinks.sort((a, b) => customSorting(a.associated_link_name, b.associated_link_name))
+                        .map((link, index) => (
+                          <Grid item xs={12} className={classes.content} key={index}>
+                            <a
+                              href={link.associated_link_url}
+                              className={classes.link}
+                              rel="noopener noreferrer"
+                              target="_blank">
+                              {link.associated_link_name}
+                            </a> <ExternalLinkIcon/> <br/>
+                          </Grid>
+                      ))}
                     </Grid>
                   </Grid>
                   
@@ -223,7 +239,7 @@ const Overview = ({
                 {/*<div><hr className={classNames(classes.hrLine, classes.hrLineRight)} /></div>*/}
               </Grid>
               <Grid container direction="row" className={classes.detailContainerRight}>
-                <SampleProfile data={data} />
+                <BiospecimenProfile data={data} />
 
                 {/* START: Image Collection */}
                 <Grid item lg={6} md={6} sm={6} xs={12} className={classes.imageCollection}>

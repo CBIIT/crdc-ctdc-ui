@@ -17,9 +17,8 @@ export default ({
         paddingLeft: '0px',
         marginLeft: '0px',
         '& span:first-child': {
-          borderRight: '1px solid #6e6e6e',
           flexDirection: 'row',
-          justifyContent: 'flex-start',
+          justifyContent: 'center',
         },
       },
     },

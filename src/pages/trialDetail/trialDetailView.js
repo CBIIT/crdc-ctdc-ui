@@ -10,13 +10,12 @@ import { Link } from 'react-router-dom';
 
 // import { request, gql } from 'graphql-request';
 // import { useQuery } from '@tanstack/react-query';
-import _ from 'lodash';
 import Snackbar from '../../components/Snackbar';
 import StatsView from '../../components/Stats/StatsView';
 // import { fetchDataForDashboardTabDataTable } from '../dashboardTab/store/dashboardReducer';
 // import { studyDisposition, } from './utils';
 // import { navigatedToDashboard } from '../../utils/utils';
-import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
+// import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import {
   headerIcon,
   tab,
@@ -30,7 +29,7 @@ import TabPanel from '../../components/Tab/TabPanel';
 // import pendingHeaderIcon from '../../assets/icons/PendingRelease-icons.StudiesDetail-Main.svg';
 import Styles from './studyDetailsStyle';
 import StudyThemeProvider from './studyDetailsThemeConfig';
-import classNames from 'classnames';
+// import classNames from 'classnames';
 import Overview from './views/overview/overview';
 // import SupportingData from './views/supporting-data/supportingData';
 // import env from '../../utils/env';
@@ -52,9 +51,10 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
     volumeOfData: 100
   };
 
-  /*React.useEffect(() => {
+  /*
+  React.useEffect(() => {
     fetchDataForDashboardTabDataTable();
-  }, []);*/
+  }, []);
 
   const breadCrumbJson = [{
     name: 'ALL PROGRAMS',
@@ -65,6 +65,7 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
     to: '',
     isALink: false,
   }];
+  */
 
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
@@ -179,7 +180,7 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
           switch (processedTab.label) {
             case 'OVERVIEW': return (
               <TabPanel value={currentTab} index={index}>
-                <Overview/>
+                <Overview data={data} />
               </TabPanel>
             );
 
