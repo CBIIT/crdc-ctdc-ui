@@ -154,7 +154,7 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
                 // onClick={() => navigatedToDashboard(studyData.clinical_study_designation, 'Cases')}
               >
                 <div className={classes.headerButtonLinkNumber}>
-                  {147 || data.searchParticipant.participantCountBaseOnStudyId[0].subjects}
+                  { data.searchParticipant.participantCountBaseOnSubjectId[0].subjects || 0}
                 </div>
                 <span className={classes.headerButtonLinkText}>Associated Participants</span>
               </Link>

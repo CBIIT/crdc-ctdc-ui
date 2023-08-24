@@ -196,19 +196,21 @@ const DropdownContainer = styled.div`
 
     .dropdownList {
       background: #1F4671;
-      display: grid;
+      display: inline-flex;
       grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
       padding: 32px 32px 0 32px;
+      flex-wrap: wrap;
     }
 
     .dropdownItem {
-      padding: 0 10px 52px 10px;
+      padding: 0 35px 35px 35px;
       text-align: left;
       font-family: 'Poppins';
       font-weight: 600;
       font-style: normal;
       font-size: 20px;
       line-height: 110%;
+      width: max-content;
       color: #FFFFFF;
       text-decoration: none;
   }
