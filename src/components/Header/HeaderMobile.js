@@ -262,11 +262,28 @@ const Header = () => {
                             </div>
                         </Link>)
                       }
+
                       {navMobileItem.className === 'navMobileSubTitle' && <div className="navMobileItem">{navMobileItem.name}</div>}
                     </React.Fragment>
                   );
                 })
               }
+              <a href="login" rel="noreferrer" target="_blank" >
+                           <div role="button" 
+                              tabIndex={0} 
+                              className="navMobileItem " 
+                            >
+                              Login
+                            </div>
+                        </a>
+              <a href="cart" rel="noreferrer" target="_blank" >
+                           <div role="button" 
+                              tabIndex={0} 
+                              className="navMobileItem " 
+                            >
+                              Cart
+                            </div>
+                        </a>
             </div>
           </div>
           <div

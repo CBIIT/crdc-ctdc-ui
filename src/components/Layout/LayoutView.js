@@ -20,7 +20,7 @@ import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';
 import CarView from '../../pages/cart/cartController';
 import AuthSessionTimeoutController from '../SessionTimeout/SessionTimeoutController';
 import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
-
+import UnderDev from '../../pages/error/Development';
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
 
@@ -64,13 +64,13 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={CarView} />
             <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
             {/* bento 4.0 template */}
-            <PrivateRoute path="/explore" access={['admin', 'member']} component={DashTemplate} />
+            <PrivateRoute path="/explore" access={['admin', 'member']} component={UnderDev} />
             {/* END SECTION */}
 
             {/* Psuedo Private routes where minor
             functionality can be accessed my unauthorized users */}
-            <Route exact path="/search" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
-            <Route path="/search/:id" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
+            <Route exact path="/search" access={['admin', 'member', 'non-member']} component={UnderDev} />
+            <Route path="/search/:id" access={['admin', 'member', 'non-member']} component={UnderDev} />
 
             {/* END: Private Routes */}
             {aboutPageRoutes.map(
@@ -78,12 +78,12 @@ const Layout = ({ classes, isSidebarOpened }) => {
                 <Route
                   key={index}
                   path={aboutPageRoute}
-                  component={About}
+                  component={UnderDev}
                 />
               ),
             )}
-            <Route path="/graphql" component={GraphqlClient} />
-            <LoginRoute path="/login" component={Login} />
+            <Route path="/graphql" component={UnderDev} />
+            <LoginRoute path="/login" component={UnderDev} />
             <Route component={Error} />
 
           </Switch>
