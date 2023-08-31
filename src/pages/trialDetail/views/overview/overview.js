@@ -48,6 +48,7 @@ const Overview = ({
   const diagnoses = data.studyByStudyId.diagnosis.list_diagnosis;
   const participantFileTypes = data.studyByStudyId.data_file.list_type;
   const imageCollection = data.studyByStudyId.image_collection;
+  const { study_name, study_description, study_type, dates_of_conduct } = data.studyByStudyId;
 
   const customSorting = (a, b) => {
     let val = 0
@@ -70,7 +71,7 @@ const Overview = ({
                   <div>
                     <span className={classes.content}>
                       {' '}
-                      Cancer Moonshot Biobank
+                      { study_name || "" }
                       {' '}
                     </span>
                   </div>
@@ -82,15 +83,7 @@ const Overview = ({
                         TRIAL DESCRIPTION                     
                       </Grid>
                       <Grid item xs={12} className={classes.content}>
-                        "Cancer Moonshot Biobank" is a longitudinal study. This means it
-                        collects and stores samples and information
-                        over time, throughout the course of a
-                        patient's cancer treatment. By looking at
-                        samples and information collected from the
-                        same people over time, researchers hope to
-                        better understand how cancer changes over
-                        time and over the course of medical
-                        treatments.
+                        { study_description || "" }
                       </Grid>
                     </Grid>
                   </Grid>
@@ -100,7 +93,7 @@ const Overview = ({
                         TRIAL TYPE                     
                       </Grid>
                       <Grid item xs={12} className={classes.content}>
-                        Observational
+                        { study_type || "" }
                       </Grid>
                     </Grid>
                   </Grid>
@@ -110,7 +103,7 @@ const Overview = ({
                         DATES OF CONDUCT
                       </Grid>
                       <Grid item xs={12} className={classes.content}>
-                        September 2020 - September 2025 (estimated)
+                        { dates_of_conduct || "" }
                       </Grid>
                     </Grid>
                   </Grid>
