@@ -214,22 +214,24 @@ export const facetsConfig = [
 // --------------- Dashboard Widgets configuration --------------
 // Sunburst chart color scheme
 export const SUNBURST_COLORS_LEVEL_1 = [
+  '#C2E5DC',
+  '#6AC6B6',
   '#C33B27',
   '#FDB915',
   '#381F5F',
   '#007EA5',
-  '#6AC6B6',
-  '#C2E5DC',
   '#8B5996',
 ];
 
 export const SUNBURST_COLORS_LEVEL_2 = [
+  '#8B5996',
+  '#6AC6B6',
+  '#007EA5',
   '#C33B27',
   '#FDB915',
   '#381F5F',
   '#6AC6B6',
   '#007EA5',
-  '#8B5996',
   '#C2E5DC',
 ];
 
@@ -249,52 +251,52 @@ export const widgetConfig = [
     type: 'sunburst',
     title: 'Diagnosis and Stage of Disease',
     sliceTitle: "Participants",
-    dataName: 'armsByPrograms', // Query Update req
-    datatable_level1_field: 'program', // Query Update req
+    dataName: 'diagnosesAndStageOfDiseases', 
+    datatable_level1_field: 'ctepDiseaseCode', // Inner Ring
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'arm', // Query Update req
+    datatable_level2_field: 'snomedDiseaseCode', // Outer Ring
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
   },
   {
     type: 'sunburst',
     title: 'Sex and Gender',
     sliceTitle: "Participants",
-    dataName: 'armsByPrograms', // Query Update req
-    datatable_level1_field: 'program', // Query Update req
+    dataName: 'sexesAndGenders',
+    datatable_level1_field: 'sex', // Inner Ring
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'arm', // Query Update req
+    datatable_level2_field: 'reportedGender', // Outer Ring
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
   },
   {
     type: 'sunburst',
     title: 'Race and Ethnicity',
     sliceTitle: "Participants",
-    dataName: 'armsByPrograms', // Query Update req
-    datatable_level1_field: 'program', // Query Update req
+    dataName: 'racesAndEthnicities',
+    datatable_level1_field: 'race',
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'arm', // Query Update req
+    datatable_level2_field: 'ethnicity',
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
   },
   {
     type: 'donut',
     title: 'Therapy',
     sliceTitle: "Participants",
-    dataName: 'subjectCountByTumorSize', // Query Update req
+    dataName: 'participantCountByTargetedTherapy',
   },
   {
     type: 'sunburst',
     title: 'Biospecimens & Timepoints',
     sliceTitle: "Biospecimens",
-    dataName: 'armsByPrograms', // Query Update req
-    datatable_level1_field: 'program', // Query Update req
+    dataName: 'timepointsAndBiospecimensTypes',
+    datatable_level1_field: 'assessmentTimepoint',
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'arm', // Query Update req
+    datatable_level2_field: 'biospecimensType',
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
   },
   {
     type: 'donut',
     title: 'Files',
     sliceTitle: "Files",
-    dataName: 'subjectCountByEndocrineTherapy', // Query Update req
+    dataName: 'participantCountByDataFileType',
   },
 ];
