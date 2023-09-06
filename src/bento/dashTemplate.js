@@ -214,20 +214,23 @@ export const facetsConfig = [
 // --------------- Dashboard Widgets configuration --------------
 // Sunburst chart color scheme
 export const SUNBURST_COLORS_LEVEL_1 = [
-  '#7dc242',
-  '#274fa5',
-  '#79287c',
-  '#f78f48',
-  '#057ebd',
+  '#C33B27',
+  '#FDB915',
+  '#381F5F',
+  '#007EA5',
+  '#6AC6B6',
+  '#C2E5DC',
+  '#8B5996',
 ];
 
 export const SUNBURST_COLORS_LEVEL_2 = [
-  '#057ebd',
-  '#f78f48',
-  '#79287c',
-  '#0e3151',
-  '#057ebd',
-  '#7dc242',
+  '#C33B27',
+  '#FDB915',
+  '#381F5F',
+  '#6AC6B6',
+  '#007EA5',
+  '#8B5996',
+  '#C2E5DC',
 ];
 
 // A maximum of 6 widgets are allowed
@@ -244,36 +247,54 @@ export const SUNBURST_COLORS_LEVEL_2 = [
 export const widgetConfig = [
   {
     type: 'sunburst',
-    title: 'Programs and Arms',
-    dataName: 'armsByPrograms',
-    datatable_level1_field: 'program',
+    title: 'Diagnosis and Stage of Disease',
+    sliceTitle: "Participants",
+    dataName: 'armsByPrograms', // Query Update req
+    datatable_level1_field: 'program', // Query Update req
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'arm',
+    datatable_level2_field: 'arm', // Query Update req
+    datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+  },
+  {
+    type: 'sunburst',
+    title: 'Sex and Gender',
+    sliceTitle: "Participants",
+    dataName: 'armsByPrograms', // Query Update req
+    datatable_level1_field: 'program', // Query Update req
+    datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
+    datatable_level2_field: 'arm', // Query Update req
+    datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+  },
+  {
+    type: 'sunburst',
+    title: 'Race and Ethnicity',
+    sliceTitle: "Participants",
+    dataName: 'armsByPrograms', // Query Update req
+    datatable_level1_field: 'program', // Query Update req
+    datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
+    datatable_level2_field: 'arm', // Query Update req
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
   },
   {
     type: 'donut',
-    title: 'Diagnosis',
-    dataName: 'subjectCountByDiagnoses',
+    title: 'Therapy',
+    sliceTitle: "Participants",
+    dataName: 'subjectCountByTumorSize', // Query Update req
+  },
+  {
+    type: 'sunburst',
+    title: 'Biospecimens & Timepoints',
+    sliceTitle: "Biospecimens",
+    dataName: 'armsByPrograms', // Query Update req
+    datatable_level1_field: 'program', // Query Update req
+    datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
+    datatable_level2_field: 'arm', // Query Update req
+    datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
   },
   {
     type: 'donut',
-    title: 'Recurrence Score',
-    dataName: 'subjectCountByRecurrenceScore',
-  },
-  {
-    type: 'donut',
-    title: 'Tumor Size',
-    dataName: 'subjectCountByTumorSize',
-  },
-  {
-    type: 'donut',
-    title: 'Chemotherapy',
-    dataName: 'subjectCountByChemotherapyRegimen',
-  },
-  {
-    type: 'donut',
-    title: 'Endocrine Therapy',
-    dataName: 'subjectCountByEndocrineTherapy',
+    title: 'Files',
+    sliceTitle: "Files",
+    dataName: 'subjectCountByEndocrineTherapy', // Query Update req
   },
 ];
