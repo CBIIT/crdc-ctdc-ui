@@ -43,16 +43,16 @@ const theme = {
     },
     MuiListItem: {
       root: {
-        '&.casesCheckedEven': {
+        '&.participantsCheckedEven': {
           backgroundColor: '#e8f7dc',
         },
-        '&.casesCheckedOdd': {
+        '&.participantsCheckedOdd': {
           backgroundColor: '#f5FDEE',
         },
-        '&.samplesCheckedEven': {
+        '&.biospecimensCheckedEven': {
           backgroundColor: '#C9EBF7',
         },
-        '&.samplesCheckedOdd': {
+        '&.biospecimensCheckedOdd': {
           backgroundColor: '#E8F8FE',
         },
         '&.filesCheckedEven': {
@@ -65,10 +65,10 @@ const theme = {
     },
     MuiSvgIcon: {
       root: {
-        '&.casesCheckedIcon': {
+        '&.participantsCheckedIcon': {
           color: '#10a075',
         },
-        '&.samplesCheckedIcon': {
+        '&.biospecimensCheckedIcon': {
           color: '#10beff',
         },
         '&.filesCheckedIcon': {
@@ -78,13 +78,13 @@ const theme = {
     },
     MuiTypography: {
       root: {
-        '&.casesSubjects': {
+        '&.participantsSubjects': {
           color: '#10a075',
           fontSize: '12px',
           fontFamily: 'Nunito',
           marginRight: '0px',
         },
-        '&.samplesSubjects': {
+        '&.biospecimensSubjects': {
           color: '#10beff',
           fontSize: '12px',
           fontFamily: 'Nunito',
@@ -109,10 +109,10 @@ const theme = {
           backgroundColor: '#0d8461',
         },
         '&.divider1': {
-          backgroundColor: '#10beff',
+          backgroundColor: '#EF660B',
         },
         '&.divider2': {
-          backgroundColor: '#e636e4',
+          backgroundColor: '#0696C9',
         },
       },
     },

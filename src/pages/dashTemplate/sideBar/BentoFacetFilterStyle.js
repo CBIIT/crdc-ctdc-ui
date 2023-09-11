@@ -59,7 +59,7 @@ export default () => ({
     lineHeight: '0',
     marginLeft: '5px',
     letterSpacing: '0',
-    textTransform: 'uppercase',
+    // textTransform: 'uppercase',
   },
   dropDownIconSubSection: {
     marginLeft: '0px',
@@ -69,13 +69,17 @@ export default () => ({
     flexDirection: 'row-reverse',
     paddingLeft: 4,
   },
+  customExpansionPanelSummaryRootView: {
+    flexDirection: 'row-reverse',
+    paddingLeft: 8,
+  },
   sectionSummaryTextContainer: {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     zIndex: 2,
     fontFamily: 'Open Sans, Lato',
-    fontSize: 20,
+    fontSize: 16, // 20
     fontWeight: 300,
     marginLeft: 3,
     color: '#000000',
@@ -117,7 +121,7 @@ export default () => ({
     marginRight: 6,
   },
   findCaseButton: {
-    marginLeft: '105px',
+    marginLeft: '0px', // 105px
     backgroundColor: '#10A075',
     boxSizing: 'border-box',
     height: 30,
