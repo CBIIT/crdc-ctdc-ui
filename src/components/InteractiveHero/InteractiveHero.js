@@ -105,7 +105,7 @@ const TherapiesActiveText = ({ classes, heroData }) => (
     <div className={classes.whiteText}>
       {heroData ? heroData.numberOfTherapies : 'NA'}
       {' '}
-      ThERAPIES
+      THERAPIES
     </div>
     <div className={classes.blueText}>
       {' '}
