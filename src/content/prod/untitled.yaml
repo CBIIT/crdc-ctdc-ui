@@ -1,0 +1,8 @@
+- paragraph: "$$#CTDC and NCI’s Cloud Resources#$$ "
+- paragraph: "The CTDC supports analysis via the $$[Seven Bridges Cancer Genomics Cloud (SB-CGC)](https://datacommons.cancer.gov/analytical-resource/seven-bridges-cancer-genomics-cloud-developed-velsera#)$$. SB-CGC supports data access through a web-based user interface, programmatic access to analytic tools and workflows, and collaborative data analysis and sharing pipelines. Users can transfer data of interest from the CTDC directly to SB-CGC, eliminating the need to download and store extremely large data sets. Through the SB-CGC, researchers can bring analysis tools to the data in the cloud, instead of the traditional process of bringing the data to the tools on local hardware. Analyzing data through the cloud offers many benefits including: "
+- paragraph: "State of the art analysis using high-performance computing"
+- paragraph: "Remote access and flexibility for nationally or globally distributed teams"
+- paragraph: "On-demand computational capacity to scale resources as needed   "
+- paragraph: "Data brought to the SB-CGC can be analyzed using more than 200 preinstalled, curated bioinformatics tools and workflows. Researchers can also extend the functionality of the platform by adding their own data and tools via an intuitive software development kit. "
+- paragraph: "$300 in credits are available to new users who want to test out the platform.  "
+- paragraph: "For more information on getting started with SB-CGC including onboarding videos and more, visit: $$[https://www.cancergenomicscloud.org/getting-started](https://www.cancergenomicscloud.org/getting-started )$$.""
