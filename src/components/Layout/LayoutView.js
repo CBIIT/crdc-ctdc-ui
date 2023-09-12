@@ -78,7 +78,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
                 <Route
                   key={index}
                   path={aboutPageRoute}
-                  component={UnderDev}
+                  component={About}
                 />
               ),
             )}
