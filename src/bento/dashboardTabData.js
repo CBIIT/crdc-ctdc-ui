@@ -72,7 +72,236 @@ export const tabIndex = [
   },
 ];
 
+// Main Query used to populate Facet, Widget components
 export const DASHBOARD_QUERY_NEW = gql`
+  query search (          
+      $subject_ids: [String],
+      $programs: [String],
+      $studies: [String],
+      $diagnoses: [String],
+      $rc_scores: [String],
+      $tumor_sizes: [String],
+      $chemo_regimen: [String],
+      $tumor_grades: [String],
+      $er_status: [String],
+      $pr_status: [String],
+      $endo_therapies: [String],
+      $meno_status: [String],
+      $tissue_type: [String],
+      $composition: [String],
+      $association: [String],
+      $file_type: [String],
+      $age_at_index: [Float]
+  ){
+      searchSubjects (          
+          subject_ids: $subject_ids,
+          programs: $programs,
+          studies: $studies,
+          diagnoses: $diagnoses,
+          rc_scores: $rc_scores,
+          tumor_sizes: $tumor_sizes,
+          chemo_regimen: $chemo_regimen,
+          tumor_grades: $tumor_grades,
+          er_status: $er_status,
+          pr_status: $pr_status,
+          endo_therapies: $endo_therapies,
+          meno_status: $meno_status,
+          tissue_type: $tissue_type,
+          composition: $composition,
+          association: $association,       
+          file_type: $file_type,
+          age_at_index: $age_at_index
+      ) {
+          numberOfPrograms
+          numberOfStudies
+          numberOfSubjects
+          numberOfSamples
+          numberOfLabProcedures
+          numberOfFiles
+          armsByPrograms {
+              program
+              caseSize
+              children {
+                  arm
+                  caseSize
+                  size
+              }
+          }
+          diagnosesAndStageOfDiseases {
+              ctepDiseaseCode
+              caseSize
+              children {
+                  snomedDiseaseCode
+                  caseSize
+                  size
+              }
+          }
+          sexesAndGenders {
+              sex
+              caseSize 
+              children {
+                  reportedGender
+                  caseSize
+                  size
+              }
+          }
+          racesAndEthnicities {
+              race 
+              caseSize
+              children {
+                  ethnicity 
+                  caseSize
+                  size
+              }
+          }
+          timepointsAndBiospecimensTypes {
+              assessmentTimepoint
+              caseSize
+              children {
+                  biospecimensType
+                  caseSize
+                  size
+              }
+          }
+          participantCountByDataFileType {
+              group
+              subjects
+          }
+          participantCountByTargetedTherapy {
+              group
+              subjects
+          }
+          subjectCountByProgram {
+              group
+              subjects
+          }
+          subjectCountByStudy {
+              group
+              subjects
+          }
+          subjectCountByDiagnoses {
+              group
+              subjects
+          }
+          subjectCountByRecurrenceScore {
+              group
+              subjects
+          }
+          subjectCountByTumorSize {
+              group
+              subjects
+          }
+          subjectCountByChemotherapyRegimen {
+              group
+              subjects
+          }
+          subjectCountByEndocrineTherapy {
+              group
+              subjects
+          }
+          subjectCountByTumorGrade{
+              group
+              subjects
+          }
+          subjectCountByErStatus{
+              group
+              subjects
+          }
+          subjectCountByPrStatus{
+              group
+              subjects
+          }
+          subjectCountByMenopauseStatus{
+              group
+              subjects
+          }
+          subjectCountByFileType {
+              group
+              subjects
+          }
+          subjectCountByFileAssociation {
+              group
+              subjects
+          }
+          subjectCountByTissueComposition {
+              group
+              subjects
+          }
+          subjectCountByTissueType {
+              group
+              subjects
+          }
+          filterSubjectCountByProgram {
+              group
+              subjects
+          }
+          filterSubjectCountByStudy{
+              group
+              subjects
+          }
+          filterSubjectCountByDiagnoses{
+              group
+              subjects
+          }
+          filterSubjectCountByRecurrenceScore{
+              group
+              subjects
+          }
+          filterSubjectCountByTumorSize{
+              group
+              subjects
+          }
+          filterSubjectCountByTumorGrade{
+              group
+              subjects
+          }
+          filterSubjectCountByErStatus{
+              group
+              subjects
+          }
+          filterSubjectCountByPrStatus{
+              group
+              subjects
+          }
+          filterSubjectCountByChemotherapyRegimen{
+              group
+              subjects
+          }
+          filterSubjectCountByEndocrineTherapy{
+              group
+              subjects
+          }
+          filterSubjectCountByMenopauseStatus{
+              group
+              subjects
+          }
+          filterSubjectCountByTissueType{
+              group
+              subjects
+          }
+          filterSubjectCountByTissueComposition{
+              group
+              subjects
+          }
+          filterSubjectCountByFileAssociation{
+              group
+              subjects
+          }
+          filterSubjectCountByFileType{
+              group
+              subjects
+          }
+          filterSubjectCountByAge{
+              lowerBound
+              upperBound
+              subjects
+          }
+      }
+  }
+`;
+
+// Original DASHBOARD_QUERY_NEW for reference
+export const ORIGINAL_DASHBOARD_QUERY_NEW = gql`
 query search (          
     $subject_ids: [String],
     $programs: [String] ,
@@ -255,6 +484,7 @@ query search (
 }
 `;
 
+// Unused Query
 export const DASHBOARD_QUERY = gql`
     query search (          
       $programs: [String] ,
@@ -441,6 +671,7 @@ export const DASHBOARD_QUERY = gql`
   
    `;
 
+// Unused Query
 export const FILTER_GROUP_QUERY = gql`
   query groupCounts($subject_ids: [String]){
    armsByPrograms(subject_ids: $subject_ids) {
@@ -476,6 +707,7 @@ subjectCountByEndocrineTherapy (subject_ids: $subject_ids){
 }
  `;
 
+// Unused Query
 export const FILTER_QUERY = gql`
 query search (          
   $programs: [String] ,
@@ -661,6 +893,7 @@ query search (
 }
 `;
 
+// Query for Tab - Files Table
 export const GET_FILES_OVERVIEW_QUERY = gql`
 query fileOverview(
     $subject_ids: [String],
@@ -726,6 +959,7 @@ query fileOverview(
 }
 `;
 
+// Query for Tab - Samples Table
 export const GET_SAMPLES_OVERVIEW_QUERY = gql`
 query sampleOverview(
     $subject_ids: [String],
@@ -790,6 +1024,7 @@ query sampleOverview(
 }
 `;
 
+// Query for Tab - Cases Table
 export const GET_CASES_OVERVIEW_QUERY = gql`
 query subjectOverview(
     $subject_ids: [String],
@@ -862,6 +1097,7 @@ query subjectOverview(
 }
 `;
 
+// --------------- GraphQL Query - Add selected files under Cases table to Cart ---------------
 export const GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL = gql`
 query search (          
   $subject_ids: [String],
@@ -872,6 +1108,7 @@ query search (
 }
   `;
 
+// --------------- GraphQL Query - Add selected files under Samples table to Cart ---------------
 export const GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL = gql`
 query search (          
   $sample_ids: [String],
@@ -882,6 +1119,7 @@ query search (
 }
   `;
 
+// --------------- GraphQL Query - Add selected files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL = gql`
 query search (          
   $file_names: [String] 
@@ -892,6 +1130,7 @@ query search (
 }
   `;
 
+// --------------- GraphQL Query - Add all files under Cases table to Cart ---------------
 export const GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART = gql`
 query subjectsAddAllToCart(
   $subject_ids: [String],
@@ -944,6 +1183,7 @@ query subjectsAddAllToCart(
 }
     `;
 
+// --------------- GraphQL Query - Add all files under Samples table to Cart ---------------
 export const GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART = gql`
     query samplesAddAllToCart(
       $subject_ids: [String],
@@ -997,6 +1237,7 @@ export const GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART = gql`
     }
         `;
 
+// --------------- GraphQL Query - Add all files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART = gql`
 query fileAddAllToCart(
   $subject_ids: [String],

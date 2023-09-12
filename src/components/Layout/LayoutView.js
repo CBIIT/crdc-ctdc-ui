@@ -64,7 +64,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={CarView} />
             <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
             {/* bento 4.0 template */}
-            <PrivateRoute path="/explore" access={['admin', 'member']} component={UnderDev} />
+            <PrivateRoute path="/explore" access={['admin', 'member']} component={DashTemplate} />
             {/* END SECTION */}
 
             {/* Psuedo Private routes where minor
