@@ -1,3 +1,8 @@
+- page: '/submit'
+  title: "Data Submission"
+  primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
+  content:
+    - paragraph: "CTDC is not accepting external data submissions at this time. For more information on how to submit data to other data repositories within the Cancer Research Data Commons, please see $$[here](https://datascience.cancer.gov/data-commons)$$."
 - page: '/crdc'
   title: "Cancer Research Data Commons (CRDC) and Analysis"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png

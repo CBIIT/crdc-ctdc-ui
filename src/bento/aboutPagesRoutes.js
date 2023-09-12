@@ -5,4 +5,5 @@ export default [
   '/developers',
   '/support',
   '/request-access',
+  '/submit'
 ];
