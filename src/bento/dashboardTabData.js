@@ -72,230 +72,247 @@ export const tabIndex = [
   },
 ];
 
+/*
+    $subject_ids: [String],
+    $ctep_disease_code: [String], // Diagnosis
+    $snomed_disease_code: [String], // Stage of Disease
+    $tumor_grade: [String], // Tumor Grade
+    $sex: [String], // Sex
+    $reported_gender: [String], // Gender
+    $race: [String], // Race
+    $ethnicity: [String], // Ethnicity
+    $carcinogen_exposure: [String], // Exposures
+    $targeted_therapy: [String], // Targeted Therapy
+    $anatomical_collection_site: [String], // Anatomical Collection Site
+    $specimen_type: [String], // Biospecimen Type
+    $tissue_category: [String], // Tissue Category
+    $assessment_timepoint: [String], // Collection Timepoint
+    $data_file_type: [String], // File Type
+    $data_file_format: [String] // File Format
+*/
 // Main Query used to populate Facet, Widget components
 export const DASHBOARD_QUERY_NEW = gql`
   query search (          
-      $subject_ids: [String],
-      $programs: [String],
-      $studies: [String],
-      $diagnoses: [String],
-      $rc_scores: [String],
-      $tumor_sizes: [String],
-      $chemo_regimen: [String],
-      $tumor_grades: [String],
-      $er_status: [String],
-      $pr_status: [String],
-      $endo_therapies: [String],
-      $meno_status: [String],
-      $tissue_type: [String],
-      $composition: [String],
-      $association: [String],
-      $file_type: [String],
-      $age_at_index: [Float]
+    $subject_ids: [String],
+    $ctep_disease_code: [String],
+    $snomed_disease_code: [String],
+    $tumor_grade: [String],
+    $sex: [String],
+    $reported_gender: [String],
+    $race: [String],
+    $ethnicity: [String],
+    $carcinogen_exposure: [String],
+    $targeted_therapy: [String],
+    $anatomical_collection_site: [String],
+    $specimen_type: [String],
+    $tissue_category: [String],
+    $assessment_timepoint: [String],
+    $data_file_type: [String],
+    $data_file_format: [String]
   ){
       searchSubjects (          
-          subject_ids: $subject_ids,
-          programs: $programs,
-          studies: $studies,
-          diagnoses: $diagnoses,
-          rc_scores: $rc_scores,
-          tumor_sizes: $tumor_sizes,
-          chemo_regimen: $chemo_regimen,
-          tumor_grades: $tumor_grades,
-          er_status: $er_status,
-          pr_status: $pr_status,
-          endo_therapies: $endo_therapies,
-          meno_status: $meno_status,
-          tissue_type: $tissue_type,
-          composition: $composition,
-          association: $association,       
-          file_type: $file_type,
-          age_at_index: $age_at_index
+        subject_ids: $subject_ids,
+        ctep_disease_code: $ctep_disease_code,
+        snomed_disease_code: $snomed_disease_code,
+        tumor_grade: $tumor_grade,
+        sex: $sex,
+        reported_gender: $reported_gender,
+        race: $race,
+        ethnicity: $ethnicity,
+        carcinogen_exposure: $carcinogen_exposure,
+        targeted_therapy: $targeted_therapy,
+        anatomical_collection_site: $anatomical_collection_site,
+        specimen_type: $specimen_type,
+        tissue_category: $tissue_category,
+        assessment_timepoint: $assessment_timepoint,
+        data_file_type: $data_file_type,
+        data_file_format: $data_file_format
       ) {
-          numberOfPrograms
-          numberOfStudies
-          numberOfSubjects
-          numberOfSamples
-          numberOfLabProcedures
-          numberOfFiles
-          armsByPrograms {
-              program
-              caseSize
-              children {
-                  arm
-                  caseSize
-                  size
-              }
+        numberOfPrograms
+        numberOfStudies
+        numberOfSubjects
+        numberOfSamples
+        numberOfLabProcedures
+        numberOfFiles
+        armsByPrograms {
+          program
+          caseSize
+          children {
+            arm
+            caseSize
+            size
           }
-          diagnosesAndStageOfDiseases {
-              ctepDiseaseCode
-              caseSize
-              children {
-                  snomedDiseaseCode
-                  caseSize
-                  size
-              }
+        }
+        diagnosesAndStageOfDiseases {
+          ctepDiseaseCode
+          caseSize
+          children {
+            snomedDiseaseCode
+            caseSize
+            size
           }
-          sexesAndGenders {
-              sex
-              caseSize 
-              children {
-                  reportedGender
-                  caseSize
-                  size
-              }
+        }
+        sexesAndGenders {
+          sex
+          caseSize 
+          children {
+            reportedGender
+            caseSize
+            size
           }
-          racesAndEthnicities {
-              race 
-              caseSize
-              children {
-                  ethnicity 
-                  caseSize
-                  size
-              }
+        }
+        racesAndEthnicities {
+          race 
+          caseSize
+          children {
+            ethnicity 
+            caseSize
+            size
           }
-          timepointsAndBiospecimensTypes {
-              assessmentTimepoint
-              caseSize
-              children {
-                  biospecimensType
-                  caseSize
-                  size
-              }
+        }
+        timepointsAndBiospecimensTypes {
+          assessmentTimepoint
+          caseSize
+          children {
+            biospecimensType
+            caseSize
+            size
           }
-          participantCountByDataFileType {
-              group
-              subjects
-          }
-          participantCountByTargetedTherapy {
-              group
-              subjects
-          }
-          subjectCountByProgram {
-              group
-              subjects
-          }
-          subjectCountByStudy {
-              group
-              subjects
-          }
-          subjectCountByDiagnoses {
-              group
-              subjects
-          }
-          subjectCountByRecurrenceScore {
-              group
-              subjects
-          }
-          subjectCountByTumorSize {
-              group
-              subjects
-          }
-          subjectCountByChemotherapyRegimen {
-              group
-              subjects
-          }
-          subjectCountByEndocrineTherapy {
-              group
-              subjects
-          }
-          subjectCountByTumorGrade{
-              group
-              subjects
-          }
-          subjectCountByErStatus{
-              group
-              subjects
-          }
-          subjectCountByPrStatus{
-              group
-              subjects
-          }
-          subjectCountByMenopauseStatus{
-              group
-              subjects
-          }
-          subjectCountByFileType {
-              group
-              subjects
-          }
-          subjectCountByFileAssociation {
-              group
-              subjects
-          }
-          subjectCountByTissueComposition {
-              group
-              subjects
-          }
-          subjectCountByTissueType {
-              group
-              subjects
-          }
-          filterSubjectCountByProgram {
-              group
-              subjects
-          }
-          filterSubjectCountByStudy{
-              group
-              subjects
-          }
-          filterSubjectCountByDiagnoses{
-              group
-              subjects
-          }
-          filterSubjectCountByRecurrenceScore{
-              group
-              subjects
-          }
-          filterSubjectCountByTumorSize{
-              group
-              subjects
-          }
-          filterSubjectCountByTumorGrade{
-              group
-              subjects
-          }
-          filterSubjectCountByErStatus{
-              group
-              subjects
-          }
-          filterSubjectCountByPrStatus{
-              group
-              subjects
-          }
-          filterSubjectCountByChemotherapyRegimen{
-              group
-              subjects
-          }
-          filterSubjectCountByEndocrineTherapy{
-              group
-              subjects
-          }
-          filterSubjectCountByMenopauseStatus{
-              group
-              subjects
-          }
-          filterSubjectCountByTissueType{
-              group
-              subjects
-          }
-          filterSubjectCountByTissueComposition{
-              group
-              subjects
-          }
-          filterSubjectCountByFileAssociation{
-              group
-              subjects
-          }
-          filterSubjectCountByFileType{
-              group
-              subjects
-          }
-          filterSubjectCountByAge{
-              lowerBound
-              upperBound
-              subjects
-          }
+        }
+        participantCountByDiagnosis {
+          group
+          subjects
+        }
+        filterParticipantCountByDiagnosis {
+          group
+          subjects
+        }
+
+        participantCountByStageOfDisease {
+          group
+          subjects
+        }
+        filterParticipantCountByStageOfDisease {
+          group
+          subjects
+        }
+
+        participantCountByTumorGrade {
+          group
+          subjects
+        }
+        filterParticipantCountByTumorGrade {
+          group
+          subjects
+        }
+
+        participantCountBySex {
+          group
+          subjects
+        }
+        filterParticipantCountBySex {
+          group
+          subjects
+        }
+
+        participantCountByGender {
+          group
+          subjects
+        }
+        filterParticipantCountByGender {
+          group
+          subjects
+        }
+
+        participantCountByRace {
+          group
+          subjects
+        }
+        filterParticipantCountByRace {
+          group
+          subjects
+        }
+
+        participantCountByEthnicity {
+          group
+          subjects
+        }
+        filterParticipantCountByEthnicity {
+          group
+          subjects
+        }
+
+        participantCountByExposures {
+          group
+          subjects
+        }
+        filterParticipantCountByExposures {
+          group
+          subjects
+        }
+
+        participantCountByTargetedTherapy {
+          group
+          subjects
+        }
+        filterParticipantCountByTargetedTherapy {
+          group
+          subjects
+        }
+
+        participantCountByAnatomicalCollectionSite {
+          group
+          subjects
+        }
+        filterParticipantCountByAnatomicalCollectionSite {
+          group
+          subjects
+        }
+
+        participantCountByBiospecimenType {
+          group
+          subjects
+        }
+        filterParticipantCountByBiospecimenType {
+          group
+          subjects
+        }
+
+        participantCountByTissueCategory {
+          group
+          subjects
+        }
+        filterParticipantCountByTissueCategory {
+          group
+          subjects
+        }
+
+        participantCountByCollectionTimepoint {
+          group
+          subjects
+        }
+        filterParticipantCountByCollectionTimepoint {
+          group
+          subjects
+        }
+
+        participantCountByDataFileType {
+          group
+          subjects
+        }
+        filterParticipantCountByDataFileType {
+          group
+          subjects
+        }
+
+        participantCountByFileFormat {
+          group
+          subjects
+        }
+        filterParticipantCountByFileFormat {
+          group
+          subjects
+        }
       }
   }
 `;

@@ -63,6 +63,11 @@ const { SearchBox } = SearchBoxGenerator({
       }
     },
   },
+  config: {
+    inputPlaceholder: 'e.g. MSB-00140, MSB-00205', // The textarea placeholder
+    noOptionsText: 'No matching items found',      // The text to display when no autocomplete opts are found
+    searchType: 'subjectIds',                      // The search type to use for the autocomplete
+  },
 });
 
 // Generate UploadModal Component
@@ -85,6 +90,14 @@ const { UploadModal } = UploadModalGenerator({
         return { matched: [], unmatched: [] };
       }
     },
+  },
+  config: {
+    title: 'Upload Participant Set',                   // The title of the modal
+    inputPlaceholder: 'eg. PARTICIPANT-123',           // The placeholder text for the textarea input
+    inputTooltip: 'Add the participant indentifier.',  // The tooltip text for the textarea input section. Empty = no tooltip
+    uploadTooltip: 'Add the participant indentifier.', // The tooltip text for the upload button section. Empty = no tooltip
+    accept: '.csv,.txt',                        // The file types that can be uploaded (must be text/* files only)
+    maxSearchTerms: 1000,                       // The maximum number of search terms that can be searched for. See note below.
   },
 });
 
@@ -137,7 +150,7 @@ const BentoFacetFilter = ({
   */
   const CustomFacetSection = ({ section }) => {
     const { name, expandSection } = section;
-    const { hasSearch = false } = facetSectionVariables[name];
+    const { hasSearch = false, hasArrowDropDownIcon = true } = facetSectionVariables[name];
 
     const [expanded, setExpanded] = useState(expandSection);
     const [showSearch, setShowSearch] = useState(true);
@@ -153,7 +166,17 @@ const BentoFacetFilter = ({
 
     return (
       <>
-        <CustomExpansionPanelSummary onClick={collapseHandler} id={section}>
+        <CustomExpansionPanelSummary
+          expandIcon={hasArrowDropDownIcon && (
+            <ArrowDropDownIcon
+              classes={{ root: classes.dropDownIconSubSection }}
+              style={{ fontSize: 26 }}
+            />
+          )}
+          onClick={collapseHandler}
+          id={section}
+          className={hasArrowDropDownIcon ? classes.customExpansionPanelSummaryRoot : {}}
+        >
           <div className={classes.sectionSummaryTextContainer}>
             {name}
             {hasSearch && (
@@ -191,7 +214,7 @@ const BentoFacetFilter = ({
             />
           )}
           id={facet.label}
-          className={classes.customExpansionPanelSummaryRoot}
+          className={classes.customExpansionPanelSummaryRootView}
         >
           <div
             id={facet.label}
