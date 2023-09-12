@@ -1,7 +1,7 @@
 export default [
-  '/submit',
   '/developers',
   '/purpose',
   '/support',
+  '/submit',
   '/cloud-computing'
 ];
