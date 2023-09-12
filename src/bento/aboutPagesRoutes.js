@@ -1,4 +1,5 @@
 export default [
   '/submit',
-  '/developers'
+  '/developers',
+  '/purpose'
 ];
