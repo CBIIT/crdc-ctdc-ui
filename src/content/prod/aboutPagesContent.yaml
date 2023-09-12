@@ -26,6 +26,11 @@
      - paragraph: "$$*Fueling collaborative research:*$$ By centralizing data and making them available through NCI’s Cloud Resources, the CTDC promotes secure collaboration among distributed research groups, fostering interdisciplinary partnerships. "
      - paragraph: "$$*Democratizing Data access:*$$ Data in the CTDC are made available through various access restrictions including open (no registration required) and controlled access (registration required). The CTDC aims to make each dataset as open as possible while protecting participant privacy and adhering to regulations, agreements, and other considerations specific to each study. "
      - paragraph: "$$*Alignment to F.A.I.R data principles:*$$ The CTDC adheres to Findable, Accessible, Interoperable, and Reusable ($$[FAIR]( https://www.go-fair.org/fair-principles/)$$) principles for scientific data management and stewardship. CTDC seeks to provide clearly organized data and guidance enabling end users to search for, find, and access data of interest. The emphasis on harmonization described above promotes the interoperability of data within and across the CRDC ecosystem and beyond and promotes reusability of data beyond the primary publication."
+- page: '/support'
+  title: "Support"
+  primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Support.png
+  content:
+    - paragraph: "If you have any questions, please contact us at $$[CTDCHelpDesk@mail.nih.gov](CTDCHelpDesk@mail.nih.gov)$$"
 
 
      
