@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 // import { request, gql } from 'graphql-request';
 // import { useQuery } from '@tanstack/react-query';
 import Snackbar from '../../components/Snackbar';
-import StatsView from '../../components/Stats/StatsView';
+import Stats from '../../components/Stats/AllStatsController';
 // import { fetchDataForDashboardTabDataTable } from '../dashboardTab/store/dashboardReducer';
 // import { studyDisposition, } from './utils';
 // import { navigatedToDashboard } from '../../utils/utils';
@@ -124,7 +124,7 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
         classes={classes}
       />
 
-      <StatsView data={stat} />
+      <Stats />
       <div className={classes.container}>
         <div className={classes.header}>
           <div className={classes.logo}>

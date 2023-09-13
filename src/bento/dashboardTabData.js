@@ -128,11 +128,11 @@ export const DASHBOARD_QUERY_NEW = gql`
         data_file_type: $data_file_type,
         data_file_format: $data_file_format
       ) {
-        numberOfPrograms
-        numberOfStudies
-        numberOfSubjects
-        numberOfSamples
-        numberOfLabProcedures
+        numberOfTrials
+        numberOfParticipants
+        numberOfDiagnoses
+        numberOfTargetedTherapies
+        numberOfBiospecimens
         numberOfFiles
         armsByPrograms {
           program

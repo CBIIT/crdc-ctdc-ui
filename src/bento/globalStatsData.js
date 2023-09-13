@@ -2,88 +2,101 @@ import gql from 'graphql-tag';
 
 export const statsStyling = {
   global: {
-    horizontalStyle: true,
-    statTitleFirst: true,
-    height: '47px',
-    background: '#3695A9',
+    horizontalStyle: false,
+    statTitleFirst: false,
+    height: '50px',
+    background: '#47AEC3',
   },
   statsGroup: {
-    margin: '4px 80px',
+    margin: '8px 40px 0px 0px',
+    padding: '0px',
+    borderRight: 'none',
+    '&:first-child': {
+      padding: '0px 60px 0px 90px',
+    },
+    '&:last-child': {
+      padding: '0px 40px 0px 0px',
+    },
   },
   statsIcon: {
-    // width: '45px',
-    // height: '45px',
+    margin: '0px 0px 0px -35px',
+    '&:second-child': {
+      paddingTop: '20px',
+      marginTop: '20px'
+    }
   },
   statCount: {
     color: '#FFFFFF',
-    fontFamily: 'sans-serif',
-    fontSize: 'calc(11.2px)',
-    margin: '13px 0px 0px',
-    // float: 'left',
+    fontWeight: '500',
+    fontFamily: 'Oswald',
+    fontSize: '20px',
+    margin: '-5px 0px -4px 10px',
+    paddingTop: '0px',
+    // lineHeight: 17px
   },
   statTitle: {
-    color: '#000000',
-    fontFamily: 'sans-serif',
-    fontWeight: '600',
-    fontSize: 'calc(11.2px)',
+    color: '#062D4F',
+    fontFamily: 'Nunito',
+    fontWeight: '700',
+    fontSize: '12px',
     textTransform: 'none',
-    // float: 'none',
+    margin: '0px 0px 0px 10px',
   },
 };
 
 export const globalStatsData = [
   // A maximum of 6 stats are allowed
   {
-    statTitle: 'TRIALS:',
+    statTitle: 'TRIALS',
     type: 'field',
     statAPI: 'numberOfTrials',
-    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/statsBar/stats-bar-trials.svg',
+    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-explore-stats-bar-icons/ctdc/images/svg/ExploreStatsBarTrialsIcon.svg',
     statIconAlt: 'TRIALS Stats Bar Icon',
   },
   {
-    statTitle: 'CASES:',
+    statTitle: 'PARTICIPANTS',
     type: 'field',
-    statAPI: 'numberOfCases',
-    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/statsBar/stats-bar-cases.svg',
-    statIconAlt: 'CASES Stats Bar Icon',
+    statAPI: 'numberOfParticipants',
+    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-explore-stats-bar-icons/ctdc/images/svg/ExploreStatsBarParticipantsIcon.svg',
+    statIconAlt: 'PARTICIPANTS Stats Bar Icon',
   },
   {
-    statTitle: 'FILES:',
+    statTitle: 'DIAGNOSES',
+    type: 'field',
+    statAPI: 'numberOfDiagnoses',
+    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-explore-stats-bar-icons/ctdc/images/svg/ExploreStatsBarDiagnosesIcon.svg',
+    statIconAlt: 'DIAGNOSES Stats Bar Icon',
+  },
+  {
+    statTitle: 'THERAPIES',
+    type: 'field',
+    statAPI: 'numberOfTargetedTherapies',
+    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-explore-stats-bar-icons/ctdc/images/svg/ExploreStatsBarTargetedTherapiesIcon.svg',
+    statIconAlt: 'TARGETED THERAPIES Stats Bar Icon',
+  },
+  {
+    statTitle: 'BIOSPECIMENS',
+    type: 'field',
+    statAPI: 'numberOfBiospecimens',
+    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-explore-stats-bar-icons/ctdc/images/svg/ExploreStatsBarBiospecimensIcon.svg',
+    statIconAlt: 'BIOSPECIMENS Stats Bar Icon',
+  },
+  {
+    statTitle: 'FILES',
     type: 'field',
     statAPI: 'numberOfFiles',
-    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/statsBar/stats-bar-files.svg',
+    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-explore-stats-bar-icons/ctdc/images/svg/ExploreStatsBarFilesIcon.svg',
     statIconAlt: 'FILES Stats Bar Icon',
   },
 ];
 
 // --------------- GraphQL query - Retrieve stats details --------------
 export const GET_GLOBAL_STATS_DATA_QUERY = gql`
-  query search(
-    $clinical_trial_designation : [String],
-    $clinical_trial_id : [String],
-    $pubmed_id : [String],
-    $trial_arm : [String],
-    $disease : [String],
-    $gender : [String],
-    $race : [String],
-    $ethnicity : [String],
-    $file_type : [String],
-    $file_format : [String]
-){
-    searchCases(
-        clinical_trial_designation: $clinical_trial_designation
-        clinical_trial_id: $clinical_trial_id
-        pubmed_id: $pubmed_id
-        trial_arm: $trial_arm
-        disease: $disease
-        gender: $gender
-        race: $race
-        ethnicity: $ethnicity
-        file_type: $file_type
-        file_format: $file_format
-    ){
-        numberOfTrials
-        numberOfCases
-        numberOfFiles
-    }
+{
+  numberOfTrials
+  numberOfParticipants
+  numberOfDiagnoses
+  numberOfTargetedTherapies
+  numberOfBiospecimens
+  numberOfFiles
 }`;
