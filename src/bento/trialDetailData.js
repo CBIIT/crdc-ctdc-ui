@@ -13,8 +13,8 @@ export const title = {
 
 
 
-export const headerIcon = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/trialDetail/ctdc/images/svg/Icon-TrialDetail.svg';
-export const externalIcon = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/trialDetail/ctdc/images/svg/ExternalLinkIcon.svg';
+export const headerIcon = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/Icon-TrialDetail.svg';
+export const externalIcon = 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExternalLinkIcon.svg';
 
 export const tab = {
   items: [
