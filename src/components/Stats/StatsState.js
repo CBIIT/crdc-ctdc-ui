@@ -29,7 +29,7 @@ function receiveStats(json) {
     type: RECIEVE_STATS,
     payload:
     {
-      data: json.data ? json.data.searchCases : {},
+      data: json.data ? json.data : {},
     },
   };
 }
@@ -45,7 +45,7 @@ function fetchStats(statQuery) {
   return (dispatch) => client
     .query({
       query: statQuery,
-      context: { clientName: "ctdcOldService"},
+      context: { clientName: "mockService"},
     })
     .then((result) => dispatch(receiveStats(result)))
     .catch((error) => dispatch(errorhandler(error, STATS_QUERY_ERR)));
