@@ -32,7 +32,7 @@ export const externalLinkIcon = {
 export const tabs = [
   {
     id: 'case_tab',
-    title: 'Cases',
+    title: 'Participants',
     dataField: 'dataCase',
     count: 'numberOfSubjects',
   },
@@ -315,6 +315,35 @@ export const DASHBOARD_QUERY_NEW = gql`
         }
       }
   }
+`;
+
+export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
+  query participantOverview(
+    $subject_id: [String],
+    $ctep_disease_code: [String] ,
+    $snomed_disease_code: [String] ,
+    $tumor_grade: [String] ,
+    $age_at_diagnosis: [String] ,
+    $sex: [String] ,
+    $reported_gender: [String] ,
+    $race: [String] ,
+    $ethnicity: [String] ,
+    $carcinogen_exposure: [String] ,
+    $targeted_therapy: [String] ){
+    participantOverview(
+        subject_id: $subject_id,
+        ctep_disease_code: $ctep_disease_code,
+        snomed_disease_code: $snomed_disease_code,
+        tumor_grade: $tumor_grade,
+        age_at_diagnosis: $age_at_diagnosis,
+        sex: $sex,
+        reported_gender: $reported_gender,
+        race: $race,
+        ethnicity: $ethnicity,
+        carcinogen_exposure: $carcinogen_exposure,
+        targeted_therapy: $targeted_therapy
+    )
+}
 `;
 
 // Original DASHBOARD_QUERY_NEW for reference
@@ -1338,11 +1367,11 @@ export const GET_FILE_IDS_FROM_FILE_NAME = gql`
 // --------------- Tabs Table configuration --------------
 export const tabContainers = [
   {
-    name: 'Cases',
+    name: 'Participants',
     dataField: 'dataCase',
-    api: GET_CASES_OVERVIEW_QUERY,
-    paginationAPIField: 'subjectOverview',
-    count: 'numberOfSubjects',
+    api: GET_PARTICIPANTS_OVERVIEW_QUERY,
+    paginationAPIField: 'participantOverview',
+    count: 'numberOfParticipants',
     dataKey: 'subject_id',
     defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
@@ -1360,96 +1389,84 @@ export const tabContainers = [
       },
       {
         dataField: 'subject_id',
-        header: 'Case ID',
+        header: 'Participant ID',
         cellType: cellTypes.LINK,
         linkAttr : {
-          rootPath: '/case',
+          rootPath: '/participant',
           pathParams: ['subject_id'],
         },
         display: true,
         tooltipText: 'sort',
       },
       {
-        dataField: 'program',
-        header: 'Program Code',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/program',
-          pathParams: ['program_id'],
-        },
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'program_id',
-        header: 'Program ID',
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'study_acronym',
-        header: 'Arm',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/arm',
-          pathParams: ['study_acronym'],
-        },
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'diagnosis',
+        dataField: 'ctep_disease_code',
         header: 'Diagnosis',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'recurrence_score',
-        header: 'Recurrence Score',
+        dataField: 'snomed_disease_code',
+        header: 'Stage of Disease',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'tumor_size',
-        header: 'Tumor Size (cm)',
+        dataField: 'tumor_grade',
+        header: 'Tumor Grade',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'er_status',
-        header: 'ER Status',
+        dataField: 'age_at_diagnosis',
+        header: 'Age',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'pr_status',
-        header: 'PR Status',
+        dataField: '_sex',
+        header: 'Sex',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'age_at_index',
-        header: 'Age (years)',
+        dataField: 'reported_gender',
+        header: 'Gender',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'survival_time',
-        header: 'Survival (days)',
+        dataField: 'race',
+        header: 'Race',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        cellType: cellTypes.CUSTOM_ELEM,
-        displayEmpty: false,
+      },
+      {
+        dataField: 'ethnicity',
+        header: 'Ethnicity',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'carcinogen_exposure',
+        header: 'Carcinogen Exposure',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'targeted_therapy',
+        header: 'Targeted Therapy',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
       },
     ],
     id: 'case_tab',
