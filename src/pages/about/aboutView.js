@@ -1,5 +1,6 @@
 import React from 'react';
-import { AboutHeader, AboutBody } from '@bento-core/about';
+import {AboutBody } from '@bento-core/about';
+import AboutHeader from './aboutHeader';
 import { withStyles } from '@material-ui/core';
 import Stats from '../../components/Stats/AllStatsController';
 
@@ -11,16 +12,19 @@ const AboutView = ({ classes, data }) => {
       <Stats />
       <AboutHeader title={data.title} />
       <AboutBody data={{
-        image: getImage(data.primaryContentImage, data.title),
-        imageLocation: 'right',
-        title: data.title ? data.title : '',
-        content: data.content ? data.content : '',
-        table: data.table ? data.table : '',
-        secondaryImage: data.secondaryZoomImage ? data.secondaryZoomImage : null,
-        secondaryImageData: getImage(data.secondaryZoomImage, 'secondary zoominout'),
-        secondaryZoomImageTitle: data.secondaryZoomImageTitle ? data.secondaryZoomImageTitle : null,
-      }}
-      />
+          fontFamily: '"Lato Regular", "Open Sans", sans-serif',
+          lineHeight: '25px',
+          image: getImage(data.primaryContentImage, data.title),
+          imageLocation: 'left',
+          title: data.title ? data.title : '',
+          content: data.content ? data.content : '',
+          table: data.table ? data.table : '',
+          secondaryImage: data.secondaryZoomImage ? data.secondaryZoomImage : null,
+          secondaryImageData: getImage(data.secondaryZoomImage, 'secondary zoominout'),
+          secondaryZoomImageTitle:
+           data.secondaryZoomImageTitle ? data.secondaryZoomImageTitle : null,
+        }}
+        />
     </>
 
   );
