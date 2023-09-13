@@ -109,6 +109,12 @@ export const navbarSublists = {
       id: 'navbar-dropdown-item-data-harmonization',
       className: 'navMobileSubItem',
     },
+    {
+      name: 'Cloud computing',
+      link: '/cloud-computing',
+      id: 'navbar-dropdown-item-data-harmonization',
+      className: 'navMobileSubItem',
+    },
   ],
     "Resources": [
     {

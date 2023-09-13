@@ -1,8 +1,7 @@
 export default [
-  '/purpose',
-  '/crdc',
-  '/ctdc-data-model',
   '/developers',
+  '/purpose',
   '/support',
-  '/request-access',
+  '/submit',
+  '/cloud-computing'
 ];
