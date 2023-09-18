@@ -8,12 +8,12 @@ import { dataFormatTypes } from '@bento-core/table';
 export const tooltipContent = {
   icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   alt: 'tooltipIcon',
-  0: 'Click button to add selected files associated with the selected case(s).',
-  1: 'Click button to add selected files associated with the selected sample(s).',
-  2: 'Click button to add selected files.',
-  Cases: 'Click button to add selected files associated with the selected case(s).',
-  Samples: 'Click button to add selected files associated with the selected sample(s).',
-  Files: 'Click button to add selected files.',
+  0: 'Click button to Add Associated Files associated with the selected Participant(s).',
+  1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
+  2: 'Click button to Add Associated Files.',
+  Participants: 'Click button to Add Associated Files associated with the selected Participant(s).',
+  Samples: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
+  Files: 'Click button to Add Associated Files.',
   arrow: true,
   styles: {
     border: '#03A383 1px solid',
@@ -31,14 +31,14 @@ export const externalLinkIcon = {
 // --------------- Tabs Header Data configuration --------------
 export const tabs = [
   {
-    id: 'case_tab',
+    id: 'participants_tab',
     title: 'Participants',
     dataField: 'dataCase',
-    count: 'numberOfSubjects',
+    count: 'numberOfParticipants',
   },
   {
-    id: 'sample_tab',
-    title: 'Samples',
+    id: 'biospecimens_tab',
+    title: 'Biospecimens',
     dataField: 'dataSample',
     count: 'numberOfSamples',
   },
@@ -1143,7 +1143,7 @@ query subjectOverview(
 }
 `;
 
-// --------------- GraphQL Query - Add selected files under Cases table to Cart ---------------
+// --------------- GraphQL Query - Add Associated Files under Cases table to Cart ---------------
 export const GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL = gql`
 query search (          
   $subject_ids: [String],
@@ -1154,7 +1154,7 @@ query search (
 }
   `;
 
-// --------------- GraphQL Query - Add selected files under Samples table to Cart ---------------
+// --------------- GraphQL Query - Add Associated Files under Samples table to Cart ---------------
 export const GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL = gql`
 query search (          
   $sample_ids: [String],
@@ -1165,7 +1165,7 @@ query search (
 }
   `;
 
-// --------------- GraphQL Query - Add selected files under Files table to Cart ---------------
+// --------------- GraphQL Query - Add Associated Files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL = gql`
 query search (          
   $file_names: [String] 
@@ -1375,8 +1375,8 @@ export const tabContainers = [
     dataKey: 'subject_id',
     defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
-    buttonText: 'Add Selected Files',
-    tableID: 'case_tab_table',
+    buttonText: 'Add Associated Files',
+    tableID: 'participants_tab_table',
     extendedViewConfig: {
       pagination: true,
       manageViewColumns: false,
@@ -1427,7 +1427,7 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: '_sex',
+        dataField: 'sex',
         header: 'Sex',
         display: true,
         tooltipText: 'sort',
@@ -1469,8 +1469,8 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
     ],
-    id: 'case_tab',
-    tableID: 'case_tab_table',
+    id: 'participants_tab',
+    tableID: 'participants_tab_table',
     tableDownloadCSV: customCasesTabDownloadCSV,
     tabIndex: '0',
     downloadFileName: 'Bento_Dashboard_cases_download',
@@ -1484,7 +1484,7 @@ export const tabContainers = [
     addSelectedFilesQuery: GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
   },
   {
-    name: 'Samples',
+    name: 'Biospecimens',
     dataField: 'dataSample',
     api: GET_SAMPLES_OVERVIEW_QUERY,
     count: 'numberOfSamples',
@@ -1492,7 +1492,7 @@ export const tabContainers = [
     dataKey: 'sample_id',
     defaultSortField: 'sample_id',
     defaultSortDirection: 'asc',
-    tableID: 'sample_tab_table',
+    tableID: 'biospecimens_tab_table',
     extendedViewConfig: {
       pagination: true,
       manageViewColumns: false,
@@ -1614,8 +1614,8 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
     ],
-    id: 'sample_tab',
-    tableID: 'sample_tab_table',
+    id: 'biospecimens_tab',
+    tableID: 'biospecimens_tab_table',
     tabIndex: '1',
     tableDownloadCSV: customSamplesTabDownloadCSV,
     downloadFileName: 'Bento_Dashboard_cases_download',

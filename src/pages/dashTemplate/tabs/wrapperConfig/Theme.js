@@ -36,15 +36,15 @@ export const customTheme = {
       '&.add_all_button': {
         marginRight: '24px',
         // width: '120px',
-        backgroundColor: '#142D64',
+        backgroundColor: '#08A383',
       },
       '&.add_selected_button': {
         marginRight: '10px',
       },
-      '&.add_selected_button_Cases': {
-        backgroundColor: '#10A075',
+      '&.add_selected_button_Participants': {
+        backgroundColor: '#067CA5',
       },
-      '&.add_selected_button_Samples': {
+      '&.add_selected_button_biospecimens': {
         backgroundColor: '#0DAFEC',
       },
       '&.add_selected_button_Files': {
@@ -52,10 +52,10 @@ export const customTheme = {
       },
       '&.Mui-disabled': {
         color: '#fff',
-        '&.add_selected_button_Cases': {
-          backgroundColor: '#D6F2EA',
+        '&.add_selected_button_Participants': {
+          backgroundColor: '#cef1fd',
         },
-        '&.add_selected_button_Samples': {
+        '&.add_selected_button_biospecimens': {
           backgroundColor: '#CFEDF9',
         },
         '&.add_selected_button_Files': {

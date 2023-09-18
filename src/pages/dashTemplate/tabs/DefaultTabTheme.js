@@ -24,11 +24,11 @@ export const customTheme = {
       fontFamily: 'Lato',
       '&.Mui-selected': {
         fontWeight: 'bolder',
-        '&.cases': {
-          background: '#d6f2ea',
-          color: '#10a075',
+        '&.participants': {
+          background: '#D7F2EB',
+          color: '#11A075',
         },
-        '&.samples': {
+        '&.biospecimens': {
           background: '#cfedf9',
           color: '#0dafec',
         },
@@ -40,11 +40,11 @@ export const customTheme = {
           color: 'red',
         },
       },
-      '& span.cases_count': {
+      '& span.participants_count': {
         marginLeft: '5px',
-        fontSize: '17px',
+        fontSize: '14px',
       },
-      '& span.samples_count': {
+      '& span.biospecimens_count': {
         marginLeft: '5px',
         fontSize: '17px',
       },
