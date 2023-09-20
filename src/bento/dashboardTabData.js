@@ -319,32 +319,101 @@ export const DASHBOARD_QUERY_NEW = gql`
 
 export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
   query participantOverview(
-    $subject_id: [String],
-    $ctep_disease_code: [String] ,
-    $snomed_disease_code: [String] ,
-    $tumor_grade: [String] ,
-    $age_at_diagnosis: [String] ,
-    $sex: [String] ,
+    $subject_ids: [String],
+    $ctep_disease_code: [String],
+    $snomed_disease_code: [String],
+    $tumor_grade: [String],
+    $age_at_diagnosis: [String],
+    $sex: [String],
     $reported_gender: [String] ,
-    $race: [String] ,
-    $ethnicity: [String] ,
-    $carcinogen_exposure: [String] ,
-    $targeted_therapy: [String] ){
+    $race: [String],
+    $ethnicity: [String],
+    $carcinogen_exposure: [String],
+    $targeted_therapy: [String],
+    $first: Int, 
+    $offset: Int, 
+    $order_by: String,
+    $sort_direction: String
+  ){
     participantOverview(
-        subject_id: $subject_id,
-        ctep_disease_code: $ctep_disease_code,
-        snomed_disease_code: $snomed_disease_code,
-        tumor_grade: $tumor_grade,
-        age_at_diagnosis: $age_at_diagnosis,
-        sex: $sex,
-        reported_gender: $reported_gender,
-        race: $race,
-        ethnicity: $ethnicity,
-        carcinogen_exposure: $carcinogen_exposure,
-        targeted_therapy: $targeted_therapy
-    )
-}
+      subject_ids: $subject_ids,
+      ctep_disease_code: $ctep_disease_code,
+      snomed_disease_code: $snomed_disease_code,
+      tumor_grade: $tumor_grade,
+      age_at_diagnosis: $age_at_diagnosis,
+      sex: $sex,
+      reported_gender: $reported_gender,
+      race: $race,
+      ethnicity: $ethnicity,
+      carcinogen_exposure: $carcinogen_exposure,
+      targeted_therapy: $targeted_therapy,
+      first: $first, 
+      offset: $offset, 
+      order_by: $order_by,
+      sort_direction: $sort_direction
+    ) {
+      subject_id,
+      ctep_disease_code,
+      snomed_disease_code,
+      tumor_grade,
+      age_at_diagnosis,
+      sex,
+      reported_gender,
+      race,
+      ethnicity,
+      carcinogen_exposure,
+      targeted_therapy
+    }
+  }
 `;
+
+export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
+  query biospecimenOverview(
+    $subject_ids: [String],
+    $ctep_disease_code: [String],
+    $snomed_disease_code: [String],
+    $primary_disease_site: [String],
+    $specimen_id: [String],
+    $parent_specimen_id: [String],
+    $anatomical_collection_site: [String], 
+    $specimen_type: [String],
+    $tissue_category: [String],
+    $assessment_timepoint: [String],
+    $first: Int, 
+    $offset: Int, 
+    $order_by: String,
+    $sort_direction: String
+  ){
+    biospecimenOverview(
+      subject_ids: $subject_ids,
+      ctep_disease_code: $ctep_disease_code,
+      snomed_disease_code: $snomed_disease_code,
+      primary_disease_site: $primary_disease_site,
+      specimen_id: $specimen_id,
+      parent_specimen_id: $parent_specimen_id,
+      anatomical_collection_site: $anatomical_collection_site,
+      specimen_type: $specimen_type,
+      tissue_category: $tissue_category,
+      assessment_timepoint: $assessment_timepoint,
+      first: $first, 
+      offset: $offset, 
+      order_by: $order_by,
+      sort_direction: $sort_direction
+    ) {
+      subject_id,
+      ctep_disease_code,
+      snomed_disease_code,
+      primary_disease_site,
+      specimen_id,
+      parent_specimen_id,
+      anatomical_collection_site,
+      specimen_type,
+      tissue_category,
+      assessment_timepoint
+    }
+  }
+`;
+
 
 // Original DASHBOARD_QUERY_NEW for reference
 export const ORIGINAL_DASHBOARD_QUERY_NEW = gql`
@@ -1379,7 +1448,7 @@ export const tabContainers = [
     tableID: 'participants_tab_table',
     extendedViewConfig: {
       pagination: true,
-      manageViewColumns: false,
+      manageViewColumns: true,
     },
     columns: [
       {
@@ -1486,16 +1555,16 @@ export const tabContainers = [
   {
     name: 'Biospecimens',
     dataField: 'dataSample',
-    api: GET_SAMPLES_OVERVIEW_QUERY,
-    count: 'numberOfSamples',
-    paginationAPIField: 'sampleOverview',
+    api: GET_BIOSPECIMENS_OVERVIEW_QUERY,
+    count: 'numberOfBiospecimens',
+    paginationAPIField: 'biospecimenOverview',
     dataKey: 'sample_id',
-    defaultSortField: 'sample_id',
+    defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
     tableID: 'biospecimens_tab_table',
     extendedViewConfig: {
       pagination: true,
-      manageViewColumns: false,
+      manageViewColumns: true,
     },
     saveButtonDefaultStyle: {
       color: '#fff',
@@ -1521,94 +1590,75 @@ export const tabContainers = [
         role: cellTypes.CHECKBOX,
       },
       {
-        dataField: 'sample_id',
-        header: 'Sample ID',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
         dataField: 'subject_id',
-        header: 'Case ID',
-        link: '/case/{subject_id}',
+        header: 'Participant ID',
         cellType: cellTypes.LINK,
         linkAttr : {
-          rootPath: '/case',
+          rootPath: '/participant',
           pathParams: ['subject_id'],
         },
         display: true,
         tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'program',
-        header: 'Program Code',
-        cellType: cellTypes.LINK,
-        tooltipText: 'sort',
-        linkAttr : {
-          rootPath: '/program',
-          pathParams: ['program_id'],
-        },
-        display: true,
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'program_id',
-        header: 'Program ID',
-        display: false,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'arm',
-        header: 'Arm',
-        link: '/arm/{arm}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/arm',
-          pathParams: ['arm'],
-        },
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'diagnosis',
+        dataField: 'ctep_disease_code',
         header: 'Diagnosis',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'tissue_type',
-        header: 'Tissue Type',
+        dataField: 'snomed_disease_code',
+        header: 'Stage of Disease',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'tissue_composition',
-        header: 'Tissue Composition',
+        dataField: 'primary_disease_site',
+        header: 'Primary Site',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'sample_anatomic_site',
-        header: 'Sample Anatomic Site',
+        dataField: 'specimen_id',
+        header: 'Biospecimen ID',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'sample_procurement_method',
-        header: 'Sample Procurement Method',
+        dataField: 'parent_specimen_id',
+        header: 'Parent Biospecimen ID',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'platform',
-        header: 'platform',
+        dataField: 'anatomical_collection_site',
+        header: 'Anatomical Collection Site',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'specimen_type',
+        header: 'Biospecimen Type',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'tissue_category',
+        header: 'Tissue Category',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'assessment_timepoint',
+        header: 'Collection Timepoint',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,

@@ -44,7 +44,7 @@ export const customTheme = {
       '&.add_selected_button_Participants': {
         backgroundColor: '#067CA5',
       },
-      '&.add_selected_button_biospecimens': {
+      '&.add_selected_button_Biospecimens': {
         backgroundColor: '#0DAFEC',
       },
       '&.add_selected_button_Files': {
@@ -55,7 +55,7 @@ export const customTheme = {
         '&.add_selected_button_Participants': {
           backgroundColor: '#cef1fd',
         },
-        '&.add_selected_button_biospecimens': {
+        '&.add_selected_button_Biospecimens': {
           backgroundColor: '#CFEDF9',
         },
         '&.add_selected_button_Files': {
