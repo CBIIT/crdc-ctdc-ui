@@ -74,9 +74,9 @@ export const navbarSublists = {
   // ],
   "Data": [
     {
-      name: 'Analyze Data',
-      link: '/crdc',
-      id: 'navbar-dropdown-item-analyze-data',
+      name: 'Cloud Computing',
+      link: '/cloud-computing',
+      id: 'navbar-dropdown-item-data-harmonization',
       className: 'navMobileSubItem',
     },
     {
@@ -92,6 +92,12 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
     {
+      name: 'Data Harmonization',
+      link: '/data-harmonization',
+      id: 'navbar-dropdown-item-data-harmonization',
+      className: 'navMobileSubItem',
+    },
+    {
       name: 'Data Use Policy',
       link: '/data-use',
       id: 'navbar-dropdown-item-data-use',
@@ -101,18 +107,6 @@ export const navbarSublists = {
       name: 'Data Submission',
       link: '/submit',
       id: 'navbar-dropdown-item-data-submission',
-      className: 'navMobileSubItem',
-    },
-    {
-      name: 'Data Harmonization',
-      link: '/data-harmonization',
-      id: 'navbar-dropdown-item-data-harmonization',
-      className: 'navMobileSubItem',
-    },
-    {
-      name: 'Cloud Computing',
-      link: '/cloud-computing',
-      id: 'navbar-dropdown-item-data-harmonization',
       className: 'navMobileSubItem',
     },
   ],
