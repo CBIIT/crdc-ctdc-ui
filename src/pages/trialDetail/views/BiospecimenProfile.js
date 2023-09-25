@@ -24,12 +24,14 @@ const tooltipContent = ({ argument, originalValue }) => (
   </div>
 );
 
-const BiospecimenProfile = ({ classes, data }) => {
+const BiospecimenProfile = ({ classes, d }) => {
   // const studyCode = data.study[0].clinical_study_designation;
   const [currentTab, setCurrentTab] = useState(0);
   const handleTabChange = (event, value) => {
     setCurrentTab(value);
   };
+
+  let data = d["StudySpecimenByStudyShortName"][0];
   const tabCount = biospecimenProfile.tabs.filter((tab) => (data[tab.value]
     && data[tab.value].length > 0));
 
@@ -90,7 +92,7 @@ const BiospecimenProfile = ({ classes, data }) => {
                   // onClick={() => linkToDashboard()}
                 >
                   <span className={classes.headerButtonLinkNumber}>
-                    {373 || data.sampleCountOfStudy}
+                    {0 || data.sample_count}
                   </span>
                   <span className={classes.headerButtonLinkText}>Associated Samples</span>
                 </Link>

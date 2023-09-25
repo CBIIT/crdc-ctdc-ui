@@ -8,32 +8,17 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
-// import { request, gql } from 'graphql-request';
-// import { useQuery } from '@tanstack/react-query';
 import Snackbar from '../../components/Snackbar';
 import Stats from '../../components/Stats/AllStatsController';
-// import { fetchDataForDashboardTabDataTable } from '../dashboardTab/store/dashboardReducer';
-// import { studyDisposition, } from './utils';
-// import { navigatedToDashboard } from '../../utils/utils';
-// import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import {
   headerIcon,
   tab,
 } from '../../bento/trialDetailData';
 import Tab from '../../components/Tab/Tab';
-// import Overview from './views/overview/Overview';
-// import Publication from './views/Publication';
-// import ArmsAndCohort from './views/cohort/ArmsAndCohort';
-// import StudyFiles from './views/StudyFiles';
 import TabPanel from '../../components/Tab/TabPanel';
-// import pendingHeaderIcon from '../../assets/icons/PendingRelease-icons.StudiesDetail-Main.svg';
 import Styles from './studyDetailsStyle';
 import StudyThemeProvider from './studyDetailsThemeConfig';
-// import classNames from 'classnames';
 import Overview from './views/overview/overview';
-// import SupportingData from './views/supporting-data/supportingData';
-// import env from '../../utils/env';
-// import ClinicalData from './views/clinical-data/clinicalData';
 
 
 const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
@@ -51,21 +36,6 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
     volumeOfData: 100
   };
 
-  /*
-  React.useEffect(() => {
-    fetchDataForDashboardTabDataTable();
-  }, []);
-
-  const breadCrumbJson = [{
-    name: 'ALL PROGRAMS',
-    to: '/programs',
-    isALink: true,
-  }, {
-    name: "program_acronym",
-    to: '',
-    isALink: false,
-  }];
-  */
 
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
@@ -133,15 +103,15 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
           <div className={classes.headerTitle}>
             <div className={classes.headerMainTitle}>
               <span>
-                {studyData.studyByStudyId.study_short_name}&nbsp;{'>'}
+                {studyData.studyByStudyShortName[0].study_short_name}&nbsp;{'>'}
                 <span className={classes.headerMainSubTitle}>
-                   {studyData.studyByStudyId.study_id}
+                   {studyData.studyByStudyShortName[0].study_id}
                 </span>
               </span>
             </div>
             <div className={classes.headerSubTitleCate}>
               <span>
-                {studyData.studyByStudyId.study_name}
+                {studyData.studyByStudyShortName[0].study_name}
               </span>
             </div>
           </div>
@@ -154,7 +124,7 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
                 // onClick={() => navigatedToDashboard(studyData.clinical_study_designation, 'Cases')}
               >
                 <div className={classes.headerButtonLinkNumber}>
-                  { data.searchParticipant.participantCountBaseOnSubjectId[0].subjects || 0}
+                  { studyData.studyByStudyShortName[0].participant_count || 0}
                 </div>
                 <span className={classes.headerButtonLinkText}>Associated Participants</span>
               </Link>

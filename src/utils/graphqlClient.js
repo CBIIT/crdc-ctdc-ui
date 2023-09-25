@@ -13,6 +13,7 @@ const BACKEND = env.REACT_APP_BACKEND_API;
 const PUBLIC_BACKEND = env.REACT_APP_BACKEND_PUBLIC_API;
 const MOCK = 'https://4250bc0d-7018-4a95-bffb-d4dceb96fb4d.mock.pstmn.io/v1/graphql';
 const CTDC_OLD_SERVICE =  "https://trialcommons-dev.cancer.gov/v1/graphql/";
+const LOCAL_SERVICE =  "http://localhost:8080/v1/graphql/";
 const AUTH_SERVICE = `${env.REACT_APP_AUTH_SERVICE_API}graphql`;
 const USER_SERVICE = `${env.REACT_APP_USER_SERVICE_API}graphql`;
 
@@ -41,6 +42,10 @@ const mockService = new HttpLink({
   uri: MOCK,
 });
 
+const localService = new HttpLink({
+  uri: LOCAL_SERVICE,
+});
+
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   defaultOptions,
@@ -50,6 +55,9 @@ const client = new ApolloClient({
     ApolloLink.split(
       (operation) => operation.getContext().clientName === 'mockService',
       mockService,
+      ApolloLink.split(
+         (operation) => operation.getContext().clientName === 'localService',
+      localService,
       ApolloLink.split(
         (operation) => operation.getContext().clientName === 'authService',
         // the string "authService" can be anything you want,
@@ -65,6 +73,7 @@ const client = new ApolloClient({
           )
         ), // <= otherwise will send to this
       ),
+       ),
     ),
   ),
 });
