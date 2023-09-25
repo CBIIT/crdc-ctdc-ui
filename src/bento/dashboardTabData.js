@@ -1605,8 +1605,8 @@ export const tabContainers = [
     api: GET_BIOSPECIMENS_OVERVIEW_QUERY,
     count: 'numberOfBiospecimens',
     paginationAPIField: 'biospecimenOverview',
-    dataKey: 'sample_id',
-    defaultSortField: 'subject_id',
+    dataKey: 'specimen_id',
+    defaultSortField: 'specimen_id',
     defaultSortDirection: 'asc',
     tableID: 'biospecimens_tab_table',
     extendedViewConfig: {
@@ -1724,7 +1724,7 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addFilesRequestVariableKey: 'sample_ids',
+    addFilesRequestVariableKey: 'specimen_ids',
     addFilesResponseKeys: ['fileIDsFromList'],
     addAllFilesResponseKeys: ['sampleOverview', 'files'],
     addAllFileQuery: GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
@@ -1735,10 +1735,10 @@ export const tabContainers = [
     dataField: 'dataFile',
     api: GET_FILES_OVERVIEW_QUERY,
     paginationAPIField: 'fileOverview',
-    defaultSortField: 'subject_id',
+    defaultSortField: 'data_file_name',
     defaultSortDirection: 'asc',
     count: 'numberOfFiles',
-    dataKey: 'subject_id',
+    dataKey: 'data_file_name',
     tableID: 'file_tab_table',
     extendedViewConfig: {
       pagination: true,
@@ -1764,7 +1764,7 @@ export const tabContainers = [
       {
         dataField: 'data_file_format',
         header: 'Format',
-        display: false,
+        display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
@@ -1799,19 +1799,13 @@ export const tabContainers = [
       {
         dataField: 'specimen_id',
         header: 'Biospecimen ID',
-        display: false,
+        display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
         dataField: 'subject_id',
         header: 'Participant ID',
-        link: '/participant/{subject_id}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/participant',
-          pathParams: ['subject_id'],
-        },
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1832,7 +1826,7 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addFilesRequestVariableKey: 'subject_ids',
+    addFilesRequestVariableKey: 'data_file_name',
     addFilesResponseKeys: ['fileIDsFromList'],
     addAllFilesResponseKeys: ['fileOverview', 'file_id'],
     addAllFileQuery: GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
