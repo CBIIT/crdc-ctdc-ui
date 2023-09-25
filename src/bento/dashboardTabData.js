@@ -8,12 +8,12 @@ import { dataFormatTypes } from '@bento-core/table';
 export const tooltipContent = {
   icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   alt: 'tooltipIcon',
-  0: 'Click button to add selected files associated with the selected case(s).',
-  1: 'Click button to add selected files associated with the selected sample(s).',
-  2: 'Click button to add selected files.',
-  Cases: 'Click button to add selected files associated with the selected case(s).',
-  Samples: 'Click button to add selected files associated with the selected sample(s).',
-  Files: 'Click button to add selected files.',
+  0: 'Click button to Add Associated Files associated with the selected Participant(s).',
+  1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
+  2: 'Click button to Add Associated Files.',
+  Participants: 'Click button to Add Associated Files associated with the selected Participant(s).',
+  Samples: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
+  Files: 'Click button to Add Associated Files.',
   arrow: true,
   styles: {
     border: '#03A383 1px solid',
@@ -31,14 +31,14 @@ export const externalLinkIcon = {
 // --------------- Tabs Header Data configuration --------------
 export const tabs = [
   {
-    id: 'case_tab',
-    title: 'Cases',
+    id: 'participants_tab',
+    title: 'Participants',
     dataField: 'dataCase',
-    count: 'numberOfSubjects',
+    count: 'numberOfParticipants',
   },
   {
-    id: 'sample_tab',
-    title: 'Samples',
+    id: 'biospecimens_tab',
+    title: 'Biospecimens',
     dataField: 'dataSample',
     count: 'numberOfSamples',
   },
@@ -315,6 +315,146 @@ export const DASHBOARD_QUERY_NEW = gql`
         }
       }
   }
+`;
+
+export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
+  query participantOverview(
+    $subject_ids: [String],
+    $ctep_disease_code: [String],
+    $snomed_disease_code: [String],
+    $tumor_grade: [String],
+    $age_at_diagnosis: [String],
+    $sex: [String],
+    $reported_gender: [String] ,
+    $race: [String],
+    $ethnicity: [String],
+    $carcinogen_exposure: [String],
+    $targeted_therapy: [String],
+    $first: Int, 
+    $offset: Int, 
+    $order_by: String,
+    $sort_direction: String
+  ){
+    participantOverview(
+      subject_ids: $subject_ids,
+      ctep_disease_code: $ctep_disease_code,
+      snomed_disease_code: $snomed_disease_code,
+      tumor_grade: $tumor_grade,
+      age_at_diagnosis: $age_at_diagnosis,
+      sex: $sex,
+      reported_gender: $reported_gender,
+      race: $race,
+      ethnicity: $ethnicity,
+      carcinogen_exposure: $carcinogen_exposure,
+      targeted_therapy: $targeted_therapy,
+      first: $first, 
+      offset: $offset, 
+      order_by: $order_by,
+      sort_direction: $sort_direction
+    ) {
+      subject_id,
+      ctep_disease_code,
+      snomed_disease_code,
+      tumor_grade,
+      age_at_diagnosis,
+      sex,
+      reported_gender,
+      race,
+      ethnicity,
+      carcinogen_exposure,
+      targeted_therapy
+    }
+  }
+`;
+
+export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
+  query biospecimenOverview(
+    $subject_ids: [String],
+    $ctep_disease_code: [String],
+    $snomed_disease_code: [String],
+    $primary_disease_site: [String],
+    $specimen_id: [String],
+    $parent_specimen_id: [String],
+    $anatomical_collection_site: [String], 
+    $specimen_type: [String],
+    $tissue_category: [String],
+    $assessment_timepoint: [String],
+    $first: Int, 
+    $offset: Int, 
+    $order_by: String,
+    $sort_direction: String
+  ){
+    biospecimenOverview(
+      subject_ids: $subject_ids,
+      ctep_disease_code: $ctep_disease_code,
+      snomed_disease_code: $snomed_disease_code,
+      primary_disease_site: $primary_disease_site,
+      specimen_id: $specimen_id,
+      parent_specimen_id: $parent_specimen_id,
+      anatomical_collection_site: $anatomical_collection_site,
+      specimen_type: $specimen_type,
+      tissue_category: $tissue_category,
+      assessment_timepoint: $assessment_timepoint,
+      first: $first, 
+      offset: $offset, 
+      order_by: $order_by,
+      sort_direction: $sort_direction
+    ) {
+      subject_id,
+      ctep_disease_code,
+      snomed_disease_code,
+      primary_disease_site,
+      specimen_id,
+      parent_specimen_id,
+      anatomical_collection_site,
+      specimen_type,
+      tissue_category,
+      assessment_timepoint
+    }
+  }
+`;
+export const GET_FILES_OVERVIEW_QUERY = gql`
+  query fileOverview(
+    $subject_ids: [String],
+    $data_file_names: [String],
+    $data_file_formats: [String],
+    $data_file_types: [String],
+    $data_file_sizes: [String],
+    $associations: [String],
+    $data_file_descriptions: [String],
+    $specimen_ids: [String],
+    $ctep_disease_codes: [String],
+    $first: Int, 
+    $offset: Int, 
+    $order_by: String,
+    $sort_direction: String
+    ){
+      fileOverview(
+        subject_ids: $subject_ids,
+        data_file_names: $data_file_names,
+        data_file_formats: $data_file_formats,
+        data_file_types: $data_file_types,
+        data_file_sizes: $data_file_sizes,
+        associations: $associations,
+        data_file_descriptions: $data_file_descriptions,
+        specimen_ids: $specimen_ids,
+        ctep_disease_codes: $ctep_disease_codes,
+        first: $first, 
+        offset: $offset, 
+        order_by: $order_by,
+        sort_direction: $sort_direction
+    ) {
+        subject_id,
+        data_file_name,
+        data_file_format,
+        data_file_type,
+        data_file_size,
+        association,
+        data_file_description,
+        specimen_id,
+        ctep_disease_code
+    }
+}
 `;
 
 // Original DASHBOARD_QUERY_NEW for reference
@@ -911,7 +1051,7 @@ query search (
 `;
 
 // Query for Tab - Files Table
-export const GET_FILES_OVERVIEW_QUERY = gql`
+export const GET_FILES_OVERVIEW_QUERY_ORIGINAL = gql`
 query fileOverview(
     $subject_ids: [String],
     $file_ids: [String],
@@ -1114,7 +1254,7 @@ query subjectOverview(
 }
 `;
 
-// --------------- GraphQL Query - Add selected files under Cases table to Cart ---------------
+// --------------- GraphQL Query - Add Associated Files under Cases table to Cart ---------------
 export const GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL = gql`
 query search (          
   $subject_ids: [String],
@@ -1125,7 +1265,7 @@ query search (
 }
   `;
 
-// --------------- GraphQL Query - Add selected files under Samples table to Cart ---------------
+// --------------- GraphQL Query - Add Associated Files under Samples table to Cart ---------------
 export const GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL = gql`
 query search (          
   $sample_ids: [String],
@@ -1136,7 +1276,7 @@ query search (
 }
   `;
 
-// --------------- GraphQL Query - Add selected files under Files table to Cart ---------------
+// --------------- GraphQL Query - Add Associated Files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL = gql`
 query search (          
   $file_names: [String] 
@@ -1338,19 +1478,24 @@ export const GET_FILE_IDS_FROM_FILE_NAME = gql`
 // --------------- Tabs Table configuration --------------
 export const tabContainers = [
   {
-    name: 'Cases',
+    name: 'Participants',
     dataField: 'dataCase',
-    api: GET_CASES_OVERVIEW_QUERY,
-    paginationAPIField: 'subjectOverview',
-    count: 'numberOfSubjects',
+    api: GET_PARTICIPANTS_OVERVIEW_QUERY,
+    paginationAPIField: 'participantOverview',
+    count: 'numberOfParticipants',
     dataKey: 'subject_id',
     defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
-    buttonText: 'Add Selected Files',
-    tableID: 'case_tab_table',
+    buttonText: 'Add Associated Files',
+    tableID: 'participants_tab_table',
     extendedViewConfig: {
       pagination: true,
-      manageViewColumns: false,
+      manageViewColumns: {
+        title: "View Columns"
+      },
+      download: {
+        downloadCsv: "Download Table Contents As CSV"
+      },
     },
     columns: [
       {
@@ -1360,100 +1505,88 @@ export const tabContainers = [
       },
       {
         dataField: 'subject_id',
-        header: 'Case ID',
+        header: 'Participant ID',
         cellType: cellTypes.LINK,
         linkAttr : {
-          rootPath: '/case',
+          rootPath: '/participant',
           pathParams: ['subject_id'],
         },
         display: true,
         tooltipText: 'sort',
       },
       {
-        dataField: 'program',
-        header: 'Program Code',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/program',
-          pathParams: ['program_id'],
-        },
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'program_id',
-        header: 'Program ID',
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'study_acronym',
-        header: 'Arm',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/arm',
-          pathParams: ['study_acronym'],
-        },
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'diagnosis',
+        dataField: 'ctep_disease_code',
         header: 'Diagnosis',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'recurrence_score',
-        header: 'Recurrence Score',
+        dataField: 'snomed_disease_code',
+        header: 'Stage of Disease',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'tumor_size',
-        header: 'Tumor Size (cm)',
+        dataField: 'tumor_grade',
+        header: 'Tumor Grade',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'er_status',
-        header: 'ER Status',
+        dataField: 'age_at_diagnosis',
+        header: 'Age',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'pr_status',
-        header: 'PR Status',
+        dataField: 'sex',
+        header: 'Sex',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'age_at_index',
-        header: 'Age (years)',
+        dataField: 'reported_gender',
+        header: 'Gender',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'survival_time',
-        header: 'Survival (days)',
+        dataField: 'race',
+        header: 'Race',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        cellType: cellTypes.CUSTOM_ELEM,
-        displayEmpty: false,
+      },
+      {
+        dataField: 'ethnicity',
+        header: 'Ethnicity',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'carcinogen_exposure',
+        header: 'Carcinogen Exposure',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'targeted_therapy',
+        header: 'Targeted Therapy',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
       },
     ],
-    id: 'case_tab',
-    tableID: 'case_tab_table',
+    id: 'participants_tab',
+    tableID: 'participants_tab_table',
     tableDownloadCSV: customCasesTabDownloadCSV,
     tabIndex: '0',
     downloadFileName: 'Bento_Dashboard_cases_download',
@@ -1467,18 +1600,19 @@ export const tabContainers = [
     addSelectedFilesQuery: GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
   },
   {
-    name: 'Samples',
+    name: 'Biospecimens',
     dataField: 'dataSample',
-    api: GET_SAMPLES_OVERVIEW_QUERY,
-    count: 'numberOfSamples',
-    paginationAPIField: 'sampleOverview',
+    api: GET_BIOSPECIMENS_OVERVIEW_QUERY,
+    count: 'numberOfBiospecimens',
+    paginationAPIField: 'biospecimenOverview',
     dataKey: 'sample_id',
-    defaultSortField: 'sample_id',
+    defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
-    tableID: 'sample_tab_table',
+    tableID: 'biospecimens_tab_table',
     extendedViewConfig: {
       pagination: true,
-      manageViewColumns: false,
+      manageViewColumns: true,
+      download: true,
     },
     saveButtonDefaultStyle: {
       color: '#fff',
@@ -1504,101 +1638,82 @@ export const tabContainers = [
         role: cellTypes.CHECKBOX,
       },
       {
-        dataField: 'sample_id',
-        header: 'Sample ID',
-        display: true,
-        tooltipText: 'sort',
-      },
-      {
         dataField: 'subject_id',
-        header: 'Case ID',
-        link: '/case/{subject_id}',
+        header: 'Participant ID',
         cellType: cellTypes.LINK,
         linkAttr : {
-          rootPath: '/case',
+          rootPath: '/participant',
           pathParams: ['subject_id'],
         },
         display: true,
         tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'program',
-        header: 'Program Code',
-        cellType: cellTypes.LINK,
-        tooltipText: 'sort',
-        linkAttr : {
-          rootPath: '/program',
-          pathParams: ['program_id'],
-        },
-        display: true,
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'program_id',
-        header: 'Program ID',
-        display: false,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'arm',
-        header: 'Arm',
-        link: '/arm/{arm}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/arm',
-          pathParams: ['arm'],
-        },
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'diagnosis',
+        dataField: 'ctep_disease_code',
         header: 'Diagnosis',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'tissue_type',
-        header: 'Tissue Type',
+        dataField: 'snomed_disease_code',
+        header: 'Stage of Disease',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'tissue_composition',
-        header: 'Tissue Composition',
+        dataField: 'primary_disease_site',
+        header: 'Primary Site',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'sample_anatomic_site',
-        header: 'Sample Anatomic Site',
+        dataField: 'specimen_id',
+        header: 'Biospecimen ID',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'sample_procurement_method',
-        header: 'Sample Procurement Method',
+        dataField: 'parent_specimen_id',
+        header: 'Parent Biospecimen ID',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'platform',
-        header: 'platform',
+        dataField: 'anatomical_collection_site',
+        header: 'Anatomical Collection Site',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'specimen_type',
+        header: 'Biospecimen Type',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'tissue_category',
+        header: 'Tissue Category',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'assessment_timepoint',
+        header: 'Collection Timepoint',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
     ],
-    id: 'sample_tab',
-    tableID: 'sample_tab_table',
+    id: 'biospecimens_tab',
+    tableID: 'biospecimens_tab_table',
     tabIndex: '1',
     tableDownloadCSV: customSamplesTabDownloadCSV,
     downloadFileName: 'Bento_Dashboard_cases_download',
@@ -1616,14 +1731,15 @@ export const tabContainers = [
     dataField: 'dataFile',
     api: GET_FILES_OVERVIEW_QUERY,
     paginationAPIField: 'fileOverview',
-    defaultSortField: 'file_name',
+    defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
     count: 'numberOfFiles',
-    dataKey: 'file_name',
+    dataKey: 'subject_id',
     tableID: 'file_tab_table',
     extendedViewConfig: {
       pagination: true,
-      manageViewColumns: false,
+      manageViewColumns: true,
+      download: true,
     },
     columns: [
       {
@@ -1632,15 +1748,29 @@ export const tabContainers = [
         role: cellTypes.CHECKBOX,
       },
       {
-        dataField: 'file_name',
+        dataField: 'data_file_name',
         header: 'File Name',
         display: true,
         tooltipText: 'sort',
       },
       {
-        dataField: 'file_id',
-        header: 'File ID',
+        dataField: 'data_file_format',
+        header: 'Format',
         display: false,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'data_file_type',
+        header: 'File Type',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'data_file_size',
+        header: 'Size',
+        display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
@@ -1652,103 +1782,26 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'file_description',
+        dataField: 'data_file_description',
         header: 'Description',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'file_format',
-        header: 'File Format',
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'file_size',
-        header: 'Size',
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-        dataFormatType: dataFormatTypes.FORMAT_BYTES,
-        cellType: cellTypes.FORMAT_DATA,
-      },
-      {
-        dataField: 'acl', // This need to left empty if no data need to be displayed before file download icon
-        header: 'Access',
-        display: true,
-        cellType: cellTypes.CUSTOM_ELEM,
-        downloadDocument: true, // To indicate that column is document donwload
-        documentDownloadProps: {
-          // Max file size needs to bin Bytes to seperate two support file preview and download
-          maxFileSize: 315,
-          // Tool top text for Unauthenticated users
-          toolTipTextUnauthenticated: 'Controlled access file',
-          // Tool top text for file download
-          toolTipTextFileDownload: 'Download a copy of this file',
-          // Tool top text for file preview
-          toolTipTextFilePreview: 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
-          // datafield where file file column exists in the table
-          fileSizeColumn: 'file_size',
-          // datafield where file file id exists in the table which is used to get file location
-          fileLocationColumn: 'file_id',
-          // datafield where file format exists in the table
-          fileFormatColumn: 'file_format',
-          // datafield where file case id exists in the table which is used to get file information
-          caseIdColumn: 'subject_id',
-          // Unauthenticated lock icon
-          iconUnauthenticated: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Access_Lock.svg',
-          // file download icon
-          iconFileDownload: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadPDF.svg',
-          // file preview icon
-          iconFilePreview: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadCloud.svg',
-          // file viewer icon JBrowse
-          iconFileViewer: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadBAM.svg',
-        },
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'program',
-        header: 'Program Code',
-        link: '/program/{program_id}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/program',
-          pathParams: ['program_id'],
-        },
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'program_id',
-        header: 'Program ID',
+        dataField: 'specimen_id',
+        header: 'Biospecimen ID',
         display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'arm',
-        header: 'Arm',
-        link: '/arm/{arm}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/arm',
-          pathParams: ['arm'],
-        },
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
         dataField: 'subject_id',
-        header: 'Case ID',
-        link: '/case/{subject_id}',
+        header: 'Participant ID',
+        link: '/participant/{subject_id}',
         cellType: cellTypes.LINK,
         linkAttr : {
-          rootPath: '/case',
+          rootPath: '/participant',
           pathParams: ['subject_id'],
         },
         display: true,
@@ -1756,16 +1809,9 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'sample_id',
-        header: 'Sample ID',
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'diagnosis',
+        dataField: 'ctep_disease_code',
         header: 'Diagnosis',
-        display: false,
+        display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
@@ -1778,7 +1824,7 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addFilesRequestVariableKey: 'file_names',
+    addFilesRequestVariableKey: 'subject_ids',
     addFilesResponseKeys: ['fileIDsFromList'],
     addAllFilesResponseKeys: ['fileOverview', 'file_id'],
     addAllFileQuery: GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,

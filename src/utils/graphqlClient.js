@@ -61,7 +61,7 @@ const client = new ApolloClient({
            ApolloLink.split( // This is 2nd level of ApolloLink.
           (operation) => operation.getContext().clientName === 'ctdcOldService',
             CTDC_OLD_BackendService,
-            backendService, // <= otherwise will send to this
+            mockService, // <= otherwise will send to this
           )
         ), // <= otherwise will send to this
       ),
