@@ -413,7 +413,49 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     }
   }
 `;
-
+export const GET_FILES_OVERVIEW_QUERY = gql`
+  query fileOverview(
+    $subject_ids: [String],
+    $data_file_names: [String],
+    $data_file_formats: [String],
+    $data_file_types: [String],
+    $data_file_sizes: [String],
+    $associations: [String],
+    $data_file_descriptions: [String],
+    $specimen_ids: [String],
+    $ctep_disease_codes: [String],
+    $first: Int, 
+    $offset: Int, 
+    $order_by: String,
+    $sort_direction: String
+    ){
+      fileOverview(
+        subject_ids: $subject_ids,
+        data_file_names: $data_file_names,
+        data_file_formats: $data_file_formats,
+        data_file_types: $data_file_types,
+        data_file_sizes: $data_file_sizes,
+        associations: $associations,
+        data_file_descriptions: $data_file_descriptions,
+        specimen_ids: $specimen_ids,
+        ctep_disease_codes: $ctep_disease_codes,
+        first: $first, 
+        offset: $offset, 
+        order_by: $order_by,
+        sort_direction: $sort_direction
+    ) {
+        subject_id,
+        data_file_name,
+        data_file_format,
+        data_file_type,
+        data_file_size,
+        association,
+        data_file_description,
+        specimen_id,
+        ctep_disease_code
+    }
+}
+`;
 
 // Original DASHBOARD_QUERY_NEW for reference
 export const ORIGINAL_DASHBOARD_QUERY_NEW = gql`
@@ -1009,7 +1051,7 @@ query search (
 `;
 
 // Query for Tab - Files Table
-export const GET_FILES_OVERVIEW_QUERY = gql`
+export const GET_FILES_OVERVIEW_QUERY_ORIGINAL = gql`
 query fileOverview(
     $subject_ids: [String],
     $file_ids: [String],
@@ -1448,7 +1490,12 @@ export const tabContainers = [
     tableID: 'participants_tab_table',
     extendedViewConfig: {
       pagination: true,
-      manageViewColumns: true,
+      manageViewColumns: {
+        title: "View Columns"
+      },
+      download: {
+        downloadCsv: "Download Table Contents As CSV"
+      },
     },
     columns: [
       {
@@ -1565,6 +1612,7 @@ export const tabContainers = [
     extendedViewConfig: {
       pagination: true,
       manageViewColumns: true,
+      download: true,
     },
     saveButtonDefaultStyle: {
       color: '#fff',
@@ -1683,14 +1731,15 @@ export const tabContainers = [
     dataField: 'dataFile',
     api: GET_FILES_OVERVIEW_QUERY,
     paginationAPIField: 'fileOverview',
-    defaultSortField: 'file_name',
+    defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
     count: 'numberOfFiles',
-    dataKey: 'file_name',
+    dataKey: 'subject_id',
     tableID: 'file_tab_table',
     extendedViewConfig: {
       pagination: true,
-      manageViewColumns: false,
+      manageViewColumns: true,
+      download: true,
     },
     columns: [
       {
@@ -1699,15 +1748,29 @@ export const tabContainers = [
         role: cellTypes.CHECKBOX,
       },
       {
-        dataField: 'file_name',
+        dataField: 'data_file_name',
         header: 'File Name',
         display: true,
         tooltipText: 'sort',
       },
       {
-        dataField: 'file_id',
-        header: 'File ID',
+        dataField: 'data_file_format',
+        header: 'Format',
         display: false,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'data_file_type',
+        header: 'File Type',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'data_file_size',
+        header: 'Size',
+        display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
@@ -1719,103 +1782,26 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'file_description',
+        dataField: 'data_file_description',
         header: 'Description',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'file_format',
-        header: 'File Format',
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'file_size',
-        header: 'Size',
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-        dataFormatType: dataFormatTypes.FORMAT_BYTES,
-        cellType: cellTypes.FORMAT_DATA,
-      },
-      {
-        dataField: 'acl', // This need to left empty if no data need to be displayed before file download icon
-        header: 'Access',
-        display: true,
-        cellType: cellTypes.CUSTOM_ELEM,
-        downloadDocument: true, // To indicate that column is document donwload
-        documentDownloadProps: {
-          // Max file size needs to bin Bytes to seperate two support file preview and download
-          maxFileSize: 315,
-          // Tool top text for Unauthenticated users
-          toolTipTextUnauthenticated: 'Controlled access file',
-          // Tool top text for file download
-          toolTipTextFileDownload: 'Download a copy of this file',
-          // Tool top text for file preview
-          toolTipTextFilePreview: 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
-          // datafield where file file column exists in the table
-          fileSizeColumn: 'file_size',
-          // datafield where file file id exists in the table which is used to get file location
-          fileLocationColumn: 'file_id',
-          // datafield where file format exists in the table
-          fileFormatColumn: 'file_format',
-          // datafield where file case id exists in the table which is used to get file information
-          caseIdColumn: 'subject_id',
-          // Unauthenticated lock icon
-          iconUnauthenticated: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Access_Lock.svg',
-          // file download icon
-          iconFileDownload: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadPDF.svg',
-          // file preview icon
-          iconFilePreview: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadCloud.svg',
-          // file viewer icon JBrowse
-          iconFileViewer: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadBAM.svg',
-        },
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'program',
-        header: 'Program Code',
-        link: '/program/{program_id}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/program',
-          pathParams: ['program_id'],
-        },
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'program_id',
-        header: 'Program ID',
+        dataField: 'specimen_id',
+        header: 'Biospecimen ID',
         display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'arm',
-        header: 'Arm',
-        link: '/arm/{arm}',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/arm',
-          pathParams: ['arm'],
-        },
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
         dataField: 'subject_id',
-        header: 'Case ID',
-        link: '/case/{subject_id}',
+        header: 'Participant ID',
+        link: '/participant/{subject_id}',
         cellType: cellTypes.LINK,
         linkAttr : {
-          rootPath: '/case',
+          rootPath: '/participant',
           pathParams: ['subject_id'],
         },
         display: true,
@@ -1823,16 +1809,9 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'sample_id',
-        header: 'Sample ID',
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'diagnosis',
+        dataField: 'ctep_disease_code',
         header: 'Diagnosis',
-        display: false,
+        display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
@@ -1845,7 +1824,7 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addFilesRequestVariableKey: 'file_names',
+    addFilesRequestVariableKey: 'subject_ids',
     addFilesResponseKeys: ['fileIDsFromList'],
     addAllFilesResponseKeys: ['fileOverview', 'file_id'],
     addAllFileQuery: GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
