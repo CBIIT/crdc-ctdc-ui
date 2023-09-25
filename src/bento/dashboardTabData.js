@@ -1611,8 +1611,12 @@ export const tabContainers = [
     tableID: 'biospecimens_tab_table',
     extendedViewConfig: {
       pagination: true,
-      manageViewColumns: true,
-      download: true,
+      manageViewColumns: {
+        title: "View Columns"
+      },
+      download: {
+        downloadCsv: "Download Table Contents As CSV"
+      },
     },
     saveButtonDefaultStyle: {
       color: '#fff',
@@ -1738,8 +1742,12 @@ export const tabContainers = [
     tableID: 'file_tab_table',
     extendedViewConfig: {
       pagination: true,
-      manageViewColumns: true,
-      download: true,
+      manageViewColumns: {
+        title: "View Columns"
+      },
+      download: {
+        downloadCsv: "Download Table Contents As CSV"
+      },
     },
     columns: [
       {
