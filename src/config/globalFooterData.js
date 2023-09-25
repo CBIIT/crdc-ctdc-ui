@@ -109,8 +109,8 @@ export default {
       link: 'tel:+18004226237',
     },
     {
-      text: 'CTDCHelpDesk@nih.gov',
-      link: 'mailto:+CTDCHelpDesk@nih.gov',
+      text: 'NCIinfo@nih.gov',
+      link: 'mailto:NCIinfo@nih.gov',
     },
     {
       text: 'Site Feedback',

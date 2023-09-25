@@ -332,7 +332,7 @@ const FooterDesktop = () => {
                   return (
                     contactItem.link.includes('http')
                       ? <a key={contactkey} href={contactItem.link} target="_blank" rel="noopener noreferrer">{contactItem.text}</a>
-                      : <Link key={contactkey} to={contactItem.link}>{contactItem.text}</Link>
+                      : <a key={contactkey} href={contactItem.link}>{contactItem.text}</a>
                   );
                 })
               }
