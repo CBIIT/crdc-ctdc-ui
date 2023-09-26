@@ -44,11 +44,11 @@ const Overview = ({
         alt='outbounnd web site icon'/>
     )
   }
-  const associatedLinks = data.studyByStudyId.associated_link;
-  const diagnoses = data.studyByStudyId.diagnosis.list_diagnosis;
-  const participantFileTypes = data.studyByStudyId.data_file.list_type;
-  const imageCollection = data.studyByStudyId.image_collection;
-  const { study_name, study_description, study_type, dates_of_conduct } = data.studyByStudyId;
+  const associatedLinks = JSON.parse(JSON.stringify(data.studyByStudyShortName[0].associated_links));
+  const diagnoses = JSON.parse(JSON.stringify(data.studyDiagnosisByStudyShortName[0].ctep_disease_codes));
+  const participantFileTypes = JSON.parse(JSON.stringify(data.StudyDataFileByStudyShortName[0].list_type));
+  const imageCollection = JSON.parse(JSON.stringify(data.studyByStudyShortName[0].image_collection));
+  const { study_name, study_description, study_type, dates_of_conduct } = data.studyByStudyShortName[0];
 
   const customSorting = (a, b) => {
     let val = 0
@@ -112,7 +112,7 @@ const Overview = ({
                       <Grid item xs={12} className={classes.title}>
                         ASSOCIATED LINKS
                       </Grid>
-                      {associatedLinks.sort((a, b) => customSorting(a.associated_link_name, b.associated_link_name))
+                      {associatedLinks.sort((a, b) => customSorting(a.associated_link_id, b.associated_link_id))
                         .map((link, index) => (
                           <Grid item xs={12} className={classes.content} key={index}>
                             <a
@@ -184,7 +184,7 @@ const Overview = ({
                 </Grid>
               </Grid>
               <Grid container direction="row" className={classes.detailContainerRight}>
-                <BiospecimenProfile data={data} />
+                <BiospecimenProfile d={data} />
 
                 {/* START: Image Collection */}
                 <Grid item lg={6} md={6} sm={12} xs={12} className={classes.imageCollection}>
