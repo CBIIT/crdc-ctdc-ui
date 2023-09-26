@@ -1640,13 +1640,9 @@ export const tabContainers = [
       {
         dataField: 'subject_id',
         header: 'Participant ID',
-        cellType: cellTypes.LINK,
-        linkAttr : {
-          rootPath: '/participant',
-          pathParams: ['subject_id'],
-        },
         display: true,
         tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
       },
       {
         dataField: 'ctep_disease_code',
