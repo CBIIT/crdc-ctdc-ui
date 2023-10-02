@@ -51,30 +51,28 @@ const client = new ApolloClient({
   defaultOptions,
   link: ApolloLink.split(
     (op) => op.getContext().clientName === 'publicService',
-    publicService,
-    ApolloLink.split(
-      (operation) => operation.getContext().clientName === 'mockService',
-      mockService,
+      publicService,
       ApolloLink.split(
-         (operation) => operation.getContext().clientName === 'localService',
-        localService,
+        (operation) => operation.getContext().clientName === 'mockService',
+        mockService,
         ApolloLink.split(
-          (operation) => operation.getContext().clientName === 'authService',
-          // the string "authService" can be anything you want,
-          authService, // <= apollo will send to this if clientName is "authService"
-          ApolloLink.split( // This is 2nd level of ApolloLink.
-            (operation) => operation.getContext().clientName === 'userService',
-            // the string "userService" can be anything you want,
-            userService, // <= apollo will send to this if clientName is "userService"
-             ApolloLink.split( // This is 2nd level of ApolloLink.
-            (operation) => operation.getContext().clientName === 'ctdcOldService',
-              CTDC_OLD_BackendService,
-              BACKEND, // <= otherwise will send to this
-            )
-          ), // <= otherwise will send to this
-        ),
-       ),
-    ),
+           (operation) => operation.getContext().clientName === 'localService',
+          localService,
+          ApolloLink.split(
+            (operation) => operation.getContext().clientName === 'authService',
+            authService, 
+            ApolloLink.split( 
+              (operation) => operation.getContext().clientName === 'userService',
+              userService, 
+               ApolloLink.split( 
+              (operation) => operation.getContext().clientName === 'ctdcOldService',
+                CTDC_OLD_BackendService,
+                backendService,
+              ),
+            ), 
+          ),
+         ),
+      ),
   ),
 });
 
