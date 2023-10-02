@@ -9,7 +9,6 @@ const ProgramDetailContainer = ({ match }) => {
   
   const { loading, error, data } = useQuery(GET_TRIAL_DETAIL_DATA_QUERY, {
     variables: { study_short_name: ["CMB"] },
-    context: { clientName: "localService"},
   });
 
 

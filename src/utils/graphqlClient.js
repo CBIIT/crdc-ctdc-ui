@@ -57,22 +57,22 @@ const client = new ApolloClient({
       mockService,
       ApolloLink.split(
          (operation) => operation.getContext().clientName === 'localService',
-      localService,
-      ApolloLink.split(
-        (operation) => operation.getContext().clientName === 'authService',
-        // the string "authService" can be anything you want,
-        authService, // <= apollo will send to this if clientName is "authService"
-        ApolloLink.split( // This is 2nd level of ApolloLink.
-          (operation) => operation.getContext().clientName === 'userService',
-          // the string "userService" can be anything you want,
-          userService, // <= apollo will send to this if clientName is "userService"
-           ApolloLink.split( // This is 2nd level of ApolloLink.
-          (operation) => operation.getContext().clientName === 'ctdcOldService',
-            CTDC_OLD_BackendService,
-            mockService, // <= otherwise will send to this
-          )
-        ), // <= otherwise will send to this
-      ),
+        localService,
+        ApolloLink.split(
+          (operation) => operation.getContext().clientName === 'authService',
+          // the string "authService" can be anything you want,
+          authService, // <= apollo will send to this if clientName is "authService"
+          ApolloLink.split( // This is 2nd level of ApolloLink.
+            (operation) => operation.getContext().clientName === 'userService',
+            // the string "userService" can be anything you want,
+            userService, // <= apollo will send to this if clientName is "userService"
+             ApolloLink.split( // This is 2nd level of ApolloLink.
+            (operation) => operation.getContext().clientName === 'ctdcOldService',
+              CTDC_OLD_BackendService,
+              BACKEND, // <= otherwise will send to this
+            )
+          ), // <= otherwise will send to this
+        ),
        ),
     ),
   ),
