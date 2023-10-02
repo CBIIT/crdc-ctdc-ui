@@ -29,12 +29,12 @@ export const customTheme = {
           color: '#11A075',
         },
         '&.biospecimens': {
-          background: '#cfedf9',
-          color: '#0dafec',
+          background: '#f8c19d',
+          color: '#EF660B',
         },
         '&.files': {
-          background: '#f7d7f7',
-          color: '#c92ec7',
+          background: '#cfedf9',
+          color: '#0dafec',
         },
         '&.MuiTypography-body1': {
           color: 'red',
