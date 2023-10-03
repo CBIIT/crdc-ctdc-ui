@@ -11,7 +11,7 @@ const landingController = () => {
     loading, error, data,
   } = useQuery(GET_LANDING_PAGE_DATA_QUERY, {
     context: {
-      clientName: 'mockService',
+      clientName: 'localService',
     },
     fetchPolicy: 'no-cache',
   });
@@ -26,7 +26,7 @@ const landingController = () => {
     );
   }
 
-  return <LandingView heroData={data.search} />;
+  return <LandingView heroData={data.getHomePage[0]} />;
 };
 
 export default landingController;

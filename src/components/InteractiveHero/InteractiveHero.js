@@ -115,7 +115,7 @@ const TherapiesActiveText = ({ classes, heroData }) => (
     </div>
      <div className={classes.blueText}>
       {' '}
-      {heroData ? heroData.numberofNonTargeted : 'NA'}
+      {heroData ? heroData.numberOfNonTargeted : 'NA'}
       {' '}
       Non-Targeted
     </div>
