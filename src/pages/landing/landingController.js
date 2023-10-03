@@ -10,9 +10,6 @@ const landingController = () => {
   const {
     loading, error, data,
   } = useQuery(GET_LANDING_PAGE_DATA_QUERY, {
-    context: {
-      clientName: '',
-    },
     fetchPolicy: 'no-cache',
   });
 
