@@ -50,6 +50,11 @@ export const tabs = [
   },
 ];
 
+export const multiStudyData = {
+  icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/icon-multiStudy.svg',
+  alt: 'Multi-study icon',
+  toolTipText: 'Multi-study participant also enrolled as:',
+};
 // --------------- Tabs Header Style configuration --------------
 export const tabIndex = [
   {

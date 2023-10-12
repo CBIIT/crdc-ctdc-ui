@@ -96,19 +96,57 @@ export const manifestData = {
 
 // --------------- GraphQL query - Retrieve selected cases info --------------
 export const GET_MY_CART_DATA_QUERY = gql`
-query filesInList($file_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String ="file_name", $sort_direction:String="asc") {
-    filesInList(file_ids: $file_ids, offset: $offset,first: $first, order_by: $order_by, sort_direction: $sort_direction) {
-        study_code
-        subject_id
-        file_name
-        file_type
-        association
-        file_description
-        file_format
-        file_size
-        file_id
-        md5sum
-    }
+query filesInList($uuids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String =""){
+  filesInList(uuids: $uuids, offset: $offset,first: $first, order_by: $order_by){
+    file_name
+    drs_uri
+    study_code
+    case_id
+    file_type
+    association
+    file_description
+    file_format
+    file_size
+    case_id
+    file_uuid
+    individual_id
+    breed
+    diagnosis
+    study_code
+    sample_id
+    sample_site
+    physical_sample_type
+    general_sample_pathology
+    tumor_sample_origin
+    summarized_sample_type
+    specific_sample_pathology
+    date_of_sample_collection
+    tumor_grade
+    sample_chronology
+    percentage_tumor
+    necropsy_sample
+    sample_preservation
+    comment
+    patient_age_at_enrollment
+    sex
+    neutered_indicator
+    weight
+    weight_unit
+    primary_disease_site
+    stage_of_disease
+    date_of_diagnosis
+    histology_cytopathology
+    histological_grade
+    best_response
+    pathology_report
+    treatment_data
+    follow_up_data
+    concurrent_disease
+    concurrent_disease_type
+    arm
+    other_cases
+    cohort_description
+ }
 }`;
 
 // --------------- File table configuration --------------

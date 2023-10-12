@@ -17,7 +17,7 @@ import Login from '../../pages/login';
 import ProfileController from '../../pages/profile/profileController';
 import OverlayWindow from '../OverlayWindow/OverlayWindow';
 import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';
-import CarView from '../../pages/cart/cartController';
+import CartView from '../../pages/cart/cartController';
 import AuthSessionTimeoutController from '../SessionTimeout/SessionTimeoutController';
 import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
 import UnderDev from '../../pages/error/Development';
@@ -61,7 +61,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
 
             {/* SECTION: Member & Admin only Path */}
             <PrivateRoute path="/programs" access={['admin', 'member']} component={Programs} />
-            <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={CarView} />
+            <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={CartView} />
             <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
             {/* bento 4.0 template */}
             <PrivateRoute path="/explore" access={['admin', 'member']} component={DashTemplate} />
