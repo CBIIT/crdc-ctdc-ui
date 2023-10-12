@@ -1846,7 +1846,7 @@ export const tabContainers = [
     },
     addFilesRequestVariableKey: 'subject_id',
     addFilesResponseKeys: ['fileOverview','subject_id'],
-    addAllFilesResponseKeys: ['fileOverview'],
+    addAllFilesResponseKeys: ['fileOverview','subject_id'],
     addAllFileQuery: GET_FILES_OVERVIEW_QUERY,
     addSelectedFilesQuery: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
   },
