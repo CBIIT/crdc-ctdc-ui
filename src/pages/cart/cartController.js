@@ -27,7 +27,7 @@ const mapStateToProps = (state) => ({
 /**
 * return file id to delete (attr file_id)
 */
-const getFileId = (row) => row.file_id;
+const getFileId = (row) => row.subject_id;
 
 const mapDispatchToProps = (dispatch) => ({
   deleteAllFiles: () => dispatch(onDeleteAllCartFile()),
