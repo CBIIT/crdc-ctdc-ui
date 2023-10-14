@@ -3,7 +3,7 @@ import {
   GET_MY_CART_DATA_QUERY,
   GET_MY_CART_DATA_QUERY_DESC,
   table,
-} from '../../../../bento/fileCentricCartWorkflowData';
+} from '../../../bento/fileCentricCartWorkflowData';
 
 // pagination table behavior
 // customizeOnRowSelect,
@@ -29,7 +29,7 @@ export const myFileTablePaginationOptions = (context) => ({
 });
 
 export const paginationOptions = (context, config) => {
-  switch (config?.title) {
+  switch (config.title) {
     case 'myFiles':
       return {
         ...myFileTablePaginationOptions(context),

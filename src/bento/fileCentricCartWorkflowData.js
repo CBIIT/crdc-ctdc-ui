@@ -90,7 +90,7 @@ export const myFilesPageData = {
 
 
 export const manifestData = {
-  keysToInclude: ['study_code', 'subject_id', 'file_name', 'file_id', 'md5sum'],
+  keysToInclude: ['study_code', 'subject_id', 'data_file_name', 'file_id', 'md5sum'],
   header: ['Study Code', 'Case ID', 'File Name', 'File ID', 'Md5sum', 'User Comments'],
 };
 
@@ -125,18 +125,64 @@ query fileOverview($subject_ids: [String], $data_file_names: [String], $data_fil
   }
 }
 `;
+
+
+export const GET_MY_CART_DATA_QUERY_DESC = gql`
+query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $ctep_disease_codes: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
+  fileOverview(
+    subject_ids: $subject_ids
+    data_file_names: $data_file_names
+    data_file_formats: $data_file_formats
+    data_file_types: $data_file_types
+    data_file_sizes: $data_file_sizes
+    associations: $associations
+    data_file_descriptions: $data_file_descriptions
+    specimen_ids: $specimen_ids
+    ctep_disease_codes: $ctep_disease_codes
+    first: $first
+    offset: $offset
+    order_by: $order_by
+    sort_direction: $sort_direction
+  ) {
+    subject_id
+    data_file_name
+    data_file_format
+    data_file_type
+    data_file_size
+    association
+    data_file_description
+    specimen_id
+    ctep_disease_code
+    __typename
+  }
+}
+`;
+
 // --------------- File table configuration --------------
 
 export const table = {
-  dataField: 'fileOverview',
+  dataField: 'data_file_name',
+  title: 'myFiles',
   // Value must be one of the 'dataField's in "columns"
-  defaultSortField: 'file_name',
+  defaultSortField: 'data_file_name',
   // 'asc' or 'desc'
   api: GET_MY_CART_DATA_QUERY,
   defaultSortDirection: 'asc',
   paginationAPIField: 'fileOverview',
-  dataKey: 'data_file_name',
+  paginationAPIFieldDesc: 'fileOverview',
   tableDownloadCSV: customMyFilesTabDownloadCSV,
+  extendedViewConfig: {
+    pagination: true,
+    download: {
+      customDownload: true,
+      fileName: 'ICDC_My_Files_download',
+      downloadCsv: 'Download table contents as CSV',
+      ...customMyFilesTabDownloadCSV,
+    },
+    manageViewColumns: {
+      title: 'View columns',
+    },
+  },
   columns: [
     {
       cellType: cellTypes.CHECKBOX,
@@ -148,6 +194,7 @@ export const table = {
       header: 'File Name',
       display: true,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       dataField: 'data_file_format',
@@ -171,13 +218,6 @@ export const table = {
       role: cellTypes.DISPLAY,
     },
     {
-      dataField: 'association',
-      header: 'Association',
-      display: true,
-      tooltipText: 'sort',
-      role: cellTypes.DISPLAY,
-    },
-    {
       dataField: 'data_file_description',
       header: 'Description',
       display: true,
@@ -194,13 +234,6 @@ export const table = {
     {
       dataField: 'subject_id',
       header: 'Participant ID',
-      display: true,
-      tooltipText: 'sort',
-      role: cellTypes.DISPLAY,
-    },
-    {
-      dataField: 'ctep_disease_code',
-      header: 'Diagnosis',
       display: true,
       tooltipText: 'sort',
       role: cellTypes.DISPLAY,
