@@ -36,7 +36,7 @@ const CartView = (props) => {
     rowsPerPage: 10,
     page: 0,
   });
-console.log('Initial Table state', initTblState)
+  
   const variables = {};
   variables.file_ids = filesId;
   return (

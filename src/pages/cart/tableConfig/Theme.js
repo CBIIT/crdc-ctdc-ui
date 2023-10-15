@@ -26,9 +26,10 @@ export const tblHeader = {
   },
   MuiTooltip: {
     tooltipPlacementBottom: {
+      background: '#000000 !important',
+      color: '#FFFFFF',
       '@media (min-width: 600px)': {
-        marginTop: '-10px',
-        marginLeft: '-20px',
+        marginTop: '10px',
         background: 'none',
       },
     },
