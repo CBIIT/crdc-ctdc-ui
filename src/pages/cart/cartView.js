@@ -1,17 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
-import { TableView } from '@bento-core/paginated-table';
+import { TableContext, TableView } from '@bento-core/paginated-table';
 import { configColumn } from './tableConfig/Column';
 import { themeConfig } from './tableConfig/Theme';
 import styles from './cartView.style';
 import CartWrapper from './cartWrapper';
-
+import {paginationOptions} from './tableConfig/PaginationOptions';
 const CartView = (props) => {
   const {
     classes,
     config,
+    tblRows = [],
+    isServer = true,
     filesId = [],
   } = props;
+
+  // access table state
+  const tableContext = useContext(TableContext);
+  const { context } = tableContext;
 
   /**
   * configure table state
@@ -30,7 +36,7 @@ const CartView = (props) => {
     rowsPerPage: 10,
     page: 0,
   });
-
+console.log('Initial Table state', initTblState)
   const variables = {};
   variables.file_ids = filesId;
   return (
@@ -46,6 +52,9 @@ const CartView = (props) => {
               themeConfig={themeConfig}
               queryVariables={variables}
               totalRowCount={filesId.length}
+              tblRows={tblRows}
+              server={isServer}
+              paginationOptions={paginationOptions(context, config)}
             />
           </CartWrapper>
         </div>

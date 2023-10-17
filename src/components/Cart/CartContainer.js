@@ -11,7 +11,7 @@ export default compose(
   connect(
     (state) => ({
       isSidebarOpened: state.layout.isSidebarOpened,
-      cartFieldIds: state.cart.fileIds,
+      cartFieldIds: state.cartReducer.filesId? state.cartReducer.filesId:[],
     }),
     { toggleSidebar },
   ),

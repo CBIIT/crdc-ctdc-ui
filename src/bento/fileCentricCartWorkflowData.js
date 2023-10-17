@@ -90,101 +90,153 @@ export const myFilesPageData = {
 
 
 export const manifestData = {
-  keysToInclude: ['study_code', 'subject_id', 'file_name', 'file_id', 'md5sum'],
+  keysToInclude: ['study_code', 'subject_id', 'data_file_name', 'file_id', 'md5sum'],
   header: ['Study Code', 'Case ID', 'File Name', 'File ID', 'Md5sum', 'User Comments'],
 };
 
 // --------------- GraphQL query - Retrieve selected cases info --------------
 export const GET_MY_CART_DATA_QUERY = gql`
-query filesInList($file_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String ="file_name", $sort_direction:String="asc") {
-    filesInList(file_ids: $file_ids, offset: $offset,first: $first, order_by: $order_by, sort_direction: $sort_direction) {
-        study_code
-        subject_id
-        file_name
-        file_type
-        association
-        file_description
-        file_format
-        file_size
-        file_id
-        md5sum
-    }
-}`;
+query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $ctep_disease_codes: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
+  fileOverview(
+    subject_ids: $subject_ids
+    data_file_names: $data_file_names
+    data_file_formats: $data_file_formats
+    data_file_types: $data_file_types
+    data_file_sizes: $data_file_sizes
+    associations: $associations
+    data_file_descriptions: $data_file_descriptions
+    specimen_ids: $specimen_ids
+    ctep_disease_codes: $ctep_disease_codes
+    first: $first
+    offset: $offset
+    order_by: $order_by
+    sort_direction: $sort_direction
+  ) {
+    subject_id
+    data_file_name
+    data_file_format
+    data_file_type
+    data_file_size
+    association
+    data_file_description
+    specimen_id
+    ctep_disease_code
+    __typename
+  }
+}
+`;
+
+
+export const GET_MY_CART_DATA_QUERY_DESC = gql`
+query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $ctep_disease_codes: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
+  fileOverview(
+    subject_ids: $subject_ids
+    data_file_names: $data_file_names
+    data_file_formats: $data_file_formats
+    data_file_types: $data_file_types
+    data_file_sizes: $data_file_sizes
+    associations: $associations
+    data_file_descriptions: $data_file_descriptions
+    specimen_ids: $specimen_ids
+    ctep_disease_codes: $ctep_disease_codes
+    first: $first
+    offset: $offset
+    order_by: $order_by
+    sort_direction: $sort_direction
+  ) {
+    subject_id
+    data_file_name
+    data_file_format
+    data_file_type
+    data_file_size
+    association
+    data_file_description
+    specimen_id
+    ctep_disease_code
+    __typename
+  }
+}
+`;
 
 // --------------- File table configuration --------------
 
 export const table = {
-  dataField: 'filesInList',
+  dataField: 'data_file_name',
+  title: 'myFiles',
   // Value must be one of the 'dataField's in "columns"
-  defaultSortField: 'file_name',
+  defaultSortField: 'data_file_name',
   // 'asc' or 'desc'
   api: GET_MY_CART_DATA_QUERY,
   defaultSortDirection: 'asc',
-  paginationAPIField: 'filesInList',
+  paginationAPIField: 'fileOverview',
+  paginationAPIFieldDesc: 'fileOverview',
   tableDownloadCSV: customMyFilesTabDownloadCSV,
+  extendedViewConfig: {
+    pagination: true,
+    download: {
+      customDownload: true,
+      fileName: 'ICDC_My_Files_download',
+      downloadCsv: 'Download table contents as CSV',
+      ...customMyFilesTabDownloadCSV,
+    },
+    manageViewColumns: {
+      title: 'View columns',
+    },
+  },
   columns: [
     {
-      dataField: 'file_name',
+      cellType: cellTypes.CHECKBOX,
+      display: true,
+      role: cellTypes.CHECKBOX,
+    },
+    {
+      dataField: 'data_file_name',
       header: 'File Name',
       display: true,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
-      dataField: 'file_type',
-      header: 'File Type',
-      display: true,
-      tooltipText: 'sort',
-    },
-    {
-      dataField: 'association',
-      header: 'Association',
-      display: true,
-      tooltipText: 'sort',
-    },
-    {
-      dataField: 'file_description',
-      header: 'Description',
-      display: true,
-      tooltipText: 'sort',
-    },
-    {
-      dataField: 'file_format',
+      dataField: 'data_file_format',
       header: 'Format',
       display: true,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
-      dataField: 'file_size',
-      header: 'Size',
-      // set formatBytes to true to display file size (in bytes) in a more human readable format
+      dataField: 'data_file_type',
+      header: 'File Type',
       display: true,
-      dataFormatType: dataFormatTypes.FORMAT_BYTES,
-      cellType: cellTypes.FORMAT_DATA,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: 'data_file_size',
+      header: 'Size',
+      display: true,
+      tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: 'data_file_description',
+      header: 'Description',
+      display: true,
+      tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: 'specimen_id',
+      header: 'Biospecimen ID',
+      display: true,
+      tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       dataField: 'subject_id',
-      header: 'Case ID',
+      header: 'Participant ID',
       display: true,
       tooltipText: 'sort',
-    },
-    {
-      dataField: 'study_code',
-      header: 'Study Code',
-      display: true,
-      tooltipText: 'sort',
-    },
-    {
-      dataField: 'file_id',
-      header: 'UUID',
-      display: false,
-      tooltipText: 'sort',
-    },
-    {
-      dataField: 'md5sum',
-      header: 'Md5Sum',
-      display: false,
-      tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       cellType: cellTypes.DELETE,

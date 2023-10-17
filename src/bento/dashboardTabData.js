@@ -50,6 +50,11 @@ export const tabs = [
   },
 ];
 
+export const multiStudyData = {
+  icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/icon-multiStudy.svg',
+  alt: 'Multi-study icon',
+  toolTipText: 'Multi-study participant also enrolled as:',
+};
 // --------------- Tabs Header Style configuration --------------
 export const tabIndex = [
   {
@@ -1278,14 +1283,35 @@ query search (
 
 // --------------- GraphQL Query - Add Associated Files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL = gql`
-query search (          
-  $file_names: [String] 
-){
-  fileIDsFromList (          
-      file_names: $file_names
-  ) 
+query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $ctep_disease_codes: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
+  fileOverview(
+    subject_ids: $subject_ids
+    data_file_names: $data_file_names
+    data_file_formats: $data_file_formats
+    data_file_types: $data_file_types
+    data_file_sizes: $data_file_sizes
+    associations: $associations
+    data_file_descriptions: $data_file_descriptions
+    specimen_ids: $specimen_ids
+    ctep_disease_codes: $ctep_disease_codes
+    first: $first
+    offset: $offset
+    order_by: $order_by
+    sort_direction: $sort_direction
+  ) {
+    subject_id
+    data_file_name
+    data_file_format
+    data_file_type
+    data_file_size
+    association
+    data_file_description
+    specimen_id
+    ctep_disease_code
+    __typename
+  }
 }
-  `;
+`;
 
 // --------------- GraphQL Query - Add all files under Cases table to Cart ---------------
 export const GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART = gql`
@@ -1818,10 +1844,10 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addFilesRequestVariableKey: 'data_file_name',
-    addFilesResponseKeys: ['fileIDsFromList'],
-    addAllFilesResponseKeys: ['fileOverview', 'file_id'],
-    addAllFileQuery: GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
+    addFilesRequestVariableKey: 'subject_id',
+    addFilesResponseKeys: ['fileOverview','subject_id'],
+    addAllFilesResponseKeys: ['fileOverview','subject_id'],
+    addAllFileQuery: GET_FILES_OVERVIEW_QUERY,
     addSelectedFilesQuery: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
   },
 ];

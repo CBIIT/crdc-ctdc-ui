@@ -129,6 +129,14 @@ const table = {
   ],
 };
 
+
+// A maximum of 6 leftPanelattributes are allowed
+export const pageData = {
+  headerIcon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/master/icdc/images/svgs/Icon-Programs.svg',
+  embargoFileIcon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Icon-Embargo-File.svg',
+  pendingFileIcon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/PendingRelease-icons.Studies-Listing.svg',
+};
+
 // --------------- GraphQL query - Retrieve program details --------------
 const GET_PROGRAM_DETAIL_DATA_QUERY = gql`
 query programDetail($program_id: String!) {

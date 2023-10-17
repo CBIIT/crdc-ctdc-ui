@@ -5,6 +5,7 @@ import {
 } from '../../bento/navigationBarData';
 import styled from 'styled-components';
 import { Tooltip as MuiTooltip } from '@material-ui/core';
+import {Link} from 'react-router-dom'
 
 
 const CartView = (props) => {
@@ -78,6 +79,7 @@ const getCartLabel = (labelType) => {
   const Tooltip =  MuiTooltip;
   return (
            <CartContainer>
+            <Link to="/fileCentricCart">
               <span className="badge">
                           <img
                             className="cartIcon"
@@ -86,6 +88,7 @@ const getCartLabel = (labelType) => {
                           />
                            {getCartLabel(navBarCartData.cartLabelType)}
                 </span>
+                </Link>
            </CartContainer>
   )
 }
