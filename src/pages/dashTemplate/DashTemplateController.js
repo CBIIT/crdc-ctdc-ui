@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 import { getFilters } from '@bento-core/facet-filter';
 import DashTemplateView from './DashTemplateView';
-import { DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
+import { DASHBOARD_QUERY_NEW } from '../../bentoc/dashboardTabData';
 
 const getDashData = (states) => {
   const {
@@ -17,7 +17,7 @@ const getDashData = (states) => {
     const result = await client.query({
       query: DASHBOARD_QUERY_NEW,
       variables: activeFilters,
-      context: { clientName: "mockService"},
+      // context: { clientName: "mockService"},
     })
       .then((response) => response.data);
     return result;

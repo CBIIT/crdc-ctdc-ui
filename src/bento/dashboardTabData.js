@@ -184,11 +184,11 @@ export const DASHBOARD_QUERY_NEW = gql`
             size
           }
         }
-        participantCountByDiagnosis {
+        participantCountByCtepDiseaseCode {
           group
           subjects
         }
-        filterParticipantCountByDiagnosis {
+        filterParticipantCountByCtepDiseaseCode {
           group
           subjects
         }
@@ -220,11 +220,11 @@ export const DASHBOARD_QUERY_NEW = gql`
           subjects
         }
 
-        participantCountByGender {
+        participantCountByReportedGender {
           group
           subjects
         }
-        filterParticipantCountByGender {
+        filterParticipantCountByReportedGender {
           group
           subjects
         }
@@ -274,11 +274,11 @@ export const DASHBOARD_QUERY_NEW = gql`
           subjects
         }
 
-        participantCountByBiospecimenType {
+        participantCountBySpecimenType {
           group
           subjects
         }
-        filterParticipantCountByBiospecimenType {
+        filterParticipantCountBySpecimenType {
           group
           subjects
         }
@@ -292,11 +292,11 @@ export const DASHBOARD_QUERY_NEW = gql`
           subjects
         }
 
-        participantCountByCollectionTimepoint {
+        participantCountByAssessmentTimepoint {
           group
           subjects
         }
-        filterParticipantCountByCollectionTimepoint {
+        filterParticipantCountByAssessmentTimepoint {
           group
           subjects
         }
