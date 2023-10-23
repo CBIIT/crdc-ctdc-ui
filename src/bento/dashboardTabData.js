@@ -97,13 +97,22 @@ export const tabIndex = [
 */
 // Main Query used to populate Facet, Widget components
 export const DASHBOARD_QUERY_NEW = gql`
-query search($subject_id: [String],
+query search(
+  $subject_id: [String],
    $ctep_disease_code: [String],
     $snomed_disease_code: [String],
      $tumor_grade: [String], 
      $sex: [String], 
      $reported_gender: [String], 
-     $race: [String], $ethnicity: [String], $carcinogen_exposure: [String], $targeted_therapy: [String], $anatomical_collection_site: [String], $specimen_type: [String], $tissue_category: [String], $assessment_timepoint: [String], $data_file_type: [String], $data_file_format: [String]) {
+     $race: [String], $ethnicity: [String],
+      $carcinogen_exposure: [String], 
+      $targeted_therapy: [String],
+       $anatomical_collection_site: [String],
+        $specimen_type: [String],
+         $tissue_category: [String],
+          $assessment_timepoint: [String],
+           $data_file_type: [String],
+            $data_file_format: [String]) {
   searchParticipants(
     subject_id: $subject_id
     ctep_disease_code: $ctep_disease_code
@@ -273,42 +282,32 @@ query search($subject_id: [String],
       subjects
       __typename
     }
-    participantCountByAnatomicalCollectionSite {
+    specimenCountByAnatomicalCollectionSite {
       group
       subjects
       __typename
     }
-    filterParticipantCountByAnatomicalCollectionSite {
+    filterSpecimenCountByAnatomicalCollectionSite {
       group
       subjects
       __typename
     }
-    participantCountByTissueCategory {
+    specimenCountByTissueCategory {
       group
       subjects
       __typename
     }
-    filterParticipantCountByTissueCategory {
+    filterSpecimenCountByTissueCategory {
       group
       subjects
       __typename
     }
-    participantCountBySpecimenType {
+    specimenCountBySpecimenType {
       group
       subjects
       __typename
     }
-    filterParticipantCountBySpecimenType {
-      group
-      subjects
-      __typename
-    }
-    participantCountByTissueCategory {
-      group
-      subjects
-      __typename
-    }
-    filterParticipantCountByTissueCategory {
+    filterSpecimenCountBySpecimenType {
       group
       subjects
       __typename
@@ -323,22 +322,22 @@ query search($subject_id: [String],
       subjects
       __typename
     }
-    participantCountByDataFileType {
+    dataFileCountByDataFileType {
       group
       subjects
       __typename
     }
-    filterParticipantCountByDataFileType {
+    filterDataFileCountByDataFileType {
       group
       subjects
       __typename
     }
-    participantCountByDataFileFormat {
+    dataFileCountByDataFileFormat {
       group
       subjects
       __typename
     }
-    filterParticipantCountByDataFileFormat {
+    filterDataFileCountByDataFileFormat {
       group
       subjects
       __typename

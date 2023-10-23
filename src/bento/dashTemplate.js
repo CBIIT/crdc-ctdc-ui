@@ -134,8 +134,8 @@ export const facetsConfig = [
   {
     section: SAMPLES,
     label: 'Anatomical Collection Site',
-    apiPath: 'participantCountByAnatomicalCollectionSite',
-    apiForFiltering: 'filterParticipantCountByAnatomicalCollectionSite',
+    apiPath: 'specimenCountByAnatomicalCollectionSite',
+    apiForFiltering: 'filterSpecimenCountByAnatomicalCollectionSite',
     datafield: 'anatomical_collection_site',
     field: GROUP,
     type: InputTypes.CHECKBOX,
@@ -145,8 +145,8 @@ export const facetsConfig = [
   {
     section: SAMPLES,
     label: 'Biospecimen Type',
-    apiPath: 'participantCountBySpecimenType',
-    apiForFiltering: 'filterParticipantCountBySpecimenType',
+    apiPath: 'specimenCountBySpecimenType',
+    apiForFiltering: 'filterSpecimenCountBySpecimenType',
     datafield: 'specimen_type',
     field: GROUP,
     type: InputTypes.CHECKBOX,
@@ -156,8 +156,8 @@ export const facetsConfig = [
   {
     section: SAMPLES,
     label: 'Tissue Category',
-    apiPath: 'participantCountByTissueCategory',
-    apiForFiltering: 'filterParticipantCountByTissueCategory',
+    apiPath: 'specimenCountByTissueCategory',
+    apiForFiltering: 'filterSpecimenCountByTissueCategory',
     datafield: 'tissue_category',
     field: GROUP,
     type: InputTypes.CHECKBOX,
@@ -178,8 +178,8 @@ export const facetsConfig = [
   {
     section: FILES,
     label: 'File Type',
-    apiPath: 'participantCountByDataFileType',
-    apiForFiltering: 'filterParticipantCountByDataFileType',
+    apiPath: 'dataFileCountByDataFileType',
+    apiForFiltering: 'filterDataFileCountByDataFileType',
     datafield: 'data_file_type',
     field: GROUP,
     type: InputTypes.CHECKBOX,
@@ -240,9 +240,9 @@ export const widgetConfig = [
     title: 'Diagnosis and Stage of Disease',
     sliceTitle: "Participants",
     dataName: 'diagnosesAndStageOfDiseases', 
-    datatable_level1_field: 'ctepDiseaseCode', // Inner Ring
+    datatable_level1_field: 'program', // Inner Ring
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'snomedDiseaseCode', // Outer Ring
+    datatable_level2_field: 'arm', // Outer Ring
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
   },
   {
@@ -250,9 +250,9 @@ export const widgetConfig = [
     title: 'Sex and Gender',
     sliceTitle: "Participants",
     dataName: 'sexesAndGenders',
-    datatable_level1_field: 'sex', // Inner Ring
+    datatable_level1_field: 'program', // Inner Ring
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'reportedGender', // Outer Ring
+    datatable_level2_field: 'arm', // Outer Ring
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
   },
   {
@@ -260,9 +260,9 @@ export const widgetConfig = [
     title: 'Race and Ethnicity',
     sliceTitle: "Participants",
     dataName: 'racesAndEthnicities',
-    datatable_level1_field: 'race',
+    datatable_level1_field: 'program',
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'ethnicity',
+    datatable_level2_field: 'arm',
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
   },
   {
@@ -276,15 +276,15 @@ export const widgetConfig = [
     title: 'Biospecimens & Timepoints',
     sliceTitle: "Biospecimens",
     dataName: 'timepointsAndBiospecimensTypes',
-    datatable_level1_field: 'assessmentTimepoint',
+    datatable_level1_field: 'program',
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'biospecimensType',
+    datatable_level2_field: 'arm',
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
   },
   {
     type: 'donut',
     title: 'Files',
     sliceTitle: "Files",
-    dataName: 'participantCountByDataFileType',
+    dataName: 'dataFileCountByDataFileType',
   },
 ];
