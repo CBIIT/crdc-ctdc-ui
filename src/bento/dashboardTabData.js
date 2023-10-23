@@ -324,39 +324,49 @@ export const DASHBOARD_QUERY_NEW = gql`
 
 export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
   query participantOverview(
-    $subject_ids: [String],
+    $subject_id: [String],
     $ctep_disease_code: [String],
     $snomed_disease_code: [String],
     $tumor_grade: [String],
-    $age_at_diagnosis: [String],
     $sex: [String],
-    $reported_gender: [String] ,
+    $reported_gender: [String],
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
     $targeted_therapy: [String],
-    $first: Int, 
-    $offset: Int, 
+    $anatomical_collection_site: [String],
+    $specimen_type: [String],
+    $tissue_category: [String],
+    $assessment_timepoint: [String],
+    $data_file_type: [String],
+    $data_file_format: [String],
+    $first: Int,
+    $offset: Int,
     $order_by: String,
     $sort_direction: String
   ){
     participantOverview(
-      subject_ids: $subject_ids,
-      ctep_disease_code: $ctep_disease_code,
-      snomed_disease_code: $snomed_disease_code,
-      tumor_grade: $tumor_grade,
-      age_at_diagnosis: $age_at_diagnosis,
-      sex: $sex,
-      reported_gender: $reported_gender,
-      race: $race,
-      ethnicity: $ethnicity,
-      carcinogen_exposure: $carcinogen_exposure,
-      targeted_therapy: $targeted_therapy,
-      first: $first, 
-      offset: $offset, 
-      order_by: $order_by,
+      subject_id: $subject_id
+      ctep_disease_code: $ctep_disease_code
+      snomed_disease_code: $snomed_disease_code
+      tumor_grade: $tumor_grade
+      sex: $sex
+      reported_gender: $reported_gender
+      race: $race
+      ethnicity: $ethnicity
+      carcinogen_exposure: $carcinogen_exposure
+      targeted_therapy: $targeted_therapy
+      anatomical_collection_site: $anatomical_collection_site
+      specimen_type: $specimen_type
+      tissue_category: $tissue_category
+      assessment_timepoint: $assessment_timepoint
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+      first: $first
+      offset: $offset
+      order_by: $order_by
       sort_direction: $sort_direction
-    ) {
+    ){
       subject_id,
       ctep_disease_code,
       snomed_disease_code,
@@ -368,43 +378,57 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       ethnicity,
       carcinogen_exposure,
       targeted_therapy
+
+      data_file_uuid
     }
   }
 `;
 
 export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
   query biospecimenOverview(
-    $subject_ids: [String],
+    $subject_id: [String],
     $ctep_disease_code: [String],
     $snomed_disease_code: [String],
-    $primary_disease_site: [String],
-    $specimen_id: [String],
-    $parent_specimen_id: [String],
-    $anatomical_collection_site: [String], 
+    $tumor_grade: [String],
+    $sex: [String],
+    $reported_gender: [String],
+    $race: [String],
+    $ethnicity: [String],
+    $carcinogen_exposure: [String],
+    $targeted_therapy: [String],
+    $anatomical_collection_site: [String],
     $specimen_type: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
-    $first: Int, 
-    $offset: Int, 
+    $data_file_type: [String],
+    $data_file_format: [String],
+    $first: Int,
+    $offset: Int,
     $order_by: String,
     $sort_direction: String
   ){
     biospecimenOverview(
-      subject_ids: $subject_ids,
-      ctep_disease_code: $ctep_disease_code,
-      snomed_disease_code: $snomed_disease_code,
-      primary_disease_site: $primary_disease_site,
-      specimen_id: $specimen_id,
-      parent_specimen_id: $parent_specimen_id,
-      anatomical_collection_site: $anatomical_collection_site,
-      specimen_type: $specimen_type,
-      tissue_category: $tissue_category,
-      assessment_timepoint: $assessment_timepoint,
-      first: $first, 
-      offset: $offset, 
-      order_by: $order_by,
+      subject_id: $subject_id
+      ctep_disease_code: $ctep_disease_code
+      snomed_disease_code: $snomed_disease_code
+      tumor_grade: $tumor_grade
+      sex: $sex
+      reported_gender: $reported_gender
+      race: $race
+      ethnicity: $ethnicity
+      carcinogen_exposure: $carcinogen_exposure
+      targeted_therapy: $targeted_therapy
+      anatomical_collection_site: $anatomical_collection_site
+      specimen_type: $specimen_type
+      tissue_category: $tissue_category
+      assessment_timepoint: $assessment_timepoint
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+      first: $first
+      offset: $offset
+      order_by: $order_by
       sort_direction: $sort_direction
-    ) {
+    ){
       subject_id,
       ctep_disease_code,
       snomed_disease_code,
@@ -415,51 +439,70 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       specimen_type,
       tissue_category,
       assessment_timepoint
+
+      data_file_uuid
     }
   }
 `;
+
 export const GET_FILES_OVERVIEW_QUERY = gql`
   query fileOverview(
-    $subject_ids: [String],
-    $data_file_names: [String],
-    $data_file_formats: [String],
-    $data_file_types: [String],
-    $data_file_sizes: [String],
-    $associations: [String],
-    $data_file_descriptions: [String],
-    $specimen_ids: [String],
-    $ctep_disease_codes: [String],
-    $first: Int, 
-    $offset: Int, 
+    $subject_id: [String],
+    $ctep_disease_code: [String],
+    $snomed_disease_code: [String],
+    $tumor_grade: [String],
+    $sex: [String],
+    $reported_gender: [String],
+    $race: [String],
+    $ethnicity: [String],
+    $carcinogen_exposure: [String],
+    $targeted_therapy: [String],
+    $anatomical_collection_site: [String],
+    $specimen_type: [String],
+    $tissue_category: [String],
+    $assessment_timepoint: [String],
+    $data_file_type: [String],
+    $data_file_format: [String],
+    $first: Int,
+    $offset: Int,
     $order_by: String,
     $sort_direction: String
+  ){
+    fileOverview(
+      subject_id: $subject_id
+      ctep_disease_code: $ctep_disease_code
+      snomed_disease_code: $snomed_disease_code
+      tumor_grade: $tumor_grade
+      sex: $sex
+      reported_gender: $reported_gender
+      race: $race
+      ethnicity: $ethnicity
+      carcinogen_exposure: $carcinogen_exposure
+      targeted_therapy: $targeted_therapy
+      anatomical_collection_site: $anatomical_collection_site
+      specimen_type: $specimen_type
+      tissue_category: $tissue_category
+      assessment_timepoint: $assessment_timepoint
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+      first: $first
+      offset: $offset
+      order_by: $order_by
+      sort_direction: $sort_direction
     ){
-      fileOverview(
-        subject_ids: $subject_ids,
-        data_file_names: $data_file_names,
-        data_file_formats: $data_file_formats,
-        data_file_types: $data_file_types,
-        data_file_sizes: $data_file_sizes,
-        associations: $associations,
-        data_file_descriptions: $data_file_descriptions,
-        specimen_ids: $specimen_ids,
-        ctep_disease_codes: $ctep_disease_codes,
-        first: $first, 
-        offset: $offset, 
-        order_by: $order_by,
-        sort_direction: $sort_direction
-    ) {
-        subject_id,
-        data_file_name,
-        data_file_format,
-        data_file_type,
-        data_file_size,
-        association,
-        data_file_description,
-        specimen_id,
-        ctep_disease_code
+      subject_id,
+      data_file_name,
+      data_file_format,
+      data_file_type,
+      data_file_size,
+      association,
+      data_file_description,
+      specimen_id,
+      ctep_disease_code
+      
+      data_file_uuid
     }
-}
+  }
 `;
 
 // Original DASHBOARD_QUERY_NEW for reference
