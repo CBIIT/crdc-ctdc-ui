@@ -19,7 +19,7 @@ export const tooltipContent = {
   icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   alt: 'tooltipIcon',
   clsName: 'tooltip_icon',
-  myFiles: 'To access and analyze files: select and remove unwanted files,  click the “Download Manifest” button, and upload the resulting Manifest file to your Seven Bridges Genomics account.',
+  myFiles: 'To access and analyze files, select and remove unwanted files, click the "Download File Manifest" button, and upload the resulting manifest file to your Velsera Seven Bridges Cancer Genomics Cloud account.',
   arrow: true,
   styles: {
     border: '#03A383 1px solid',
@@ -28,7 +28,7 @@ export const tooltipContent = {
 
 //BENTO-2455 Configuration set for Bento 4.0.
 export const myFilesPageData = {
-  manifestFileName: 'BENTO File Manifest',
+  manifestFileName: 'CTDC File Manifest',
   tooltipIcon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   tooltipAlt: 'tooltip icon',
   tooltipMessage: 'To access and analyze files: select and remove unwanted files,  click the “Download Manifest” button, and upload the resulting Manifest file to your Seven Bridges Genomics account.',
@@ -63,7 +63,7 @@ export const myFilesPageData = {
     clsName: 'container_header',
     items: [
       {
-        title: 'DOWNLOAD MANIFEST',
+        title: 'Download File Manifest',
         clsName: 'download_manifest',
         type: types.BUTTON,
         role: btnTypes.DOWNLOAD_MANIFEST,
@@ -90,8 +90,8 @@ export const myFilesPageData = {
 
 
 export const manifestData = {
-  keysToInclude: ['study_code', 'subject_id', 'data_file_name', 'file_id', 'md5sum'],
-  header: ['Study Code', 'Case ID', 'File Name', 'File ID', 'Md5sum', 'User Comments'],
+  keysToInclude: ['data_file_name ', 'subject_id', 'data_file_uuid', 'data_file_checksum_value', 'specimen_id', 'ctep_disease_code', 'stage_of_disease','tumor_grade', 'age_at_diagnosis', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy', 'primary_disease_site', 'parent_specimen_id','anatomical_collection_site', 'specimen_type','tissue_category','assessment_timepoint'],
+  header: ['name', 'Participant ID', 'File ID', 'Md5sum', 'Biospecimen ID', 'Diagnosis', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Primary Site', 'Parent Biospecimen ID', 'Anatomical Collection Site','Biospecimen Type','Tissue Category','Collection Timepoint','User Comments'],
 };
 
 // --------------- GraphQL query - Retrieve selected cases info --------------
@@ -171,11 +171,12 @@ export const table = {
   paginationAPIField: 'fileOverview',
   paginationAPIFieldDesc: 'fileOverview',
   tableDownloadCSV: customMyFilesTabDownloadCSV,
+  objectKey: 'fileOverview',
   extendedViewConfig: {
     pagination: true,
     download: {
       customDownload: true,
-      fileName: 'ICDC_My_Files_download',
+      fileName: 'CTDC_My_Files_download',
       downloadCsv: 'Download table contents as CSV',
       ...customMyFilesTabDownloadCSV,
     },

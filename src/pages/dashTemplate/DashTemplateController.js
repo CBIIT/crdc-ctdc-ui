@@ -17,7 +17,6 @@ const getDashData = (states) => {
     const result = await client.query({
       query: DASHBOARD_QUERY_NEW,
       variables: activeFilters,
-      context: { clientName: "mockService"},
     })
       .then((response) => response.data);
     return result;
@@ -36,8 +35,8 @@ const getDashData = (states) => {
   useEffect(() => {
     const controller = new AbortController();
     getData(activeFilters).then((result) => {
-      if (result.searchSubjects) {
-        setDashData(result.searchSubjects);
+      if (result.searchParticipants) {
+        setDashData(result.searchParticipants);
       }
     });
     return () => controller.abort();

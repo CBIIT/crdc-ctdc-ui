@@ -97,229 +97,254 @@ export const tabIndex = [
 */
 // Main Query used to populate Facet, Widget components
 export const DASHBOARD_QUERY_NEW = gql`
-  query search (          
-    $subject_ids: [String],
-    $ctep_disease_code: [String],
+query search(
+  $subject_id: [String],
+   $ctep_disease_code: [String],
     $snomed_disease_code: [String],
-    $tumor_grade: [String],
-    $sex: [String],
-    $reported_gender: [String],
-    $race: [String],
-    $ethnicity: [String],
-    $carcinogen_exposure: [String],
-    $targeted_therapy: [String],
-    $anatomical_collection_site: [String],
-    $specimen_type: [String],
-    $tissue_category: [String],
-    $assessment_timepoint: [String],
-    $data_file_type: [String],
-    $data_file_format: [String]
-  ){
-      searchSubjects (          
-        subject_ids: $subject_ids,
-        ctep_disease_code: $ctep_disease_code,
-        snomed_disease_code: $snomed_disease_code,
-        tumor_grade: $tumor_grade,
-        sex: $sex,
-        reported_gender: $reported_gender,
-        race: $race,
-        ethnicity: $ethnicity,
-        carcinogen_exposure: $carcinogen_exposure,
-        targeted_therapy: $targeted_therapy,
-        anatomical_collection_site: $anatomical_collection_site,
-        specimen_type: $specimen_type,
-        tissue_category: $tissue_category,
-        assessment_timepoint: $assessment_timepoint,
-        data_file_type: $data_file_type,
-        data_file_format: $data_file_format
-      ) {
-        numberOfTrials
-        numberOfParticipants
-        numberOfDiagnoses
-        numberOfTargetedTherapies
-        numberOfBiospecimens
-        numberOfFiles
-        armsByPrograms {
-          program
-          caseSize
-          children {
-            arm
-            caseSize
-            size
-          }
-        }
-        diagnosesAndStageOfDiseases {
-          ctepDiseaseCode
-          caseSize
-          children {
-            snomedDiseaseCode
-            caseSize
-            size
-          }
-        }
-        sexesAndGenders {
-          sex
-          caseSize 
-          children {
-            reportedGender
-            caseSize
-            size
-          }
-        }
-        racesAndEthnicities {
-          race 
-          caseSize
-          children {
-            ethnicity 
-            caseSize
-            size
-          }
-        }
-        timepointsAndBiospecimensTypes {
-          assessmentTimepoint
-          caseSize
-          children {
-            biospecimensType
-            caseSize
-            size
-          }
-        }
-        participantCountByDiagnosis {
-          group
-          subjects
-        }
-        filterParticipantCountByDiagnosis {
-          group
-          subjects
-        }
-
-        participantCountByStageOfDisease {
-          group
-          subjects
-        }
-        filterParticipantCountByStageOfDisease {
-          group
-          subjects
-        }
-
-        participantCountByTumorGrade {
-          group
-          subjects
-        }
-        filterParticipantCountByTumorGrade {
-          group
-          subjects
-        }
-
-        participantCountBySex {
-          group
-          subjects
-        }
-        filterParticipantCountBySex {
-          group
-          subjects
-        }
-
-        participantCountByGender {
-          group
-          subjects
-        }
-        filterParticipantCountByGender {
-          group
-          subjects
-        }
-
-        participantCountByRace {
-          group
-          subjects
-        }
-        filterParticipantCountByRace {
-          group
-          subjects
-        }
-
-        participantCountByEthnicity {
-          group
-          subjects
-        }
-        filterParticipantCountByEthnicity {
-          group
-          subjects
-        }
-
-        participantCountByExposures {
-          group
-          subjects
-        }
-        filterParticipantCountByExposures {
-          group
-          subjects
-        }
-
-        participantCountByTargetedTherapy {
-          group
-          subjects
-        }
-        filterParticipantCountByTargetedTherapy {
-          group
-          subjects
-        }
-
-        participantCountByAnatomicalCollectionSite {
-          group
-          subjects
-        }
-        filterParticipantCountByAnatomicalCollectionSite {
-          group
-          subjects
-        }
-
-        participantCountByBiospecimenType {
-          group
-          subjects
-        }
-        filterParticipantCountByBiospecimenType {
-          group
-          subjects
-        }
-
-        participantCountByTissueCategory {
-          group
-          subjects
-        }
-        filterParticipantCountByTissueCategory {
-          group
-          subjects
-        }
-
-        participantCountByCollectionTimepoint {
-          group
-          subjects
-        }
-        filterParticipantCountByCollectionTimepoint {
-          group
-          subjects
-        }
-
-        participantCountByDataFileType {
-          group
-          subjects
-        }
-        filterParticipantCountByDataFileType {
-          group
-          subjects
-        }
-
-        participantCountByFileFormat {
-          group
-          subjects
-        }
-        filterParticipantCountByFileFormat {
-          group
-          subjects
-        }
+     $tumor_grade: [String], 
+     $sex: [String], 
+     $reported_gender: [String], 
+     $race: [String], $ethnicity: [String],
+      $carcinogen_exposure: [String], 
+      $targeted_therapy: [String],
+       $anatomical_collection_site: [String],
+        $specimen_type: [String],
+         $tissue_category: [String],
+          $assessment_timepoint: [String],
+           $data_file_type: [String],
+            $data_file_format: [String]) {
+  searchParticipants(
+    subject_id: $subject_id
+    ctep_disease_code: $ctep_disease_code
+    snomed_disease_code: $snomed_disease_code
+    tumor_grade: $tumor_grade
+    sex: $sex
+    reported_gender: $reported_gender
+    race: $race
+    ethnicity: $ethnicity
+    carcinogen_exposure: $carcinogen_exposure
+    targeted_therapy: $targeted_therapy
+    anatomical_collection_site: $anatomical_collection_site
+    specimen_type: $specimen_type
+    tissue_category: $tissue_category
+    assessment_timepoint: $assessment_timepoint
+    data_file_type: $data_file_type
+    data_file_format: $data_file_format
+  ) {
+    numberOfStudies
+    numberOfParticipants
+    numberOfDiagnoses
+    numberOfTargetedTherapies
+    numberOfSpecimens
+    numberOfFiles
+    
+    diagnosesAndStageOfDiseases {
+      program
+      caseSize
+      children {
+        arm
+        caseSize
+        size
+        __typename
       }
+      __typename
+    }
+    sexesAndGenders {
+      program
+      caseSize
+      children {
+        arm
+        caseSize
+        size
+        __typename
+      }
+      __typename
+    }
+    racesAndEthnicities {
+      program
+      caseSize
+      children {
+        arm
+        caseSize
+        size
+        __typename
+      }
+      __typename
+    }
+    timepointsAndBiospecimensTypes {
+      program
+      caseSize
+      children {
+        arm
+        caseSize
+        size
+        __typename
+      }
+      __typename
+    }
+    participantCountByStageOfDisease {
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountByStageOfDisease {
+      group
+      subjects
+      __typename
+    }
+    participantCountByCtepDiseaseCode {
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountByCtepDiseaseCode {
+      group
+      subjects
+      __typename
+    }
+    participantCountBySnomedDiseaseCode{
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountBySnomedDiseaseCode{
+      group
+      subjects
+      __typename
+    }
+    participantCountByTumorGrade {
+      group
+      subjects
+    #   __typename
+    }
+    filterParticipantCountByTumorGrade {
+      group
+      subjects
+    #   __typename
+    }
+    participantCountBySex {
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountBySex {
+      group
+      subjects
+      __typename
+    }
+    participantCountByReportedGender {
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountByReportedGender {
+      group
+      subjects
+      __typename
+    }
+    participantCountByRace {
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountByRace {
+      group
+      subjects
+      __typename
+    }
+    participantCountByEthnicity {
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountByEthnicity {
+      group
+      subjects
+      __typename
+    }
+    participantCountByCarcinogenExposure {
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountByCarcinogenExposure {
+      group
+      subjects
+      __typename
+    }
+    participantCountByTargetedTherapy {
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountByTargetedTherapy {
+      group
+      subjects
+      __typename
+    }
+    specimenCountByAnatomicalCollectionSite {
+      group
+      subjects
+      __typename
+    }
+    filterSpecimenCountByAnatomicalCollectionSite {
+      group
+      subjects
+      __typename
+    }
+    specimenCountByTissueCategory {
+      group
+      subjects
+      __typename
+    }
+    filterSpecimenCountByTissueCategory {
+      group
+      subjects
+      __typename
+    }
+    specimenCountBySpecimenType {
+      group
+      subjects
+      __typename
+    }
+    filterSpecimenCountBySpecimenType {
+      group
+      subjects
+      __typename
+    }
+    participantCountByAssessmentTimepoint {
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountByAssessmentTimepoint {
+      group
+      subjects
+      __typename
+    }
+    dataFileCountByDataFileType {
+      group
+      subjects
+      __typename
+    }
+    filterDataFileCountByDataFileType {
+      group
+      subjects
+      __typename
+    }
+    dataFileCountByDataFileFormat {
+      group
+      subjects
+      __typename
+    }
+    filterDataFileCountByDataFileFormat {
+      group
+      subjects
+      __typename
+    }
+    __typename
   }
+}
 `;
 
 export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
