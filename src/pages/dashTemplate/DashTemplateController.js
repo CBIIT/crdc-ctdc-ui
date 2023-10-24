@@ -17,7 +17,6 @@ const getDashData = (states) => {
     const result = await client.query({
       query: DASHBOARD_QUERY_NEW,
       variables: activeFilters,
-      context: { clientName: "localService"},
     })
       .then((response) => response.data);
     return result;
