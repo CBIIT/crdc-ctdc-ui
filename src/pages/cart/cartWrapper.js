@@ -5,6 +5,7 @@ import { customTheme } from './wrapperConfig/Theme';
 import {
   myFilesPageData, table, manifestData,
 } from '../../bento/fileCentricCartWorkflowData';
+import CustomToolTipContent from './tooltip/customToolTipContent';
 
 const Header = ({
   children,
@@ -27,6 +28,8 @@ const Header = ({
     };
     dispatch(setCartConfig(config));
   }, [queryVariables]);
+
+  myFilesPageData.layout[1].items[0].tooltipCofig.customToolTipComponent = <CustomToolTipContent/>;
 
   return (
     <>
