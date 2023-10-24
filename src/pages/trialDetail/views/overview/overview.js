@@ -56,6 +56,19 @@ const Overview = ({
     if(a > b) { val = 1; }
     return val;
   }
+  
+  /* 
+    This function repalces '*' with ',' because
+    there are caseses where the database might have 
+   '*' separeted data
+    */
+  const separetByCommaIfnot = (imageList) => {
+    if(imageList.includes("*")){
+      return imageList.split("*").join(",");
+    }
+
+    return imageList;
+}
 
   return (
     <OverviewThemeProvider>
@@ -224,7 +237,7 @@ const Overview = ({
                           </span>
 
                           <span className={classes.imageValue}>
-                            {image.image_type_included}
+                            {separetByCommaIfnot(image.image_type_included)}
                           </span>
                         </div>
                       ))}
