@@ -46,6 +46,7 @@ const CartView = (props) => {
           <CartWrapper
             classes={classes}
             queryVariables={variables}
+            totalRowCount={filesId.length}
           >
             <TableView
               initState={initTblState}

@@ -246,7 +246,7 @@ export const table = {
     },
   ],
   tableMsg: {
-    noMatch: 'No Matching Records Found',
+    noMatch: 'No files have been added to the cart',
   },
 };
 

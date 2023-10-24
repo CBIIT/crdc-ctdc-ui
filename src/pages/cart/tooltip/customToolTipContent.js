@@ -7,7 +7,7 @@ const CustomToolTipContent = ({ classes }) => (
         {/* eslint-disable-next-line max-len */}
         To access and analyze files, select and remove unwanted files, click the "Download File Manifest" button, and upload the resulting manifest file to your         {' '}
         <a
-            style={{ color: '#blue' }}
+            style={{ color: '#1A8CCB' }}
             target="_blank"
             rel="noreferrer"
             href="https://cgc-accounts.sbgenomics.com/auth/login?next=https%3A%2F%2Fcgc-accounts.sbgenomics.com%2F"

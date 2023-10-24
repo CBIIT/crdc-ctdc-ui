@@ -11,6 +11,7 @@ const Header = ({
   children,
   queryVariables,
   classes,
+  totalRowCount,
 }) => {
   const cartContext = useContext(CartContext);
   const {
@@ -37,6 +38,7 @@ const Header = ({
         wrapConfig={myFilesPageData.layout}
         customTheme={customTheme}
         classes={classes}
+        totalRowCount={totalRowCount}
         section="myFiles"
       >
         {children}
