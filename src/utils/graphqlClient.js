@@ -23,19 +23,19 @@ const backendService = new HttpLink({
 
 
 const CTDC_OLD_BackendService = new HttpLink({
-  uri: CTDC_OLD_SERVICE,
+  uri: MOCK , // ctdc old service
 });
 
 const authService = new HttpLink({
-  uri: AUTH_SERVICE,
+  uri: AUTH_SERVICE, // auth service
 });
 
 const userService = new HttpLink({
-  uri: USER_SERVICE,
+  uri: USER_SERVICE , // user service
 });
 
 const publicService = new HttpLink({
-  uri: PUBLIC_BACKEND,
+  uri: MOCK , // public backend
 });
 
 const mockService = new HttpLink({
