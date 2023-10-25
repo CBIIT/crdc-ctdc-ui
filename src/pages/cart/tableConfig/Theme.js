@@ -26,8 +26,14 @@ export const tblHeader = {
   },
   MuiTooltip: {
     tooltipPlacementBottom: {
-      background: '#000000 !important',
-      color: '#FFFFFF',
+      background: 'gray !important',
+      marginTop: '0px',
+      marginLeft: '0px',
+      color: 'white !important',
+      border: 'none !important',
+      '&.remove_button_all':{
+        background:'red !important'
+      },
       '@media (min-width: 600px)': {
         marginTop: '10px',
         background: 'none',
@@ -35,9 +41,11 @@ export const tblHeader = {
     },
     popper: {
       '&#header-tooltip div': {
-        background: '#61614F',
+        background: 'gray !important',
         marginTop: '0px',
         marginLeft: '0px',
+        color: 'white !important',
+        border: 'none !important'
       },
     },
   },
@@ -51,7 +59,7 @@ export const tblHeader = {
   MuiTypography: {
     root: {
       color: '#A61401',
-      '&.remove_all_tooltip': {
+      '&.del_all_row_tooltip': {
         width: '110px',
         border: '2px solid #A61401',
         height: '48px',
