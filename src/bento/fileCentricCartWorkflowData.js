@@ -96,6 +96,39 @@ export const manifestData = {
 
 // --------------- GraphQL query - Retrieve selected cases info --------------
 export const GET_MY_CART_DATA_QUERY = gql`
+  query filesInList(
+    $data_file_uuid: [String],
+    $offset: Int = 0,
+    $first: Int = 10,
+    $order_by:String ="data_file_name",
+    $sort_direction:String="asc"
+  ){
+    filesInList(
+      data_file_uuid: $data_file_uuid,
+      offset: $offset,
+      first: $first,
+      order_by: $order_by,
+      sort_direction: $sort_direction
+    ){
+      subject_id
+      specimen_id
+      association
+      ctep_disease_code
+
+      data_file_uuid
+      data_file_name
+      data_file_type
+      data_file_description
+      data_file_format
+      data_file_size
+      data_file_checksum_value
+      data_file_checksum_type
+      data_file_compression_status
+      data_file_location
+    }
+  }
+`;
+export const GET_MY_CART_DATA_QUERY2 = gql`
 query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $ctep_disease_codes: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
   fileOverview(
     subject_ids: $subject_ids
@@ -168,8 +201,8 @@ export const table = {
   // 'asc' or 'desc'
   api: GET_MY_CART_DATA_QUERY,
   defaultSortDirection: 'asc',
-  paginationAPIField: 'fileOverview',
-  paginationAPIFieldDesc: 'fileOverview',
+  paginationAPIField: 'filesInList',
+  paginationAPIFieldDesc: 'filesInList',
   tableDownloadCSV: customMyFilesTabDownloadCSV,
   extendedViewConfig: {
     pagination: true,
