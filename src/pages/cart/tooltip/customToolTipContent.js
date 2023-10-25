@@ -5,7 +5,8 @@ import Styles from './customToolTipContent.style';
 const CustomToolTipContent = ({ classes }) => (
     <div className={classes.downloadFileManifestTooltip}>
         {/* eslint-disable-next-line max-len */}
-        To access and analyze files, select and remove unwanted files, click the "Download File Manifest" button, and upload the resulting manifest file to your         {' '}
+        Click this button to download a file manifest that can be uploaded into your  
+             {' '}
         <a
             style={{ color: '#blue' }}
             target="_blank"
@@ -17,7 +18,7 @@ const CustomToolTipContent = ({ classes }) => (
             </span>
         </a>
         {' '}
-        account.
+        for cloud access  
     </div>
 )
 

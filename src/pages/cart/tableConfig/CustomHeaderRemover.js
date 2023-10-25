@@ -1,10 +1,21 @@
 import React from 'react';
 import {
   Button,
+  makeStyles,
   Tooltip,
   withStyles,
 } from '@material-ui/core';
 
+const useStyles = makeStyles((theme) => ({
+  customTooltip: {
+    borderRadius: '5px',
+    textAlign: 'center',
+    fontSize:'14px',
+    backgroundColor: 'white !important',
+    color:'#A61401 !important',
+    border: '2px solid #A61401 !important',
+  },
+}));
 const CustomHeaderRemove = ({
   openDialogBox,
   classes: {
@@ -12,7 +23,7 @@ const CustomHeaderRemove = ({
   },
 }) => (
   <div>
-    <Tooltip title="Remove all items in cart" arrow>
+    <Tooltip  classes={{tooltip: useStyles().customTooltip}} title="Remove all items in cart" arrow>
       <Button
         classes={{ root: removeBtn }}
         onClick={openDialogBox}
