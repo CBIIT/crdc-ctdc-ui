@@ -421,63 +421,48 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
 
 export const GET_FILES_OVERVIEW_QUERY = gql`
   query fileOverview(
-    $subject_id: [String],
-    $ctep_disease_code: [String],
-    $snomed_disease_code: [String],
-    $tumor_grade: [String],
-    $sex: [String],
-    $reported_gender: [String],
-    $race: [String],
-    $ethnicity: [String],
-    $carcinogen_exposure: [String],
-    $targeted_therapy: [String],
-    $anatomical_collection_site: [String],
-    $specimen_type: [String],
-    $tissue_category: [String],
-    $assessment_timepoint: [String],
-    $data_file_type: [String],
-    $data_file_format: [String],
-    $first: Int,
-    $offset: Int,
+    $subject_ids: [String],
+    $data_file_names: [String],
+    $data_file_formats: [String],
+    $data_file_types: [String],
+    $data_file_sizes: [String],
+    $associations: [String],
+    $data_file_descriptions: [String],
+    $specimen_ids: [String],
+    $ctep_disease_codes: [String],
+    $first: Int, 
+    $offset: Int, 
     $order_by: String,
     $sort_direction: String
-  ){
-    fileOverview(
-      subject_id: $subject_id
-      ctep_disease_code: $ctep_disease_code
-      snomed_disease_code: $snomed_disease_code
-      tumor_grade: $tumor_grade
-      sex: $sex
-      reported_gender: $reported_gender
-      race: $race
-      ethnicity: $ethnicity
-      carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy: $targeted_therapy
-      anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
-      tissue_category: $tissue_category
-      assessment_timepoint: $assessment_timepoint
-      data_file_type: $data_file_type
-      data_file_format: $data_file_format
-      first: $first
-      offset: $offset
-      order_by: $order_by
-      sort_direction: $sort_direction
     ){
-      subject_id,
-      data_file_name,
-      data_file_format,
-      data_file_type,
-      data_file_size,
-      association,
-      data_file_description,
-      specimen_id,
-      ctep_disease_code
-      
-      data_file_uuid
+      fileOverview(
+        subject_ids: $subject_ids,
+        data_file_names: $data_file_names,
+        data_file_formats: $data_file_formats,
+        data_file_types: $data_file_types,
+        data_file_sizes: $data_file_sizes,
+        associations: $associations,
+        data_file_descriptions: $data_file_descriptions,
+        specimen_ids: $specimen_ids,
+        ctep_disease_codes: $ctep_disease_codes,
+        first: $first, 
+        offset: $offset, 
+        order_by: $order_by,
+        sort_direction: $sort_direction
+    ) {
+        subject_id,
+        data_file_name,
+        data_file_format,
+        data_file_type,
+        data_file_size,
+        association,
+        data_file_description,
+        specimen_id,
+        ctep_disease_code
     }
-  }
+}
 `;
+
 
 // Original DASHBOARD_QUERY_NEW for reference
 export const ORIGINAL_DASHBOARD_QUERY_NEW = gql`
