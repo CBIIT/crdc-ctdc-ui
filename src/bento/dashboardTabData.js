@@ -8,18 +8,26 @@ import { dataFormatTypes } from '@bento-core/table';
 export const tooltipContent = {
   icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   alt: 'tooltipIcon',
-  0: 'Click button to Add Associated Files associated with the selected Participant(s).',
-  1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
-  2: 'Click button to Add Associated Files.',
-  Participants: 'Click button to Add Associated Files associated with the selected Participant(s).',
-  Samples: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
-  Files: 'Click button to Add Associated Files.',
+  0: 'Add selected files to My Files',
+  1: 'Add selected files to My Files',
+  2: 'Add selected files to My Files',
+  Participants: 'Add selected files to My Files',
+  Samples: 'Add selected files to My Files',
+  Files: 'Add selected files to My Files',
   arrow: true,
   styles: {
     border: '#03A383 1px solid',
   }
 };
-
+// --------------- Tooltip configuration --------------
+export const selectAllToolTip = {
+  icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Tooltip.SpeechBubble.svg',
+  alt: 'tooltipIcon',
+  0: 'Add all filtered files to My Filess',
+  1: 'Add all filtered files to My Files',
+  2: 'Add all filtered files to My Files',
+  3: 'Add all filtered files to My Files',
+};
 // --------------- Dahboard Table external link configuration --------------
 // Ideal size for externalLinkIcon is 16x16 px
 export const externalLinkIcon = {
@@ -1326,33 +1334,12 @@ query search (
 
 // --------------- GraphQL Query - Add Associated Files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL = gql`
-query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $ctep_disease_codes: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
-  fileOverview(
-    subject_ids: $subject_ids
-    data_file_names: $data_file_names
-    data_file_formats: $data_file_formats
-    data_file_types: $data_file_types
-    data_file_sizes: $data_file_sizes
-    associations: $associations
-    data_file_descriptions: $data_file_descriptions
-    specimen_ids: $specimen_ids
-    ctep_disease_codes: $ctep_disease_codes
-    first: $first
-    offset: $offset
-    order_by: $order_by
-    sort_direction: $sort_direction
-  ) {
-    subject_id
-    data_file_name
-    data_file_format
-    data_file_type
-    data_file_size
-    association
-    data_file_description
-    specimen_id
-    ctep_disease_code
-    __typename
-  }
+query search (          
+  $data_file_name: [String]
+){
+  fileIDsFromList (          
+    data_file_name: $data_file_name
+  ) 
 }
 `;
 
@@ -1512,7 +1499,7 @@ query fileAddAllToCart(
       data_file_uuid,
   }
 }
-            `;
+`;
 
 // --------------- GraphQL query - Retrieve files tab details --------------
 export const GET_FILES_NAME_QUERY = gql`
@@ -1891,7 +1878,7 @@ export const tabContainers = [
     // addAllFileQuery: GET_FILES_OVERVIEW_QUERY,
     // addSelectedFilesQuery: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
 
-    addFilesRequestVariableKey: 'file_names',
+    addFilesRequestVariableKey: 'data_file_name',
     
     addFilesResponseKeys: ['fileIDsFromList'],
     addSelectedFilesQuery: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
