@@ -45,21 +45,21 @@ export const customTheme = {
         backgroundColor: '#067CA5',
       },
       '&.add_selected_button_Biospecimens': {
-        backgroundColor: '#EF660B',
+        backgroundColor: '#067CA5',
       },
       '&.add_selected_button_Files': {
-        backgroundColor: '#0dafec',
+        backgroundColor: '#067CA5',
       },
       '&.Mui-disabled': {
         color: '#fff',
         '&.add_selected_button_Participants': {
-          backgroundColor: '#cef1fd',
+          backgroundColor: '#067CA5',
         },
         '&.add_selected_button_Biospecimens': {
-          backgroundColor: '#f8c19d',
+          backgroundColor: '#067CA5',
         },
         '&.add_selected_button_Files': {
-          backgroundColor: '#cfedf9',
+          backgroundColor: '#067CA5',
         },
       },
       '&.yesBtn': {
