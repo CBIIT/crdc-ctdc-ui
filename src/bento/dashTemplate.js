@@ -48,7 +48,7 @@ export const facetsConfig = [
     label: 'Stage of Disease',
     apiPath: 'participantCountByStageOfDisease',
     apiForFiltering: 'filterParticipantCountByStageOfDisease',
-    datafield: 'snomed_disease_code',
+    datafield: 'stage_of_disease',
     field: GROUP,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
