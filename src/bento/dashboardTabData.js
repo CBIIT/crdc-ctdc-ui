@@ -80,7 +80,7 @@ export const tabIndex = [
 /*
     $subject_ids: [String],
     $ctep_disease_code: [String], // Diagnosis
-    $snomed_disease_code: [String], // Stage of Disease
+    $stage_of_disease: [String], // Stage of Disease
     $tumor_grade: [String], // Tumor Grade
     $sex: [String], // Sex
     $reported_gender: [String], // Gender
@@ -100,7 +100,7 @@ export const DASHBOARD_QUERY_NEW = gql`
 query search(
   $subject_id: [String],
    $ctep_disease_code: [String],
-    $snomed_disease_code: [String],
+    $stage_of_disease: [String],
      $tumor_grade: [String], 
      $sex: [String], 
      $reported_gender: [String], 
@@ -116,7 +116,7 @@ query search(
   searchParticipants(
     subject_id: $subject_id
     ctep_disease_code: $ctep_disease_code
-    snomed_disease_code: $snomed_disease_code
+    stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
     reported_gender: $reported_gender
@@ -351,7 +351,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
   query participantOverview(
     $subject_id: [String],
     $ctep_disease_code: [String],
-    $snomed_disease_code: [String],
+    $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
     $reported_gender: [String],
@@ -373,7 +373,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     participantOverview(
       subject_id: $subject_id
       ctep_disease_code: $ctep_disease_code
-      snomed_disease_code: $snomed_disease_code
+      stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
       reported_gender: $reported_gender
@@ -394,7 +394,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     ){
       subject_id,
       ctep_disease_code,
-      snomed_disease_code,
+      stage_of_disease,
       tumor_grade,
       age_at_diagnosis,
       sex,
@@ -413,7 +413,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
   query biospecimenOverview(
     $subject_id: [String],
     $ctep_disease_code: [String],
-    $snomed_disease_code: [String],
+    $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
     $reported_gender: [String],
@@ -435,7 +435,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     biospecimenOverview(
       subject_id: $subject_id
       ctep_disease_code: $ctep_disease_code
-      snomed_disease_code: $snomed_disease_code
+      stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
       reported_gender: $reported_gender
@@ -456,7 +456,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     ){
       subject_id,
       ctep_disease_code,
-      snomed_disease_code,
+      stage_of_disease,
       primary_disease_site,
       specimen_id,
       parent_specimen_id,
@@ -474,7 +474,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
   query fileOverview(
     $subject_id: [String],
     $ctep_disease_code: [String],
-    $snomed_disease_code: [String],
+    $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
     $reported_gender: [String],
@@ -496,7 +496,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     fileOverview(
       subject_id: $subject_id
       ctep_disease_code: $ctep_disease_code
-      snomed_disease_code: $snomed_disease_code
+      stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
       reported_gender: $reported_gender
@@ -1612,7 +1612,7 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'snomed_disease_code',
+        dataField: 'stage_of_disease',
         header: 'Stage of Disease',
         display: true,
         tooltipText: 'sort',
@@ -1746,7 +1746,7 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'snomed_disease_code',
+        dataField: 'stage_of_disease',
         header: 'Stage of Disease',
         display: true,
         tooltipText: 'sort',
