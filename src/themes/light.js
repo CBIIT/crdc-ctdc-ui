@@ -36,6 +36,7 @@ export default {
     fontFamilyRaleway: "'Raleway', sans-serif",
     fontFamilyInter: '"Inter", sans-serif',
     fontFamilyNunitoSansRegular: 'Nunito Sans Regular',
+    fontFamilyNunito: 'Nunito',
     fontFamilyNunitoSansBold: 'Nunito Sans Bold',
     drawerWidth: '240px',
     widgetDivider: '#E2E7EC',

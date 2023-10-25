@@ -49,7 +49,7 @@ export const globalStatsData = [
   {
     statTitle: 'TRIALS',
     type: 'field',
-    statAPI: 'numberOfTrials',
+    statAPI: 'numberOfStudies',
     statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-explore-stats-bar-icons/ctdc/images/svg/ExploreStatsBarTrialsIcon.svg',
     statIconAlt: 'TRIALS Stats Bar Icon',
   },
@@ -77,7 +77,7 @@ export const globalStatsData = [
   {
     statTitle: 'BIOSPECIMENS',
     type: 'field',
-    statAPI: 'numberOfBiospecimens',
+    statAPI: 'numberOfSpecimens',
     statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-explore-stats-bar-icons/ctdc/images/svg/ExploreStatsBarBiospecimensIcon.svg',
     statIconAlt: 'BIOSPECIMENS Stats Bar Icon',
   },
@@ -93,10 +93,10 @@ export const globalStatsData = [
 // --------------- GraphQL query - Retrieve stats details --------------
 export const GET_GLOBAL_STATS_DATA_QUERY = gql`
 {
-  numberOfTrials
+  numberOfStudies
   numberOfParticipants
   numberOfDiagnoses
   numberOfTargetedTherapies
-  numberOfBiospecimens
+  numberOfSpecimens
   numberOfFiles
 }`;
