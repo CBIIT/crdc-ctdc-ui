@@ -141,10 +141,11 @@ export default (theme) => ({
   },
   downloadFileManifestTooltip: {
     fontFamily: 'Nunito',
+  backgroundColor:'white',
     fontStyle: 'normal',
     fontWeight: 500,
     fontSize: '12px',
-    color: '#ffffff',
+    color: '#000',
     lineHeight: '15px',
   },
   listItemText: { textWrap: 'balance', padding: '0px' },
