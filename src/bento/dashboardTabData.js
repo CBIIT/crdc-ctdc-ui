@@ -6,14 +6,15 @@ import { dataFormatTypes } from '@bento-core/table';
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
-  icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
+  icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-tooltip-icon/ctdc/images/svg/ExploreAddFileTooltipIcon.svg',
   alt: 'tooltipIcon',
   0: 'Add selected files to My Files',
   1: 'Add selected files to My Files',
   2: 'Add selected files to My Files',
   Participants: 'Add selected files to My Files',
-  Samples: 'Add selected files to My Files',
+  Biospecimens: 'Add selected files to My Files',
   Files: 'Add selected files to My Files',
+  clsName: 'add_selected_file_tooltip_icon',
   arrow: true,
   styles: {
     border: '#03A383 1px solid',
@@ -21,12 +22,17 @@ export const tooltipContent = {
 };
 // --------------- Tooltip configuration --------------
 export const selectAllToolTip = {
-  icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Tooltip.SpeechBubble.svg',
+  icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-tooltip-icon/ctdc/images/svg/ExploreAddFileTooltipIcon.svg',
   alt: 'tooltipIcon',
-  0: 'Add all filtered files to My Filess',
+  Participants: 'Add all filtered files to My Files',
+  Biospecimens: 'Add all filtered files to My Files',
+  Files: 'Add all filtered files to My Files',
+  0: 'Add all filtered files to My Files',
   1: 'Add all filtered files to My Files',
   2: 'Add all filtered files to My Files',
   3: 'Add all filtered files to My Files',
+  clsName: 'addAllTooltip',
+  arrow: true,
 };
 // --------------- Dahboard Table external link configuration --------------
 // Ideal size for externalLinkIcon is 16x16 px
