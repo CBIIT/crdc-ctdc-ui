@@ -56,6 +56,19 @@ const Overview = ({
     if(a > b) { val = 1; }
     return val;
   }
+  
+  /* 
+    This function repalces '*' with ',' because
+    there are caseses where the database might have 
+   '*' separeted data
+    */
+  const separetByCommaIfnot = (imageList) => {
+    if(imageList.includes("*")){
+      return imageList.split("*").join(",");
+    }
+
+    return imageList;
+}
 
   return (
     <OverviewThemeProvider>
@@ -224,7 +237,7 @@ const Overview = ({
                           </span>
 
                           <span className={classes.imageValue}>
-                            {image.image_type_included}
+                            {separetByCommaIfnot(image.image_type_included)}
                           </span>
                         </div>
                       ))}
@@ -346,15 +359,17 @@ const styles = (theme) => ({
   },
   detailContainerHeaderText: {
     fontFamily: theme.custom.fontFamilyInter,
-    fontSize: '16px',
+    fontSize: '18px',
     fontWeight: 400,
     letterSpacing: '0.017em',
-    color: '#0696C9',
+    color: '#0296C9',
     textTransform: 'uppercase',
   },
   content: {
-    fontSize: '14px',
-    fontFamily: theme.custom.fontFamilyNunitoSansRegular
+    fontSize: '16px',
+    fontFamily: theme.custom.fontFamilyNunito,
+    fontWeight: 400,
+    color: '#000'
   },
   scrollDownText: {
     color: '#838383',
@@ -426,7 +441,9 @@ const styles = (theme) => ({
   link: {
     color: '#990099',
     textDecoration: 'none',
-    fontSize: '14px',
+    fontSize: '16px',
+    fontWeight: 400,
+    fontFamily: theme.custom.fontFamilyNunito
   },
   externalLinkIcon: {
     marginLeft: '5px'

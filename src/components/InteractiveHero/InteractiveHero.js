@@ -64,11 +64,11 @@ const DiagnosesActiveText = ({ classes, heroData }) => {
         {' '}
         DIAGNOSES
       </div>
-      {diagnosisData[0] ? (
+      {diagnosisData[5] ? (
       <div className={classes.blueText}>
-        {diagnosisData[0].subjects}
+        {diagnosisData[5].subjects}
         {' '}
-        {diagnosisData[0].group}
+        {diagnosisData[5].group}
       </div>):""
       }
       

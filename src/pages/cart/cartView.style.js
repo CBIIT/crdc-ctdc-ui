@@ -2,7 +2,7 @@ export default () => ({
   myFilesWrapper: {
     border: '#03A383 4px solid',
     borderRadius: '35px',
-    marginTop: '200px',
+    marginTop: '60px',
     marginBottom: '80px',
     marginLeft: '3%',
     marginRight: '3%',
