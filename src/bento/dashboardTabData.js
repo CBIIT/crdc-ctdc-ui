@@ -1693,7 +1693,7 @@ export const tabContainers = [
     name: 'Biospecimens',
     dataField: 'dataSample',
     api: GET_BIOSPECIMENS_OVERVIEW_QUERY,
-    count: 'numberOfBiospecimens',
+    count: 'numberOfSpecimens',
     paginationAPIField: 'biospecimenOverview',
     dataKey: 'specimen_id',
     defaultSortField: 'specimen_id',
