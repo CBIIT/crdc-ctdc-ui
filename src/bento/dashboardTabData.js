@@ -8,13 +8,11 @@ import { dataFormatTypes } from '@bento-core/table';
 export const tooltipContent = {
   icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-tooltip-icon/ctdc/images/svg/ExploreAddFileTooltipIcon.svg',
   alt: 'tooltipIcon',
-  0: 'Add selected files to My Files',
-  1: 'Add selected files to My Files',
-  2: 'Add selected files to My Files',
+  tooltipText: 'Add selected files to My Files',
   Participants: 'Add selected files to My Files',
   Biospecimens: 'Add selected files to My Files',
   Files: 'Add selected files to My Files',
-  clsName: 'add_selected_file_tooltip_icon',
+  clsName: 'addSelectedFileTooltip',
   arrow: true,
   styles: {
     border: '#03A383 1px solid',
@@ -24,13 +22,10 @@ export const tooltipContent = {
 export const selectAllToolTip = {
   icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-tooltip-icon/ctdc/images/svg/ExploreAddFileTooltipIcon.svg',
   alt: 'tooltipIcon',
+  tooltipText: 'Add all filtered files to My Files',
   Participants: 'Add all filtered files to My Files',
   Biospecimens: 'Add all filtered files to My Files',
   Files: 'Add all filtered files to My Files',
-  0: 'Add all filtered files to My Files',
-  1: 'Add all filtered files to My Files',
-  2: 'Add all filtered files to My Files',
-  3: 'Add all filtered files to My Files',
   clsName: 'addAllTooltip',
   arrow: true,
 };
