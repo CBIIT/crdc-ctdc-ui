@@ -1,17 +1,18 @@
 export const customTheme = {
   MuiTooltip: {
     tooltip: {
+      border: '#C3C3C3 1px solid',
       backgroundColor: '#ffffff',
-      color: '#1c2023',
+      color: '#223D4C',
       maxWidth: '220px',
       fontSize: '0.75rem',
-      border: '2px solid #a7afb3',
       fontFamily: 'Open Sans',
       fontWeight: '600',
       textAlign: 'left',
       lineHeight: '1.6',
-      padding: '10px 12px',
-      borderRadius: '0px',
+      padding: '10px 15px',
+      borderRadius: '5px',
+      boxShadow: '0px 4px 10px 0px #00000040',
     },
   },
   MuiContainer: {
@@ -35,12 +36,12 @@ export const customTheme = {
         textDecoration: 'none',
       },
       '& img': {
-        width: '41px',
-        paddingRight: '24px',
+        width: '29px',
+        paddingRight: '12px',
         verticalAlign: 'top',
         marginTop: '4px',
         // '&.addAllTooltip': {},
-        // '&.add_selected_file_tooltip_icon': {},
+        // '&.addSelectedFileTooltip': {},
       },
     },
   },
@@ -63,6 +64,7 @@ export const customTheme = {
       },
       '&.add_selected_button': {
         marginRight: '4px',
+        marginLeft: '14px',
       },
       '&.add_selected_button_Participants': {
         backgroundColor: '#067CA5',
