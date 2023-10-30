@@ -93,9 +93,12 @@ export const wrapperConfig = [{
 */
 export const configWrapper = (tab, configs) => {
   const wrpConfig = configs.map((container) => ({
-    ...container,
+    ...container,   
     items: (!container.paginatedTable) ? container.items.map((item) => ({
       ...item,
+      title: (item.role == btnTypes.ADD_ALL_FILES) ?
+        "ADD FILES FOR ALL " + tab.name :
+        "ADD ASSOCIATED FILES FOR ALL " + tab.name,
       addFileQuery: (item.role === btnTypes.ADD_ALL_FILES)
         ? tab.addAllFileQuery : tab.addSelectedFilesQuery,
       dataKey: tab.addFilesRequestVariableKey,
