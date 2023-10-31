@@ -6,20 +6,29 @@ import { dataFormatTypes } from '@bento-core/table';
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
-  icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
+  icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-tooltip-icon/ctdc/images/svg/ExploreAddFileTooltipIcon.svg',
   alt: 'tooltipIcon',
-  0: 'Click button to Add Associated Files associated with the selected Participant(s).',
-  1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
-  2: 'Click button to Add Associated Files.',
-  Participants: 'Click button to Add Associated Files associated with the selected Participant(s).',
-  Samples: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
-  Files: 'Click button to Add Associated Files.',
+  tooltipText: 'Add selected files to My Files',
+  Participants: 'Add selected files to My Files',
+  Biospecimens: 'Add selected files to My Files',
+  Files: 'Add selected files to My Files',
+  clsName: 'addSelectedFileTooltip',
   arrow: true,
   styles: {
     border: '#03A383 1px solid',
   }
 };
-
+// --------------- Tooltip configuration --------------
+export const selectAllToolTip = {
+  icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-tooltip-icon/ctdc/images/svg/ExploreAddFileTooltipIcon.svg',
+  alt: 'tooltipIcon',
+  tooltipText: 'Add all filtered files to My Files',
+  Participants: 'Add all filtered files to My Files',
+  Biospecimens: 'Add all filtered files to My Files',
+  Files: 'Add all filtered files to My Files',
+  clsName: 'addAllTooltip',
+  arrow: true,
+};
 // --------------- Dahboard Table external link configuration --------------
 // Ideal size for externalLinkIcon is 16x16 px
 export const externalLinkIcon = {
@@ -1332,10 +1341,10 @@ query subjectOverview(
 // --------------- GraphQL Query - Add Associated Files under Cases table to Cart ---------------
 export const GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL = gql`
 query search (          
-  $subject_ids: [String],
+  $subject_id: [String],
 ){
   fileIDsFromList (          
-      subject_ids: $subject_ids,
+      subject_id: $subject_id,
   ) 
 }
   `;
@@ -1343,43 +1352,22 @@ query search (
 // --------------- GraphQL Query - Add Associated Files under Samples table to Cart ---------------
 export const GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL = gql`
 query search (          
-  $sample_ids: [String],
+  $sample_id: [String],
 ){
   fileIDsFromList (          
-    sample_ids: $sample_ids,
+    sample_id: $sample_id,
   ) 
 }
   `;
 
 // --------------- GraphQL Query - Add Associated Files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL = gql`
-query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $ctep_disease_codes: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
-  fileOverview(
-    subject_ids: $subject_ids
-    data_file_names: $data_file_names
-    data_file_formats: $data_file_formats
-    data_file_types: $data_file_types
-    data_file_sizes: $data_file_sizes
-    associations: $associations
-    data_file_descriptions: $data_file_descriptions
-    specimen_ids: $specimen_ids
-    ctep_disease_codes: $ctep_disease_codes
-    first: $first
-    offset: $offset
-    order_by: $order_by
-    sort_direction: $sort_direction
-  ) {
-    subject_id
-    data_file_name
-    data_file_format
-    data_file_type
-    data_file_size
-    association
-    data_file_description
-    specimen_id
-    ctep_disease_code
-    __typename
-  }
+query search (          
+  $data_file_name: [String]
+){
+  fileIDsFromList (          
+    data_file_name: $data_file_name
+  ) 
 }
 `;
 
@@ -1493,55 +1481,53 @@ export const GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART = gql`
 // --------------- GraphQL Query - Add all files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART = gql`
 query fileAddAllToCart(
-  $subject_ids: [String],
-  $programs: [String] ,
-  $studies: [String] ,
-  $diagnoses: [String] ,
-  $rc_scores: [String] ,
-  $tumor_sizes: [String] ,
-  $chemo_regimen: [String] ,
-  $tumor_grades: [String] ,
-  $er_status: [String] ,
-  $pr_status: [String] ,
-  $endo_therapies: [String] ,
-  $meno_status: [String] ,
-  $tissue_type: [String],
-  $composition: [String],
-  $association: [String],
-  $file_type: [String],
-  $age_at_index: [Float],
+  $subject_id: [String],
+  $ctep_disease_code: [String],
+  $snomed_disease_code: [String],
+  $tumor_grade: [String],
+  $sex: [String],
+  $reported_gender: [String],
+  $race: [String],
+  $ethnicity: [String],
+  $carcinogen_exposure: [String],
+  $targeted_therapy: [String],
+  $anatomical_collection_site: [String],
+  $specimen_type: [String],
+  $tissue_category: [String],
+  $assessment_timepoint: [String],
+  $data_file_type: [String],
+  $data_file_format: [String],
   $first: Int,
   $offset: Int= 0, 
-  $order_by: String = "file_id",
+  $order_by: String = "data_file_uuid",
   $sort_direction: String = "asc"
  ){
   fileOverview(
-      subject_ids:$subject_ids,
-      programs: $programs,
-      studies: $studies,
-      diagnoses: $diagnoses,
-      rc_scores: $rc_scores,
-      tumor_sizes: $tumor_sizes,
-      chemo_regimen: $chemo_regimen,
-      tumor_grades: $tumor_grades,
-      er_status: $er_status,
-      pr_status: $pr_status,
-      endo_therapies: $endo_therapies,
-      meno_status: $meno_status,
-      tissue_type: $tissue_type,
-      composition: $composition,
-      association: $association,       
-      file_type: $file_type,
-      age_at_index: $age_at_index,
-      first: $first, 
-      offset: $offset, 
-      order_by: $order_by,
-      sort_direction: $sort_direction
+    subject_id: $subject_id
+    ctep_disease_code: $ctep_disease_code
+    snomed_disease_code: $snomed_disease_code
+    tumor_grade: $tumor_grade
+    sex: $sex
+    reported_gender: $reported_gender
+    race: $race
+    ethnicity: $ethnicity
+    carcinogen_exposure: $carcinogen_exposure
+    targeted_therapy: $targeted_therapy
+    anatomical_collection_site: $anatomical_collection_site
+    specimen_type: $specimen_type
+    tissue_category: $tissue_category
+    assessment_timepoint: $assessment_timepoint
+    data_file_type: $data_file_type
+    data_file_format: $data_file_format
+    first: $first
+    offset: $offset
+    order_by: $order_by
+    sort_direction: $sort_direction
   ){
-      file_id,
+      data_file_uuid,
   }
 }
-            `;
+`;
 
 // --------------- GraphQL query - Retrieve files tab details --------------
 export const GET_FILES_NAME_QUERY = gql`
@@ -1685,7 +1671,7 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addFilesRequestVariableKey: 'subject_ids',
+    addFilesRequestVariableKey: 'subject_id',
     addFilesResponseKeys: ['fileIDsFromList'],
     addAllFilesResponseKeys: ['subjectOverview', 'files'],
     addAllFileQuery: GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART,
@@ -1812,7 +1798,7 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addFilesRequestVariableKey: 'specimen_ids',
+    addFilesRequestVariableKey: 'specimen_id',
     addFilesResponseKeys: ['fileIDsFromList'],
     addAllFilesResponseKeys: ['sampleOverview', 'files'],
     addAllFileQuery: GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
@@ -1914,11 +1900,19 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addFilesRequestVariableKey: 'subject_id',
-    addFilesResponseKeys: ['fileOverview','subject_id'],
-    addAllFilesResponseKeys: ['fileOverview','subject_id'],
-    addAllFileQuery: GET_FILES_OVERVIEW_QUERY,
+    // addFilesRequestVariableKey: 'subject_id',
+    // addFilesResponseKeys: ['fileOverview','subject_id'],
+    // addAllFilesResponseKeys: ['fileOverview','subject_id'],
+    // addAllFileQuery: GET_FILES_OVERVIEW_QUERY,
+    // addSelectedFilesQuery: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
+
+    addFilesRequestVariableKey: 'data_file_name',
+    
+    addFilesResponseKeys: ['fileIDsFromList'],
     addSelectedFilesQuery: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
+
+    addAllFilesResponseKeys: ['fileOverview', 'data_file_uuid'],
+    addAllFileQuery: GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART,
   },
 ];
 

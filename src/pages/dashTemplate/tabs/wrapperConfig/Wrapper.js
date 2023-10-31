@@ -3,7 +3,7 @@ import {
   types,
 } from '@bento-core/paginated-table';
 import {
-  tooltipContent,
+  tooltipContent, selectAllToolTip
 } from '../../../../bento/dashboardTabData';
 import { alertMessage } from '../../../../bento/fileCentricCartWorkflowData';
 
@@ -25,16 +25,17 @@ export const wrapperConfig = [{
   clsName: 'container_header',
   items: [
     {
-      title: 'ADD ASSOCIATED FILES FOR ALL',
+      title: 'ADD ALL FILES',
       clsName: 'add_all_button',
       type: types.BUTTON,
       role: btnTypes.ADD_ALL_FILES,
       btnType: btnTypes.ADD_ALL_FILES,
-      conditional: false,
+      tooltipCofig: selectAllToolTip,
+      conditional: true,
       alertMessage,
     },
     {
-      title: 'ADD ASSOCIATED FILES',
+      title: 'ADD SELECTED FILES',
       clsName: 'add_selected_button',
       type: types.BUTTON,
       role: btnTypes.ADD_SELECTED_FILES,
@@ -53,16 +54,17 @@ export const wrapperConfig = [{
   clsName: 'container_footer',
   items: [
     {
-      title: 'ADD ASSOCIATED FILES FOR ALL',
+      title: 'ADD ALL FILES',
       clsName: 'add_all_button',
       type: types.BUTTON,
       role: btnTypes.ADD_ALL_FILES,
       btnType: btnTypes.ADD_ALL_FILES,
+      tooltipCofig: selectAllToolTip,
       conditional: false,
       alertMessage,
     },
     {
-      title: 'ADD ASSOCIATED FILES',
+      title: 'ADD SELECTED FILES',
       clsName: 'add_selected_button',
       type: types.BUTTON,
       role: btnTypes.ADD_SELECTED_FILES,
