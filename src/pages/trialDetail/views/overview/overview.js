@@ -64,7 +64,7 @@ const Overview = ({
     */
   const separetByCommaIfnot = (imageList) => {
     if(imageList.includes("*")){
-      return imageList.replace(/\s/g, "").split("*").join(",");
+      return imageList.replace(/\s/g, "").split("*").join(", ");
     }
 
     return imageList;
