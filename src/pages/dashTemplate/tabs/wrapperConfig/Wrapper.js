@@ -3,7 +3,7 @@ import {
   types,
 } from '@bento-core/paginated-table';
 import {
-  tooltipContent,
+  tooltipContent, tooltipContentAllFile,
 } from '../../../../bento/dashboardTabData';
 import { alertMessage } from '../../../../bento/fileCentricCartWorkflowData';
 
@@ -31,6 +31,7 @@ export const wrapperConfig = [{
       role: btnTypes.ADD_ALL_FILES,
       btnType: btnTypes.ADD_ALL_FILES,
       conditional: false,
+      tooltipCofig: tooltipContentAllFile,
       alertMessage,
     },
     {
@@ -59,6 +60,7 @@ export const wrapperConfig = [{
       role: btnTypes.ADD_ALL_FILES,
       btnType: btnTypes.ADD_ALL_FILES,
       conditional: false,
+      tooltipCofig: tooltipContentAllFile,
       alertMessage,
     },
     {
@@ -99,6 +101,7 @@ export const configWrapper = (tab, configs) => {
       title: (item.role == btnTypes.ADD_ALL_FILES) ?
         "ADD FILES FOR ALL " + tab.name :
         "ADD ASSOCIATED FILES FOR ALL " + tab.name,
+     //   tooltipCofig: item.tooltipCofig.,
       addFileQuery: (item.role === btnTypes.ADD_ALL_FILES)
         ? tab.addAllFileQuery : tab.addSelectedFilesQuery,
       dataKey: tab.addFilesRequestVariableKey,

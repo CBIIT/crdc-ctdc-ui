@@ -11,8 +11,23 @@ export const tooltipContent = {
   0: 'Click button to Add Associated Files associated with the selected Participant(s).',
   1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
   2: 'Click button to Add Associated Files.',
-  Participants: 'Click button to Add Associated Files associated with the selected Participant(s).',
-  Samples: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
+  Participants: 'Add filtered files associated with selected participants(s) to My Files',
+  Biospecimens: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
+  Files: 'Click button to Add Associated Files.',
+  arrow: true,
+  styles: {
+    border: '#03A383 1px solid',
+  }
+};
+
+  export const tooltipContentAllFile = {
+  icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
+  alt: 'tooltipIcon',
+  0: 'Click button to Add Associated Files associated with the selected Participant(s).',
+  1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
+  2: 'Click button to Add Associated Files.',
+  Participants: 'Add filtered files associated with all participants in the current results set to My Files',
+  Biospecimens: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
   Files: 'Click button to Add Associated Files.',
   arrow: true,
   styles: {

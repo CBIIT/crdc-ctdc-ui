@@ -34,12 +34,13 @@ export const customTheme = {
       marginBottom: '10px',
       textTransform: 'uppercase',
       '&.add_all_button': {
-        marginRight: '24px',
+        marginRight: '10px',
         // width: '120px',
         backgroundColor: '#08A383',
       },
       '&.add_selected_button': {
         marginRight: '10px',
+        marginLeft: '10px'
       },
       '&.add_selected_button_Participants': {
         backgroundColor: '#067CA5',
