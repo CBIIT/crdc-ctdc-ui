@@ -1,5 +1,5 @@
 /* eslint-disable no-shadow */
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Grid,
   withStyles,
@@ -19,12 +19,17 @@ import TabPanel from '../../components/Tab/TabPanel';
 import Styles from './studyDetailsStyle';
 import StudyThemeProvider from './studyDetailsThemeConfig';
 import Overview from './views/overview/overview';
+import { globalStatsData } from '../../bento/globalStatsData';
+import StatsView from '../../components/Stats/StatsView';
+import { DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
+import { useApolloClient } from '@apollo/client';
 
 
-const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
+const StudyDetailView = ({ classes, data,statData, isLoading=false, isError=false}) => {
   const studyData = data;
   console.log("Data: ", data)
-
+// alert("ALL: "+ JSON.stringify(statData))
+console.log("STAT DATA: " , statData.data.searchParticipants);
   const stat = {
     numberOfStudies: 1,
     numberOfCases: 100,
@@ -41,6 +46,7 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
     open: false,
     value: 0,
   });
+
 
   function closeSnack() {
     setsnackbarState({ open: false });
@@ -94,7 +100,8 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
         classes={classes}
       />
 
-      <Stats />
+     {/* {(statData.length > 0)? <StatsView data={statData} /> :  <CircularProgress />} */}
+     <StatsView data={statData.data.searchParticipants} /> 
       <div className={classes.container}>
         <div className={classes.header}>
           <div className={classes.logo}>
