@@ -1349,16 +1349,12 @@ query search (
 }
   `;
 
-// --------------- GraphQL Query - Add Associated Files under Samples table to Cart ---------------
-export const GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL = gql`
-query search (          
-  $sample_id: [String],
-){
-  fileIDsFromList (          
-    sample_id: $sample_id,
-  ) 
-}
-  `;
+// --------------- GraphQL Query - Add Associated Files under Biospecimens table to Cart ---------------
+export const GET_ALL_FILEIDS_BIOSPECIMENSTAB_FOR_SELECT_ALL = gql`
+  query search ( $specimen_id: [String] ) {
+    fileIDsFromList ( specimen_id: $specimen_id ) 
+  }
+`;
 
 // --------------- GraphQL Query - Add Associated Files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL = gql`
@@ -1424,59 +1420,60 @@ query subjectsAddAllToCart(
 }
     `;
 
-// --------------- GraphQL Query - Add all files under Samples table to Cart ---------------
-export const GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART = gql`
-    query samplesAddAllToCart(
-      $subject_ids: [String],
-      $sample_ids: [String],
-      $programs: [String] ,
-      $studies: [String] ,
-      $diagnoses: [String] ,
-      $rc_scores: [String] ,
-      $tumor_sizes: [String] ,
-      $chemo_regimen: [String] ,
-      $tumor_grades: [String] ,
-      $er_status: [String] ,
-      $pr_status: [String] ,
-      $endo_therapies: [String] ,
-      $meno_status: [String] ,
-      $tissue_type: [String],
-      $composition: [String],
-      $association: [String],
-      $file_type: [String],
-      $age_at_index: [Float],
-      $first: Int,
-      $offset: Int= 0, 
-      $order_by: String = "file_id",
-      $sort_direction: String = "asc" ){
-      sampleOverview(
-          subject_ids: $subject_ids,
-          sample_ids: $sample_ids,
-          programs: $programs,
-          studies: $studies,
-          diagnoses: $diagnoses,
-          rc_scores: $rc_scores,
-          tumor_sizes: $tumor_sizes,
-          chemo_regimen: $chemo_regimen,
-          tumor_grades: $tumor_grades,
-          er_status: $er_status,
-          pr_status: $pr_status,
-          endo_therapies: $endo_therapies,
-          meno_status: $meno_status,
-          tissue_type: $tissue_type,
-          composition: $composition,
-          association: $association,
-          file_type: $file_type,
-          age_at_index: $age_at_index,
-          first: $first,
-          offset: $offset,
-          order_by: $order_by,
-          sort_direction: $sort_direction
-          ) {
-          files
-      }
+// --------------- GraphQL Query - Add all files under Biospecimens table to Cart ---------------
+export const GET_ALL_FILEIDS_FROM_BIOSPECIMENSTAB_FOR_ADD_ALL_CART = gql`
+  query biospecimenAddAllToCart(
+    $subject_id: [String],
+    $ctep_disease_code: [String],
+    $stage_of_disease: [String],
+    $tumor_grade: [String],
+    $sex: [String],
+    $reported_gender: [String],
+    $race: [String],
+    $ethnicity: [String],
+    $carcinogen_exposure: [String],
+    $targeted_therapy: [String],
+
+    $anatomical_collection_site: [String],
+    $specimen_type: [String],
+    $tissue_category: [String],
+    $assessment_timepoint: [String],
+
+    $data_file_type: [String],
+    $data_file_format: [String],
+
+    $first: Int,
+    $offset: Int= 0, 
+    $order_by: String = "file_id",
+    $sort_direction: String = "asc"
+  ){
+    biospecimenOverview(
+      subject_id: $subject_id
+      ctep_disease_code: $ctep_disease_code
+      stage_of_disease: $stage_of_disease
+      tumor_grade: $tumor_grade
+      sex: $sex
+      reported_gender: $reported_gender
+      race: $race
+      ethnicity: $ethnicity
+      carcinogen_exposure: $carcinogen_exposure
+      targeted_therapy: $targeted_therapy
+      anatomical_collection_site: $anatomical_collection_site
+      specimen_type: $specimen_type
+      tissue_category: $tissue_category
+      assessment_timepoint: $assessment_timepoint
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+
+      first: $first,
+      offset: $offset,
+      order_by: $order_by,
+      sort_direction: $sort_direction
+    ){
+        data_file_uuid
     }
-        `;
+  }
+`;
 
 // --------------- GraphQL Query - Add all files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FROM_FILESTAB_FOR_ADD_ALL_CART = gql`
@@ -1799,10 +1796,12 @@ export const tabContainers = [
       noMatch: 'No Matching Records Found',
     },
     addFilesRequestVariableKey: 'specimen_id',
+
     addFilesResponseKeys: ['fileIDsFromList'],
-    addAllFilesResponseKeys: ['sampleOverview', 'files'],
-    addAllFileQuery: GET_ALL_FILEIDS_FROM_SAMPLETAB_FOR_ADD_ALL_CART,
-    addSelectedFilesQuery: GET_ALL_FILEIDS_SAMPLESTAB_FOR_SELECT_ALL,
+    addSelectedFilesQuery: GET_ALL_FILEIDS_BIOSPECIMENSTAB_FOR_SELECT_ALL,
+
+    addAllFilesResponseKeys: ['biospecimenOverview', 'data_file_uuid'],
+    addAllFileQuery: GET_ALL_FILEIDS_FROM_BIOSPECIMENSTAB_FOR_ADD_ALL_CART,
   },
   {
     name: 'Files',
