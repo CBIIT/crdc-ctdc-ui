@@ -19,6 +19,14 @@ export const customTheme = {
         borderBottom: '1px solid #3E6886',
         textDecoration: 'none',
       },
+      '& img': {
+        width: '29px',
+        paddingRight: '12px',
+        verticalAlign: 'top',
+        marginTop: '4px',
+        // '&.addAllTooltip': {},
+        // '&.addSelectedFileTooltip': {},
+      },
     },
   },
   MuiButton: {
@@ -34,32 +42,33 @@ export const customTheme = {
       marginBottom: '10px',
       textTransform: 'uppercase',
       '&.add_all_button': {
-        marginRight: '24px',
+        marginRight: '4px',
         // width: '120px',
         backgroundColor: '#08A383',
       },
       '&.add_selected_button': {
-        marginRight: '10px',
+        marginRight: '4px',
+        marginLeft: '14px',
       },
       '&.add_selected_button_Participants': {
         backgroundColor: '#067CA5',
       },
       '&.add_selected_button_Biospecimens': {
-        backgroundColor: '#EF660B',
+        backgroundColor: '#067CA5',
       },
       '&.add_selected_button_Files': {
-        backgroundColor: '#0dafec',
+        backgroundColor: '#067CA5',
       },
       '&.Mui-disabled': {
         color: '#fff',
         '&.add_selected_button_Participants': {
-          backgroundColor: '#cef1fd',
+          backgroundColor: '#067CA5',
         },
         '&.add_selected_button_Biospecimens': {
-          backgroundColor: '#f8c19d',
+          backgroundColor: '#067CA5',
         },
         '&.add_selected_button_Files': {
-          backgroundColor: '#cfedf9',
+          backgroundColor: '#067CA5',
         },
       },
       '&.yesBtn': {
