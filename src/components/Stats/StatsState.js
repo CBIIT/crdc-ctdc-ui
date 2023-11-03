@@ -45,7 +45,6 @@ function fetchStats(statQuery) {
   return (dispatch) => client
     .query({
       query: statQuery,
-      context: { clientName: "localService"},
     })
     .then((result) => dispatch(receiveStats(result)))
     .catch((error) => dispatch(errorhandler(error, STATS_QUERY_ERR)));
