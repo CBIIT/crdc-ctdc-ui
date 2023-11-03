@@ -1,3 +1,4 @@
+import { ORIGINAL_DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
 import { GET_GLOBAL_STATS_DATA_QUERY as STATS_QUERY } from '../../bento/globalStatsData';
 import client from '../../utils/graphqlClient';
 
@@ -29,7 +30,7 @@ function receiveStats(json) {
     type: RECIEVE_STATS,
     payload:
     {
-      data: json.data ? json.data : {},
+      data: json.data.searchParticipants ? json.data.searchParticipants : {},
     },
   };
 }
@@ -45,7 +46,6 @@ function fetchStats(statQuery) {
   return (dispatch) => client
     .query({
       query: statQuery,
-      context: { clientName: "mockService"},
     })
     .then((result) => dispatch(receiveStats(result)))
     .catch((error) => dispatch(errorhandler(error, STATS_QUERY_ERR)));

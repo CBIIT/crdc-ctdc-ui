@@ -38,7 +38,7 @@ const CartView = (props) => {
   });
   
   const variables = {};
-  variables.file_ids = filesId;
+  variables.data_file_uuid = filesId;
   return (
     <Grid>
       <Grid item xs={12}>

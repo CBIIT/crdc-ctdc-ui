@@ -25,7 +25,7 @@ export const wrapperConfig = [{
   clsName: 'container_header',
   items: [
     {
-      title: 'ADD ASSOCIATED FILES FOR ALL',
+      title: 'ADD ALL FILES',
       clsName: 'add_all_button',
       type: types.BUTTON,
       role: btnTypes.ADD_ALL_FILES,
@@ -35,7 +35,7 @@ export const wrapperConfig = [{
       alertMessage,
     },
     {
-      title: 'ADD ASSOCIATED FILES',
+      title: 'ADD SELECTED FILES',
       clsName: 'add_selected_button',
       type: types.BUTTON,
       role: btnTypes.ADD_SELECTED_FILES,
@@ -54,7 +54,7 @@ export const wrapperConfig = [{
   clsName: 'container_footer',
   items: [
     {
-      title: 'ADD ASSOCIATED FILES FOR ALL',
+      title: 'ADD ALL FILES',
       clsName: 'add_all_button',
       type: types.BUTTON,
       role: btnTypes.ADD_ALL_FILES,
@@ -64,7 +64,7 @@ export const wrapperConfig = [{
       alertMessage,
     },
     {
-      title: 'ADD ASSOCIATED FILES',
+      title: 'ADD SELECTED FILES',
       clsName: 'add_selected_button',
       type: types.BUTTON,
       role: btnTypes.ADD_SELECTED_FILES,
