@@ -2,10 +2,7 @@ import React from 'react';
 import {AboutBody } from '@bento-core/about';
 import AboutHeader from './aboutHeader';
 import { CircularProgress, withStyles } from '@material-ui/core';
-import Stats from '../../components/Stats/AllStatsController';
 import StatsView from '../../components/Stats/StatsView';
-import { DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
-import { useQuery } from '@apollo/client';
 
 const AboutView = ({ classes, data,statData }) => {
   const getImage = (imgPath, alt) => <img className={classes.img} src={imgPath != null ? imgPath : ''} alt={alt} />;

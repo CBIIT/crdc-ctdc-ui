@@ -28,9 +28,7 @@ import { useApolloClient } from '@apollo/client';
 const StudyDetailView = ({ classes, data,statData, isLoading=false, isError=false}) => {
   const studyData = data;
   console.log("Data: ", data)
-// alert("ALL: "+ JSON.stringify(statData))
-console.log("STAT DATA: " , statData.data.searchParticipants);
-  const stat = {
+ const stat = {
     numberOfStudies: 1,
     numberOfCases: 100,
     numberOfSamples: 100,

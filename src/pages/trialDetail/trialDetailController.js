@@ -14,7 +14,7 @@ const ProgramDetailContainer =  ({ match }) => {
   });
 
   const statData = useQuery(DASHBOARD_QUERY_NEW, {
-    variables: {"subject_ids":["NCT04314401"]},
+    variables: {"studies":["NCT04314401"]},
   });
  
    
