@@ -97,9 +97,7 @@ const SearchBar = () => {
   return (
     <SearchBarContainer>
       <div className="searchBar">
-        <label>
-          <SearchInput id="header-search-bar" type="search" value={localText} onChange={handleTextInputChange} onKeyDown={handleKeyPress} />
-        </label>
+          <SearchInput id="header-search-bar" type="search" value={localText} onChange={handleTextInputChange} onKeyDown={handleKeyPress} aria-label="search"/>
       </div>
       <div role="button" tabIndex={0} className="searchButton" onKeyDown={handleKeyPress} onClick={handleSearch}>Search</div>
     </SearchBarContainer>
