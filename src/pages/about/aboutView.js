@@ -1,11 +1,13 @@
 import React from 'react';
 import {AboutBody } from '@bento-core/about';
 import AboutHeader from './aboutHeader';
-import { withStyles } from '@material-ui/core';
+import { CircularProgress, withStyles } from '@material-ui/core';
 import Stats from '../../components/Stats/AllStatsController';
+
 
 const AboutView = ({ classes, data }) => {
   const getImage = (imgPath, alt) => <img className={classes.img} src={imgPath != null ? imgPath : ''} alt={alt} />;
+
 
   return (
     <>

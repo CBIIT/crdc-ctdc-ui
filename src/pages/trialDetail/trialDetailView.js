@@ -1,5 +1,4 @@
-/* eslint-disable no-shadow */
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Grid,
   withStyles,
@@ -20,27 +19,14 @@ import Styles from './studyDetailsStyle';
 import StudyThemeProvider from './studyDetailsThemeConfig';
 import Overview from './views/overview/overview';
 
-
 const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
   const studyData = data;
-  console.log("Data: ", data)
-
-  const stat = {
-    numberOfStudies: 1,
-    numberOfCases: 100,
-    numberOfSamples: 100,
-    numberOfFiles: 100,
-    numberOfStudyFiles: 100,
-    numberOfPrograms: 100,
-    numberOfAliquots: 100,
-    volumeOfData: 100
-  };
-
 
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
     value: 0,
   });
+
 
   function closeSnack() {
     setsnackbarState({ open: false });
@@ -94,6 +80,7 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
         classes={classes}
       />
 
+     {/* {(statData.length > 0)? <StatsView data={statData} /> :  <CircularProgress />} */}
       <Stats />
       <div className={classes.container}>
         <div className={classes.header}>

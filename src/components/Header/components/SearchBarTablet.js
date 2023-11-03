@@ -101,9 +101,7 @@ const SearchBar = () => {
   return (
     <SearchBarContainer>
       <div className="searchBar">
-        <label>
-          <SearchInput id="header-search-bar" type="search" value={localText} placeholder="" onChange={handleTextInputChange} onKeyDown={handleKeyPress} />
-        </label>
+          <SearchInput id="header-search-bar" type="search" value={localText} placeholder="" onChange={handleTextInputChange} onKeyDown={handleKeyPress} aria-label="search"/>
       </div>
       <div role="button" tabIndex={0} className="searchButton" onKeyDown={handleKeyPress} onClick={handleSearch}><img src={searchIcon} alt="searchIcon" /></div>
     </SearchBarContainer>

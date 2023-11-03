@@ -307,19 +307,19 @@ const FooterTablet = () => {
             }
           </FooterLinksContainer>
           <FooterEmailSignupContainer onSubmit={handleSubmit} ref={emailForm} action="https://public.govdelivery.com/accounts/USNIHNCI/subscribers/qualify" method="post" target="_blank" id="signup" noValidate>
-            <input type="hidden" name="topic_id" id="topic_id" value="USNIHNCI_223" />
+            <input type="hidden" name="topic_id" id="topic_id" value="USNIHNCI_223" aria-label="topic_id"/>
             <div className="signUpTitle">
               Sign up for email updates
             </div>
             <div className={errorClass !== "" ? 'ErrorBorder' : null}>
               <div className="enterTitle">
-                <label htmlFor="email">
+               
                   Enter your email address
                   <div className={errorClass}>
                     {errorClass !== "" ? <div className="enterTitle">Enter a valid email address</div> : null}
-                    <input id="email" type="email" name="email" className="signUpInputBox" value={emailContent} onChange={(e) => handleChange(e)} />
+                      <input id="email" type="email" name="email" className="signUpInputBox" value={emailContent} onChange={(e) => handleChange(e)}  label="signup box" aria-label="email"/>
                   </div>
-                </label>
+               
               </div>
 
             </div>

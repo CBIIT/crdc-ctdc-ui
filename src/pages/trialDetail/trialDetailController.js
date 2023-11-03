@@ -5,11 +5,12 @@ import TrialView from './trialDetailView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { GET_TRIAL_DETAIL_DATA_QUERY } from '../../bento/trialDetailData';
 
-const ProgramDetailContainer = ({ match }) => {
+const ProgramDetailContainer =  ({ match }) => {
   
   const { loading, error, data } = useQuery(GET_TRIAL_DETAIL_DATA_QUERY, {
     variables: { study_short_name: ["CMB"] },
   });
+
 
 
   if (loading) return <CircularProgress />;
@@ -24,3 +25,5 @@ const ProgramDetailContainer = ({ match }) => {
 };
 
 export default ProgramDetailContainer;
+
+
