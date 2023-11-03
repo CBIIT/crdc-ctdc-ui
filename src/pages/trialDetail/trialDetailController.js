@@ -4,12 +4,21 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import TrialView from './trialDetailView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { GET_TRIAL_DETAIL_DATA_QUERY } from '../../bento/trialDetailData';
+import { DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
+import { stat } from 'fs-extra';
 
-const ProgramDetailContainer = ({ match }) => {
+const ProgramDetailContainer =  ({ match }) => {
   
   const { loading, error, data } = useQuery(GET_TRIAL_DETAIL_DATA_QUERY, {
     variables: { study_short_name: ["CMB"] },
   });
+
+  const statData = useQuery(DASHBOARD_QUERY_NEW, {
+    variables: {"studies":["NCT04314401"]},
+  });
+ 
+   
+  
 
 
   if (loading) return <CircularProgress />;
@@ -20,7 +29,9 @@ const ProgramDetailContainer = ({ match }) => {
       </Typography>
     );
   }
-  return <TrialView data={data} />;
+  return <TrialView data={data} statData={statData} />;
 };
 
 export default ProgramDetailContainer;
+
+
