@@ -13,7 +13,6 @@ export const tooltipContent = {
   Biospecimens: 'Add selected files to My Files',
   Files: 'Add selected files to My Files',
   clsName: 'addSelectedFileTooltip',
-  arrow: true,
   styles: {
     border: '#03A383 1px solid',
   }
@@ -27,7 +26,6 @@ export const selectAllToolTip = {
   Biospecimens: 'Add all filtered files to My Files',
   Files: 'Add all filtered files to My Files',
   clsName: 'addAllTooltip',
-  arrow: true,
 };
 // --------------- Dahboard Table external link configuration --------------
 // Ideal size for externalLinkIcon is 16x16 px
