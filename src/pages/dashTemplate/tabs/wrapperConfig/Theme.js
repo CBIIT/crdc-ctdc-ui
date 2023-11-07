@@ -44,31 +44,31 @@ export const customTheme = {
       '&.add_all_button': {
         marginRight: '4px',
         // width: '120px',
-        backgroundColor: '#08A383',
+        backgroundColor: '#067CA5',
       },
       '&.add_selected_button': {
         marginRight: '4px',
         marginLeft: '14px',
       },
       '&.add_selected_button_Participants': {
-        backgroundColor: '#067CA5',
+        backgroundColor: '#06846A',
       },
       '&.add_selected_button_Biospecimens': {
-        backgroundColor: '#067CA5',
+        backgroundColor: '#06846A',
       },
       '&.add_selected_button_Files': {
-        backgroundColor: '#067CA5',
+        backgroundColor: '#06846A',
       },
       '&.Mui-disabled': {
         color: '#fff',
         '&.add_selected_button_Participants': {
-          backgroundColor: '#067CA5',
+          backgroundColor: '#06846A',
         },
         '&.add_selected_button_Biospecimens': {
-          backgroundColor: '#067CA5',
+          backgroundColor: '#06846A',
         },
         '&.add_selected_button_Files': {
-          backgroundColor: '#067CA5',
+          backgroundColor: '#06846A',
         },
       },
       '&.yesBtn': {
