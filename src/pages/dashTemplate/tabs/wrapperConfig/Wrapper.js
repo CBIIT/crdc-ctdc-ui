@@ -6,6 +6,7 @@ import {
   tooltipContent, selectAllToolTip
 } from '../../../../bento/dashboardTabData';
 import { alertMessage } from '../../../../bento/fileCentricCartWorkflowData';
+import { DisplayCustomText } from '../Customize/TableView';
 
 export const layoutConfig = [{
   container: 'buttons',
@@ -93,8 +94,8 @@ export const wrapperConfig = [{
 * 1. addFileQuery - query to addAll files or add selected files on cart
 * 2. responseKeys - provided respose key for addFileQuery
 */
-export const configWrapper = (tab, configs) => {
-  const wrpConfig = configs.map((container) => ({
+export const configWrapper = (tab, wrapperConfig, context, totalRowCount) => {
+  const wrpConfig = wrapperConfig.map((container) => ({
     ...container,
     items: (!container.paginatedTable) ? container.items.map((item) => ({
       ...item,
@@ -103,6 +104,7 @@ export const configWrapper = (tab, configs) => {
       dataKey: tab.addFilesRequestVariableKey,
       responseKeys: (item.role === btnTypes.ADD_ALL_FILES)
         ? tab.addAllFilesResponseKeys : tab.addFilesResponseKeys,
+      DisplayCustomText: (props) => DisplayCustomText({ tab, ...props, totalRowCount }),
     })) : [],
   }));
   return wrpConfig;
