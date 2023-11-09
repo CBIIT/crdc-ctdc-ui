@@ -1541,8 +1541,9 @@ export const tabContainers = [
     dataKey: 'subject_id',
     defaultSortField: 'subject_id',
     defaultSortDirection: 'asc',
-    buttonText: 'Add Associated Files',
     tableID: 'participants_tab_table',
+    addAllButtonText: 'ADD FILES FOR ALL PARTICIPANTS',
+    buttonText: 'ADD FILES FOR SELECTED PARTICIPANTS',
     extendedViewConfig: {
       pagination: true,
       manageViewColumns: {
@@ -1660,6 +1661,8 @@ export const tabContainers = [
     defaultSortField: 'specimen_id',
     defaultSortDirection: 'asc',
     tableID: 'biospecimens_tab_table',
+    addAllButtonText: 'ADD FILES FOR ALL BIOSPECIMENS',
+    buttonText: 'ADD FILES FOR SELECTED BIOSPECIMENS',
     extendedViewConfig: {
       pagination: true,
       manageViewColumns: {
@@ -1789,6 +1792,8 @@ export const tabContainers = [
     count: 'numberOfFiles',
     dataKey: 'data_file_name',
     tableID: 'file_tab_table',
+    addAllButtonText: 'ADD ALL FILES',
+    buttonText: 'ADD SELECTED FILES',
     extendedViewConfig: {
       pagination: true,
       manageViewColumns: {

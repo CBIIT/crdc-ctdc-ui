@@ -89,16 +89,32 @@ export const wrapperConfig = [{
 },
 ];
 
+/**
+* Return title that will be displayed in wrapper buttons
+*/
+const getButtonTitle = (tab, item) => {
+  if (item.role === btnTypes.ADD_ALL_FILES && tab.addAllButtonText) {
+    return tab.addAllButtonText;
+  } if (item.role === btnTypes.ADD_SELECTED_FILES && tab.buttonText) {
+    return tab.buttonText;
+  }
+
+  return item.title;
+};
 
 /**
-* 1. addFileQuery - query to addAll files or add selected files on cart
-* 2. responseKeys - provided respose key for addFileQuery
+* 1. title - The title that will be displayed on the button
+* 2. addFileQuery - query to addAll files or add selected files on cart
+* 3. dataKey - A key used to identify the data variable associated with the add files request.
+* 4. responseKeys - provided respose key for addFileQuery
+* 5. DisplayCustomText - A function that generates custom text for the confirmation message or dialog.
 */
 export const configWrapper = (tab, wrapperConfig, context, totalRowCount) => {
   const wrpConfig = wrapperConfig.map((container) => ({
     ...container,
     items: (!container.paginatedTable) ? container.items.map((item) => ({
       ...item,
+      title: getButtonTitle(tab, item),
       addFileQuery: (item.role === btnTypes.ADD_ALL_FILES)
         ? tab.addAllFileQuery : tab.addSelectedFilesQuery,
       dataKey: tab.addFilesRequestVariableKey,
