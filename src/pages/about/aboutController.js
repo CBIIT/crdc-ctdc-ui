@@ -3,16 +3,12 @@ import yaml from 'js-yaml';
 import axios from 'axios';
 import YAMLData from '../../content/prod/aboutPagesContent.yaml';
 import AboutView from './aboutView';
-import { DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
 import { useQuery } from '@apollo/client';
 
 const About = ({ match }) => {
   const [data, setData] = useState([]);
 
 
-  const statData = useQuery(DASHBOARD_QUERY_NEW, {
-   variables: {"subject_ids":[]},
- });
   useEffect(() => {
     const fetchData = async () => {
       let resultData = [];
@@ -35,7 +31,7 @@ const About = ({ match }) => {
 
   return (
 
-    <AboutView data={data} statData={statData} />
+    <AboutView data={data} />
   );
 };
 export default About;

@@ -35,7 +35,7 @@ export const customTheme = {
     },
     root: {
       color: '#fff',
-      fontSize: '12px',
+      fontSize: '14px',
       marginTop: '6px',
       fontFamily: 'Lato',
       borderRadius: '10px',
@@ -55,10 +55,10 @@ export const customTheme = {
         backgroundColor: '#08A383',
       },
       '&.add_selected_button_Biospecimens': {
-        backgroundColor: '#067CA5',
+        backgroundColor: '#06846A',
       },
       '&.add_selected_button_Files': {
-        backgroundColor: '#067CA5',
+        backgroundColor: '#06846A',
       },
       '&.Mui-disabled': {
         color: '#fff',
@@ -66,23 +66,23 @@ export const customTheme = {
           backgroundColor: '#08a3834f',
         },
         '&.add_selected_button_Biospecimens': {
-          backgroundColor: '#067CA5',
+          backgroundColor: '#06846A',
         },
         '&.add_selected_button_Files': {
-          backgroundColor: '#067CA5',
+          backgroundColor: '#06846A',
         },
       },
       '&.yesBtn': {
         width: '133px',
         height: '45px',
         cursor: 'pointer',
-        background: '#98a19e',
+        background: '#3E74B6',
       },
       '&.noBtn': {
         width: '133px',
         height: '45px',
         cursor: 'pointer',
-        background: '#42779a',
+        background: '#4F5D69',
       },
     },
   },

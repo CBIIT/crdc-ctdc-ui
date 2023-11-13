@@ -8,19 +8,20 @@ export const DisplayCustomText = ({
   tab,
   totalRowCount = 0,
 }) => {
+  console.log("||| DisplayCustomText: ")
   const {
     id,
   } = tab;
   let text = '';
   switch (id) {
-    case 'case_tab':
-      text = `Add all filtered Files for the ${totalRowCount} selected Cases to My Files?`;
+    case 'participants_tab':
+      text = `Add all filtered Files for the ${totalRowCount} selected Participants to My Files?`;
       break;
-    case 'sample_tab':
-      text = `Add all filtered Files for the ${totalRowCount} selected Samples to My Files?`;
+    case 'biospecimens_tab':
+      text = `Add all filtered Files for the ${totalRowCount} selected Biospecimens to My Files?`;
       break;
     case 'file_tab':
-      text = `Add all ${totalRowCount} files to My Files?`;
+      text = `Add all ${totalRowCount} to My Files?`;
       break;
     case 'study_file_tab':
       text = `Add all ${totalRowCount} files to My Files?`;

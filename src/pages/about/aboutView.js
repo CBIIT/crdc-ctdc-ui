@@ -2,16 +2,16 @@ import React from 'react';
 import {AboutBody } from '@bento-core/about';
 import AboutHeader from './aboutHeader';
 import { CircularProgress, withStyles } from '@material-ui/core';
-import StatsView from '../../components/Stats/StatsView';
+import Stats from '../../components/Stats/AllStatsController';
 
-const AboutView = ({ classes, data,statData }) => {
+
+const AboutView = ({ classes, data }) => {
   const getImage = (imgPath, alt) => <img className={classes.img} src={imgPath != null ? imgPath : ''} alt={alt} />;
 
 
   return (
     <>
-    {statData.data? <StatsView data={statData.data.searchParticipants} /> : 
-    <CircularProgress />}
+      <Stats />
       <AboutHeader title={data.title} />
       <AboutBody data={{
           fontFamily: '"Lato Regular", "Open Sans", sans-serif',

@@ -68,7 +68,7 @@ const TabView = (props) => {
   return (
     <TableContextProvider>
       <Wrapper
-        wrapConfig={configWrapper(config, wrapperConfig)}
+        wrapConfig={configWrapper(config, wrapperConfig, "", dashboardStats[config.count])}
         customTheme={customTheme}
         classes={classes}
         section={config.name}
