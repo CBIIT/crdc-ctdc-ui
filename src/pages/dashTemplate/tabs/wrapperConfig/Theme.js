@@ -42,16 +42,17 @@ export const customTheme = {
       marginBottom: '10px',
       textTransform: 'uppercase',
       '&.add_all_button': {
-        marginRight: '4px',
+        marginRight: '10px',
         // width: '120px',
         backgroundColor: '#067CA5',
       },
       '&.add_selected_button': {
-        marginRight: '4px',
-        marginLeft: '14px',
+        marginRight: '10px',
+        marginLeft: '10px',
+        backgroundColor: 'red'
       },
       '&.add_selected_button_Participants': {
-        backgroundColor: '#06846A',
+        backgroundColor: '#08A383',
       },
       '&.add_selected_button_Biospecimens': {
         backgroundColor: '#06846A',
@@ -62,7 +63,7 @@ export const customTheme = {
       '&.Mui-disabled': {
         color: '#fff',
         '&.add_selected_button_Participants': {
-          backgroundColor: '#06846A',
+          backgroundColor: '#08a3834f',
         },
         '&.add_selected_button_Biospecimens': {
           backgroundColor: '#06846A',

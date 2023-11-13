@@ -3,7 +3,7 @@ import {
   types,
 } from '@bento-core/paginated-table';
 import {
-  tooltipContent, selectAllToolTip
+  tooltipContent, selectAllToolTip, tooltipContentAllFile
 } from '../../../../bento/dashboardTabData';
 import { alertMessage } from '../../../../bento/fileCentricCartWorkflowData';
 import { DisplayCustomText } from '../Customize/TableView';
@@ -31,7 +31,7 @@ export const wrapperConfig = [{
       type: types.BUTTON,
       role: btnTypes.ADD_ALL_FILES,
       btnType: btnTypes.ADD_ALL_FILES,
-      tooltipCofig: selectAllToolTip,
+      tooltipCofig: tooltipContentAllFile,
       conditional: true,
       alertMessage,
     },
@@ -60,7 +60,7 @@ export const wrapperConfig = [{
       type: types.BUTTON,
       role: btnTypes.ADD_ALL_FILES,
       btnType: btnTypes.ADD_ALL_FILES,
-      tooltipCofig: selectAllToolTip,
+      tooltipCofig: tooltipContentAllFile,
       conditional: false,
       alertMessage,
     },

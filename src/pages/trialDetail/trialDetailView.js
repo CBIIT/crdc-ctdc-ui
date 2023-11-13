@@ -80,7 +80,6 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
         classes={classes}
       />
 
-     {/* {(statData.length > 0)? <StatsView data={statData} /> :  <CircularProgress />} */}
       <Stats />
       <div className={classes.container}>
         <div className={classes.header}>
