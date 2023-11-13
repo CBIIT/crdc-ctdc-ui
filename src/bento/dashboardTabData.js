@@ -1345,10 +1345,10 @@ export const GET_ALL_FILEIDS_BIOSPECIMENSTAB_FOR_SELECT_ALL = gql`
 // --------------- GraphQL Query - Add Associated Files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL = gql`
 query search (          
-  $data_file_name: [String]
+  $data_file_uuid: [String]
 ){
   fileIDsFromList (          
-    data_file_name: $data_file_name
+    data_file_uuid: $data_file_uuid
   ) 
 }
 `;
@@ -1798,7 +1798,7 @@ export const tabContainers = [
     defaultSortField: 'data_file_name',
     defaultSortDirection: 'asc',
     count: 'numberOfFiles',
-    dataKey: 'data_file_name',
+    dataKey: 'data_file_uuid',
     tableID: 'file_tab_table',
     addAllButtonText: 'ADD ALL FILES',
     buttonText: 'ADD SELECTED FILES',
@@ -1888,13 +1888,8 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    // addFilesRequestVariableKey: 'subject_id',
-    // addFilesResponseKeys: ['fileOverview','subject_id'],
-    // addAllFilesResponseKeys: ['fileOverview','subject_id'],
-    // addAllFileQuery: GET_FILES_OVERVIEW_QUERY,
-    // addSelectedFilesQuery: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
 
-    addFilesRequestVariableKey: 'data_file_name',
+    addFilesRequestVariableKey: 'data_file_uuid',
     
     addFilesResponseKeys: ['fileIDsFromList'],
     addSelectedFilesQuery: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
