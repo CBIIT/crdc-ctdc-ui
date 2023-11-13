@@ -120,7 +120,12 @@ export const configWrapper = (tab, wrapperConfig, context, totalRowCount) => {
       dataKey: tab.addFilesRequestVariableKey,
       responseKeys: (item.role === btnTypes.ADD_ALL_FILES)
         ? tab.addAllFilesResponseKeys : tab.addFilesResponseKeys,
-      DisplayCustomText: (props) => DisplayCustomText({ tab, ...props, totalRowCount }),
+      DisplayCustomText: {component: (props) => DisplayCustomText({ tab, ...props, totalRowCount }),
+        actions:[
+          { label: 'No', className:'noBtn', type:'Negative' },
+          { label: 'Yes', className:'yesBtn', type:'Positive' },
+        ],
+      },
     })) : [],
   }));
   return wrpConfig;
