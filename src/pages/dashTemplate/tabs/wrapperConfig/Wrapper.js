@@ -130,7 +130,7 @@ export const configWrapper = (tab, wrapperConfig, context, totalRowCount) => {
     {
       label: 'Yes',
       className:'yesBtn',
-      type:'Negative'
+      type:'Positive'
     },
 
     ]},
