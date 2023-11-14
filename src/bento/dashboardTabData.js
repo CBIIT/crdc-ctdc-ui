@@ -12,9 +12,8 @@ export const tooltipContent = {
   1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
   2: 'Click button to Add Associated Files.',
   Participants: 'Add filtered files associated with selected participants(s) to My Files',
-  Biospecimens: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
-  Files: 'Click button to Add Associated Files.',
-  arrow: true,
+  Biospecimens: 'Add filtered files associated with selected biospecimen(s) to My Files',
+  Files: 'Add selected files to My Files',
   styles: {
     border: '#03A383 1px solid',
   }
@@ -27,9 +26,8 @@ export const tooltipContent = {
   1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
   2: 'Click button to Add Associated Files.',
   Participants: 'Add filtered files associated with all participants in the current results set to My Files',
-  Biospecimens: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
-  Files: 'Click button to Add Associated Files.',
-  arrow: true,
+  Biospecimens: 'Add filtered files associated with all biospecimens in the current results set to My Files',
+  Files: 'Add all filtered files to My Files',
   styles: {
     border: '#03A383 1px solid',
   }
