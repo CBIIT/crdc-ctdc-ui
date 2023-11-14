@@ -111,6 +111,8 @@ export default (theme) => ({
     fontFamily: 'Raleway, sans-serif',
     paddingLeft: '32px',
     paddingRight: '32px',
+    maxWidth: '1440px',
+    margin: "0 auto",
   },
   content: {
     fontSize: '12px',
@@ -233,11 +235,11 @@ export default (theme) => ({
     borderBottom: '3px solid #990099'
   },
   logo: {
-    position: 'absolute',
     float: 'left',
     width: '94px',
-    top: '298px',
-    left: '-1px'
+    marginTop:'-87px',
+    marginLeft: '-73px',
+    position: 'inherit'
   },
   detailContainer: {
     margin: 'auto',
@@ -249,6 +251,7 @@ export default (theme) => ({
     color: '#000000',
     size: '12px',
     lineHeight: '23px',
+    maxWidth:'1440px',
   },
   headerButtonLink: {
     textDecoration: 'none',
