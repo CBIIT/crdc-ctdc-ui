@@ -1542,7 +1542,7 @@ export const GET_FILE_IDS_FROM_FILE_NAME = gql`
 export const tabContainers = [
   {
     name: 'Participants',
-    dataField: 'dataCase',
+    dataField: 'participant_data_files',
     api: GET_PARTICIPANTS_OVERVIEW_QUERY,
     paginationAPIField: 'participantOverview',
     count: 'numberOfParticipants',
@@ -1655,7 +1655,7 @@ export const tabContainers = [
     },
     addFilesRequestVariableKey: 'subject_id',
     addFilesResponseKeys: ['fileIDsFromList'],
-    addAllFilesResponseKeys: ['subjectOverview', 'files'],
+    addAllFilesResponseKeys: ['participant_data_files', 'data_file_uuid'],
     addAllFileQuery: GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART,
     addSelectedFilesQuery: GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
   },

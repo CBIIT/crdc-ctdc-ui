@@ -194,17 +194,18 @@ query fileOverview($subject_ids: [String], $data_file_names: [String], $data_fil
 // --------------- File table configuration --------------
 
 export const table = {
-  dataField: 'data_file_name',
+  dataField: 'data_file_uuid',
   title: 'myFiles',
   // Value must be one of the 'dataField's in "columns"
-  defaultSortField: 'data_file_name',
+  defaultSortField: 'data_file_uuid',
   // 'asc' or 'desc'
   api: GET_MY_CART_DATA_QUERY,
   defaultSortDirection: 'asc',
   paginationAPIField: 'filesInList',
   paginationAPIFieldDesc: 'filesInList',
+  dataKey:'data_file_uuid',
   tableDownloadCSV: customMyFilesTabDownloadCSV,
-  objectKey: 'fileOverview',
+  objectKey: 'filesInList',
   extendedViewConfig: {
     pagination: true,
     download: {
