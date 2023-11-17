@@ -93,7 +93,7 @@ export const globalStatsData = [
 export const GET_GLOBAL_STATS_DATA_QUERY = gql`
   query search(
     $subject_id: [String],
-     $ctep_disease_code: [String],
+     $snomed_disease_term: [String],
       $stage_of_disease: [String],
        $tumor_grade: [String], 
        $sex: [String], 
@@ -109,7 +109,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
               $data_file_format: [String]) {
     searchParticipants(
       subject_id: $subject_id
-      ctep_disease_code: $ctep_disease_code
+      snomed_disease_term: $snomed_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
