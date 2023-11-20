@@ -189,8 +189,8 @@ export const facetsConfig = [
   {
     section: FILES,
     label: 'File Format',
-    apiPath: 'participantCountByFileFormat',
-    apiForFiltering: 'filterParticipantCountByFileFormat',
+    apiPath: 'dataFileCountByDataFileFormat',
+    apiForFiltering: 'filterDataFileCountByDataFileFormat',
     datafield: 'data_file_format',
     field: GROUP,
     type: InputTypes.CHECKBOX,
