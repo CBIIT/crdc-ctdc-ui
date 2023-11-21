@@ -68,7 +68,7 @@ export const myFilesPageData = {
         type: types.BUTTON,
         role: btnTypes.DOWNLOAD_MANIFEST,
         btnType: btnTypes.DOWNLOAD_MANIFEST,
-        tooltipCofig: tooltipContent,
+        tooltipCofig: tooltipContent
       }],
   },
   {
@@ -88,9 +88,9 @@ export const myFilesPageData = {
   }]
 };
 
-
+// name , drs_url, 
 export const manifestData = {
-  keysToInclude: ['data_file_name ', 'subject_id', 'data_file_uuid', 'data_file_checksum_value', 'specimen_id', 'ctep_disease_code', 'stage_of_disease','tumor_grade', 'age_at_diagnosis', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy', 'primary_disease_site', 'parent_specimen_id','anatomical_collection_site', 'specimen_type','tissue_category','assessment_timepoint'],
+  keysToInclude: ['data_file_name ', 'subject_id', 'data_file_uuid', 'data_file_checksum_value', 'specimen_id', 'snomed_disease_term', 'stage_of_disease','tumor_grade', 'age_at_diagnosis', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy', 'primary_disease_site', 'parent_specimen_id','anatomical_collection_site', 'specimen_type','tissue_category','assessment_timepoint'],
   header: ['name', 'Participant ID', 'File ID', 'Md5sum', 'Biospecimen ID', 'Diagnosis', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Primary Site', 'Parent Biospecimen ID', 'Anatomical Collection Site','Biospecimen Type','Tissue Category','Collection Timepoint','User Comments'],
 };
 
@@ -113,7 +113,7 @@ export const GET_MY_CART_DATA_QUERY = gql`
       subject_id
       specimen_id
       association
-      ctep_disease_code
+      snomed_disease_term
 
       data_file_uuid
       data_file_name
@@ -129,7 +129,7 @@ export const GET_MY_CART_DATA_QUERY = gql`
   }
 `;
 export const GET_MY_CART_DATA_QUERY2 = gql`
-query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $ctep_disease_codes: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
+query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $snomed_disease_terms: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
   fileOverview(
     subject_ids: $subject_ids
     data_file_names: $data_file_names
@@ -139,7 +139,7 @@ query fileOverview($subject_ids: [String], $data_file_names: [String], $data_fil
     associations: $associations
     data_file_descriptions: $data_file_descriptions
     specimen_ids: $specimen_ids
-    ctep_disease_codes: $ctep_disease_codes
+    snomed_disease_terms: $snomed_disease_terms
     first: $first
     offset: $offset
     order_by: $order_by
@@ -153,7 +153,7 @@ query fileOverview($subject_ids: [String], $data_file_names: [String], $data_fil
     association
     data_file_description
     specimen_id
-    ctep_disease_code
+    snomed_disease_term
     __typename
   }
 }
@@ -161,7 +161,7 @@ query fileOverview($subject_ids: [String], $data_file_names: [String], $data_fil
 
 
 export const GET_MY_CART_DATA_QUERY_DESC = gql`
-query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $ctep_disease_codes: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
+query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $snomed_disease_terms: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
   fileOverview(
     subject_ids: $subject_ids
     data_file_names: $data_file_names
@@ -171,7 +171,7 @@ query fileOverview($subject_ids: [String], $data_file_names: [String], $data_fil
     associations: $associations
     data_file_descriptions: $data_file_descriptions
     specimen_ids: $specimen_ids
-    ctep_disease_codes: $ctep_disease_codes
+    snomed_disease_terms: $snomed_disease_terms
     first: $first
     offset: $offset
     order_by: $order_by
@@ -185,7 +185,7 @@ query fileOverview($subject_ids: [String], $data_file_names: [String], $data_fil
     association
     data_file_description
     specimen_id
-    ctep_disease_code
+    snomed_disease_term
     __typename
   }
 }
@@ -197,7 +197,7 @@ export const table = {
   dataField: 'data_file_uuid',
   title: 'myFiles',
   // Value must be one of the 'dataField's in "columns"
-  defaultSortField: 'data_file_uuid',
+  defaultSortField: 'data_file_name',
   // 'asc' or 'desc'
   api: GET_MY_CART_DATA_QUERY,
   defaultSortDirection: 'asc',
@@ -280,7 +280,7 @@ export const table = {
     },
   ],
   tableMsg: {
-    noMatch: 'No Matching Records Found',
+    noMatch: 'No files have been added to the cart',
   },
 };
 

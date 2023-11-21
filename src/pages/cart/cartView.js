@@ -38,7 +38,7 @@ const CartView = (props) => {
   });
   
   const variables = {};
-  variables.data_file_uuid = filesId;
+ variables.data_file_uuid = filesId;
   return (
     <Grid>
       <Grid item xs={12}>
@@ -46,6 +46,7 @@ const CartView = (props) => {
           <CartWrapper
             classes={classes}
             queryVariables={variables}
+            totalRowCount={filesId.length}
           >
             <TableView
               initState={initTblState}

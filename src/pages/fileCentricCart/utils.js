@@ -1,3 +1,5 @@
+import { EqualizerTwoTone } from "@material-ui/icons";
+
 export function createFileName(fileName) {
   const date = new Date();
   const yyyy = date.getFullYear();
@@ -31,7 +33,7 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
     let line = '';
     keysToInclude.map((keyName) => {
       if (line !== '') line += ',';
-      let columnResult = entry[keyName];
+      let columnResult = keyName == 'data_file_uuid'? "drs://nci-crdc.datacommons.io/dg.4DFC/"+ entry[keyName] : entry[keyName];
       if (typeof columnResult === 'string') columnResult.replace(/"/g, '""');
       if (typeof columnResult === 'string' && columnResult.search(/("|,|\n)/g) >= 0) columnResult = `"${columnResult}"`;
       line += columnResult !== null ? columnResult : ' ';

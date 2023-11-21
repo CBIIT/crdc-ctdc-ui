@@ -66,10 +66,10 @@ export const customTheme = {
           backgroundColor: '#08a3834f',
         },
         '&.add_selected_button_Biospecimens': {
-          backgroundColor: '#06846A',
+          backgroundColor: '#08a3834f',
         },
         '&.add_selected_button_Files': {
-          backgroundColor: '#06846A',
+          backgroundColor: '#08a3834f',
         },
       },
       '&.yesBtn': {
