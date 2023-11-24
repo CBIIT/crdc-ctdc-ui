@@ -43,6 +43,7 @@ export const wrapperConfig = [{
       btnType: btnTypes.ADD_SELECTED_FILES,
       tooltipCofig: tooltipContent,
       conditional: true,
+      applyActiveFilter: true,
     }],
 },
 {
@@ -72,6 +73,7 @@ export const wrapperConfig = [{
       btnType: btnTypes.ADD_SELECTED_FILES,
       tooltipCofig: tooltipContent,
       conditional: true,
+      applyActiveFilter: true,
     },
   ],
 },
