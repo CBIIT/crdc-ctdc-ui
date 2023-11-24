@@ -12,9 +12,8 @@ export const tooltipContent = {
   1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
   2: 'Click button to Add Associated Files.',
   Participants: 'Add filtered files associated with selected participants(s) to My Files',
-  Biospecimens: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
-  Files: 'Click button to Add Associated Files.',
-  arrow: true,
+  Biospecimens: 'Add filtered files associated with selected biospecimen(s) to My Files',
+  Files: 'Add selected files to My Files',
   styles: {
     border: '#03A383 1px solid',
   }
@@ -27,9 +26,8 @@ export const tooltipContent = {
   1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
   2: 'Click button to Add Associated Files.',
   Participants: 'Add filtered files associated with all participants in the current results set to My Files',
-  Biospecimens: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
-  Files: 'Click button to Add Associated Files.',
-  arrow: true,
+  Biospecimens: 'Add filtered files associated with all biospecimens in the current results set to My Files',
+  Files: 'Add all filtered files to My Files',
   styles: {
     border: '#03A383 1px solid',
   }
@@ -189,7 +187,7 @@ query search(
       subjects
       __typename
     }
-    filterParticipantCountBySnomedDiseaseTerm {
+    participantCountBySnomedDiseaseTerm {
       group
       subjects
       __typename
@@ -1345,10 +1343,10 @@ export const GET_ALL_FILEIDS_BIOSPECIMENSTAB_FOR_SELECT_ALL = gql`
 // --------------- GraphQL Query - Add Associated Files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL = gql`
 query search (          
-  $data_file_name: [String]
+  $data_file_uuid: [String]
 ){
   fileIDsFromList (          
-    data_file_name: $data_file_name
+    data_file_uuid: $data_file_uuid
   ) 
 }
 `;
@@ -1358,6 +1356,7 @@ export const GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART = gql`
 query participant_data_files(
   $subject_id: [String],
   $snomed_disease_term: [String],
+  $snomed_disease_code: [String],
   $tumor_grade: [String],
   $sex: [String],
   $reported_gender: [String],
@@ -1379,6 +1378,7 @@ query participant_data_files(
   participant_data_files(
       subject_id: $subject_id
       snomed_disease_term: $snomed_disease_term
+      snomed_disease_code: $snomed_disease_code
       tumor_grade: $tumor_grade
       sex: $sex
       reported_gender: $reported_gender
@@ -1797,7 +1797,7 @@ export const tabContainers = [
     defaultSortField: 'data_file_uuid',
     defaultSortDirection: 'asc',
     count: 'numberOfFiles',
-    dataKey: 'data_file_name',
+    dataKey: 'data_file_uuid',
     tableID: 'file_tab_table',
     addAllButtonText: 'ADD ALL FILES',
     buttonText: 'ADD SELECTED FILES',
@@ -1887,13 +1887,8 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    // addFilesRequestVariableKey: 'subject_id',
-    // addFilesResponseKeys: ['fileOverview','subject_id'],
-    // addAllFilesResponseKeys: ['fileOverview','subject_id'],
-    // addAllFileQuery: GET_FILES_OVERVIEW_QUERY,
-    // addSelectedFilesQuery: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
 
-    addFilesRequestVariableKey: 'data_file_name',
+    addFilesRequestVariableKey: 'data_file_uuid',
     
     addFilesResponseKeys: ['fileIDsFromList'],
     addSelectedFilesQuery: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,

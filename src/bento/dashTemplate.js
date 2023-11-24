@@ -32,9 +32,9 @@ export const facetsConfig = [
   {
     section: CASES,
     label: 'Diagnosis',
-    apiPath: 'participantCountByCtepDiseaseCode',
-    apiForFiltering: 'filterParticipantCountByCtepDiseaseCode',
-    datafield: 'ctep_disease_code',
+    apiPath: 'participantCountBySnomedDiseaseTerm',
+    apiForFiltering: 'filterParticipantCountBySnomedDiseaseTerm',
+    datafield: 'snomed_disease_term',
     field: GROUP,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
@@ -189,8 +189,8 @@ export const facetsConfig = [
   {
     section: FILES,
     label: 'File Format',
-    apiPath: 'participantCountByFileFormat',
-    apiForFiltering: 'filterParticipantCountByFileFormat',
+    apiPath: 'dataFileCountByDataFileFormat',
+    apiForFiltering: 'filterDataFileCountByDataFileFormat',
     datafield: 'data_file_format',
     field: GROUP,
     type: InputTypes.CHECKBOX,

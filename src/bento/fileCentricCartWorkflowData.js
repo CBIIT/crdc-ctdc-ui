@@ -138,7 +138,7 @@ query fileOverview($subject_ids: [String], $data_file_names: [String], $data_fil
     associations: $associations
     data_file_descriptions: $data_file_descriptions
     specimen_ids: $specimen_ids
-    snomed_disease_terms: $snomed_disease_terms
+    snomed_disease_term: $snomed_disease_term
     first: $first
     offset: $offset
     order_by: $order_by
@@ -160,7 +160,7 @@ query fileOverview($subject_ids: [String], $data_file_names: [String], $data_fil
 
 
 export const GET_MY_CART_DATA_QUERY_DESC = gql`
-query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $snomed_disease_terms: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
+query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $snomed_disease_term: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
   fileOverview(
     subject_ids: $subject_ids
     data_file_names: $data_file_names

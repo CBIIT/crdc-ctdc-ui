@@ -83,18 +83,18 @@ export default {
     },
     {
       img: instagramIcon,
-      link: '',
+      link: 'https://www.instagram.com/nationalcancerinstitute/',
       description: 'instagramIcon',
     },
     {
       img: youtubeIcon,
-      link: '',
+      link: 'https://www.youtube.com/NCIgov',
       description: 'youtubeIcon',
 
     },
     {
       img: linkedInIcon,
-      link: '',
+      link: 'https://www.linkedin.com/company/nationalcancerinstitute/',
       description: 'linkedInIcon',
 
     }
