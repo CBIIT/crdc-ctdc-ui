@@ -1324,30 +1324,165 @@ query subjectOverview(
 
 // --------------- GraphQL Query - Add Associated Files under Cases table to Cart ---------------
 export const GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL = gql`
-query search (          
+query participant_data_files(
   $subject_id: [String],
-){
-  fileIDsFromList (          
-      subject_id: $subject_id,
-  ) 
+  $snomed_disease_term: [String],
+  $snomed_disease_code: [String],
+  $tumor_grade: [String],
+  $sex: [String],
+  $reported_gender: [String],
+  $race: [String],
+  $ethnicity: [String],
+  $carcinogen_exposure: [String],
+  $targeted_therapy: [String],
+  $anatomical_collection_site: [String],
+  $specimen_type: [String],
+  $tissue_category: [String],
+  $assessment_timepoint: [String],
+  $data_file_type: [String],
+  $data_file_format: [String],
+  $first: Int,
+  $offset: Int,
+  $order_by: String,
+  $sort_direction: String
+) {
+  participant_data_files(
+      subject_id: $subject_id
+      snomed_disease_term: $snomed_disease_term
+      snomed_disease_code: $snomed_disease_code
+      tumor_grade: $tumor_grade
+      sex: $sex
+      reported_gender: $reported_gender
+      race: $race
+      ethnicity: $ethnicity
+      carcinogen_exposure: $carcinogen_exposure
+      targeted_therapy: $targeted_therapy
+      anatomical_collection_site: $anatomical_collection_site
+      specimen_type: $specimen_type
+      tissue_category: $tissue_category
+      assessment_timepoint: $assessment_timepoint
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+      first: $first
+      offset: $offset
+      order_by: $order_by
+      sort_direction: $sort_direction
+) {
+  data_file_uuid
+  __typename
+}
 }
   `;
 
 // --------------- GraphQL Query - Add Associated Files under Biospecimens table to Cart ---------------
 export const GET_ALL_FILEIDS_BIOSPECIMENSTAB_FOR_SELECT_ALL = gql`
-  query search ( $specimen_id: [String] ) {
-    fileIDsFromList ( specimen_id: $specimen_id ) 
+query biospecimenAddAllToCart(
+  $subject_id: [String],
+  $snomed_disease_term: [String],
+  $stage_of_disease: [String],
+  $tumor_grade: [String],
+  $sex: [String],
+  $reported_gender: [String],
+  $race: [String],
+  $ethnicity: [String],
+  $carcinogen_exposure: [String],
+  $targeted_therapy: [String],
+
+  $anatomical_collection_site: [String],
+  $specimen_type: [String],
+  $tissue_category: [String],
+  $assessment_timepoint: [String],
+  $specimen_id: [String],
+
+  $data_file_type: [String],
+  $data_file_format: [String],
+
+  $first: Int,
+  $offset: Int= 0, 
+  $order_by: String = "file_id",
+  $sort_direction: String = "asc"
+){
+  biospecimenOverview(
+    subject_id: $subject_id
+    snomed_disease_term: $snomed_disease_term
+    stage_of_disease: $stage_of_disease
+    tumor_grade: $tumor_grade
+    sex: $sex
+    reported_gender: $reported_gender
+    race: $race
+    ethnicity: $ethnicity
+    carcinogen_exposure: $carcinogen_exposure
+    targeted_therapy: $targeted_therapy
+    
+    anatomical_collection_site: $anatomical_collection_site
+    specimen_type: $specimen_type
+    tissue_category: $tissue_category
+    assessment_timepoint: $assessment_timepoint
+    specimen_id: $specimen_id
+
+    data_file_type: $data_file_type
+    data_file_format: $data_file_format
+
+    first: $first,
+    offset: $offset,
+    order_by: $order_by,
+    sort_direction: $sort_direction
+  ){
+      data_file_uuid
   }
+}
 `;
 
 // --------------- GraphQL Query - Add Associated Files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL = gql`
-query search (          
-  $data_file_uuid: [String]
-){
-  fileIDsFromList (          
-    data_file_uuid: $data_file_uuid
-  ) 
+query fileAddSelectedToCart(
+  $data_file_uuid: [String],
+  $subject_id: [String],
+  $snomed_disease_term: [String],
+  $stage_of_disease: [String],
+  $tumor_grade: [String],
+  $sex: [String],
+  $reported_gender: [String],
+  $race: [String],
+  $ethnicity: [String],
+  $carcinogen_exposure: [String],
+  $targeted_therapy: [String],
+  $anatomical_collection_site: [String],
+  $specimen_type: [String],
+  $tissue_category: [String],
+  $assessment_timepoint: [String],
+  $data_file_type: [String],
+  $data_file_format: [String],
+  $first: Int,
+  $offset: Int= 0, 
+  $order_by: String = "data_file_uuid",
+  $sort_direction: String = "asc"
+ ){
+  fileOverview(
+    data_file_uuid: $data_file_uuid,
+    subject_id: $subject_id
+    snomed_disease_term: $snomed_disease_term
+    stage_of_disease: $stage_of_disease
+    tumor_grade: $tumor_grade
+    sex: $sex
+    reported_gender: $reported_gender
+    race: $race
+    ethnicity: $ethnicity
+    carcinogen_exposure: $carcinogen_exposure
+    targeted_therapy: $targeted_therapy
+    anatomical_collection_site: $anatomical_collection_site
+    specimen_type: $specimen_type
+    tissue_category: $tissue_category
+    assessment_timepoint: $assessment_timepoint
+    data_file_type: $data_file_type
+    data_file_format: $data_file_format
+    first: $first
+    offset: $offset
+    order_by: $order_by
+    sort_direction: $sort_direction
+  ){
+      data_file_uuid,
+  }
 }
 `;
 
@@ -1652,8 +1787,8 @@ export const tabContainers = [
       noMatch: 'No Matching Records Found',
     },
     addFilesRequestVariableKey: 'subject_id',
-    addFilesResponseKeys: ['fileIDsFromList'],
-    addAllFilesResponseKeys: ['subjectOverview', 'files'],
+    addFilesResponseKeys: ['participant_data_files', 'data_file_uuid'],
+    addAllFilesResponseKeys: ['participant_data_files', 'data_file_uuid'],
     addAllFileQuery: GET_ALL_FILEIDS_FROM_CASESTAB_FOR_ADD_ALL_CART,
     addSelectedFilesQuery: GET_ALL_FILEIDS_CASESTAB_FOR_SELECT_ALL,
   },
@@ -1782,7 +1917,7 @@ export const tabContainers = [
     },
     addFilesRequestVariableKey: 'specimen_id',
 
-    addFilesResponseKeys: ['fileIDsFromList'],
+    addFilesResponseKeys: ['biospecimenOverview', 'data_file_uuid'],
     addSelectedFilesQuery: GET_ALL_FILEIDS_BIOSPECIMENSTAB_FOR_SELECT_ALL,
 
     addAllFilesResponseKeys: ['biospecimenOverview', 'data_file_uuid'],
@@ -1889,7 +2024,7 @@ export const tabContainers = [
 
     addFilesRequestVariableKey: 'data_file_uuid',
     
-    addFilesResponseKeys: ['fileIDsFromList'],
+    addFilesResponseKeys: ['fileOverview','data_file_uuid'],
     addSelectedFilesQuery: GET_ALL_FILEIDS_FILESTAB_FOR_SELECT_ALL,
 
     addAllFilesResponseKeys: ['fileOverview', 'data_file_uuid'],
