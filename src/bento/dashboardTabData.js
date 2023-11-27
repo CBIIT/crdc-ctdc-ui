@@ -1402,7 +1402,7 @@ query biospecimenAddAllToCart(
   $order_by: String = "file_id",
   $sort_direction: String = "asc"
 ){
-  biospecimenOverview(
+  biospecimen_data_files(
     subject_id: $subject_id
     snomed_disease_term: $snomed_disease_term
     stage_of_disease: $stage_of_disease
@@ -1564,7 +1564,7 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
     $order_by: String = "file_id",
     $sort_direction: String = "asc"
   ){
-    biospecimenOverview(
+    biospecimen_data_files(
       subject_id: $subject_id
       snomed_disease_term: $snomed_disease_term
       stage_of_disease: $stage_of_disease
@@ -1917,10 +1917,10 @@ export const tabContainers = [
     },
     addFilesRequestVariableKey: 'specimen_id',
 
-    addFilesResponseKeys: ['biospecimenOverview', 'data_file_uuid'],
+    addFilesResponseKeys: ['biospecimen_data_files', 'data_file_uuid'],
     addSelectedFilesQuery: GET_ALL_FILEIDS_BIOSPECIMENS_TAB_FOR_SELECT_ALL,
 
-    addAllFilesResponseKeys: ['biospecimenOverview', 'data_file_uuid'],
+    addAllFilesResponseKeys: ['biospecimen_data_files', 'data_file_uuid'],
     addAllFileQuery: GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART,
   },
   {
