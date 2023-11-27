@@ -1327,7 +1327,7 @@ export const GET_ALL_FILEIDS_PARTICIPANTS_TAB_FOR_SELECT_ALL = gql`
 query participant_data_files(
   $subject_id: [String],
   $snomed_disease_term: [String],
-  $snomed_disease_code: [String],
+  $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
   $reported_gender: [String],
@@ -1349,7 +1349,7 @@ query participant_data_files(
   participant_data_files(
       subject_id: $subject_id
       snomed_disease_term: $snomed_disease_term
-      snomed_disease_code: $snomed_disease_code
+      stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
       reported_gender: $reported_gender
@@ -1491,7 +1491,7 @@ export const GET_ALL_FILEIDS_FROM_PARTICIPANTS_TAB_FOR_ADD_ALL_CART = gql`
 query participant_data_files(
   $subject_id: [String],
   $snomed_disease_term: [String],
-  $snomed_disease_code: [String],
+  $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
   $reported_gender: [String],
@@ -1513,7 +1513,7 @@ query participant_data_files(
   participant_data_files(
       subject_id: $subject_id
       snomed_disease_term: $snomed_disease_term
-      snomed_disease_code: $snomed_disease_code
+      stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
       reported_gender: $reported_gender
