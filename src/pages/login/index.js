@@ -17,16 +17,14 @@ function loginController(props) {
 
   const customConfig = {
     config: {
-      GOOGLE_CLIENT_ID: 'TEST',
-      NIH_CLIENT_ID: 'TEST"',
-      NIH_AUTH_URL: 'https://stsstg.nih.gov/auth/oauth/v2/authorize',
+      GOOGLE_CLIENT_ID: '',
+      NIH_CLIENT_ID: '9daCtorxUg7aJPKFPd2cD4QvWw3AH61lWaKXZqXM',
+      NIH_AUTH_URL: 'https://nci-crdc-staging.datacommons.io/user/oauth2/authorize',
     }
   }
-    
   const { Login } = LoginGenerator();
   const {AuthProvider} = AuthProviderGenerator(customConfig);
 
-  
   return (
     <div className={classes.Container}>
       <Stats />
