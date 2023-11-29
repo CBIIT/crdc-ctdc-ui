@@ -4,15 +4,15 @@ import { headerData } from '../../../config/globalHeaderData';
 
 const LogoArea = styled.div`
     display: flex;
-
+    height: 110px;
     img {
       width: fit-content;
-      height: 100px;
-      margin-left: -23px;
+      height: 70px;
+      max-width: 484px;
     }
 
     .logoContainer {
-      margin-top: 35px;
+      margin-top: 50px;
     }
 
 `;
