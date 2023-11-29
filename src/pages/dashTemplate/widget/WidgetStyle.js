@@ -103,6 +103,11 @@ const styles = (theme) => ({
   },
   checked: {},
   track: {},
+  title: {
+    maxWidth: '200px',
+    textAlign: 'center',
+    margin: '0 auto',
+  }
 });
 
 export default styles;

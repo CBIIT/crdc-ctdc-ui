@@ -50,10 +50,10 @@ const LandingController = ({ classes, heroData }) => (
               <div className={classes.aboutContainer}>
                 <Link to='/purpose' className={classes.link}>
                   <div className={classes.CTDCHeader}>
-                    About the Clinical Trial Data Commons <span className={classes.CTDCWords}>(CTDC)</span>
+                    About the Clinical and Translational Data Commons <span className={classes.CTDCWords}>(CTDC)</span>
                   </div>
                   <div className={classes.aboutContent}>
-                    The Clinical Trial Data Commons (CTDC) was established to allow expanded access to,
+                    The Clinical and Translational Data Commons (CTDC) was established to allow expanded access to,
                     and exploration of, data collected from NCI-sponsored clinical trials to advance
                     cancer research. The CTDC is part of NCI's Cancer Research Data Commons (CRDC).
                   </div>
