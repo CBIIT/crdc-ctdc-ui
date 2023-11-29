@@ -17,7 +17,7 @@ function loginController(props) {
 
   const customConfig = {
     config: {
-      GOOGLE_CLIENT_ID: '',
+      GOOGLE_CLIENT_ID: 'x',
       NIH_CLIENT_ID: '9daCtorxUg7aJPKFPd2cD4QvWw3AH61lWaKXZqXM',
       NIH_AUTH_URL: 'https://nci-crdc-staging.datacommons.io/user/oauth2/authorize',
     }
