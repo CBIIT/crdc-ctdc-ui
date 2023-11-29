@@ -124,7 +124,7 @@ export const SEARCH_PAGE_RESULT_MODEL_PUBLIC = gql`
     }
 `;
 
-/** End of public searches */
+/** End of public searches */  /// -- AutoComplete
 
 export const SEARCH = gql`
     query globalSearch($input: String){
@@ -344,7 +344,7 @@ export async function queryAutocompleteAPI(inputValue, isPublic) {
       input: inputValue,
     },
     context: {
-      clientName: isPublic ? 'publicService' : '',
+      clientName: isPublic ? 'publicService' : 'CTDC_OLD_SERVICE',
     },
   })
     .then((result) => (isPublic ? result.data.publicGlobalSearch : result.data.globalSearch))
@@ -366,7 +366,7 @@ export async function queryCountAPI(inputValue, isPublic) {
       input: inputValue,
     },
     context: {
-      clientName: isPublic ? 'publicService' : '',
+      clientName: isPublic ? 'publicService' : 'CTDC_OLD_SERVICE',
     },
   })
     .then((result) => (isPublic ? result.data.publicGlobalSearch : result.data.globalSearch))
@@ -387,7 +387,7 @@ export async function queryResultAPI(datafield, input, isPublic) {
     query: getResultQueryByField(datafield, isPublic),
     variables: input,
     context: {
-      clientName: isPublic ? 'publicService' : '',
+      clientName: isPublic ? 'publicService' : 'CTDC_OLD_SERVICE',
     },
   })
     .then((result) => (isPublic ? result.data.publicGlobalSearch : result.data.globalSearch))
