@@ -79,12 +79,7 @@ export const myFilesPageData = {
     container: 'buttons',
     size: 'xl',
     clsName: 'container_footer',
-    items: [
-      {
-        clsName: 'manifest_comments',
-        type: types.TEXT_INPUT,
-        placeholder: 'Please add a description for the CSV file you are about to download.',
-      }],
+    items: [],
   }]
 };
  
@@ -94,7 +89,7 @@ export const manifestData = {
 };
 
 // --------------- GraphQL query - Retrieve selected cases info --------------
-export const GET_MY_CART_DATA_QUERY2 = gql`
+export const GET_MY_CART_DATA_QUERY = gql`
   query filesInList(
     $data_file_uuid: [String],
     $offset: Int = 0,
@@ -108,26 +103,35 @@ export const GET_MY_CART_DATA_QUERY2 = gql`
       first: $first,
       order_by: $order_by,
       sort_direction: $sort_direction
-    ){
-      subject_id
-      specimen_id
-      association
-      snomed_disease_term
-
-      data_file_uuid
-      data_file_name
-      data_file_type
-      data_file_description
+    ){ data_file_name
       data_file_format
+      data_file_type
       data_file_size
+      association
+      data_file_description
+      subject_id
+      primary_disease_site
+      specimen_id
+      snomed_disease_term
+      data_file_uuid
+      stage_of_disease
+      tumor_grade
+      age_at_enrollment
+      sex
+      reported_gender
+      race
       data_file_checksum_value
-      data_file_checksum_type
-      data_file_compression_status
-      data_file_location
-    }
+      ethnicity
+      carcinogen_exposure
+      targeted_therapy
+      anatomical_collection_site
+      specimen_type
+      tissue_category
+      assessment_timepoint
+   }
   }
 `;
-export const GET_MY_CART_DATA_QUERY = gql`
+export const GET_MY_CART_DATA_QUERY2 = gql`
 query fileOverview(
   $data_file_uuid: [String]
   $offset: Int = 0,
@@ -212,11 +216,11 @@ export const table = {
   // 'asc' or 'desc'
   api: GET_MY_CART_DATA_QUERY,
   defaultSortDirection: 'asc',
-  paginationAPIField: 'fileOverview',
-  paginationAPIFieldDesc: 'fileOverview',
+  paginationAPIField: 'filesInList',
+  paginationAPIFieldDesc: 'filesInList',
   dataKey:'data_file_uuid',
   tableDownloadCSV: customMyFilesTabDownloadCSV,
-  objectKey: 'fileOverview',
+  objectKey: 'filesInList',
   extendedViewConfig: {
     pagination: true,
     download: {
