@@ -1675,7 +1675,7 @@ export const GET_FILE_IDS_FROM_FILE_NAME = gql`
 export const tabContainers = [
   {
     name: 'Participants',
-    dataField: 'dataCase',
+    dataField: 'participant_data_files',
     api: GET_PARTICIPANTS_OVERVIEW_QUERY,
     paginationAPIField: 'participantOverview',
     count: 'numberOfParticipants',
@@ -1685,6 +1685,7 @@ export const tabContainers = [
     tableID: 'participants_tab_table',
     addAllButtonText: 'ADD FILES FOR ALL PARTICIPANTS',
     buttonText: 'ADD FILES FOR SELECTED PARTICIPANTS',
+    cartWillFull: true,
     extendedViewConfig: {
       pagination: true,
       manageViewColumns: {
@@ -1928,7 +1929,7 @@ export const tabContainers = [
     dataField: 'dataFile',
     api: GET_FILES_OVERVIEW_QUERY,
     paginationAPIField: 'fileOverview',
-    defaultSortField: 'data_file_name',
+    defaultSortField: 'data_file_uuid',
     defaultSortDirection: 'asc',
     count: 'numberOfFiles',
     dataKey: 'data_file_uuid',

@@ -68,7 +68,7 @@ export const myFilesPageData = {
         type: types.BUTTON,
         role: btnTypes.DOWNLOAD_MANIFEST,
         btnType: btnTypes.DOWNLOAD_MANIFEST,
-        tooltipCofig: tooltipContent,
+        tooltipCofig: tooltipContent
       }],
   },
   {
@@ -79,19 +79,13 @@ export const myFilesPageData = {
     container: 'buttons',
     size: 'xl',
     clsName: 'container_footer',
-    items: [
-      {
-        clsName: 'manifest_comments',
-        type: types.TEXT_INPUT,
-        placeholder: 'Please add a description for the CSV file you are about to download.',
-      }],
+    items: [],
   }]
 };
-
-
+ 
 export const manifestData = {
-  keysToInclude: ['data_file_name ', 'subject_id', 'data_file_uuid', 'data_file_checksum_value', 'specimen_id', 'snomed_disease_term', 'stage_of_disease','tumor_grade', 'age_at_diagnosis', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy', 'primary_disease_site', 'parent_specimen_id','anatomical_collection_site', 'specimen_type','tissue_category','assessment_timepoint'],
-  header: ['name', 'Participant ID', 'File ID', 'Md5sum', 'Biospecimen ID', 'Diagnosis', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Primary Site', 'Parent Biospecimen ID', 'Anatomical Collection Site','Biospecimen Type','Tissue Category','Collection Timepoint','User Comments'],
+  keysToInclude: ['data_file_name', 'data_file_uuid', 'subject_id', 'data_file_checksum_value','User_Comment', 'specimen_id', 'snomed_disease_term','primary_disease_site', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site', 'specimen_type','tissue_category','assessment_timepoint'],
+  header: ['name', 'drs_uri', 'Participant ID', 'Md5sum','User Comment', 'Biospecimen ID', 'Diagnosis','Primary Site', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Biospecimen Type','Tissue Category','Collection Timepoint'],
 };
 
 // --------------- GraphQL query - Retrieve selected cases info --------------
@@ -109,55 +103,76 @@ export const GET_MY_CART_DATA_QUERY = gql`
       first: $first,
       order_by: $order_by,
       sort_direction: $sort_direction
-    ){
-      subject_id
-      specimen_id
-      association
-      snomed_disease_term
-
-      data_file_uuid
-      data_file_name
-      data_file_type
-      data_file_description
+    ){ data_file_name
       data_file_format
+      data_file_type
       data_file_size
+      association
+      data_file_description
+      subject_id
+      primary_disease_site
+      specimen_id
+      snomed_disease_term
+      data_file_uuid
+      stage_of_disease
+      tumor_grade
+      age_at_enrollment
+      sex
+      reported_gender
+      race
       data_file_checksum_value
-      data_file_checksum_type
-      data_file_compression_status
-      data_file_location
-    }
+      ethnicity
+      carcinogen_exposure
+      targeted_therapy
+      anatomical_collection_site
+      specimen_type
+      tissue_category
+      assessment_timepoint
+   }
   }
 `;
 export const GET_MY_CART_DATA_QUERY2 = gql`
-query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $snomed_disease_term: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
+query fileOverview(
+  $data_file_uuid: [String]
+  $offset: Int = 0,
+  $first: Int = 10,
+  $order_by:String ="data_file_name",
+  $sort_direction:String="asc"
+){
   fileOverview(
-    subject_ids: $subject_ids
-    data_file_names: $data_file_names
-    data_file_formats: $data_file_formats
-    data_file_types: $data_file_types
-    data_file_sizes: $data_file_sizes
-    associations: $associations
-    data_file_descriptions: $data_file_descriptions
-    specimen_ids: $specimen_ids
-    snomed_disease_term: $snomed_disease_term
-    first: $first
-    offset: $offset
-    order_by: $order_by
-    sort_direction: $sort_direction
-  ) {
-    subject_id
+    data_file_uuid: $data_file_uuid
+    offset: $offset,
+      first: $first,
+      order_by: $order_by,
+      sort_direction: $sort_direction
+  ){
     data_file_name
     data_file_format
     data_file_type
     data_file_size
     association
     data_file_description
+    subject_id
+    primary_disease_site
     specimen_id
     snomed_disease_term
-    __typename
+    data_file_uuid
+    stage_of_disease
+    tumor_grade
+    age_at_enrollment
+    sex
+    reported_gender
+    race
+    data_file_checksum_value
+    ethnicity
+    carcinogen_exposure
+    targeted_therapy
+    anatomical_collection_site
+    specimen_type
+    tissue_category
+    assessment_timepoint
   }
-}
-`;
+}`;
 
 
 export const GET_MY_CART_DATA_QUERY_DESC = gql`
@@ -171,7 +186,7 @@ query fileOverview($subject_ids: [String], $data_file_names: [String], $data_fil
     associations: $associations
     data_file_descriptions: $data_file_descriptions
     specimen_ids: $specimen_ids
-    snomed_disease_term: $snomed_disease_term
+    snomed_disease_terms: $snomed_disease_terms
     first: $first
     offset: $offset
     order_by: $order_by
@@ -194,7 +209,7 @@ query fileOverview($subject_ids: [String], $data_file_names: [String], $data_fil
 // --------------- File table configuration --------------
 
 export const table = {
-  dataField: 'data_file_name',
+  dataField: 'data_file_uuid',
   title: 'myFiles',
   // Value must be one of the 'dataField's in "columns"
   defaultSortField: 'data_file_name',
@@ -203,8 +218,9 @@ export const table = {
   defaultSortDirection: 'asc',
   paginationAPIField: 'filesInList',
   paginationAPIFieldDesc: 'filesInList',
+  dataKey:'data_file_uuid',
   tableDownloadCSV: customMyFilesTabDownloadCSV,
-  objectKey: 'fileOverview',
+  objectKey: 'filesInList',
   extendedViewConfig: {
     pagination: true,
     download: {
@@ -279,7 +295,7 @@ export const table = {
     },
   ],
   tableMsg: {
-    noMatch: 'No Matching Records Found',
+    noMatch: 'No files have been added to the cart',
   },
 };
 
