@@ -11,6 +11,11 @@ function loginController(props) {
   const { classes } = props;
   const componentProp = { 
     enabledAuthProviders,
+    styles:{
+      LoginButton:{
+        overflow: 'hidden',
+      }
+    },
     authenticationProviders: loginProvidersData,
     AlertMessage,
     };
