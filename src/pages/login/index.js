@@ -12,8 +12,29 @@ function loginController(props) {
   const componentProp = { 
     enabledAuthProviders,
     styles:{
+      Box: {
+          height: '237px',
+          minWidth: '496px',
+          backgroundColor:'#F0F8FA',
+          border: '3px #08A383 solid',
+          borderRadius: '35px'
+      },
+      LoginBoxTitle:{
+        marginTop: '0px'
+      },
+      LoginButtonGroup: {
+       marginTop: '10px'
+      },
       LoginButton:{
         overflow: 'hidden',
+        paddingLeft: '32px',
+        borderRadius: '15px',
+        fontWeight: 'bold',
+        color:'black',
+        width: '256px',
+        height: '48px',
+        border: '1.25px #0A6D59 solid'
+
       }
     },
     authenticationProviders: loginProvidersData,
