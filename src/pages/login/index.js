@@ -10,8 +10,9 @@ import Stats from '../../components/Stats/AllStatsController';
 function loginController(props) {
   const { classes } = props;
   const componentProp = { 
+    headerMessage: "Log in with the following Identity Provider(s)",
     enabledAuthProviders,
-    styles:{
+    styles:{    
       Box: {
           height: '237px',
           minWidth: '496px',
@@ -50,7 +51,6 @@ function loginController(props) {
   }
   const { Login } = LoginGenerator();
   const {AuthProvider} = AuthProviderGenerator(customConfig);
-
   return (
     <div className={classes.Container}>
       <Stats />
