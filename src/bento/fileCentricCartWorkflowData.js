@@ -84,8 +84,8 @@ export const myFilesPageData = {
 };
  
 export const manifestData = {
-  keysToInclude: ['data_file_name', 'data_file_uuid', 'subject_id', 'data_file_checksum_value','User_Comment', 'specimen_id', 'snomed_disease_term','primary_disease_site', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site', 'specimen_type','tissue_category','assessment_timepoint'],
-  header: ['name', 'drs_uri', 'Participant ID', 'Md5sum','User Comment', 'Biospecimen ID', 'Diagnosis','Primary Site', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Biospecimen Type','Tissue Category','Collection Timepoint'],
+  keysToInclude: ['data_file_name', 'data_file_uuid', 'subject_id','data_file_uuid', 'data_file_checksum_value','User_Comment', 'specimen_id', 'snomed_disease_term','primary_disease_site', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site', 'specimen_type','tissue_category','assessment_timepoint'],
+  header: ['name', 'drs_uri', 'Participant ID','File ID', 'Md5sum','User Comment', 'Biospecimen ID', 'Diagnosis','Primary Site', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Biospecimen Type','Tissue Category','Collection Timepoint'],
 };
 
 // --------------- GraphQL query - Retrieve selected cases info --------------
