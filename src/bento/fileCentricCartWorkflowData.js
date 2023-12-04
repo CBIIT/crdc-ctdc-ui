@@ -175,36 +175,46 @@ query fileOverview(
 }`;
 
 
-export const GET_MY_CART_DATA_QUERY_DESC = gql`
-query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $snomed_disease_term: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
-  fileOverview(
-    subject_ids: $subject_ids
-    data_file_names: $data_file_names
-    data_file_formats: $data_file_formats
-    data_file_types: $data_file_types
-    data_file_sizes: $data_file_sizes
-    associations: $associations
-    data_file_descriptions: $data_file_descriptions
-    specimen_ids: $specimen_ids
-    snomed_disease_terms: $snomed_disease_terms
-    first: $first
-    offset: $offset
-    order_by: $order_by
+export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
+  $data_file_uuid: [String],
+  $offset: Int = 0,
+  $first: Int = 10,
+  $order_by:String ="data_file_name",
+  $sort_direction:String="desc"
+){
+  filesInList(
+    data_file_uuid: $data_file_uuid,
+    offset: $offset,
+    first: $first,
+    order_by: $order_by,
     sort_direction: $sort_direction
-  ) {
-    subject_id
-    data_file_name
+  ){ data_file_name
     data_file_format
     data_file_type
     data_file_size
     association
     data_file_description
+    subject_id
+    primary_disease_site
     specimen_id
     snomed_disease_term
-    __typename
-  }
-}
-`;
+    data_file_uuid
+    stage_of_disease
+    tumor_grade
+    age_at_enrollment
+    sex
+    reported_gender
+    race
+    data_file_checksum_value
+    ethnicity
+    carcinogen_exposure
+    targeted_therapy
+    anatomical_collection_site
+    specimen_type
+    tissue_category
+    assessment_timepoint
+ }
+}`;
 
 // --------------- File table configuration --------------
 
