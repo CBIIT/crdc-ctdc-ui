@@ -22,13 +22,10 @@ import {
 async function getAllQueryField(searchText, calcOffset, pageSize, isPublic) {
   const searchResp = await queryCountAPI(searchText, isPublic);
   const custodianConfigForTabData = isPublic ? [{ countField: 'about_count', nameField: 'about_page' }]
-    : [{ countField: 'subject_count', nameField: 'subjects' },
-      { countField: 'sample_count', nameField: 'samples' },
-      { countField: 'file_count', nameField: 'files' },
-      { countField: 'program_count', nameField: 'programs' },
-      { countField: 'study_count', nameField: 'studies' },
-      { countField: 'model_count', nameField: 'model' },
-      { countField: 'about_count', nameField: 'about_page' }];
+    : [{ countField: 'participant_count', nameField: 'participants' },
+      { countField: 'biospecimen_count', nameField: 'biospecimens' },];
+      // { countField: 'model_count', nameField: 'model' },
+      // { countField: 'about_count', nameField: 'about_page' }];
 
   let acc = 0;
   const mapCountAndName = custodianConfigForTabData.map((obj) => {
@@ -50,7 +47,7 @@ async function getAllQueryField(searchText, calcOffset, pageSize, isPublic) {
     };
   }
 
-  return { datafieldValue: isPublic ? 'about_page' : 'subjects', offsetValue: 0 };
+  return { datafieldValue: isPublic ? 'about_page' : 'participants', offsetValue: 0 };
 }
 
 /**
@@ -233,54 +230,24 @@ function searchView(props) {
       value: '1',
     },
     {
-      name: 'Cases',
-      field: 'subjects',
+      name: 'Participants',
+      field: 'participants',
       classes: {
         root: classes.buttonRoot,
         wrapper: classes.tabColor,
       },
-      count: searchCounts.subject_count || 0,
+      count: searchCounts.participant_count || 0,
       value: `${!authCheck() ? 'inactive-' : ''}2`,
     },
     {
-      name: 'Samples',
-      field: 'samples',
+      name: 'Biospecimens',
+      field: 'biospecimens',
       classes: {
         root: classes.buttonRoot,
         wrapper: classes.tabColor,
       },
-      count: searchCounts.sample_count || 0,
+      count: searchCounts.biospecimen_count || 0,
       value: `${!authCheck() ? 'inactive-' : ''}3`,
-    },
-    {
-      name: 'Files',
-      field: 'files',
-      classes: {
-        root: classes.buttonRoot,
-        wrapper: classes.tabColor,
-      },
-      count: searchCounts.file_count || 0,
-      value: `${!authCheck() ? 'inactive-' : ''}4`,
-    },
-    {
-      name: 'Programs',
-      field: 'programs',
-      classes: {
-        root: classes.buttonRoot,
-        wrapper: classes.tabColor,
-      },
-      count: searchCounts.program_count || 0,
-      value: `${!authCheck() ? 'inactive-' : ''}5`,
-    },
-    {
-      name: 'Studies',
-      field: 'studies',
-      classes: {
-        root: classes.buttonRoot,
-        wrapper: classes.tabColor,
-      },
-      count: searchCounts.study_count || 0,
-      value: `${!authCheck() ? 'inactive-' : ''}6`,
     },
     {
       name: 'Data Model',
@@ -290,7 +257,7 @@ function searchView(props) {
         wrapper: classes.tabColor,
       },
       count: searchCounts.model_count || 0,
-      value: `${!authCheck() ? 'inactive-' : ''}7`,
+      value: `${!authCheck() ? 'inactive-' : ''}4`,
     },
     {
       name: 'About',
@@ -300,7 +267,7 @@ function searchView(props) {
         wrapper: classes.tabColor,
       },
       count: searchCounts.about_count || 0,
-      value: '8',
+      value: '5',
     }],
   });
 
