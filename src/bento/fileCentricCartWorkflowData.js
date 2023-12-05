@@ -58,20 +58,7 @@ export const myFilesPageData = {
         },
       ],
     },
-    {
-    container: 'buttons',
-    size: 'xl',
-    clsName: 'container_header',
-    items: [
-      {
-        title: 'Download File Manifest',
-        clsName: 'download_manifest',
-        type: types.BUTTON,
-        role: btnTypes.DOWNLOAD_MANIFEST,
-        btnType: btnTypes.DOWNLOAD_MANIFEST,
-        tooltipCofig: tooltipContent
-      }],
-  },
+  
   {
     container: 'paginatedTable',
     paginatedTable: true,

@@ -30,7 +30,7 @@ const Header = ({
     dispatch(setCartConfig(config));
   }, [queryVariables]);
 
-  myFilesPageData.layout[1].items[0].tooltipCofig.customToolTipComponent = <CustomToolTipContent/>;
+  myFilesPageData.layout[3].items[0].tooltipCofig.customToolTipComponent = <CustomToolTipContent/>;
 
   return (
     <>
