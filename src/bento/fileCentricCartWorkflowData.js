@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { cellTypes, dataFormatTypes } from '@bento-core/table';
 import { types, btnTypes } from '@bento-core/paginated-table';
 import { customMyFilesTabDownloadCSV } from './tableDownloadCSV';
+import CustomFooterMessage from '../pages/cart/tableConfig/CustomFooterMessage';
 
 export const navBarCartData = {
   cartLabel: 'Cart',
@@ -79,8 +80,32 @@ export const myFilesPageData = {
     container: 'buttons',
     size: 'xl',
     clsName: 'container_footer',
-    items: [],
-  }]
+    items: [{
+      clsName: 'manifest_comments',
+      type: types.CUSTOM_ELEM,
+      customViewElem: CustomFooterMessage,
+      text: 'To access and analyze files, select and remove unwanted files, click the "Download File Manifest" button, and upload the resulting manifest file to your Velsera Seven Bridges Cancer Genomics Cloud account. [Note "Velsera Seven Bridges Cancer Genomics Cloud account" should be hyperlinked to https://cgc-accounts.sbgenomics.com/auth/login?next=https%3A%2F%2Fcgc-accounts.sbgenomics.com%2F with external icon ]',
+
+    },{
+      clsName: 'manifest_comments',
+      type: types.TEXT_INPUT,
+      placeholder: 'User Comment',
+    }],
+  },
+  {
+  container: 'buttons',
+  size: 'xl',
+  clsName: 'container_header',
+  items: [
+    {
+      title: 'Download File Manifest',
+      clsName: 'download_manifest',
+      type: types.BUTTON,
+      role: btnTypes.DOWNLOAD_MANIFEST,
+      btnType: btnTypes.DOWNLOAD_MANIFEST,
+      tooltipCofig: tooltipContent
+    }],
+},]
 };
  
 export const manifestData = {
