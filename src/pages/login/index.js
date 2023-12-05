@@ -46,7 +46,7 @@ function loginController(props) {
     config: {
       GOOGLE_CLIENT_ID: 'x',
       NIH_CLIENT_ID: '9daCtorxUg7aJPKFPd2cD4QvWw3AH61lWaKXZqXM',
-      NIH_AUTH_URL: 'https://nci-crdc-staging.datacommons.io/user/oauth2/authorize',
+      NIH_AUTH_URL: 'https://supreme-doodle-gq6eegg.pages.github.io/redirect.html',
     }
   }
   const { Login } = LoginGenerator();
