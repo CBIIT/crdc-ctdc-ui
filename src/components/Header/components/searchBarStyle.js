@@ -52,7 +52,10 @@ export const CUSTOM_STYLES = makeStyles({
       outline: '3px solid #2491ff',
     },
     '& .MuiAutocomplete-inputRoot': {
-      height: '32px',
+      height: '32px', // Default Height for desktop
+      '@media (max-width: 1024px)': {
+        height: '43px', // Height for tablets and below
+      },
       '& .MuiAutocomplete-input': {
         padding: '0px 4px',
       },
@@ -111,6 +114,12 @@ export const CUSTOM_STYLES = makeStyles({
     '&:hover': {
       cursor: 'pointer',
       background: '#004971',
+    },
+     // Style for tablets and below
+    '@media (max-width: 1024px)': {
+      height: '43px',
+      padding: '10px 14px',
+      maxWidth: '48px',
     },
   },
   searchContainer: {
