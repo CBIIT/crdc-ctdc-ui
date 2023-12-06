@@ -127,9 +127,7 @@ const styles = () => ({
       color: '#1B1B1B',
       fontWeight: 500,
       border: '.5px solid #1B1B1B',
-      borderBottom: '0px',
       padding: '0px',
-      background: '#fff',
       '& li': {
         // list item specific styling
       },
