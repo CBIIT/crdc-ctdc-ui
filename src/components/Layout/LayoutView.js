@@ -90,7 +90,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
               ),
             )}
             <Route path="/graphql" component={GraphqlClient} />
-            <LoginRoute path="/login" component={UnderDev} />
+            <LoginRoute path="/login" component={Login} />
             <Route component={Error} />
 
           </Switch>

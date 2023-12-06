@@ -71,7 +71,7 @@ export const customTheme = {
     },
     root: {
       color: '#fff',
-      backgroundColor: '#03a383',
+      backgroundColor: '#1A8CCB',
       fontSize: '0.875rem',
       fontFamily: 'Lato',
       fontWeight: '500',
@@ -80,8 +80,15 @@ export const customTheme = {
       marginBottom: '10px',
       textTransform: 'uppercase',
       '&:hover': {
-        backgroundColor: '#03a383',
+        backgroundColor: '#1a8ccbb3',
       },
+      '&.Mui-disabled': {
+        
+        '&.download_manifest': {
+          backgroundColor: 'grey',
+        },
+      },
+
     },
   },
   MuiTooltip: {
