@@ -23,13 +23,13 @@ export const SEARCH_DATAFIELDS = {
 
 /** used by the Global Search page results */
 export const SEARCH_PAGE_KEYS = {
-  private: [...SEARCH_KEYS.private],
+  private: [...SEARCH_KEYS.private, 'model'],
   public: [],
 };
 
 export const SEARCH_PAGE_DATAFIELDS = {
   public: [],
-  private: [...SEARCH_DATAFIELDS.private],
+  private: [...SEARCH_DATAFIELDS.private, 'node_name'],
 };
 
 /** Public search queries */
@@ -136,6 +136,9 @@ export const SEARCH = gql`
       biospecimens {
         specimen_id
       }
+      model {
+        node_name
+      }
     }
   }
 `;
@@ -233,6 +236,8 @@ export const SEARCH_PAGE_RESULTS = gql`
     ) {
         participant_count
         biospecimen_count
+        model_count
+        about_count
     }
   }
 `;
@@ -251,11 +256,10 @@ export function getResultQueryByField(field, isPublic) {
       return SEARCH_PAGE_RESULT_PARTICIPANTS;
     case 'biospecimens':
       return SEARCH_PAGE_RESULT_BIOSPECIMENS;
-    
-    /*case 'model':
+    case 'model':
       return SEARCH_PAGE_RESULT_MODEL;
     case 'about_page':
-      return isPublic ? SEARCH_PAGE_RESULT_ABOUT_PUBLIC : SEARCH_PAGE_RESULT_ABOUT; */
+      return isPublic ? SEARCH_PAGE_RESULT_ABOUT_PUBLIC : SEARCH_PAGE_RESULT_ABOUT;
     default:
       return SEARCH_PAGE_RESULT_PARTICIPANTS;
   }

@@ -23,9 +23,9 @@ async function getAllQueryField(searchText, calcOffset, pageSize, isPublic) {
   const searchResp = await queryCountAPI(searchText, isPublic);
   const custodianConfigForTabData = isPublic ? [{ countField: 'about_count', nameField: 'about_page' }]
     : [{ countField: 'participant_count', nameField: 'participants' },
-      { countField: 'biospecimen_count', nameField: 'biospecimens' },];
-      // { countField: 'model_count', nameField: 'model' },
-      // { countField: 'about_count', nameField: 'about_page' }];
+      { countField: 'biospecimen_count', nameField: 'biospecimens' },
+      { countField: 'model_count', nameField: 'model' },
+      { countField: 'about_count', nameField: 'about_page' }];
 
   let acc = 0;
   const mapCountAndName = custodianConfigForTabData.map((obj) => {
