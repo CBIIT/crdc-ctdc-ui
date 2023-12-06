@@ -31,12 +31,18 @@ const styles = () => ({
   },
   heroArea: {
     width: '100%',
-    height: '167px',
-    background: '#D9E8F8',
+    height: '185px',
+    background: '#98C0D0',
   },
   autocomplete: {
     margin: '0 auto',
-    paddingTop: '57px',
+    paddingTop: '66px',
+    '& .MuiAutocomplete-inputRoot[class*="Mui-focused"]': {
+      outline: '4px solid #3395CA',
+    },
+    '&:hover .MuiAutocomplete-inputRoot': {
+      outline: '4px solid #3395CA',
+    },
   },
   chipSection: {
     display: 'flex',
@@ -93,41 +99,43 @@ const styles = () => ({
   textFieldRoot: {
     '& .MuiOutlinedInput-root': {
       background: '#fff',
-      paddingLeft: '20px',
+      paddingLeft: '12px',
       paddingTop: '2px',
       paddingBottom: '3px',
-      color: '#1479D3',
+      color: '#2A6EA6',
       fontFamily: 'Lato',
       fontSize: '25px',
+      borderRadius: '0px',
       '& fieldset': {
-        border: '2px solid #747474',
-      },
-      '&:hover fieldset': {
-        border: '2px solid #747474',
+        border: '1px solid #067CA5',
       },
       '&.Mui-focused fieldset': {
-        border: '2px solid #747474',
+        border: '.5px solid #1B1B1B',
       },
     },
   },
-
+  // Popper
   root: {
+    marginTop: '-5px',
+    zIndex: 1100,
+    '& .MuiPaper-root': {
+      borderRadius: 0,
+    },
     '& .MuiAutocomplete-listbox': {
-      borderRadius: '8px',
       fontFamily: 'Lato',
       fontSize: '18px',
-      color: '#142D64',
+      color: '#1B1B1B',
       fontWeight: 500,
-      border: '2px solid #0088FF',
+      border: '.5px solid #1B1B1B',
+      borderBottom: '0px',
       padding: '0px',
       background: '#fff',
       '& li': {
         // list item specific styling
-        border: '1px solid #D2D2D2',
       },
       '& :hover': {
         color: 'white',
-        backgroundColor: '#0088FF',
+        backgroundColor: '#007BBD',
       },
     },
   },

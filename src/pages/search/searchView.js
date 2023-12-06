@@ -285,7 +285,7 @@ function searchView(props) {
     <>
       <div className={classes.heroArea}>
         <div>
-          <SearchBar value={searchText} clearable={!false} style={{ width: 750 }} />
+          <SearchBar value={searchText} clearable={!false} style={{ width: 700 }} />
         </div>
       </div>
       <div className={classes.bodyContainer}>
