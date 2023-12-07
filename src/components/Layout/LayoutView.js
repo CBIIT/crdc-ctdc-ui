@@ -76,8 +76,8 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route exact path="/request-access" access={['admin', 'member', 'non-member']} component={UnderDev} />
             <Route exact path="/crdc" access={['admin', 'member', 'non-member']} component={UnderDev} />
 
-            <Route exact path="/search" access={['admin', 'member', 'non-member']} component={UnderDev} />
-            <Route path="/search/:id" access={['admin', 'member', 'non-member']} component={UnderDev} />
+            <Route exact path="/search" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
+            <Route path="/search/:id" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
 
             {/* END: Private Routes */}
             {aboutPageRoutes.map(
