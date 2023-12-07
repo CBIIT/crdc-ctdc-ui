@@ -90,6 +90,7 @@ export const myFilesPageData = {
       type: types.BUTTON,
       role: btnTypes.DOWNLOAD_MANIFEST,
       btnType: btnTypes.DOWNLOAD_MANIFEST,
+      usePopup: false,
       tooltipCofig: tooltipContent
     }],
 },]
