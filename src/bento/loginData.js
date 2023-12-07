@@ -1,20 +1,11 @@
 export const pageTitle = 'Login';
+const  eraIcons  = require("../assets/icons/era_commons.png");
 
 export const loginProvidersData = {
-  google: {
-    key: 'google',
-    icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/google.png',
-    loginButtonText: 'Google',
-  },
-  loginGov: {
-    key: 'loginGov',
-    icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/login.gov.png',
-    loginButtonText: 'Login.gov',
-  },
   nih: {
     key: 'nih',
-    icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/nih_itrust.png',
-    loginButtonText: 'NIH iTrust',
+    icon: eraIcons,
+    loginButtonText: 'eRA Commons',
   },
 };
 
