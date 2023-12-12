@@ -55,10 +55,13 @@ query search {
 `;
 
 function graphQLFetcher(graphQLParams) {
+  
+  if (!graphQLParams.variables) graphQLParams = Object.assign({}, graphQLParams, {'variables':{}});
+
   return fetch(BACKEND, {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(Object.assign({}, graphQLParams, {'variables':{}})),
+    body: JSON.stringify(graphQLParams),
   }).then((response) => response.json());
 }
 
