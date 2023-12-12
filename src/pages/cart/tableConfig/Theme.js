@@ -8,6 +8,11 @@ export const tblHeader = {
       fontWeight: 'bold',
       letterSpacing: '0.06em',
       textDecoration: 'none',
+      maxWidth: '220px',
+      wordWrap: 'break-word',
+      "&.data_file_format":{
+          maxWidth:'194px',
+      },
       '&:hover': {
         color: '#13344A',
       },
@@ -18,6 +23,11 @@ export const tblHeader = {
       padding: '0px 0px 0px 25px',
       paddingRight: '5px',
       color: '#13344A',
+      maxWidth: '220px',
+      wordWrap: 'break-word',
+      "&.data_file_format":{
+        maxWidth: '127px',
+    },
       '&.del_all_row': {
         minWidth: '150px',
         cursor: 'pointer',
@@ -52,7 +62,8 @@ export const tblHeader = {
   MuiIconButton: {
     root: {
       '&.del_all_row_btn': {
-        paddingLeft: '5px',
+        alignSelf: 'center',
+        margin: '0px',
       },
     },
   },
@@ -106,8 +117,18 @@ export const tblBody = {
     body: {
       color: '#004C73',
       borderBottom: 'none',
+      maxWidth: '220px',
+      wordWrap: 'break-word',
+      "&.data_file_format":{
+        maxWidth: '194px',
+    },
+    "&.delete_row":{
+      justifyContent: 'center',
+      alignItems: 'center',
+      display: 'flex',
+      minHeight: '100px'
+    },
       '&.file_name': {
-        maxWidth: '300px',
         '& p': {
           lineBreak: 'anywhere',
           paddingTop: '10px',
@@ -142,6 +163,15 @@ export const tblContainer = {
       display: 'table',
       borderSpacing: '0',
       borderCollapse: 'collapse',
+      "&.data_file_format":{
+        maxWidth: '194px',
+    },
+    "&.delete_row":{
+      justifyContent: 'center',
+      alignItems: 'center',
+      display: 'flex',
+      maxHeight: '100px'
+    },
     },
   },
 };
