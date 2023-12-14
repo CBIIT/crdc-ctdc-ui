@@ -32,7 +32,7 @@ const CustomFooterMessage = () => (
 
         </p>
         <p>2. Click the “Download All Files “ button to download all files in the cart to your local storage. </p>
-        <p>3. Click the download icon in the "Download" column above to download the corresponding individual file  to your local storage. </p>
+        <p>3. Click the download icon in the "Download" column above to download the corresponding individual file to your local storage.</p>
 
 
     </div>
