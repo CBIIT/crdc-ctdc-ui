@@ -94,7 +94,7 @@ export const tabIndex = [
 export const DASHBOARD_QUERY_NEW = gql`
 query search(
   $subject_id: [String],
-   $snomed_disease_term: [String],
+   $ctep_disease_term: [String],
     $stage_of_disease: [String],
      $tumor_grade: [String], 
      $sex: [String], 
@@ -110,7 +110,7 @@ query search(
             $data_file_format: [String]) {
   searchParticipants(
     subject_id: $subject_id
-    snomed_disease_term: $snomed_disease_term
+    ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
@@ -187,12 +187,12 @@ query search(
       subjects
       __typename
     }
-    participantCountBySnomedDiseaseTerm {
+    participantCountByCtepDiseaseTerm {
       group
       subjects
       __typename
     }
-    filterParticipantCountBySnomedDiseaseTerm {
+    filterParticipantCountByCtepDiseaseTerm {
       group
       subjects
       __typename
@@ -345,7 +345,7 @@ query search(
 export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
   query participantOverview(
     $subject_id: [String],
-    $snomed_disease_term: [String],
+    $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
@@ -367,7 +367,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
   ){
     participantOverview(
       subject_id: $subject_id
-      snomed_disease_term: $snomed_disease_term
+      ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
@@ -388,7 +388,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       sort_direction: $sort_direction
     ){
       subject_id,
-      snomed_disease_term,
+      ctep_disease_term,
       stage_of_disease,
       tumor_grade,
       age_at_diagnosis,
@@ -407,7 +407,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
 export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
   query biospecimenOverview(
     $subject_id: [String],
-    $snomed_disease_term: [String],
+    $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
@@ -429,7 +429,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
   ){
     biospecimenOverview(
       subject_id: $subject_id
-      snomed_disease_term: $snomed_disease_term
+      ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
@@ -450,7 +450,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       sort_direction: $sort_direction
     ){
       subject_id,
-      snomed_disease_term,
+      ctep_disease_term,
       stage_of_disease
       primary_disease_site,
       specimen_id,
@@ -468,7 +468,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
 export const GET_FILES_OVERVIEW_QUERY = gql`
   query fileOverview(
     $subject_id: [String],
-    $snomed_disease_term: [String],
+    $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
@@ -490,7 +490,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
   ){
     fileOverview(
       subject_id: $subject_id
-      snomed_disease_term: $snomed_disease_term
+      ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
@@ -518,7 +518,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       association,
       data_file_description,
       specimen_id,
-      snomed_disease_term
+      ctep_disease_term
       
       data_file_uuid
     }
@@ -1326,7 +1326,7 @@ query subjectOverview(
 export const GET_ALL_FILEIDS_PARTICIPANTS_TAB_FOR_SELECT_ALL = gql`
 query participant_data_files(
   $subject_id: [String],
-  $snomed_disease_term: [String],
+  $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
@@ -1348,7 +1348,7 @@ query participant_data_files(
 ) {
   participant_data_files(
       subject_id: $subject_id
-      snomed_disease_term: $snomed_disease_term
+      ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
@@ -1378,7 +1378,7 @@ query participant_data_files(
 export const GET_ALL_FILEIDS_BIOSPECIMENS_TAB_FOR_SELECT_ALL = gql`
 query biospecimenAddAllToCart(
   $subject_id: [String],
-  $snomed_disease_term: [String],
+  $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
@@ -1404,7 +1404,7 @@ query biospecimenAddAllToCart(
 ){
   biospecimen_data_files(
     subject_id: $subject_id
-    snomed_disease_term: $snomed_disease_term
+    ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
@@ -1438,7 +1438,7 @@ export const GET_ALL_FILEIDS_FILES_TAB_FOR_SELECT_ALL = gql`
 query fileAddSelectedToCart(
   $data_file_uuid: [String],
   $subject_id: [String],
-  $snomed_disease_term: [String],
+  $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
@@ -1461,7 +1461,7 @@ query fileAddSelectedToCart(
   fileOverview(
     data_file_uuid: $data_file_uuid,
     subject_id: $subject_id
-    snomed_disease_term: $snomed_disease_term
+    ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
@@ -1490,7 +1490,7 @@ query fileAddSelectedToCart(
 export const GET_ALL_FILEIDS_FROM_PARTICIPANTS_TAB_FOR_ADD_ALL_CART = gql`
 query participant_data_files(
   $subject_id: [String],
-  $snomed_disease_term: [String],
+  $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
@@ -1512,7 +1512,7 @@ query participant_data_files(
 ) {
   participant_data_files(
       subject_id: $subject_id
-      snomed_disease_term: $snomed_disease_term
+      ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
@@ -1541,7 +1541,7 @@ query participant_data_files(
 export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
   query biospecimenAddAllToCart(
     $subject_id: [String],
-    $snomed_disease_term: [String],
+    $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
@@ -1566,7 +1566,7 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
   ){
     biospecimen_data_files(
       subject_id: $subject_id
-      snomed_disease_term: $snomed_disease_term
+      ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
@@ -1596,7 +1596,7 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
 export const GET_ALL_FILEIDS_FROM_FILES_TAB_FOR_ADD_ALL_CART = gql`
 query fileAddAllToCart(
   $subject_id: [String],
-  $snomed_disease_term: [String],
+  $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
@@ -1618,7 +1618,7 @@ query fileAddAllToCart(
  ){
   fileOverview(
     subject_id: $subject_id
-    snomed_disease_term: $snomed_disease_term
+    ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
@@ -1709,7 +1709,7 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'snomed_disease_term',
+        dataField: 'ctep_disease_term',
         header: 'Diagnosis',
         display: true,
         tooltipText: 'sort',
@@ -1845,7 +1845,7 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'snomed_disease_term',
+        dataField: 'ctep_disease_term',
         header: 'Diagnosis',
         display: true,
         tooltipText: 'sort',
@@ -2007,7 +2007,7 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'snomed_disease_term',
+        dataField: 'ctep_disease_term',
         header: 'Diagnosis',
         display: true,
         tooltipText: 'sort',
