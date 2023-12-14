@@ -187,12 +187,12 @@ query search(
       subjects
       __typename
     }
-    participantCountBySnomedDiseaseTerm {
+    participantCountByCtepDiseaseTerm {
       group
       subjects
       __typename
     }
-    filterParticipantCountBySnomedDiseaseTerm {
+    filterParticipantCountByCtepDiseaseTerm {
       group
       subjects
       __typename
