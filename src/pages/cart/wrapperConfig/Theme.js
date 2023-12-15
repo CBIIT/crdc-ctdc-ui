@@ -35,10 +35,10 @@ export const customTheme = {
         padding: '10px 0px 15px 0px',
         marginRight: '-5px',
         position: 'relative',
-        textAlign: 'right',
+        textAlign: 'left',
         '& img.tooltip_icon': {
           width: '20px',
-          marginLeft: '5px',
+          marginLeft: '2px',
           verticalAlign: 'top',
         },
       },
@@ -47,16 +47,28 @@ export const customTheme = {
       },
       '&.container_footer': {
         maxWidth: '100%',
+        alignSelf: 'left',
         textAlign: 'left',
+        display: 'flex',
+        flexDirection: 'column',
         paddingLeft: '0px',
+       
+        '& img.tooltip_icon': {
+          width: '20px',
+          marginLeft: '5px',
+          verticalAlign: 'top',
+        },
+        '&.tooltip_icon': {
+          width: '25px',
+        },
         '& textarea.manifest_comments': {
           color: '#000',
           border: '1.5px solid #707070',
-          height: '170px',
+          height: '96px',
           resize: 'none',
           padding: '15px',
           fontSize: '10px',
-          minWidth: '412px',
+          maxWidth: '412px',
           background: '#ebebeb',
           fontFamily: 'Open Sans',
           marginRight: '10px',
@@ -79,6 +91,12 @@ export const customTheme = {
       borderRadius: '10px',
       marginBottom: '10px',
       textTransform: 'uppercase',
+      '&.download_manifest':{
+          width: '250px',
+          margin: '10px',
+          background:'#004D73',
+          marginRight: '3px'
+      },
       '&:hover': {
         backgroundColor: '#1a8ccbb3',
       },
