@@ -9,6 +9,7 @@ import {
   SEARCH_PAGE_DATAFIELDS, SEARCH_PAGE_KEYS,
   queryCountAPI, queryResultAPI, queryAutocompleteAPI,
 } from '../../bento/search';
+import { AboutCard, ValueCard } from './Cards';
 
 /**
  * Determine the correct datafield and offset for the All tab based
@@ -215,60 +216,72 @@ function searchView(props) {
 
   const { SearchResults } = SearchResultsGenerator({
     classes,
+    config: {
+      resultCardMap: {
+        participants: ValueCard,
+        biospecimens: ValueCard,
+        node: ValueCard,
+        value: ValueCard,
+        property: ValueCard,
+        about: AboutCard,
+      },
+    },
     functions: {
       onTabChange,
       getTabData,
     },
-    tabs: [{
-      name: 'All',
-      field: 'all',
-      classes: {
-        root: classes.buttonRoot,
-        wrapper: classes.tabColor,
+    tabs: [
+      {
+        name: 'All',
+        field: 'all',
+        classes: {
+          root: classes.buttonRoot,
+          wrapper: classes.tabColor,
+        },
+        count: (!authCheck() ? searchCounts.about_count : countValues(searchCounts)) || 0,
+        value: '1',
       },
-      count: (!authCheck() ? searchCounts.about_count : countValues(searchCounts)) || 0,
-      value: '1',
-    },
-    {
-      name: 'Participants',
-      field: 'participants',
-      classes: {
-        root: classes.buttonRoot,
-        wrapper: classes.tabColor,
+      {
+        name: 'Participants',
+        field: 'participants',
+        classes: {
+          root: classes.buttonRoot,
+          wrapper: classes.tabColor,
+        },
+        count: searchCounts.participant_count || 0,
+        value: `${!authCheck() ? 'inactive-' : ''}2`,
       },
-      count: searchCounts.participant_count || 0,
-      value: `${!authCheck() ? 'inactive-' : ''}2`,
-    },
-    {
-      name: 'Biospecimens',
-      field: 'biospecimens',
-      classes: {
-        root: classes.buttonRoot,
-        wrapper: classes.tabColor,
+      {
+        name: 'Biospecimens',
+        field: 'biospecimens',
+        classes: {
+          root: classes.buttonRoot,
+          wrapper: classes.tabColor,
+        },
+        count: searchCounts.biospecimen_count || 0,
+        value: `${!authCheck() ? 'inactive-' : ''}3`,
       },
-      count: searchCounts.biospecimen_count || 0,
-      value: `${!authCheck() ? 'inactive-' : ''}3`,
-    },
-    {
-      name: 'Data Model',
-      field: 'model',
-      classes: {
-        root: classes.buttonRoot,
-        wrapper: classes.tabColor,
+      {
+        name: 'Data Model',
+        field: 'model',
+        classes: {
+          root: classes.buttonRoot,
+          wrapper: classes.tabColor,
+        },
+        count: searchCounts.model_count || 0,
+        value: `${!authCheck() ? 'inactive-' : ''}4`,
       },
-      count: searchCounts.model_count || 0,
-      value: `${!authCheck() ? 'inactive-' : ''}4`,
-    },
-    {
-      name: 'About',
-      field: 'about_page',
-      classes: {
-        root: classes.buttonRoot,
-        wrapper: classes.tabColor,
-      },
-      count: searchCounts.about_count || 0,
-      value: '5',
-    }],
+      {
+        name: 'About',
+        field: 'about_page',
+        classes: {
+          root: classes.buttonRoot,
+          wrapper: classes.tabColor,
+        },
+        count: searchCounts.about_count || 0,
+        value: '5',
+      }
+    ],
   });
 
   useEffect(() => {
