@@ -18,7 +18,7 @@ export const SEARCH_KEYS = {
 
 export const SEARCH_DATAFIELDS = {
   public: [],
-  private: ['subject_id', 'specimen_id', 'snomed_disease_term', 'stage_of_disease'],
+  private: ['subject_id', 'specimen_id', 'ctep_disease_term', 'stage_of_disease'],
 };
 
 /** used by the Global Search page results */
@@ -130,7 +130,7 @@ export const SEARCH = gql`
     globalSearch(input: $input) {
       participants {
         subject_id
-        snomed_disease_term
+        ctep_disease_term
         stage_of_disease
       }
       biospecimens {
@@ -153,7 +153,7 @@ export const SEARCH_PAGE_RESULT_PARTICIPANTS = gql`
       participants {
         type
         study_short_name
-        snomed_disease_term
+        ctep_disease_term
         stage_of_disease
         sex
         reported_gender
@@ -178,7 +178,7 @@ export const SEARCH_PAGE_RESULT_BIOSPECIMENS = gql`
         study_short_name
         specimen_id
         subject_id
-        snomed_disease_term
+        ctep_disease_term
         specimen_type
         parent_specimen_type
         tissue_category
