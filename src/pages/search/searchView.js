@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { withStyles, Box } from '@material-ui/core';
+import { withStyles, Box, Grid } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import {
   SearchBarGenerator, SearchResultsGenerator, countValues,
@@ -9,6 +9,7 @@ import {
   SEARCH_PAGE_DATAFIELDS, SEARCH_PAGE_KEYS,
   queryCountAPI, queryResultAPI, queryAutocompleteAPI,
 } from '../../bento/search';
+import { AboutCard, ValueCard } from './Cards';
 
 /**
  * Determine the correct datafield and offset for the All tab based
@@ -202,7 +203,7 @@ function searchView(props) {
   const { SearchBar } = SearchBarGenerator({
     classes,
     config: {
-      placeholder: '',
+      placeholder: 'e.g. colon, MSB-01068, panitumimab, FFPE, CMB, gender',
       iconType: 'image',
       maxSuggestions: 0,
       minimumInputLength: 0,
@@ -215,60 +216,73 @@ function searchView(props) {
 
   const { SearchResults } = SearchResultsGenerator({
     classes,
+    config: {
+      resultCardMap: {
+        participants: ValueCard,
+        biospecimens: ValueCard,
+        node: ValueCard,
+        value: ValueCard,
+        property: ValueCard,
+        about: AboutCard,
+      },
+      showFilterBy: true,
+    },
     functions: {
       onTabChange,
       getTabData,
     },
-    tabs: [{
-      name: 'All',
-      field: 'all',
-      classes: {
-        root: classes.buttonRoot,
-        wrapper: classes.tabColor,
+    tabs: [
+      {
+        name: 'All',
+        field: 'all',
+        classes: {
+          root: classes.buttonRoot,
+          wrapper: classes.tabColor,
+        },
+        count: (!authCheck() ? searchCounts.about_count : countValues(searchCounts)) || 0,
+        value: '1',
       },
-      count: (!authCheck() ? searchCounts.about_count : countValues(searchCounts)) || 0,
-      value: '1',
-    },
-    {
-      name: 'Participants',
-      field: 'participants',
-      classes: {
-        root: classes.buttonRoot,
-        wrapper: classes.tabColor,
+      {
+        name: 'Participants',
+        field: 'participants',
+        classes: {
+          root: classes.buttonRoot,
+          wrapper: classes.tabColor,
+        },
+        count: searchCounts.participant_count || 0,
+        value: `${!authCheck() ? 'inactive-' : ''}2`,
       },
-      count: searchCounts.participant_count || 0,
-      value: `${!authCheck() ? 'inactive-' : ''}2`,
-    },
-    {
-      name: 'Biospecimens',
-      field: 'biospecimens',
-      classes: {
-        root: classes.buttonRoot,
-        wrapper: classes.tabColor,
+      {
+        name: 'Biospecimens',
+        field: 'biospecimens',
+        classes: {
+          root: classes.buttonRoot,
+          wrapper: classes.tabColor,
+        },
+        count: searchCounts.biospecimen_count || 0,
+        value: `${!authCheck() ? 'inactive-' : ''}3`,
       },
-      count: searchCounts.biospecimen_count || 0,
-      value: `${!authCheck() ? 'inactive-' : ''}3`,
-    },
-    {
-      name: 'Data Model',
-      field: 'model',
-      classes: {
-        root: classes.buttonRoot,
-        wrapper: classes.tabColor,
+      {
+        name: 'About',
+        field: 'about_page',
+        classes: {
+          root: classes.buttonRoot,
+          wrapper: classes.tabColor,
+        },
+        count: searchCounts.about_count || 0,
+        value: '4',
       },
-      count: searchCounts.model_count || 0,
-      value: `${!authCheck() ? 'inactive-' : ''}4`,
-    },
-    {
-      name: 'About',
-      field: 'about_page',
-      classes: {
-        root: classes.buttonRoot,
-        wrapper: classes.tabColor,
+      {
+        name: 'Model',
+        field: 'model',
+        classes: {
+          root: classes.buttonRoot,
+          wrapper: classes.tabColor,
+        },
+        count: searchCounts.model_count || 0,
+        value: `${!authCheck() ? 'inactive-' : ''}5`,
       },
-      count: searchCounts.about_count || 0,
-      value: '5',
-    }],
+    ],
   });
 
   useEffect(() => {
@@ -283,11 +297,24 @@ function searchView(props) {
 
   return (
     <>
+      <Grid container direction="column" alignItems="center" justifyContent="center" className={classes.heroArea}>
+        <Grid item>
+          <h2 className={classes.searchTitle}>Search Clinical and Translational Data Commons</h2>
+        </Grid>
+        <Grid item>
+          <SearchBar value={searchText} clearable={!false} style={{ width: 700 }} />
+        </Grid>
+      </Grid>
+    {/* 
       <div className={classes.heroArea}>
+        <div className={classes.searchTitle}>
+          <h2>Search Clinical and Translational Data Commons</h2>
+        </div>
         <div>
           <SearchBar value={searchText} clearable={!false} style={{ width: 700 }} />
         </div>
-      </div>
+      </div>*/}
+
       <div className={classes.bodyContainer}>
         <Box sx={{ width: '100%', typography: 'body1' }}>
           <SearchResults searchText={searchText} />

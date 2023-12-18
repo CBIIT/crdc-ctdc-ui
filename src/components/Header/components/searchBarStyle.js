@@ -66,9 +66,8 @@ export const CUSTOM_STYLES = makeStyles({
     margin: '0px 18px 0px 6px',
   },
   inputRoot: {
-    color: '#618299',
-    fontWeight: '600',
-    fontFamily: 'Open Sans',
+    color: '#1b1b1b',
+    fontFamily: 'Roboto, Lato, Open Sans',
     lineHeight: '26px',
     fontSize: '15px',
   },
@@ -77,6 +76,7 @@ export const CUSTOM_STYLES = makeStyles({
   },
   textFieldRoot: {
     '& .MuiOutlinedInput-root': {
+      color: '#1B1B1B',
       borderRadius: '0',
       '& fieldset': {
         border: '1px solid #71767A',
@@ -86,6 +86,12 @@ export const CUSTOM_STYLES = makeStyles({
         border: '.5px solid #1B1B1B',
         borderTop: '1px solid #1B1B1B',
         borderRight: '0px'
+      },
+    },
+    '& .MuiOutlinedInput-input': {
+      '&::placeholder': {
+        fontFamily: 'Roboto, lato',
+        color: '#225987', // Placeholder text color
       },
     },
   },
