@@ -164,7 +164,6 @@ const styles = () => ({
   searchIcon: {
     height: '22px',
     margin: '0px 6px 0px 6px',
-    color: 'red',
   },
   searchIconSpan: {
     cursor: 'pointer',
@@ -172,7 +171,6 @@ const styles = () => ({
   },
   clearIcon: {
     height: '18px',
-    margin: '-8px 4px 0px 19px',
   },
   filterByIconContainer: {
     marginRight: '12px',
