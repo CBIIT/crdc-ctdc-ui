@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { withStyles, Box } from '@material-ui/core';
+import { withStyles, Box, Grid } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import {
   SearchBarGenerator, SearchResultsGenerator, countValues,
@@ -203,7 +203,7 @@ function searchView(props) {
   const { SearchBar } = SearchBarGenerator({
     classes,
     config: {
-      placeholder: '',
+      placeholder: 'e.g. colon, MSB-01068, panitumimab, FFPE, CMB, gender',
       iconType: 'image',
       maxSuggestions: 0,
       minimumInputLength: 0,
@@ -225,6 +225,7 @@ function searchView(props) {
         property: ValueCard,
         about: AboutCard,
       },
+      showFilterBy: true,
     },
     functions: {
       onTabChange,
@@ -262,16 +263,6 @@ function searchView(props) {
         value: `${!authCheck() ? 'inactive-' : ''}3`,
       },
       {
-        name: 'Data Model',
-        field: 'model',
-        classes: {
-          root: classes.buttonRoot,
-          wrapper: classes.tabColor,
-        },
-        count: searchCounts.model_count || 0,
-        value: `${!authCheck() ? 'inactive-' : ''}4`,
-      },
-      {
         name: 'About',
         field: 'about_page',
         classes: {
@@ -279,8 +270,18 @@ function searchView(props) {
           wrapper: classes.tabColor,
         },
         count: searchCounts.about_count || 0,
-        value: '5',
-      }
+        value: '4',
+      },
+      {
+        name: 'Model',
+        field: 'model',
+        classes: {
+          root: classes.buttonRoot,
+          wrapper: classes.tabColor,
+        },
+        count: searchCounts.model_count || 0,
+        value: `${!authCheck() ? 'inactive-' : ''}5`,
+      },
     ],
   });
 
@@ -296,11 +297,24 @@ function searchView(props) {
 
   return (
     <>
+      <Grid container direction="column" alignItems="center" justifyContent="center" className={classes.heroArea}>
+        <Grid item>
+          <h2 className={classes.searchTitle}>Search Clinical and Translational Data Commons</h2>
+        </Grid>
+        <Grid item>
+          <SearchBar value={searchText} clearable={!false} style={{ width: 700 }} />
+        </Grid>
+      </Grid>
+    {/* 
       <div className={classes.heroArea}>
+        <div className={classes.searchTitle}>
+          <h2>Search Clinical and Translational Data Commons</h2>
+        </div>
         <div>
           <SearchBar value={searchText} clearable={!false} style={{ width: 700 }} />
         </div>
-      </div>
+      </div>*/}
+
       <div className={classes.bodyContainer}>
         <Box sx={{ width: '100%', typography: 'body1' }}>
           <SearchResults searchText={searchText} />
