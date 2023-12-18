@@ -128,7 +128,7 @@ export const GET_MY_CART_DATA_QUERY = gql`
       subject_id
       primary_disease_site
       specimen_id
-      snomed_disease_term
+      ctep_disease_term
       data_file_uuid
       parent_specimen_id
       stage_of_disease
@@ -172,7 +172,7 @@ query fileOverview(
     subject_id
     primary_disease_site
     specimen_id
-    snomed_disease_term
+    ctep_disease_term
     data_file_uuid
     stage_of_disease
     tumor_grade
@@ -218,7 +218,7 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     parent_specimen_id
     primary_disease_site
     specimen_id
-    snomed_disease_term
+    ctep_disease_term
     data_file_uuid
     stage_of_disease
     tumor_grade
