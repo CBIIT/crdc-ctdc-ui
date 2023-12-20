@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { cellTypes, dataFormatTypes } from '@bento-core/table';
 import { types, btnTypes } from '@bento-core/paginated-table';
 import { customMyFilesTabDownloadCSV } from './tableDownloadCSV';
+import CustomFooterMessage from '../pages/cart/tableConfig/CustomFooterMessage';
 
 export const navBarCartData = {
   cartLabel: 'Cart',
@@ -57,20 +58,7 @@ export const myFilesPageData = {
         },
       ],
     },
-    {
-    container: 'buttons',
-    size: 'xl',
-    clsName: 'container_header',
-    items: [
-      {
-        title: 'Download File Manifest',
-        clsName: 'download_manifest',
-        type: types.BUTTON,
-        role: btnTypes.DOWNLOAD_MANIFEST,
-        btnType: btnTypes.DOWNLOAD_MANIFEST,
-        tooltipCofig: tooltipContent
-      }],
-  },
+  
   {
     container: 'paginatedTable',
     paginatedTable: true,
@@ -79,13 +67,38 @@ export const myFilesPageData = {
     container: 'buttons',
     size: 'xl',
     clsName: 'container_footer',
-    items: [],
-  }]
+    items: [{
+      clsName: 'manifest_comments',
+      type: types.CUSTOM_ELEM,
+      customViewElem: CustomFooterMessage,
+      text: 'To access and analyze files, select and remove unwanted files, click the "Download File Manifest" button, and upload the resulting manifest file to your Velsera Seven Bridges Cancer Genomics Cloud account. [Note "Velsera Seven Bridges Cancer Genomics Cloud account" should be hyperlinked to https://cgc-accounts.sbgenomics.com/auth/login?next=https%3A%2F%2Fcgc-accounts.sbgenomics.com%2F with external icon ]',
+
+    },{
+      clsName: 'manifest_comments',
+      type: types.TEXT_INPUT,
+      placeholder: 'User Comment',
+    }],
+  },
+  {
+  container: 'buttons',
+  size: 'xl',
+  clsName: 'container_header',
+  items: [
+    {
+      title: 'Download File Manifest',
+      clsName: 'download_manifest',
+      type: types.BUTTON,
+      role: btnTypes.DOWNLOAD_MANIFEST,
+      btnType: btnTypes.DOWNLOAD_MANIFEST,
+      usePopup: false,
+      tooltipCofig: tooltipContent
+    }],
+},]
 };
  
 export const manifestData = {
-  keysToInclude: ['data_file_name', 'data_file_uuid', 'subject_id', 'data_file_checksum_value','User_Comment', 'specimen_id', 'snomed_disease_term','primary_disease_site', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site', 'specimen_type','tissue_category','assessment_timepoint'],
-  header: ['name', 'drs_uri', 'Participant ID', 'Md5sum','User Comment', 'Biospecimen ID', 'Diagnosis','Primary Site', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Biospecimen Type','Tissue Category','Collection Timepoint'],
+  keysToInclude: ['data_file_name', 'data_file_uuid','data_file_uuid', 'data_file_checksum_value','subject_id', 'specimen_id', 'ctep_disease_term','meddra_disease_code', 'primary_disease_site','histology', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site', 'specimen_type','tissue_category','assessment_timepoint','User_Comment'],
+  header: ['name', 'drs_uri' ,'File ID', 'Md5sum','Participant ID', 'Biospecimen ID', 'Diagnosis','MedDRA Disease Code', 'Primary Site','Histology', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Biospecimen Type','Tissue Category','Collection Timepoint','User Comment'],
 };
 
 // --------------- GraphQL query - Retrieve selected cases info --------------
@@ -108,12 +121,16 @@ export const GET_MY_CART_DATA_QUERY = gql`
       data_file_type
       data_file_size
       association
+      ctep_disease_term
+      meddra_disease_code
+      histology
       data_file_description
       subject_id
       primary_disease_site
       specimen_id
-      snomed_disease_term
+      ctep_disease_term
       data_file_uuid
+      parent_specimen_id
       stage_of_disease
       tumor_grade
       age_at_enrollment
@@ -155,7 +172,7 @@ query fileOverview(
     subject_id
     primary_disease_site
     specimen_id
-    snomed_disease_term
+    ctep_disease_term
     data_file_uuid
     stage_of_disease
     tumor_grade
@@ -175,36 +192,50 @@ query fileOverview(
 }`;
 
 
-export const GET_MY_CART_DATA_QUERY_DESC = gql`
-query fileOverview($subject_ids: [String], $data_file_names: [String], $data_file_formats: [String], $data_file_types: [String], $data_file_sizes: [String], $associations: [String], $data_file_descriptions: [String], $specimen_ids: [String], $snomed_disease_term: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
-  fileOverview(
-    subject_ids: $subject_ids
-    data_file_names: $data_file_names
-    data_file_formats: $data_file_formats
-    data_file_types: $data_file_types
-    data_file_sizes: $data_file_sizes
-    associations: $associations
-    data_file_descriptions: $data_file_descriptions
-    specimen_ids: $specimen_ids
-    snomed_disease_terms: $snomed_disease_terms
-    first: $first
-    offset: $offset
-    order_by: $order_by
+export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
+  $data_file_uuid: [String],
+  $offset: Int = 0,
+  $first: Int = 10,
+  $order_by:String ="data_file_name",
+  $sort_direction:String="desc"
+){
+  filesInList(
+    data_file_uuid: $data_file_uuid,
+    offset: $offset,
+    first: $first,
+    order_by: $order_by,
     sort_direction: $sort_direction
-  ) {
-    subject_id
-    data_file_name
+  ){ data_file_name
     data_file_format
     data_file_type
     data_file_size
     association
     data_file_description
+    subject_id
+    ctep_disease_term
+    meddra_disease_code
+    histology
+    parent_specimen_id
+    primary_disease_site
     specimen_id
-    snomed_disease_term
-    __typename
-  }
-}
-`;
+    ctep_disease_term
+    data_file_uuid
+    stage_of_disease
+    tumor_grade
+    age_at_enrollment
+    sex
+    reported_gender
+    race
+    data_file_checksum_value
+    ethnicity
+    carcinogen_exposure
+    targeted_therapy
+    anatomical_collection_site
+    specimen_type
+    tissue_category
+    assessment_timepoint
+ }
+}`;
 
 // --------------- File table configuration --------------
 

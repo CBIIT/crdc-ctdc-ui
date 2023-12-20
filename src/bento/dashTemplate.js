@@ -32,9 +32,9 @@ export const facetsConfig = [
   {
     section: CASES,
     label: 'Diagnosis',
-    apiPath: 'participantCountBySnomedDiseaseTerm',
-    apiForFiltering: 'filterParticipantCountBySnomedDiseaseTerm',
-    datafield: 'snomed_disease_term',
+    apiPath: 'participantCountByCtepDiseaseTerm',
+    apiForFiltering: 'filterParticipantCountByCtepDiseaseTerm',
+    datafield: 'ctep_disease_term',
     field: GROUP,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
