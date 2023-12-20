@@ -33,7 +33,7 @@ const getFileId = (row) => row.data_file_uuid;
 
 const mapDispatchToProps = (dispatch) =>{
   return({
-  deleteAllFiles: () => dispatch(onDeleteAllCartFile()),
+  deleteAllFiles: () => { dispatch(onDeleteAllCartFile())},
   deleteCartFile: (row) => dispatch(onDeleteCartFile(getFileId(row))),
 })};
 

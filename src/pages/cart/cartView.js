@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import { TableContext, TableView } from '@bento-core/paginated-table';
 import { configColumn } from './tableConfig/Column';
@@ -18,6 +18,8 @@ const CartView = (props) => {
   // access table state
   const tableContext = useContext(TableContext);
   const { context } = tableContext;
+  const [isUpdated,setIsUpdated] = useState(false);
+  props ={ ...props, removeCheck: () => {setIsUpdated(true)}}
 
   /**
   * configure table state
@@ -50,6 +52,7 @@ const CartView = (props) => {
           >
             <TableView
               initState={initTblState}
+              checkedItemReset={isUpdated}
               themeConfig={themeConfig}
               queryVariables={variables}
               totalRowCount={filesId.length}
@@ -57,6 +60,7 @@ const CartView = (props) => {
               server={isServer}
               paginationOptions={paginationOptions(context, config)}
             />
+          
           </CartWrapper>
         </div>
       </Grid>
