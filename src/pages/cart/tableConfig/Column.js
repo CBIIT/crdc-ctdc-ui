@@ -29,6 +29,7 @@ export const configColumn = ({
   columns,
   deleteAllFiles,
   deleteCartFile,
+  removeCheck
 }) => {
   /**
   * display columns as configuration
@@ -76,7 +77,7 @@ export const configColumn = ({
     if (column.headerType === headerTypes.DELETE) {
       return {
         ...column,
-        headerEventHandler: deleteAllFiles,
+        headerEventHandler: ()=>{ removeCheck(); deleteAllFiles() },
       };
     }
     return column;
