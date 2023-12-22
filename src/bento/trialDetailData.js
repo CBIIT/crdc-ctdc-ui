@@ -121,7 +121,7 @@ query studyByStudyShortNameQueries($study_short_name: [String]) {
   }
 
    studyDiagnosisByStudyShortName(study_short_name: $study_short_name) {
-    ctep_disease_codes
+    ctep_disease_terms
   }
 
    StudyDataFileByStudyShortName(study_short_name: $study_short_name) {
