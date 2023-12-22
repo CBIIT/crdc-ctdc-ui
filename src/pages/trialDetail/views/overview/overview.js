@@ -45,7 +45,7 @@ const Overview = ({
     )
   }
   const associatedLinks = JSON.parse(JSON.stringify(data.studyByStudyShortName[0].associated_links));
-  const diagnoses = JSON.parse(JSON.stringify(data.studyDiagnosisByStudyShortName[0].ctep_disease_codes));
+  const diagnoses = JSON.parse(JSON.stringify(data.studyDiagnosisByStudyShortName[0].ctep_disease_terms));
   const participantFileTypes = JSON.parse(JSON.stringify(data.StudyDataFileByStudyShortName[0].list_type));
   const imageCollection = JSON.parse(JSON.stringify(data.studyByStudyShortName[0].image_collection));
   const { study_name, study_description, study_type, dates_of_conduct } = data.studyByStudyShortName[0];
