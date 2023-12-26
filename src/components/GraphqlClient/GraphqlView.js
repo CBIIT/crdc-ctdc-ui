@@ -43,7 +43,7 @@ query search {
     numberOfBiomarker
     numberOfHistologyImages
     numberOfRadiologyImages
-    specimenCountbySnomedDiseaseCode {
+    specimenCountbyStageOfDisease {
       group
       subjects
       __typename

@@ -55,7 +55,7 @@ const DiagnosesInActiveText = ({ classes, heroData }) => (
 );
 
 const DiagnosesActiveText = ({ classes, heroData }) => {
-  const diagnosisData = heroData.specimenCountbySnomedDiseaseCode;
+  const diagnosisData = heroData.specimenCountbyStageOfDisease;
 
   return (
     <div className={classes.inActiveTextBG}>
