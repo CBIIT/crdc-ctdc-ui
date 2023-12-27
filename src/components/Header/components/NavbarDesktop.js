@@ -114,7 +114,7 @@ const LiSection = styled.li`
 
   .clicked {
     color: #FFFFFF;
-    background: #004971;
+    background: #1F4671;
   }
 
   .clicked::after {
@@ -126,7 +126,7 @@ const LiSection = styled.li`
   }
 
   .clicked:hover {
-    border-bottom: 4px solid #004971;
+    border-bottom: 4px solid #1F4671;
     color: #FFFFFF;
 
     ::after {
@@ -168,7 +168,7 @@ const LiSection = styled.li`
     padding: 16px 16px 0px 16px;
 
     user-select:none;
-    background: #004971;
+    background: #1F4671;
     border-top: 4px solid #5786FF;
     border-left: 4px solid #5786FF;
     border-right: 4px solid #5786FF;
@@ -179,7 +179,7 @@ const Dropdown = styled.div`
     top: 69px;
     left: 0;
     width: 100%;
-    background: #004971;
+    background: #1F4671;
     z-index: 1100;
     position: absolute;
     // visibility: hidden;
@@ -194,7 +194,7 @@ const DropdownContainer = styled.div`
     max-width: 1400px;
 
     .dropdownList {
-      background: #004971;
+      background: #1F4671;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       padding: 32px 32px 0 32px;
