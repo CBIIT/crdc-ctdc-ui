@@ -11,7 +11,6 @@ const Nav = styled.div`
     left: 0;
     width: 100%;
     background: #ffffff;
-    box-shadow: -0.1px 6px 9px -6px rgba(0, 0, 0, 0.5);
     z-index: 1100;
     position: relative;
 
@@ -41,7 +40,7 @@ const NavContainer = styled.div`
 const UlContainer = styled.ul`
   list-style: none;
   margin: 0;
-  padding-top: 17px;
+  padding-top: 16px;
   padding-left: 11px;
 `;
 
@@ -54,21 +53,20 @@ const LiSection = styled.li`
   transition:all 0.3s ease-in-out;
 
   a {
-    color: #585C65;
+    color: #565c65;
     text-decoration: none;
   }
 
   .navTitle {
     display: block;
-    color: #585C65;
-    font-family: poppins;
+    color: #565c65;
+    font-family: Poppins;
     font-size: 17px;
-    font-weight: 700;
-    line-height: 40px;
+    font-weight: 600;
+    line-height: 17px;
     letter-spacing: normal;
     text-decoration: none;
-    margin: 0 20px 0 5px;
-    padding: 0 15px;
+    padding: 16px 16px 0px 16px;
     user-select:none;
     border-top: 4px solid transparent;
     border-left: 4px solid transparent;
@@ -80,6 +78,7 @@ const LiSection = styled.li`
   }
 
   .navText {
+    padding-bottom: 12px;
     border-bottom: 4px solid transparent;
   }
 
@@ -106,8 +105,8 @@ const LiSection = styled.li`
     display: inline-block;
     width: 6px;
     height: 6px;
-    border-bottom: 1px solid #585C65;
-    border-left: 1px solid #585C65;
+    border-bottom: 1px solid #565c65;
+    border-left: 1px solid #565c65;
     margin: 0 0 4px 8px;
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
@@ -115,7 +114,7 @@ const LiSection = styled.li`
 
   .clicked {
     color: #FFFFFF;
-    background: #1F4671;
+    background: #004971;
   }
 
   .clicked::after {
@@ -127,7 +126,7 @@ const LiSection = styled.li`
   }
 
   .clicked:hover {
-    border-bottom: 4px solid #1F4671;
+    border-bottom: 4px solid #004971;
     color: #FFFFFF;
 
     ::after {
@@ -160,16 +159,16 @@ const LiSection = styled.li`
   .navTitleClicked {
     display: block;
     color: #FFFFFF;
-    font-family: poppins;
+    font-family: Poppins;
     font-size: 17px;
-    font-weight: 700;
-    line-height: 40px;
+    font-weight: 600;
+    line-height: 17px;
     letter-spacing: normal;
     text-decoration: none;
-    margin: 0 45px 0 5px;
-    padding: 0 15px;
+    padding: 16px 16px 0px 16px;
+
     user-select:none;
-    background: #1F4671;
+    background: #004971;
     border-top: 4px solid #5786FF;
     border-left: 4px solid #5786FF;
     border-right: 4px solid #5786FF;
@@ -177,10 +176,10 @@ const LiSection = styled.li`
 `;
 
 const Dropdown = styled.div`
-    top: 60.5px;
+    top: 69px;
     left: 0;
     width: 100%;
-    background: #1F4671;
+    background: #004971;
     z-index: 1100;
     position: absolute;
     // visibility: hidden;
@@ -195,9 +194,9 @@ const DropdownContainer = styled.div`
     max-width: 1400px;
 
     .dropdownList {
-      background: #1F4671;
-      display: inline-flex;
-      grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
+      background: #004971;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
       padding: 32px 32px 0 32px;
       flex-wrap: wrap;
     }
@@ -214,6 +213,9 @@ const DropdownContainer = styled.div`
       color: #FFFFFF;
       text-decoration: none;
   }
+  .dropdownItem:nth-child(4n-3) {
+    padding: 0 35px 35px 0px;
+  }
 
   .dropdownItem:hover {
     text-decoration: underline;
@@ -224,7 +226,6 @@ const DropdownContainer = styled.div`
     font-family: 'Open Sans';
     font-style: normal;
     font-weight: 400;
-    font-size: 16.16px;
     line-height: 22px;
   }
 `;
