@@ -1,8 +1,8 @@
 /* eslint-disable */
 import gql from 'graphql-tag';
 import { cellTypes } from '@bento-core/table';
-import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
-import { dataFormatTypes } from '@bento-core/table';
+// import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
+// import { dataFormatTypes } from '@bento-core/table';
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
@@ -1692,7 +1692,8 @@ export const tabContainers = [
         title: "View Columns"
       },
       download: {
-        downloadCsv: "Download Table Contents As CSV"
+        downloadCsv: "Download Table Contents As CSV",
+        downloadFileName: "CTDC_Participants_download",
       },
     },
     columns: [
@@ -1781,9 +1782,9 @@ export const tabContainers = [
     ],
     id: 'participants_tab',
     tableID: 'participants_tab_table',
-    tableDownloadCSV: customCasesTabDownloadCSV,
+    // tableDownloadCSV: customCasesTabDownloadCSV,
     tabIndex: '0',
-    downloadFileName: 'Bento_Dashboard_cases_download',
+    // downloadFileName: 'Bento_Dashboard_cases_download',
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
@@ -1811,7 +1812,8 @@ export const tabContainers = [
         title: "View Columns"
       },
       download: {
-        downloadCsv: "Download Table Contents As CSV"
+        downloadCsv: "Download Table Contents As CSV",
+        downloadFileName: "CTDC_Biospecimens_download",
       },
     },
     saveButtonDefaultStyle: {
@@ -1911,8 +1913,8 @@ export const tabContainers = [
     id: 'biospecimens_tab',
     tableID: 'biospecimens_tab_table',
     tabIndex: '1',
-    tableDownloadCSV: customSamplesTabDownloadCSV,
-    downloadFileName: 'Bento_Dashboard_cases_download',
+    // tableDownloadCSV: customSamplesTabDownloadCSV,
+    // downloadFileName: 'Bento_Dashboard_cases_download',
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
@@ -1942,7 +1944,8 @@ export const tabContainers = [
         title: "View Columns"
       },
       download: {
-        downloadCsv: "Download Table Contents As CSV"
+        downloadCsv: "Download Table Contents As CSV",
+        downloadFileName: "CTDC_Data_Files_download",
       },
     },
     columns: [
@@ -2017,8 +2020,8 @@ export const tabContainers = [
     id: 'file_tab',
     tableID: 'file_tab_table',
     selectableRows: true,
-    tableDownloadCSV: customFilesTabDownloadCSV,
-    downloadFileName: 'Bento_Dashboard_cases_download',
+    // tableDownloadCSV: customFilesTabDownloadCSV,
+    // downloadFileName: 'Bento_Dashboard_cases_download',
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
