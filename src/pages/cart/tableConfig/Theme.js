@@ -1,4 +1,31 @@
 export const tblHeader = {
+  MuiButton: {
+    text: {
+      padding: '10px 16px',
+    },
+    root: {
+      color: '#fff',
+      fontSize: '14px',
+      marginTop: '6px',
+      fontFamily: 'Lato',
+      borderRadius: '10px',
+      marginBottom: '10px',
+      textTransform: 'uppercase',
+      width: '133px',
+      '&.okBtn': {
+        width: '133px',
+        height: '45px',
+        cursor: 'pointer',
+        background: '#3E74B6',
+      },
+      '&.cancelBtn': {
+        width: '133px',
+        height: '45px',
+        cursor: 'pointer',
+        background: '#4F5D69',
+      },
+    },
+  },
   MuiTableSortLabel: {
     root: {
       color: '#13344A',
