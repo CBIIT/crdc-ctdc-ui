@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Layout from './Layout/LayoutContainer';
 import nihLoginSuccess from './Auth/components/nihLoginSuccess';
 import { CustomThemeProvider } from './ThemeContext';
-import { AuthProviderGenerator } from '@bento-core/authentication';
+import { AuthProviderGenerator } from './Authentication';
 import AUTHPROVIDER_CONFIG from './Auth/authProviderConfig';
 import { GlobalProvider } from './Global/GlobalProvider';
 
@@ -20,7 +20,7 @@ const App = () => {
       <GlobalProvider>
         <BrowserRouter>
           <Switch>
-            <Route path="/nihloginsuccess" component={nihLoginSuccess} />
+            <Route path="/login" component={nihLoginSuccess} />
             <Route path="/" component={Layout} />
           </Switch>
         </BrowserRouter>

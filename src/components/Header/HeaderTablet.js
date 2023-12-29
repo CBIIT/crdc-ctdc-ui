@@ -267,7 +267,7 @@ const Header = () => {
                   );
                 })
               }
-               <a href="login" rel="noreferrer" target="_blank" >
+               <a href="/user/login" rel="noreferrer" target="_blank" >
                            <div role="button" 
                               tabIndex={0} 
                               className="navMobileItem " 

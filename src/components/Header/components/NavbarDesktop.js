@@ -314,6 +314,7 @@ const NavBar = () => {
     setClickedTitle("");
   }, []);
 
+ 
   return (
     <Nav>
       <NavContainer>
@@ -362,7 +363,7 @@ const NavBar = () => {
           }
         </UlContainer>
         <CartSpan>
-         <StyledLoginLink  id="header-navbar-login-button" to="/login">Login</StyledLoginLink>
+         <StyledLoginLink  id="header-navbar-login-button" to="/user/login">Login</StyledLoginLink>
           <CartContainer />
         </CartSpan> 
       </NavContainer>
