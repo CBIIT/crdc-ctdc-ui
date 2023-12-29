@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { useAuth } from '@bento-core/authentication';
+import { useAuth } from '../Authentication';
 import AfterSignInComponent from './components/afterSignInComponent';
 import globalData, {enableAuthentication, loginPath, REDIRECT_AFTER_SIGN_OUT } from '../../bento/siteWideConfig';
 

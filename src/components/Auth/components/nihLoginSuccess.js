@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { redirect } from '@bento-core/authentication';
-import { useAuth } from '@bento-core/authentication';
+import { redirect } from '../../Authentication';
+import { useAuth } from '../../Authentication';
 
 function useQuery() {
   const { search } = useLocation();
@@ -10,7 +10,7 @@ function useQuery() {
 
 function getRedirectPath(query) {
   const state = JSON.parse(query.get('state')) || {};
-  const path = `/#${state.internalRedirectPath}`;
+  const path = `/#${state.internalRedirectPath || ""}`;
   return path;
 }
 
@@ -35,7 +35,7 @@ function nihLoginSuccess() {
 
   useEffect(() => {
     if (nihCode) {
-      authServiceLogin(nihCode, 'nih', `${originDomain}/nihloginsuccess`, onSuccess, onError);
+      authServiceLogin('test', 'dcf', `${originDomain}/login`, onSuccess, onError);
     } else {
       const { error, errorDescription } = getErrorData(query);
       if (error) {

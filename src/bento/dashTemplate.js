@@ -17,8 +17,8 @@ export const resetIcon = {
 export const facetSectionVariables = {
   'Filter by Participants': {
     isExpanded: true,
-    hasSearch: true,
-    hasArrowDropDownIcon: false,
+    hasSearch: false,
+    hasArrowDropDownIcon: true,
   },
   'Filter by Biospecimens': {
     isExpanded: true,

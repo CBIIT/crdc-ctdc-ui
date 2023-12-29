@@ -54,7 +54,7 @@ export const navMobileList = [
     className: 'navMobileItem clickable',
   },
   {
-    name: 'Request Acess',
+    name: 'Request Access',
     link: '/request-access',
     id: 'navbar-link-request-access',
     className: 'navMobileItem',

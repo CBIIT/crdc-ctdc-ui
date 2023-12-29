@@ -31,7 +31,7 @@ const HeaderContainer = styled.div`
 
 const Header = () => {
   const path = useLocation().pathname;
-
+  
   return (
     <HeaderBanner role="banner">
       <HeaderContainer>

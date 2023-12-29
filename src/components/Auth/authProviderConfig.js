@@ -2,7 +2,6 @@
 import gql from 'graphql-tag';
 import GET_USER_DETAILS from '../../bento/authProviderData';
 import env from '../../utils/env';
-import { redirect } from '@bento-core/authentication';
 import { storeInLocalStorage, deleteFromLocalStorage } from '../../utils/localStorage';
 
 /**
@@ -20,14 +19,7 @@ export const AUTHPROVIDER_CONFIG = {
 
   // Helper functions used by the component
   functions: {
-    /**
-     * A function that is called when the redirect is needed to be done.
-     *
-     * @param {object} history object of history.
-     * @param {object} redirectPath reason for the change event
-     */
-    redirect: redirect,
-
+  
     /**
      * A function that is called when value is needed to store in Local Storage.
      *

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 import { SessionTimeoutGenerator } from '@bento-core/session-timeout';
-import { useAuth } from '@bento-core/authentication';
+import { useAuth } from '../Authentication';
 import env from '../../utils/env';
 import {
   PING_INTERVAL,
@@ -32,7 +32,8 @@ const { SessionTimeout } = SessionTimeoutGenerator({
 export default () => {
   const history = useHistory();
   const { signOut } = useAuth();
-  const onSignOut = () => signOut(history, REDIRECT_AFTER_SIGN_OUT);
+  const IDP = 'dcf';
+  const onSignOut = () => signOut(history, REDIRECT_AFTER_SIGN_OUT, IDP);
 
   const { Notification } = useGlobal();
   const onShowNotification = (content, duration) => Notification.show(content, duration);

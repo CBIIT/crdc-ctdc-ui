@@ -51,9 +51,9 @@ const Layout = ({ classes, isSidebarOpened }) => {
         >
           <Route component={ScrollToTopComponent} />
           <Switch>
-            <MixedRoute exact path="/" component={Home} />
-            <MixedRoute exact path="/home" component={Home} />
-            <MixedRoute exact path="/trial/:id" component={TrialDetail} />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/home" component={Home} />
+            <Route exact path="/trial/:id" component={TrialDetail} />
 
             {/* START: Private Routes */}
             <PrivateRoute path="/profile" requiuredSignIn access={['member', 'non-member', 'admin']} component={ProfileController} />
@@ -90,7 +90,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
               ),
             )}
             <Route path="/graphql" component={GraphqlClient} />
-            <LoginRoute path="/login" component={Login} />
+            <LoginRoute path="/user/login" component={Login} />
             <Route component={Error} />
 
           </Switch>
