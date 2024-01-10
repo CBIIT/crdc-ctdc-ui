@@ -14,6 +14,7 @@ import { widgetConfig } from '../../../bento/dashTemplate';
 import colors from '../../../utils/colors';
 import { Typography } from '../../../components/Wrappers/Wrappers';
 import { formatWidgetData } from './WidgetUtils';
+import sunburstStyle from './SunburstStyle'
 
 const WidgetView = ({
   classes,
@@ -36,8 +37,14 @@ const WidgetView = ({
       },
     },
     SunburstConfig: {
+      classes: sunburstStyle(),
       styles: {
         textColor: theme.palette.widgetBackground.contrastText,
+        sunburst: {
+          stroke: '#ddd',
+          strokeOpacity: 0.3,
+          strokeWidth: '0.5',
+        },
       },
     },
   };
