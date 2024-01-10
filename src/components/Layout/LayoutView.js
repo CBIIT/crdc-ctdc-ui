@@ -53,7 +53,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
           <Switch>
             <MixedRoute exact path="/" component={Home} />
             <MixedRoute exact path="/home" component={Home} />
-            <MixedRoute exact path="/trial/:id" component={TrialDetail} />
+            <MixedRoute exact path="/study/:id" component={TrialDetail} />
 
             {/* START: Private Routes */}
             <PrivateRoute path="/profile" requiuredSignIn access={['member', 'non-member', 'admin']} component={ProfileController} />

@@ -30,9 +30,9 @@ export const navMobileList = [
     className: 'navMobileItem',
   },
   {
-    name: 'Trials',
-    link: '/trial/NCT04314401',
-    id: 'navbar-link-trials',
+    name: 'Studies',
+    link: '/study/NCT04314401',
+    id: 'navbar-link-study',
     className: 'navMobileItem',
   },
   {
