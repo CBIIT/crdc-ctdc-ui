@@ -1,17 +1,15 @@
 import React from 'react';
 import { useQuery } from '@apollo/client';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import TrialView from './trialDetailView';
+import StudyView from './studyDetailView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import { GET_TRIAL_DETAIL_DATA_QUERY } from '../../bento/trialDetailData';
+import { GET_STUDY_DETAIL_DATA_QUERY } from '../../bento/studyDetailData';
 
 const ProgramDetailContainer =  ({ match }) => {
   
-  const { loading, error, data } = useQuery(GET_TRIAL_DETAIL_DATA_QUERY, {
+  const { loading, error, data } = useQuery(GET_STUDY_DETAIL_DATA_QUERY, {
     variables: { study_short_name: ["CMB"] },
   });
-
-
 
   if (loading) return <CircularProgress />;
   if (error || !data) {
@@ -21,7 +19,7 @@ const ProgramDetailContainer =  ({ match }) => {
       </Typography>
     );
   }
-  return <TrialView data={data} />;
+  return <StudyView data={data} />;
 };
 
 export default ProgramDetailContainer;
