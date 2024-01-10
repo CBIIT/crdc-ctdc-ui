@@ -95,7 +95,7 @@ export const valueConfiguration = {
 
 
 // --------------- GraphQL query configuration --------------
-export const GET_TRIAL_DETAIL_DATA_QUERY = gql`
+export const GET_STUDY_DETAIL_DATA_QUERY = gql`
 query studyByStudyShortNameQueries($study_short_name: [String]) {
  
   studyByStudyShortName(study_short_name: $study_short_name) {

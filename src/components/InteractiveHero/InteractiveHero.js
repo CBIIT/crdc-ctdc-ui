@@ -11,10 +11,6 @@ import ActiveReports from '../../assets/landing/animation/Reports_Active.png';
 import InActiveReports from '../../assets/landing/animation/Reports_InActive.png';
 
 import WhispInActive from '../../assets/landing/animation/Whisp-All_Active.png';
-import ActiveFiles from '../../assets/landing/animation/FilesActive.png';
-import InActiveFiles from '../../assets/landing/animation/FilesInActive.png';
-import ActiveTrials from '../../assets/landing/animation/TrialsActive.png';
-import InActiveTrials from '../../assets/landing/animation/TrialsInActive.png';
 import CircularIcon from './CircularIcon';
 import Circle1 from '../../assets/landing/animation/circle1.png';
 import Circle2 from '../../assets/landing/animation/circle2.png';

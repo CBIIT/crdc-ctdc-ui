@@ -7,7 +7,7 @@ import ToolTip from '@bento-core/tool-tip';
 import {
   // eslint-disable-next-line no-unused-vars
   externalIcon,
-} from '../../../../bento/trialDetailData';
+} from '../../../../bento/studyDetailData';
 import BiospecimenProfile from '../BiospecimenProfile';
 import OverviewThemeProvider from './overviewThemeConfig';
 
@@ -78,7 +78,7 @@ const Overview = ({
             <Grid item lg={5} md={4} sm={6} xs={12} className={classes.borderRight}>
               <Grid container direction="row" className={classes.detailContainerLeft}>
                 <Grid item xs={12} className={classes.containerHeader}>
-                  <span className={classes.detailContainerHeaderText}>Trial Name</span>
+                  <span className={classes.detailContainerHeaderText}>Study Name</span>
                 </Grid>
                 <Grid item xs={12} className={classes.studyDescription}>
                   <div>
@@ -93,7 +93,7 @@ const Overview = ({
                   <Grid item xs={12} className={classes.detailContainerItem}>
                     <Grid item container direction="row">
                       <Grid item xs={12} className={classes.title}>
-                        TRIAL DESCRIPTION                     
+                        STUDY DESCRIPTION                     
                       </Grid>
                       <Grid item xs={12} className={classes.content}>
                         { study_description || "" }
@@ -103,7 +103,7 @@ const Overview = ({
                   <Grid item xs={12} className={classes.detailContainerItem}>
                     <Grid item container direction="row">
                       <Grid item xs={12} className={classes.title}>
-                        TRIAL TYPE                     
+                        STUDY TYPE                     
                       </Grid>
                       <Grid item xs={12} className={classes.content}>
                         { study_type || "" }
