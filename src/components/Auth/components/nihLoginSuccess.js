@@ -35,7 +35,7 @@ function nihLoginSuccess() {
 
   useEffect(() => {
     if (nihCode) {
-      authServiceLogin('test', 'dcf', `${originDomain}/login`, onSuccess, onError);
+      authServiceLogin(nihCode, 'dcf', `${originDomain}/login`, onSuccess, onError);
     } else {
       const { error, errorDescription } = getErrorData(query);
       if (error) {

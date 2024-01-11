@@ -2,6 +2,9 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useHistory } from 'react-router';
+import { useSelector } from 'react-redux';
+import { useAuth } from '../../Authentication';
 import CartContainer from '../../Cart/CartContainer';
 import { navMobileList, navbarSublists } from '../../../config/globalHeaderData';
 
@@ -244,10 +247,90 @@ const StyledLoginLink = styled(Link)`
   margin-right: -1px;
 `;
 
+
+
 const CartSpan = styled.span`
     display: flex;
     flex-flow: row;
+
+    .userName{
+      color: #00846A;
+      font-size: 16px;
+      font-family: Poppins;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+      letter-spacing: 0.42px;
+      text-decoration: none;
+      padding: 19px 0 10px 0;
+      margin-bottom: 4.5px;
+      margin-right: -1px;
+    }
     `
+
+
+const NameDropdown = styled.div`
+    top: 60.5px;
+    left: 0;
+    width: 100%;
+    background: #1F4671;
+    z-index: 1100;
+    position: absolute;
+
+    // left: 0;
+    // background: #1F4671;
+    // z-index: 1100;
+    // position: absolute;
+    // // visibility: hidden;
+    // // outline: none;
+    // // opacity: 0;
+    // /* border-left: 4px solid #5786FF;
+    // border-bottom: 4px solid #5786FF;
+    // border-right: 4px solid #5786FF; */
+    // width: 100%;
+`;
+
+
+const NameDropdownContainer = styled.div`
+  margin: 0 auto;
+  text-align: left;
+  position: relative;
+  max-width: 1400px;
+  .dropdownList {
+      background: #1F4671;
+      display: inline-flex;
+      grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
+      padding: 32px 32px 0 32px;
+  }
+  .dropdownItem {
+    padding: 0 10px 52px 10px;
+    text-align: left;
+    font-family: 'Poppins';
+    font-weight: 600;
+    font-style: normal;
+    font-size: 20px;
+    line-height: 110%;
+    color: #FFFFFF;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .dropdownItem:hover {
+    text-decoration: underline;
+  }
+  .dropdownItemButton {
+    padding-bottom: 0;
+    text-transform: none;
+  }
+  .dropdownItemButton:hover {
+    background: transparent;
+  }
+  #navbar-dropdown-item-name-logout {
+    max-width: 200px;
+  }
+`;
+
+
 
 const useOutsideAlerter = (ref) => {
   useEffect(() => {
@@ -269,11 +352,25 @@ const useOutsideAlerter = (ref) => {
 };
 
 const NavBar = () => {
+  const authData = useSelector((state) => {
+    console.log(state)
+    return state.login;
+  } );
+
+  const {
+    signOut,
+  } = useAuth();
+  const history = useHistory();
   const [clickedTitle, setClickedTitle] = useState("");
   const dropdownSelection = useRef(null);
+  const nameDropdownSelection = useRef(null);
   const clickableObject = navMobileList.filter((item) => item.className === 'navMobileItem clickable');
   const clickableTitle = clickableObject.map((item) => item.name);
-  useOutsideAlerter(dropdownSelection);
+  const displayName = authData.name || "N/A";
+  const [showLogoutAlert, setShowLogoutAlert] = useState(false);
+  clickableTitle.push(displayName);
+
+  useOutsideAlerter(dropdownSelection, nameDropdownSelection);
 
   const handleMenuClick = (e) => {
     if (e.target.innerText === clickedTitle || !clickableTitle.includes(e.target.innerText)) {
@@ -289,7 +386,14 @@ const NavBar = () => {
     }
   };
 
-
+  const handleLogout = async () => {
+    console.log("signOut")
+    setClickedTitle("");
+    signOut(history, "/", 'DCF');
+    navigate("/");
+    setShowLogoutAlert(true);
+    setTimeout(() => setShowLogoutAlert(false), 10000);
+  };
 
   function shouldBeUnderlined(item) {
     const linkName = item.name;
@@ -362,16 +466,32 @@ const NavBar = () => {
             })
           }
         </UlContainer>
-        <CartSpan>
+ {authData.isSignedIn
+            ? (
+               <CartSpan>
+               <div
+                    id="navbar-dropdown-name"
+                    onKeyDown={onKeyPressHandler}
+                    role="button"
+                    tabIndex={0} className={clickedTitle === displayName ? 'navText displayName clicked userName' : 'navText displayName userName' }
+                    onClick={handleMenuClick}
+                  >
+                    {displayName}
+                  </div>
+                <CartContainer />
+              </CartSpan> 
+              ):(
+         <CartSpan>
          <StyledLoginLink  id="header-navbar-login-button" to="/user/login">Login</StyledLoginLink>
           <CartContainer />
         </CartSpan> 
+        )}
       </NavContainer>
       <Dropdown ref={dropdownSelection} className={clickedTitle === ''  ? "invisible" : ""}>
         <DropdownContainer>
           <div className="dropdownList">
             {
-              clickedTitle !== "" ? navbarSublists[clickedTitle].map((dropItem, idx) => {
+              clickedTitle !== "" && clickedTitle !== displayName ? navbarSublists[clickedTitle].map((dropItem, idx) => {
                 const dropkey = `drop_${idx}`;
                 return (
                   dropItem.link && (
@@ -393,6 +513,27 @@ const NavBar = () => {
           </div>
         </DropdownContainer>
       </Dropdown>
+       <NameDropdown ref={nameDropdownSelection} className={clickedTitle !== displayName ? "invisible" : ""}>
+        <NameDropdownContainer>
+          <div className="dropdownList">
+            <span
+              id="navbar-dropdown-item-name-logout"
+              role="button"
+              tabIndex={0}
+              className="dropdownItem"
+              onClick={() => { setClickedTitle(""); handleLogout(); }}
+              onKeyDown={(e) => {
+                  if (e.key === "Enter") {
+                    setClickedTitle("");
+                    handleLogout();
+                  }
+                }}
+            >
+              Logout
+            </span>
+          </div>
+        </NameDropdownContainer>
+      </NameDropdown>
     </Nav>
   );
 };
