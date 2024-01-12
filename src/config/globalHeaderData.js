@@ -86,12 +86,6 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
     {
-      name: 'CTDC Data Dictionary',
-      link: '/data-dictionary',
-      id: 'navbar-dropdown-item-CTDC-data-dictionary',
-      className: 'navMobileSubItem',
-    },
-    {
       name: 'Data Harmonization',
       link: '/data-harmonization',
       id: 'navbar-dropdown-item-data-harmonization',
