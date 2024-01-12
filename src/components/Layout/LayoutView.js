@@ -55,18 +55,18 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route exact path="/home" component={Home} />
             <Route exact path="/trial/:id" component={TrialDetail} />
 
-            <Route path="/fileCentricCart" access={['admin', 'member']} component={CartView} />
-            <Route path="/explore" access={['admin', 'member']} component={DashTemplate} />
+            <Route path="/fileCentricCart" component={CartView} />
+            <Route path="/explore" component={DashTemplate} />
 
-            <Route exact path="/ctdc-data-model" access={['admin', 'member', 'non-member']} component={UnderDev} />
-            <Route exact path="/data-dictionary" access={['admin', 'member', 'non-member']} component={UnderDev} />
-            <Route exact path="/data-harmonization" access={['admin', 'member', 'non-member']} component={UnderDev} />
-            <Route exact path="/data-use" access={['admin', 'member', 'non-member']} component={UnderDev} />
-            <Route exact path="/request-access" access={['admin', 'member', 'non-member']} component={UnderDev} />
+            <Route exact path="/ctdc-data-model" component={UnderDev} />
+            <Route exact path="/data-dictionary" component={UnderDev} />
+            <Route exact path="/data-harmonization" component={UnderDev} />
+            <Route exact path="/data-use" component={UnderDev} />
+            <Route exact path="/request-access" component={UnderDev} />
             <Route exact path="/crdc"  component={UnderDev} />
 
-            <Route exact path="/search" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
-            <Route path="/search/:id" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
+            <Route exact path="/search" component={GlobalSearchController} />
+            <Route path="/search/:id" component={GlobalSearchController} />
 
             {/* END: Private Routes */}
             {aboutPageRoutes.map(
