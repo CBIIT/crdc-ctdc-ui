@@ -88,7 +88,7 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
         googleUser,
         isInitialized,
         grantOfflineAccess,
-        signOut: googleSignOut,
+        googleSignOut: googleSignOut,
         isSignedIn,
       } = useGoogleLogin({
         clientId: GOOGLE_CLIENT_ID,
@@ -164,7 +164,8 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
             body: JSON.stringify({ IDP }),
           }).then(() => {
             deleteFromLocalStorage('userDetails');
-            //signOut();
+            signOut();
+            dispatchProps("signOut")
             //googleSignOut();
             redirect(history, redirectPath);
           })

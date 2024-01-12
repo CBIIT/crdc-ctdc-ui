@@ -1,9 +1,10 @@
 /* eslint-disable */
 import React, { useEffect, useState, useRef } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link} from 'react-router-dom';
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
 import { useSelector } from 'react-redux';
+import { useGlobal } from '../../Global/GlobalProvider';
 import { useAuth } from '../../Authentication';
 import CartContainer from '../../Cart/CartContainer';
 import { navMobileList, navbarSublists } from '../../../config/globalHeaderData';
@@ -247,8 +248,6 @@ const StyledLoginLink = styled(Link)`
   margin-right: -1px;
 `;
 
-
-
 const CartSpan = styled.span`
     display: flex;
     flex-flow: row;
@@ -268,26 +267,14 @@ const CartSpan = styled.span`
     }
     `
 
-
 const NameDropdown = styled.div`
     top: 60.5px;
     left: 0;
     width: 100%;
     background: #1F4671;
-    z-index: 1100;
+    z-index: 2200;
     position: absolute;
 
-    // left: 0;
-    // background: #1F4671;
-    // z-index: 1100;
-    // position: absolute;
-    // // visibility: hidden;
-    // // outline: none;
-    // // opacity: 0;
-    // /* border-left: 4px solid #5786FF;
-    // border-bottom: 4px solid #5786FF;
-    // border-right: 4px solid #5786FF; */
-    // width: 100%;
 `;
 
 
@@ -331,14 +318,16 @@ const NameDropdownContainer = styled.div`
 `;
 
 
-
-const useOutsideAlerter = (ref) => {
+const useOutsideAlerter = (ref1, ref2) => {
   useEffect(() => {
     function handleClickOutside(event) {
-      if (!event.target || (event.target.getAttribute("class") !== "dropdownList" && ref.current && !ref.current.contains(event.target))) {
-        const toggle = document.getElementsByClassName("navText clicked");
-        if (toggle[0] && event.target.getAttribute("class") !== "navText clicked" && event.target.getAttribute("class") !== "navText clicked") {
-          const temp = toggle[0];
+      if (!event.target ||
+         (event.target.getAttribute("class") !== "dropdownList" 
+            && ref1.current && !ref1.current.contains(event.target)
+               && ref2.current && !ref2.current.contains(event.target))) {
+        let toggle = document.getElementsByClassName("navText clicked");
+        if (toggle[0] && !event.target.getAttribute("class").includes("navText clicked")) {
+          let temp = toggle[0];
           temp.click();
         }
       }
@@ -348,12 +337,12 @@ const useOutsideAlerter = (ref) => {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [ref]);
+  }, [ref1, ref2]);
 };
 
 const NavBar = () => {
   const authData = useSelector((state) => {
-    console.log(state)
+    console.log(state);
     return state.login;
   } );
 
@@ -367,6 +356,7 @@ const NavBar = () => {
   const clickableObject = navMobileList.filter((item) => item.className === 'navMobileItem clickable');
   const clickableTitle = clickableObject.map((item) => item.name);
   const displayName = authData.name || "N/A";
+  const [isSignedIn, setIsSignedIn] = useState(authData.name?authData.isSignedIn:false);
   const [showLogoutAlert, setShowLogoutAlert] = useState(false);
   clickableTitle.push(displayName);
 
@@ -386,22 +376,20 @@ const NavBar = () => {
     }
   };
 
+  const { Notification } = useGlobal();
+  const onShowNotification = (content, duration) => Notification.show(content, duration);
+
   const handleLogout = async () => {
-    console.log("signOut")
     setClickedTitle("");
     signOut(history, "/", 'DCF');
-    navigate("/");
-    setShowLogoutAlert(true);
-    setTimeout(() => setShowLogoutAlert(false), 10000);
+    onShowNotification("You have been logged out.", 2000)
+    history.push('/');
   };
 
   function shouldBeUnderlined(item) {
     const linkName = item.name;
     const correctPath = window.location.href.slice(window.location.href.lastIndexOf(window.location.host) + window.location.host.length);
     const correctLink = "/#".concat(item.link);
-    // if (item.linkName === "Home") {
-    //   return correctPath === "/";
-    // }
     if (item.className === "navMobileItem") {
       return correctPath === correctLink;
     }
@@ -409,10 +397,9 @@ const NavBar = () => {
       return false;
     }
     const linkNames = Object.values(navbarSublists[linkName]).map((e) => "/#".concat(e.link));
-    console.log(linkNames);
-    console.log(correctPath);
     return linkNames.includes(correctPath);
   }
+
 
   useEffect(() => {
     setClickedTitle("");
@@ -466,7 +453,7 @@ const NavBar = () => {
             })
           }
         </UlContainer>
- {authData.isSignedIn
+ {isSignedIn && authData.name
             ? (
                <CartSpan>
                <div
@@ -487,7 +474,7 @@ const NavBar = () => {
         </CartSpan> 
         )}
       </NavContainer>
-      <Dropdown ref={dropdownSelection} className={clickedTitle === ''  ? "invisible" : ""}>
+      <Dropdown id="Dropdown" ref={dropdownSelection} className={clickedTitle === '' && clickedTitle !== displayName  ? "invisible" : ""}>
         <DropdownContainer>
           <div className="dropdownList">
             {
@@ -513,24 +500,23 @@ const NavBar = () => {
           </div>
         </DropdownContainer>
       </Dropdown>
-       <NameDropdown ref={nameDropdownSelection} className={clickedTitle !== displayName ? "invisible" : ""}>
+       <NameDropdown id="NameDropdown"  ref={nameDropdownSelection} className={clickedTitle !== displayName ? "invisible" : ""}>
         <NameDropdownContainer>
           <div className="dropdownList">
-            <span
+            <div
               id="navbar-dropdown-item-name-logout"
               role="button"
               tabIndex={0}
               className="dropdownItem"
-              onClick={() => { setClickedTitle(""); handleLogout(); }}
+              onClick={() => {  handleLogout()}}
               onKeyDown={(e) => {
                   if (e.key === "Enter") {
-                    setClickedTitle("");
-                    handleLogout();
+                    handleLogout()
                   }
                 }}
             >
               Logout
-            </span>
+            </div>
           </div>
         </NameDropdownContainer>
       </NameDropdown>

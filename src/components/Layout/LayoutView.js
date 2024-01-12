@@ -55,26 +55,15 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route exact path="/home" component={Home} />
             <Route exact path="/trial/:id" component={TrialDetail} />
 
-            {/* START: Private Routes */}
-            <PrivateRoute path="/profile" requiuredSignIn access={['member', 'non-member', 'admin']} component={ProfileController} />
-            {/* END SECTION */}
+            <Route path="/fileCentricCart" access={['admin', 'member']} component={CartView} />
+            <Route path="/explore" access={['admin', 'member']} component={DashTemplate} />
 
-            {/* SECTION: Member & Admin only Path */}
-            <PrivateRoute path="/programs" access={['admin', 'member']} component={Programs} />
-            <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={CartView} />
-            <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
-            {/* bento 4.0 template */}
-            <PrivateRoute path="/explore" access={['admin', 'member']} component={DashTemplate} />
-            {/* END SECTION */}
-
-            {/* Psuedo Private routes where minor
-            functionality can be accessed my unauthorized users */}
             <Route exact path="/ctdc-data-model" access={['admin', 'member', 'non-member']} component={UnderDev} />
             <Route exact path="/data-dictionary" access={['admin', 'member', 'non-member']} component={UnderDev} />
             <Route exact path="/data-harmonization" access={['admin', 'member', 'non-member']} component={UnderDev} />
             <Route exact path="/data-use" access={['admin', 'member', 'non-member']} component={UnderDev} />
             <Route exact path="/request-access" access={['admin', 'member', 'non-member']} component={UnderDev} />
-            <Route exact path="/crdc" access={['admin', 'member', 'non-member']} component={UnderDev} />
+            <Route exact path="/crdc"  component={UnderDev} />
 
             <Route exact path="/search" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
             <Route path="/search/:id" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
