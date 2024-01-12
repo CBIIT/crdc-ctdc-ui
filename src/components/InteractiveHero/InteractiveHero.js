@@ -122,7 +122,7 @@ const TherapiesActiveText = ({ classes, heroData }) => (
 const ReportsInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
-      REPORTS
+      FILES
     </div>
   </div>
 );
@@ -130,7 +130,7 @@ const ReportsInActiveText = ({ classes, heroData }) => (
 const ReportsActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteText}>
-      Reports
+      FILES
     </div>
      <div className={classes.blueText}>
       {heroData ? heroData.numberOfBiomarker : 'NA'}
