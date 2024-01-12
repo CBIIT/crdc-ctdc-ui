@@ -47,7 +47,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                   {contentObj.listWithDots && (
                     <div className={classes.text}>
                       {/* Numbered ordered list */}
-                      <ol>
+                      <ul>
                         { contentObj.listWithDots.map((listObj) => (
                           listObj.listWithAlpahbets ? (
                             // Alphetised sub ordered list
@@ -57,7 +57,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                             </ol>
                           ) : <li> {listObj.includes('$$') ? boldText(listObj) : listObj}</li>
                         ))}
-                      </ol>
+                      </ul>
                     </div>
                   )}
                   {/* Ordered List with Alphabets logic */}
