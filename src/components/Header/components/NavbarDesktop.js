@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useState, useRef } from 'react';
-import { NavLink, Link} from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
 import { useSelector } from 'react-redux';
