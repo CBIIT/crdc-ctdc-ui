@@ -1,6 +1,10 @@
 import React, { useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
+import { useAuth } from '../Authentication';
+import { useGlobal } from '../Global/GlobalProvider';
 import Logo from "./components/LogoMobile";
 import SearchBar from "./components/SearchBarMobile";
 import menuClearIcon from '../../assets/header/Menu_Cancel_Icon.svg';
@@ -163,10 +167,132 @@ const Header = () => {
   const [navMobileDisplay, setNavMobileDisplay] = useState('none');
   const [navbarMobileList, setNavbarMobileList] = useState(navMobileList);
 
+  
   const clickNavItem = (e) => {
-    const clickTitle = e.target.innerText;
-    setNavbarMobileList(navbarSublists[clickTitle]);
+    if(e==="login"){
+      setNavbarMobileList("login")
+    }else{
+      const clickTitle = e.target.innerText;
+      setNavbarMobileList(navbarSublists[clickTitle]);
+    }
   };
+
+  const history = useHistory();
+   const {
+    signOut,
+  } = useAuth();
+
+   const authData = useSelector((state) => {
+    console.log(state);
+    return state.login;
+  } );
+
+  const [isSignedIn, setIsSignedIn] = useState(authData.name?authData.isSignedIn:false);
+
+  const displayName = authData.name || "N/A";
+
+  const handleLogout = async () => {
+    signOut(history, "/", 'DCF');
+    onShowNotification("You have been logged out.", 2000)
+    history.push('/');
+    setNavMobileDisplay('none');
+  };
+
+  const { Notification } = useGlobal();
+  const onShowNotification = (content, duration) => Notification.show(content, duration);
+
+
+ const SubMenu = () =>{
+    return navbarMobileList.map((navMobileItem, idx) => {
+                    const mobilekey = `mobile_${idx}`;
+                    return (
+                      <React.Fragment key={mobilekey}>
+                        {navMobileItem.className === 'navMobileItem' && <NavLink id={navMobileItem.id} to={navMobileItem.link} onClick={() => setNavMobileDisplay('none')}><div className="navMobileItem">{navMobileItem.name}</div></NavLink>}
+                        {navMobileItem.className === 'navMobileItem clickable' && <div id={navMobileItem.id} role="button" tabIndex={0} className="navMobileItem clickable" onKeyDown={(e) => { if (e.key === "Enter") { clickNavItem(e); } }} onClick={clickNavItem}>{navMobileItem.name}</div>}
+                        {navMobileItem.className === 'navMobileSubItem' && 
+                          (navMobileItem.link.startsWith("https://") ? 
+                          <a href={navMobileItem.link} rel="noreferrer" target="_blank" id={navMobileItem.id}>
+                             <div role="button" 
+                                tabIndex={0} 
+                                className="navMobileItem SubItem" 
+                              >
+                                {navMobileItem.name}
+                              </div>
+                          </a>
+
+                          :
+                          <Link 
+                            id={navMobileItem.id} 
+                            to={navMobileItem.link}>
+                              <div role="button" 
+                                tabIndex={0} 
+                                className="navMobileItem SubItem" 
+                                onKeyDown={(e) => { 
+                                  if (e.key === "Enter") 
+                                    { setNavMobileDisplay('none'); } 
+                                  }
+                                } 
+                                onClick={() => setNavMobileDisplay('none')}>
+                                  
+                                {navMobileItem.name}
+                              </div>
+                          </Link>)
+                        }
+                        {navMobileItem.className === 'navMobileSubTitle' && <div className="navMobileItem">{navMobileItem.name}</div>}
+                      </React.Fragment>
+                    );
+                  })
+  }
+
+  const LoginMenu=()=>{
+    if(isSignedIn && authData.name){
+      if(navbarMobileList !== navMobileList) return "";
+      return(
+        <React.Fragment>
+        <div
+                    id="navbar-dropdown-name"
+                    role="button" tabIndex={0}
+                    className="navMobileItem clickable"
+                    onKeyDown={(e) => { if (e.key === "Enter") { clickNavItem("login"); } }}
+                    onClick={ ()=>clickNavItem("login")}
+                  >
+                    {authData.name}
+                  </div>
+                  <Link to="/fileCentricCart" rel="noreferrer">
+                           <div role="button" 
+                              tabIndex={0} 
+                              className="navMobileItem " 
+                            >
+                              Cart
+                            </div>
+                        </Link>
+            </React.Fragment>
+                )
+    }else{
+      if(navbarMobileList !== navMobileList) return "";
+      return ( <React.Fragment>
+        <Link to="/user/login" rel="noreferrer">
+                           <div role="button" 
+                              tabIndex={0} 
+                              className="navMobileItem " 
+                            >
+                              Login
+                            </div>
+                        </Link>
+                        <Link to="/fileCentricCart" rel="noreferrer">
+                           <div role="button" 
+                              tabIndex={0} 
+                              className="navMobileItem " 
+                            >
+                              Cart
+                            </div>
+                        </Link>
+           </React.Fragment>)
+    }
+  }
+
+
+
 
   return (
     <>
@@ -227,63 +353,21 @@ const Header = () => {
               </div>
             )}
             <div className="navMobileContainer">
-              {
-                navbarMobileList.map((navMobileItem, idx) => {
-                  const mobilekey = `mobile_${idx}`;
-                  return (
-                    <React.Fragment key={mobilekey}>
-                      {navMobileItem.className === 'navMobileItem' && <NavLink id={navMobileItem.id} to={navMobileItem.link} onClick={() => setNavMobileDisplay('none')}><div className="navMobileItem">{navMobileItem.name}</div></NavLink>}
-                      {navMobileItem.className === 'navMobileItem clickable' && <div id={navMobileItem.id} role="button" tabIndex={0} className="navMobileItem clickable" onKeyDown={(e) => { if (e.key === "Enter") { clickNavItem(e); } }} onClick={clickNavItem}>{navMobileItem.name}</div>}
-                      {navMobileItem.className === 'navMobileSubItem' && 
-                        (navMobileItem.link.startsWith("https://") ? 
-                        <a href={navMobileItem.link} rel="noreferrer" target="_blank" id={navMobileItem.id}>
-                           <div role="button" 
-                              tabIndex={0} 
-                              className="navMobileItem SubItem" 
-                            >
-                              {navMobileItem.name}
-                            </div>
-                        </a>
-                        :
-                        <Link 
-                          id={navMobileItem.id} 
-                          to={navMobileItem.link}>
-                            <div role="button" 
-                              tabIndex={0} 
-                              className="navMobileItem SubItem" 
-                              onKeyDown={(e) => { 
-                                if (e.key === "Enter") 
-                                  { setNavMobileDisplay('none'); } 
-                                }
-                              } 
-                              onClick={() => setNavMobileDisplay('none')}>
-                                
-                              {navMobileItem.name}
-                            </div>
-                        </Link>)
-                      }
+              {navbarMobileList!="login"? (
+                   <React.Fragment key={"menu"}>
+                      <SubMenu />
+                   </React.Fragment>
+               ):(
+                   <React.Fragment key={"logout"}>
+                    <div id={"logout-btn"} role="button" tabIndex={0} className="navMobileItem " onKeyDown={(e) => { if (e.key === "Enter") { handleLogout(); } }} onClick={handleLogout}>Logout</div>
+                   </React.Fragment>
+                )
+             }
 
-                      {navMobileItem.className === 'navMobileSubTitle' && <div className="navMobileItem">{navMobileItem.name}</div>}
-                    </React.Fragment>
-                  );
-                })
-              }
-              <a href="/user/login" rel="noreferrer" target="_blank" >
-                           <div role="button" 
-                              tabIndex={0} 
-                              className="navMobileItem " 
-                            >
-                              Login
-                            </div>
-                        </a>
-              <a href="cart" rel="noreferrer" target="_blank" >
-                           <div role="button" 
-                              tabIndex={0} 
-                              className="navMobileItem " 
-                            >
-                              Cart
-                            </div>
-                        </a>
+              <React.Fragment key={"login"}>
+                       <LoginMenu />
+              </React.Fragment>
+              
             </div>
           </div>
           <div

@@ -21,7 +21,7 @@ window.injectedEnv = {
   // Access control settings
   REACT_APP_AUTH: true,
   PUBLIC_ACCESS: 'Metadata Only',
-  NODE_LEVEL_ACCESS: true,
+  NODE_LEVEL_ACCESS: false,
   NODE_LABEL: 'Study Arm(s)',
 
   // No Longer Used.
