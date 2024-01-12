@@ -267,7 +267,7 @@ export const table = {
   columns: [
     {
       cellType: cellTypes.CHECKBOX,
-      display: true,
+      display: false,
       role: cellTypes.CHECKBOX,
     },
     {
