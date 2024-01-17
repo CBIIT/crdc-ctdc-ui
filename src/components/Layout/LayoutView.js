@@ -71,7 +71,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
             functionality can be accessed my unauthorized users */}
             <Route exact path="/ctdc-data-model" access={['admin', 'member', 'non-member']} component={UnderDev} />
             <Route exact path="/data-dictionary" access={['admin', 'member', 'non-member']} component={UnderDev} />
-            <Route exact path="/data-harmonization" access={['admin', 'member', 'non-member']} component={UnderDev} />
+            <Route exact path="/data-harmonization" access={['admin', 'member', 'non-member']} component={About} />
             <Route exact path="/data-use" access={['admin', 'member', 'non-member']} component={UnderDev} />
             <Route exact path="/request-access" access={['admin', 'member', 'non-member']} component={UnderDev} />
             <Route exact path="/crdc" access={['admin', 'member', 'non-member']} component={UnderDev} />
