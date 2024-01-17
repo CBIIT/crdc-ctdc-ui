@@ -30,9 +30,9 @@ export const navMobileList = [
     className: 'navMobileItem',
   },
   {
-    name: 'Trials',
-    link: '/trial/NCT04314401',
-    id: 'navbar-link-trials',
+    name: 'Studies',
+    link: '/study/NCT04314401',
+    id: 'navbar-link-study',
     className: 'navMobileItem',
   },
   {
@@ -74,12 +74,6 @@ export const navbarSublists = {
       name: 'CTDC Data Model',
       link: '/ctdc-data-model',
       id: 'navbar-dropdown-item-CTDC-data-model',
-      className: 'navMobileSubItem',
-    },
-    {
-      name: 'CTDC Data Dictionary',
-      link: '/data-dictionary',
-      id: 'navbar-dropdown-item-CTDC-data-dictionary',
       className: 'navMobileSubItem',
     },
     {

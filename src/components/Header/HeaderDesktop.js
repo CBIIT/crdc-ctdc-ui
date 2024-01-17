@@ -26,7 +26,7 @@ const HeaderContainer = styled.div`
 
     .searchBarArea {
       margin-top: 42px;
-  }
+    }
 `;
 
 const Header = () => {

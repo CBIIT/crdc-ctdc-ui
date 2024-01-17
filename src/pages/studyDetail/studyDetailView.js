@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Grid,
   withStyles,
@@ -12,7 +12,7 @@ import Stats from '../../components/Stats/AllStatsController';
 import {
   headerIcon,
   tab,
-} from '../../bento/trialDetailData';
+} from '../../bento/studyDetailData';
 import Tab from '../../components/Tab/Tab';
 import TabPanel from '../../components/Tab/TabPanel';
 import Styles from './studyDetailsStyle';
@@ -26,7 +26,6 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
     open: false,
     value: 0,
   });
-
 
   function closeSnack() {
     setsnackbarState({ open: false });
@@ -44,10 +43,7 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
     />
   );
 
-
   const getHeaderIcon = renderDefaultHeaderIcon
-
-  const getLabel = "Label"
 
   if (isLoading) {
     return <CircularProgress />;

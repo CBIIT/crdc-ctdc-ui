@@ -10,7 +10,7 @@ import Home from '../../pages/landing/landingController';
 import About from '../../pages/about/aboutController';
 import Programs from '../../pages/programs/programsController';
 import ProgramDetail from '../../pages/programDetail/programDetailController';
-import TrialDetail from '../../pages/trialDetail/trialDetailController';
+import StudyDetail from '../../pages/studyDetail/studyDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import GlobalSearchController from '../../pages/search/searchViewController';
 import Login from '../../pages/login';
@@ -23,7 +23,7 @@ import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
 import UnderDev from '../../pages/error/Development';
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
-
+import RAView from '../../pages/about/requestAccess'; 
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -51,22 +51,20 @@ const Layout = ({ classes, isSidebarOpened }) => {
         >
           <Route component={ScrollToTopComponent} />
           <Switch>
+
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
-            <Route exact path="/trial/:id" component={TrialDetail} />
-
+            <Route exact path="/study/:id" component={TrialDetail} />
             <Route path="/fileCentricCart" component={CartView} />
             <Route path="/explore" component={DashTemplate} />
-
             <Route exact path="/ctdc-data-model" component={UnderDev} />
             <Route exact path="/data-dictionary" component={UnderDev} />
             <Route exact path="/data-harmonization" component={UnderDev} />
             <Route exact path="/data-use" component={UnderDev} />
             <Route exact path="/request-access" component={UnderDev} />
             <Route exact path="/crdc"  component={UnderDev} />
-
             <Route exact path="/search" component={GlobalSearchController} />
-            <Route path="/search/:id" component={GlobalSearchController} />
+            <Route path="/search/:id"  component={GlobalSearchController} />
 
             {/* END: Private Routes */}
             {aboutPageRoutes.map(

@@ -18,7 +18,7 @@ export const facetSectionVariables = {
   'Filter by Participants': {
     isExpanded: true,
     hasSearch: false,
-    hasArrowDropDownIcon: true,
+    hasArrowDropDownIcon: false,
   },
   'Filter by Biospecimens': {
     isExpanded: true,
@@ -202,7 +202,7 @@ export const facetsConfig = [
 // --------------- Dashboard Widgets configuration --------------
 // Sunburst chart color scheme
 export const SUNBURST_COLORS_LEVEL_1 = [
-  '#C2E5DC',
+  '#0A8B8B',
   '#6AC6B6',
   '#C33B27',
   '#FDB915',
@@ -218,9 +218,8 @@ export const SUNBURST_COLORS_LEVEL_2 = [
   '#C33B27',
   '#FDB915',
   '#381F5F',
-  '#6AC6B6',
   '#007EA5',
-  '#C2E5DC',
+  '#0A8B8B',
 ];
 
 // A maximum of 6 widgets are allowed
