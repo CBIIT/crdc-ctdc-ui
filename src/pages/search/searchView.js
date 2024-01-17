@@ -9,10 +9,9 @@ import {
   SEARCH_PAGE_DATAFIELDS, SEARCH_PAGE_KEYS,
   queryCountAPI, queryResultAPI, queryAutocompleteAPI,
 } from '../../bento/search';
-import { AboutCard } from './Cards';
-import ParticipantCard from './Cards/participant/ParticipantCardView';
-import BiospecimenCard from './Cards/biospecimen/BiospecimenCardView';
-
+import { AboutCard, ValueCard } from './Cards';
+import ParticipantCard from './Cards/participant/ParticipantCard';
+import BiospecimenCard from './Cards/biospecimen/BiospecimenCard';
 
 /**
  * Determine the correct datafield and offset for the All tab based
@@ -223,7 +222,9 @@ function searchView(props) {
       resultCardMap: {
         participants: ParticipantCard,
         biospecimens: BiospecimenCard,
-        // property: AboutCard,
+        property: ValueCard,
+        node: ValueCard,
+        value: ValueCard,
         about: AboutCard,
       },
       showFilterBy: true,
