@@ -13,7 +13,7 @@ import {
   valueConfiguration,
   timePointArgumentConfiguration,
   argumentConfiguration,
-} from '../../../bento/trialDetailData';
+} from '../../../bento/studyDetailData';
 import TabPanel from '../../../components/Tab/TabPanel';
 // import { navigatedToDashboard } from '../../../utils/utils';
 
@@ -110,7 +110,7 @@ const BiospecimenProfile = ({ classes, d }) => {
         <Grid container className={classes.detailContainerCL}>
           <Grid item xs={12} sm={10}>
             <div className={classes.content}>
-              This trial currently has no associated Biospecimen Profile
+              This study currently has no associated Biospecimen Profile
             </div>
           </Grid>
         </Grid>

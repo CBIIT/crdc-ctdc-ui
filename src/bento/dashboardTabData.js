@@ -391,7 +391,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       ctep_disease_term,
       stage_of_disease,
       tumor_grade,
-      age_at_diagnosis,
+      age_at_enrollment,
       sex,
       reported_gender,
       race,
@@ -1731,7 +1731,7 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'age_at_diagnosis',
+        dataField: 'age_at_enrollment',
         header: 'Age',
         display: true,
         tooltipText: 'sort',

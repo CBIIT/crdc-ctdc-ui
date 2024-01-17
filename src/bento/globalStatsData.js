@@ -46,11 +46,11 @@ export const statsStyling = {
 export const globalStatsData = [
   // A maximum of 6 stats are allowed
   {
-    statTitle: 'TRIALS',
+    statTitle: 'STUDIES',
     type: 'field',
     statAPI: 'numberOfStudies',
     statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-explore-stats-bar-icons/ctdc/images/svg/ExploreStatsBarTrialsIcon.svg',
-    statIconAlt: 'TRIALS Stats Bar Icon',
+    statIconAlt: 'STUDIES Stats Bar Icon',
   },
   {
     statTitle: 'PARTICIPANTS',
