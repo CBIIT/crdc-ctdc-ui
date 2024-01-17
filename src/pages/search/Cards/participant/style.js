@@ -1,6 +1,12 @@
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
+  card: {
+    '&:last-child $hrContainer': {
+      display: 'none',
+    },
+    maxWidth: '800px',
+  },
   indexContainer: {
     fontFamily: 'Roboto',
     fontSize: '16px',

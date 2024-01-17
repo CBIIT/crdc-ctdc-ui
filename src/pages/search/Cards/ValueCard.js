@@ -17,23 +17,22 @@ const CARD_PROPERTIES = [
     label: 'Property Description',
     dataField: 'property_description',
   },
-
   // {
   //   label: 'Property Required',
   //   dataField: 'property_required',
   // },
   // {
   //   label: 'Property Type',
-  //   dataField: 'property_description',
+  //   dataField: 'property_type',
   // },
   // {
-  //   label: 'Property Type',
+  //   label: 'Property Value',
   //   dataField: 'value',
   // },
   {
     label: 'Page Link',
     dataField: 'node_name',
-    link: '/resources',
+    link: '/',
   },
 ];
 
@@ -69,6 +68,12 @@ const ValueCard = ({ data, classes, index }) => {
 };
 
 const styles = (theme) => ({
+  card: {
+    '&:last-child $hrContainer': {
+      display: 'none',
+    },
+    maxWidth: '800px',
+  },
   indexContainer: {
     color: '#767676',
     fontFamily: 'Roboto',
@@ -113,7 +118,7 @@ const styles = (theme) => ({
     fontSize: '18px',
     lineHeight: '22px',
     color: '#990099',
-    paddingLeft: '15px',
+    paddingLeft: '10px',
     verticalAlign: 'middle',
   },
 

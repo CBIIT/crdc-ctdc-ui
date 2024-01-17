@@ -61,6 +61,12 @@ const AboutCard = ({
 };
 
 const styles = (theme) => ({
+  card: {
+    '&:last-child $hrContainer': {
+      display: 'none',
+    },
+    maxWidth: '800px',
+  },
   linkText: {
     marginTop: '4px',
   },
@@ -100,7 +106,7 @@ const styles = (theme) => ({
     fontSize: '18px',
     lineHeight: '22px',
     color: '#990099',
-    paddingLeft: '15px',
+    paddingLeft: '10px',
     verticalAlign: 'middle',
   },
   detailContainerHeader: {

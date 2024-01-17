@@ -7,7 +7,6 @@ import { cn } from 'bento-components';
 
 const ParticipantCard = ({ data = {}, index })=> {
   const {
-    study_short_name: studyShortName,
     subject_id: subjectId,
     ctep_disease_term: ctepDiseaseTerm,
     age_at_enrollment: age,
@@ -40,7 +39,7 @@ const ParticipantCard = ({ data = {}, index })=> {
         <div className={cn(classes.row, classes.titleRow)}>
           <span className={classes.titleKey}>PARTICIPANT</span>
           <Typography variant="h3" className={classes.titleValue}>
-            {`${studyShortName}-${subjectId}`}
+            {subjectId}
           </Typography>
         </div>
         <div className={classes.row}>
