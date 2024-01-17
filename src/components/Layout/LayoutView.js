@@ -23,7 +23,7 @@ import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
 import UnderDev from '../../pages/error/Development';
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
-
+import RAView from '../../pages/about/requestAccess'; 
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -71,9 +71,9 @@ const Layout = ({ classes, isSidebarOpened }) => {
             functionality can be accessed my unauthorized users */}
             <Route exact path="/ctdc-data-model" access={['admin', 'member', 'non-member']} component={UnderDev} />
             <Route exact path="/data-dictionary" access={['admin', 'member', 'non-member']} component={UnderDev} />
-            <Route exact path="/data-harmonization" access={['admin', 'member', 'non-member']} component={UnderDev} />
+            <Route exact path="/data-harmonization" access={['admin', 'member', 'non-member']} component={About} />
             <Route exact path="/data-use" access={['admin', 'member', 'non-member']} component={UnderDev} />
-            <Route exact path="/request-access" access={['admin', 'member', 'non-member']} component={UnderDev} />
+            <Route exact path="/request-access" access={['admin', 'member', 'non-member']} component={RAView} />
             <Route exact path="/crdc" access={['admin', 'member', 'non-member']} component={UnderDev} />
 
             <Route exact path="/search" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
