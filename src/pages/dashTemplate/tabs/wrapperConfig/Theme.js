@@ -19,6 +19,14 @@ export const customTheme = {
         borderBottom: '1px solid #3E6886',
         textDecoration: 'none',
       },
+      '& img': {
+        width: '29px',
+        paddingRight: '12px',
+        verticalAlign: 'top',
+        marginTop: '4px',
+        // '&.addAllTooltip': {},
+        // '&.addSelectedFileTooltip': {},
+      },
     },
   },
   MuiButton: {
@@ -27,52 +35,55 @@ export const customTheme = {
     },
     root: {
       color: '#fff',
-      fontSize: '12px',
+      fontSize: '14px',
       marginTop: '6px',
       fontFamily: 'Lato',
       borderRadius: '10px',
       marginBottom: '10px',
       textTransform: 'uppercase',
       '&.add_all_button': {
-        marginRight: '24px',
+        marginRight: '10px',
         // width: '120px',
-        backgroundColor: '#142D64',
+        backgroundColor: '#067CA5',
       },
       '&.add_selected_button': {
         marginRight: '10px',
+        marginLeft: '10px',
+        backgroundColor: 'red'
       },
-      '&.add_selected_button_Cases': {
-        backgroundColor: '#10A075',
+      '&.add_selected_button_Participants': {
+        backgroundColor: '#06846A',
+        backgroundColor: '#06846A',
       },
-      '&.add_selected_button_Samples': {
-        backgroundColor: '#0DAFEC',
+      '&.add_selected_button_Biospecimens': {
+        backgroundColor: '#06846A',
       },
       '&.add_selected_button_Files': {
-        backgroundColor: '#C92EC7',
+        backgroundColor: '#06846A',
       },
       '&.Mui-disabled': {
         color: '#fff',
-        '&.add_selected_button_Cases': {
-          backgroundColor: '#D6F2EA',
+        '&.add_selected_button_Participants': {
+          backgroundColor: '#06846A4f',
         },
-        '&.add_selected_button_Samples': {
-          backgroundColor: '#CFEDF9',
+        '&.add_selected_button_Biospecimens': {
+          backgroundColor: '#08a3834f',
         },
         '&.add_selected_button_Files': {
-          backgroundColor: '#F7D7F7',
+          backgroundColor: '#08a3834f',
         },
       },
       '&.yesBtn': {
         width: '133px',
         height: '45px',
         cursor: 'pointer',
-        background: '#98a19e',
+        background: '#3E74B6',
       },
       '&.noBtn': {
         width: '133px',
         height: '45px',
         cursor: 'pointer',
-        background: '#42779a',
+        background: '#4F5D69',
       },
     },
   },

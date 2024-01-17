@@ -35,8 +35,8 @@ const getDashData = (states) => {
   useEffect(() => {
     const controller = new AbortController();
     getData(activeFilters).then((result) => {
-      if (result.searchSubjects) {
-        setDashData(result.searchSubjects);
+      if (result.searchParticipants) {
+        setDashData(result.searchParticipants);
       }
     });
     return () => controller.abort();
@@ -46,7 +46,6 @@ const getDashData = (states) => {
 
 const DashTemplateController = ((props) => {
   const { dashData, activeFilters } = getDashData(props);
-
   if (!dashData) {
     return (<CircularProgress />);
   }

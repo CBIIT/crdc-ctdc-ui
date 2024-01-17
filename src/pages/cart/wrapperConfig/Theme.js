@@ -35,10 +35,10 @@ export const customTheme = {
         padding: '10px 0px 15px 0px',
         marginRight: '-5px',
         position: 'relative',
-        textAlign: 'right',
+        textAlign: 'left',
         '& img.tooltip_icon': {
           width: '20px',
-          marginLeft: '5px',
+          marginLeft: '2px',
           verticalAlign: 'top',
         },
       },
@@ -47,16 +47,28 @@ export const customTheme = {
       },
       '&.container_footer': {
         maxWidth: '100%',
+        alignSelf: 'left',
         textAlign: 'left',
+        display: 'flex',
+        flexDirection: 'column',
         paddingLeft: '0px',
+       
+        '& img.tooltip_icon': {
+          width: '20px',
+          marginLeft: '5px',
+          verticalAlign: 'top',
+        },
+        '&.tooltip_icon': {
+          width: '25px',
+        },
         '& textarea.manifest_comments': {
           color: '#000',
           border: '1.5px solid #707070',
-          height: '170px',
+          height: '96px',
           resize: 'none',
           padding: '15px',
           fontSize: '10px',
-          minWidth: '412px',
+          maxWidth: '412px',
           background: '#ebebeb',
           fontFamily: 'Open Sans',
           marginRight: '10px',
@@ -71,7 +83,7 @@ export const customTheme = {
     },
     root: {
       color: '#fff',
-      backgroundColor: '#03a383',
+      backgroundColor: '#1A8CCB',
       fontSize: '0.875rem',
       fontFamily: 'Lato',
       fontWeight: '500',
@@ -79,8 +91,46 @@ export const customTheme = {
       borderRadius: '10px',
       marginBottom: '10px',
       textTransform: 'uppercase',
+      '&.download_manifest':{
+          width: '250px',
+          margin: '10px',
+          background:'#004D73',
+          marginRight: '3px'
+      },
       '&:hover': {
-        backgroundColor: '#03a383',
+        backgroundColor: '#1a8ccbb3',
+      },
+      '&.Mui-disabled': {
+        
+        '&.download_manifest': {
+          backgroundColor: 'grey',
+        },
+      },
+
+    },
+  },
+  MuiTooltip: {
+    tooltip: {
+      backgroundColor: '#ffffff',
+      color: '#1c2023',
+      maxWidth: '220px',
+      fontSize: '0.75rem',
+      border: '2px solid #a7afb3',
+      fontFamily: 'Open Sans',
+      fontWeight: '600',
+      textAlign: 'left',
+      lineHeight: '1.6',
+      padding: '10px 12px',
+      borderRadius: '0px',
+    },
+    arrow: {
+      color: '#ffffff',
+      marginTop: '-0.71em',
+      marginLeft: '0px',
+      marginRight: '4px',
+      fontSize: '1.25rem',
+      '&:before': {
+        border: '2px solid #a7afb3',
       },
     },
   },

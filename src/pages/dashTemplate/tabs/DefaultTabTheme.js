@@ -24,27 +24,27 @@ export const customTheme = {
       fontFamily: 'Lato',
       '&.Mui-selected': {
         fontWeight: 'bolder',
-        '&.cases': {
-          background: '#d6f2ea',
-          color: '#10a075',
+        '&.participants': {
+          background: '#D7F2EB',
+          color: '#11A075',
         },
-        '&.samples': {
-          background: '#cfedf9',
-          color: '#0dafec',
+        '&.biospecimens': {
+          background: '#f8c19d',
+          color: '#EF660B',
         },
         '&.files': {
-          background: '#f7d7f7',
-          color: '#c92ec7',
+          background: '#cfedf9',
+          color: '#0dafec',
         },
         '&.MuiTypography-body1': {
           color: 'red',
         },
       },
-      '& span.cases_count': {
+      '& span.participants_count': {
         marginLeft: '5px',
-        fontSize: '17px',
+        fontSize: '14px',
       },
-      '& span.samples_count': {
+      '& span.biospecimens_count': {
         marginLeft: '5px',
         fontSize: '17px',
       },

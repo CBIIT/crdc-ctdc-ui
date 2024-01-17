@@ -5,11 +5,13 @@ import { customTheme } from './wrapperConfig/Theme';
 import {
   myFilesPageData, table, manifestData,
 } from '../../bento/fileCentricCartWorkflowData';
+import CustomToolTipContent from './tooltip/customToolTipContent';
 
 const Header = ({
   children,
   queryVariables,
   classes,
+  totalRowCount
 }) => {
   const cartContext = useContext(CartContext);
   const {
@@ -28,12 +30,15 @@ const Header = ({
     dispatch(setCartConfig(config));
   }, [queryVariables]);
 
+  myFilesPageData.layout[3].items[0].tooltipCofig.customToolTipComponent = <CustomToolTipContent/>;
+
   return (
     <>
       <Wrapper
         wrapConfig={myFilesPageData.layout}
         customTheme={customTheme}
         classes={classes}
+        totalRowCount={totalRowCount}
         section="myFiles"
       >
         {children}

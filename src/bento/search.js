@@ -13,12 +13,12 @@ export const programListingIcon = {
 /** used by the Global Search header autocomplete */
 export const SEARCH_KEYS = {
   public: [],
-  private: ['programs', 'studies', 'subjects', 'samples', 'files'],
+  private: ['participants', 'biospecimens', 'participants', 'participants'],
 };
 
 export const SEARCH_DATAFIELDS = {
   public: [],
-  private: ['program_id', 'study_id', 'subject_id', 'sample_id', 'file_id'],
+  private: ['subject_id', 'specimen_id', 'ctep_disease_term', 'stage_of_disease'],
 };
 
 /** used by the Global Search page results */
@@ -124,125 +124,69 @@ export const SEARCH_PAGE_RESULT_MODEL_PUBLIC = gql`
     }
 `;
 
-/** End of public searches */
-
+// AutoComplete main Query
 export const SEARCH = gql`
-    query globalSearch($input: String){
-        globalSearch(input: $input) {
-            programs {
-                program_id
-            }
-            studies {
-                study_id
-            }
-            subjects {
-                subject_id
-            }
-            samples {
-                sample_id
-            }
-            files {
-                file_id
-            }
-            model {
-                node_name
-            }
-        }
+  query globalSearch($input: String){
+    globalSearch(input: $input) {
+      participants {
+        subject_id
+        ctep_disease_term
+        stage_of_disease
+      }
+      biospecimens {
+        specimen_id
+      }
+      model {
+        node_name
+      }
     }
+  }
 `;
 
-export const SEARCH_PAGE_RESULT_PROGRAM = gql`
-    query globalSearch($input: String, $first: Int, $offset: Int){
-        globalSearch(
-            input: $input
-            first: $first
-            offset: $offset
-        ) {
-            programs {
-                type
-                program_id
-                program_name
-                program_code
-            }
-        }
+export const SEARCH_PAGE_RESULT_PARTICIPANTS = gql`
+  query globalSearch($input: String, $first: Int, $offset: Int){
+    globalSearch(
+      input: $input
+      first: $first
+      offset: $offset
+    ) {
+      participants {
+        type
+        study_short_name
+        ctep_disease_term
+        stage_of_disease
+        sex
+        reported_gender
+        race
+        targeted_therapy
+        ethnicity
+        subject_id
+      }
     }
+  }
 `;
 
-export const SEARCH_PAGE_RESULT_STUDIES = gql`
-    query globalSearch($input: String, $first: Int, $offset: Int){
-        globalSearch(
-            input: $input
-            first: $first
-            offset: $offset
-        ) {
-            studies {
-                type
-                study_id
-                program_id
-                study_name
-                study_type
-                study_code
-            }
-        }
+export const SEARCH_PAGE_RESULT_BIOSPECIMENS = gql`
+  query globalSearch($input: String, $first: Int, $offset: Int){
+    globalSearch(
+      input: $input
+      first: $first
+      offset: $offset
+    ) {
+      biospecimens {
+        type
+        study_short_name
+        specimen_id
+        subject_id
+        ctep_disease_term
+        specimen_type
+        parent_specimen_type
+        tissue_category
+        anatomical_collection_site
+        assessment_timepoint
+      }
     }
-`;
-
-export const SEARCH_PAGE_RESULT_SUBJECTS = gql`
-    query globalSearch($input: String, $first: Int, $offset: Int){
-        globalSearch(
-            input: $input
-            first: $first
-            offset: $offset
-        ) {
-            subjects {
-                type
-                subject_id
-                program_id
-                diagnosis
-                age
-            }
-        }
-    }
-`;
-
-export const SEARCH_PAGE_RESULT_SAMPLES = gql`
-    query globalSearch($input: String, $first: Int, $offset: Int){
-        globalSearch(
-            input: $input
-            first: $first
-            offset: $offset
-        ) {
-            samples {
-                type
-                sample_id
-                program_id
-                subject_id
-                diagnosis
-                sample_anatomic_site
-                tissue_type
-            }
-        }
-    }
-`;
-
-export const SEARCH_PAGE_RESULT_FILES = gql`
-    query globalSearch($input: String, $first: Int, $offset: Int){
-        globalSearch(
-            input: $input
-            first: $first
-            offset: $offset
-        ) {
-            files {
-                type
-                file_id
-                file_name
-                file_format
-                program_id
-                subject_id
-                sample_id
-            }
-        }
-    }
+  }
 `;
 
 export const SEARCH_PAGE_RESULT_MODEL = gql`
@@ -267,39 +211,35 @@ export const SEARCH_PAGE_RESULT_MODEL = gql`
 `;
 
 export const SEARCH_PAGE_RESULT_ABOUT = gql`
-    query globalSearch($input: String, $first: Int, $offset: Int){
-        globalSearch(
-            input: $input
-            first: $first
-            offset: $offset
-        ) {
-
-            about_page {
-                type
-                text
-                page
-                title
-            }
+  query globalSearch($input: String, $first: Int, $offset: Int){
+    globalSearch(
+      input: $input
+      first: $first
+      offset: $offset
+    ) {
+        about_page {
+          type
+          text
+          page
+          title
         }
     }
+  }
 `;
 
 export const SEARCH_PAGE_RESULTS = gql`
-    query globalSearch($input: String, $first: Int, $offset: Int){
-        globalSearch(
-            input: $input
-            first: $first
-            offset: $offset
-        ) {
-            program_count
-            study_count
-            subject_count
-            sample_count
-            file_count
-            model_count
-            about_count
-        }
+  query globalSearch($input: String, $first: Int, $offset: Int){
+    globalSearch(
+      input: $input
+      first: $first
+      offset: $offset
+    ) {
+        participant_count
+        biospecimen_count
+        model_count
+        about_count
     }
+  }
 `;
 
 /**
@@ -311,23 +251,17 @@ export const SEARCH_PAGE_RESULTS = gql`
 export function getResultQueryByField(field, isPublic) {
   switch (field) {
     case 'all':
-      return isPublic ? SEARCH_PUBLIC : SEARCH_PAGE_RESULT_SUBJECTS;
-    case 'subjects':
-      return SEARCH_PAGE_RESULT_SUBJECTS;
-    case 'samples':
-      return SEARCH_PAGE_RESULT_SAMPLES;
-    case 'files':
-      return SEARCH_PAGE_RESULT_FILES;
-    case 'programs':
-      return isPublic ? SEARCH_PAGE_RESULT_PROGRAM_PUBLIC : SEARCH_PAGE_RESULT_PROGRAM;
-    case 'studies':
-      return SEARCH_PAGE_RESULT_STUDIES;
+      return isPublic ? SEARCH_PUBLIC : SEARCH_PAGE_RESULT_PARTICIPANTS;
+    case 'participants':
+      return SEARCH_PAGE_RESULT_PARTICIPANTS;
+    case 'biospecimens':
+      return SEARCH_PAGE_RESULT_BIOSPECIMENS;
     case 'model':
       return SEARCH_PAGE_RESULT_MODEL;
     case 'about_page':
       return isPublic ? SEARCH_PAGE_RESULT_ABOUT_PUBLIC : SEARCH_PAGE_RESULT_ABOUT;
     default:
-      return SEARCH_PAGE_RESULT_SUBJECTS;
+      return SEARCH_PAGE_RESULT_PARTICIPANTS;
   }
 }
 

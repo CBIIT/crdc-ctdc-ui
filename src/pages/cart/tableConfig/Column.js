@@ -1,9 +1,24 @@
 import React from 'react';
 import { cellTypes, headerTypes } from '@bento-core/table';
+import CustomHeaderRemover from './CustomHeaderRemover';
 
 export const CustomCellView = () => (<></>);
 
-export const CustomHeaderCellView = () => (<></>);
+export const CustomHeaderCellView = (props) => {
+  const {
+    dataField,
+    openDialogBox,
+    cellType,
+  } = props;
+  switch (dataField || cellType) {
+    case headerTypes.DELETE:
+      return (
+        <CustomHeaderRemover openDialogBox={openDialogBox} />
+      );
+    default:
+      return (<></>);
+  }
+};
 
 /**
 * set column configuration
@@ -14,6 +29,7 @@ export const configColumn = ({
   columns,
   deleteAllFiles,
   deleteCartFile,
+  removeCheck
 }) => {
   /**
   * display columns as configuration
@@ -31,6 +47,14 @@ export const configColumn = ({
       return {
         ...column,
         cellEventHandler: deleteCartFile,
+        customColHeaderRender: (toggleDisplay) => (
+          <CustomHeaderCellView openDialogBox={toggleDisplay} {...column} />
+        ),
+        customModalMessage: (count) => (
+          <>
+            {count} {' '} File(s) will be removed from your cart
+          </>
+        ),
       };
     }
     return column;
@@ -53,7 +77,7 @@ export const configColumn = ({
     if (column.headerType === headerTypes.DELETE) {
       return {
         ...column,
-        headerEventHandler: deleteAllFiles,
+        headerEventHandler: ()=>{ removeCheck(); deleteAllFiles() },
       };
     }
     return column;

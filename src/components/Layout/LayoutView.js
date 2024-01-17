@@ -2,33 +2,34 @@ import React from 'react';
 import { withStyles, CssBaseline } from '@material-ui/core';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import aboutPageRoutes from '../../bento/aboutPagesRoutes';
-import Header from '../Header/HeaderView';
-import NavBar from '../NavBar/NavBarContainer';
-import Footer from '../Footer/FooterView';
+import Header from '../Header';
+import Footer from '../Footer';
+import ScrollToTop from '../ScrollButton/ScrollButtonView';
 import Error from '../../pages/error/Error';
 import Home from '../../pages/landing/landingController';
 import About from '../../pages/about/aboutController';
-import DataDictonary from '../../pages/dataDictionary/dataDictonaryController';
 import Programs from '../../pages/programs/programsController';
 import ProgramDetail from '../../pages/programDetail/programDetailController';
+import StudyDetail from '../../pages/studyDetail/studyDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import GlobalSearchController from '../../pages/search/searchViewController';
 import Login from '../../pages/login';
-import SysInfoView from '../../pages/sysInfo/view';
 import ProfileController from '../../pages/profile/profileController';
 import OverlayWindow from '../OverlayWindow/OverlayWindow';
 import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';
-import CarView from '../../pages/cart/cartController';
+import CartView from '../../pages/cart/cartController';
 import AuthSessionTimeoutController from '../SessionTimeout/SessionTimeoutController';
 import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
-
+import UnderDev from '../../pages/error/Development';
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
 
-const ScrollToTop = () => {
+
+const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
   return null;
 };
+
 
 const Layout = ({ classes, isSidebarOpened }) => {
   // Access control imports
@@ -43,16 +44,16 @@ const Layout = ({ classes, isSidebarOpened }) => {
         <AuthSessionTimeoutController />
         <Header />
         <OverlayWindow />
-        <NavBar />
         {/* Reminder: Ajay need to replace the ICDC with env variable and
           change build npm to read env variable */}
         <div
           className={classes.content}
         >
-          <Route component={ScrollToTop} />
+          <Route component={ScrollToTopComponent} />
           <Switch>
             <MixedRoute exact path="/" component={Home} />
             <MixedRoute exact path="/home" component={Home} />
+            <MixedRoute exact path="/study/:id" component={StudyDetail} />
 
             {/* START: Private Routes */}
             <PrivateRoute path="/profile" requiuredSignIn access={['member', 'non-member', 'admin']} component={ProfileController} />
@@ -60,7 +61,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
 
             {/* SECTION: Member & Admin only Path */}
             <PrivateRoute path="/programs" access={['admin', 'member']} component={Programs} />
-            <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={CarView} />
+            <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={CartView} />
             <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
             {/* bento 4.0 template */}
             <PrivateRoute path="/explore" access={['admin', 'member']} component={DashTemplate} />
@@ -68,6 +69,13 @@ const Layout = ({ classes, isSidebarOpened }) => {
 
             {/* Psuedo Private routes where minor
             functionality can be accessed my unauthorized users */}
+            <Route exact path="/ctdc-data-model" access={['admin', 'member', 'non-member']} component={UnderDev} />
+            <Route exact path="/data-dictionary" access={['admin', 'member', 'non-member']} component={UnderDev} />
+            <Route exact path="/data-harmonization" access={['admin', 'member', 'non-member']} component={UnderDev} />
+            <Route exact path="/data-use" access={['admin', 'member', 'non-member']} component={UnderDev} />
+            <Route exact path="/request-access" access={['admin', 'member', 'non-member']} component={UnderDev} />
+            <Route exact path="/crdc" access={['admin', 'member', 'non-member']} component={UnderDev} />
+
             <Route exact path="/search" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
             <Route path="/search/:id" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
 
@@ -86,7 +94,8 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route component={Error} />
 
           </Switch>
-          <Footer data={{ isSidebarOpened }} />
+          <ScrollToTop />
+          <Footer />
         </div>
       </>
     </HashRouter>
@@ -104,7 +113,6 @@ const styles = (theme) => ({
     // width: `calc(100vw - 240px)`,   // Ajay need to add this on addung side bar
     width: 'calc(100%)', // Remove this on adding sidebar
     background: theme.custom.bodyBackGround,
-    marginTop: '194px',
   },
   '@global': {
     '*::-webkit-scrollbar': {

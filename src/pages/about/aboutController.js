@@ -3,9 +3,11 @@ import yaml from 'js-yaml';
 import axios from 'axios';
 import YAMLData from '../../content/prod/aboutPagesContent.yaml';
 import AboutView from './aboutView';
+import { useQuery } from '@apollo/client';
 
 const About = ({ match }) => {
   const [data, setData] = useState([]);
+
 
   useEffect(() => {
     const fetchData = async () => {

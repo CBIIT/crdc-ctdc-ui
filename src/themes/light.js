@@ -28,12 +28,16 @@ export default {
   custom: {
     maxContentWidth: '1440px',
     maxContent: 'white',
-    bodyBackGround: '#E5F0FA',
+    bodyBackGround: '#FFFFFF',
     cardBackGround: '#f0f6f8',
     fontFamilySans: '"Open Sans", sans-serif',
     footorBackground: '#325068',
     fontFamily: 'Lato,"Open Sans", sans-serif',
     fontFamilyRaleway: "'Raleway', sans-serif",
+    fontFamilyInter: '"Inter", sans-serif',
+    fontFamilyNunitoSansRegular: 'Nunito Sans Regular',
+    fontFamilyNunito: 'Nunito',
+    fontFamilyNunitoSansBold: 'Nunito Sans Bold',
     drawerWidth: '240px',
     widgetDivider: '#E2E7EC',
   },
@@ -225,7 +229,7 @@ export default {
       footerText: 'white',
     },
     background: {
-      default: '#E5F0FA',
+      default: '#FFFFFF',
       light: '#F3F5FF',
     },
     clearQueryResultColor: {

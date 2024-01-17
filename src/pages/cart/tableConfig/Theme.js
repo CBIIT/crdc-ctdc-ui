@@ -1,4 +1,31 @@
 export const tblHeader = {
+  MuiButton: {
+    text: {
+      padding: '10px 16px',
+    },
+    root: {
+      color: '#fff',
+      fontSize: '14px',
+      marginTop: '6px',
+      fontFamily: 'Lato',
+      borderRadius: '10px',
+      marginBottom: '10px',
+      textTransform: 'uppercase',
+      width: '133px',
+      '&.okBtn': {
+        width: '133px',
+        height: '45px',
+        cursor: 'pointer',
+        background: '#3E74B6',
+      },
+      '&.cancelBtn': {
+        width: '133px',
+        height: '45px',
+        cursor: 'pointer',
+        background: '#4F5D69',
+      },
+    },
+  },
   MuiTableSortLabel: {
     root: {
       color: '#13344A',
@@ -8,6 +35,11 @@ export const tblHeader = {
       fontWeight: 'bold',
       letterSpacing: '0.06em',
       textDecoration: 'none',
+      maxWidth: '220px',
+      wordWrap: 'break-word',
+      "&.data_file_format":{
+          maxWidth:'194px',
+      },
       '&:hover': {
         color: '#13344A',
       },
@@ -18,6 +50,11 @@ export const tblHeader = {
       padding: '0px 0px 0px 25px',
       paddingRight: '5px',
       color: '#13344A',
+      maxWidth: '220px',
+      wordWrap: 'break-word',
+      "&.data_file_format":{
+        maxWidth: '127px',
+    },
       '&.del_all_row': {
         minWidth: '150px',
         cursor: 'pointer',
@@ -26,31 +63,41 @@ export const tblHeader = {
   },
   MuiTooltip: {
     tooltipPlacementBottom: {
+      background: 'gray !important',
+      marginTop: '0px',
+      marginLeft: '0px',
+      color: 'white !important',
+      border: 'none !important',
+      '&.remove_button_all':{
+        background:'red !important'
+      },
       '@media (min-width: 600px)': {
-        marginTop: '-10px',
-        marginLeft: '-20px',
+        marginTop: '10px',
         background: 'none',
       },
     },
     popper: {
       '&#header-tooltip div': {
-        background: '#61614F',
+        background: 'gray !important',
         marginTop: '0px',
         marginLeft: '0px',
+        color: 'white !important',
+        border: 'none !important'
       },
     },
   },
   MuiIconButton: {
     root: {
       '&.del_all_row_btn': {
-        paddingLeft: '5px',
+        alignSelf: 'center',
+        margin: '0px',
       },
     },
   },
   MuiTypography: {
     root: {
       color: '#A61401',
-      '&.remove_all_tooltip': {
+      '&.del_all_row_tooltip': {
         width: '110px',
         border: '2px solid #A61401',
         height: '48px',
@@ -97,8 +144,18 @@ export const tblBody = {
     body: {
       color: '#004C73',
       borderBottom: 'none',
+      maxWidth: '220px',
+      wordWrap: 'break-word',
+      "&.data_file_format":{
+        maxWidth: '194px',
+    },
+    "&.delete_row":{
+      justifyContent: 'center',
+      alignItems: 'center',
+      display: 'flex',
+      minHeight: '100px'
+    },
       '&.file_name': {
-        maxWidth: '300px',
         '& p': {
           lineBreak: 'anywhere',
           paddingTop: '10px',
@@ -133,6 +190,15 @@ export const tblContainer = {
       display: 'table',
       borderSpacing: '0',
       borderCollapse: 'collapse',
+      "&.data_file_format":{
+        maxWidth: '194px',
+    },
+    "&.delete_row":{
+      justifyContent: 'center',
+      alignItems: 'center',
+      display: 'flex',
+      maxHeight: '100px'
+    },
     },
   },
 };

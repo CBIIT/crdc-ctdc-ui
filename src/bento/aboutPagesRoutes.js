@@ -1,4 +1,7 @@
 export default [
-  '/bento',
-  '/resources',
+  '/developers',
+  '/purpose',
+  '/support',
+  '/submit',
+  '/cloud-computing'
 ];

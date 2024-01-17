@@ -2,6 +2,7 @@ import gql from 'graphql-tag';
 import { cellTypes, dataFormatTypes } from '@bento-core/table';
 import { types, btnTypes } from '@bento-core/paginated-table';
 import { customMyFilesTabDownloadCSV } from './tableDownloadCSV';
+import CustomFooterMessage from '../pages/cart/tableConfig/CustomFooterMessage';
 
 export const navBarCartData = {
   cartLabel: 'Cart',
@@ -19,7 +20,7 @@ export const tooltipContent = {
   icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   alt: 'tooltipIcon',
   clsName: 'tooltip_icon',
-  myFiles: 'To access and analyze files: select and remove unwanted files,  click the “Download Manifest” button, and upload the resulting Manifest file to your Seven Bridges Genomics account.',
+  myFiles: 'To access and analyze files, select and remove unwanted files, click the "Download File Manifest" button, and upload the resulting manifest file to your Velsera Seven Bridges Cancer Genomics Cloud account.',
   arrow: true,
   styles: {
     border: '#03A383 1px solid',
@@ -28,7 +29,7 @@ export const tooltipContent = {
 
 //BENTO-2455 Configuration set for Bento 4.0.
 export const myFilesPageData = {
-  manifestFileName: 'BENTO File Manifest',
+  manifestFileName: 'CTDC File Manifest',
   tooltipIcon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   tooltipAlt: 'tooltip icon',
   tooltipMessage: 'To access and analyze files: select and remove unwanted files,  click the “Download Manifest” button, and upload the resulting Manifest file to your Seven Bridges Genomics account.',
@@ -57,20 +58,7 @@ export const myFilesPageData = {
         },
       ],
     },
-    {
-    container: 'buttons',
-    size: 'xl',
-    clsName: 'container_header',
-    items: [
-      {
-        title: 'DOWNLOAD MANIFEST',
-        clsName: 'download_manifest',
-        type: types.BUTTON,
-        role: btnTypes.DOWNLOAD_MANIFEST,
-        btnType: btnTypes.DOWNLOAD_MANIFEST,
-        tooltipCofig: tooltipContent,
-      }],
-  },
+  
   {
     container: 'paginatedTable',
     paginatedTable: true,
@@ -79,112 +67,257 @@ export const myFilesPageData = {
     container: 'buttons',
     size: 'xl',
     clsName: 'container_footer',
-    items: [
-      {
-        clsName: 'manifest_comments',
-        type: types.TEXT_INPUT,
-        placeholder: 'Please add a description for the CSV file you are about to download.',
-      }],
-  }]
+    items: [{
+      clsName: 'manifest_comments',
+      type: types.CUSTOM_ELEM,
+      customViewElem: CustomFooterMessage,
+      text: 'To access and analyze files, select and remove unwanted files, click the "Download File Manifest" button, and upload the resulting manifest file to your Velsera Seven Bridges Cancer Genomics Cloud account. [Note "Velsera Seven Bridges Cancer Genomics Cloud account" should be hyperlinked to https://cgc-accounts.sbgenomics.com/auth/login?next=https%3A%2F%2Fcgc-accounts.sbgenomics.com%2F with external icon ]',
+
+    },{
+      clsName: 'manifest_comments',
+      type: types.TEXT_INPUT,
+      placeholder: 'User Comment',
+    }],
+  },
+  {
+  container: 'buttons',
+  size: 'xl',
+  clsName: 'container_header',
+  items: [
+    {
+      title: 'Download File Manifest',
+      clsName: 'download_manifest',
+      type: types.BUTTON,
+      role: btnTypes.DOWNLOAD_MANIFEST,
+      btnType: btnTypes.DOWNLOAD_MANIFEST,
+      usePopup: false,
+      tooltipCofig: tooltipContent
+    }],
+},]
 };
-
-
+ 
 export const manifestData = {
-  keysToInclude: ['study_code', 'subject_id', 'file_name', 'file_id', 'md5sum'],
-  header: ['Study Code', 'Case ID', 'File Name', 'File ID', 'Md5sum', 'User Comments'],
+  keysToInclude: ['data_file_name', 'data_file_uuid','data_file_uuid', 'data_file_checksum_value','subject_id', 'specimen_id', 'ctep_disease_term','meddra_disease_code', 'primary_disease_site','histology', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site', 'specimen_type','tissue_category','assessment_timepoint','User_Comment'],
+  header: ['name', 'drs_uri' ,'File ID', 'Md5sum','Participant ID', 'Biospecimen ID', 'Diagnosis','MedDRA Disease Code', 'Primary Site','Histology', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Biospecimen Type','Tissue Category','Collection Timepoint','User Comment'],
 };
 
 // --------------- GraphQL query - Retrieve selected cases info --------------
 export const GET_MY_CART_DATA_QUERY = gql`
-query filesInList($file_ids: [String], $offset: Int = 0, $first: Int = 10, $order_by:String ="file_name", $sort_direction:String="asc") {
-    filesInList(file_ids: $file_ids, offset: $offset,first: $first, order_by: $order_by, sort_direction: $sort_direction) {
-        study_code
-        subject_id
-        file_name
-        file_type
-        association
-        file_description
-        file_format
-        file_size
-        file_id
-        md5sum
-    }
+  query filesInList(
+    $data_file_uuid: [String],
+    $offset: Int = 0,
+    $first: Int = 10,
+    $order_by:String ="data_file_name",
+    $sort_direction:String="asc"
+  ){
+    filesInList(
+      data_file_uuid: $data_file_uuid,
+      offset: $offset,
+      first: $first,
+      order_by: $order_by,
+      sort_direction: $sort_direction
+    ){ data_file_name
+      data_file_format
+      data_file_type
+      data_file_size
+      association
+      ctep_disease_term
+      meddra_disease_code
+      histology
+      data_file_description
+      subject_id
+      primary_disease_site
+      specimen_id
+      ctep_disease_term
+      data_file_uuid
+      parent_specimen_id
+      stage_of_disease
+      tumor_grade
+      age_at_enrollment
+      sex
+      reported_gender
+      race
+      data_file_checksum_value
+      ethnicity
+      carcinogen_exposure
+      targeted_therapy
+      anatomical_collection_site
+      specimen_type
+      tissue_category
+      assessment_timepoint
+   }
+  }
+`;
+export const GET_MY_CART_DATA_QUERY2 = gql`
+query fileOverview(
+  $data_file_uuid: [String]
+  $offset: Int = 0,
+  $first: Int = 10,
+  $order_by:String ="data_file_name",
+  $sort_direction:String="asc"
+){
+  fileOverview(
+    data_file_uuid: $data_file_uuid
+    offset: $offset,
+      first: $first,
+      order_by: $order_by,
+      sort_direction: $sort_direction
+  ){
+    data_file_name
+    data_file_format
+    data_file_type
+    data_file_size
+    association
+    data_file_description
+    subject_id
+    primary_disease_site
+    specimen_id
+    ctep_disease_term
+    data_file_uuid
+    stage_of_disease
+    tumor_grade
+    age_at_enrollment
+    sex
+    reported_gender
+    race
+    data_file_checksum_value
+    ethnicity
+    carcinogen_exposure
+    targeted_therapy
+    anatomical_collection_site
+    specimen_type
+    tissue_category
+    assessment_timepoint
+  }
+}`;
+
+
+export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
+  $data_file_uuid: [String],
+  $offset: Int = 0,
+  $first: Int = 10,
+  $order_by:String ="data_file_name",
+  $sort_direction:String="desc"
+){
+  filesInList(
+    data_file_uuid: $data_file_uuid,
+    offset: $offset,
+    first: $first,
+    order_by: $order_by,
+    sort_direction: $sort_direction
+  ){ data_file_name
+    data_file_format
+    data_file_type
+    data_file_size
+    association
+    data_file_description
+    subject_id
+    ctep_disease_term
+    meddra_disease_code
+    histology
+    parent_specimen_id
+    primary_disease_site
+    specimen_id
+    ctep_disease_term
+    data_file_uuid
+    stage_of_disease
+    tumor_grade
+    age_at_enrollment
+    sex
+    reported_gender
+    race
+    data_file_checksum_value
+    ethnicity
+    carcinogen_exposure
+    targeted_therapy
+    anatomical_collection_site
+    specimen_type
+    tissue_category
+    assessment_timepoint
+ }
 }`;
 
 // --------------- File table configuration --------------
 
 export const table = {
-  dataField: 'filesInList',
+  dataField: 'data_file_uuid',
+  title: 'myFiles',
   // Value must be one of the 'dataField's in "columns"
-  defaultSortField: 'file_name',
+  defaultSortField: 'data_file_name',
   // 'asc' or 'desc'
   api: GET_MY_CART_DATA_QUERY,
   defaultSortDirection: 'asc',
   paginationAPIField: 'filesInList',
+  paginationAPIFieldDesc: 'filesInList',
+  dataKey:'data_file_uuid',
   tableDownloadCSV: customMyFilesTabDownloadCSV,
+  objectKey: 'filesInList',
+  extendedViewConfig: {
+    pagination: true,
+    download: {
+      customDownload: true,
+      fileName: 'CTDC_My_Files_download',
+      downloadCsv: 'Download table contents as CSV',
+      ...customMyFilesTabDownloadCSV,
+    },
+    manageViewColumns: {
+      title: 'View columns',
+    },
+  },
   columns: [
     {
-      dataField: 'file_name',
+      cellType: cellTypes.CHECKBOX,
+      display: true,
+      role: cellTypes.CHECKBOX,
+    },
+    {
+      dataField: 'data_file_name',
       header: 'File Name',
       display: true,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
-      dataField: 'file_type',
-      header: 'File Type',
-      display: true,
-      tooltipText: 'sort',
-    },
-    {
-      dataField: 'association',
-      header: 'Association',
-      display: true,
-      tooltipText: 'sort',
-    },
-    {
-      dataField: 'file_description',
-      header: 'Description',
-      display: true,
-      tooltipText: 'sort',
-    },
-    {
-      dataField: 'file_format',
+      dataField: 'data_file_format',
       header: 'Format',
       display: true,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
-      dataField: 'file_size',
-      header: 'Size',
-      // set formatBytes to true to display file size (in bytes) in a more human readable format
+      dataField: 'data_file_type',
+      header: 'File Type',
       display: true,
-      dataFormatType: dataFormatTypes.FORMAT_BYTES,
-      cellType: cellTypes.FORMAT_DATA,
       tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: 'data_file_size',
+      header: 'Size',
+      display: true,
+      tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: 'data_file_description',
+      header: 'Description',
+      display: true,
+      tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: 'specimen_id',
+      header: 'Biospecimen ID',
+      display: true,
+      tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       dataField: 'subject_id',
-      header: 'Case ID',
+      header: 'Participant ID',
       display: true,
       tooltipText: 'sort',
-    },
-    {
-      dataField: 'study_code',
-      header: 'Study Code',
-      display: true,
-      tooltipText: 'sort',
-    },
-    {
-      dataField: 'file_id',
-      header: 'UUID',
-      display: false,
-      tooltipText: 'sort',
-    },
-    {
-      dataField: 'md5sum',
-      header: 'Md5Sum',
-      display: false,
-      tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
     },
     {
       cellType: cellTypes.DELETE,
@@ -193,7 +326,7 @@ export const table = {
     },
   ],
   tableMsg: {
-    noMatch: 'No Matching Records Found',
+    noMatch: 'No files have been added to the cart',
   },
 };
 

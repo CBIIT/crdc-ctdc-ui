@@ -11,12 +11,19 @@ const defaultOptions = {
 
 const BACKEND = env.REACT_APP_BACKEND_API;
 const PUBLIC_BACKEND = env.REACT_APP_BACKEND_PUBLIC_API;
-const MOCK = 'https://f20e5514-ae0a-4e09-b498-94283cdf9d2c.mock.pstmn.io/v1/graphql';
+const MOCK = 'https://4250bc0d-7018-4a95-bffb-d4dceb96fb4d.mock.pstmn.io/v1/graphql';
+const CTDC_OLD_SERVICE =  "https://bento-dev.bento-tools.org/v1/graphql/";
+const LOCAL_SERVICE =  "http://localhost:8080/v1/graphql/";
 const AUTH_SERVICE = `${env.REACT_APP_AUTH_SERVICE_API}graphql`;
 const USER_SERVICE = `${env.REACT_APP_USER_SERVICE_API}graphql`;
 
 const backendService = new HttpLink({
   uri: BACKEND,
+});
+
+
+const CTDC_OLD_BackendService = new HttpLink({
+  uri: CTDC_OLD_SERVICE,
 });
 
 const authService = new HttpLink({
@@ -33,9 +40,10 @@ const publicService = new HttpLink({
 
 const mockService = new HttpLink({
   uri: MOCK,
-  headers: {
-    'x-mock-match-request-body': true,
-  },
+});
+
+const localService = new HttpLink({
+  uri: LOCAL_SERVICE,
 });
 
 const client = new ApolloClient({
@@ -43,22 +51,28 @@ const client = new ApolloClient({
   defaultOptions,
   link: ApolloLink.split(
     (op) => op.getContext().clientName === 'publicService',
-    publicService,
-    ApolloLink.split(
-      (operation) => operation.getContext().clientName === 'mockService',
-      mockService,
+      publicService,
       ApolloLink.split(
-        (operation) => operation.getContext().clientName === 'authService',
-        // the string "authService" can be anything you want,
-        authService, // <= apollo will send to this if clientName is "authService"
-        ApolloLink.split( // This is 2nd level of ApolloLink.
-          (operation) => operation.getContext().clientName === 'userService',
-          // the string "userService" can be anything you want,
-          userService, // <= apollo will send to this if clientName is "userService"
-          backendService, // <= otherwise will send to this
-        ), // <= otherwise will send to this
+        (operation) => operation.getContext().clientName === 'mockService',
+        mockService,
+        ApolloLink.split(
+           (operation) => operation.getContext().clientName === 'localService',
+          localService,
+          ApolloLink.split(
+            (operation) => operation.getContext().clientName === 'authService',
+            authService, 
+            ApolloLink.split( 
+              (operation) => operation.getContext().clientName === 'userService',
+              userService, 
+               ApolloLink.split( 
+              (operation) => operation.getContext().clientName === 'ctdcOldService',
+                CTDC_OLD_BackendService,
+                backendService,
+              ),
+            ), 
+          ),
+         ),
       ),
-    ),
   ),
 });
 

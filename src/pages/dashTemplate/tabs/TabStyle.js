@@ -97,11 +97,22 @@ export default () => ({
     marginLeft: '-5px',
   },
   customTooltip: {
-    border: '#03A383 1px solid',
+    border: '#C3C3C3 1px solid',
+    backgroundColor: '#ffffff',
+    color: '#223D4C',
+    maxWidth: '220px',
+    fontSize: '0.75rem',
+    fontFamily: 'Open Sans',
+    fontWeight: '600',
+    textAlign: 'left',
+    lineHeight: '1.6',
+    padding: '10px 15px',
+    borderRadius: '5px',
+    boxShadow: '0px 4px 10px 0px #00000040',
   },
   customArrow: {
     '&::before': {
-      border: '#03A383 1px solid',
+      border: '#C3C3C3 1px solid',
     },
   },
 });

@@ -14,7 +14,7 @@ const styles = () => ({
     position: 'absolute',
     width: '250px',
     height: '250px',
-    marginTop: '180px',
+    marginTop: '158px',
   },
 }
 );

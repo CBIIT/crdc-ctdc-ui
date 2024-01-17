@@ -33,7 +33,6 @@ const Error = ({ classes }) => (
 const styles = (theme) => ({
   container: {
     display: 'flex',
-    marginTop: '-49px',
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',

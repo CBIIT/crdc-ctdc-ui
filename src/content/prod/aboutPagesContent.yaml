@@ -1,17 +1,46 @@
-- page: '/bento'
-  title: "Bento"
-  primaryContentImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/About_Purpose.png'
+- page: '/submit'
+  title: "Data Submission"
+  primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
   content:
-    - paragraph: "Bento is an open source framework developed by the Frederick National Laboratory for Cancer Research to support data sharing. It provides a structure to enable groups to quickly stand up and then configure a data sharing environment for life science data - groups can use Bento to share data amongst themselves or with a larger community. Bento's reference implementation contains a data model that is compatible with the Cancer Research Data Commons' Harmonized model (CRDC-H) such that Bento instances can be connected into and inter-operate with the CRDC. Users can customize the data model for their own needs. Bento also contains a User Interface and an API for programmatic access."
-    - paragraph: "$$*CONTACT:*$$ bento-help@nih.gov"
-- page: "/resources"
-  primaryContentImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/png/About_Resources.png'
-  title: "Resources"
+    - paragraph: "CTDC is not accepting external data submissions at this time. For more information on how to submit data to other data repositories within the Cancer Research Data Commons, please see $$[here](type:internal url:https://datacommons.cancer.gov/data/submit-data target:_blank )$$."
+- page: '/developers'
+  title: "For Developers"
+  primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Developers.png
   content:
-    - paragraph: "Bento is a modular, data agnostic, cloud-enable software framework for building data sharing platforms, for life science and clinical research. Instructions on using the Bento framework to set up your own platform may be found $$[here](https://cbiit.github.io/bento-docs/)."
-    - paragraph: "All code necessary to use Bento is provided in the form of Docker containers. However, we do provide our code to the public for research, usage, forking and pull requests. Here are the repos for:"
-    - paragraph: "•	Core Data Model: $$[https://github.com/CBIIT/bento-model](https://github.com/CBIIT/bento-model)$$"
-    - paragraph: "•	Frontend: $$[https://github.com/CBIIT/bento-frontend](https://github.com/CBIIT/bento-frontend)"
-    - paragraph: "•	File and Data Loaders: $$[https://github.com/CBIIT/icdc-dataloader](https://github.com/CBIIT/icdc-dataloader)"
-  secondaryZoomImageTitle: "The Bento Core Data Model"
-  secondaryZoomImage: 'https://cbiit.github.io/bento-model/model-desc/bento-model.svg'
+    - paragraph: "Users can query the CTDC data via Graphical User Interface (GUI) or Application Programming Interface (API). The CTDC GitHub repo is also available for those interested in accessing our codebase and documentation."
+    - paragraph: "$$#CTDC GUI#$$"
+    - paragraph: "The GUI provides users a distilled set of parameters (faceted querying) they can use to explore a subset of the CTDC data model. "
+    - paragraph: "$$#CTDC API#$$"
+    - paragraph: "CTDC is based on a Graph database, featuring a  GraphQL API (Java) and a React front-end (JavaScript). Each tier in the application stack is designed to be modular and adaptable for a variety of use-cases and scenarios.  $$[A GraphQL API](type:internal url:/#/graphql target:_blank)$$ enables querying of the entire data model. The API is provided “as is:” there are no warranties or conditions arising out of usage of these services."
+    - paragraph: "$$#GITHUB#$$"
+    - paragraph: "The  $$[ CTDC GitHub repo](https://github.com/CBIIT/crdc-ctdc-ui)$$ is available for research, usage, forking, and pull requests. The codebase is intended for sharing and building frameworks for related initiatives and projects. The CTDC GitHub repo has documentation about how to access the system, including endpoints and recommendations for tools and example queries. Both the project and documentation are maintained and updated in accordance with major and minor releases."
+- page: '/purpose'
+  title: "Purpose"
+  primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Purpose.png
+  content:
+     - paragraph: "The goals of the CTDC are to advance cancer research and accelerate the development of innovative therapies by improving access to data from NCI-sponsored clinical studies, including genomic panel assay and clinical data. The CTDC does this through:  "
+     - paragraph: "$$*Graphical User Interface (GUI)*$$ – The CTDC’s GUI includes an Explore dashboard with search filters to help users visualize, explore, and navigate complex metadata without the need for coding or specialized technical skills. "
+     - paragraph: "$$*Data consolidation:*$$ The CTDC consolidates data from clinical studies funded by the NCI. This allows researchers to analyze data collectively, leading to deeper insights and a better understanding of cancer’s complexities. "
+     - paragraph: "$$*Data harmonization:*$$ Data harmonization ensures that data across studies within the CTDC are standardized and organized in a consistent manner to improve data compatibility, integration, and meta-analysis. "
+     - paragraph: "$$*Integration with NCI Cloud Resources:*$$ Users can easily transfer selected CTDC data to the $$[ Velsera Seven Bridges Cancer Genomics Cloud](https://datacommons.cancer.gov/analytical-resource/seven-bridges-cancer-genomics-cloud)$$ (SB-CGC), a cloud-based platform for cancer research funded by the NCI. Here, researchers can integrate mutli-omic data across sources and leverage access to a multitude of tools and workflows for computation and analysis.  "
+     - paragraph: "$$*Fueling collaborative research:*$$ By centralizing data and making them available through NCI’s Cloud Resources, the CTDC promotes secure collaboration among distributed research groups, fostering interdisciplinary partnerships. "
+     - paragraph: "$$*Democratizing Data access:*$$ Data in the CTDC are made available through various access restrictions including open (no registration required) and controlled access (registration required). The CTDC aims to make each dataset as open as possible while protecting participant privacy and adhering to regulations, agreements, and other considerations specific to each study. "
+     - paragraph: "$$*Alignment to F.A.I.R data principles:*$$ The CTDC adheres to Findable, Accessible, Interoperable, and Reusable ($$[FAIR]( https://www.go-fair.org/fair-principles/)$$) principles for scientific data management and stewardship. CTDC seeks to provide clearly organized data and guidance enabling end users to search for, find, and access data of interest. The emphasis on harmonization described above promotes the interoperability of data within and across the CRDC ecosystem and beyond and promotes reusability of data beyond the primary publication."
+- page: '/support'
+  title: "Support"
+  primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Support.png
+  content:
+    - paragraph: "If you have any questions, please contact us at $$[CTDCHelpDesk@mail.nih.gov](CTDCHelpDesk@mail.nih.gov)$$."
+- page: '/cloud-computing'
+  title: "Cloud computing"
+  primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
+  content:
+    - paragraph: "$$#CTDC and NCI’s Cloud Resources#$$ "
+    - paragraph: "The CTDC supports analysis via the $$[Seven Bridges Cancer Genomics Cloud](https://datacommons.cancer.gov/analytical-resource/seven-bridges-cancer-genomics-cloud-developed-velsera#)$$(SB-CGC). SB-CGC supports data access through a web-based user interface, programmatic access to analytic tools and workflows, and collaborative data analysis and sharing pipelines. Users can transfer data of interest from the CTDC directly to SB-CGC, eliminating the need to download and store extremely large datasets. Through the SB-CGC, researchers can bring analysis tools to the data in the cloud, instead of the traditional process of bringing the data to the tools on local hardware. Analyzing data through the cloud offers many benefits including: "
+    - listWithDots :
+      - "State of the art analysis using high-performance computing"
+      - "Remote access and flexibility for nationally or globally distributed teams"
+      - "On-demand computational capacity to scale resources as needed   "
+    - paragraph: "Data brought to the SB-CGC can be analyzed using more than 200 preinstalled, curated bioinformatics tools and workflows. Researchers can also extend the functionality of the platform by adding their own data and tools via an intuitive software development kit. "
+    - paragraph: "$300 in credits are available to new users who want to test out the platform.  "
+    - paragraph: "For more information on getting started with SB-CGC including onboarding videos and more, visit: $$[https://www.cancergenomicscloud.org/getting-started](https://www.cancergenomicscloud.org/getting-started )$$."

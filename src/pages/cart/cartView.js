@@ -1,17 +1,25 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
-import { TableView } from '@bento-core/paginated-table';
+import { TableContext, TableView } from '@bento-core/paginated-table';
 import { configColumn } from './tableConfig/Column';
 import { themeConfig } from './tableConfig/Theme';
 import styles from './cartView.style';
 import CartWrapper from './cartWrapper';
-
+import {paginationOptions} from './tableConfig/PaginationOptions';
 const CartView = (props) => {
   const {
     classes,
     config,
+    tblRows = [],
+    isServer = true,
     filesId = [],
   } = props;
+
+  // access table state
+  const tableContext = useContext(TableContext);
+  const { context } = tableContext;
+  const [isUpdated,setIsUpdated] = useState(false);
+  props ={ ...props, removeCheck: () => {setIsUpdated(true)}}
 
   /**
   * configure table state
@@ -30,9 +38,9 @@ const CartView = (props) => {
     rowsPerPage: 10,
     page: 0,
   });
-
+  
   const variables = {};
-  variables.file_ids = filesId;
+ variables.data_file_uuid = filesId;
   return (
     <Grid>
       <Grid item xs={12}>
@@ -40,13 +48,19 @@ const CartView = (props) => {
           <CartWrapper
             classes={classes}
             queryVariables={variables}
+            totalRowCount={filesId.length}
           >
             <TableView
               initState={initTblState}
+              checkedItemReset={isUpdated}
               themeConfig={themeConfig}
               queryVariables={variables}
               totalRowCount={filesId.length}
+              tblRows={tblRows}
+              server={isServer}
+              paginationOptions={paginationOptions(context, config)}
             />
+          
           </CartWrapper>
         </div>
       </Grid>
