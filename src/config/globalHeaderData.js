@@ -54,7 +54,7 @@ export const navMobileList = [
     className: 'navMobileItem clickable',
   },
   {
-    name: 'Request Acess',
+    name: 'Request Access',
     link: '/request-access',
     id: 'navbar-link-request-access',
     className: 'navMobileItem',
@@ -63,15 +63,6 @@ export const navMobileList = [
 
 export const navbarSublists = {
   // Example of how to do a navMobileSubTitle and subtext
-  // Home: [
-  //   {
-  //     name: 'Explore ##',
-  //     link: '',
-  //     text: 'testText',
-  //     id: 'navbar-dropdown-item-navbar-subitem-2',
-  //     className: 'navMobileSubTitle',
-  //   },
-  // ],
   "Data": [
     {
       name: 'Cloud Computing',

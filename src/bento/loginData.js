@@ -3,7 +3,7 @@ const  eraIcons  = require("../assets/icons/era_commons.png");
 
 export const loginProvidersData = {
   nih: {
-    key: 'nih',
+    key: 'auth_url',
     icon: eraIcons,
     loginButtonText: 'eRA Commons',
   },
