@@ -27,7 +27,7 @@ const ScrollButton = () => {
     <div
       onClick={onClickScrollToTop}
       id="stt"
-      className={scroll < 200 || location.pathname == '/explore' ? "hidden" : "visisble"}
+      className={scroll < 200 || location.pathname == '/explore' ? "hidden" : "visible"}
     >
       <span id="stt-span">BACK TO TOP</span>
     </div>
