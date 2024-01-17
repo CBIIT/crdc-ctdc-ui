@@ -46,9 +46,11 @@ const AboutCard = ({
             {data.title}
           </Typography>
         </div>
-        <div className={classes.text}>{getHighlightedText(results, searchText, classes)}</div>
-        <div className={classes.linkText}>
-          <Anchor link={data.page} text={`${window.location.origin}${data.page}`} classes={classes}/>
+        <div className={classes.cardBody}>
+          <div className={classes.text}>{getHighlightedText(results, searchText, classes)}</div>
+          <div className={classes.linkText}>
+            <Anchor link={data.page} text={`${window.location.origin}${data.page}`} classes={classes}/>
+          </div>
         </div>
       </Grid>
       <Grid item className={classes.hrContainer}>
@@ -71,6 +73,9 @@ const styles = (theme) => ({
     textAlign: 'left',
     color: '#990099',
     textDecoration: 'none',
+    '&:hover': {
+      textDecoration: 'underline',
+    },
   },
   indexContainer: {
     color: '#767676',
@@ -110,6 +115,9 @@ const styles = (theme) => ({
     verticalAlign: 'middle',
     borderRadius: '2px',
     textAlign: 'left',
+  },
+  cardBody: {
+    marginLeft: '3px',
   },
   text: {
     color: '#000000',
