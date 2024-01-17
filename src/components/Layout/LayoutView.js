@@ -51,10 +51,9 @@ const Layout = ({ classes, isSidebarOpened }) => {
         >
           <Route component={ScrollToTopComponent} />
           <Switch>
-
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
-            <Route exact path="/study/:id" component={TrialDetail} />
+            <Route exact path="/study/:id" component={StudyDetail} />
             <Route path="/fileCentricCart" component={CartView} />
             <Route path="/explore" component={DashTemplate} />
             <Route exact path="/ctdc-data-model" component={UnderDev} />

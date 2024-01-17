@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { useLocation } from 'react-router-dom';
 import "./ScrollButtonStyles.css";
 
 const ScrollButton = () => {
   const [scroll, setScroll] = useState(0);
+  const location = useLocation();
 
   const updateScroll = () => {
     setScroll(window.scrollY);
@@ -25,7 +27,7 @@ const ScrollButton = () => {
     <div
       onClick={onClickScrollToTop}
       id="stt"
-      className={scroll < 200 ? "hidden" : "visisble"}
+      className={scroll < 200 || location.pathname == '/explore' ? "hidden" : "visisble"}
     >
       <span id="stt-span">BACK TO TOP</span>
     </div>
