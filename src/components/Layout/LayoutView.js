@@ -58,7 +58,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route path="/explore" component={DashTemplate} />
             <Route exact path="/ctdc-data-model" component={UnderDev} />
             <Route exact path="/data-dictionary" component={UnderDev} />
-            <Route exact path="/data-harmonization" component={UnderDev} />
+            <Route exact path="/data-harmonization" component={About} />
             <Route exact path="/data-use" component={UnderDev} />
             <Route exact path="/request-access" component={RAView} />
             <Route exact path="/crdc"  component={UnderDev} />
