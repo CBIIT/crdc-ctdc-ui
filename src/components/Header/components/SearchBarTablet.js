@@ -28,7 +28,7 @@ const SearchBar = (props) => {
   const SearchBarConfig = {
     classes: CUSTOM_STYLES(),
     config: {
-      placeholder: "e.g. colon, MSB-01068, CMB",
+      placeholder: "Search CTDC",
       query: async (search) => queryAutocompleteAPI(search, !authenticated),
       searchKeys: authenticated ? SEARCH_KEYS.private : SEARCH_KEYS.public,
       searchFields: authenticated ? SEARCH_DATAFIELDS.private : SEARCH_DATAFIELDS.public,

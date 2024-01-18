@@ -161,7 +161,6 @@ export const SEARCH_PAGE_RESULT_PARTICIPANTS = gql`
         targeted_therapy
         ethnicity
         subject_id
-        age_at_enrollment
       }
     }
   }

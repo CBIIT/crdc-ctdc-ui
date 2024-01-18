@@ -1931,7 +1931,7 @@ export const tabContainers = [
     dataField: 'dataFile',
     api: GET_FILES_OVERVIEW_QUERY,
     paginationAPIField: 'fileOverview',
-    defaultSortField: 'data_file_name',
+    defaultSortField: 'data_file_uuid',
     defaultSortDirection: 'asc',
     count: 'numberOfFiles',
     dataKey: 'data_file_uuid',

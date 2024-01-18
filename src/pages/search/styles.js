@@ -1,15 +1,4 @@
-const buttonRoot = {
-  height: '56px',
-  fontSize: '16px',
-  marginRight: '63px',
-  padding: '0px, 10px',
-  textTransform: 'none',
-};
-
 const styles = () => ({
-  'global_search_tab_label_1': {
-    border: '1px solid black'
-  },
   allText: {
     marginLeft: '8px',
   },
@@ -25,34 +14,21 @@ const styles = () => ({
     maxWidth: '840px',
     height: '56px',
     margin: '0 auto',
-    '& .MuiTab-root': {
-      padding: '0px'
-    }
   },
   tabColor: { color: '#142D64' },
-  allButton: {
-    ...buttonRoot,
-    width: '54px',
-    minWidth: '54px',
+  buttonRoot: {
+    height: '56px',
+    fontSize: '16px',
+    minWidth: 'min-content',
+    // padding: '0px',
+    marginRight: '63px',
+    // minWidth: '200px',
+    padding: '0px, 10px',
+    textTransform: 'none',
+    // border: '.5px solid red'
   },
-  participantButton: {
-    ...buttonRoot,
-    width: '126px',
-    minWidth: '126px',
-  },
-  biospecimenButton: {
-    ...buttonRoot,
-    minWidth: '140px',
-  },
-  aboutButton: {
-    ...buttonRoot,
-    width: '70px',
-    minWidth: '70px',
-  },
-  modelButton: {
-    ...buttonRoot,
-    width: '81px',
-    minWidth: '81px',
+  notchedOutline: {
+
   },
   input: {
     borderRadius: '8px',
@@ -70,12 +46,15 @@ const styles = () => ({
     color: '#B4E2F5',
     fontFamily: 'Inter',
     fontWeight: '400',
+    // border: '1px solid red', 
     fontSize: '24px',
     lineHeight: '31.47px',
     margin: '0px 0px 15px 0px'
   },
   autocomplete: {
     margin: '0 auto',
+    // paddingTop: '66px',
+    // border: '1px solid yellow', 
     '& .MuiAutocomplete-inputRoot[class*="Mui-focused"]': {
       outline: '4px solid #3395CA',
     },
@@ -115,10 +94,6 @@ const styles = () => ({
     color: '#000000',
     fontSize: '15px',
     lineHeight: '22px',
-    marginBottom: '108px',
-    '& .MuiTabPanel-root': {
-      padding: '0px !important',
-    },
   },
   width1100: {
     maxWidth: '1100px',
@@ -209,33 +184,6 @@ const styles = () => ({
     fontSize: '16px',
     lineHeight: '16px',
     color: '#142D64',
-  },
-  totalResults: {
-    color: '#225987',
-    fontFamily: 'Roboto',
-    fontSize: '20px',
-    fontWeight: 400,
-    lineHeight: '31px',
-    letterSpacing: '0.02em',
-    textAlign: 'left',
-    paddingLeft: '0px',
-    maxWidth: '940px',
-    margin: '11px auto 24px auto'
-  },
-  totalCount: {
-    fontFamily: 'Roboto',
-  },
-  subsection: {
-    borderBottom: '1px solid #8A8A8A',
-    paddingBottom: '22px',
-  },
-  subsectionBody: {
-    padding: '0px 2px',
-    width: '880px',
-    maxWidth: '973px',
-  },
-  paginationContainer: {
-    paddingBottom: '0px',
   },
 });
 

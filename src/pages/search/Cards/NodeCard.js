@@ -5,37 +5,25 @@ import PropertyItem from './PropertyItem';
 
 const CARD_PROPERTIES = [
   {
-    label: 'Data Model Node',
+    label: 'Node Name',
     dataField: 'node_name',
+    link: '/case/{subject_id}',
   },
   {
     label: 'Property Name',
     dataField: 'property_name',
   },
   {
-    label: 'Property Description',
-    dataField: 'property_description',
+    label: 'File Name',
+    dataField: 'file_name',
   },
   {
-    label: 'Property Required',
-    dataField: 'property_required',
-  },
-  {
-    label: 'Property Type',
-    dataField: 'property_description',
-  },
-  {
-    label: 'Property Type',
-    dataField: 'value',
-  },
-  {
-    label: 'Page Link',
-    dataField: 'node_name',
-    link: '/resources',
+    label: 'File Id',
+    dataField: 'file_id',
   },
 ];
 
-const ValueCard = ({ data, classes, index }) => {
+const NodeCard = ({ data, classes, index }) => {
   const propertiesWithLinks = prepareLinks(CARD_PROPERTIES, data);
 
   return (
@@ -45,10 +33,8 @@ const ValueCard = ({ data, classes, index }) => {
       </Grid>
       <Grid item xs={11} className={classes.propertyContainer}>
         <div>
-          <span className={classes.detailContainerHeader}>DATA MODEL</span>
-          <span className={classes.cardTitle}>
-            {data.highlight}
-          </span>
+          <span className={classes.detailContainerHeader}>Node</span>
+          <span className={classes.cardTitle}>{data.file_id}</span>
         </div>
         {propertiesWithLinks.map((prop, idx) => (
           <PropertyItem
@@ -84,7 +70,7 @@ const styles = (theme) => ({
   detailContainerHeader: {
     textTransform: 'uppercase',
     padding: '2px 8px',
-    backgroundColor: '#e6d2f2',
+    backgroundColor: '#ECC28B',
     color: '#000000',
     fontFamily: 'Nunito',
     fontSize: '12px',
@@ -95,4 +81,4 @@ const styles = (theme) => ({
   },
 });
 
-export default withStyles(styles, { withTheme: true })(ValueCard);
+export default withStyles(styles, { withTheme: true })(NodeCard);
