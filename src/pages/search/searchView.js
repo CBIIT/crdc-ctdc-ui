@@ -9,7 +9,7 @@ import {
   SEARCH_PAGE_DATAFIELDS, SEARCH_PAGE_KEYS,
   queryCountAPI, queryResultAPI, queryAutocompleteAPI,
 } from '../../bento/search';
-import { AboutCard, ValueCard } from './Cards';
+import { ParticipantCard, BiospecimenCard, AboutCard, ValueCard } from './Cards';
 
 /**
  * Determine the correct datafield and offset for the All tab based
@@ -218,11 +218,11 @@ function searchView(props) {
     classes,
     config: {
       resultCardMap: {
-        participants: ValueCard,
-        biospecimens: ValueCard,
+        participants: ParticipantCard,
+        biospecimens: BiospecimenCard,
+        property: ValueCard,
         node: ValueCard,
         value: ValueCard,
-        property: ValueCard,
         about: AboutCard,
       },
       showFilterBy: true,
@@ -236,8 +236,13 @@ function searchView(props) {
         name: 'All',
         field: 'all',
         classes: {
-          root: classes.buttonRoot,
+          root: classes.allButton,
           wrapper: classes.tabColor,
+          totalResults: classes.totalResults,
+          totalCount: classes.totalCount,
+          subsection: classes.subsection,
+          subsectionBody: classes.subsectionBody,
+          paginationContainer: classes.paginationContainer,
         },
         count: (!authCheck() ? searchCounts.about_count : countValues(searchCounts)) || 0,
         value: '1',
@@ -246,8 +251,13 @@ function searchView(props) {
         name: 'Participants',
         field: 'participants',
         classes: {
-          root: classes.buttonRoot,
+          root: classes.participantButton,
           wrapper: classes.tabColor,
+          totalResults: classes.totalResults,
+          totalCount: classes.totalCount,
+          subsection: classes.subsection,
+          subsectionBody: classes.subsectionBody,
+          paginationContainer: classes.paginationContainer,
         },
         count: searchCounts.participant_count || 0,
         value: `${!authCheck() ? 'inactive-' : ''}2`,
@@ -256,8 +266,13 @@ function searchView(props) {
         name: 'Biospecimens',
         field: 'biospecimens',
         classes: {
-          root: classes.buttonRoot,
+          root: classes.biospecimenButton,
           wrapper: classes.tabColor,
+          totalResults: classes.totalResults,
+          totalCount: classes.totalCount,
+          subsection: classes.subsection,
+          subsectionBody: classes.subsectionBody,
+          paginationContainer: classes.paginationContainer,
         },
         count: searchCounts.biospecimen_count || 0,
         value: `${!authCheck() ? 'inactive-' : ''}3`,
@@ -266,8 +281,13 @@ function searchView(props) {
         name: 'About',
         field: 'about_page',
         classes: {
-          root: classes.buttonRoot,
+          root: classes.aboutButton,
           wrapper: classes.tabColor,
+          totalResults: classes.totalResults,
+          totalCount: classes.totalCount,
+          subsection: classes.subsection,
+          subsectionBody: classes.subsectionBody,
+          paginationContainer: classes.paginationContainer,
         },
         count: searchCounts.about_count || 0,
         value: '4',
@@ -276,8 +296,13 @@ function searchView(props) {
         name: 'Model',
         field: 'model',
         classes: {
-          root: classes.buttonRoot,
+          root: classes.modelButton,
           wrapper: classes.tabColor,
+          totalResults: classes.totalResults,
+          totalCount: classes.totalCount,
+          subsection: classes.subsection,
+          subsectionBody: classes.subsectionBody,
+          paginationContainer: classes.paginationContainer,
         },
         count: searchCounts.model_count || 0,
         value: `${!authCheck() ? 'inactive-' : ''}5`,
