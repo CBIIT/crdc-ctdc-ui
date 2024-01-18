@@ -10,6 +10,7 @@ const CustomFooterMessage = () => (
         fontSize: '14px',
         color: 'rgba(0, 0, 0, 0.65)',
         lineHeight: '19px',
+        maxWidth:'600px',
     }}>
         {/* eslint-disable-next-line max-len */}
         <p>

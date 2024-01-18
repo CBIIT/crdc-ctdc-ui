@@ -47,7 +47,7 @@ const RAView = ({ classes }) => {
                       Controlled access data  
                   </div>
                   <div className={classes.content}>
-                      Controlled data within the CTDC include genomic and other potentially sensitive Personal Identifiable Information (PII). To protect the privacy of individuals who have contributed data to clinical studies, researchers who wish to access controlled data must register for an 
+                      Controlled data within the CTDC include genomic and other potentially sensitive Personal Identifiable Information (PII). To protect the privacy of individuals who have contributed data to clinical studies, researchers who wish to access controlled data must register for an{' '} 
                       <Link
                               title="NIH eRA Commons"
                               target='_blank'
@@ -64,7 +64,7 @@ const RAView = ({ classes }) => {
                                   alt="outbounnd web site icon"
                                   className={classes.linkIcon}
                                 />
-                       account and apply for data access authorization through the
+                       {' '}account and apply for data access authorization through the{' '}
                            <Link
                               title=" NIH database of Genotypes and Phenotypes "
                               target='_blank'
@@ -82,8 +82,7 @@ const RAView = ({ classes }) => {
                                   className={classes.linkIcon}
                                 />
                                 
-                        (dbGaP)
-                        . See instructions below for how to access controlled data. 
+                        (dbGaP). See instructions below for how to access controlled data. 
                    </div>
                  </div>
                 <div className={classes.text}>
