@@ -1,11 +1,11 @@
 import React from 'react';
-import { LoginGenerator,AuthProviderGenerator } from '@bento-core/authentication';
+import { LoginGenerator,AuthProviderGenerator } from '../../components/Authentication';
 import { withStyles } from '@material-ui/core';
 import { enabledAuthProviders } from '../../bento/siteWideConfig';
 import { loginProvidersData } from '../../bento/loginData';
 import AlertMessage from '../../bento-core/AlertMessage';
 import Stats from '../../components/Stats/AllStatsController';
-
+import env from '../../utils/env';
 
 function loginController(props) {
   const { classes } = props;
@@ -42,11 +42,10 @@ function loginController(props) {
     AlertMessage,
     };
 
+
   const customConfig = {
     config: {
-      GOOGLE_CLIENT_ID: 'x',
-      NIH_CLIENT_ID: '9daCtorxUg7aJPKFPd2cD4QvWw3AH61lWaKXZqXM',
-      NIH_AUTH_URL: 'https://supreme-doodle-gq6eegg.pages.github.io/redirect.html',
+      AUTH_URL: env.REACT_APP_LOGIN_URL,
     }
   }
   const { Login } = LoginGenerator();

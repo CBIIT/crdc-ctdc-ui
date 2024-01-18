@@ -26,8 +26,8 @@ export const enabledAuthProviders = ['google', 'nih', 'loginGov'];
 export const PUBLIC_ACCESS = env.PUBLIC_ACCESS || 'Metadata Only';
 
 // Node level access
-export const NODE_LEVEL_ACCESS = getEnvBoolean(env.NODE_LEVEL_ACCESS, true);
-export const NODE_LABEL = env.NODE_LABEL || 'Study Arm(s)';
+export const NODE_LEVEL_ACCESS = '';
+export const NODE_LABEL = '';
 
 // Redirect configs.
 export const REDIRECT_AFTER_SIGN_OUT = '/';
