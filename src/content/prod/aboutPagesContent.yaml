@@ -30,7 +30,7 @@
   title: "Support"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Support.png
   content:
-    - paragraph: "If you have any questions, please contact us at $$[CTDCHelpDesk@mail.nih.gov](CTDCHelpDesk@mail.nih.gov)$$."
+    - paragraph: "If you have any questions, please contact us at $$[NCICTDCHelpDesk@mail.nih.gov](NCICTDCHelpDesk@mail.nih.gov)$$."
 - page: '/cloud-computing'
   title: "Cloud computing"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
@@ -44,3 +44,9 @@
     - paragraph: "Data brought to the SB-CGC can be analyzed using more than 200 preinstalled, curated bioinformatics tools and workflows. Researchers can also extend the functionality of the platform by adding their own data and tools via an intuitive software development kit. "
     - paragraph: "$300 in credits are available to new users who want to test out the platform.  "
     - paragraph: "For more information on getting started with SB-CGC including onboarding videos and more, visit: $$[https://www.cancergenomicscloud.org/getting-started](https://www.cancergenomicscloud.org/getting-started )$$."
+- page: '/data-harmonization'
+  title: "Data Harmonization"
+  primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
+  content:
+    - paragraph: "CTDC data elements have been aligned against NCI’s $$[ Data Standards Services ](https://datascience.cancer.gov/data-commons/data-standards-services)$$(DSS) common data elements (CDEs) curated through the CRDC in $$[ the Cancer Data Standards Registry and Repository](https://cadsr.cancer.gov/onedata/Home.jsp)$$(caDSR). A list of the current CRDC Standard Data Elements can be found $$[here](https://cadsr.cancer.gov/onedata/clsc_datamanager_container.do?s=JTAycSUwNiUwQVQlMDUwelQrJTI0JTI5RyU3RiUyMkglMDAqc2IlMERxd3d1JTAwJTEzJTBEJTdDaiUyQ0VlJTJDcSUxNSUwNCUwRHIlMEElMDIlMDJ2c3IlMDIlN0MlMDk3JTJDYSUyNSUxRSUxMnclMDVyJTdCJTI3JTBEQnAlMjZRVC5NJTdDJTdGJTdDJTA5bEolMTQ )$$."
+ 
