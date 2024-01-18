@@ -4,7 +4,7 @@ const COLORS_EVEN = [
   '#C33B27',
   '#FDB915',
   '#381F5F',
-  '#0A8B8B',
+  '#C2E5DC',
   '#8B5996',
 ];
 

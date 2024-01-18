@@ -23,7 +23,7 @@ import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
 import UnderDev from '../../pages/error/Development';
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
-import RAView from '../../pages/about/requestAccess'; 
+
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);

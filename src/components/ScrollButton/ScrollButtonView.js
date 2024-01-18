@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from 'react-router-dom';
 import "./ScrollButtonStyles.css";
 
+
 const ScrollButton = () => {
   const [scroll, setScroll] = useState(0);
   const location = useLocation();
