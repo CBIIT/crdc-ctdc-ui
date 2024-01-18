@@ -1,6 +1,6 @@
 import React from 'react';
-import { Grid, withStyles } from '@material-ui/core';
-import { Anchor } from '@bento-core/util';
+import { Grid, Typography, withStyles } from '@material-ui/core';
+import Anchor from '../../../utils/Anchor';
 
 /**
  * Property Item component generates the result card key:value element
@@ -24,15 +24,15 @@ const PropertyItem = ({ ...props }) => {
   return (
     <Grid item container className={classes.propertyContainer}>
       {value ? (
-        <Grid item xs={12}>
-          <span className={classes.title} id={`section_title_${index + 1}`}>
+        <Grid item xs={12} className={classes.row}>
+          <Typography variant="h6" className={classes.title} id={`section_title_${index + 1}`}>
             {labelLink ? <Anchor link={labelLink} text={label} classes={classes} /> : `${label}:`}
-          </span>
-          <span className={classes.content} id={`section_description_${index + 1}`}>
+          </Typography>
+          <Typography variant="body1" className={classes.content} id={`section_description_${index + 1}`}>
             {value || value === 0 ? (
               link ? <Anchor link={link} text={value} classes={classes} /> : value
             ) : defaultValue}
-          </span>
+          </Typography>
         </Grid>
       ) : '' }
     </Grid>
@@ -40,37 +40,47 @@ const PropertyItem = ({ ...props }) => {
 };
 
 const styles = () => ({
+  row: {
+    display: 'flex',
+    margin: '0px',
+    padding: '0px',
+  },
   content: {
-    color: '#000',
-    // fontFamily: theme.custom.fontFamilySans,
-    fontFamily: 'Nunito',
-    fontSize: '14px',
-    whiteSpace: 'normal',
-    paddingLeft: '6px',
-    letterSpacing: '0.7px',
+    color: '#000000',
+    fontFamily: 'Roboto',
+    fontSize: '16px',
+    fontWeight: 400,
+    lineHeight: '24px',
+    letterSpacing: '0em',
+    textAlign: 'left',
   },
   title: {
-    color: '#000',
-    // fontFamily: theme.custom.fontFamilySans,
-    fontFamily: 'Inter',
-    fontSize: '12px',
-    lineHeight: '12px',
-    letterSpacing: '0.7px',
-    fontWeight: '600',
-    whiteSpace: 'nowrap',
+    textTransform: 'uppercase',
+    width: '115px',
+    maxWidth: '115px',
+    minWidth: '115px',
+    color: '#000000',
+    fontFamily: 'Roboto',
+    fontSize: '14px',
+    fontWeight: 700,
+    lineHeight: '21px',
+    letterSpacing: '0px',
+    textAlign: 'left',
   },
   propertyContainer: {
     lineHeight: '17px',
-    paddingLeft: '6px',
+    paddingLeft: '3px',
   },
   link: {
-    color: 'black',
+    color: '#990099',
     textDecoration: 'none',
+    fontFamily: 'Roboto',
+    fontSize: '16px',
+    fontWeight: 600,
+    lineHeight: '24px',
+    letterSpacing: '0px',
     '&:hover': {
       textDecoration: 'underline',
-    },
-    '&:visited': {
-      color: '#9F3D26',
     },
   },
 });
