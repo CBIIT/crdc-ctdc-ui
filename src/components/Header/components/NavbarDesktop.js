@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useState, useRef } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
 import { useSelector } from 'react-redux';
@@ -351,6 +351,7 @@ const NavBar = () => {
     signOut,
   } = useAuth();
   const history = useHistory();
+  const location = useLocation();
   const [clickedTitle, setClickedTitle] = useState("");
   const dropdownSelection = useRef(null);
   const nameDropdownSelection = useRef(null);
@@ -408,7 +409,7 @@ const NavBar = () => {
 
  
   return (
-    <Nav>
+    <Nav style={{ boxShadow: location.pathname === '/home' ? '-0.1px 6px 9px -6px rgba(0, 0, 0, 0.5)' : 'none' }}>
       <NavContainer>
         <UlContainer>
           {
