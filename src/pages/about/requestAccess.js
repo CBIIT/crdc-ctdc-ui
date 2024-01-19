@@ -90,25 +90,10 @@ const RAView = ({ classes }) => {
                     Accessing controlled data in the CTDC
                   </div>
                   <div className={classes.content}>
-                      <ol>
-                        <li>Obtain an NIH eRA Commons account</li>
-                      <li>Obtain dbGaP access</li>
-                      <li>Request access to controlled data of choice through dbGaP</li>
-                      <li>Access approved datasets within the CTDC</li>
-                      </ol>
-                   </div>
-                </div>
-                  <img className={classes.followGraph} src={followImg} alt="follow graph" />
-            
-
-                   <div className={classes.header}>
-                     Accessing Cancer Moonshot Biobank access through CTDT
-                </div>
-                 
-                 <div className={classes.expansionPanel}>
+                             <div className={classes.expansionPanel}>
                 <ExpansionPanel>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>For Obtain an NIH eRA Commons account</Typography>
+                    <Typography className={classes.heading}>Obtain an NIH eRA Commons account</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                    <div className={classes.panelDetails}>
@@ -136,7 +121,7 @@ const RAView = ({ classes }) => {
                               title="eRA Help and Tutorials"
                               target='_blank'
                               rel="noreferrer"
-                              href="hhttps://www.era.nih.gov/help-tutorials"
+                              href="https://www.era.nih.gov/help-tutorials"
                               color="inherit"
                               className={classes.link}
                             >
@@ -174,10 +159,9 @@ const RAView = ({ classes }) => {
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
 
-
                  <ExpansionPanel>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>For Obtain dbGaP access</Typography>
+                    <Typography className={classes.heading}>Obtain dbGaP access</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                    <div className={classes.panelDetails}>
@@ -247,10 +231,9 @@ const RAView = ({ classes }) => {
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
 
-
                  <ExpansionPanel>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>For Request access to controlled data of choice through dbGaP</Typography>
+                    <Typography className={classes.heading}>Request access to controlled data of choice through dbGaP</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                   <div className={classes.panelDetails}>
@@ -267,18 +250,23 @@ const RAView = ({ classes }) => {
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
 
-
                  <ExpansionPanel>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>For Access approved datasets in CTDC</Typography>
+                    <Typography className={classes.heading}>Access approved datasets within the CTDC</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     <Typography className={classes.panelDetails}>
-                      After receiving dbGaP approval for a desired dataset, you can access and download the dataset through your CTDC account or create a manifest to analyze data within the Seven Bridges’ Cancer Genomics Cloud (SB-CGC).
+                      After receiving dbGaP approval for a desired dataset, you can access and download the dataset through your CTDC account or create a manifest to analyze data within the 
+
+                                  Seven Bridges’ Cancer Genomics Cloud
+                       (SB-CGC).
                     </Typography>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
                 </div>
+                   </div>
+                </div>
+                  <img className={classes.followGraph} src={followImg} alt="follow graph" />
             </Grid>
           </Grid>
       </div>
@@ -302,7 +290,7 @@ const styles = () => ({
     maxWidth: '1440px',
   },
   expansionPanel:{
-    padding: '10px',
+    padding: '10px 0px',
   },
   heading: {
      fontFamily: 'Inter',
