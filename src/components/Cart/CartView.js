@@ -19,7 +19,6 @@ const CartContainer = styled.div`
      padding-right: 20px;
   },
   .cartIcon{
-     margin: 0px 0px 0px 6px;
      height: 46.6px;
   },
   .cartCounter {
