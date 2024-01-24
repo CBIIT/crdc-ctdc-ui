@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useState, useRef } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
 import { useHistory } from 'react-router';
 import { useSelector } from 'react-redux';
@@ -17,6 +17,8 @@ const Nav = styled.div`
     background: #ffffff;
     z-index: 1100;
     position: relative;
+    box-shadow: ${({ location }) =>
+      location.pathname === '/home' ? '-0.1px 6px 9px -6px rgba(0, 0, 0, 0.5)' : 'none'};
 
     .dropdownContainer {
       // outline: none;
@@ -32,6 +34,8 @@ const Nav = styled.div`
  `;
 
 const NavContainer = styled.div`
+    max-height: 53px;
+    height: 53px;
     margin: 0 auto;
     max-width: 1400px;
     text-align: left;
@@ -239,7 +243,7 @@ const StyledLoginLink = styled(Link)`
   font-size: 14px;
   font-family: Poppins;
   font-style: normal;
-  font-weight: 600;
+  font-weight: 700;
   line-height: normal;
   letter-spacing: 0.42px;
   text-decoration: none;
@@ -252,6 +256,8 @@ const StyledLoginLink = styled(Link)`
 const CartSpan = styled.span`
     display: flex;
     flex-flow: row;
+    align-items: flex-end;
+    margin-right: 10px;
 
     .userName{
       color: #00846A;
@@ -406,9 +412,10 @@ const NavBar = () => {
     setClickedTitle("");
   }, []);
 
- 
+  const EnhancedNav = withRouter(Nav);
+
   return (
-    <Nav>
+    <EnhancedNav>
       <NavContainer>
         <UlContainer>
           {
@@ -521,7 +528,7 @@ const NavBar = () => {
           </div>
         </NameDropdownContainer>
       </NameDropdown>
-    </Nav>
+    </EnhancedNav>
   );
 };
 
