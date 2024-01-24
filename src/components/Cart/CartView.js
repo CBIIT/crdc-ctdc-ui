@@ -7,19 +7,20 @@ import styled from 'styled-components';
 import { Tooltip as MuiTooltip } from '@material-ui/core';
 import {Link} from 'react-router-dom'
 
-
 const CartView = (props) => {
 
 const CartContainer = styled.div`
   .badge{
-    padding-top: 30px;
+    padding-top: 45px;
     display: flex;
-    position: relative;
     vertical-align: middle;
      padding-right: 20px;
   },
+  .cartLink{
+    text-decoration: none;
+  },
   .cartIcon{
-     height: 46.6px;
+     height: 63px;
   },
   .cartCounter {
     min-width: 16px;
@@ -29,7 +30,8 @@ const CartContainer = styled.div`
     transform: scale(1) translate(0%, -50%);
   },
   .cartCounter2Wrapper {
-    margin-left: 6px;
+    padding-top: 4px;
+    margin-left: -3px;
   },
   .cartCounter2 {
     color: #6D6D6D;
@@ -47,6 +49,7 @@ const CartContainer = styled.div`
     letter-spacing: 0.8px;
     text-align: start;
     font-size: 12px;
+    text-transform: uppercase;
   }
 `;
 
@@ -77,18 +80,18 @@ const getCartLabel = (labelType) => {
 
   const Tooltip =  MuiTooltip;
   return (
-           <CartContainer>
-            <Link to="/fileCentricCart">
-              <span className="badge">
-                          <img
-                            className="cartIcon"
-                            src={navBarCartData.cartIcon}
-                            alt={navBarCartData.cartIconAlt}
-                          />
-                           {getCartLabel(navBarCartData.cartLabelType)}
-                </span>
-                </Link>
-           </CartContainer>
+    <CartContainer>
+      <Link to="/fileCentricCart" className="cartLink">
+        <span className="badge">
+            <img
+              className="cartIcon"
+              src={navBarCartData.cartIcon}
+              alt={navBarCartData.cartIconAlt}
+            />
+          {getCartLabel(navBarCartData.cartLabelType)}
+        </span>
+      </Link>
+    </CartContainer>
   )
 }
 
