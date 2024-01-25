@@ -85,10 +85,15 @@ const RAView = ({ classes }) => {
                         (dbGaP). See instructions below for how to access controlled data. 
                    </div>
                  </div>
+
+                 <img className={classes.followGraph} src={followImg} alt="follow graph" />
+
+
                 <div className={classes.text}>
                   <div className={classes.title}>
                     Accessing controlled data in the CTDC
                   </div>
+
                   <div className={classes.content}>
                              <div className={classes.expansionPanel}>
                 <ExpansionPanel>
@@ -266,7 +271,7 @@ const RAView = ({ classes }) => {
                 </div>
                    </div>
                 </div>
-                  <img className={classes.followGraph} src={followImg} alt="follow graph" />
+                  
             </Grid>
           </Grid>
       </div>
@@ -339,8 +344,9 @@ const styles = () => ({
   },
 
   followGraph: {
-    padding: '30px 10px',
-    width: '100%'
+    padding: '0px 10px',
+    width: '100%',
+    marginBottom: '-5px'
   },
   title: (props) => ({
     color: props.titleColor,
