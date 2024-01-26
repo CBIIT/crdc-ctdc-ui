@@ -243,13 +243,13 @@ const RAView = ({ classes }) => {
                   <ExpansionPanelDetails>
                   <div className={classes.panelDetails}>
                     <ul>
-                        <li>Log in to your dbGaP account using your eRA Commons username and password</li>
-                        <li>Navigate to the “My Projects” page</li>
-                        <li>Create a new research project or revise project to request access to new data</li>
-                        <li>Enter the appropriate ID for your project of interest</li>
-                        <li>E.g. “phs002192” for Cancer Moonshot Biobank dataset</li>
-                        <li>Submit request</li>
-                        <li>You will receive notification of approval via email</li>
+                        <li>Log in to your dbGaP account using your eRA Commons username and password.</li>
+                        <li>Navigate to the “My Projects” page.</li>
+                        <li>Create a new research project or revise project to request access to new data.</li>
+                        <li>Enter the appropriate ID for your project of interest.</li>
+                        <li>E.g. “phs002192” for Cancer Moonshot Biobank dataset.</li>
+                        <li>Submit request.</li>
+                        <li>You will receive notification of approval via email.</li>
                     </ul>
                     </div>
                   </ExpansionPanelDetails>
