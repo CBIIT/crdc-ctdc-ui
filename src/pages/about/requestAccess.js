@@ -249,7 +249,7 @@ const RAView = ({ classes }) => {
                         <li>Enter the appropriate ID for your project of interest</li>
                         <li>E.g. “phs002192” for Cancer Moonshot Biobank dataset</li>
                         <li>Submit request</li>
-                        <li>You will receive notification of approval</li>
+                        <li>You will receive notification of approval via email</li>
                     </ul>
                     </div>
                   </ExpansionPanelDetails>
