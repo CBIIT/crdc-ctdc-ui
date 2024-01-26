@@ -4,15 +4,20 @@ export const statsStyling = {
   global: {
     horizontalStyle: false,
     statTitleFirst: false,
-    height: '66px',
-    background: '#8DCAFF',
+    height: '50px',
+    background: '#47AEC3',
   },
   statsGroup: {
     margin: '6px 9.25px',
     padding: '0.1% 10% 2% 6%',
-    borderRight: '1px solid #0B3556',
+    borderRight: 'none',
     '&:first-child': {
       padding: '0.1% 6% 2% 6%',
+    },
+    '&:nth-child(2)': {
+      '& $statsIcon': { // Targeting statsIcon inside the second child
+        marginTop: '4px',
+      },
     },
     '&:last-child': {
       padding: '0.1% 6% 2% 6%',
@@ -21,25 +26,25 @@ export const statsStyling = {
   statsIcon: {
     width: '40px',
     height: '45px',
-    margin: '2px 0px 0px -45px',
+    margin: '0px 0px 0px -45px',
     position: 'relative',
   },
   statCount: {
-    color: '#0467BD',
+    color: '#FFFFFF',
+    fontWeight: '500',
     fontFamily: 'Oswald',
     fontSize: '20px',
-    lineHeight: '17px',
-    letterSpacing: '0.02em',
-    margin: '4px 0 2px 13px',
+    margin: '-5px 0px -4px 10px',
+    paddingTop: '0px',
+    // lineHeight: 17px
   },
   statTitle: {
     color: '#062D4F',
     fontFamily: 'Nunito',
-    fontSize: '12px',
     fontWeight: '700',
-    lineHeight: '16px',
-    textTransform: 'uppercase',
-    margin: '0 0 0 13px',
+    fontSize: '12px',
+    textTransform: 'none',
+    margin: '0px 0px 0px 10px',
   },
 };
 
@@ -67,7 +72,7 @@ export const globalStatsData = [
     statIconAlt: 'DIAGNOSES Stats Bar Icon',
   },
   {
-    statTitle: 'TARGETED THERAPIES',
+    statTitle: 'THERAPIES',
     type: 'field',
     statAPI: 'numberOfTargetedTherapies',
     statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-explore-stats-bar-icons/ctdc/images/svg/ExploreStatsBarTargetedTherapiesIcon.svg',

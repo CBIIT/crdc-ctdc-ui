@@ -207,6 +207,7 @@ const styles = () => ({
       maxWidth: '225px',
       padding: props.styles.statsGroup ? (props.styles.statsGroup['&:last-child'] && props.styles.statsGroup['&:last-child'].padding) ? props.styles.statsGroup['&:last-child'].padding : '4px 40px 10px 80px' : '4px 40px 10px 80px',
     },
+    ...props.styles.statsGroup,
   }),
   statsIcon: (props) => ({
     position: 'absolute',
