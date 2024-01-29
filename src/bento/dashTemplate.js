@@ -18,7 +18,7 @@ export const facetSectionVariables = {
   'Filter by Participants': {
     isExpanded: true,
     hasSearch: false,
-    hasArrowDropDownIcon: false,
+    hasArrowDropDownIcon: true,
   },
   'Filter by Biospecimens': {
     isExpanded: true,
