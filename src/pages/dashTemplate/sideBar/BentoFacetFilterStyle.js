@@ -56,9 +56,10 @@ export default () => ({
     flexShrink: '0',
     fontFamily: 'Open Sans',
     fontWeight: '600',
-    lineHeight: '0',
+    lineHeight: '1',
     marginLeft: '5px',
     letterSpacing: '0',
+    overflowWrap: 'break-word',
     // textTransform: 'uppercase',
   },
   dropDownIconSubSection: {
