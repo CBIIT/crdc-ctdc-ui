@@ -51,7 +51,7 @@ function nihLoginSuccess() {
               {' '}
               or
               {' '}
-              <Link to="/#/login">Login Page</Link>
+              <Link to="/#/user/login">Login Page</Link>
               {' '}
               to login again.
             </span>
