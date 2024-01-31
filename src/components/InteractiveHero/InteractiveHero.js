@@ -22,8 +22,10 @@ const ParticipantsInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
       {' '}
-      {heroData ? heroData.numberOfParticipants : 'NA'}
+      {/* {heroData ? heroData.numberOfParticipants : 'NA'} */}
+      {/* code to Add count to the inactive view  */}
       {' '}
+
       PARTICIPANTS
     </div>
   </div>
@@ -46,8 +48,9 @@ const ParticipantsActiveText = ({ classes, heroData }) => (
 const DiagnosesInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
-      {heroData ? heroData.numberOfDiagnoses : 'NA'}
-      {' '}
+      {/* {heroData ? heroData.numberOfDiagnoses : 'NA'}
+      {' '} */}
+      {/* code to Add count to the inactive view  */}
       DIAGNOSES
     </div>
   </div>
@@ -85,6 +88,8 @@ const DiagnosesActiveText = ({ classes, heroData }) => {
         {diagnosisData[2].group}
       </div>):""
       }
+
+      
     </div>
   );
 };
@@ -92,7 +97,8 @@ const DiagnosesActiveText = ({ classes, heroData }) => {
 const TherapiesInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
-      {heroData ? heroData.numberOfTargeted : 'NA'}
+      {/* {heroData ? heroData.numberOfTargeted : 'NA'} */}
+      {/* code to Add count to the inactive view  */}
       {' '}
       THERAPIES
     </div>
@@ -117,7 +123,8 @@ const TherapiesActiveText = ({ classes, heroData }) => (
 const FilesInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
-      {heroData ? heroData.dataFileCount : 'NA'}
+      {/* {heroData ? heroData.dataFileCount : 'NA'} */}
+      {/* code to Add count to the inactive view  */}
       {' '}
       FILES
     </div>
@@ -158,30 +165,7 @@ const FilesActiveText = ({ classes, heroData }) => {
     </div>
   );
 };
-// const ReportsActiveText = ({ classes, heroData }) => (
-//   <div className={classes.inActiveTextBG}>
-//     <div className={classes.whiteText}>
-//       FILES
-//     </div>
-//      <div className={classes.blueText}>
-//       {heroData ? heroData.numberOfBiomarker : 'NA'}
-//       {' '}
-//       participants with biomarker results
-//     </div>
-//     <div className={classes.blueText}>
-//       {' '}
-//       {heroData ? heroData.numberOfHistologyImages : 'NA'}
-//       {' '}
-//       histology images
-//     </div>
-//      <div className={classes.blueText}>
-//       {' '}
-//       {heroData ? heroData.numberOfRadiologyImages : 'NA'}
-//       {' '}
-//       radiology images
-//     </div>
-//   </div>
-// );
+
 
 const InteractiveHero = ({ classes, heroData }) => {
   const [activeState, setActiveState] = React.useState({
