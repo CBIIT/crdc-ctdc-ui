@@ -24,6 +24,7 @@ import UnderDev from '../../pages/error/Development';
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
 import RAView from '../../pages/about/requestAccess'; 
+import ActivitiesController from '../ActivitiesController'; 
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -33,7 +34,7 @@ const ScrollToTopComponent = () => {
 
 const Layout = ({ classes, isSidebarOpened }) => {
   // Access control imports
-  const { LoginRoute, MixedRoute, PrivateRoute, AdminRoute} = AuthenticationMiddlewareGenerator(AUTH_MIDDLEWARE_CONFIG);
+  const { LoginRoute } = AuthenticationMiddlewareGenerator(AUTH_MIDDLEWARE_CONFIG);
 
   return (
   <>
@@ -49,36 +50,38 @@ const Layout = ({ classes, isSidebarOpened }) => {
         <div
           className={classes.content}
         >
+
           <Route component={ScrollToTopComponent} />
           <Switch>
-            <Route exact path="/" component={Home} />
-            <Route exact path="/home" component={Home} />
-            <Route exact path="/study/:id" component={StudyDetail} />
-            <Route path="/fileCentricCart" component={CartView} />
-            <Route path="/explore" component={DashTemplate} />
-            <Route exact path="/ctdc-data-model" component={UnderDev} />
-            <Route exact path="/data-dictionary" component={UnderDev} />
-            <Route exact path="/data-harmonization" component={About} />
-            <Route exact path="/data-use" component={UnderDev} />
-            <Route exact path="/request-access" component={RAView} />
-            <Route exact path="/crdc"  component={UnderDev} />
-            <Route exact path="/search" component={GlobalSearchController} />
-            <Route path="/search/:id"  component={GlobalSearchController} />
+            <ActivitiesController >
+              <Route exact path="/" component={Home} />
+              <Route exact path="/home" component={Home} />
+              <Route exact path="/study/:id" component={StudyDetail} />
+              <Route path="/fileCentricCart" component={CartView} />
+              <Route path="/explore" component={DashTemplate} />
+              <Route exact path="/ctdc-data-model" component={UnderDev} />
+              <Route exact path="/data-dictionary" component={UnderDev} />
+              <Route exact path="/data-harmonization" component={About} />
+              <Route exact path="/data-use" component={UnderDev} />
+              <Route exact path="/request-access" component={RAView} />
+              <Route exact path="/crdc"  component={UnderDev} />
+              <Route exact path="/search" component={GlobalSearchController} />
+              <Route path="/search/:id"  component={GlobalSearchController} />
 
-            {/* END: Private Routes */}
-            {aboutPageRoutes.map(
-              (aboutPageRoute, index) => (
-                <Route
-                  key={index}
-                  path={aboutPageRoute}
-                  component={About}
-                />
-              ),
-            )}
-            <Route path="/graphql" component={GraphqlClient} />
-            <LoginRoute path="/user/login" component={Login} />
-            <Route component={Error} />
-
+              {/* END: Private Routes */}
+              {aboutPageRoutes.map(
+                (aboutPageRoute, index) => (
+                  <Route
+                    key={index}
+                    path={aboutPageRoute}
+                    component={About}
+                  />
+                ),
+              )}
+              <Route path="/graphql" component={GraphqlClient} />
+              <LoginRoute path="/user/login" component={Login} />
+              <Route component={Error} />
+            </ActivitiesController>
           </Switch>
           <ScrollToTop />
           <Footer />
