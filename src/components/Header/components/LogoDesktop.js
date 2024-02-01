@@ -7,12 +7,12 @@ const LogoArea = styled.div`
     height: 110px;
     img {
       width: fit-content;
-      height: 70px;
-      max-width: 484px;
+      max-width: 600px;
+      height:100px;
     }
 
     .logoContainer {
-      margin-top: 32px;
+      margin-top: 7px;
     }
 
 `;

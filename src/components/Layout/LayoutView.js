@@ -52,8 +52,8 @@ const Layout = ({ classes, isSidebarOpened }) => {
         >
 
           <Route component={ScrollToTopComponent} />
+           <ActivitiesController >
           <Switch>
-            <ActivitiesController >
               <Route exact path="/" component={Home} />
               <Route exact path="/home" component={Home} />
               <Route exact path="/study/:id" component={StudyDetail} />
@@ -81,8 +81,8 @@ const Layout = ({ classes, isSidebarOpened }) => {
               <Route path="/graphql" component={GraphqlClient} />
               <LoginRoute path="/user/login" component={Login} />
               <Route component={Error} />
-            </ActivitiesController>
           </Switch>
+          </ActivitiesController>
           <ScrollToTop />
           <Footer />
         </div>
