@@ -145,7 +145,7 @@ export default (theme) => ({
   headerTitle: {
     margin: 'auto',
     float: 'left',
-    marginLeft: '70px',
+    marginLeft: '95px',
     width: 'calc(100% - 465px)',
   },
   headerMainTitle: {
@@ -240,7 +240,7 @@ export default (theme) => ({
     width: '94px',
     marginTop:'-75px',
     marginLeft: '-68px',
-    position: 'inherit'
+    position: 'absolute',
   },
   detailContainer: {
     margin: 'auto',
@@ -252,7 +252,7 @@ export default (theme) => ({
     color: '#000000',
     size: '12px',
     lineHeight: '23px',
-    maxWidth:'1440px',
+    maxWidth:'1400px',
   },
   headerButtonLink: {
     textDecoration: 'none',
