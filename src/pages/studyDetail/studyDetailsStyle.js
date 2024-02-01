@@ -93,13 +93,15 @@ export default (theme) => ({
     paddingBottm: '17px',
   },
   tabPrimaryColor: {
-    color: '#81a6b9',
-    fontWeight: '700',
+    fontFamily: 'Nunito Sans',
+    color: '#507C91',
+    fontWeight: '600',
   },
   tabHighlightColor: {
-    color: '#0B3556',
-    fontWeight: '700',
-    borderBottom: '5px solid rgb(53, 185, 235)',
+    fontFamily: 'Nunito Sans',
+    color: '#000000',
+    fontWeight: '600',
+    borderBottom: '5px solid #0296C9',
   },
   hrLine: {
     marginTop: '-2px',
@@ -111,7 +113,7 @@ export default (theme) => ({
     fontFamily: 'Raleway, sans-serif',
     paddingLeft: '32px',
     paddingRight: '32px',
-    maxWidth: '1440px',
+    maxWidth: '1400px',
     margin: "0 auto",
   },
   content: {
@@ -139,7 +141,6 @@ export default (theme) => ({
     borderBottom: '#4B619A 12px solid',
     height: '118px',
     margin: 'auto',
-    border: '1px solid black'
   },
   headerTitle: {
     margin: 'auto',
@@ -221,7 +222,7 @@ export default (theme) => ({
   headerButtonLinkText: {
     fontFamily: theme.custom.fontFamilyRaleway,
     fontWeight: 600,
-    color: '#717171',
+    color: '#666666',
     fontSize: '16px',
   },
   headerButtonLinkNumber: {

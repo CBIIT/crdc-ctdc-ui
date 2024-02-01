@@ -15,7 +15,7 @@ export default ({
       },
       '&:first-child': {
         paddingLeft: '0px',
-        marginLeft: '-5px',
+        marginLeft: '-2px'
       },
     },
   };
