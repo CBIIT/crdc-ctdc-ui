@@ -139,20 +139,21 @@ export default (theme) => ({
     borderBottom: '#4B619A 12px solid',
     height: '118px',
     margin: 'auto',
+    border: '1px solid black'
   },
   headerTitle: {
     margin: 'auto',
     float: 'left',
-    marginLeft: '100px',
+    marginLeft: '70px',
     width: 'calc(100% - 465px)',
   },
   headerMainTitle: {
-    fontFamily: theme.custom.fontFamilyInter,
-    fontWeight: 400,
-    fontSize: '24px',
+    fontFamily: 'Inter',
+    fontWeight: 600,
+    fontSize: '26px',
     color: '#274FA6',
     paddingLeft: '3px',
-    lineHeight: '31.47px',
+    lineHeight: '31px',
     letterSpacing: '-2%',
   },
   headerMainSubTitle: {
@@ -160,14 +161,13 @@ export default (theme) => ({
     paddingLeft: '8px',
   },
   headerSubTitleCate: {
-    fontFamily: theme.custom.fontFamilyInter,
-    fontWeight: '400',
-    fontSize: '16px',
+    fontFamily: 'Inter',
+    fontWeight: 500,
+    fontSize: '18px',
     color: '#274FA6',
     paddingLeft: '3px',
     paddingRight: '200px',
     lineHeight: '21.78px',
-    letterSpacing: '-2%',
     marginTop: '4px',
   },
   lowLetterSpace: {
@@ -237,8 +237,8 @@ export default (theme) => ({
   logo: {
     float: 'left',
     width: '94px',
-    marginTop:'-87px',
-    marginLeft: '-73px',
+    marginTop:'-75px',
+    marginLeft: '-68px',
     position: 'inherit'
   },
   detailContainer: {
