@@ -13,6 +13,7 @@ import {
   valueConfiguration,
   timePointArgumentConfiguration,
   argumentConfiguration,
+  seriesSetting,
 } from '../../../bento/studyDetailData';
 import TabPanel from '../../../components/Tab/TabPanel';
 // import { navigatedToDashboard } from '../../../utils/utils';
@@ -71,6 +72,8 @@ const BiospecimenProfile = ({ classes, d }) => {
         tooltipContent={tooltipContent}
         argument={item.label === 'TIMEPOINT' ? timePointArgumentConfiguration : argumentConfiguration}
         value={valueConfiguration}
+        seriesSetting={seriesSetting}
+        size= {{ maxHeight: 300, maxWidth: 300, }}
       />
     </TabPanel>
   );

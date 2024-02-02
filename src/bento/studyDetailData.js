@@ -49,6 +49,7 @@ export const biospecimenProfile = {
 
 export const palette = ['#2A4B83', '#9F2A23', '#A8C4DF', '#CC703E', '#DFC798', '#C2C1C0', '#517D98', '#0B3556', '#1D79A8', '#FF7F15', '#39C0F0', '#8E9CEF', '#4BC41E' ];
 
+/* * Xaxis config value */
 export const argumentConfiguration = {
   field: 'group',
   visible: false,
@@ -57,7 +58,9 @@ export const argumentConfiguration = {
   title: {
     text: 'Biospecimen Type',
     size: 13,
-    color: '#444444'
+    color: '#444444',
+    weight: 500,
+    family: 'Inter',
   },
   label: {
     size: 20,
@@ -66,6 +69,7 @@ export const argumentConfiguration = {
   },
 };
 
+/* * Xaxis config value */
 export const timePointArgumentConfiguration = {
   ...argumentConfiguration,
   title: {
@@ -74,6 +78,7 @@ export const timePointArgumentConfiguration = {
   }
 };
 
+/* * Yaxis config value */
 export const valueConfiguration = {
   field: 'count',
   size: 12,
@@ -82,17 +87,25 @@ export const valueConfiguration = {
     text: 'Biospecimen Count',
     size: 13,
     color: '#444444',
-    fontFamily: 'Inter'
+    weight: 500,
+    family: 'Inter',
   },
   chartGrid: {
-    visible: true,
+    visible: false,
   },
   label: {
     size: 12,
     position: 'outside',
   },
+  tick: {
+    visible: true,
+  },
 };
 
+/** common series setting */
+export const seriesSetting = {
+  maxBarWidth: 16,
+};
 
 // --------------- GraphQL query configuration --------------
 export const GET_STUDY_DETAIL_DATA_QUERY = gql`
