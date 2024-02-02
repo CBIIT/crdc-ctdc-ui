@@ -33,17 +33,15 @@ const ParticipantsInActiveText = ({ classes, heroData }) => (
 
 const ParticipantsActiveText = ({ classes, heroData }) => (
   <div className={classes.activeTextBG}>
-    <div>
+    <div className={classes.whiteText}>
+      PARTICIPANTS
+    </div>
+    <div className={classes.blueText}>
+      {' '}
       {heroData ? heroData.numberOfParticipants : 'NA'}
       {' '}
       PARTICIPANTS
     </div>
-    {/* <div className={classes.blueText}>
-      {' '}
-      {heroData ? heroData.numberOfParticipants : 'NA'}
-      {' '}
-      PARTICIPANTS
-    </div> */}
   </div>
 );
 
@@ -64,15 +62,15 @@ const DiagnosesActiveText = ({ classes, heroData }) => {
   return (
     <div className={classes.inActiveTextBG}>
       <div className={classes.whiteText}>
-      {heroData ? heroData.numberOfDiagnoses : 'NA'}
-      {' '}
+        {heroData ? heroData.numberOfDiagnoses : 'NA'}
+        {' '}
         DIAGNOSES
       </div>
-      {diagnosisData[0] ? (
+      {diagnosisData[5] ? (
       <div className={classes.blueText}>
-        {diagnosisData[0].subjects}
+        {diagnosisData[5].subjects}
         {' '}
-        {diagnosisData[0].group}
+        {diagnosisData[5].group}
       </div>):""
       }
       
@@ -99,24 +97,24 @@ const DiagnosesActiveText = ({ classes, heroData }) => {
 const TherapiesInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
-
       {/* {heroData ? heroData.numberOfTargeted : 'NA'} */}
       {/* code to Add count to the inactive view  */}
       {' '}
-      TARGETED THERAPIES
-
+      THERAPIES
     </div>
   </div>
 );
 
 const TherapiesActiveText = ({ classes, heroData }) => (
   <div className={classes.activeTextBG}>
-    <div>
-    {heroData ? heroData.numberOfTargeted : 'NA'}
-    {' '}
-    TARGETED THERAPIES
+    <div className={classes.whiteText}>
+    THERAPIES
     </div>
     <div className={classes.blueText}>
+      {' '}
+      {heroData ? heroData.numberOfTargeted : 'NA'}
+      {' '}
+      THERAPIES
     </div>
   </div>
 );
@@ -138,7 +136,7 @@ const FilesActiveText = ({ classes, heroData }) => {
   return (
     <div className={classes.inActiveTextBG}>
       <div className={classes.whiteText}>
-        {/* {heroData ? heroData.dataFileCount : 'NA'} */}
+        {heroData ? heroData.dataFileCount : 'NA'}
         {' '}
         FILES
       </div>
@@ -266,8 +264,8 @@ const styles = () => ({
   participantsActiveText: {
     position: 'absolute',
     float: 'left',
-    marginTop: '80px',
-    left: '180px',
+    marginTop: '68px',
+    left: '162px',
     width: '150px',
     color: '#FEFFFF',
     fontFamily: 'Oswald',
@@ -324,12 +322,12 @@ const styles = () => ({
   therapiesActiveText :{
     position: 'absolute',
     float: 'left',
-    marginTop: '373px',
-    left: '385px',
+    marginTop: '349px',
+    left: '345px',
     width: '150px',
     color: '#FFFFFF',
     fontFamily: 'Oswald',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 500,
   },
   reportsIcon: {
@@ -366,7 +364,7 @@ const styles = () => ({
   whiteText: {
     color: '#FEFFFF',
     fontFamily: 'Oswald',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 600,
     letterSpacing: 0,
     textAlign: 'left',
