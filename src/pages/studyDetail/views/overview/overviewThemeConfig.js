@@ -9,19 +9,13 @@ export default ({
   const themesLight = _.cloneDeep(themes.light);
   themesLight.overrides.MuiTab = {
     root: {
-      minWidth: '130px',
-      '@media (min-width: 600px)': {
-        minWidth: '110px',
-      },
-      '&:nth-child(-n+2)': {
-        paddingLeft: '0px',
-        marginLeft: '0px',
-        '& span:first-child': {
-          flexDirection: 'row',
-          justifyContent: 'center',
-        },
-      },
+      maxHeight: '45px',
+      paddingTop: '0px',
+      '& .last-child': {
+        border: '1px solid black'
+      }
     },
+    
   };
 
   themesLight.overrides.MuiGrid = {

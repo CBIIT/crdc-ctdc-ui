@@ -19,7 +19,7 @@ import TabPanel from '../../../components/Tab/TabPanel';
 
 const tooltipContent = ({ argument, originalValue }) => (
   <div>
-    <span style={{ fontWeight: 600, color: '#B1B1B1' }}>{argument}, </span>
+    <span style={{ fontWeight: 600, color: '#444444' }}>{argument}, </span>
     <span style={{ color: '#444444', fontWeight: 900 }}>{originalValue}</span>
   </div>
 );
@@ -47,7 +47,8 @@ const BiospecimenProfile = ({ classes, d }) => {
       textColor="primary"
       TabIndicatorProps={{
         style: {
-          backgroundColor: '#ffffff',
+          backgroundColor: '#0296C9',
+          height: '5px',
         },
       }}
     >
@@ -154,7 +155,7 @@ const styles = (theme) => ({
     outline: 'none !important',
   },
   tabContainer: {
-    width: '320px',
+    // width: '320px',
     marginTop: '10px',
     padding: '0px 23px',
     marginBottom: '30px',
@@ -162,21 +163,15 @@ const styles = (theme) => ({
   },
   tab: {
     fontSize: '14px',
-    fontWeight: '600',
-    fontFamily: theme.custom.fontFamilyNunitoSans,
+    fontWeight: 600,
+    lineHeight: '19px',
+    fontFamily: 'Nunito Sans',
     minWidth: '120px',
     paddingLeft: '2px',
     padding: '0px !important',
     marginRight: '10px',
     textAlign: 'center',
-    color: '#A7C1CE',
-  },
-  tab2: {
-    minWidth: '90px',
-    width: '90px',
-    fontSize: '11px',
-    fontWeight: '700',
-    paddingLeft: '5px',
+    color: '#507C91',
   },
   headerButton: {
     fontFamily: theme.custom.fontFamilySans,
@@ -218,7 +213,6 @@ const styles = (theme) => ({
     '& .Mui-selected': {
       color: '#000000',
       fontWeight: '600',
-      borderBottom: '6px solid #0296C9'
     },
     fontFamily: theme.custom.fontFamilyNunitoSansRegular,
   },
