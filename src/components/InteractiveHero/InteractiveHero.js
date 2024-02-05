@@ -50,8 +50,7 @@ const ParticipantsActiveText = ({ classes, heroData }) => (
 const DiagnosesInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
-      {/* {heroData ? heroData.numberOfDiagnoses : 'NA'}
-      {' '} */}
+      
       {/* code to Add count to the inactive view  */}
       DIAGNOSES
     </div>
@@ -64,7 +63,8 @@ const DiagnosesActiveText = ({ classes, heroData }) => {
   return (
     <div className={classes.inActiveTextBG}>
       <div className={classes.whiteText}>
-
+      {heroData ? heroData.numberOfDiagnoses : 'NA'}
+      {' '}
         DIAGNOSES
       </div>
       {diagnosisData[5] ? (
@@ -132,7 +132,7 @@ const FilesActiveText = ({ classes, heroData }) => {
   return (
     <div className={classes.inActiveTextBG}>
       <div className={classes.whiteText}>
-        {/* {heroData ? heroData.dataFileCount : 'NA'} */}
+        {heroData ? heroData.dataFileCount : 'NA'}
         {' '}
         FILES
       </div>
