@@ -98,7 +98,7 @@ const DiagnosesActiveText = ({ classes, heroData }) => {
 const TherapiesInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
-      THERAPIES
+      TARGETED THERAPIES
     </div>
   </div>
 );
@@ -108,7 +108,7 @@ const TherapiesActiveText = ({ classes, heroData }) => (
     <div>
     {heroData ? heroData.numberOfTargeted : 'NA'}
     {' '}
-    THERAPIES
+    TARGETED THERAPIES
     </div>
     <div className={classes.blueText}>
     </div>
