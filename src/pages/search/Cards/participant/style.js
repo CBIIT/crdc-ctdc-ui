@@ -82,6 +82,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',
     margin: '0px',
     padding: '0px',
+    marginTop: '-2px',
   },
   hrContainer: {
     paddingTop: '10px',

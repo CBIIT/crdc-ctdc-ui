@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: '115px',
     margin: '0px 0px 0px 3px',
     padding: '0px',
-    textTransform: 'uppercase'
+    textTransform: 'uppercase',
   },
   value: {
     fontFamily: 'Roboto',
@@ -82,6 +82,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'left',
     margin: '0px',
     padding: '0px',
+    marginTop: '-2px',
   },
   hrContainer: {
     paddingTop: '10px',
