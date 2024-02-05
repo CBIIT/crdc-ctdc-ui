@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Typography, withStyles } from '@material-ui/core';
 import Anchor from '../../../utils/Anchor';
-import LineBreaksRenderer from '../LineBreaksRenderer';
+import LineBreaksRenderer from '../../../utils/LineBreaksRenderer';
 
 /**
  * Property Item component generates the result card key:value element
