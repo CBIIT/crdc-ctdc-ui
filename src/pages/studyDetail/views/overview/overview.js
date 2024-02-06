@@ -15,11 +15,6 @@ const Overview = ({
   classes,
   data,
 }) => {
-  // eslint-disable-next-line no-unused-vars
-  const getImageTypes = (typeString) => {
-    const types = JSON.parse(typeString);
-    return types.join(', ');
-  };
 
   const getAccessTypeString = (accessType) => {
     switch (accessType) {
@@ -139,7 +134,7 @@ const Overview = ({
                       ))}
                     </Grid>
                   </Grid>
-                  
+              
                 </Grid>
               </Grid>
             </Grid>
@@ -182,12 +177,12 @@ const Overview = ({
                   xs={12}
                   className={classes.detailContainerRightTop}
                 >
-                  <Grid container className={classes.participantFile}>
+                  <Grid container className={classes.participantFileH}>
                     <Grid item xs={12} className={classes.containerHeader}>
                       <span className={classes.detailContainerHeaderText}>PARTICIPANT FILE TYPES</span>
                     </Grid>
                   </Grid>
-                  <Grid container className={classes.participantFile}>
+                  <Grid container className={classes.participantFileC}>
                     {(participantFileTypes.length > 0) ? participantFileTypes.sort((a, b) => customSorting(a, b)).map((fileType, index) => (
                       <Grid item xs={12} key={index}>
                         <span className={classes.content}>{fileType}</span>
@@ -284,7 +279,7 @@ const styles = (theme) => ({
     marginBottom: '16px'
   },
   imageKey: {
-    color: '#0296C9',
+    color: '#067CA7',
     paddingRight: '15px'
     // fontFamily: theme.
   },
@@ -295,7 +290,7 @@ const styles = (theme) => ({
     fontFamily: 'Raleway, sans-serif',
     padding: '0px 32px 40px 32px',
     margin: '0 auto',
-    maxWidth:'1440px',
+    maxWidth: '1400px',
   },
   additionalDataLink: {
     color: '#DC762F',
@@ -347,8 +342,8 @@ const styles = (theme) => ({
   detailContainerLeft: {
     display: 'block',
     padding: '0px 61px 5px 8px',
-    minHeight: '500px',
-    maxHeight: '500px',
+    minHeight: '810px',
+    maxHeight: '810px',
     overflowY: 'auto',
     overflowX: 'hidden',
     width: 'calc(100% + 8px) !important',
@@ -364,23 +359,25 @@ const styles = (theme) => ({
     fontSize: '18px',
     fontWeight: 400,
     letterSpacing: '0.017em',
-    color: '#0296C9',
+    color: '#067CA7',
     textTransform: 'uppercase',
   },
   content: {
     fontSize: '16px',
     fontFamily: theme.custom.fontFamilyNunito,
-
+    marginTop: '10px',
     fontWeight: 400,
     color: '#000'
   },
   scrollDownText: {
-    color: '#838383',
-    fontSize: '12px',
+    fontFamily: 'Roboto',
+    fontWeight: 400,
+    color: '#757575',
+    fontSize: '13px',
     fontStyle: 'italic',
   },
   title: {
-    color: '#0696C9',
+    color: '#067CA7',
     fontFamily: theme.custom.fontFamilyInter,
     fontSize: '16px',
     letterSpacing: '0.017em',
@@ -388,7 +385,7 @@ const styles = (theme) => ({
     textTransform: 'uppercase',
   },
   titleCD: {
-    color: '#0296c9',
+    color: '#067CA7',
     fontFamily: theme.custom.fontFamilySans,
     fontSize: '12px',
     letterSpacing: '0.017em',
@@ -397,7 +394,7 @@ const styles = (theme) => ({
     marginRight: '4px',
   },
   detailContainerItem: {
-    paddingTop: '16px !important',
+    paddingTop: '30px !important',
   },
   detailContainerRight: {
     margin: '30px 0px 0px 0px',
@@ -408,19 +405,25 @@ const styles = (theme) => ({
     overflowX: 'hidden',
     width: 'calc(100% + 8px)',
   },
-  detailContainerRightTop: {
+  participantFileH: {
+    paddingLeft: '30px'
+  },
+  participantFileC: {
+    paddingLeft: '30px',
+    marginTop: '10px',
     maxHeight: '250px',
     overflow: 'auto',
   },
-  participantFile: {
-    paddingLeft: '30px'
-  },
+  
   detailContainerHL: {
     paddingRight: '30px',
   },
   detailContainerCL: {
-    paddingTop: '2px',
+    marginTop: '10px',
     paddingRight: '30px',
+
+    maxHeight: '250px',
+    overflow: 'auto',
   },
   paddingTop2: {
     paddingTop: '2px',
