@@ -16,6 +16,7 @@ const CARD_PROPERTIES = [
   {
     label: 'Property Description',
     dataField: 'property_description',
+    hasBreakLine: true,
   },
   // {
   //   label: 'Property Required',
@@ -54,9 +55,8 @@ const ValueCard = ({ data, classes, index }) => {
         {propertiesWithLinks.map((prop, idx) => (
           <PropertyItem
             index={idx}
-            label={prop.label}
             value={data[prop.dataField]}
-            link={prop.link}
+            {...prop}
           />
         ))}
       </Grid>
