@@ -11,13 +11,16 @@ export const CustomCellView = (props) => {
   if (downloadDocument) {
     return (
       <DocumentDownloadView
-        fileSize={props.file_size}
+        // fileSize={props.file_size}
+        fileSize={props[documentDownloadProps.fileSizeColumn]}
+
         caseId={props[documentDownloadProps.caseIdColumn]}
         fileFormat={props[documentDownloadProps.fileFormatColumn]}
         fileLocation={props[documentDownloadProps.fileLocationColumn]}
         {...documentDownloadProps}
         {...props}
         requiredACLs={props[dataField]}
+        fileName={props[documentDownloadProps.fileName]}
       />
     );
   } else if (typeof displayEmpty === "boolean") {

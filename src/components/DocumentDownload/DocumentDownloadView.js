@@ -8,13 +8,14 @@ import { Link, useHistory } from 'react-router-dom';
 import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
 import { jBrowseOptions } from '../../bento/jbrowseDetailData';
-import { useAuth } from '@bento-core/authentication';
+
 import { enableAuthentication } from '../../bento/siteWideConfig';
 import SessionTimeOutModal from '../sessionTimeOutModal';
+import { useAuth } from '../Authentication';
 
 const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
 
-const fetchFileToDownload = (fileURL = '', signOut, setShowModal) => {
+const fetchFileToDownload = (fileURL = '', signOut, setShowModal, fileName) => {
   fetch(`${FILE_SERVICE_API}${fileURL}`, {
     method: 'GET',
     headers: {
@@ -38,7 +39,7 @@ const fetchFileToDownload = (fileURL = '', signOut, setShowModal) => {
       link.href = filePath;
       link.setAttribute(
         'download',
-        'fileURL',
+        fileName,
       );
 
       // Append to html link element page
@@ -65,6 +66,7 @@ const DocumentDownload = ({
   fileLocation = '',
   caseId = '',
   requiredACLs = [],
+  fileName,
 }) => {
   const {
     signInWithGoogle,
@@ -88,11 +90,14 @@ const DocumentDownload = ({
   };
 
   const hasAccess = () => {
+    /*
     if (role === 'admin') return true;
 
     return requiredACLs.reduce(
       (status, rACL) => approvedACLs.includes(rACL) || status, false,
     );
+    */
+    return isSignedIn;
   };
 
   return (
@@ -128,7 +133,7 @@ const DocumentDownload = ({
           <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} arrow placement="bottom">
             <div
               style={{ textAlign: 'center' }}
-              onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal)}
+              onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName)}
             >
               <CustomIcon imgSrc={iconFileDownload} />
             </div>

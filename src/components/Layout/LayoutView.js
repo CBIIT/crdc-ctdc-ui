@@ -79,7 +79,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
                 ),
               )}
               <Route path="/graphql" component={GraphqlClient} />
-              <LoginRoute path="/user/login" component={Login} />
+              <LoginRoute path="/login" component={Login} />
               <Route component={Error} />
           </Switch>
           </ActivitiesController>

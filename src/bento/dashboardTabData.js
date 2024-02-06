@@ -1982,6 +1982,42 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
+        dataField: 'data_file_uuid', // This need to left empty if no data need to be displayed before file download icon
+        header: 'Access',
+        display: true,
+        cellType: cellTypes.CUSTOM_ELEM,
+        downloadDocument: true, // To indicate that column is document donwload
+        documentDownloadProps: {
+          // Max file size needs to bin Bytes to seperate two support file preview and download
+          maxFileSize: 315,
+          // Tool top text for Unauthenticated users
+          toolTipTextUnauthenticated: 'Log in to download a copy of this file',
+          // Tool top text for file download
+          toolTipTextFileDownload: 'Download a copy of this file',
+          // Tool top text for file preview
+          toolTipTextFilePreview: 'Because of its size and/or format, this file must be accessed via the My Files workflow',
+          // datafield where file file column exists in the table
+          fileSizeColumn: 'data_file_size',
+          // datafield where file file id exists in the table which is used to get file location
+          fileLocationColumn: 'data_file_uuid',
+          // datafield where file format exists in the table
+          fileFormatColumn: 'file_format',
+          // datafield where file case id exists in the table which is used to get file information
+          caseIdColumn: 'subject_id',
+          fileName: 'data_file_name',
+          // Unauthenticated lock icon
+          iconUnauthenticated: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Access_Lock.svg',
+          // file download icon
+          iconFileDownload: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadPDF.svg',
+          // file preview icon
+          iconFilePreview: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadCloud.svg',
+          // file viewer icon JBrowse
+          iconFileViewer: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadBAM.svg',
+        },
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
         dataField: 'association',
         header: 'Association',
         display: true,
