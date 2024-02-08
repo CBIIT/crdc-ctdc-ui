@@ -3,6 +3,9 @@ import gql from 'graphql-tag';
 import { cellTypes } from '@bento-core/table';
 // import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
 // import { dataFormatTypes } from '@bento-core/table';
+import downloadSuccess from '../assets/dash/downloadSuccess.svg'
+import downloadLock from '../assets/dash/downloadLock.svg'
+import previewLarge from '../assets/dash/previewLarge.svg'
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
@@ -1990,29 +1993,28 @@ export const tabContainers = [
         documentDownloadProps: {
           // Max file size needs to bin Bytes to seperate two support file preview and download
           maxFileSize: 315,
-          // Tool top text for Unauthenticated users
-          toolTipTextUnauthenticated: 'Log in to download a copy of this file',
-          // Tool top text for file download
-          toolTipTextFileDownload: 'Download a copy of this file',
-          // Tool top text for file preview
-          toolTipTextFilePreview: 'Because of its size and/or format, this file must be accessed via the My Files workflow',
           // datafield where file file column exists in the table
           fileSizeColumn: 'data_file_size',
           // datafield where file file id exists in the table which is used to get file location
           fileLocationColumn: 'data_file_uuid',
           // datafield where file format exists in the table
-          fileFormatColumn: 'file_format',
+          fileFormatColumn: 'data_file_format',
           // datafield where file case id exists in the table which is used to get file information
           caseIdColumn: 'subject_id',
+          // datafield where file name exists
           fileName: 'data_file_name',
-          // Unauthenticated lock icon
-          iconUnauthenticated: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Access_Lock.svg',
-          // file download icon
-          iconFileDownload: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadPDF.svg',
-          // file preview icon
-          iconFilePreview: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadCloud.svg',
-          // file viewer icon JBrowse
-          iconFileViewer: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/DocumentDownloadBAM.svg',
+
+          // Case 1: Logged in and granted access, file size below {maxFileSize}
+          toolTipTextFileDownload: 'Download a copy of this file',
+          iconFileDownload: downloadSuccess,
+          
+          // Case 2: Not logged in or access not granted, file size below {maxFileSize}
+          iconUnauthenticated: downloadLock,
+          toolTipTextUnauthenticated: 'You must be logged in and already have been granted access to download a copy of this file',
+
+          // Case 3: Regardless of login status, file size larger than {maxFileSize}
+          iconFilePreview: previewLarge,
+          toolTipTextFilePreview: 'Because of its size and/or format, this file must be accessed via the My Files workflow',
         },
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
