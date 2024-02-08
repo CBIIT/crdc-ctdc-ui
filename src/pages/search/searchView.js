@@ -278,7 +278,7 @@ function searchView(props) {
         value: `${!authCheck() ? 'inactive-' : ''}3`,
       },
       {
-        name: 'About',
+        name: 'General',
         field: 'about_page',
         classes: {
           root: classes.aboutButton,

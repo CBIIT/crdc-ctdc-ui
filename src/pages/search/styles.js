@@ -46,8 +46,8 @@ const styles = () => ({
   },
   aboutButton: {
     ...buttonRoot,
-    width: '70px',
-    minWidth: '70px',
+    width: '95px',
+    minWidth: '95px',
   },
   modelButton: {
     ...buttonRoot,
