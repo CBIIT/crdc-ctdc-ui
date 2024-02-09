@@ -1,9 +1,15 @@
 const buttonRoot = {
   height: '56px',
   fontSize: '16px',
-  marginRight: '63px',
+  marginRight: '20px',
   padding: '0px, 10px',
   textTransform: 'none',
+  '@media (min-width: 800px)': {
+    marginRight: '33px',
+  },
+  '@media (min-width: 1000px)': {
+    marginRight: '63px',
+  }
 };
 
 const styles = () => ({
@@ -72,16 +78,21 @@ const styles = () => ({
     fontWeight: '400',
     fontSize: '24px',
     lineHeight: '31.47px',
-    margin: '0px 0px 15px 0px'
+    margin: '0px 0px 15px 0px',
+    textAlign: 'center',
   },
   autocomplete: {
     margin: '0 auto',
+    width: '700px',
     '& .MuiAutocomplete-inputRoot[class*="Mui-focused"]': {
       outline: '4px solid #3395CA',
     },
     '&:hover .MuiAutocomplete-inputRoot': {
       outline: '4px solid #3395CA',
     },
+    '@media (max-width: 750px)': {
+      width: '400px',
+    }
   },
   chipSection: {
     display: 'flex',
@@ -209,6 +220,9 @@ const styles = () => ({
     fontSize: '16px',
     lineHeight: '16px',
     color: '#142D64',
+    '@media (max-width: 1000px)': {
+      marginRight: '30px',
+    }
   },
   totalResults: {
     color: '#225987',
@@ -218,8 +232,8 @@ const styles = () => ({
     lineHeight: '31px',
     letterSpacing: '0.02em',
     textAlign: 'left',
-    paddingLeft: '0px',
-    maxWidth: '940px',
+    paddingLeft: '16px',
+    maxWidth: '959px',
     margin: '11px auto 24px auto'
   },
   totalCount: {
@@ -230,9 +244,9 @@ const styles = () => ({
     paddingBottom: '22px',
   },
   subsectionBody: {
-    padding: '0px 2px',
-    width: '880px',
-    maxWidth: '973px',
+    padding: '0px 16px',
+    maxWidth: '959px',
+    minWidth: '500px',
   },
   paginationContainer: {
     paddingBottom: '0px',
