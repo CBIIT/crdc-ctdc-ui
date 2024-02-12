@@ -278,7 +278,7 @@ function searchView(props) {
         value: `${!authCheck() ? 'inactive-' : ''}3`,
       },
       {
-        name: 'About',
+        name: 'General',
         field: 'about_page',
         classes: {
           root: classes.aboutButton,
@@ -327,18 +327,9 @@ function searchView(props) {
           <h2 className={classes.searchTitle}>Search Clinical and Translational Data Commons</h2>
         </Grid>
         <Grid item>
-          <SearchBar value={searchText} clearable={!false} style={{ width: 700 }} />
+          <SearchBar value={searchText} clearable={!false}/>
         </Grid>
       </Grid>
-    {/* 
-      <div className={classes.heroArea}>
-        <div className={classes.searchTitle}>
-          <h2>Search Clinical and Translational Data Commons</h2>
-        </div>
-        <div>
-          <SearchBar value={searchText} clearable={!false} style={{ width: 700 }} />
-        </div>
-      </div>*/}
 
       <div className={classes.bodyContainer}>
         <Box sx={{ width: '100%', typography: 'body1' }}>
