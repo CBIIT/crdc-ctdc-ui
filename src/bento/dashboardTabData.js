@@ -2010,7 +2010,7 @@ export const tabContainers = [
           
           // Case 2: Not logged in or access not granted, file size below {maxFileSize}
           iconUnauthenticated: downloadLock,
-          toolTipTextUnauthenticated: 'You must be logged in and already have been granted access to download a copy of this file',
+          toolTipTextUnauthenticated: 'You must be logged in and must already have been granted access to download a copy of this file',
 
           // Case 3: Regardless of login status, file size larger than {maxFileSize}
           iconFilePreview: previewLarge,
