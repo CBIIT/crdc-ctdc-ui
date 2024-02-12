@@ -14,7 +14,7 @@ const CartContainer = styled.div`
     padding-top: 45px;
     display: flex;
     vertical-align: middle;
-     padding-right: 20px;
+    padding-right: 22px;
   },
   .cartLink{
     text-decoration: none;
