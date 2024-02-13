@@ -52,16 +52,20 @@ export default {
       title: 'Policies',
       items: [
         {
-          text: 'Disclaimer',
-          link: 'https://www.cancer.gov/policies/disclaimer',
-        },
-        {
           text: 'Accessibility',
           link: 'https://www.cancer.gov/policies/accessibility',
         },
         {
           text: 'FOIA',
           link: 'https://www.cancer.gov/policies/foia',
+        },
+         {
+          text: 'Privacy & Security',
+          link: 'https://www.cancer.gov/policies/privacy-security',
+        },
+         {
+          text: 'Disclaimers',
+          link: 'https://www.cancer.gov/policies/disclaimer',
         },
         {
           text: 'Vulnerability Disclosure',
