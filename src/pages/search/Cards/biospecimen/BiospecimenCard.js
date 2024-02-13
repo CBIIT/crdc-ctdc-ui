@@ -10,6 +10,7 @@ const BiospecimenCard = ({ data = {}, index }) => {
     specimen_id: specimenId,
     subject_id: subjectId,
     ctep_disease_term: ctepDiseaseTerm,
+    specimen_type: biospecimenType,
     parent_specimen_type: parentSpecimenType,
     tissue_category: tissueCategory,
     anatomical_collection_site: anatomicalCollectionSite,
@@ -46,6 +47,7 @@ const BiospecimenCard = ({ data = {}, index }) => {
           <div className={classes.column}>
             {renderInfo('Participant:', subjectId)}
             {renderInfo('Diagnosis:', ctepDiseaseTerm)}
+            {renderInfo('Biospecimen type:', biospecimenType)}
             {renderInfo('Parent biospecimen:', parentSpecimenType)}
           </div>
 
