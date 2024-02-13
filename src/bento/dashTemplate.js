@@ -167,8 +167,8 @@ export const facetsConfig = [
   {
     section: SAMPLES,
     label: 'Collection Timepoint',
-    apiPath: 'participantCountByAssessmentTimepoint',
-    apiForFiltering: 'filterParticipantCountByAssessmentTimepoint',
+    apiPath: 'biospecimenCountByAssessmentTimepoint',
+    apiForFiltering: 'filterBiospecimenCountByAssessmentTimepoint',
     datafield: 'assessment_timepoint',
     field: GROUP,
     type: InputTypes.CHECKBOX,
@@ -271,14 +271,10 @@ export const widgetConfig = [
     dataName: 'participantCountByTargetedTherapy',
   },
   {
-    type: 'sunburst',
-    title: 'Biospecimens & Timepoints',
+    type: 'donut',
+    title: 'Timepoints',
     sliceTitle: "Biospecimens",
-    dataName: 'timepointsAndBiospecimensTypes',
-    datatable_level1_field: 'program',
-    datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'arm',
-    datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+    dataName: 'biospecimenCountByAssessmentTimepoint',
   },
   {
     type: 'donut',

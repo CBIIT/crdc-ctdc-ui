@@ -308,12 +308,12 @@ query search(
       subjects
       __typename
     }
-    participantCountByAssessmentTimepoint {
+    biospecimenCountByAssessmentTimepoint {
       group
       subjects
       __typename
     }
-    filterParticipantCountByAssessmentTimepoint {
+    filterBiospecimenCountByAssessmentTimepoint {
       group
       subjects
       __typename
