@@ -35,11 +35,6 @@ export const tab = {
 export const biospecimenProfile = {
   tabs: [
     {
-      index: 0,
-      label: 'TYPE',
-      value: 'specimen_types',
-    },
-    {
       index: 1,
       label: 'TIMEPOINT',
       value: 'specimen_timepoints',
