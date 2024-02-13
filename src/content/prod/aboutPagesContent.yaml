@@ -55,4 +55,9 @@
   content:
     - paragraph: "For more information about the CTDC Data Model, you can visit our data model repo $$[https://github.com/CBIIT/ctdc-model](https://github.com/CBIIT/ctdc-model/tree/master/model-desc)$$"
   secondaryZoomImageTitle: "The CTDC Data Model"
-  secondaryZoomImage: 'https://cbiit.github.io/bento-model/model-desc/bento-model.svg'
+  secondaryZoomImage: 'https://github.com/CBIIT/ctdc-model/blob/ctdc-model/model-desc/ctdc-model.svg'
+
+
+
+
+  
