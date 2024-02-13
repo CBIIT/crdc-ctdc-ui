@@ -3,5 +3,6 @@ export default [
   '/purpose',
   '/support',
   '/submit',
-  '/cloud-computing'
+  '/cloud-computing',
+  '/ctdc-data-model'
 ];
