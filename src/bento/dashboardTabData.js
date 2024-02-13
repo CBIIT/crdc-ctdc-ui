@@ -1871,6 +1871,13 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
+        dataField: 'specimen_type',
+        header: 'Biospecimen Type',
+        display: false,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
         dataField: 'tissue_category',
         header: 'Tissue Category',
         display: true,
