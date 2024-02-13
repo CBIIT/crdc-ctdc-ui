@@ -180,6 +180,7 @@ export const SEARCH_PAGE_RESULT_BIOSPECIMENS = gql`
         specimen_id
         subject_id
         ctep_disease_term
+        parent_specimen_type
         tissue_category
         anatomical_collection_site
         assessment_timepoint
