@@ -18,12 +18,6 @@ export const headerData = {
 
 export const navMobileList = [
   {
-    name: 'Home',
-    link: '/home',
-    id: 'navbar-link-home',
-    className: 'navMobileItem',
-  },
-  {
     name: 'Explore',
     link: '/explore',
     id: 'navbar-link-explore',
