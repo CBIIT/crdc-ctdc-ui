@@ -38,11 +38,6 @@ query search {
     numberOfParticipants
     numberOfDiagnoses
     numberOfTherapies
-    numberOfTargeted
-    numberOfNonTargeted
-    numberOfBiomarker
-    numberOfHistologyImages
-    numberOfRadiologyImages
     specimenCountbyStageOfDisease {
       group
       subjects
