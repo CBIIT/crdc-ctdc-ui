@@ -36,9 +36,11 @@ const BiospecimenProfile = ({ classes, d }) => {
   const tabCount = biospecimenProfile.tabs.filter((tab) => (data[tab.value]
     && data[tab.value].length > 0));
 
-  // const linkToDashboard = () => {
-  //   navigatedToDashboard(studyCode, 'Samples');
-  // };
+  const biospecimenTabPathName = "/explore?selectedTab=biospecimens"
+
+  const linkToDashboard = () => {
+    // ToDo: Reset ActiveFilter to be empty
+  };
 
   const tabItem = (items) => (
     <Tabs
@@ -92,7 +94,7 @@ const BiospecimenProfile = ({ classes, d }) => {
               <span className={classes.headerButtonLinkSpan}>
                 <Link
                   className={classes.headerButtonLink}
-                  to={(location) => ({ ...location, pathname: '/explore' })}
+                  to={biospecimenTabPathName}
                   // onClick={() => linkToDashboard()}
                 >
                   <span className={classes.headerButtonLinkNumber}>
