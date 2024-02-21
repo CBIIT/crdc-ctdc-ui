@@ -1985,6 +1985,20 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
+        dataField: 'association',
+        header: 'Association',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'data_file_description',
+        header: 'Description',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
         dataField: 'data_file_uuid', // This need to left empty if no data need to be displayed before file download icon
         header: 'Access',
         display: true,
@@ -2016,20 +2030,6 @@ export const tabContainers = [
           iconFilePreview: previewLarge,
           toolTipTextFilePreview: 'Because of its size and/or format, this file must be accessed via the My Files workflow',
         },
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'association',
-        header: 'Association',
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'data_file_description',
-        header: 'Description',
-        display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
