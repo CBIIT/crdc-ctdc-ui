@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { BarChart } from 'bento-components';
+import { clearAllFilters } from '@bento-core/facet-filter';
 import {
   biospecimenProfile,
   palette,
@@ -17,6 +18,7 @@ import {
 } from '../../../bento/studyDetailData';
 import TabPanel from '../../../components/Tab/TabPanel';
 // import { navigatedToDashboard } from '../../../utils/utils';
+import store from '../../../store';
 
 const tooltipContent = ({ argument, originalValue }) => (
   <div>
@@ -39,7 +41,8 @@ const BiospecimenProfile = ({ classes, d }) => {
   const biospecimenTabPathName = "/explore?selectedTab=biospecimens"
 
   const linkToDashboard = () => {
-    // ToDo: Reset ActiveFilter to be empty
+    // TODO: Once local-find is enabled; dispatch(resetAllData()) from bento-core/local-find to RESET_LOCALFIND_ALL_DATA
+    store.dispatch(clearAllFilters());
   };
 
   const tabItem = (items) => (
@@ -95,7 +98,7 @@ const BiospecimenProfile = ({ classes, d }) => {
                 <Link
                   className={classes.headerButtonLink}
                   to={biospecimenTabPathName}
-                  // onClick={() => linkToDashboard()}
+                  onClick={() => linkToDashboard()}
                 >
                   <span className={classes.headerButtonLinkNumber}>
                     {0 || data.sample_count}
