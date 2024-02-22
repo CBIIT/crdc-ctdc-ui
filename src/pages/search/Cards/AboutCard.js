@@ -1,7 +1,5 @@
 import React from 'react';
 import { Grid, Typography, withStyles } from '@material-ui/core';
-// import { Anchor } from '@bento-core/util';
-import { cn } from 'bento-components';
 import Anchor from '../../../utils/Anchor';
 
 const AboutCard = ({
@@ -159,10 +157,10 @@ const styles = (theme) => {
         marginLeft: '36px',
       },
       [lgBreakpoint]: {
-        marginLeft: '0px',
-        width: '959px',
-        minWidth: '959px',
-      }
+        marginLeft: '36px',
+        width: '925px',
+        minWidth: '925px',
+      },
     },
     hr: {
       width: '100%', 
