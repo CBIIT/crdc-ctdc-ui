@@ -76,9 +76,8 @@ const styles = () => ({
   },
   title: {
     textTransform: 'uppercase',
-    width: '115px',
-    maxWidth: '115px',
-    minWidth: '115px',
+    width: '212px',
+    minWidth: '212px',
     color: '#000000',
     fontFamily: 'Roboto',
     fontSize: '14px',
