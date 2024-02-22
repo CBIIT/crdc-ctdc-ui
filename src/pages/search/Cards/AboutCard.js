@@ -117,7 +117,7 @@ const styles = (theme) => {
       fontWeight: 500,
       fontSize: '18px',
       lineHeight: '22px',
-      color: '#990099',
+      color: '#004D73',
       paddingLeft: '10px',
       verticalAlign: 'middle',
     },
