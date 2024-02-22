@@ -295,21 +295,6 @@ const Header = () => {
         <HeaderContainer>
           <Logo />
           <div className="headerLowerContainer">
-            <div
-              id="header-navbar-open-menu-button"
-              role="button"
-              tabIndex={0}
-              className="menuButton"
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  setNavMobileDisplay('block');
-                }
-              }}
-              onClick={() => setNavMobileDisplay('block')}
-            >
-              Menu
-            </div>
-            {path !== "/sitesearch" && <div className="searchBarArea"><SearchBar /></div>}
           </div>
         </HeaderContainer>
       </HeaderBanner>

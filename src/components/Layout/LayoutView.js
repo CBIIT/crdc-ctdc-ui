@@ -20,7 +20,7 @@ import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';
 import CartView from '../../pages/cart/cartController';
 import AuthSessionTimeoutController from '../SessionTimeout/SessionTimeoutController';
 import { AuthenticationMiddlewareGenerator } from '@bento-core/authentication';
-import UnderDev from '../../pages/error/Development';
+import Comingsoon from '../../pages/error/Comingsoon';
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
 import RAView from '../../pages/about/requestAccess'; 
@@ -54,6 +54,8 @@ const Layout = ({ classes, isSidebarOpened }) => {
           <Route component={ScrollToTopComponent} />
            <ActivitiesController >
           <Switch>
+            <Route  component={Comingsoon} />
+             { /* 
               <Route exact path="/" component={Home} />
               <Route exact path="/home" component={Home} />
               <Route exact path="/study/:id" component={StudyDetail} />
@@ -67,7 +69,6 @@ const Layout = ({ classes, isSidebarOpened }) => {
               <Route exact path="/search" component={GlobalSearchController} />
               <Route path="/search/:id"  component={GlobalSearchController} />
 
-              {/* END: Private Routes */}
               {aboutPageRoutes.map(
                 (aboutPageRoute, index) => (
                   <Route
@@ -80,6 +81,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
               <Route path="/graphql" component={GraphqlClient} />
               <LoginRoute path="/user/login" component={Login} />
               <Route component={Error} />
+            */}
           </Switch>
           </ActivitiesController>
           <ScrollToTop />
