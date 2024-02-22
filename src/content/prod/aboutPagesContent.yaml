@@ -53,7 +53,9 @@
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
   title: "Data Model"
   content:
-    - paragraph: "For more information about the CTDC Data Model, you can visit our data model repo $$[https://github.com/CBIIT/ctdc-model](https://github.com/CBIIT/ctdc-model/tree/master/model-desc)$$"
+    - paragraph: "For more information about the CTDC Data Model, you can visit our data model repo $$[https://github.com/CBIIT/ctdc-model](https://github.com/CBIIT/ctdc-model/tree/master/model-desc)$$. The CTDC data model is a representation of how data in the CTDC are arranged relative to each other. The data model is flexibly designed to accommodate an ever-expanding CTDC database."
+    - paragraph: "The SVG graphic below represents the current CTDC data model consisting of data nodes, node properties, and relationships (edges). It provides a comprehensive mapping of the system data, part of which may be viewed in the application and user interface. Additional nodes and properties beyond those presented on the front-end are available for inspection and querying via API at https://trialcommons-dev.cancer.gov/#/graphql."
+    - paragraph: "Information about the graphic data model, including the model description files, can be found on GitHub at https://github.com/CBIIT/ctdc-model."
   secondaryZoomImageTitle: "The CTDC Data Model"
   secondaryZoomImage: 'https://raw.githubusercontent.com/CBIIT/ctdc-model/ctdc-model/model-desc/ctdc-model.svg'
 
