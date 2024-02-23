@@ -67,6 +67,9 @@ const styles = () => ({
   grapqhQlContainer: {
     height: '600px',
   },
+  docExplorerTitle:{
+    padding: '0px',  
+  }
 });
 
 export default withStyles(styles)(GraphqlView);
