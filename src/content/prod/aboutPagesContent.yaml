@@ -50,7 +50,7 @@
   content:
     - paragraph: "CTDC data elements have been aligned against NCI’s $$[ Data Standards Services ](https://datascience.cancer.gov/data-commons/data-standards-services)$$(DSS) common data elements (CDEs) curated through the CRDC in $$[ the Cancer Data Standards Registry and Repository](https://cadsr.cancer.gov/onedata/dmdirect/NIH/NCI/CO/CDEDD?filter=Administered%20Item%20%28Data%20Element%20CO%29.CDEDD%20Classification.P_ITEM_ID_VER=10466051v1)$$(caDSR). A list of the current CRDC Standard Data Elements can be found $$[here](https://cadsr.cancer.gov/onedata/clsc_datamanager_container.do?s=JTAycSUwNiUwQVQlMDUwelQrJTI0JTI5RyU3RiUyMkglMDAqc2IlMERxd3d1JTAwJTEzJTBEJTdDaiUyQ0VlJTJDcSUxNSUwNCUwRHIlMEElMDIlMDJ2c3IlMDIlN0MlMDk3JTJDYSUyNSUxRSUxMnclMDVyJTdCJTI3JTBEQnAlMjZRVC5NJTdDJTdGJTdDJTA5bEolMTQ )$$."
 - page: "/ctdc-data-model"
-  primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
+  primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Model.png
   title: "Data Model"
   content:
     - paragraph: "For more information about the CTDC Data Model, you can visit our data model repo $$[https://github.com/CBIIT/ctdc-model](https://github.com/CBIIT/ctdc-model/tree/master/model-desc)$$. The CTDC data model is a representation of how data in the CTDC are arranged relative to each other. The data model is flexibly designed to accommodate an ever-expanding CTDC database."
