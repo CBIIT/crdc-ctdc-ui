@@ -33,7 +33,7 @@ const LandingController = ({ classes, heroData }) => (
     <div className={classes.container}>
       <Grid container spacing={16} direction="row" className={classes.bannerTextureContainer}>
         <div className={classes.bannerTexture}>
-          Exploring, analyzing, and understanding data from human cancer studies
+        FUELING DISCOVERY: HARNESSING THE POWER OF DATA FROM CANCER STUDIES
         </div>
       </Grid>
       <Grid container spacing={16} direction="row" className={classes.bannerTextureContainer}>
@@ -50,7 +50,7 @@ const LandingController = ({ classes, heroData }) => (
               <div className={classes.aboutContainer}>
                 <Link to='/purpose' className={classes.link}>
                   <div className={classes.CTDCHeader}>
-                  FUELING DISCOVERY: HARNESSING THE POWER OF DATA FROM CANCER STUDIES <span className={classes.CTDCWords}>(CTDC)</span>
+                  ABOUT THE CLINICAL AND TRANSLATIONAL DATA COMMONS <span className={classes.CTDCWords}>(CTDC)</span>
                   </div>
                   <div className={classes.aboutContent}>
                   The Clinical and Translational Data Commons (CTDC) aims to accelerate scientific discovery and medical advancements through the power of clinical data. The CTDC empowers cancer researchers with comprehensive, diverse, and high-quality data collected from NCI-sponsored cancer clinical studies. The CTDC is part of NCI’s Cancer Research Data Commons (CRDC).
