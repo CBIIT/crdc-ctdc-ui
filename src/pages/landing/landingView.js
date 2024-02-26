@@ -46,9 +46,9 @@ const LandingController = ({ classes, heroData }) => (
             <div className={classes.contentRightTop}>
               <div className={classes.aboutContainer}>
                 <Link to='/purpose' className={classes.link}>
-                  <h5 className={classes.CTDCHeader}>
+                  <h2 className={classes.CTDCHeader}>
                     About the Clinical and Translational Data Commons&nbsp;&nbsp;(CTDC)
-                  </h5>
+                  </h2>
                   
                   <div className={classes.aboutContent}>
                     The Clinical and Translational Data Commons (CTDC) was established to allow expanded access to,
@@ -61,17 +61,17 @@ const LandingController = ({ classes, heroData }) => (
             <div className={classes.contentRightBottom}>
               <div className={classes.program}>
                 <div className={classes.programImg}>
-                  <img className={classes.image} src={imgStudy} alt="CTDC Studies" />
+                  <img className={classes.image} src={imgStudy} alt="CTDC Studies page" />
                 </div>
                 <div className={classes.content}>
-                  <h5 className={classes.contentHeader}>Studies</h5>
+                  <h2 className={classes.contentHeader}>Studies</h2>
                   <p className={classes.contentContainer}>
                     View summaries of clinical studies within CTDC
                   </p>
                 </div>
                 <div className={classes.blueButton}>
                   <div className={classes.blueButtonLeft}>
-                    <img className={classes.icon} src={icon} alt="CTDC Studies" />
+                    <img className={classes.icon} src={icon} alt="Page Icon" />
                     {' '}
                   </div>
                   <div className={classes.blueButtonRight}>
@@ -81,17 +81,17 @@ const LandingController = ({ classes, heroData }) => (
               </div>
               <div className={classes.studies}>
                 <div className={classes.programImg}>
-                  <img className={classes.image} src={imgAccess} alt="CTDC Request ACCESS " />
+                  <img className={classes.image} src={imgAccess} alt="CTDC Dashboard page" />
                 </div>
                 <div className={classes.content}>
-                  <h5 className={classes.contentHeader}> EXPLORE DATA</h5>
+                  <h2 className={classes.contentHeader}> EXPLORE DATA</h2>
                   <p className={classes.contentContainer}>
                     Search and explore CTDC data
                   </p>
                 </div>
                 <div className={classes.blueButton}>
                   <div className={classes.blueButtonLeft}>
-                    <img className={classes.icon} src={icon} alt="CTDC about " />
+                    <img className={classes.icon} src={icon} alt="Page Icon" />
                     {' '}
                   </div>
                   <div className={classes.blueButtonRight}>
