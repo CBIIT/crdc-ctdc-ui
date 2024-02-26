@@ -50,12 +50,10 @@ const LandingController = ({ classes, heroData }) => (
               <div className={classes.aboutContainer}>
                 <Link to='/purpose' className={classes.link}>
                   <div className={classes.CTDCHeader}>
-                    About the Clinical and Translational Data Commons <span className={classes.CTDCWords}>(CTDC)</span>
+                  FUELING DISCOVERY: HARNESSING THE POWER OF DATA FROM CANCER STUDIES <span className={classes.CTDCWords}>(CTDC)</span>
                   </div>
                   <div className={classes.aboutContent}>
-                    The Clinical and Translational Data Commons (CTDC) was established to allow expanded access to,
-                    and exploration of, data collected from cancer studies to advance
-                    cancer research. The CTDC is part of NCI's Cancer Research Data Commons (CRDC).
+                  The Clinical and Translational Data Commons (CTDC) aims to accelerate scientific discovery and medical advancements through the power of clinical data. The CTDC empowers cancer researchers with comprehensive, diverse, and high-quality data collected from NCI-sponsored cancer clinical studies. The CTDC is part of NCI’s Cancer Research Data Commons (CRDC).
                   </div>
                 </Link>
               </div>
@@ -78,7 +76,7 @@ const LandingController = ({ classes, heroData }) => (
                     {' '}
                   </div>
                   <div className={classes.blueButtonRight}>
-                    <Link to="/study/NCT04314401" className={classes.blueButton}>GO TO STUDIES LISTING</Link>
+                    <Link to="/study/NCT04314401" className={classes.blueButton}>GO TO STUDY LISTING</Link>
                   </div>
                 </div>
               </div>
@@ -89,7 +87,7 @@ const LandingController = ({ classes, heroData }) => (
                 <div className={classes.content}>
                   <div className={classes.contentHeader}> EXPLORE DATA</div>
                   <div className={classes.contentContainer}>
-                    Search and explore CTDC data
+                  Search and explore study data
                   </div>
 
                 </div>
