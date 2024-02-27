@@ -4,5 +4,6 @@ export default [
   '/support',
   '/submit',
   '/cloud-computing',
+  '/data-use',
   '/ctdc-data-model'
 ];
