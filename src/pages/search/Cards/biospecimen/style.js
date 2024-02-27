@@ -123,10 +123,10 @@ const useStyles = makeStyles((theme) => {
         marginLeft: '36px',
       },
       [lgBreakpoint]: {
-        marginLeft: '0px',
-        width: '959px',
-        minWidth: '959px',
-      }
+        marginLeft: '36px',
+        width: '925px',
+        minWidth: '925px',
+      },
     },
     hr: {
       width: '100%', 
