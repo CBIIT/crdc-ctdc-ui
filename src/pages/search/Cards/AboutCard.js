@@ -145,8 +145,8 @@ const styles = (theme) => {
       textAlign: 'left',
     },
     highlightText: {
-      color: '#990099',
-      fontWeight: 400,
+      color: '#004D73',
+      fontWeight: 600,
     },
     hrContainer: {
       paddingTop: '10px',
