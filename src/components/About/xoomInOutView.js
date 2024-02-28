@@ -47,16 +47,17 @@ const ModelPage = ({ classes, children }) => (
         zoomIn,
         zoomOut,
         resetTransform,
+        ...rest
       }) => (
         <div className={classes.modelContainer}>
           <div className={classes.tools}>
-            <Button onClick={zoomIn} className={classes.button}>
+            <Button onClick={() => zoomIn()} className={classes.button}>
               <img src={ZoomInIcon} alt="Zoom In" />
             </Button>
-            <Button onClick={zoomOut} className={classes.button}>
+            <Button onClick={() => zoomOut()} className={classes.button}>
               <img src={ZoomOutIcon} alt="Zoom Out" />
             </Button>
-            <Button onClick={resetTransform} className={classes.button}>
+            <Button onClick={() => resetTransform()} className={classes.button}>
               <img src={CenterIcon} alt="Center " />
             </Button>
           </div>

@@ -1349,7 +1349,7 @@ li.CodeMirror-hint-active {
   display: flex;
   height: 34px;
   line-height: 14px;
-  padding: 8px 8px 5px;
+  /* padding: 8px 8px 5px; */
   position: relative;
   user-select: none;
 }
