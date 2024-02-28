@@ -1,7 +1,5 @@
 import React from 'react';
 import { Grid, Typography, withStyles } from '@material-ui/core';
-// import { Anchor } from '@bento-core/util';
-import { cn } from 'bento-components';
 import Anchor from '../../../utils/Anchor';
 
 const AboutCard = ({
@@ -117,7 +115,7 @@ const styles = (theme) => {
       fontWeight: 500,
       fontSize: '18px',
       lineHeight: '22px',
-      color: '#990099',
+      color: '#004D73',
       paddingLeft: '10px',
       verticalAlign: 'middle',
     },
@@ -147,8 +145,8 @@ const styles = (theme) => {
       textAlign: 'left',
     },
     highlightText: {
-      color: '#990099',
-      fontWeight: 400,
+      color: '#004D73',
+      fontWeight: 600,
     },
     hrContainer: {
       paddingTop: '10px',
@@ -159,10 +157,10 @@ const styles = (theme) => {
         marginLeft: '36px',
       },
       [lgBreakpoint]: {
-        marginLeft: '0px',
-        width: '959px',
-        minWidth: '959px',
-      }
+        marginLeft: '36px',
+        width: '925px',
+        minWidth: '925px',
+      },
     },
     hr: {
       width: '100%', 

@@ -2,13 +2,12 @@ const buttonRoot = {
   height: '56px',
   fontSize: '16px',
   marginRight: '20px',
-  padding: '0px, 10px',
   textTransform: 'none',
   '@media (min-width: 800px)': {
     marginRight: '33px',
   },
   '@media (min-width: 1000px)': {
-    marginRight: '63px',
+    marginRight: '68px',
   }
 };
 
@@ -56,7 +55,9 @@ const styles = () => ({
     minWidth: '95px',
   },
   modelButton: {
-    ...buttonRoot,
+    height: '56px',
+    fontSize: '16px',
+    textTransform: 'none',
     width: '81px',
     minWidth: '81px',
   },

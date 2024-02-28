@@ -30,7 +30,7 @@ const LandingController = ({ classes, heroData }) => (
     <div className={classes.container}>
       <Grid container spacing={16} direction="row" className={classes.bannerTextureContainer}>
         <h1 className={classes.bannerTexture}>
-          Exploring, Analyzing, and Understanding Data From Human Cancer Studies
+          FUELING DISCOVERY: HARNESSING THE POWER OF DATA FROM CANCER STUDIES
         </h1>
       </Grid>
       <Grid container spacing={16} direction="row" className={classes.bannerTextureContainer}>
@@ -47,13 +47,10 @@ const LandingController = ({ classes, heroData }) => (
               <div className={classes.aboutContainer}>
                 <Link to='/purpose' className={classes.link}>
                   <h2 className={classes.CTDCHeader}>
-                    About the Clinical and Translational Data Commons&nbsp;&nbsp;(CTDC)
+                    ABOUT THE CLINICAL AND TRANSLATIONAL DATA COMMONS&nbsp;&nbsp;(CTDC)
                   </h2>
-                  
                   <div className={classes.aboutContent}>
-                    The Clinical and Translational Data Commons (CTDC) was established to allow expanded access to,
-                    and exploration of, data collected from cancer studies to advance
-                    cancer research. The CTDC is part of NCI's Cancer Research Data Commons (CRDC).
+                  The Clinical and Translational Data Commons (CTDC) aims to accelerate scientific discovery and medical advancements through the power of clinical data. The CTDC empowers cancer researchers with comprehensive, diverse, and high-quality data collected from NCI-sponsored cancer clinical studies. The CTDC is part of NCI’s Cancer Research Data Commons (CRDC).
                   </div>
                 </Link>
               </div>
@@ -75,7 +72,7 @@ const LandingController = ({ classes, heroData }) => (
                     {' '}
                   </div>
                   <div className={classes.blueButtonRight}>
-                    <Link to="/study/NCT04314401" className={classes.blueButton}>GO TO STUDIES LISTING</Link>
+                    <Link to="/study/NCT04314401" className={classes.blueButton}>GO TO STUDY LISTING</Link>
                   </div>
                 </div>
               </div>
@@ -84,9 +81,9 @@ const LandingController = ({ classes, heroData }) => (
                   <img className={classes.image} src={imgAccess} alt="CTDC Dashboard page" />
                 </div>
                 <div className={classes.content}>
-                  <h2 className={classes.contentHeader}> EXPLORE DATA</h2>
+                  <h2 className={classes.contentHeader}>EXPLORE DATA</h2>
                   <p className={classes.contentContainer}>
-                    Search and explore CTDC data
+                    Search and explore study data
                   </p>
                 </div>
                 <div className={classes.blueButton}>
