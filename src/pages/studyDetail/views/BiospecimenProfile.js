@@ -146,7 +146,7 @@ const styles = (theme) => ({
     fontFamily: theme.custom.fontFamilyInter,
     fontSize: '16px',
     letterSpacing: '0.017em',
-    color: '#0696C9',
+    color: '#066D93',
   },
   container: {
     fontFamily: 'Raleway, sans-serif',
@@ -206,7 +206,7 @@ const styles = (theme) => ({
     fontFamily: theme.custom.fontFamilyInter,
     margin: '0 4px',
     fontSize: '14px',
-    color: '#DC762F',
+    color: '#AA581D',
   },
   headerButtonLink: {
     textDecoration: 'none',
