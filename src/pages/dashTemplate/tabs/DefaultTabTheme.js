@@ -26,15 +26,15 @@ export const customTheme = {
         fontWeight: 'bolder',
         '&.participants': {
           background: '#D7F2EB',
-          color: '#11A075',
+          color: '#26785F',
         },
         '&.biospecimens': {
-          background: '#f8c19d',
-          color: '#EF660B',
+          background: '#FFF0E7',
+          color: '#843806',
         },
         '&.files': {
-          background: '#cfedf9',
-          color: '#0dafec',
+          background: '#EDF8FD',
+          color: '#035877',
         },
         '&.MuiTypography-body1': {
           color: 'red',
