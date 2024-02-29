@@ -14,14 +14,14 @@ export const customTheme = {
       borderTop: '1px solid black',
       borderLeft: '1px solid black',
       borderRight: '1px solid black',
-      fontWeight: '400',
-      lineHeight: '18px',
+      fontWeight: '500',
+      lineHeight: '24px',
       letterSpacing: '0.25px',
       marginRight: '10px',
-      fontSize: '21px',
+      fontSize: '20px',
       width: '250px',
       textTransform: 'none',
-      fontFamily: 'Lato',
+      fontFamily: 'Inter',
       '&.Mui-selected': {
         fontWeight: 'bolder',
         '&.participants': {
@@ -42,15 +42,15 @@ export const customTheme = {
       },
       '& span.participants_count': {
         marginLeft: '5px',
-        fontSize: '14px',
+        fontSize: '16px',
       },
       '& span.biospecimens_count': {
         marginLeft: '5px',
-        fontSize: '17px',
+        fontSize: '16px',
       },
       '& span.files_count': {
         marginLeft: '5px',
-        fontSize: '17px',
+        fontSize: '16px',
       },
     },
   },
