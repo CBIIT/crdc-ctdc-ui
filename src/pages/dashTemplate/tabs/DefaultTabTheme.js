@@ -1,7 +1,7 @@
 export const customTheme = {
   MuiTabs: {
     root: {
-      borderBottom: '10px solid #40789c',
+      borderBottom: '10px solid #41789D',
     },
   },
   MuiTab: {
@@ -23,7 +23,7 @@ export const customTheme = {
       textTransform: 'none',
       fontFamily: 'Inter',
       '&.Mui-selected': {
-        fontWeight: 'bolder',
+        fontWeight: '500',
         '&.participants': {
           background: '#D7F2EB',
           color: '#26785F',
@@ -41,14 +41,17 @@ export const customTheme = {
         },
       },
       '& span.participants_count': {
+        fontWeight: '400',
         marginLeft: '5px',
         fontSize: '16px',
       },
       '& span.biospecimens_count': {
+        fontWeight: '400',
         marginLeft: '5px',
         fontSize: '16px',
       },
       '& span.files_count': {
+        fontWeight: '400',
         marginLeft: '5px',
         fontSize: '16px',
       },
