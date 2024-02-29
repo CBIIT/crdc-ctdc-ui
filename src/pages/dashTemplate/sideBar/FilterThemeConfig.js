@@ -44,56 +44,59 @@ const theme = {
     MuiListItem: {
       root: {
         '&.filter_by_participantsCheckedEven': {
-          backgroundColor: '#e8f7dc',
+          backgroundColor: '#E8F7DC',
         },
         '&.filter_by_participantsCheckedOdd': {
-          backgroundColor: '#f5FDEE',
+          backgroundColor: '#F5FCEF',
         },
         '&.filter_by_biospecimensCheckedEven': {
-          backgroundColor: '#C9EBF7',
+          backgroundColor: '#FFF2EA',
         },
         '&.filter_by_biospecimensCheckedOdd': {
-          backgroundColor: '#E8F8FE',
+          backgroundColor: '#FFF9F5',
         },
         '&.filter_by_data_filesCheckedEven': {
-          backgroundColor: '#FBE3FB',
+          backgroundColor: '#EDF8FD',
         },
         '&.filter_by_data_filesCheckedOdd': {
-          backgroundColor: '#FFF2FF',
+          backgroundColor: '#F8FBFC',
         },
       },
     },
     MuiSvgIcon: {
       root: {
         '&.filter_by_participantsCheckedIcon': {
-          color: '#10a075',
+          color: '#4F4F4F',
         },
         '&.filter_by_biospecimensCheckedIcon': {
-          color: '#10beff',
+          color: '#4F4F4F',
         },
         '&.filter_by_data_filesCheckedIcon': {
-          color: '#e636e4',
+          color: '#4F4F4F',
         },
       },
     },
     MuiTypography: {
       root: {
         '&.filter_by_participantsSubjects': {
-          color: '#10a075',
+          color: '#065B43',
           fontSize: '12px',
           fontFamily: 'Nunito',
+          fontWeight: 400,
           marginRight: '0px',
         },
         '&.filter_by_biospecimensSubjects': {
-          color: '#10beff',
+          color: '#843806',
           fontSize: '12px',
           fontFamily: 'Nunito',
+          fontWeight: 400,
           marginRight: '0px',
         },
         '&.filter_by_data_filesSubjects': {
-          color: '#e636e4',
+          color: '#005A7A',
           fontSize: '12px',
           fontFamily: 'Nunito',
+          fontWeight: 400,
           marginRight: '0px',
         },
       },

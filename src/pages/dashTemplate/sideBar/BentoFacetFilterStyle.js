@@ -107,14 +107,14 @@ export default () => ({
     fontSize: '14px',
     marginRight: '0px',
   },
-  activeFacetCases: {
-    color: '#10a075',
+  "activeFacetFilter_by_Participants": {
+    color: '#076448',
   },
-  activeFacetSamples: {
-    color: '#10beff',
+  "activeFacetFilter_by_Biospecimens": {
+    color: '#843806',
   },
-  activeFacetFiles: {
-    color: '#e636e4',
+  "activeFacetFilter_by_Data_Files": {
+    color: '#005A7A',
   },
   searchContainer: {
     paddingTop: '15px',
