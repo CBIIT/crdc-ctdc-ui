@@ -43,54 +43,54 @@ const theme = {
     },
     MuiListItem: {
       root: {
-        '&.participantsCheckedEven': {
+        '&.filter_by_participantsCheckedEven': {
           backgroundColor: '#e8f7dc',
         },
-        '&.participantsCheckedOdd': {
+        '&.filter_by_participantsCheckedOdd': {
           backgroundColor: '#f5FDEE',
         },
-        '&.biospecimensCheckedEven': {
+        '&.filter_by_biospecimensCheckedEven': {
           backgroundColor: '#C9EBF7',
         },
-        '&.biospecimensCheckedOdd': {
+        '&.filter_by_biospecimensCheckedOdd': {
           backgroundColor: '#E8F8FE',
         },
-        '&.filesCheckedEven': {
+        '&.filter_by_data_filesCheckedEven': {
           backgroundColor: '#FBE3FB',
         },
-        '&.filesCheckedOdd': {
+        '&.filter_by_data_filesCheckedOdd': {
           backgroundColor: '#FFF2FF',
         },
       },
     },
     MuiSvgIcon: {
       root: {
-        '&.participantsCheckedIcon': {
+        '&.filter_by_participantsCheckedIcon': {
           color: '#10a075',
         },
-        '&.biospecimensCheckedIcon': {
+        '&.filter_by_biospecimensCheckedIcon': {
           color: '#10beff',
         },
-        '&.filesCheckedIcon': {
+        '&.filter_by_data_filesCheckedIcon': {
           color: '#e636e4',
         },
       },
     },
     MuiTypography: {
       root: {
-        '&.participantsSubjects': {
+        '&.filter_by_participantsSubjects': {
           color: '#10a075',
           fontSize: '12px',
           fontFamily: 'Nunito',
           marginRight: '0px',
         },
-        '&.biospecimensSubjects': {
+        '&.filter_by_biospecimensSubjects': {
           color: '#10beff',
           fontSize: '12px',
           fontFamily: 'Nunito',
           marginRight: '0px',
         },
-        '&.filesSubjects': {
+        '&.filter_by_data_filesSubjects': {
           color: '#e636e4',
           fontSize: '12px',
           fontFamily: 'Nunito',
