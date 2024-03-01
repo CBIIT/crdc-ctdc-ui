@@ -218,8 +218,10 @@ const BentoFacetFilter = ({
         >
           <div
             id={facet.label}
-            className={
-              clsx(classes.sectionSummaryText, classes[facetClasses])
+            className={clsx(
+              classes.sectionSummaryText,
+              // Help to change "activeFacetFilter by Participants" to activeFacetFilter_by_Participants
+              classes[facetClasses.replace(/\s/g, '_')])
             }
           >
             {facet.label}

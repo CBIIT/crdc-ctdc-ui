@@ -53,7 +53,6 @@ export const customTheme = {
       },
       '&.add_selected_button_Participants': {
         backgroundColor: '#06846A',
-        backgroundColor: '#06846A',
       },
       '&.add_selected_button_Biospecimens': {
         backgroundColor: '#06846A',

@@ -381,7 +381,7 @@ AboutBody.defaultProps = {
     fontFamily: 'Nunito',
     lineHeight: '30px',
   },
-  linkColor: '#0296C9',
+  linkColor: '#107FA8',
   titleColor: '#0B3556',
   externalIconImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/common/images/logos/svgs/externalLinkIcon.svg',
 };
