@@ -39,7 +39,7 @@ const AboutCard = ({
       </Grid>
       <Grid item xs={true} className={classes.propertyContainer}>
         <div className={classes.titleRow}>
-          <span className={classes.detailContainerHeader}>ABOUT</span>
+          <span className={classes.detailContainerHeader}>GENERAL</span>
           <Typography variant="h3" className={classes.cardTitle}>
             {data.title}
           </Typography>
