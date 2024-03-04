@@ -43,57 +43,60 @@ const theme = {
     },
     MuiListItem: {
       root: {
-        '&.participantsCheckedEven': {
-          backgroundColor: '#e8f7dc',
+        '&.filter_by_participantsCheckedEven': {
+          backgroundColor: '#E8F7DC',
         },
-        '&.participantsCheckedOdd': {
-          backgroundColor: '#f5FDEE',
+        '&.filter_by_participantsCheckedOdd': {
+          backgroundColor: '#F5FCEF',
         },
-        '&.biospecimensCheckedEven': {
-          backgroundColor: '#C9EBF7',
+        '&.filter_by_biospecimensCheckedEven': {
+          backgroundColor: '#FFF2EA',
         },
-        '&.biospecimensCheckedOdd': {
-          backgroundColor: '#E8F8FE',
+        '&.filter_by_biospecimensCheckedOdd': {
+          backgroundColor: '#FFF9F5',
         },
-        '&.filesCheckedEven': {
-          backgroundColor: '#FBE3FB',
+        '&.filter_by_data_filesCheckedEven': {
+          backgroundColor: '#EDF8FD',
         },
-        '&.filesCheckedOdd': {
-          backgroundColor: '#FFF2FF',
+        '&.filter_by_data_filesCheckedOdd': {
+          backgroundColor: '#F8FBFC',
         },
       },
     },
     MuiSvgIcon: {
       root: {
-        '&.participantsCheckedIcon': {
-          color: '#10a075',
+        '&.filter_by_participantsCheckedIcon': {
+          color: '#4F4F4F',
         },
-        '&.biospecimensCheckedIcon': {
-          color: '#10beff',
+        '&.filter_by_biospecimensCheckedIcon': {
+          color: '#4F4F4F',
         },
-        '&.filesCheckedIcon': {
-          color: '#e636e4',
+        '&.filter_by_data_filesCheckedIcon': {
+          color: '#4F4F4F',
         },
       },
     },
     MuiTypography: {
       root: {
-        '&.participantsSubjects': {
-          color: '#10a075',
+        '&.filter_by_participantsSubjects': {
+          color: '#065B43',
           fontSize: '12px',
           fontFamily: 'Nunito',
+          fontWeight: 400,
           marginRight: '0px',
         },
-        '&.biospecimensSubjects': {
-          color: '#10beff',
+        '&.filter_by_biospecimensSubjects': {
+          color: '#843806',
           fontSize: '12px',
           fontFamily: 'Nunito',
+          fontWeight: 400,
           marginRight: '0px',
         },
-        '&.filesSubjects': {
-          color: '#e636e4',
+        '&.filter_by_data_filesSubjects': {
+          color: '#005A7A',
           fontSize: '12px',
           fontFamily: 'Nunito',
+          fontWeight: 400,
           marginRight: '0px',
         },
       },

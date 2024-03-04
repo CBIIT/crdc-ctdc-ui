@@ -44,6 +44,29 @@
     - paragraph: "Data brought to the SB-CGC can be analyzed using more than 200 preinstalled, curated bioinformatics tools and workflows. Researchers can also extend the functionality of the platform by adding their own data and tools via an intuitive software development kit. "
     - paragraph: "$300 in credits are available to new users who want to test out the platform.  "
     - paragraph: "For more information on getting started with SB-CGC including onboarding videos and more, visit: $$[https://www.cancergenomicscloud.org/getting-started](https://www.cancergenomicscloud.org/getting-started )$$."
+- page: '/data-use'
+  title: "CTDC Data Terms of Use"
+  primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
+  content:
+    - paragraph: "CTDC’s data terms of use are consistent with applicable international, national, tribal, and state laws and regulations, as well as institutional policies for data submission, access, and sharing to help enable broad data access to the extent possible."
+    - paragraph: "$$#DATA ACCESS#$$"
+    - paragraph: "Data is made available through open-access, registered access, and controlled access tiers. Visit our $$[Request Access](type:internal url:/#/request-access target:_blank )$$ page for more information. Access to controlled data is restricted to authorized users. Users and Users’ institutions are responsible for understanding terms of use and adhering to study-specific Data Use Agreement(s) (DUAs), Institutional Review Board policies, and other relevant guidelines. A signed specific DUA may be required to access controlled-access tier data for individual trials or studies. If a DUA is required, it will be provided as part of the data request process.  "
+    - paragraph: "$$#RE-IDENTIFICATION#$$"
+    - paragraph: "Data available within the CTDC includes de-identified clinical study data subject to both general and dataset-specific data use policies. Users of any data provided by CTDC, whether open, registered or controlled access, agree not to attempt to reidentify any individual participant in any study represented by CTDC data, for any purpose whatever. This includes, but is not limited to, the use of analytical techniques of reidentification on genomic or clinical data. "
+    - paragraph: "$$#INTELLECTUAL PROPERTY#$$"
+    - paragraph: "NIH considers CTDC data as pre-competitive and discourages users from making IP claims derived directly from the available dataset(s). NIH-provided data, and conclusions derived thereof, shall remain freely available, without requirement for licensing. However, the NIH also recognizes the importance of the subsequent development of IP on downstream discoveries, especially in therapeutics, which will be necessary to support full investment in products that the public needs. "
+    - paragraph: "For more information about the CTDC and or questions regarding intellectual property, please contact us at $$[NCICTDCHelpDesk@mail.nih.gov](NCICTDCHelpDesk@mail.nih.gov)$$.  "
+    - paragraph: "$$#CITING CTDC IN PUBLICATIONS:#$$"
+    - paragraph: "Whenever using CTDC data in a publication, please cite: "
+    - paragraph: "1. CTDC resource or individual study  "
+    - paragraph: "           ● To cite the resource, cite the CTDC website ( $$[clinical.datacommons.cancer.gov](type:internal url:/#/ target:_blank )$$ ) "
+    - paragraph: "           ● To cite an individual study, either cite the CTDC study id (e.g., NCT04314401)  "
+    - paragraph: "OR"
+    - paragraph: "           ● Cite the study URL: (e.g., $$[https://clinical.datacommons.cancer.gov/#/study/NCT04314401](type:internal url:/#/study/NCT04314401 target:_blank )$$). "
+    - paragraph: "2. Primary publication of the data (when applicable) "
+    - paragraph: "           ● The primary publication from the original data producers is available on the individual study summary pages. "
+    - paragraph: "$$#QUESTIONS#$$"
+    - paragraph: "CTDC strongly encourages investigators to contact $$[NCICTDCHelpDesk@mail.nih.gov](NCICTDCHelpDesk@mail.nih.gov)$$ with any questions or concerns related to publication of their analyses."
 - page: '/data-harmonization'
   title: "Data Harmonization"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png

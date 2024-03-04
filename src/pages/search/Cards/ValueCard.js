@@ -2,7 +2,6 @@ import { Grid, Typography, withStyles } from '@material-ui/core';
 import React from 'react';
 import { prepareLinks } from '@bento-core/util';
 import PropertyItem from './PropertyItem';
-import { cn } from 'bento-components';
 
 const CARD_PROPERTIES = [
   {
@@ -124,7 +123,7 @@ const styles = (theme) => {
       fontWeight: 500,
       fontSize: '18px',
       lineHeight: '22px',
-      color: '#990099',
+      color: '#004D73',
       paddingLeft: '10px',
       verticalAlign: 'middle',
     },
@@ -138,10 +137,10 @@ const styles = (theme) => {
         marginLeft: '36px',
       },
       [lgBreakpoint]: {
-        marginLeft: '0px',
-        width: '959px',
-        minWidth: '959px',
-      }
+        marginLeft: '36px',
+        width: '925px',
+        minWidth: '925px',
+      },
     },
     hr: {
       width: '100%', 

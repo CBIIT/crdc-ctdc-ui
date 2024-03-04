@@ -74,6 +74,7 @@ const WidgetView = ({
             disableRipple
             checked={themeChanger.dark}
             onChange={themeChanger.toggleTheme}
+            inputProps={{ 'aria-label': 'Switch between dark and light themes' }}
           />
         </div>
       </div>
