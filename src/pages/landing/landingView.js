@@ -243,16 +243,13 @@ const styles = () => ({
     background: '#004D73',
     padding: '30px 20px 32px 20px',
     color: '#fff',
-<<<<<<< Updated upstream
     fontFamily: '"Open Sans"',
     fontSize: '14px',
     lineHeight: '22px',
-=======
     fontFamily: 'Roboto',
     fontWeight: 400,
     fontSize: '14px',
     lineHeight: '24px',
->>>>>>> Stashed changes
     textAlign: 'center',
   },
   link: {
