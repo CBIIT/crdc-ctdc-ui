@@ -10,7 +10,7 @@
     "@bento-core/all": "*",
     "@bento-core/authentication": "1.0.0-CTDC.0",
     "@bento-core/cart": "^1.0.1-ctdc.3",
-    "@bento-core/global-search": "1.0.0-ctdc.1",
+    "@bento-core/global-search": "1.0.0-ctdc.2",
     "@bento-core/paginated-table": "1.0.1-ctdc.7",
     "@bento-core/table": "1.0.1-ctdc.5",
     "@bento-core/facet-filter": "1.0.1-ctdc.0",
@@ -172,7 +172,7 @@
     "eslint": "^6.2.2",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.22.0",
-    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.20.5",
     "eslint-plugin-react-hooks": "^1.7.0"
   }
