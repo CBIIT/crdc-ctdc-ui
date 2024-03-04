@@ -20,7 +20,7 @@ import LineBreaksRenderer from '../../../utils/LineBreaksRenderer';
  */
 const PropertyItem = ({ ...props }) => {
   const {
-    label, value, link, labelLink, classes, index, hasBreakLine
+    label, linkText, value, link, labelLink, classes, index, hasBreakLine
   } = props;
   const defaultValue = '';
 
@@ -38,7 +38,7 @@ const PropertyItem = ({ ...props }) => {
 
   const renderValueContent = () => {
     if (link !== undefined) {
-      return <Anchor link={link} text={value} classes={classes} />;
+      return <Anchor link={link} text={linkText ? linkText : value} classes={classes} />;
     } else if (hasBreakLine) {
       return <LineBreaksRenderer htmlContent={value} classes={classes} />;
     } else {

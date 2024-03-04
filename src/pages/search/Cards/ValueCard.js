@@ -1,4 +1,4 @@
-import { Grid, Typography, withStyles } from '@material-ui/core';
+import { Grid, withStyles } from '@material-ui/core';
 import React from 'react';
 import { prepareLinks } from '@bento-core/util';
 import PropertyItem from './PropertyItem';
@@ -32,7 +32,8 @@ const CARD_PROPERTIES = [
   {
     label: 'Page Link',
     dataField: 'node_name',
-    link: '/',
+    link: '/ctdc-data-model',
+    linkText: 'Data Model',
   },
 ];
 
@@ -46,9 +47,6 @@ const ValueCard = ({ data, classes, index }) => {
       <Grid item xs={true} className={classes.propertyContainer}>
         <div className={classes.titleRow}>
           <span className={classes.detailContainerHeader}>MODEL</span>
-          <Typography variant="h3" className={classes.cardTitle}>
-            CMB
-          </Typography>
         </div>
         {propertiesWithLinks.map((prop, idx) => (
           <PropertyItem
