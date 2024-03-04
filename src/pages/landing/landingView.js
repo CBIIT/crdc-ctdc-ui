@@ -236,7 +236,6 @@ const styles = () => ({
     height: '251px',
   },
   aboutContent: {
-    height: '132px',
     background: '#004D73',
     padding: '30px 20px',
     color: '#fff',
