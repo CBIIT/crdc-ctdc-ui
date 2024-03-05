@@ -235,7 +235,7 @@ const styles = () => ({
     textAlign: 'left',
     paddingLeft: '16px',
     maxWidth: '959px',
-    margin: '11px auto 24px auto'
+    margin: '11px auto 2px auto'
   },
   totalCount: {
     fontFamily: 'Roboto',
@@ -243,6 +243,7 @@ const styles = () => ({
   subsection: {
     borderBottom: '1px solid #8A8A8A',
     paddingBottom: '22px',
+    paddingTop: '22px',
   },
   subsectionBody: {
     padding: '0px 16px',
@@ -251,6 +252,10 @@ const styles = () => ({
   },
   paginationContainer: {
     paddingBottom: '0px',
+  },
+  noData: {
+    margin: 'auto',
+    textAlign: 'center',
   },
 });
 
