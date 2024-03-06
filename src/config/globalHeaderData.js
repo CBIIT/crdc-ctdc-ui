@@ -36,7 +36,7 @@ export const navMobileList = [
     className: 'navMobileItem clickable',
   },
   {
-    name: 'Resources',
+    name: 'Developers',
     link: '',
     id: 'navbar-dropdown-about',
     className: 'navMobileItem clickable',
