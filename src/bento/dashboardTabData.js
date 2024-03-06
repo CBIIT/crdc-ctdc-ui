@@ -1770,7 +1770,7 @@ export const tabContainers = [
       },
       {
         dataField: 'carcinogen_exposure',
-        header: 'Carcinogen Exposure',
+        header: 'Environmental exposures',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,

@@ -32,7 +32,7 @@ const CARD_PROPERTIES = [
   {
     label: 'Page Link',
     dataField: 'node_name',
-    link: '/ctdc-data-model',
+    link: '/data-model',
     linkText: 'Data Model',
   },
 ];

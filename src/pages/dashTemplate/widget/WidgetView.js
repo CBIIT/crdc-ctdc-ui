@@ -45,7 +45,7 @@ const WidgetView = ({
           strokeWidth: '0.5',
         },
       },
-    },
+    }
   };
   const { Widget } = useCallback(WidgetGenerator(widgetGeneratorConfig), []);
 

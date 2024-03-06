@@ -36,7 +36,7 @@ export const navMobileList = [
     className: 'navMobileItem clickable',
   },
   {
-    name: 'Resources',
+    name: 'Developers',
     link: '',
     id: 'navbar-dropdown-about',
     className: 'navMobileItem clickable',
@@ -65,8 +65,8 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
     {
-      name: 'CTDC Data Model',
-      link: '/ctdc-data-model',
+      name: 'Data Model',
+      link: '/data-model',
       id: 'navbar-dropdown-item-CTDC-data-model',
       className: 'navMobileSubItem',
     },
@@ -89,7 +89,7 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
   ],
-    "Resources": [
+    "Developers": [
     {
       name: 'GraphQL',
       link: '/graphql',
