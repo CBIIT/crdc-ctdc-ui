@@ -2006,7 +2006,7 @@ export const tabContainers = [
         downloadDocument: true, // To indicate that column is document donwload
         documentDownloadProps: {
           // Max file size needs to bin Bytes to seperate two support file preview and download
-          maxFileSize: 315,
+          maxFileSize: 80000000, // 10MB => 80,000,000 bits
           // datafield where file file column exists in the table
           fileSizeColumn: 'data_file_size',
           // datafield where file file id exists in the table which is used to get file location

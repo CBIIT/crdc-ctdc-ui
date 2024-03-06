@@ -4,7 +4,6 @@ import {
   Collapse,
   FormControlLabel,
   Grid,
-  Switch,
   withStyles,
 } from '@material-ui/core';
 import { useTheme } from '../../../components/ThemeContext';
@@ -23,7 +22,7 @@ const WidgetView = ({
 }) => {
   const displayWidgets = formatWidgetData(data, widgetConfig);
   const [collapse, setCollapse] = React.useState(true);
-  const themeChanger = useTheme();
+  // const themeChanger = useTheme(); Hidding Dark Mode
   const handleChange = () => setCollapse((prev) => !prev);
 
   const widgetGeneratorConfig = {
@@ -62,6 +61,8 @@ const WidgetView = ({
               </Button>
             )}
           />
+          {/*
+          Hidding Dark Mode
           <Switch
             classes={{
               root: classes.switchRoot,
@@ -75,7 +76,7 @@ const WidgetView = ({
             checked={themeChanger.dark}
             onChange={themeChanger.toggleTheme}
             inputProps={{ 'aria-label': 'Switch between dark and light themes' }}
-          />
+          /> */}
         </div>
       </div>
       <Collapse in={collapse} className={classes.backgroundWidgets}>
