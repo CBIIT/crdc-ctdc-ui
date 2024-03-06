@@ -89,7 +89,7 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
   ],
-    "Resources": [
+    "Developers": [
     {
       name: 'GraphQL',
       link: '/graphql',
