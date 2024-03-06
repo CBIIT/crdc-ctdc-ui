@@ -65,8 +65,8 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
     {
-      name: 'CTDC Data Model',
-      link: '/ctdc-data-model',
+      name: 'Data Model',
+      link: '/data-model',
       id: 'navbar-dropdown-item-CTDC-data-model',
       className: 'navMobileSubItem',
     },

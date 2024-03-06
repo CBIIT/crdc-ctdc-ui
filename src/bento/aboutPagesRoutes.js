@@ -5,5 +5,5 @@ export default [
   '/submit',
   '/cloud-computing',
   '/data-use',
-  '/ctdc-data-model'
+  '/data-model'
 ];
