@@ -1780,7 +1780,8 @@ export const tabContainers = [
         header: 'Targeted Therapy',
         display: true,
         tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
+        cellType: cellTypes.CUSTOM_ELEM,
+        removeSquareBrackets: true, // Flag to indicate if square brackets should be removed
       },
     ],
     id: 'participants_tab',
