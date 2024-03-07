@@ -3,10 +3,15 @@ import { Typography } from '@material-ui/core';
 import { cellTypes, headerTypes } from '@bento-core/table';
 import DocumentDownloadView from '../../../../components/DocumentDownload/DocumentDownloadView';
 
+// Define a function to remove square brackets from a string
+const removeSquareBracketsFromString = (text) => {
+  return text.replace(/\[|\]/g, '');
+};
+
 export const CustomCellView = (props) => {
   const {
     downloadDocument, documentDownloadProps,
-    displayEmpty, dataField,
+    displayEmpty, dataField, removeSquareBrackets
   } = props;
   if (downloadDocument) {
     return (
@@ -22,6 +27,13 @@ export const CustomCellView = (props) => {
         requiredACLs={props[dataField]}
         fileName={props[documentDownloadProps.fileName]}
       />
+    );
+  }else if (removeSquareBrackets) { 
+    return (
+      // If removeSquareBrackets flag is true, remove square brackets
+      <Typography>
+        {displayEmpty || props[dataField] ? removeSquareBracketsFromString(props[dataField]) : ""}
+      </Typography>
     );
   } else if (typeof displayEmpty === "boolean") {
     return (<Typography>{displayEmpty || props[dataField] ? props[dataField] : ""}</Typography>);
