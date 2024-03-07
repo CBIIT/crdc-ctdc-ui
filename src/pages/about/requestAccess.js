@@ -8,7 +8,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AboutHeader from './aboutHeader';
 import Stats from '../../components/Stats/AllStatsController';
 import followImg from './assets/design_flow.png';
-import raImg from './assets/request_access.png';
 import externalIconImage from './assets/externalLinkIcon.svg';
 
 const RAView = ({ classes }) => {
@@ -19,7 +18,7 @@ const RAView = ({ classes }) => {
       <div className={classes.container}>
         <Grid container spacing={16} direction="row" className={classes.aboutSection}>
               <Grid item lg={3} md={3} sm={12} xs={12} className={classes.imageSection}>
-                 <img className={classes.followGraph} src={raImg} alt="follow graph" />
+                 <img className={classes.followGraph} src={"https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_RequestAccess.png"} alt="follow graph" />
             
               </Grid>
               <Grid item lg={9} md={9} sm={12} xs={12} className={classes.contentSection}>
