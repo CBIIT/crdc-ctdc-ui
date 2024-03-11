@@ -1,8 +1,7 @@
 /* eslint-disable */
 import gql from 'graphql-tag';
-import { cellTypes } from '@bento-core/table';
+import { cellTypes, dataFormatTypes } from '@bento-core/table';
 // import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
-// import { dataFormatTypes } from '@bento-core/table';
 import downloadSuccess from '../assets/dash/downloadSuccess.svg'
 import downloadLock from '../assets/dash/downloadLock.svg'
 import previewLarge from '../assets/dash/previewLarge.svg'
@@ -1963,6 +1962,7 @@ export const tabContainers = [
         header: 'File Name',
         display: true,
         tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
       },
       {
         dataField: 'data_file_format',
@@ -1984,6 +1984,8 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        dataFormatType: dataFormatTypes.FORMAT_BYTES,
+        cellType: cellTypes.FORMAT_DATA,
       },
       {
         dataField: 'association',
