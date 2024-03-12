@@ -28,6 +28,9 @@ const fetchFileToDownload = (fileURL = '', signOut, setShowModal, fileName, file
         signOut();
         setShowModal(true);
         return '';
+      } else if (response.status !== 200) {
+        console.error(`Failed to fetch the file. Server responded with: ${response.status} ${response.statusText}`);
+        return '';
       }
       return response.text();
     }).then((filePath) => {
