@@ -1770,16 +1770,19 @@ export const tabContainers = [
       },
       {
         dataField: 'carcinogen_exposure',
-        header: 'Environmental exposures',
+        header: 'Environmental Exposures',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        cellType: cellTypes.CUSTOM_ELEM,
+        removeSquareBrackets: true, // Flag to indicate if square brackets should be removed
       },
       {
         dataField: 'targeted_therapy',
         header: 'Targeted Therapy',
         display: true,
         tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
         cellType: cellTypes.CUSTOM_ELEM,
         removeSquareBrackets: true, // Flag to indicate if square brackets should be removed
       },

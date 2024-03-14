@@ -28,3 +28,11 @@ export const convertCRDCLinksToValue = (data, key) => {
 
   return { ...data, [key]: processedArr };
 };
+
+/* 
+* Remove square brackets from a string 
+* ex. "[Gemtuzumab ozogamicin, Bicalutamide]" => "Gemtuzumab ozogamicin, Bicalutamide"
+*/
+export const removeSquareBracketsFromString = (text) => {
+  return text.replace(/\[|\]/g, '');
+};
