@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import { TableContext, TableView } from '@bento-core/paginated-table';
 import { configColumn } from './tableConfig/Column';
