@@ -243,6 +243,7 @@ export const widgetConfig = [
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
     datatable_level2_field: 'arm', // Outer Ring
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+    resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
   },
   {
     type: 'sunburst',
@@ -253,6 +254,7 @@ export const widgetConfig = [
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
     datatable_level2_field: 'arm', // Outer Ring
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+    resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
   },
   {
     type: 'sunburst',
@@ -263,6 +265,7 @@ export const widgetConfig = [
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
     datatable_level2_field: 'arm',
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+    resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
   },
   {
     type: 'donut',
@@ -279,6 +282,7 @@ export const widgetConfig = [
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
     datatable_level2_field: 'arm',
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+    resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
   },
   {
     type: 'donut',

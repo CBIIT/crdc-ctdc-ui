@@ -106,6 +106,7 @@ const WidgetView = ({
                   sliceTitle={widget.sliceTitle}
                   chartTitleLocation="bottom"
                   chartTitleAlignment="center"
+                  resetSunburstOnMouseOut={widget.resetSunburstOnMouseOut}
                 />
               </Grid>
             );
