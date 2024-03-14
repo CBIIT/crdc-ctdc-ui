@@ -297,6 +297,8 @@ export const table = {
       display: true,
       tooltipText: 'sort',
       role: cellTypes.DISPLAY,
+      dataFormatType: dataFormatTypes.FORMAT_BYTES,
+      cellType: cellTypes.FORMAT_DATA,
     },
     {
       dataField: 'data_file_description',
