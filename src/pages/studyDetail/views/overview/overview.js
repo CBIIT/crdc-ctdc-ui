@@ -291,7 +291,7 @@ const styles = (theme) => ({
     fontFamily: 'Raleway, sans-serif',
     padding: '0px 32px 40px 32px',
     margin: '0 auto',
-    maxWidth: '1400px',
+    // maxWidth: '1400px',
   },
   additionalDataLink: {
     color: '#DC762F',
