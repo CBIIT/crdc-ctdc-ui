@@ -113,7 +113,7 @@ export default (theme) => ({
     fontFamily: 'Raleway, sans-serif',
     paddingLeft: '32px',
     paddingRight: '32px',
-    maxWidth: '1400px',
+    // maxWidth: '1400px',
     margin: "0 auto",
   },
   content: {
@@ -252,7 +252,7 @@ export default (theme) => ({
     color: '#000000',
     size: '12px',
     lineHeight: '23px',
-    maxWidth:'1400px',
+    // maxWidth:'1400px',
   },
   headerButtonLink: {
     textDecoration: 'none',
