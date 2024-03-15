@@ -9,31 +9,22 @@ import previewLarge from '../assets/dash/previewLarge.svg'
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
-  icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-tooltip-icon/ctdc/images/svg/ExploreAddFileTooltipIcon.svg',
+  //  use as aletrative
+  icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   alt: 'tooltipIcon',
-  0: 'Click button to Add Associated Files associated with the selected Participant(s).',
-  1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
-  2: 'Click button to Add Associated Files.',
+  arrow: false,
   Participants: 'Add filtered files associated with selected participants(s) to My Files',
   Biospecimens: 'Add filtered files associated with selected biospecimen(s) to My Files',
   Files: 'Add selected files to My Files',
-  styles: {
-    border: '#03A383 1px solid',
-  }
 };
 
   export const tooltipContentAllFile = {
   icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   alt: 'tooltipIcon',
-  0: 'Click button to Add Associated Files associated with the selected Participant(s).',
-  1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
-  2: 'Click button to Add Associated Files.',
+  arrow: false,
   Participants: 'Add filtered files associated with all participants in the current results set to My Files',
   Biospecimens: 'Add filtered files associated with all biospecimens in the current results set to My Files',
   Files: 'Add all filtered files to My Files',
-  styles: {
-    border: '#03A383 1px solid',
-  }
 };
 
 // --------------- Dahboard Table external link configuration --------------
