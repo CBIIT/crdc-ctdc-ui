@@ -40,6 +40,16 @@ export default {
     fontFamilyNunitoSansBold: 'Nunito Sans Bold',
     drawerWidth: '240px',
     widgetDivider: '#E2E7EC',
+    breakpoints: { 
+      values: {
+        xs: 0,
+        sm: 600,
+        md: 960,
+        lg: 1280,
+        xl: 1920,
+        customMd: 1100, // Custom breakpoint for md used for Studies page
+      },
+    },
   },
   palette: {
     primary: {

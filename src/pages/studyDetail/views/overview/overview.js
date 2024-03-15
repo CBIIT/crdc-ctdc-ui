@@ -150,9 +150,9 @@ const Overview = ({
                   item
                   lg={6}
                   md={6}
-                  sm={6}
+                  sm={12}
                   xs={12}
-                  className={classes.detailContainerRightTop}
+                  className={classes.detailContainerRightTopDiagnoses}
                 >
                   <Grid container className={classes.detailContainerHL}>
                     <Grid item xs={12} className={classes.containerHeader}>
@@ -173,9 +173,9 @@ const Overview = ({
                   item
                   lg={6}
                   md={6}
-                  sm={6}
+                  sm={12}
                   xs={12}
-                  className={classes.detailContainerRightTop}
+                  className={classes.detailContainerRightTopParticipant}
                 >
                   <Grid container className={classes.participantFileH}>
                     <Grid item xs={12} className={classes.containerHeader}>
@@ -244,6 +244,7 @@ const Overview = ({
                 {/* END: Image Collection */}
               </Grid>
             </Grid>
+
           </Grid>
         </div>
       </div>
@@ -406,7 +407,7 @@ const styles = (theme) => ({
     width: 'calc(100% + 8px)',
   },
   participantFileH: {
-    paddingLeft: '30px'
+    paddingLeft: '30px',
   },
   participantFileC: {
     paddingLeft: '30px',
@@ -463,6 +464,22 @@ const styles = (theme) => ({
   },
   tableContainer2: {
     background: '#fff',
+  },
+
+  '@media (max-width: 1100px)': {
+    detailContainerRightTopParticipant: {
+      marginTop: '40px',
+    },
+    imageCollection: {
+      marginTop: '40px',
+      paddingLeft: '0px',
+    },
+    participantFileH: {
+      paddingLeft: '0px',
+    },
+    participantFileC: {
+      paddingLeft: '0px',
+    },
   },
 });
 
