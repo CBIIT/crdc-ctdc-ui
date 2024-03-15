@@ -163,7 +163,7 @@ const styles = (theme) => ({
     outline: 'none !important',
   },
   tabContainer: {
-    // width: '320px',
+    width: '300px',
     marginTop: '10px',
     padding: '0px 23px',
     marginBottom: '30px',
