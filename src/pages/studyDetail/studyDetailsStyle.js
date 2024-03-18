@@ -167,9 +167,10 @@ export default (theme) => ({
     fontSize: '18px',
     color: '#274FA6',
     paddingLeft: '3px',
-    paddingRight: '200px',
     lineHeight: '21.78px',
     marginTop: '4px',
+    minWidth: 'fit-content',
+    whiteSpace: 'nowrap',
   },
   lowLetterSpace: {
     color: '#606061',

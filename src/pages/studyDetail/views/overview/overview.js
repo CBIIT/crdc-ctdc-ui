@@ -466,7 +466,7 @@ const styles = (theme) => ({
     background: '#fff',
   },
 
-  '@media (max-width: 1100px)': {
+  '@media (max-width: 1099px)': {
     detailContainerRightTopParticipant: {
       marginTop: '40px',
     },
@@ -481,6 +481,25 @@ const styles = (theme) => ({
       paddingLeft: '0px',
     },
   },
+  '@media (max-width: 899px)': {
+    detailContainerLeft: {
+      padding: '0px 31px 5px 8px',
+    },
+    detailContainerRight: {
+      padding: '0px 0px 5px 25px',
+    },
+  },
+  '@media (max-width: 799px)': {
+    borderRight: {
+      borderRight: 'none',
+    },
+    detailContainerLeft: {
+      minHeight: 'fit-content'
+    },
+    detailContainerRight: {
+      padding: '0px 0px 5px 0px',
+    },
+  }
 });
 
 export default withStyles(styles, { withTheme: true })(Overview);

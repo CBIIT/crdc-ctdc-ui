@@ -32,6 +32,7 @@ export default ({
       values: {
         ...themes.light.custom.breakpoints.values,
         md: themes.light.custom.breakpoints.values.customMd, // Set md breakpoint to 1100px
+        sm: themes.light.custom.breakpoints.values.customSm, // Set sm breakpoint to 799px
       },
     },
   });
