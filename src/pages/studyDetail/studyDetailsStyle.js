@@ -146,7 +146,6 @@ export default (theme) => ({
     margin: 'auto',
     float: 'left',
     marginLeft: '95px',
-    width: 'calc(100% - 465px)',
   },
   headerMainTitle: {
     fontFamily: 'Inter',
@@ -289,5 +288,22 @@ export default (theme) => ({
     letterSpacing: '0.017em',
     fontWeight: '600',
     textTransform: 'uppercase',
+  },
+  '@media (max-width: 740px)': {
+    headerTitle: {
+      position: 'absolute',
+      top: '350px',
+    },
+    headerButton: {
+      marginLeft: '95px',
+      marginTop: '28px',
+      float: 'left',
+    },
+  },
+  '@media (max-width: 460px)': {
+    detailContainer: {
+      paddingLeft: '10px',
+      paddingRight: '10px',
+    },
   },
 });

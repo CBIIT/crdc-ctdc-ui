@@ -64,7 +64,7 @@ export const argumentConfiguration = {
   },
   label: {
     size: 20,
-    position: 'inside',
+    position: 'outside',
     staggeringSpacing: 19,
   },
 };
@@ -91,7 +91,7 @@ export const valueConfiguration = {
     family: 'Inter',
   },
   chartGrid: {
-    visible: false,
+    visible: true,
   },
   label: {
     size: 12,

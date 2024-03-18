@@ -430,7 +430,6 @@ const styles = (theme) => ({
     paddingTop: '2px',
   },
   imageCollection: {
-    marginTop: '10px',
     paddingLeft: '30px',
   },
   imageCollectionHeader: {
@@ -499,7 +498,13 @@ const styles = (theme) => ({
     detailContainerRight: {
       padding: '0px 0px 5px 0px',
     },
-  }
+  },
+  '@media (max-width: 460px)': {
+    detailContainer: {
+      paddingLeft: '10px',
+      paddingRight: '10px',
+    },
+  },
 });
 
 export default withStyles(styles, { withTheme: true })(Overview);

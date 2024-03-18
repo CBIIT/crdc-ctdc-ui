@@ -6,7 +6,8 @@ import {
   Tab,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import { BarChart } from 'bento-components';
+// import { BarChart } from 'bento-components';
+
 import { clearAllFilters } from '@bento-core/facet-filter';
 import {
   biospecimenProfile,
@@ -19,6 +20,7 @@ import {
 import TabPanel from '../../../components/Tab/TabPanel';
 // import { navigatedToDashboard } from '../../../utils/utils';
 import store from '../../../store';
+import BarChart from '../../../components/BarChart/BarChart';
 
 const tooltipContent = ({ argument, originalValue }) => (
   <div>
@@ -84,7 +86,7 @@ const BiospecimenProfile = ({ classes, d }) => {
   );
 
   return (
-    <Grid item lg={6} md={6} sm={12} xs={12} className={classes.marginTop10}>
+    <Grid item lg={6} md={6} sm={12} xs={12}>
       <Grid container className={classes.detailContainerHL}>
         <Grid item xs={12}>
           <span className={classes.detailContainerHeader}> Biospecimen PROFILE </span>
@@ -129,9 +131,6 @@ const BiospecimenProfile = ({ classes, d }) => {
 };
 
 const styles = (theme) => ({
-  marginTop10: {
-    marginTop: '10px',
-  },
   detailContainerHL: {
     paddingRight: '30px',
     marginRight: '30px',
