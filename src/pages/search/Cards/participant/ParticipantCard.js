@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core';
 import useStyles from './style';
 import { cn } from 'bento-components';
+import { removeSquareBracketsFromString } from '../../../../utils/utils';
 
 const ParticipantCard = ({ data = {}, index })=> {
   const {
@@ -53,7 +54,7 @@ const ParticipantCard = ({ data = {}, index })=> {
           <div className={cn(classes.column, classes.leftColumn)}>
             {renderInfo('Race:', race)}
             {renderInfo('Ethnicity:', ethnicity)}
-            {renderInfo('Therapy:', therapy)}
+            {renderInfo('Therapy:', removeSquareBracketsFromString(therapy))}
           </div>
         </div>
       </Grid>

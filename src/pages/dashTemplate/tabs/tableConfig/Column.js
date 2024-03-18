@@ -2,11 +2,7 @@ import React from 'react';
 import { Typography } from '@material-ui/core';
 import { cellTypes, headerTypes } from '@bento-core/table';
 import DocumentDownloadView from '../../../../components/DocumentDownload/DocumentDownloadView';
-
-// Define a function to remove square brackets from a string
-const removeSquareBracketsFromString = (text) => {
-  return text.replace(/\[|\]/g, '');
-};
+import { removeSquareBracketsFromString } from '../../../../utils/utils';
 
 export const CustomCellView = (props) => {
   const {

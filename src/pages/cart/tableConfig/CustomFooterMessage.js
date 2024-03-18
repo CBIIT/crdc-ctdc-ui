@@ -24,7 +24,7 @@ const CustomFooterMessage = () => (
             >
                 <span style={{ textDecoration: 'underline', margin: 0, padding: 0 }}>
                     Velsera Seven Bridges Cancer Genomics Cloud account.
-                    <img src={linkImg} style={{ margin: '5px', marginBottom: '-4px' }} />
+                    <img src={linkImg} style={{ margin: '5px', marginBottom: '-4px' }} alt={"External Icon"}/>
                 </span>
             </a>
 
