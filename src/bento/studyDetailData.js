@@ -36,13 +36,13 @@ export const biospecimenProfile = {
   tabs: [
     {
       index: 0,
-      label: 'TYPE',
-      value: 'specimen_types',
+      label: 'TIMEPOINT',
+      value: 'specimen_timepoints',
     },
     {
       index: 1,
-      label: 'TIMEPOINT',
-      value: 'specimen_timepoints',
+      label: 'TYPE',
+      value: 'specimen_types',
     },
   ],
 };
