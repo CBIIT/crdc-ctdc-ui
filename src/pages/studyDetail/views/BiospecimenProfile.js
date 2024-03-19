@@ -7,6 +7,7 @@ import {
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import { BarChart } from 'bento-components';
+
 import { clearAllFilters } from '@bento-core/facet-filter';
 import {
   biospecimenProfile,
@@ -84,7 +85,7 @@ const BiospecimenProfile = ({ classes, d }) => {
   );
 
   return (
-    <Grid item lg={6} md={6} sm={12} xs={12} className={classes.marginTop10}>
+    <Grid item lg={6} md={6} sm={12} xs={12}>
       <Grid container className={classes.detailContainerHL}>
         <Grid item xs={12}>
           <span className={classes.detailContainerHeader}> Biospecimen PROFILE </span>
@@ -129,9 +130,6 @@ const BiospecimenProfile = ({ classes, d }) => {
 };
 
 const styles = (theme) => ({
-  marginTop10: {
-    marginTop: '10px',
-  },
   detailContainerHL: {
     paddingRight: '30px',
     marginRight: '30px',
@@ -163,7 +161,7 @@ const styles = (theme) => ({
     outline: 'none !important',
   },
   tabContainer: {
-    // width: '320px',
+    width: '300px',
     marginTop: '10px',
     padding: '0px 23px',
     marginBottom: '30px',

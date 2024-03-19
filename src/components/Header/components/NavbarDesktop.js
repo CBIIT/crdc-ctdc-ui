@@ -26,7 +26,7 @@ const Nav = styled.div`
       // opacity: 0;
       margin: 0 auto;
       position: relative;
-      width: 1400px;
+      width: 1800px;
     }
     .invisible {
       visibility: hidden;
@@ -37,7 +37,7 @@ const NavContainer = styled.div`
     max-height: 53px;
     height: 53px;
     margin: 0 auto;
-    max-width: 1400px;
+    max-width: 1800px;
     text-align: left;
     position: relative;
     display: flex;
@@ -199,7 +199,7 @@ const DropdownContainer = styled.div`
     margin: 0 auto;
     text-align: left;
     position: relative;
-    max-width: 1400px;
+    max-width: 1800px;
 
     .dropdownList {
       background: #1F4671;
@@ -290,7 +290,7 @@ const NameDropdownContainer = styled.div`
   margin: 0 auto;
   text-align: left;
   position: relative;
-  max-width: 1400px;
+  max-width: 1800px;
   .dropdownList {
       background: #1F4671;
       display: inline-flex;

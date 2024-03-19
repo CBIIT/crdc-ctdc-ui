@@ -12,7 +12,7 @@ const BannerArea = styled.div`
 const BannerContainer = styled.div`
     display:flex;
     align-items:center;
-    max-width: 1400px;
+    max-width: 1800px;
     height:100%;
     margin-left: auto;
     margin-right: auto;

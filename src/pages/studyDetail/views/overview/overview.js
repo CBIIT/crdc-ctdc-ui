@@ -150,9 +150,9 @@ const Overview = ({
                   item
                   lg={6}
                   md={6}
-                  sm={6}
+                  sm={12}
                   xs={12}
-                  className={classes.detailContainerRightTop}
+                  className={classes.detailContainerRightTopDiagnoses}
                 >
                   <Grid container className={classes.detailContainerHL}>
                     <Grid item xs={12} className={classes.containerHeader}>
@@ -173,9 +173,9 @@ const Overview = ({
                   item
                   lg={6}
                   md={6}
-                  sm={6}
+                  sm={12}
                   xs={12}
-                  className={classes.detailContainerRightTop}
+                  className={classes.detailContainerRightTopParticipant}
                 >
                   <Grid container className={classes.participantFileH}>
                     <Grid item xs={12} className={classes.containerHeader}>
@@ -244,6 +244,7 @@ const Overview = ({
                 {/* END: Image Collection */}
               </Grid>
             </Grid>
+
           </Grid>
         </div>
       </div>
@@ -290,7 +291,7 @@ const styles = (theme) => ({
     fontFamily: 'Raleway, sans-serif',
     padding: '0px 32px 40px 32px',
     margin: '0 auto',
-    maxWidth: '1400px',
+    maxWidth: '1800px',
   },
   additionalDataLink: {
     color: '#DC762F',
@@ -406,7 +407,7 @@ const styles = (theme) => ({
     width: 'calc(100% + 8px)',
   },
   participantFileH: {
-    paddingLeft: '30px'
+    paddingLeft: '30px',
   },
   participantFileC: {
     paddingLeft: '30px',
@@ -429,7 +430,6 @@ const styles = (theme) => ({
     paddingTop: '2px',
   },
   imageCollection: {
-    marginTop: '10px',
     paddingLeft: '30px',
   },
   imageCollectionHeader: {
@@ -463,6 +463,47 @@ const styles = (theme) => ({
   },
   tableContainer2: {
     background: '#fff',
+  },
+
+  '@media (max-width: 1099px)': {
+    detailContainerRightTopParticipant: {
+      marginTop: '40px',
+    },
+    imageCollection: {
+      marginTop: '40px',
+      paddingLeft: '0px',
+    },
+    participantFileH: {
+      paddingLeft: '0px',
+    },
+    participantFileC: {
+      paddingLeft: '0px',
+    },
+  },
+  '@media (max-width: 899px)': {
+    detailContainerLeft: {
+      padding: '0px 31px 5px 8px',
+    },
+    detailContainerRight: {
+      padding: '0px 0px 5px 25px',
+    },
+  },
+  '@media (max-width: 799px)': {
+    borderRight: {
+      borderRight: 'none',
+    },
+    detailContainerLeft: {
+      minHeight: 'fit-content'
+    },
+    detailContainerRight: {
+      padding: '0px 0px 5px 0px',
+    },
+  },
+  '@media (max-width: 460px)': {
+    detailContainer: {
+      paddingLeft: '10px',
+      paddingRight: '10px',
+    },
   },
 });
 

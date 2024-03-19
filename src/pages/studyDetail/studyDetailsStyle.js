@@ -113,7 +113,7 @@ export default (theme) => ({
     fontFamily: 'Raleway, sans-serif',
     paddingLeft: '32px',
     paddingRight: '32px',
-    maxWidth: '1400px',
+    maxWidth: '1800px',
     margin: "0 auto",
   },
   content: {
@@ -146,7 +146,6 @@ export default (theme) => ({
     margin: 'auto',
     float: 'left',
     marginLeft: '95px',
-    width: 'calc(100% - 465px)',
   },
   headerMainTitle: {
     fontFamily: 'Inter',
@@ -167,9 +166,10 @@ export default (theme) => ({
     fontSize: '18px',
     color: '#274FA6',
     paddingLeft: '3px',
-    paddingRight: '200px',
     lineHeight: '21.78px',
     marginTop: '4px',
+    minWidth: 'fit-content',
+    whiteSpace: 'nowrap',
   },
   lowLetterSpace: {
     color: '#606061',
@@ -252,7 +252,7 @@ export default (theme) => ({
     color: '#000000',
     size: '12px',
     lineHeight: '23px',
-    maxWidth:'1400px',
+    maxWidth:'1800px',
   },
   headerButtonLink: {
     textDecoration: 'none',
@@ -288,5 +288,22 @@ export default (theme) => ({
     letterSpacing: '0.017em',
     fontWeight: '600',
     textTransform: 'uppercase',
+  },
+  '@media (max-width: 740px)': {
+    headerTitle: {
+      position: 'absolute',
+      top: '350px',
+    },
+    headerButton: {
+      marginLeft: '95px',
+      marginTop: '28px',
+      float: 'left',
+    },
+  },
+  '@media (max-width: 460px)': {
+    detailContainer: {
+      paddingLeft: '10px',
+      paddingRight: '10px',
+    },
   },
 });

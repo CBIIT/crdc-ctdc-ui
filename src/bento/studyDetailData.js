@@ -36,13 +36,13 @@ export const biospecimenProfile = {
   tabs: [
     {
       index: 0,
-      label: 'TYPE',
-      value: 'specimen_types',
+      label: 'TIMEPOINT',
+      value: 'specimen_timepoints',
     },
     {
       index: 1,
-      label: 'TIMEPOINT',
-      value: 'specimen_timepoints',
+      label: 'TYPE',
+      value: 'specimen_types',
     },
   ],
 };
@@ -64,7 +64,7 @@ export const argumentConfiguration = {
   },
   label: {
     size: 20,
-    position: 'inside',
+    position: 'outside',
     staggeringSpacing: 19,
   },
 };
@@ -91,7 +91,7 @@ export const valueConfiguration = {
     family: 'Inter',
   },
   chartGrid: {
-    visible: false,
+    visible: true,
   },
   label: {
     size: 12,

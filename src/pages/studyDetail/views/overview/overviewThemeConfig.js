@@ -27,6 +27,14 @@ export default ({
   const computedTheme = createTheme({
     ...themesLight,
     ...overrides,
+    breakpoints: {
+      ...themes.light.custom.breakpoints,
+      values: {
+        ...themes.light.custom.breakpoints.values,
+        md: themes.light.custom.breakpoints.values.customMd, // Set md breakpoint to 1100px
+        sm: themes.light.custom.breakpoints.values.customSm, // Set sm breakpoint to 799px
+      },
+    },
   });
 
   return (

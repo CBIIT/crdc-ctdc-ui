@@ -66,10 +66,13 @@ const GraphqlView = ({ classes }) => (<div className={classes.grapqhQlContainer}
 const styles = () => ({
   grapqhQlContainer: {
     height: '600px',
+    maxWidth: '1800px',
+    margin: 'auto',
+    padding: '10px 32px',
   },
   docExplorerTitle:{
     padding: '0px',  
-  }
+  },
 });
 
 export default withStyles(styles)(GraphqlView);
