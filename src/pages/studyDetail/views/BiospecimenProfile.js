@@ -6,7 +6,7 @@ import {
   Tab,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-// import { BarChart } from 'bento-components';
+import { BarChart } from 'bento-components';
 
 import { clearAllFilters } from '@bento-core/facet-filter';
 import {
@@ -20,7 +20,6 @@ import {
 import TabPanel from '../../../components/Tab/TabPanel';
 // import { navigatedToDashboard } from '../../../utils/utils';
 import store from '../../../store';
-import BarChart from '../../../components/BarChart/BarChart';
 
 const tooltipContent = ({ argument, originalValue }) => (
   <div>
