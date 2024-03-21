@@ -72,7 +72,7 @@ export const globalStatsData = [
     statIconAlt: 'Diagnoses Stats Bar Icon',
   },
   {
-    statTitle: 'THERAPIES',
+    statTitle: 'TARGETED THERAPIES',
     type: 'field',
     statAPI: 'numberOfTargetedTherapies',
     statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExploreStatsBarTargetedTherapiesIcon.svg',
