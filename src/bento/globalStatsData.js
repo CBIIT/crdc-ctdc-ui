@@ -107,7 +107,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
         $carcinogen_exposure: [String], 
         $targeted_therapy: [String],
          $anatomical_collection_site: [String],
-          $specimen_type: [String],
+          $specimen_category: [String],
            $tissue_category: [String],
             $assessment_timepoint: [String],
              $data_file_type: [String],
@@ -124,7 +124,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
+      specimen_category: $specimen_category
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type

@@ -147,7 +147,7 @@ export const facetsConfig = [
     label: 'Biospecimen Type',
     apiPath: 'specimenCountBySpecimenType',
     apiForFiltering: 'filterSpecimenCountBySpecimenType',
-    datafield: 'specimen_type',
+    datafield: 'specimen_category',
     field: GROUP,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
