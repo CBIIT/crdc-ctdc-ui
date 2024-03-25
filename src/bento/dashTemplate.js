@@ -266,7 +266,7 @@ export const widgetConfig = [
   },
   {
     type: 'donut',
-    title: 'Therapy',
+    title: 'Targeted Therapy',
     sliceTitle: "Participants",
     dataName: 'participantCountByTargetedTherapy',
   },
