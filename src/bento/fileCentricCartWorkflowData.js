@@ -97,7 +97,7 @@ export const myFilesPageData = {
 };
  
 export const manifestData = {
-  keysToInclude: ['data_file_name', 'data_file_uuid','data_file_uuid', 'data_file_checksum_value','subject_id', 'specimen_id', 'ctep_disease_term','meddra_disease_code', 'primary_disease_site','histology', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site', 'specimen_categorygorygory','tissue_category','assessment_timepoint','User_Comment'],
+  keysToInclude: ['data_file_name', 'data_file_uuid','data_file_uuid', 'data_file_checksum_value','subject_id', 'specimen_id', 'ctep_disease_term','meddra_disease_code', 'primary_disease_site','histology', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site', 'specimen_categorygorygory','tissue_type','assessment_timepoint','User_Comment'],
   header: ['name', 'drs_uri' ,'File ID', 'Md5sum','Participant ID', 'Biospecimen ID', 'Diagnosis','MedDRA Disease Code', 'Primary Site','Histology', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Environmental Exposures', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Biospecimen Type','Tissue Category','Collection Timepoint','User Comment'],
 };
 
@@ -143,7 +143,7 @@ export const GET_MY_CART_DATA_QUERY = gql`
       targeted_therapy
       anatomical_collection_site
       specimen_category
-      tissue_category
+      tissue_type
       assessment_timepoint
    }
   }
@@ -186,7 +186,7 @@ query fileOverview(
     targeted_therapy
     anatomical_collection_site
     specimen_category
-    tissue_category
+    tissue_type
     assessment_timepoint
   }
 }`;
@@ -232,7 +232,7 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     targeted_therapy
     anatomical_collection_site
     specimen_category
-    tissue_category
+    tissue_type
     assessment_timepoint
  }
 }`;

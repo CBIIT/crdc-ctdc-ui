@@ -97,7 +97,7 @@ query search(
       $targeted_therapy: [String],
        $anatomical_collection_site: [String],
         $specimen_category: [String],
-         $tissue_category: [String],
+         $tissue_type: [String],
           $assessment_timepoint: [String],
            $data_file_type: [String],
             $data_file_format: [String]) {
@@ -114,7 +114,7 @@ query search(
     targeted_therapy: $targeted_therapy
     anatomical_collection_site: $anatomical_collection_site
     specimen_category: $specimen_category
-    tissue_category: $tissue_category
+    tissue_type: $tissue_type
     assessment_timepoint: $assessment_timepoint
     data_file_type: $data_file_type
     data_file_format: $data_file_format
@@ -349,7 +349,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $targeted_therapy: [String],
     $anatomical_collection_site: [String],
     $specimen_category: [String],
-    $tissue_category: [String],
+    $tissue_type: [String],
     $assessment_timepoint: [String],
     $data_file_type: [String],
     $data_file_format: [String],
@@ -371,7 +371,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
       specimen_category: $specimen_category
-      tissue_category: $tissue_category
+      tissue_type: $tissue_type
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
       data_file_format: $data_file_format
@@ -411,7 +411,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     $targeted_therapy: [String],
     $anatomical_collection_site: [String],
     $specimen_category: [String],
-    $tissue_category: [String],
+    $tissue_type: [String],
     $assessment_timepoint: [String],
     $data_file_type: [String],
     $data_file_format: [String],
@@ -433,7 +433,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
       specimen_category: $specimen_category
-      tissue_category: $tissue_category
+      tissue_type: $tissue_type
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
       data_file_format: $data_file_format
@@ -450,7 +450,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       parent_specimen_id,
       anatomical_collection_site,
       specimen_category,
-      tissue_category,
+      tissue_type,
       assessment_timepoint
 
       data_file_uuid
@@ -472,7 +472,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     $targeted_therapy: [String],
     $anatomical_collection_site: [String],
     $specimen_category: [String],
-    $tissue_category: [String],
+    $tissue_type: [String],
     $assessment_timepoint: [String],
     $data_file_type: [String],
     $data_file_format: [String],
@@ -494,7 +494,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
       specimen_category: $specimen_category
-      tissue_category: $tissue_category
+      tissue_type: $tissue_type
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
       data_file_format: $data_file_format
@@ -1330,7 +1330,7 @@ query participant_data_files(
   $targeted_therapy: [String],
   $anatomical_collection_site: [String],
   $specimen_category: [String],
-  $tissue_category: [String],
+  $tissue_type: [String],
   $assessment_timepoint: [String],
   $data_file_type: [String],
   $data_file_format: [String],
@@ -1352,7 +1352,7 @@ query participant_data_files(
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
       specimen_category: $specimen_category
-      tissue_category: $tissue_category
+      tissue_type: $tissue_type
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
       data_file_format: $data_file_format
@@ -1383,7 +1383,7 @@ query biospecimenAddAllToCart(
 
   $anatomical_collection_site: [String],
   $specimen_category: [String],
-  $tissue_category: [String],
+  $tissue_type: [String],
   $assessment_timepoint: [String],
   $specimen_id: [String],
 
@@ -1409,7 +1409,7 @@ query biospecimenAddAllToCart(
     
     anatomical_collection_site: $anatomical_collection_site
     specimen_category: $specimen_category
-    tissue_category: $tissue_category
+    tissue_type: $tissue_type
     assessment_timepoint: $assessment_timepoint
     specimen_id: $specimen_id
 
@@ -1442,7 +1442,7 @@ query fileAddSelectedToCart(
   $targeted_therapy: [String],
   $anatomical_collection_site: [String],
   $specimen_category: [String],
-  $tissue_category: [String],
+  $tissue_type: [String],
   $assessment_timepoint: [String],
   $data_file_type: [String],
   $data_file_format: [String],
@@ -1465,7 +1465,7 @@ query fileAddSelectedToCart(
     targeted_therapy: $targeted_therapy
     anatomical_collection_site: $anatomical_collection_site
     specimen_category: $specimen_category
-    tissue_category: $tissue_category
+    tissue_type: $tissue_type
     assessment_timepoint: $assessment_timepoint
     data_file_type: $data_file_type
     data_file_format: $data_file_format
@@ -1494,7 +1494,7 @@ query participant_data_files(
   $targeted_therapy: [String],
   $anatomical_collection_site: [String],
   $specimen_category: [String],
-  $tissue_category: [String],
+  $tissue_type: [String],
   $assessment_timepoint: [String],
   $data_file_type: [String],
   $data_file_format: [String],
@@ -1516,7 +1516,7 @@ query participant_data_files(
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
       specimen_category: $specimen_category
-      tissue_category: $tissue_category
+      tissue_type: $tissue_type
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
       data_file_format: $data_file_format
@@ -1546,7 +1546,7 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
 
     $anatomical_collection_site: [String],
     $specimen_category: [String],
-    $tissue_category: [String],
+    $tissue_type: [String],
     $assessment_timepoint: [String],
 
     $data_file_type: [String],
@@ -1570,7 +1570,7 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
       specimen_category: $specimen_category
-      tissue_category: $tissue_category
+      tissue_type: $tissue_type
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
       data_file_format: $data_file_format
@@ -1600,7 +1600,7 @@ query fileAddAllToCart(
   $targeted_therapy: [String],
   $anatomical_collection_site: [String],
   $specimen_category: [String],
-  $tissue_category: [String],
+  $tissue_type: [String],
   $assessment_timepoint: [String],
   $data_file_type: [String],
   $data_file_format: [String],
@@ -1622,7 +1622,7 @@ query fileAddAllToCart(
     targeted_therapy: $targeted_therapy
     anatomical_collection_site: $anatomical_collection_site
     specimen_category: $specimen_category
-    tissue_category: $tissue_category
+    tissue_type: $tissue_type
     assessment_timepoint: $assessment_timepoint
     data_file_type: $data_file_type
     data_file_format: $data_file_format
@@ -1893,7 +1893,7 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'tissue_category',
+        dataField: 'tissue_type',
         header: 'Tissue Category',
         display: true,
         tooltipText: 'sort',

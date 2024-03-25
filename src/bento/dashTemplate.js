@@ -158,7 +158,7 @@ export const facetsConfig = [
     label: 'Tissue Category',
     apiPath: 'specimenCountByTissueCategory',
     apiForFiltering: 'filterSpecimenCountByTissueCategory',
-    datafield: 'tissue_category',
+    datafield: 'tissue_type',
     field: GROUP,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,

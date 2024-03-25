@@ -182,7 +182,7 @@ export const SEARCH_PAGE_RESULT_BIOSPECIMENS = gql`
         ctep_disease_term
         specimen_category
         parent_specimen_type
-        tissue_category
+        tissue_type
         anatomical_collection_site
         assessment_timepoint
       }

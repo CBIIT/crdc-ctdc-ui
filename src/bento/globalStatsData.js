@@ -108,7 +108,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
         $targeted_therapy: [String],
          $anatomical_collection_site: [String],
           $specimen_category: [String],
-           $tissue_category: [String],
+           $tissue_type: [String],
             $assessment_timepoint: [String],
              $data_file_type: [String],
               $data_file_format: [String]) {
@@ -125,7 +125,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
       specimen_category: $specimen_category
-      tissue_category: $tissue_category
+      tissue_type: $tissue_type
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
       data_file_format: $data_file_format
