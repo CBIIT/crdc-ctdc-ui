@@ -111,7 +111,7 @@ export const facetsConfig = [
   },
   {
     section: CASES,
-    label: 'Environmental Exposures',
+    label: 'Carcinogen Exposure',
     apiPath: 'participantCountByCarcinogenExposure',
     apiForFiltering: 'filterParticipantCountByCarcinogenExposure',
     datafield: 'carcinogen_exposure',
