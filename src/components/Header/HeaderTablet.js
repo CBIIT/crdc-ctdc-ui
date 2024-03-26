@@ -28,7 +28,8 @@ const HeaderContainer = styled.div`
 
     .headerLowerContainer {
         display: flex;
-        margin: 16px 0 4px 0;
+        margin: 16px 0 0 0;
+        padding-bottom: 4px;
         height: 51px;
     }
 

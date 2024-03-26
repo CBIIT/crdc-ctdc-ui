@@ -159,7 +159,7 @@ const Overview = ({
                       <span className={classes.detailContainerHeaderText}>DIAGNOSES</span>
                     </Grid>
                   </Grid>
-                  <Grid container className={classes.detailContainerCL}>
+                  <Grid container className={classes.detailContainerCL} tabIndex="0">
                     {diagnoses.sort((a, b) => customSorting(a, b)).map((diagnosis, index) => (
                       <Grid item xs={12} key={index}>
                         <span className={classes.content}>

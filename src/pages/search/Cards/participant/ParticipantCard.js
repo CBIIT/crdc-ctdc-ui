@@ -16,6 +16,7 @@ const ParticipantCard = ({ data = {}, index })=> {
     race,
     ethnicity,
     targeted_therapy: therapy,
+    stage_of_disease: stageOfDisease,
   } = data;
   const classes = useStyles();
 
@@ -55,6 +56,8 @@ const ParticipantCard = ({ data = {}, index })=> {
             {renderInfo('Race:', race)}
             {renderInfo('Ethnicity:', ethnicity)}
             {renderInfo('Therapy:', removeSquareBracketsFromString(therapy))}
+            {renderInfo('Stage of Disease:', stageOfDisease)}
+
           </div>
         </div>
       </Grid>

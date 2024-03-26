@@ -97,8 +97,8 @@ const useStyles = makeStyles((theme) => {
       lineHeight: '21px',
       letterSpacing: '0px',
       textAlign: 'left',
-      width: '115px',
-      minWidth: '115px',
+      width: '135px',
+      minWidth: '135px',
       margin: '0px 0px 0px 3px',
       padding: '0px',
       textTransform: 'uppercase'
@@ -111,7 +111,7 @@ const useStyles = makeStyles((theme) => {
       letterSpacing: '0px',
       textAlign: 'left',
       margin: '0px',
-      padding: '0px',
+      paddingLeft: '31px',
       marginTop: '-2px',
     },
     hrContainer: {
