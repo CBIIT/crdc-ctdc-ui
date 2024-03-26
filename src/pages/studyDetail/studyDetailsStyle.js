@@ -141,6 +141,7 @@ export default (theme) => ({
     borderBottom: '#4B619A 12px solid',
     height: '118px',
     margin: 'auto',
+    position: 'relative',
   },
   headerTitle: {
     margin: 'auto',
@@ -292,7 +293,7 @@ export default (theme) => ({
   '@media (max-width: 740px)': {
     headerTitle: {
       position: 'absolute',
-      top: '350px',
+      top: '0px',
     },
     headerButton: {
       marginLeft: '95px',
