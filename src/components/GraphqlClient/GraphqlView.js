@@ -69,6 +69,32 @@ const styles = () => ({
     maxWidth: '1800px',
     margin: 'auto',
     padding: '10px 32px',
+    // Modified the default CSS for compliance with 508 color contrast standards
+    '& .cm-comment': {
+      color: 'black',
+    },
+    '& .doc-explorer-title-bar': {
+      height: '47px', // 34px
+    },
+    '& .CodeMirror-linenumber': {
+      color: 'black', // #999
+    },
+    '& .doc-category-title': {
+      color: 'black', // #999
+    },
+    '& .doc-category-item': {
+      '& .type-name': {
+        color: '#8c5d00', // ##ca9800
+      },
+    },
+    '& .resultWrap': {
+      '& .cm-number': {
+        color: '#043E8B', // #97b0c0
+      },
+      '& .cm-string': {
+        color: '#711948', // #D64292
+      },
+    },
   },
   docExplorerTitle:{
     padding: '0px',  
