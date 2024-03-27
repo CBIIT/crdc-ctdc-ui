@@ -99,7 +99,7 @@ export const statsStyling = {
     fontFamily: 'Oswald',
     fontSize: '20px',
     margin: '-5px 0px -4px 8px',
-    paddingTop: '0px',
+    paddingTop: '2px',
     // lineHeight: 17px
   },
   statTitle: {
