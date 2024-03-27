@@ -1,6 +1,6 @@
 /* eslint-disable */
 import gql from 'graphql-tag';
-import { cellTypes, dataFormatTypes } from '@bento-core/table';
+import { cellTypes, dataFormatTypes, headerTypes } from '@bento-core/table';
 // import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
 import downloadSuccess from '../assets/dash/downloadSuccess.svg'
 import downloadLock from '../assets/dash/downloadLock.svg'
@@ -1743,6 +1743,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'race',
