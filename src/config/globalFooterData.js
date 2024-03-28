@@ -28,7 +28,7 @@ export default {
         },
         {
           text: 'CRDC',
-          link: '/crdc',
+          link: 'https://datacommons.cancer.gov',
         },
       ],
     }, {
