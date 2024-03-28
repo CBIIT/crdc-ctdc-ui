@@ -246,16 +246,24 @@ export const widgetConfig = [
     resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
   },
   {
-    type: 'sunburst',
-    title: 'Sex and Gender',
+    type: 'donut',
+    title: 'Sex',
     sliceTitle: "Participants",
-    dataName: 'sexesAndGenders',
-    datatable_level1_field: 'program', // Inner Ring
-    datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'arm', // Outer Ring
-    datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
-    resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
+    dataName: 'participantCountBySex',
   },
+  /* Covert "Sex and Gender" sunburst to Sex donut above, preserving this for future implementation.
+    {
+      type: 'sunburst',
+      title: 'Sex and Gender',
+      sliceTitle: "Participants",
+      dataName: 'sexesAndGenders',
+      datatable_level1_field: 'program', // Inner Ring
+      datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
+      datatable_level2_field: 'arm', // Outer Ring
+      datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+      resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
+    },
+  */
   {
     type: 'sunburst',
     title: 'Race and Ethnicity',
