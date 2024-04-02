@@ -233,7 +233,7 @@ export default {
     },
     text: {
       withbackground: 'white',
-      primary: '#4A4A4A',
+      primary: '##4D4D4D',
       secondary: '#6E6E6E',
       hint: '#B9B9B9',
       link: '#0083c6',
