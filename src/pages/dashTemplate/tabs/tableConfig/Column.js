@@ -50,6 +50,116 @@ export const CustomHeaderCellView = (props) => {
       </>
     )
   }
+  else if (props.dataField === "stage_of_disease") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '130px',textAlign: 'center'}}>
+      Disease Stage
+      </span>
+      </>
+    )
+  }
+  else if (props.dataField === "subject_id") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '170px',textAlign: 'left'}}>
+      Participant ID
+      </span>
+      </>
+    )
+  }
+  else if (props.dataField === "carcinogen_exposure") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '200px',textAlign: 'center'}}>
+      Carcinogen Exposure
+      </span>
+      </>
+    )
+  
+  }
+  else if (props.dataField === "targeted_therapy") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '170px',textAlign: 'left'}}>
+      Targeted Therapy
+      </span>
+      </>
+    )
+  
+  }
+  else if (props.dataField === "tumor_grade") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '100px',textAlign: 'center'}}>
+      Tumor Grade
+      </span>
+      </>
+    )
+  }
+  else if (props.dataField === "specimen_id") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '150px',textAlign: 'left'}}>
+      Biospecimen ID
+      </span>
+      </>
+    )
+  }
+  else if (props.dataField === "parent_specimen_id") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '200px',textAlign: 'left'}}>
+      Parent Biospecimen ID
+      </span>
+      </>
+    )
+  }
+  else if (props.dataField === "anatomical_collection_site") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '225px',textAlign: 'left'}}>
+      Anatomical Collection Site
+      </span>
+      </>
+    )
+  }
+  else if (props.dataField === "specimen_type") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '150px',textAlign: 'center'}}>
+      Biospecimen Type
+      </span>
+      </>
+    )
+  }
+  else if (props.dataField === "tissue_category") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '150px',textAlign: 'center'}}>
+      Tissue Category
+      </span>
+      </>
+    )
+  }
+  else if (props.dataField === "assessment_timepoint") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '200px',textAlign: 'left'}}>
+      Collection Timepoint
+      </span>
+      </>
+    )
+  }
+  else if (props.dataField === "data_file_type") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '150px',textAlign: 'left'}}>
+      File Type
+      </span>
+      </>
+    )
+  }
     return <> {props.header}</>
 }
 
