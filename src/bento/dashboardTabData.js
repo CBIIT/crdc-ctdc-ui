@@ -1971,6 +1971,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM
       },
       {
         dataField: 'data_file_format',

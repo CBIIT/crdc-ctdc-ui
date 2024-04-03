@@ -13,12 +13,12 @@ export const programListingIcon = {
 /** used by the Global Search header autocomplete */
 export const SEARCH_KEYS = {
   public: [],
-  private: ['participants', 'biospecimens', 'participants', 'participants'],
+  private: ['participants', 'biospecimens', 'gs_list'],
 };
 
 export const SEARCH_DATAFIELDS = {
   public: [],
-  private: ['subject_id', 'specimen_id', 'ctep_disease_term', 'stage_of_disease'],
+  private: ['subject_id', 'specimen_id', 'autocomplete_list'],
 };
 
 /** used by the Global Search page results */
@@ -130,11 +130,12 @@ export const SEARCH = gql`
     globalSearch(input: $input) {
       participants {
         subject_id
-        ctep_disease_term
-        stage_of_disease
       }
       biospecimens {
         specimen_id
+      }
+      gs_list{
+        autocomplete_list
       }
       model {
         node_name
