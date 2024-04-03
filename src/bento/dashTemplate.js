@@ -45,7 +45,7 @@ export const facetsConfig = [
   },
   {
     section: CASES,
-    label: 'Stage of Disease',
+    label: 'Disease Stage',
     apiPath: 'participantCountByStageOfDisease',
     apiForFiltering: 'filterParticipantCountByStageOfDisease',
     datafield: 'stage_of_disease',
