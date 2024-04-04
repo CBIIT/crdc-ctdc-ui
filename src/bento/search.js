@@ -134,7 +134,7 @@ export const SEARCH = gql`
       biospecimens {
         specimen_id
       }
-      gs_list{
+      gs_list {
         autocomplete_list
       }
       model {
