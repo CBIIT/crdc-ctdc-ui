@@ -13,12 +13,12 @@ export const programListingIcon = {
 /** used by the Global Search header autocomplete */
 export const SEARCH_KEYS = {
   public: [],
-  private: ['gs_list','participants', 'biospecimens'],
+  private: ['gs_list'],
 };
 
 export const SEARCH_DATAFIELDS = {
   public: [],
-  private: ['autocomplete_list','subject_id', 'specimen_id',],
+  private: ['autocomplete_list'],
 };
 
 /** used by the Global Search page results */
