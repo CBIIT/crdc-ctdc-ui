@@ -41,7 +41,8 @@ export const facetsConfig = [
     show: true,
     facetClasses: {
       border: '10px solid red'
-    }
+    },
+    defaultValue: 'Unspecified',
   },
   {
     section: CASES,
@@ -53,6 +54,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: 'Unspecified',
   },
   {
     section: CASES,
@@ -64,6 +66,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: 'Unspecified',
   },
   {
     section: CASES,
@@ -75,6 +78,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.RANGE,
     show: true,
+    defaultValue: 'Unspecified',
   },
   {
     section: CASES,
@@ -86,6 +90,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.CUSTOM_NUMBER,
     show: true,
+    defaultValue: 'Unspecified',
   },
   {
     section: CASES,
@@ -97,6 +102,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: 'Unspecified',
   },
   {
     section: CASES,
@@ -108,6 +114,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: 'Unspecified',
   },
   {
     section: CASES,
@@ -119,6 +126,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: 'Unspecified',
   },
   {
     section: CASES,
@@ -130,6 +138,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: 'Unspecified',
   },
   {
     section: SAMPLES,
@@ -141,6 +150,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: 'Unspecified',
   },
   {
     section: SAMPLES,
@@ -152,6 +162,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: 'Unspecified',
   },
   {
     section: SAMPLES,
@@ -163,6 +174,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: 'Unspecified',
   },
   {
     section: SAMPLES,
@@ -174,6 +186,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: 'Unspecified',
   },
   {
     section: FILES,
@@ -185,6 +198,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: 'Unspecified',
   },
   {
     section: FILES,
@@ -196,6 +210,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: 'Unspecified',
   },
 ];
 
@@ -246,24 +261,16 @@ export const widgetConfig = [
     resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
   },
   {
-    type: 'donut',
-    title: 'Sex',
+    type: 'sunburst',
+    title: 'Sex and Gender',
     sliceTitle: "Participants",
-    dataName: 'participantCountBySex',
+    dataName: 'sexesAndGenders',
+    datatable_level1_field: 'program', // Inner Ring
+    datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
+    datatable_level2_field: 'arm', // Outer Ring
+    datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+    resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
   },
-  /* Covert "Sex and Gender" sunburst to Sex donut above, preserving this for future implementation.
-    {
-      type: 'sunburst',
-      title: 'Sex and Gender',
-      sliceTitle: "Participants",
-      dataName: 'sexesAndGenders',
-      datatable_level1_field: 'program', // Inner Ring
-      datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-      datatable_level2_field: 'arm', // Outer Ring
-      datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
-      resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
-    },
-  */
   {
     type: 'sunburst',
     title: 'Race and Ethnicity',

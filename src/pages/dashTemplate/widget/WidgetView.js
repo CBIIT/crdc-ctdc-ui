@@ -49,6 +49,16 @@ const WidgetView = ({
   };
   const { Widget } = useCallback(WidgetGenerator(widgetGeneratorConfig), []);
 
+  const titleTransformer = (sunburstTitle) => {
+    if (sunburstTitle.includes(':')) {
+      // Extract the title parts
+      const [firstString, secondString] = sunburstTitle.split(' : ');
+      // Replace empty strings with "Unspecified"
+      return `${firstString || 'Unspecified'} : ${secondString || 'Unspecified'}`;
+    }
+    return sunburstTitle;
+  };
+  
   return (
     <>
       <div className={classes.widgetsCollapse}>
@@ -107,6 +117,7 @@ const WidgetView = ({
                   chartTitleLocation="bottom"
                   chartTitleAlignment="center"
                   resetSunburstOnMouseOut={widget.resetSunburstOnMouseOut}
+                  titleTransformer={titleTransformer}
                 />
               </Grid>
             );
