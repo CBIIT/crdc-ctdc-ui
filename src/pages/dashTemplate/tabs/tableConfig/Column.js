@@ -160,6 +160,15 @@ export const CustomHeaderCellView = (props) => {
       </>
     )
   }
+  else if (props.dataField === "data_file_name") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '150px',textAlign: 'left'}}>
+      File Name
+      </span>
+      </>
+    )
+  }
     return <> {props.header}</>
 }
 
