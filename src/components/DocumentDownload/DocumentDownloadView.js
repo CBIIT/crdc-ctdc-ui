@@ -35,7 +35,7 @@ const fetchFileToDownload = (fileId = '', signOut, setShowModal, fileName, fileF
     // Check if response status is not 200 (OK)
     else if (response.status !== 200) {
       // Throw an error with detailed message
-      throw new Error(`Failed to fetch the file from "${fileID}". Server responded with: ${response.status} (${response.statusText})`);
+      throw new Error(`Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`);
     }
     // If response status is 200, parse response body as JSON
     return response.json();
