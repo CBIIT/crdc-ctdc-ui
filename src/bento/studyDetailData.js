@@ -56,7 +56,7 @@ export const argumentConfiguration = {
   position: 'inside',
   size: 12,
   title: {
-    text: 'Biospecimen Type',
+    text: 'Analyte',
     size: 13,
     color: '#444444',
     weight: 500,

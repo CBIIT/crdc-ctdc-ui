@@ -128,7 +128,7 @@ export const CustomHeaderCellView = (props) => {
     return (
       <>
       <span style={{fontSize: '14px',width: '150px',textAlign: 'center'}}>
-      Biospecimen Type
+        Analyte
       </span>
       </>
     )
