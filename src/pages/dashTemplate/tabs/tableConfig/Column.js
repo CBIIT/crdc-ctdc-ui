@@ -127,8 +127,8 @@ export const CustomHeaderCellView = (props) => {
   else if (props.dataField === "specimen_type") {
     return (
       <>
-      <span style={{fontSize: '14px',width: '150px',textAlign: 'center'}}>
-      Biospecimen Type
+      <span style={{fontSize: '14px',width: '150px',textAlign: 'left'}}>
+        Analyte
       </span>
       </>
     )
@@ -136,7 +136,7 @@ export const CustomHeaderCellView = (props) => {
   else if (props.dataField === "tissue_category") {
     return (
       <>
-      <span style={{fontSize: '14px',width: '150px',textAlign: 'center'}}>
+      <span style={{fontSize: '14px',width: '150px',textAlign: 'left'}}>
       Tissue Category
       </span>
       </>
@@ -169,8 +169,18 @@ export const CustomHeaderCellView = (props) => {
       </>
     )
   }
+  else if (props.dataField === "primary_disease_site") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '150px',textAlign: 'left'}}>
+      Primary Site
+      </span>
+      </>
+    )
+  }
     return <> {props.header}</>
 }
+
 
 /**
 * set column configuration

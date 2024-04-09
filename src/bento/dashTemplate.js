@@ -154,7 +154,7 @@ export const facetsConfig = [
   },
   {
     section: SAMPLES,
-    label: 'Biospecimen Type',
+    label: 'Analyte',
     apiPath: 'specimenCountBySpecimenType',
     apiForFiltering: 'filterSpecimenCountBySpecimenType',
     datafield: 'specimen_type',

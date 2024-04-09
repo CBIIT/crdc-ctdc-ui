@@ -47,7 +47,7 @@ const BiospecimenCard = ({ data = {}, index }) => {
           <div className={classes.column}>
             {renderInfo('Participant:', subjectId)}
             {renderInfo('Diagnosis:', ctepDiseaseTerm)}
-            {renderInfo('Biospecimen type:', biospecimenType)}
+            {renderInfo('Analyte:', biospecimenType)}
             {renderInfo('Parent biospecimen:', parentSpecimenType)}
           </div>
 

@@ -512,7 +512,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       data_file_description,
       specimen_id,
       ctep_disease_term
-      
+      parent_specimen_id
       data_file_uuid
     }
   }
@@ -1803,8 +1803,8 @@ export const tabContainers = [
     api: GET_BIOSPECIMENS_OVERVIEW_QUERY,
     count: 'numberOfSpecimens',
     paginationAPIField: 'biospecimenOverview',
-    dataKey: 'specimen_id',
-    defaultSortField: 'specimen_id',
+    dataKey: 'parent_specimen_id',
+    defaultSortField: 'parent_specimen_id',
     defaultSortDirection: 'asc',
     tableID: 'biospecimens_tab_table',
     addAllButtonText: 'ADD FILES FOR ALL BIOSPECIMENS',
@@ -1871,11 +1871,13 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM
       },
+      // Hidden: Using parent_specimen_id instead
       {
         dataField: 'specimen_id',
         header: 'Biospecimen ID',
-        display: true,
+        display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         headerType: headerTypes.CUSTOM_ELEM,
@@ -1898,7 +1900,7 @@ export const tabContainers = [
       },
       {
         dataField: 'specimen_type',
-        header: 'Biospecimen Type',
+        header: 'Analyte',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -2046,9 +2048,18 @@ export const tabContainers = [
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
+      // Hidden: Using parent_specimen_id instead
       {
         dataField: 'specimen_id',
         header: 'Biospecimen ID',
+        display: false,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
+      },
+      {
+        dataField: 'parent_specimen_id',
+        header: 'Parent Biospecimen ID',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
