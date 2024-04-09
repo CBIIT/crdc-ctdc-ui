@@ -1871,6 +1871,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM
       },
       // Hidden: Using parent_specimen_id instead
       {
