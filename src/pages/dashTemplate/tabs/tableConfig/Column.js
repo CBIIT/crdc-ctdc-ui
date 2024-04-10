@@ -44,8 +44,8 @@ export const CustomHeaderCellView = (props) => {
   if (props.dataField === "reported_gender") {
     return (
       <>
-      <span style={{fontSize: '14px',width: '76px',textAlign: 'center'}}>
-       Gender <p style={{fontSize: '12px', lineHeight: '14px', margin: 0, textAlign: 'center',fontWeight: '700'}}>(if different than sex)</p>
+      <span style={{fontSize: '14px',width: '130px',textAlign: 'center'}}>
+       Gender <p style={{fontSize: '10px', lineHeight: '0px', margin: 0, textAlign: 'center',fontWeight: '700'}}>(if different than sex)</p>
       </span>
       </>
     )
