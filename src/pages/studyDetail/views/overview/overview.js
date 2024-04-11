@@ -10,6 +10,28 @@ import {
 } from '../../../../bento/studyDetailData';
 import BiospecimenProfile from '../BiospecimenProfile';
 import OverviewThemeProvider from './overviewThemeConfig';
+import ZipDownloadView from './components/ZipDownloadView';
+import downloadSuccess from '../../../../assets/study/zipDownloadIcon.svg'
+import toolTipIcon from '../../../../assets/study/questionMarkTooltip.svg'
+
+const documentDownloadProps = {
+    // datafield where file file id exists in the table which is used to get file location
+    fileLocationColumn: 'data_file_uuid',
+    // datafield where file format exists in the table
+    fileFormatColumn: 'data_file_format',
+    // datafield where file name exists
+    fileName: 'data_file_name',
+
+    // Case 1: Logged in and granted access, file size below {maxFileSize}
+    toolTipTextFileDownload: 'Download a copy of this file',
+    iconFileDownload: downloadSuccess,
+    
+    // Case 2: Not logged in or access not granted, file size below {maxFileSize}
+    iconUnauthenticated: downloadSuccess,
+    toolTipTextUnauthenticated: 'You must be logged in and must already have been granted access to download a copy of this file',
+
+    toolTipIcon,
+}
 
 const Overview = ({
   classes,
@@ -45,6 +67,12 @@ const Overview = ({
   const imageCollection = JSON.parse(JSON.stringify(data.studyByStudyShortName[0].image_collection));
   const { study_name, study_description, study_type, dates_of_conduct } = data.studyByStudyShortName[0];
 
+  // TODO: BE API need to provide this
+  const zipData = {
+    data_file_uuid: 'dg.4DFC/4df75011-0149-4f1e-9f5a-e9c192618c17',
+    data_file_name: 'CMB-all-files.CTDCV1',
+    data_file_format: 'zip',
+}
   const customSorting = (a, b) => {
     let val = 0
     if(a < b) { val = -1; }
@@ -134,7 +162,33 @@ const Overview = ({
                       ))}
                     </Grid>
                   </Grid>
-              
+
+                  <Grid item xs={12} className={classes.detailContainerItem}>
+                    <Grid item container direction="row">
+                      <Grid item xs={12} className={classes.title}>
+                        AVAILABLE DOWNLOADS
+                      </Grid>
+                      <Grid item xs={12} className={classes.content}>
+                        Subject to the appropriate access controls, copies of all Clinical Reports, Variant Reports,
+                        and Variant Call Files associated with the Cancer Moonshot Biobank study that are currently
+                        represented within the application can be downloaded in the form of a .zip file by selecting
+                        the ZIP FILE download option below.
+
+                        <ZipDownloadView
+                          fileFormat={zipData[documentDownloadProps.fileFormatColumn]}
+                          fileName={zipData[documentDownloadProps.fileName]}
+                          fileLocation={zipData[documentDownloadProps.fileLocationColumn]}
+                          toolTipTextFileDownload={documentDownloadProps.toolTipTextFileDownload}
+                          iconFileDownload={documentDownloadProps.iconFileDownload}
+
+                          iconUnauthenticated={documentDownloadProps.iconUnauthenticated}
+                          toolTipTextUnauthenticated={documentDownloadProps.toolTipTextUnauthenticated}
+
+                          toolTipIcon={documentDownloadProps.toolTipIcon}
+                        />
+                      </Grid>
+                    </Grid>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
@@ -237,7 +291,7 @@ const Overview = ({
                         </div>
                       ))}
                       </div>
-                      <p className={classes.scrollDownText}>Scroll down to see more available</p>
+                      <p className={classes.helpfulDirectionText}>Scroll down to see more available</p>
                     </Grid>
                   </Grid>
                 </Grid>
@@ -311,8 +365,8 @@ const styles = (theme) => ({
     width: '100%',
   },
   studyDescription: {
+    marginTop: '10px',
     paddingTop: '0px !important',
-    // paddingLeft: '2px'
   },
   detailContainer: {
     margin: 'auto',
@@ -344,16 +398,12 @@ const styles = (theme) => ({
     display: 'block',
     padding: '0px 61px 5px 8px',
     minHeight: '810px',
-    maxHeight: '810px',
+    maxHeight: '980px',
     overflowY: 'auto',
     overflowX: 'hidden',
     width: 'calc(100% + 8px) !important',
     marginLeft: '-8px',
     marginTop: '30px'
-  },
-  containerHeader: {
-    // marginBottom: '10px',
-    // lineHeight: '9px',
   },
   detailContainerHeaderText: {
     fontFamily: theme.custom.fontFamilyInter,
@@ -370,7 +420,8 @@ const styles = (theme) => ({
     fontWeight: 400,
     color: '#000'
   },
-  scrollDownText: {
+  helpfulDirectionText: {
+    marginTop: '59px',
     fontFamily: 'Roboto',
     fontWeight: 400,
     color: '#757575',
@@ -380,7 +431,7 @@ const styles = (theme) => ({
   title: {
     color: '#067CA7',
     fontFamily: theme.custom.fontFamilyInter,
-    fontSize: '16px',
+    fontSize: '18px',
     letterSpacing: '0.017em',
     fontWeight: '400',
     textTransform: 'uppercase',
@@ -433,7 +484,7 @@ const styles = (theme) => ({
     paddingLeft: '30px',
   },
   imageCollectionHeader: {
-    marginBottom: '10px',
+    marginBottom: '45px',
   },
   linkIcon: {
     width: '20px',
@@ -470,7 +521,7 @@ const styles = (theme) => ({
       marginTop: '40px',
     },
     imageCollection: {
-      marginTop: '40px',
+      marginTop: '55px',
       paddingLeft: '0px',
     },
     participantFileH: {

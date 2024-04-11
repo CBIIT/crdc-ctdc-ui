@@ -41,7 +41,7 @@ export const biospecimenProfile = {
     },
     {
       index: 1,
-      label: 'TYPE',
+      label: 'ANALYTE',
       value: 'specimen_types',
     },
   ],

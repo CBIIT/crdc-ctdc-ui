@@ -115,6 +115,9 @@ const BiospecimenProfile = ({ classes, d }) => {
           <Grid container className={classes.detailContainerItems}>
             { biospecimenProfile.tabs.map((item, index) => renderTabContent(item, index)) }
           </Grid>
+          <Grid container>
+            <p className={classes.helpfulDirectionText}>Move cursor over barchart to see data count in detail</p>
+          </Grid>
         </>
       ) : (
         <Grid container className={classes.detailContainerCL}>
@@ -221,6 +224,14 @@ const styles = (theme) => ({
       fontWeight: '600',
     },
     fontFamily: theme.custom.fontFamilyNunitoSansRegular,
+  },
+  helpfulDirectionText: {
+    marginTop: '18px',
+    fontFamily: 'Roboto',
+    fontWeight: 400,
+    color: '#757575',
+    fontSize: '13px',
+    fontStyle: 'italic',
   },
 });
 
