@@ -16,7 +16,7 @@ import { useAuth } from '../Authentication';
 const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
 
 // Function to fetch and download a file
-const fetchFileToDownload = (fileId = '', signOut, setShowModal, fileName, fileFormat) => {
+export const fetchFileToDownload = (fileId = '', signOut, setShowModal, fileName, fileFormat) => {
   fetch(`${FILE_SERVICE_API}${fileId}`, {
     method: 'GET',
     headers: {

@@ -10,68 +10,7 @@ import env from '../../../../../utils/env';
 import { enableAuthentication } from '../../../../../bento/siteWideConfig';
 import SessionTimeOutModal from '../../../../../components/sessionTimeOutModal';
 import { useAuth } from '../../../../../components/Authentication';
-
-const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
-
-// Function to fetch and download a file
-const fetchFileToDownload = (fileId = '', signOut, setShowModal, fileName, fileFormat) => {
-  fetch(`${FILE_SERVICE_API}${fileId}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/pdf',
-    },
-  })
-  .then((response) => {
-    // Check if response status is 403 (Forbidden)
-    if (response.status === 403) {
-      // Trigger sign out and show modal
-      signOut();
-      setShowModal(true);
-      // Throw an error to stop the execution of the promise chain
-      throw new Error('Forbidden');
-    } 
-    // Check if response status is not 200 (OK)
-    else if (response.status !== 200) {
-      // Throw an error with detailed message
-      throw new Error(`Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`);
-    }
-    // If response status is 200, parse response body as JSON
-    return response.json();
-  })
-  .then((response) => {
-    // Extract file path from the response
-    const fileURL = response.url;
-
-    // Check if file path exists
-    if (!fileURL) {
-      // If file path is missing, throw an error
-      throw new Error('Missing File URL');
-    }
-    
-    // Call function to download the file
-    downloadFile(fileURL, fileName, fileFormat);
-  })
-  .catch((error) => {
-    // Catch and log any errors occurred during the process
-    console.error('Error:', error.message);
-  });
-};
-
-// Function to download a file
-const downloadFile = (fileURL, fileName, fileFormat) => {
-  // Create a link element
-  const link = document.createElement('a');
-  // Set the href attribute to the file path
-  link.href = fileURL;
-  // Set the download attribute to specify the file name
-  link.setAttribute('download', `${fileName}.${fileFormat}`);
-  
-  // Append the link to the document body and trigger the download
-  document.body.appendChild(link);
-  link.click();
-  // Clean up: Remove the link element from the document body
-  link.parentNode.removeChild(link);
-};
+import { fetchFileToDownload } from '../../../../../components/DocumentDownload/DocumentDownloadView';
 
 const DocumentDownload = ({
   classes,
@@ -142,38 +81,35 @@ const DocumentDownload = ({
   );
 };
 
+const commonStyles = {
+  buttonBase: {
+    width: '126px',
+    height: '46px',
+    fontSize: '14px',
+    lineHeight: '14px',
+    fontWeight: 500,
+    fontStyle: 'normal',
+    fontFamily: 'Roboto',
+    color: '#FFFFFF',
+    borderRadius: '10px',
+    textAlign: 'center',
+  }
+}
+
 const styles = () => ({
   downloadAllBtnContainer: {
     marginTop: '16px',
   },
   downloadAllBtn: {
+    ...commonStyles.buttonBase,
     background: '#004D73',
-    width: '126px',
-    height: '46px',
-    fontSize: '14px',
-    lineHeight: '14px',
-    fontWeight: 500,
-    fontStyle: 'normal',
-    fontFamily: 'Roboto',
-    color: '#FFFFFF',
-    borderRadius: '10px',
-    textAlign: 'center',
     '&:hover': {
       border: '1px solid #004D73',
     },
   },
   disabledDownloadAllBtn: {
+    ...commonStyles.buttonBase,
     background: '#004D7380',
-    width: '126px',
-    height: '46px',
-    fontSize: '14px',
-    lineHeight: '14px',
-    fontWeight: 500,
-    fontStyle: 'normal',
-    fontFamily: 'Roboto',
-    color: '#FFFFFF',
-    borderRadius: '10px',
-    textAlign: 'center',
     '&:hover': {
       background: '#004D7380',
     },
