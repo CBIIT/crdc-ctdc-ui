@@ -7,7 +7,7 @@ import useStyles from './style';
 
 const BiospecimenCard = ({ data = {}, index }) => {
   const {
-    specimen_id: specimenId,
+    parent_specimen_id: parentSpecimenId,
     subject_id: subjectId,
     ctep_disease_term: ctepDiseaseTerm,
     specimen_type: biospecimenType,
@@ -40,7 +40,7 @@ const BiospecimenCard = ({ data = {}, index }) => {
         <div className={cn(classes.keyAndValueRow, classes.titleRow)}>
           <span className={classes.titleKey}>BIOSPECIMEN</span>
           <Typography variant="h3" className={classes.titleValue}>
-            {specimenId}
+            {parentSpecimenId}
           </Typography>
         </div>
         <div className={classes.row}>
