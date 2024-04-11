@@ -100,17 +100,11 @@ const Overview = ({
           <Grid container>
             <Grid item lg={5} md={4} sm={6} xs={12} className={classes.borderRight}>
               <Grid container direction="row" className={classes.detailContainerLeft}>
-                <Grid item xs={12} className={classes.containerHeader}>
-                  <span className={classes.detailContainerHeaderText}>Study Name</span>
+                <Grid item xs={12} className={classes.title}>
+                  STUDY DESCRIPTION                     
                 </Grid>
-                <Grid item xs={12} className={classes.studyDescription}>
-                  <div>
-                    <span className={classes.content}>
-                      {' '}
-                      { study_name || "" }
-                      {' '}
-                    </span>
-                  </div>
+                <Grid item xs={12} className={classes.content}>
+                  { study_name || "" }
                 </Grid>
                 <Grid container className={classes.detailContainerItems}>
                   <Grid item xs={12} className={classes.detailContainerItem}>
@@ -365,7 +359,7 @@ const styles = (theme) => ({
     width: '100%',
   },
   studyDescription: {
-    marginTop: '10px',
+    marginTop: '8px',
     paddingTop: '0px !important',
   },
   detailContainer: {
@@ -416,12 +410,12 @@ const styles = (theme) => ({
   content: {
     fontSize: '16px',
     fontFamily: theme.custom.fontFamilyNunito,
-    marginTop: '10px',
+    marginTop: '8px',
     fontWeight: 400,
     color: '#000'
   },
   helpfulDirectionText: {
-    marginTop: '59px',
+    marginTop: '94px',
     fontFamily: 'Roboto',
     fontWeight: 400,
     color: '#757575',
@@ -433,7 +427,7 @@ const styles = (theme) => ({
     fontFamily: theme.custom.fontFamilyInter,
     fontSize: '18px',
     letterSpacing: '0.017em',
-    fontWeight: '400',
+    fontWeight: 500,
     textTransform: 'uppercase',
   },
   titleCD: {
@@ -462,7 +456,7 @@ const styles = (theme) => ({
   },
   participantFileC: {
     paddingLeft: '30px',
-    marginTop: '10px',
+    marginTop: '8px',
     maxHeight: '250px',
     overflow: 'auto',
   },
@@ -471,7 +465,7 @@ const styles = (theme) => ({
     paddingRight: '30px',
   },
   detailContainerCL: {
-    marginTop: '10px',
+    marginTop: '8px',
     paddingRight: '30px',
 
     maxHeight: '250px',
@@ -484,7 +478,7 @@ const styles = (theme) => ({
     paddingLeft: '30px',
   },
   imageCollectionHeader: {
-    marginBottom: '45px',
+    marginBottom: '15px',
   },
   linkIcon: {
     width: '20px',

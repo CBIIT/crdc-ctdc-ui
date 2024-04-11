@@ -165,7 +165,7 @@ const styles = (theme) => ({
   },
   tabContainer: {
     width: '300px',
-    marginTop: '10px',
+    marginTop: '15px',
     padding: '0px 23px',
     marginBottom: '30px',
     borderBottom: '1px solid #42779A'
