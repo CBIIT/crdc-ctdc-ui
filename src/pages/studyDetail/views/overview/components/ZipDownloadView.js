@@ -5,7 +5,6 @@ import {
   withStyles,
 } from '@material-ui/core';
 import ToolTip from '@bento-core/tool-tip';
-import env from '../../../../../utils/env';
 
 import { enableAuthentication } from '../../../../../bento/siteWideConfig';
 import SessionTimeOutModal from '../../../../../components/sessionTimeOutModal';
