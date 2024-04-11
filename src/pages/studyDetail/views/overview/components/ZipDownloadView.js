@@ -92,12 +92,15 @@ const commonStyles = {
     color: '#FFFFFF',
     borderRadius: '10px',
     textAlign: 'center',
+    boxShadow: 'none',
+    filter: 'none',
   }
 }
 
 const styles = () => ({
   downloadAllBtnContainer: {
     marginTop: '16px',
+    marginLeft: '10px',
   },
   downloadAllBtn: {
     ...commonStyles.buttonBase,
