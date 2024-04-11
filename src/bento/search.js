@@ -132,7 +132,7 @@ export const SEARCH = gql`
         subject_id
       }
       biospecimens {
-        specimen_id
+        parent_specimen_id
       }
       gs_list {
         autocomplete_list
@@ -178,7 +178,7 @@ export const SEARCH_PAGE_RESULT_BIOSPECIMENS = gql`
       biospecimens {
         type
         study_short_name
-        specimen_id
+        parent_specimen_id
         subject_id
         ctep_disease_term
         specimen_type
