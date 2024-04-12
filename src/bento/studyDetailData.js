@@ -139,6 +139,11 @@ query studyByStudyShortNameQueries($study_short_name: [String]) {
 
    StudyDataFileByStudyShortName(study_short_name: $study_short_name) {
     list_type
+    study_data_files{
+      data_file_uuid
+      data_file_name
+      data_file_format
+    }
   }
 
   StudySpecimenByStudyShortName(study_short_name: $study_short_name) {

@@ -69,10 +69,15 @@ const Overview = ({
 
   // TODO: BE API need to provide this
   const zipData = {
-    data_file_uuid: 'dg.4DFC/4df75011-0149-4f1e-9f5a-e9c192618c17',
-    data_file_name: 'CMB-all-files.CTDCV1',
-    data_file_format: 'zip',
+    data_file_uuid: JSON.parse(JSON.stringify(data.StudyDataFileByStudyShortName[0].study_data_files[0].data_file_uuid)),
+    data_file_name: JSON.parse(JSON.stringify(data.StudyDataFileByStudyShortName[0].study_data_files[0].data_file_name)),
+    data_file_format: JSON.parse(JSON.stringify(data.StudyDataFileByStudyShortName[0].study_data_files[0].data_file_format)),
 }
+  // const zipData = {
+  //   data_file_uuid: 'dg.4DFC/4df75011-0149-4f1e-9f5a-e9c192618c17',
+  //   data_file_name: 'CMB-all-files.CTDCV1',
+  //   data_file_format: 'zip'
+  // }
   const customSorting = (a, b) => {
     let val = 0
     if(a < b) { val = -1; }
