@@ -37,8 +37,8 @@ const styles = () => ({
   tabColor: { color: '#142D64' },
   allButton: {
     ...buttonRoot,
-    width: '54px',
-    minWidth: '54px',
+    width: '64px',
+    minWidth: 'fit-content',
   },
   participantButton: {
     ...buttonRoot,
