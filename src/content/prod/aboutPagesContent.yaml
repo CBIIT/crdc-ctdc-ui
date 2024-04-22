@@ -36,9 +36,9 @@
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
   content:
     - paragraph: "$$#CTDC and NCI’s Cloud Resources#$$ "
-    - paragraph: "The CTDC supports analysis via the $$[Seven Bridges Cancer Genomics Cloud](https://datacommons.cancer.gov/analytical-resource/seven-bridges-cancer-genomics-cloud-developed-velsera#)$$(SB-CGC). SB-CGC supports data access through a web-based user interface, programmatic access to analytic tools and workflows, and collaborative data analysis and sharing pipelines. Users can transfer data of interest from the CTDC directly to SB-CGC, eliminating the need to download and store extremely large datasets. Through the SB-CGC, researchers can bring analysis tools to the data in the cloud, instead of the traditional process of bringing the data to the tools on local hardware. Analyzing data through the cloud offers many benefits including: "
+    - paragraph: "The CTDC supports analysis via the $$[Seven Bridges Cancer Genomics Cloud](https://datacommons.cancer.gov/analytical-resource/seven-bridges-cancer-genomics-cloud-developed-velsera#)$$(SB-CGC). SB-CGC supports data access through a web-based user interface, programmatic access to analytic tools and workflows, and collaborative data analysis and sharing pipelines. Users can transfer data of interest from the CTDC directly to SB-CGC, eliminating the need to download and store extremely large datasets. Through the SB-CGC, researchers can bring analysis tools to the data in the cloud, instead of the traditional process of bringing the data to tools on local hardware. Analyzing data through the cloud offers many benefits, including: "
     - listWithDots :
-      - "State of the art analysis using high-performance computing"
+      - "State-of-the-art analysis using high-performance computing"
       - "Remote access and flexibility for nationally or globally distributed teams"
       - "On-demand computational capacity to scale resources as needed   "
     - paragraph: "Data brought to the SB-CGC can be analyzed using more than 200 preinstalled, curated bioinformatics tools and workflows. Researchers can also extend the functionality of the platform by adding their own data and tools via an intuitive software development kit. "
