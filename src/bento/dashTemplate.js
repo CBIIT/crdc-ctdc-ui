@@ -1,4 +1,5 @@
 import { sortType, InputTypes } from '@bento-core/facet-filter';
+import { DEFAULT_VALUE } from './siteWideConfig';
 
 const CASES = 'Filter by Participants';
 const SAMPLES = 'Filter by Biospecimens';
@@ -42,7 +43,7 @@ export const facetsConfig = [
     facetClasses: {
       border: '10px solid red'
     },
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -54,7 +55,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -66,7 +67,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -78,7 +79,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.RANGE,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -90,7 +91,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.CUSTOM_NUMBER,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -102,7 +103,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -114,7 +115,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -126,7 +127,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -138,7 +139,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: SAMPLES,
@@ -150,7 +151,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: SAMPLES,
@@ -162,7 +163,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: SAMPLES,
@@ -174,7 +175,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: SAMPLES,
@@ -186,7 +187,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: FILES,
@@ -198,7 +199,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: FILES,
@@ -210,7 +211,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
-    defaultValue: 'Unspecified',
+    defaultValue: DEFAULT_VALUE,
   },
 ];
 

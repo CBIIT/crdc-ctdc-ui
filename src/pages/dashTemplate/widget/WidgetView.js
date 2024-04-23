@@ -6,14 +6,15 @@ import {
   Grid,
   withStyles,
 } from '@material-ui/core';
-import { useTheme } from '../../../components/ThemeContext';
-import styles from './WidgetStyle';
 import { WidgetGenerator } from '@bento-core/widgets';
+// import { useTheme } from '../../../components/ThemeContext';
+import styles from './WidgetStyle';
 import { widgetConfig } from '../../../bento/dashTemplate';
 import colors from '../../../utils/colors';
 import { Typography } from '../../../components/Wrappers/Wrappers';
 import { formatWidgetData } from './WidgetUtils';
 import sunburstStyle from './SunburstStyle'
+import { DEFAULT_VALUE } from '../../../bento/siteWideConfig';
 
 const WidgetView = ({
   classes,
@@ -53,8 +54,8 @@ const WidgetView = ({
     if (sunburstTitle.includes(':')) {
       // Extract the title parts
       const [firstString, secondString] = sunburstTitle.split(' : ');
-      // Replace empty strings with "Unspecified"
-      return `${firstString || 'Unspecified'} : ${secondString || 'Unspecified'}`;
+      // Replace empty strings with the value of DEFAULT_VALUE("No value") from /bento/siteWideConfig
+      return `${firstString || DEFAULT_VALUE } : ${secondString || DEFAULT_VALUE}`;
     }
     return sunburstTitle;
   };
