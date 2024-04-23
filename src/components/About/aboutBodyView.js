@@ -33,11 +33,11 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                       {/* Numbered ordered list */}
                       <ol>
                         { contentObj.listWithNumbers.map((listObj) => (
-                          listObj.listWithAlpahbets ? (
+                          listObj.listWithAlphabets ? (
                             // Alphetised sub ordered list
                             <ol type="a">
                               {/* bolding text if necessary */}
-                              { listObj.listWithAlpahbets.map((listObj1) => <li>{listObj1.includes('$$') ? boldText(listObj1) : listObj1}</li>)}
+                              { listObj.listWithAlphabets.map((listObj1) => <li>{listObj1.includes('$$') ? boldText(listObj1) : listObj1}</li>)}
                             </ol>
                           ) : <li>{listObj.includes('$$') ? boldText(listObj) : listObj}</li>
                         ))}
@@ -49,11 +49,11 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                       {/* Numbered ordered list */}
                       <ul>
                         { contentObj.listWithDots.map((listObj) => (
-                          listObj.listWithAlpahbets ? (
+                          listObj.listWithAlphabets ? (
                             // Alphetised sub ordered list
                             <ol type="a">
                               {/* bolding text if necessary */}
-                              { listObj.listWithAlpahbets.map((listObj1) => <li>{listObj1.includes('$$') ? boldText(listObj1) : listObj1}</li>)}
+                              { listObj.listWithAlphabets.map((listObj1) => <li>{listObj1.includes('$$') ? boldText(listObj1) : listObj1}</li>)}
                             </ol>
                           ) : <li> {listObj.includes('$$') ? boldText(listObj) : listObj}</li>
                         ))}
@@ -61,11 +61,11 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                     </div>
                   )}
                   {/* Ordered List with Alphabets logic */}
-                  {contentObj.listWithAlpahbets && (
+                  {contentObj.listWithAlphabets && (
                     <div className={classes.text}>
                       {/* Alphabetised ordered list */}
                       <ol type="a">
-                        { contentObj.listWithAlpahbets.map((listObj) => <li>{listObj.includes('$$') ? boldText(listObj) : listObj}</li>)}
+                        { contentObj.listWithAlphabets.map((listObj) => <li>{listObj.includes('$$') ? boldText(listObj) : listObj}</li>)}
                       </ol>
                     </div>
                   )}
