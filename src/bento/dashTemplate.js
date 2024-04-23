@@ -90,7 +90,7 @@ export const facetsConfig = [
     field: GROUP,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.CUSTOM_NUMBER,
-    show: true,
+    show: false,
     defaultValue: DEFAULT_VALUE,
   },
   {
