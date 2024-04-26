@@ -23,13 +23,13 @@ export const SEARCH_DATAFIELDS = {
 
 /** used by the Global Search page results */
 export const SEARCH_PAGE_KEYS = {
-  private: [...SEARCH_KEYS.private, 'model'],
+  private: [...SEARCH_KEYS.private, 'model_search'],
   public: [],
 };
 
 export const SEARCH_PAGE_DATAFIELDS = {
   public: [],
-  private: [...SEARCH_DATAFIELDS.private, 'node_name'],
+  private: [...SEARCH_DATAFIELDS.private, 'node'],
 };
 
 /** Public search queries */
@@ -137,8 +137,8 @@ export const SEARCH = gql`
       gs_list {
         autocomplete_list
       }
-      model {
-        node_name
+      model_search {
+        node
       }
     }
   }
