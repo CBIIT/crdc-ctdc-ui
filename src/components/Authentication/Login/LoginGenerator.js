@@ -43,6 +43,7 @@ export const LoginGenerator = (uiConfig = DEFAULT_CONFIG) => {
     // eslint-disable-next-line max-len
     Login: (props) => {
       const {
+        headerMessage,
         styles,
         authenticationProviders,
         onSuccess,
@@ -125,59 +126,46 @@ export const LoginGenerator = (uiConfig = DEFAULT_CONFIG) => {
 
       return (
         <div className={classes.Container}>
-          {/* ROW 1 */}
-          <Grid
-            container
-            direction="column"
-            justifyContent="flex-start"
-            alignItems="center"
-          >
             {/* Top Space */}
-            <Grid container item justifyContent="center" className={classes.emptySpace}>
+            <Grid container justifyContent="center" className={classes.emptySpace}>
               {error}
             </Grid>
 
-            {/* ROW 2 */}
-            <Grid container item justifyContent="center">
-              <Grid container spacing={1}>
-                {/* Spacing */}
-                <Grid container item sm={4} />
-
-                <Grid container item sm={4} justifyContent="center">
-                  <Grid container xs={12} alignItems="center" justify="center" direction="column" className={classes.Box}>
-                    <Grid container item justifyContent="center" className={classes.LoginBoxTitle}>
-                      Log in with either of these Identity providers:
-                    </Grid>
-                    <Grid container item justifyContent="center" className={classes.LoginButtonGroup}>
-                      {Object.values(idps).map((provider) => (
-                        <Grid container item xs={12} justifyContent="center">
-                          <Button
-                            variant="outlined"
-                            className={[classes.LoginButton]}
-                            disableRipple
-                            onClick={() => signInCall(provider)}
-                          >
-                            <Grid container item xs={1} justifyContent="center">
-                              {provider.icon
-                                ? <img src={provider.icon} className={classes.root} alt="alt coming" />
-                                : <VpnKeyIcon />}
-
-                            </Grid>
-                            <Grid container item xs={11} justifyContent="center">
-                              {provider.loginButtonText}
-                            </Grid>
-                          </Button>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </Grid>
+            {/* Main Component */}
+            <Grid container justifyContent="center">
+              <Grid container item justifyContent="center" className={classes.Box}>
+                <Grid container item className={classes.InnerBox}>
+                  <p className={classes.LoginBoxTitle}>{headerMessage}</p>
+                  <ul className={classes.LoginBoxInstruction}>
+                    <li>Click on the below button to go to the NIH Login page. </li>
+                    <li> Please enter your eRA Commons credentials. </li>
+                    <li><strong>Note: Logging in with another identity provider will not grant access.</strong></li>
+                  </ul>
                 </Grid>
+                <Grid container item xs={12} justifyContent="center" className={classes.LoginButtonGroup}>
+                  {Object.values(idps).map((provider) => (
+                    <Grid container item xs={12} justifyContent="center">
+                      <Button
+                        variant="outlined"
+                        className={[classes.LoginButton]}
+                        disableRipple
+                        onClick={() => signInCall(provider)}
+                      >
+                        <Grid container item xs={1} justifyContent="center">
+                          {provider.icon
+                            ? <img src={provider.icon} className={classes.root} alt="alt coming" />
+                            : <VpnKeyIcon />}
 
-                {/* Spacing */}
-                <Grid container item sm={4} />
+                        </Grid>
+                        <Grid container item xs={11} justifyContent="center">
+                          {provider.loginButtonText}
+                        </Grid>
+                      </Button>
+                    </Grid>
+                  ))}
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
 
           {/* Bottom Space */}
           <Grid container item justifyContent="center" className={[classes.emptySpace, classes.extraSpaceInBorrom]} />
