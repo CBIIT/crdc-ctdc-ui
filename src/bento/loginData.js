@@ -1,5 +1,5 @@
 export const pageTitle = 'Login';
-const  eraIcons  = require("../assets/icons/era_commons.png");
+const  eraIcons  = require("../assets/icons/era_commons.svg");
 
 export const loginProvidersData = {
   nih: {

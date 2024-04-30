@@ -19,12 +19,20 @@ const generateStyle = (customStyle = {}) => {
     style.Box = { ...style.Box, ...customStyle.Box };
   }
 
+  if (customStyle.InnerBox) {
+    style.InnerBox = { ...style.InnerBox, ...customStyle.InnerBox };
+  }
+
   if (customStyle.LoginButtonGroup) {
     style.LoginButtonGroup = { ...style.LoginButtonGroup, ...customStyle.LoginButtonGroup };
   }
 
   if (customStyle.LoginBoxTitle) {
     style.LoginBoxTitle = { ...style.LoginBoxTitle, ...customStyle.LoginBoxTitle };
+  }
+
+  if (customStyle.LoginBoxInstruction) {
+    style.LoginBoxInstruction = { ...style.LoginBoxInstruction, ...customStyle.LoginBoxInstruction };
   }
 
   if (customStyle.LoginButton) {
