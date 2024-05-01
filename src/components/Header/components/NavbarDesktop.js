@@ -17,8 +17,8 @@ const Nav = styled.div`
     background: #ffffff;
     z-index: 1100;
     position: relative;
-    box-shadow: ${({ location }) =>
-      location.pathname === '/home' ? '-0.1px 6px 9px -6px rgba(0, 0, 0, 0.5)' : 'none'};
+    box-shadow: ${({ location }) => (location) = location.pathname === '/home' || location.pathname === '/fileCentricCart' 
+                ? '-0.1px 6px 9px -6px rgba(0, 0, 0, 0.5)' : 'none'};
 
     .dropdownContainer {
       // outline: none;
