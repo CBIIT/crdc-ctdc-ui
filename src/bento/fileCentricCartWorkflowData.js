@@ -254,14 +254,14 @@ export const table = {
   objectKey: 'filesInList',
   extendedViewConfig: {
     pagination: true,
-    download: {
-      customDownload: true,
-      fileName: 'CTDC_My_Files_download',
-      downloadCsv: 'Download table contents as CSV',
-      ...customMyFilesTabDownloadCSV,
-    },
     manageViewColumns: {
-      title: 'View columns',
+      title: "View Columns"
+    },
+    download: {
+      downloadCsv: "Download Table Contents As CSV",
+      downloadFileName: "CTDC_My_Files_download",
+      // customDownload: true,
+      // ...customMyFilesTabDownloadCSV,
     },
   },
   columns: [
