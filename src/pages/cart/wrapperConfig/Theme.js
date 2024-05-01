@@ -33,13 +33,14 @@ export const customTheme = {
         maxWidth: '100%',
         height: '75px',
         padding: '10px 0px 15px 0px',
-        marginRight: '-5px',
+        marginRight: '0px',
         position: 'relative',
         textAlign: 'left',
         '& img.tooltip_icon': {
           width: '20px',
           marginLeft: '2px',
           verticalAlign: 'top',
+          marginTop: '6px',
         },
       },
       '&.tooltip_icon': {
@@ -93,7 +94,7 @@ export const customTheme = {
       textTransform: 'uppercase',
       '&.download_manifest':{
           width: '250px',
-          margin: '10px',
+          margin: '9px 0px 0px 0px',
           background:'#004D73',
           marginRight: '3px'
       },
