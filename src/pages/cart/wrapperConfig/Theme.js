@@ -20,7 +20,7 @@ export const customTheme = {
           lineHeight: '55px',
           '&.cart_header_text': {
             letterSpacing: '0.017em',
-            fontWeight: '300',
+            fontWeight: 'bold',
           },
           '&.cart_sel_files_text': {
             letterSpacing: '0.025em',
