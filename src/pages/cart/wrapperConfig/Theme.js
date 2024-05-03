@@ -5,13 +5,13 @@ export const customTheme = {
       '&.container_outer_layout': {
         maxWidth: '100%',
         height: '75px',
-        borderBottom: '#42779a 10px solid',
+        borderBottom: '#067CA5 10px solid',
         '& img': {
           float: 'left',
-          marginTop: '-25px',
-          marginLeft: '-33px',
-          width: '101px',
-          filter: 'drop-shadow(-3px 2px 6px rgba(27,28,28,0.29))',
+          marginTop: '-20px',
+          marginLeft: '-20px',
+          width: '100px',
+          // filter: 'drop-shadow(-3px 2px 6px rgba(27,28,28,0.29))',
         },
         '& span': {
           color: '#03a383',
@@ -21,6 +21,7 @@ export const customTheme = {
           '&.cart_header_text': {
             letterSpacing: '0.017em',
             fontWeight: 'bold',
+            paddingLeft: '5px',
           },
           '&.cart_sel_files_text': {
             letterSpacing: '0.025em',

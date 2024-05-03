@@ -9,7 +9,7 @@ export default () => ({
     },
   },
   myFilesWrapper: {
-    border: '#03A383 4px solid',
+    border: '#08A383 3px solid',
     borderRadius: '35px',
     marginTop: '98px',
     marginBottom: '194px',

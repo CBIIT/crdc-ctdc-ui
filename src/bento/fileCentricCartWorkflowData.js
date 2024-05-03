@@ -3,6 +3,7 @@ import { cellTypes, dataFormatTypes } from '@bento-core/table';
 import { types, btnTypes } from '@bento-core/paginated-table';
 import { customMyFilesTabDownloadCSV } from './tableDownloadCSV';
 import CustomFooterMessage from '../pages/cart/tableConfig/CustomFooterMessage';
+import cartPageIcon from '../assets/cart/cartPageIcon.svg'
 
 export const navBarCartData = {
   cartLabel: 'Cart',
@@ -43,8 +44,8 @@ export const myFilesPageData = {
         {
           clsName: 'cart_icon',
           type: types.ICON,
-          src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Workflow.svg',
-          alt: 'Bento MyFiles header logo',
+          src: cartPageIcon,
+          alt: 'CTDC MyFiles header logo',
         },
         {
           clsName: 'cart_header_text',
