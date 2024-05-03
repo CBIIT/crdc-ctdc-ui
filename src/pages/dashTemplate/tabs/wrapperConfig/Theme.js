@@ -11,12 +11,11 @@ export const customTheme = {
       },
       '&.container_footer_link': {
         textAlign: 'right',
-        paddingRight: '100px',
-        height: '65px',
-        color: '#3E6886',
+        paddingRight: '30px',
+        height: '98px',
         fontSize: '12px',
         fontFamily: 'Lato',
-        borderBottom: '1px solid #3E6886',
+        marginTop: '13px',
         textDecoration: 'none',
       },
       '& img': {
