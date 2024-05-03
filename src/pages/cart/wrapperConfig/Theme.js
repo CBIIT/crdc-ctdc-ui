@@ -19,12 +19,12 @@ export const customTheme = {
           fontFamily: 'Open Sans, sans-serif',
           lineHeight: '55px',
           '&.cart_header_text': {
-            letterSpacing: '0.017em',
+            letterSpacing: '-0.02em',
             fontWeight: 'bold',
             paddingLeft: '5px',
           },
           '&.cart_sel_files_text': {
-            letterSpacing: '0.025em',
+            letterSpacing: '-0.02em',
             fontWeight: 'bold',
             marginLeft: '10px',
           },
