@@ -15,7 +15,7 @@ export const customTheme = {
         height: '98px',
         fontSize: '12px',
         fontFamily: 'Lato',
-        marginTop: '23px',
+        marginTop: '5px',
         textDecoration: 'none',
       },
       '& img': {

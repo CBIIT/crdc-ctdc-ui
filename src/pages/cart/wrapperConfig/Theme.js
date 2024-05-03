@@ -26,7 +26,7 @@ export const customTheme = {
           '&.cart_sel_files_text': {
             letterSpacing: '-0.02em',
             fontWeight: 'bold',
-            marginLeft: '10px',
+            marginLeft: '5px',
           },
         },
       },
@@ -54,6 +54,7 @@ export const customTheme = {
         display: 'flex',
         flexDirection: 'column',
         paddingLeft: '0px',
+        marginLeft: '14px',
        
         '& img.tooltip_icon': {
           width: '20px',
@@ -64,17 +65,24 @@ export const customTheme = {
           width: '25px',
         },
         '& textarea.manifest_comments': {
-          color: '#000',
-          border: '1.5px solid #707070',
+          color: '#000000',
+          border: '1px solid #707070',
           height: '96px',
           resize: 'none',
           padding: '15px',
-          fontSize: '10px',
+          fontSize: '12px',
           maxWidth: '412px',
           background: '#ebebeb',
-          fontFamily: 'Open Sans',
+          fontFamily: 'Roboto, Open Sans',
           marginRight: '10px',
           borderRadius: '10px',
+        },
+        '& textarea.manifest_comments::placeholder': {
+          color: '#000000',
+          fontFamily: 'Roboto',
+          fontSize: '12px',
+          fontWeight: 400,
+          lineHeight: '12px',
         },
       },
     },
@@ -95,7 +103,7 @@ export const customTheme = {
       textTransform: 'uppercase',
       '&.download_manifest':{
           width: '250px',
-          margin: '9px 0px 0px 0px',
+          margin: '9px 0px 0px 14px',
           background:'#004D73',
           marginRight: '3px'
       },
