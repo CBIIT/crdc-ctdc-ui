@@ -7,15 +7,15 @@ const spanStyle = {
 	fontSize: '14px',
 	fontWeight: 700,
 	lineHeight: '22.75px',
-	letterSpacing: '1px',
+	letterSpacing: '.5px',
 	textAlign: 'left',
 	margin: 0, 
 	padding: 0,
 };
 const imgStyle = {
-	marginLeft: '7px',
+	marginLeft: '4px',
 	paddingRight: '0px',
-	marginTop: '2px',
+	marginTop: '2.5px',
 };
 
 const CustomGoToCartLink = () => (
