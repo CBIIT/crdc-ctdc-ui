@@ -5,13 +5,13 @@ export const customTheme = {
       '&.container_outer_layout': {
         maxWidth: '100%',
         height: '75px',
-        borderBottom: '#42779a 10px solid',
+        borderBottom: '#067CA5 10px solid',
         '& img': {
           float: 'left',
-          marginTop: '-25px',
-          marginLeft: '-33px',
-          width: '101px',
-          filter: 'drop-shadow(-3px 2px 6px rgba(27,28,28,0.29))',
+          marginTop: '-20px',
+          marginLeft: '-20px',
+          width: '100px',
+          // filter: 'drop-shadow(-3px 2px 6px rgba(27,28,28,0.29))',
         },
         '& span': {
           color: '#03a383',
@@ -20,7 +20,8 @@ export const customTheme = {
           lineHeight: '55px',
           '&.cart_header_text': {
             letterSpacing: '0.017em',
-            fontWeight: '300',
+            fontWeight: 'bold',
+            paddingLeft: '5px',
           },
           '&.cart_sel_files_text': {
             letterSpacing: '0.025em',
@@ -33,13 +34,14 @@ export const customTheme = {
         maxWidth: '100%',
         height: '75px',
         padding: '10px 0px 15px 0px',
-        marginRight: '-5px',
+        marginRight: '0px',
         position: 'relative',
         textAlign: 'left',
         '& img.tooltip_icon': {
           width: '20px',
           marginLeft: '2px',
           verticalAlign: 'top',
+          marginTop: '6px',
         },
       },
       '&.tooltip_icon': {
@@ -93,7 +95,7 @@ export const customTheme = {
       textTransform: 'uppercase',
       '&.download_manifest':{
           width: '250px',
-          margin: '10px',
+          margin: '9px 0px 0px 0px',
           background:'#004D73',
           marginRight: '3px'
       },
