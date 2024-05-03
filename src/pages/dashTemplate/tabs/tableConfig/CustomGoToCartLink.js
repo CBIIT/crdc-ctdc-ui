@@ -22,7 +22,7 @@ const CustomGoToCartLink = () => (
   <a href="#/fileCentricCart" style={{textDecoration: 'none'}} >
     <span style={spanStyle}>
 			Go to Cart
-			<img alt="Go to Cart Arrow"  height='18px'  width='21px' src={cartArrow} style={imgStyle}/>
+			<img alt="Go to Cart Arrow"  height='18px'  src={cartArrow} style={imgStyle} width='21px'/>
     </span>
   </a>
 );
