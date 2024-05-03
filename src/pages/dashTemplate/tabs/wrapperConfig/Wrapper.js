@@ -7,6 +7,7 @@ import {
 } from '../../../../bento/dashboardTabData';
 import { alertMessage } from '../../../../bento/fileCentricCartWorkflowData';
 import { DisplayCustomText } from '../Customize/TableView';
+import CustomGoToCartLink from '../tableConfig/CustomGoToCartLink';
 
 export const layoutConfig = [{
   container: 'buttons',
@@ -83,10 +84,10 @@ export const wrapperConfig = [{
   clsName: 'container_footer_link',
   items: [
     {
-      title: 'Go to Cart >',
       clsName: 'go_to_cart',
       url: '#/fileCentricCart',
-      type: types.LINK,
+      type: types.CUSTOM_ELEM,
+      customViewElem: CustomGoToCartLink,
     }],
 },
 ];
