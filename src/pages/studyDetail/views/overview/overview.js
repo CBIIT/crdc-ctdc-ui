@@ -106,7 +106,7 @@ const Overview = ({
             <Grid item lg={5} md={4} sm={6} xs={12} className={classes.borderRight}>
               <Grid container direction="row" className={classes.detailContainerLeft}>
                 <Grid item xs={12} className={classes.title}>
-                  STUDY DESCRIPTION                     
+                  Study Name               
                 </Grid>
                 <Grid item xs={12} className={classes.content}>
                   { study_name || "" }
