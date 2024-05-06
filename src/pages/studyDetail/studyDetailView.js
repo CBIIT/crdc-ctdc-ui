@@ -23,6 +23,7 @@ import store from '../../store';
 
 const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
   const studyData = data;
+  const processedTabs = tab.items;
 
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
@@ -38,14 +39,12 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
     setCurrentTab(value);
   };
 
-  const renderDefaultHeaderIcon = () => (
+  const getHeaderIcon = () => (
     <img
       src={headerIcon}
       alt="CTDC trail detail header logo"
     />
   );
-
-  const getHeaderIcon = renderDefaultHeaderIcon
 
   if (isLoading) {
     return <CircularProgress />;
@@ -57,15 +56,6 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
         An error has occurred in interoperability api
       </Typography>
     );
-  }
-
-  const currentStudy = "StudyfgfgPlaceholder"
-
-  let processedTabs;
-  if (!currentStudy) {
-    processedTabs = tab.items.filter((item) => item.label !== 'SUPPORTING DATA');
-  } else {
-    processedTabs = tab.items;
   }
 
   const linkToDashboard = () => {
