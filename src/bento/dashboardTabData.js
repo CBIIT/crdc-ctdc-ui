@@ -1385,14 +1385,14 @@ query biospecimenAddAllToCart(
   $specimen_type: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
-  $specimen_id: [String],
+  $parent_specimen_id: [String],
 
   $data_file_type: [String],
   $data_file_format: [String],
 
   $first: Int,
   $offset: Int= 0, 
-  $order_by: String = "file_id",
+  $order_by: String = "data_file_uuid",
   $sort_direction: String = "asc"
 ){
   biospecimen_data_files(
@@ -1411,7 +1411,7 @@ query biospecimenAddAllToCart(
     specimen_type: $specimen_type
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
-    specimen_id: $specimen_id
+    parent_specimen_id: $parent_specimen_id
 
     data_file_type: $data_file_type
     data_file_format: $data_file_format
@@ -1543,6 +1543,7 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
     $ethnicity: [String],
     $carcinogen_exposure: [String],
     $targeted_therapy: [String],
+    $parent_specimen_id: [String],
 
     $anatomical_collection_site: [String],
     $specimen_type: [String],
@@ -1574,6 +1575,7 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
       data_file_format: $data_file_format
+      parent_specimen_id: $parent_specimen_id
 
       first: $first,
       offset: $offset,
@@ -1931,7 +1933,7 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addFilesRequestVariableKey: 'specimen_id',
+    addFilesRequestVariableKey: 'parent_specimen_id',
 
     addFilesResponseKeys: ['biospecimen_data_files', 'data_file_uuid'],
     addSelectedFilesQuery: GET_ALL_FILEIDS_BIOSPECIMENS_TAB_FOR_SELECT_ALL,
