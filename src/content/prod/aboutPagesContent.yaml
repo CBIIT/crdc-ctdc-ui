@@ -18,7 +18,7 @@
   title: "Purpose"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Purpose.png
   content:
-     - paragraph: "The CTDC is part of the $$[Cancer Research Data Commons](https://datacommons.cancer.gov/)$$ (CRDC), an initiative from NCI’s Center for Biomedical Informatics and Information Technology (CBIIT).The goals of the CTDC are to advance cancer research and accelerate the development of innovative therapies by improving access to data from NCI-sponsored clinical studies, including genomic panel assay and clinical data. The CTDC does this through:  "
+     - paragraph: "The CTDC is part of the $$[Cancer Research Data Commons](https://datacommons.cancer.gov/)$$ (CRDC), an initiative from NCI’s Center for Biomedical Informatics and Information Technology (CBIIT). The goals of the CTDC are to advance cancer research and accelerate the development of innovative therapies by improving access to data from NCI-sponsored clinical studies, including genomic panel assay and clinical data. The CTDC does this through:  "
      - listWithDots :
         - "$$*Graphical User Interface (GUI)*$$ : The CTDC’s GUI includes an Explore dashboard with search filters to help users visualize, explore, and navigate complex metadata without the need for coding or specialized technical skills."
         - "$$*Data consolidation:*$$ The CTDC consolidates data from clinical studies funded by the NCI. This allows researchers to analyze data collectively, leading to deeper insights and a better understanding of cancer’s complexities. "
