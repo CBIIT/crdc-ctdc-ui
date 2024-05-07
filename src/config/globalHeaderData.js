@@ -77,7 +77,7 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
     {
-      name: 'Data Use Policy',
+      name: 'Data Terms of Use',
       link: '/data-use',
       id: 'navbar-dropdown-item-data-use',
       className: 'navMobileSubItem',
@@ -97,14 +97,14 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
     {
-      name: 'For Developers',
-      link: '/developers',
+      name: 'GitHub',
+      link: 'https://github.com/CBIIT/crdc-ctdc-starter-kit',
       id: 'navbar-dropdown-item-developers',
       className: 'navMobileSubItem',
     },
     {
-      name: 'GitHub',
-      link: 'https://github.com/CBIIT/crdc-ctdc-starter-kit',
+      name: 'Additional Information',
+      link: '/additional-information',
       id: 'navbar-dropdown-item-developers',
       className: 'navMobileSubItem',
     },

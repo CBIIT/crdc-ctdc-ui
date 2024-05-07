@@ -1,5 +1,5 @@
 export default [
-  '/developers',
+  '/additional-information',
   '/purpose',
   '/support',
   '/submit',

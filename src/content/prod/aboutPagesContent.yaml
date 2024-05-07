@@ -3,7 +3,7 @@
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
   content:
     - paragraph: "CTDC is not accepting external data submissions at this time. Learn how to submit $$[data to other data repositories](type:internal url:https://datacommons.cancer.gov/data/submit-data target:_blank )$$ within the Cancer Research Data Commons."
-- page: '/developers'
+- page: '/additional-information'
   title: "Additional Information"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Developers.png
   content:
@@ -46,7 +46,7 @@
     - paragraph: "$300 in credits are available to new users who want to test out the platform.  "
     - paragraph: "For more information on getting started with SB-CGC including onboarding videos and more, visit: $$[https://www.cancergenomicscloud.org/getting-started](https://www.cancergenomicscloud.org/getting-started )$$."
 - page: '/data-use'
-  title: "CTDC Data Terms of Use"
+  title: "Data Terms of Use"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
   content:
     - paragraph: "$$#DATA ACCESS#$$"

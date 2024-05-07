@@ -46,7 +46,7 @@ const RAView = ({ classes }) => {
                       Controlled access data  
                   </div>
                   <div className={classes.content}>
-                      Controlled data within the CTDC include genomic and other potentially sensitive Personal Identifiable Information (PII). To protect the privacy of individuals who have contributed data to clinical studies, researchers who wish to access controlled data must register for an{' '} 
+                      Controlled data within the CTDC include genomic and other potentially sensitive Personal Identifiable Information (PII). To protect the privacy of individuals who have contributed data to clinical studies, researchers who want to access controlled data must register for an{' '} 
                       <Link
                               title="NIH eRA Commons"
                               target='_blank'
