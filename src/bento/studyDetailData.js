@@ -23,12 +23,6 @@ export const tab = {
       label: 'OVERVIEW',
       value: 'overview',
     },
-    {
-      index: 1,
-      label: 'ADDITIONAL DETAILS',
-      value: 'additional_details',
-      disable: true,
-    },
   ],
 };
 
