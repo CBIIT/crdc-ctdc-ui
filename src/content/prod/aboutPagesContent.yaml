@@ -11,7 +11,7 @@
     - paragraph: "$$#CTDC GUI#$$"
     - paragraph: "The GUI provides users a distilled set of parameters (faceted querying) you can use to explore a subset of the CTDC data model. "
     - paragraph: "$$#CTDC API#$$"
-    - paragraph: "CTDC is based on a Graph database, featuring a  GraphQL API (Java) and a React front-end (JavaScript). Each tier in the application stack is designed to be modular and adaptable for a variety of use-cases and scenarios.  $$[GraphQL API](type:internal url:/#/graphql target:_blank)$$ enables querying of the entire data model. The API is provided “as is”: there are no warranties or conditions arising out of usage of these services."
+    - paragraph: "CTDC is based on a Graph database, featuring a GraphQL API (Java) and a React front-end (JavaScript). Each tier in the application stack is designed to be modular and adaptable for a variety of use-cases and scenarios. A $$[GraphQL API](type:internal url:/#/graphql target:_blank)$$ enables querying of the entire data model. The API is provided “as is”: there are no warranties or conditions arising out of usage of these services."
     - paragraph: "$$#GITHUB#$$"
     - paragraph: "The CTDC GitHub repository is available for research, usage, forking, and pull requests. The codebase is intended for sharing and building frameworks for related initiatives and projects. The CTDC GitHub repository has documentation about how to access the system, including endpoints and recommendations for tools and example queries. The CTDC team maintains and updates the project and documentation in accordance with major and minor releases."
 - page: '/purpose'
