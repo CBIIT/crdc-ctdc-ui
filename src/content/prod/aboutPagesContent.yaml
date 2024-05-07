@@ -2,7 +2,7 @@
   title: "Data Submission"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
   content:
-    - paragraph: "CTDC is not accepting external data submissions at this time. Learn how to submit $$[data to other data repositories](type:internal url:https://datacommons.cancer.gov/data/submit-data target:_blank )$$ within the Cancer Research Data Commons."
+    - paragraph: "CTDC is not accepting external data submissions at this time. Learn how to $$[submit data to other data repositories](type:internal url:https://datacommons.cancer.gov/data/submit-data target:_blank )$$ within the Cancer Research Data Commons."
 - page: '/additional-information'
   title: "Additional Information"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Developers.png
@@ -11,14 +11,14 @@
     - paragraph: "$$#CTDC GUI#$$"
     - paragraph: "The GUI provides users a distilled set of parameters (faceted querying) you can use to explore a subset of the CTDC data model. "
     - paragraph: "$$#CTDC API#$$"
-    - paragraph: "CTDC is based on a Graph database, featuring a  GraphQL API (Java) and a React front-end (JavaScript). Each tier in the application stack is designed to be modular and adaptable for a variety of use-cases and scenarios.  $$[GraphQL API](type:internal url:/#/graphql target:_blank)$$ enables querying of the entire data model. The API is provided “as is”: there are no warranties or conditions arising out of usage of these services."
+    - paragraph: "CTDC is based on a Graph database, featuring a GraphQL API (Java) and a React front-end (JavaScript). Each tier in the application stack is designed to be modular and adaptable for a variety of use-cases and scenarios. A $$[GraphQL API](type:internal url:/#/graphql target:_blank)$$ enables querying of the entire data model. The API is provided “as is”: there are no warranties or conditions arising out of usage of these services."
     - paragraph: "$$#GITHUB#$$"
     - paragraph: "The CTDC GitHub repository is available for research, usage, forking, and pull requests. The codebase is intended for sharing and building frameworks for related initiatives and projects. The CTDC GitHub repository has documentation about how to access the system, including endpoints and recommendations for tools and example queries. The CTDC team maintains and updates the project and documentation in accordance with major and minor releases."
 - page: '/purpose'
   title: "Purpose"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Purpose.png
   content:
-     - paragraph: "The CTDC is part of the $$[Cancer Research Data Commons](https://datacommons.cancer.gov/)$$ (CRDC), an initiative from NCI’s Center for Biomedical Informatics and Information Technology (CBIIT).The goals of the CTDC are to advance cancer research and accelerate the development of innovative therapies by improving access to data from NCI-sponsored clinical studies, including genomic panel assay and clinical data. The CTDC does this through:  "
+     - paragraph: "The CTDC is part of the $$[Cancer Research Data Commons](https://datacommons.cancer.gov/)$$ (CRDC), an initiative from NCI’s Center for Biomedical Informatics and Information Technology (CBIIT). The goals of the CTDC are to advance cancer research and accelerate the development of innovative therapies by improving access to data from NCI-sponsored clinical studies, including genomic panel assay and clinical data. The CTDC does this through:  "
      - listWithDots :
         - "$$*Graphical User Interface (GUI)*$$ : The CTDC’s GUI includes an Explore dashboard with search filters to help users visualize, explore, and navigate complex metadata without the need for coding or specialized technical skills."
         - "$$*Data consolidation:*$$ The CTDC consolidates data from clinical studies funded by the NCI. This allows researchers to analyze data collectively, leading to deeper insights and a better understanding of cancer’s complexities. "
