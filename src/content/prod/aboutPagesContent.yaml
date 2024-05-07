@@ -2,7 +2,7 @@
   title: "Data Submission"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
   content:
-    - paragraph: "CTDC is not accepting external data submissions at this time. Learn how to submit $$[data to other data repositories](type:internal url:https://datacommons.cancer.gov/data/submit-data target:_blank )$$ within the Cancer Research Data Commons."
+    - paragraph: "CTDC is not accepting external data submissions at this time. Learn how to $$[submit data to other data repositories](type:internal url:https://datacommons.cancer.gov/data/submit-data target:_blank )$$ within the Cancer Research Data Commons."
 - page: '/additional-information'
   title: "Additional Information"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Developers.png
