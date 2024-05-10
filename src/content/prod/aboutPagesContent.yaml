@@ -19,13 +19,14 @@
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Purpose.png
   content:
      - paragraph: "The CTDC is part of the $$[Cancer Research Data Commons](https://datacommons.cancer.gov/)$$ (CRDC), an initiative from NCI’s Center for Biomedical Informatics and Information Technology (CBIIT). The goals of the CTDC are to advance cancer research and accelerate the development of innovative therapies by improving access to data from NCI-sponsored clinical studies, including genomic panel assay and clinical data. The CTDC does this through:  "
-     - listWithDotsAndLines :
-        - "$$*Graphical User Interface (GUI)*$$ - The CTDC’s GUI includes an Explore dashboard with search filters to help users visualize, explore, and navigate complex metadata without the need for coding or specialized technical skills." 
-        - "$$*Data harmonization*$$ - Data harmonization ensures that data across studies within the CTDC are standardized and organized in a consistent manner to improve data compatibility, integration, and meta-analysis. "
-        - "$$*Integration*$$ - with NCI Cloud Resources:*$$ Users can easily transfer selected CTDC data to the $$[ Velsera Seven Bridges Cancer Genomics Cloud](https://datacommons.cancer.gov/analytical-resource/seven-bridges-cancer-genomics-cloud)$$ (SB-CGC), a cloud-based platform for cancer research funded by the NCI. Here, researchers can integrate multi-omic data across sources and leverage access to a multitude of tools and workflows for computation and analysis."
-        - "$$*Fueling collaborative research:*$$ - By centralizing data and making them available through NCI’s Cloud Resources, the CTDC promotes secure collaboration among distributed research groups, fostering interdisciplinary partnerships. "
-        - "$$*Democratizing Data access:*$$ - Data access in the CTDC may be open (no registration required) or controlled (registration required). The CTDC aims to make each dataset as open as possible while protecting participant privacy and adhering to regulations, agreements, and other considerations specific to each study. "
-        - "$$*Alignment to F.A.I.R data principles:*$$ - The CTDC adheres to Findable, Accessible, Interoperable, and Reusable ($$[FAIR]( https://www.go-fair.org/fair-principles/)$$) principles for scientific data management and stewardship. CTDC seeks to provide clearly organized data and guidance enabling end users to search for, find, and access data of interest. The emphasis on harmonization described above promotes the interoperability of data within and across the CRDC ecosystem and beyond and promotes reusability of data beyond the primary publication."
+     - listWithDots :
+        - "$$*Graphical User Interface (GUI)*$$ : The CTDC’s GUI includes an Explore dashboard with search filters to help users visualize, explore, and navigate complex metadata without the need for coding or specialized technical skills."
+        - "$$*Data consolidation:*$$ The CTDC consolidates data from clinical studies funded by the NCI. This allows researchers to analyze data collectively, leading to deeper insights and a better understanding of cancer’s complexities. "
+        - "$$*Data harmonization:*$$ Data harmonization ensures that data across studies within the CTDC are standardized and organized in a consistent manner to improve data compatibility, integration, and meta-analysis. "
+        - "$$*Integration with NCI Cloud Resources:*$$ Users can easily transfer selected CTDC data to the $$[ Velsera Seven Bridges Cancer Genomics Cloud](https://datacommons.cancer.gov/analytical-resource/seven-bridges-cancer-genomics-cloud)$$ (SB-CGC), a cloud-based platform for cancer research funded by the NCI. Here, researchers can integrate multi-omic data across sources and leverage access to a multitude of tools and workflows for computation and analysis.  "
+        - "$$*Fueling collaborative research:*$$ By centralizing data and making them available through NCI’s Cloud Resources, the CTDC promotes secure collaboration among distributed research groups, fostering interdisciplinary partnerships. "
+        - "$$*Democratizing Data access:*$$ Data access in the CTDC may be open (no registration required) or controlled (registration required). The CTDC aims to make each dataset as open as possible while protecting participant privacy and adhering to regulations, agreements, and other considerations specific to each study. "
+        - "$$*Alignment to F.A.I.R data principles:*$$ The CTDC adheres to Findable, Accessible, Interoperable, and Reusable ($$[FAIR]( https://www.go-fair.org/fair-principles/)$$) principles for scientific data management and stewardship. CTDC seeks to provide clearly organized data and guidance enabling end users to search for, find, and access data of interest. The emphasis on harmonization described above promotes the interoperability of data within and across the CRDC ecosystem and beyond and promotes reusability of data beyond the primary publication."
 - page: '/support'
   title: "Support"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Support.png
@@ -76,38 +77,6 @@
     - paragraph: "Information about the graphic data model, including the model description files, can be found on GitHub at $$[https://github.com/CBIIT/ctdc-model](https://github.com/CBIIT/ctdc-model)$$."
   secondaryZoomImageTitle: "The CTDC Data Model"
   secondaryZoomImage: 'https://raw.githubusercontent.com/CBIIT/ctdc-model/ctdc-model/model-desc/ctdc-model.svg'
-- page: "/request-access"
-  title: "Request Access"
-  content:
-    - paragraph: "PUBLIC ACCESS DATA"
-    - paragraph: "Public tier datasets contain de-identified aggregated data available to the public without the need for account registration or data access approval."
-    - paragraph: "REGISTERED ACCESS DATA"
-    - paragraph: "Registered tier datasets may contain some individual-level data or data under collaborative agreements that require users to register for access and agree to certain terms of use prior to access. Terms of use vary by study. "
-    - paragraph: "CONTROLLED ACCESS DATA"
-    - paragraph: "Controlled data within the CTDC include genomic and other potentially sensitive Personal Identifiable Information (PII). To protect the privacy of individuals who have contributed data to clinical studies, researchers who want to access controlled data must register for an  account and apply for data access authorization through the $$[NIH database of Genotypes and Phenotypes](https://dbgap.ncbi.nlm.nih.gov/aa/wga.cgi?page=login)$$ (dbGaP). See instructions below for how to access controlled data.."
-    - paragraph: "ACCESSING CONTROLLED DATA IN THE CTDC"
-    - paragraph: "Obtain an NIH eRA Commons account"
-    - listWithDots :
-      - "$$[eRA Commons Frequently Asked Questions (FAQs)](https://www.era.nih.gov/faqs.htm)$$"
-      - "$$[eRA Help and Tutorials](https://www.era.nih.gov/help-tutorials)$$"
-      - "$$[NIH / eRA Helpdesk/Ticketing System](https://www.era.nih.gov/need-help)$$"
-    - paragraph: "Obtain dbGaP access"
-    - listWithDots :
-      - "$$[VIDEO - dbGaP: Apply for Controlled Access Data](https://www.youtube.com/watch?v=m0xp_cCO7kA)$$"
-      - "$$[dbGaP Frequently Asked Questions (FAQs)](https://www.ncbi.nlm.nih.gov/books/NBK5295/)$$"
-      - "$$[dbGaP Helpdesk](https://dbgap.ncbi.nlm.nih.gov/aa/wga.cgi?page=email&filter=from&from=login)$$"
-    - paragraph: "Request access to controlled data of choice through dbGaP"
-    - listWithDots :
-      - "Log in to your dbGaP account using your eRA Commons username and password."
-      - "Navigate to the “My Projects” page."
-      - "Create a new research project or revise project to request access to new data."
-      - "Enter the appropriate ID for your project of interest."
-      - "E.g. “phs002192” for Cancer Moonshot Biobank dataset."
-      - "Submit request."
-      - "You will receive notification of approval via email."
-    - paragraph: "Access approved datasets within the CTDC"
-    - paragraph: "After receiving dbGaP approval for a desired dataset, you can access and download the dataset through your CTDC account or create a manifest to analyze data within the Seven Bridges’ Cancer Genomics Cloud (SB-CGC)."
-    
 
 
 
