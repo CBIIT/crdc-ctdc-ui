@@ -60,25 +60,6 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                       </ul>
                     </div>
                   )}
-                  {contentObj.listWithDotsAndLines && (
-                    <div className={classes.text}>
-                      {/* Numbered ordered list */}
-                      <ul>
-                        { contentObj.listWithDotsAndLines.map((listObj) => (
-                          listObj.listWithAlphabets ? (
-                            // Alphetised sub ordered list
-                            <ol type="a">
-                              {/* bolding text if necessary */}
-                              { listObj.listWithAlphabets.map((listObj1) => <li>{listObj1.includes('$$') ? boldText(listObj1) : listObj1}</li>)}
-                            </ol>
-                          ) : <>
-                          <li> {listObj.includes('$$') ? boldText(listObj) : listObj}</li>
-                          <br />
-                          </>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
                   {/* Ordered List with Alphabets logic */}
                   {contentObj.listWithAlphabets && (
                     <div className={classes.text}>
