@@ -72,7 +72,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
 
                   {/* Paragraphs */}
                   {contentObj.paragraph && (
-                    <div className={classes.text}>
+                    <div className={classes.text} style={contentObj.paragraph.startsWith("$$*") ? {marginLeft:'30px'}:{}}>
                       { contentObj.paragraph.split('$$').map((splitedParagraph) => {
                         // Checking for regex ()[] pattern
                         if (splitedParagraph != null && ((/\[(.+)\]\((.+)\)/g.test(splitedParagraph)) || (/\((.+)\)\[(.+)\]/g.test(splitedParagraph)))) {
@@ -381,8 +381,8 @@ AboutBody.defaultProps = {
     fontFamily: 'Nunito',
     lineHeight: '30px',
   },
-  linkColor: '#107FA8',
-  titleColor: '#0B3556',
+  linkColor: '#274FA6',
+  titleColor: '#000000',
   externalIconImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/common/images/logos/svgs/externalLinkIcon.svg',
 };
 
