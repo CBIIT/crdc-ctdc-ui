@@ -8,13 +8,13 @@ import ScrollToTop from '../ScrollButton/ScrollButtonView';
 import Error from '../../pages/error/Error';
 import Home from '../../pages/landing/landingController';
 import About from '../../pages/about/aboutController';
-import Programs from '../../pages/programs/programsController';
-import ProgramDetail from '../../pages/programDetail/programDetailController';
+// import Programs from '../../pages/programs/programsController';
+// import ProgramDetail from '../../pages/programDetail/programDetailController';
 import StudyDetail from '../../pages/studyDetail/studyDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import GlobalSearchController from '../../pages/search/searchViewController';
 import Login from '../../pages/login';
-import ProfileController from '../../pages/profile/profileController';
+// import ProfileController from '../../pages/profile/profileController';
 import OverlayWindow from '../OverlayWindow/OverlayWindow';
 import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';
 import CartView from '../../pages/cart/cartController';
@@ -25,6 +25,7 @@ import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
 import RAView from '../../pages/about/requestAccess'; 
 import ActivitiesController from '../ActivitiesController'; 
+import useVisitedPageSync from '../../utils/useVisitedPageSync';
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -35,6 +36,8 @@ const ScrollToTopComponent = () => {
 const Layout = ({ classes, isSidebarOpened }) => {
   // Access control imports
   const { LoginRoute } = AuthenticationMiddlewareGenerator(AUTH_MIDDLEWARE_CONFIG);
+  
+  useVisitedPageSync();
 
   return (
   <>
@@ -65,7 +68,9 @@ const Layout = ({ classes, isSidebarOpened }) => {
               <Route exact path="/crdc"  component={UnderDev} />
               <Route exact path="/search" component={GlobalSearchController} />
               <Route path="/search/:id"  component={GlobalSearchController} />
+              <Route path="/graphql" component={GraphqlClient} />
 
+           
               {/* END: Private Routes */}
               {aboutPageRoutes.map(
                 (aboutPageRoute, index) => (
@@ -76,7 +81,6 @@ const Layout = ({ classes, isSidebarOpened }) => {
                   />
                 ),
               )}
-              <Route path="/graphql" component={GraphqlClient} />
               <LoginRoute path="/user/login" component={Login} />
               <Route component={Error} />
           </Switch>

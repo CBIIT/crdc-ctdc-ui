@@ -41,3 +41,6 @@ export const SHOW_WARNING_BEFORE = 300;
 
 // DEFAULT_VALUE serves as a fallback when facet or widget items are empty
 export const DEFAULT_VALUE = "No value";
+
+// Constant for last visited hash key in localStorage
+export const LAST_VISITED_HASH_KEY = "lastVisitedHash";
