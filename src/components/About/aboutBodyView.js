@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Link, withStyles } from '@material-ui/core';
 import XoomInOut from './xoomInOutView';
 import tableExternalIcon from './assets/About-Table-ExternalLink.svg';
+import externalLinkIcon from './assets/About-ExternalIcon.svg';
 
 const AboutBody = ({ classes, data, externalIconImage }) => {
   function boldText(text) {
@@ -72,7 +73,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
 
                   {/* Paragraphs */}
                   {contentObj.paragraph && (
-                    <div className={classes.text}>
+                    <div className={classes.text} style={contentObj.paragraph.startsWith("$$*") ? {marginLeft:'30px'}:{}}>
                       { contentObj.paragraph.split('$$').map((splitedParagraph) => {
                         // Checking for regex ()[] pattern
                         if (splitedParagraph != null && ((/\[(.+)\]\((.+)\)/g.test(splitedParagraph)) || (/\((.+)\)\[(.+)\]/g.test(splitedParagraph)))) {
@@ -105,6 +106,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                                   // externalIconImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/common/images/logos/svgs/externalLinkIcon.svg',
                                   alt="outbounnd web site icon"
                                   className={classes.linkIcon}
+                                  style= {{padding: '0 2px 3px 3px'}}
                                 />
                               )}
 
@@ -320,6 +322,7 @@ const styles = () => ({
   },
   link: (props) => ({
     color: props.linkColor,
+    fontWeight: props.linkWeight,
     '&:hover': {
       color: props.linkColor,
     },
@@ -381,9 +384,10 @@ AboutBody.defaultProps = {
     fontFamily: 'Nunito',
     lineHeight: '30px',
   },
-  linkColor: '#107FA8',
-  titleColor: '#0B3556',
-  externalIconImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/common/images/logos/svgs/externalLinkIcon.svg',
+  linkColor: '#274FA6',
+  linkWeight: 'bold',
+  titleColor: '#000000',
+  externalIconImage: externalLinkIcon,
 };
 
 export default withStyles(styles)(AboutBody);
