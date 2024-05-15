@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Link, withStyles } from '@material-ui/core';
 import XoomInOut from './xoomInOutView';
 import tableExternalIcon from './assets/About-Table-ExternalLink.svg';
+import externalLinkIcon from './assets/About-ExternalIcon.svg';
 
 const AboutBody = ({ classes, data, externalIconImage }) => {
   function boldText(text) {
@@ -105,6 +106,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                                   // externalIconImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/common/images/logos/svgs/externalLinkIcon.svg',
                                   alt="outbounnd web site icon"
                                   className={classes.linkIcon}
+                                  style= {{padding: '0 2px 3px 3px'}}
                                 />
                               )}
 
@@ -320,6 +322,7 @@ const styles = () => ({
   },
   link: (props) => ({
     color: props.linkColor,
+    fontWeight: props.linkWeight,
     '&:hover': {
       color: props.linkColor,
     },
@@ -382,8 +385,9 @@ AboutBody.defaultProps = {
     lineHeight: '30px',
   },
   linkColor: '#274FA6',
+  linkWeight: 'bold',
   titleColor: '#000000',
-  externalIconImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/common/images/logos/svgs/externalLinkIcon.svg',
+  externalIconImage: externalLinkIcon,
 };
 
 export default withStyles(styles)(AboutBody);
