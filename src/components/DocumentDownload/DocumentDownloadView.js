@@ -61,7 +61,6 @@ const downloadFile = async (signedUrl, fileName, fileFormat) => {
       method: 'GET',
       responseType: 'blob',
     });
-    console.log("File response: ", response)
 
     // Create a URL for the blob
     const url = window.URL.createObjectURL(response.data);
