@@ -5,10 +5,10 @@ import {
 } from '@material-ui/core';
 import ToolTip from '@bento-core/tool-tip';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+
 import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
-// import { jBrowseOptions } from '../../bento/jbrowseDetailData';
-
 import { enableAuthentication } from '../../bento/siteWideConfig';
 import SessionTimeOutModal from '../sessionTimeOutModal';
 import { useAuth } from '../Authentication';
@@ -16,65 +16,71 @@ import { useAuth } from '../Authentication';
 const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
 
 // Function to fetch and download a file
-export const fetchFileToDownload = (fileId = '', signOut, setShowModal, fileName, fileFormat) => {
-  fetch(`${FILE_SERVICE_API}${fileId}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/pdf',
-    },
-  })
-  .then((response) => {
+export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fileName, fileFormat) => {
+  try {
+    const response = await fetch(`${FILE_SERVICE_API}${fileId}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/pdf',
+      },
+    });
+
     // Check if response status is 403 (Forbidden)
     if (response.status === 403) {
-      // Trigger sign out and show modal
       signOut();
       setShowModal(true);
-      // Throw an error to stop the execution of the promise chain
       throw new Error('Forbidden');
-    } 
+    }
+
     // Check if response status is not 200 (OK)
-    else if (response.status !== 200) {
-      // Throw an error with detailed message
+    if (response.status !== 200) {
       throw new Error(`Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`);
     }
-    // If response status is 200, parse response body as JSON
-    return response.json();
-  })
-  .then((response) => {
-    // Extract file path from the response
-    const fileURL = response.url;
 
-    // Check if file path exists
+    // Parse response body as JSON
+    const jsonResponse = await response.json();
+
+    // Extract file URL from the response
+    const fileURL = jsonResponse.url;
     if (!fileURL) {
-      // If file path is missing, throw an error
       throw new Error('Missing File URL');
     }
-    
-    // Call function to download the file
-    downloadFile(fileURL, fileName, fileFormat);
-  })
-  .catch((error) => {
-    // Catch and log any errors occurred during the process
+
+    // Download the file
+    await downloadFile(fileURL, fileName, fileFormat);
+  } catch (error) {
     console.error('Error:', error.message);
-  });
+  }
 };
 
-// Function to download a file
-const downloadFile = (fileURL, fileName, fileFormat) => {
-  // Create a link element
-  const link = document.createElement('a');
-  // Set the href attribute to the file path
-  link.href = fileURL;
-  // Set the download attribute to specify the file name
-  link.setAttribute('download', `${fileName}.${fileFormat}`);
-  
-  // Append the link to the document body and trigger the download
-  document.body.appendChild(link);
-  link.click();
-  // Clean up: Remove the link element from the document body
-  link.parentNode.removeChild(link);
-};
+// Function to download the file
+const downloadFile = async (signedUrl, fileName, fileFormat) => {
+  try {
+    const response = await axios({
+      url: signedUrl,
+      method: 'GET',
+      responseType: 'blob',
+    });
+    console.log("File response: ", response)
 
+    // Create a URL for the blob
+    const url = window.URL.createObjectURL(response.data);
+    const link = document.createElement('a');
+    link.href = url;
+
+    // Set the file name
+    link.setAttribute('download', `${fileName}.${fileFormat}`);
+    document.body.appendChild(link);
+
+    // Trigger the download
+    link.click();
+
+    // Cleanup and remove the link
+    link.parentNode.removeChild(link);
+  } catch (error) {
+    console.error('Failed to download file:', error);
+  }
+};
 
 // NOTE: This component is getting more complex, will need to refactor at some point.
 const DocumentDownload = ({
@@ -85,18 +91,15 @@ const DocumentDownload = ({
   toolTipTextUnauthenticated = 'Login to access this file',
   toolTipTextFileDownload = 'Download a copy of this file',
   toolTipTextFilePreview = 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
-  toolTipTextFileViewer = 'Jbrowse file viewer',
   iconFileDownload = '',
   iconFilePreview = '',
-  iconFileViewer = '',
   iconUnauthenticated = '',
   fileLocation = '',
-  caseId = '',
   requiredACLs = [],
   fileName,
 }) => {
   const {
-    signInWithGoogle,
+    signInWithAuthURL,
     signOut,
   } = useAuth();
   const history = useHistory();
@@ -152,7 +155,7 @@ const DocumentDownload = ({
               <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextUnauthenticated} placement="bottom">
                 <div
                   style={{ textAlign: 'center' }}
-                  onClick={() => history.push('/user/login?redirect=/explore')}
+                  onClick={() => history.push('/user/login')}
                 >
                   <CustomIcon imgSrc={iconUnauthenticated} />
                 </div>
@@ -183,7 +186,7 @@ const DocumentDownload = ({
           open={showModal}
           closeModal={closeModal}
           handleClose={closeModal}
-          submit={signInWithGoogle}
+          submit={signInWithAuthURL}
           message="Please login to access files!"
         />
       </div>
