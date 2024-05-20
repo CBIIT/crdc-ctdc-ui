@@ -103,7 +103,8 @@ const styles = () => ({
     margin: 'auto',
   },
   grapqhQlContainer: {
-    height: '1200px',
+    display: 'flex',
+    height: '100px',
     minHeight: '500px',
     maxWidth: '1800px',
     margin: 'auto',
@@ -122,14 +123,18 @@ const styles = () => ({
       // height: '500px',
       color: 'black', // #999
     },
+    '& .variable-editor secondary-editor': {
+      height: '0px',
+      color: 'black', // #999
+    },
     // '& .CodeMirror-linenumber': {
     //   height: '500px',
     //   color: 'black', // #999
     // },
-    '& .CodeMirror-lines': {
-      height: '500px',
-      color: 'black', // #999
-    },
+    // '& .CodeMirror-lines': {
+    //   height: '1000px',
+    //   color: 'black', // #999
+    // },
     // '& .doc-category-title': {
     //   color: 'black', // #999
     // },
@@ -146,9 +151,9 @@ const styles = () => ({
     //     color: '#711948', // #D64292
     //   },
     // },
-    '& .editorWrap': {
-      padding: '10px 32px',
-    },
+    // '& .editorWrap': {
+    //   padding: '10px 32px'
+    // },
   },
   docExplorerTitle:{
     padding: '0px',  
