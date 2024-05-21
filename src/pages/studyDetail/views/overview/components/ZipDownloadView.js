@@ -22,7 +22,7 @@ const DocumentDownload = ({
   fileName,
   toolTipIcon,
 }) => {
-  const { signInWithGoogle, signOut } = useAuth();
+  const { signInWithAuthURL, signOut } = useAuth();
   const { isSignedIn } = useSelector((state) => state.login);
   const [showModal, setShowModal] = React.useState(false);
 
@@ -72,7 +72,7 @@ const DocumentDownload = ({
           open={showModal}
           closeModal={closeModal}
           handleClose={closeModal}
-          submit={signInWithGoogle}
+          submit={signInWithAuthURL}
           message="Please login to access files!"
         />
       </div>
