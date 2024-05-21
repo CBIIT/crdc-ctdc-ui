@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
 import { redirect } from '../../Authentication';
 import { useAuth } from '../../Authentication';
+import { LAST_VISITED_HASH_KEY } from '../../../bento/siteWideConfig';
 
 function useQuery() {
   const { search } = useLocation();
@@ -10,7 +11,8 @@ function useQuery() {
 
 function getRedirectPath(query) {
   const state = JSON.parse(query.get('state')) || {};
-  const path = `/#${state.internalRedirectPath || ""}`;
+  const redirectHash = localStorage.getItem(LAST_VISITED_HASH_KEY)
+  const path = redirectHash ? `/${redirectHash}` : `/#${state.internalRedirectPath || ""}`;
   return path;
 }
 
@@ -31,7 +33,7 @@ function nihLoginSuccess() {
   const [notificationMessage, setNotificationMessage] = useState(message);
 
   const onSuccess = () => redirect(history, redirectPath);
-  const onError = (error) => {};
+  const onError = (error) => {console.log("Error: ", error)};
 
   useEffect(() => {
     if (nihCode) {

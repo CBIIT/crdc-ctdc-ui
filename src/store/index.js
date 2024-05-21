@@ -9,6 +9,7 @@ import { cartReducerGenerator } from '@bento-core/cart';
 import { LocalFindReducerGenerator } from '@bento-core/local-find';
 import { LoginReducerGenerator } from '@bento-core/authentication';
 import { getFromLocalStorage } from '../utils/localStorage';
+import { loadState, saveState } from './utils';
 
 const { localFind } = LocalFindReducerGenerator();
 const { statusReducer } = sideBarReducerGenerator();
@@ -25,10 +26,19 @@ const reducers = {
 };
 const loggerMiddleware = createLogger();
 
+// Load state from local storage
+const persistedState = loadState();
+
 const store = createStore(
   combineReducers(reducers),
+  persistedState, // Initialize the store with persisted state
   composeWithDevTools(applyMiddleware(ReduxThunk, loggerMiddleware)),
 );
+
+// Save state to local storage whenever the state changes
+store.subscribe(() => {
+  saveState(store.getState());
+});
 
 store.injectReducer = (key, reducer) => {
   reducers[key] = reducer;
