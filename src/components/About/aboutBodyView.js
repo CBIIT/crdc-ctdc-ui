@@ -14,15 +14,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
     });
     return boldedText;
   }
-  function ItalicizeText(text) {
-    const italicizeText = text.split('$$').map((splitedText) => {
-      if (splitedText != null && (/\*(.*)\*/.test(splitedText))) {
-        return (<span className={classes.title}>{splitedText.match(/\*(.*)\*/).pop()}</span>);
-      }
-      return splitedText;
-    });
-    return italicizeText;
-  }
+
   return (
     <>
       <div className={classes.container}>
