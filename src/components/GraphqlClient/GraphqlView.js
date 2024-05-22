@@ -84,6 +84,7 @@ const GraphqlView = ({ classes }) => (
     <div className={classes.grapqhQlContainer}>
       <GraphiQL editorTheme="solarized light" fetcher={graphQLFetcher} query={defaultQuery}/>
     </div>
+
 </>);
 const styles = () => ({
   aboutSection: {
@@ -106,8 +107,6 @@ const styles = () => ({
   },
   flexItemOne: {
     color: 'black',
-    // marginRight: '20px',
-    // textAlign: 'left',
     fontSize: '14px',
     width: '60px 400px 0 500px ',
     margin: '60px auto',
@@ -130,52 +129,39 @@ const styles = () => ({
     minHeight: '500px',
     maxWidth: '1800px',
     margin: 'auto',
-    // padding: '10px 32px',
     // Modified the default CSS for compliance with 508 color contrast standards
     '& .cm-comment': {
       color: 'black',
     },
     '& .doc-explorer-title-bar': {
-      height: '47px', // 34px
     },
-    // '& .CodeMirror': {
-    //   height: '600px'
-    // },
+    '& .CodeMirror': {
+    },
     '& .CodeMirror-linenumber': {
-      // height: '500px',
       color: 'black', // #999
     },
     '& .variable-editor secondary-editor': {
-      height: '0px',
       color: 'black', // #999
     },
-    // '& .CodeMirror-linenumber': {
-    //   height: '500px',
-    //   color: 'black', // #999
-    // },
-    // '& .CodeMirror-lines': {
-    //   height: '1000px',
-    //   color: 'black', // #999
-    // },
-    // '& .doc-category-title': {
-    //   color: 'black', // #999
-    // },
-    // '& .doc-category-item': {
-    //   '& .type-name': {
-    //     color: '#8c5d00', // ##ca9800
-    //   },
-    // },
-    // '& .resultWrap': {
-    //   '& .cm-number': {
-    //     color: '#043E8B', // #97b0c0
-    //   },
-    //   '& .cm-string': {
-    //     color: '#711948', // #D64292
-    //   },
-    // },
-    // '& .editorWrap': {
-    //   padding: '10px 32px'
-    // },
+    '& .CodeMirror-lines': {
+      color: 'black', // #999
+    },
+    '& .doc-category-title': {
+      color: 'black', // #999
+    },
+    '& .doc-category-item': {
+      '& .type-name': {
+        color: '#8c5d00', // ##ca9800
+      },
+    },
+    '& .resultWrap': {
+      '& .cm-number': {
+        color: '#043E8B', // #97b0c0
+      },
+      '& .cm-string': {
+        color: '#711948', // #D64292
+      },
+    },
   },
   docExplorerTitle:{
     padding: '0px',  
