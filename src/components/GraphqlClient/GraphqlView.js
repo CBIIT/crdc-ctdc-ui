@@ -69,12 +69,12 @@ const GraphqlView = ({ classes }) => (
 <Stats />
     <AboutHeader title="GraphQL"/>
  
-    <Grid container spacing={16} direction="row" className={classes.aboutSection}>
-      <Grid item lg={3} md={3} sm={10} xs={12} className={classes.imageSection}>
-        <img className={classes.graphQLImg} alt="GraphQl" src={graphGridImage}></img>
+    <Grid className={classes.aboutSection} container direction="row" spacing={16}>
+    <Grid className={classes.imageSection} item lg={3} md={3} sm={10} xs={12}>
+      <img alt="GraphQl" className={classes.graphQLImg} src={graphGridImage}></img>
       </Grid>
  
-      <Grid item lg={9} md={9} sm={12} xs={12} className={classes.contentSection}>
+      <Grid className={classes.contentSection} item lg={9} md={9} sm={12} xs={12}>
         <span className={classes.text}>
           
           CTDC provides a GraphQL interface for users to make use of CTDC information in their own systems such as Jupyter notebooks. The GraphiQL interface is provided as a convenient place for researchers to develop their GraphQL queries and view what kind of results the queries return.
@@ -172,44 +172,6 @@ const styles = () => ({
   header: {
     position: 'relative',
     margin: '0px auto',
-  },
-  slope2Text: {
-    height: '65px',
-    width: '252px',
-    color: '#087CA5',
-    fontFamily: 'Raleway',
-    fontSize: '25px',
-    fontWeight: 'bold',
-    letterSpacing: '0.025em',
-    lineHeight: '65px',
-  },
-  slope: {
-    background: '#087CA5',
-    width: '18%',
-    height: '65px',
-    '&:after': {
-      content: '""',
-      position: 'absolute',
-      left: '18%',
-      borderTop: '65px solid #087CA5',
-      borderRight: '65px solid transparent',
-    },
-  },
-  slope2: {
-    background: '#E5E7E8',
-    width: 'calc(82% - 54px)',
-    height: '65px',
-    float: 'right',
-    position: 'absolute',
-    right: '0',
-    top: '20px',
-    '&:after': {
-      content: '""',
-      position: 'absolute',
-      right: '100%',
-      borderBottom: '65px solid #E5E7E8',
-      borderLeft: '65px solid transparent',
-    },
   },
 });
 
