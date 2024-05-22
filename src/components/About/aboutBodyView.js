@@ -14,6 +14,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
     });
     return boldedText;
   }
+
   return (
     <>
       <div className={classes.container}>
@@ -121,9 +122,13 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                         if (splitedParagraph != null && (/#(.*)#/.test(splitedParagraph))) {
                           return (<div className={classes.title}>{splitedParagraph.match(/#(.*)#/).pop()}</div>);
                         }
+                        // For Italize inline words
+                        if (splitedParagraph != null && (/!(.*)!/.test(splitedParagraph))) {
+                          return (<span className={classes.italicizeText}>{splitedParagraph.match(/!(.*)!/).pop()}</span>);
+                        }
                         // For bolding inline words
                         if (splitedParagraph != null && (/\*(.*)\*/.test(splitedParagraph))) {
-                          return (<span className={classes.title}>{splitedParagraph.match(/\*(.*)\*/).pop()}</span>);
+                        return (<span className={classes.title}>{splitedParagraph.match(/\*(.*)\*/).pop()}</span>);
                         }
                         // For downloading things
                         if (splitedParagraph != null && (/{(.*)}/.test(splitedParagraph))) {
@@ -296,6 +301,10 @@ const styles = () => ({
   title: (props) => ({
     color: props.titleColor,
     fontWeight: 'bold',
+  }),
+  italicizeText: (props) => ({
+    color: props.titleColor,
+    fontStyle: 'italic',
   }),
   email: (props) => ({
     color: props.linkColor,
