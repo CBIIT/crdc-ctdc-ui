@@ -76,6 +76,7 @@ const GraphqlView = ({ classes }) => (
  
       <Grid item lg={9} md={9} sm={12} xs={12} className={classes.contentSection}>
         <span className={classes.text}>
+          
           CTDC provides a GraphQL interface for users to make use of CTDC information in their own systems such as Jupyter notebooks. The GraphiQL interface is provided as a convenient place for researchers to develop their GraphQL queries and view what kind of results the queries return.
         </span>
       </Grid>
@@ -88,7 +89,8 @@ const GraphqlView = ({ classes }) => (
 </>);
 const styles = () => ({
   aboutSection: {
-    padding: '60px 45px',
+    maxWidth: "1440px",
+    padding: '60px 145px',
     marginBottom: '100px'
   },
   text: {
@@ -136,6 +138,7 @@ const styles = () => ({
     '& .doc-explorer-title-bar': {
     },
     '& .CodeMirror': {
+
     },
     '& .CodeMirror-linenumber': {
       color: 'black', // #999
