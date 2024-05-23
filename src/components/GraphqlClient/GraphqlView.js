@@ -7,7 +7,6 @@ import env from '../../utils/env';
 import Stats from '../../components/Stats/AllStatsController';
 import AboutHeader from '../../pages/about/aboutHeader';
 import { Grid} from '@material-ui/core';
-import { LineWeight } from '@material-ui/icons';
 import externalLinkIcon from '../../components/About/assets/About-ExternalIcon.svg';
 const BACKEND = env.REACT_APP_BACKEND_API;
 
@@ -86,9 +85,9 @@ const GraphqlView = ({ classes }) => (
         To begin querying the CTDC data via GraphQL, access our API endpoint at 
         <a className={classes.link} href={BACKEND}> {BACKEND}</a>.
         <img
-          src={externalLinkIcon}
           alt="outbounnd web site icon"
           className={classes.linkIcon}
+          src={externalLinkIcon}
           style= {{padding: '0 2px 2px 2px',color: '#274FA6'}}
         />
         </span>
@@ -98,8 +97,9 @@ const GraphqlView = ({ classes }) => (
         If you are new to GraphQL and wish to learn more about query language, comprehensive tutorials and example queries are available at  
         <a className={classes.link} href="https://graphql.org/learn/"> graphql.org</a>
         <img
-          src={externalLinkIcon}
           alt="outbounnd web site icon"
+          src={externalLinkIcon}
+
           className={classes.linkIcon}
           style= {{padding: '0 2px 2px 2px',color: '#274FA6'}}
         />. These resources provide an excellent starting point for understanding and utilizing GraphQL effectively.
