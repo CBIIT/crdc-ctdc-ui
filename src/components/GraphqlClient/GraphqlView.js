@@ -86,8 +86,8 @@ const GraphqlView = ({ classes }) => (
         <a className={classes.link} href={BACKEND}> {BACKEND}</a>.
         <img
           alt="outbounnd web site icon"
-          className={classes.linkIcon}
           src={externalLinkIcon}
+          className={classes.linkIcon}
           style= {{padding: '0 2px 2px 2px',color: '#274FA6'}}
         />
         </span>
