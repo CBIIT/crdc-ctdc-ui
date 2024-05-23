@@ -121,9 +121,10 @@
     - paragraph: "You will receive notification of approval via email."
     - paragraph: "Access approved datasets within the CTDC"
     - paragraph: "After receiving dbGaP approval for a desired dataset, you can access and download the dataset through your CTDC account or create a manifest to analyze data within the Seven Bridges’ Cancer Genomics Cloud (SB-CGC)."
-    
-
-
-
-
-  
+- page: "/graphql"
+  title: "graphql"
+  content:
+    - paragraph: "GraphQL is a powerful query language for APIs. It provides a more efficient, powerful, and flexible alternative to the traditional REST API. Unlike traditional REST APIs, which typically require multiple endpoints to retrieve various pieces of data, GraphQL allows clients (the systems making the queries) to fetch exactly what they need in a single request. The Clinical and Translational Data Commons (CTDC) leverages this technology by offering a GraphQL API interface, which enables users to interact with CTDC data directly from their own systems, such as through Jupyter notebooks."
+    - paragraph: "To begin querying the CTDC data via GraphQL, access our API endpoint at $$[https://clinical.datacommons.cancer.gov/#/](https://clinical.datacommons.cancer.gov/#/)$$"
+    - paragraph: "If you are new to GraphQL and wish to learn more about query language, comprehensive tutorials and example queries are available at $$[https://graphql.org](https://graphql.org)$$ web site icon. These resources provide an excellent starting point for understanding and utilizing GraphQL effectively."
+   
