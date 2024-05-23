@@ -7,7 +7,8 @@ import env from '../../utils/env';
 import Stats from '../../components/Stats/AllStatsController';
 import AboutHeader from '../../pages/about/aboutHeader';
 import { Grid} from '@material-ui/core';
-
+import { LineWeight } from '@material-ui/icons';
+import externalLinkIcon from '../../components/About/assets/About-ExternalIcon.svg';
 const BACKEND = env.REACT_APP_BACKEND_API;
 
 const defaultQuery =
@@ -75,9 +76,33 @@ const GraphqlView = ({ classes }) => (
       </Grid>
  
       <Grid className={classes.contentSection} item lg={9} md={9} sm={12} xs={12}>
+        <span className={classes.text}>  
+        GraphQL is a powerful query language for APIs. It provides a more efficient, powerful, and flexible alternative to the traditional REST API. Unlike traditional REST APIs, which typically require multiple endpoints to retrieve various pieces of data, GraphQL allows clients (the systems making the queries) to fetch exactly what they need in a single request. The Clinical and Translational Data Commons (CTDC) leverages this technology by offering a GraphQL API interface, which enables users to interact with CTDC data directly from their own systems, such as through Jupyter notebooks.
+        </span>
+        <br />
+        <br />
         <span className={classes.text}>
           
-          CTDC provides a GraphQL interface for users to make use of CTDC information in their own systems such as Jupyter notebooks. The GraphiQL interface is provided as a convenient place for researchers to develop their GraphQL queries and view what kind of results the queries return.
+        To begin querying the CTDC data via GraphQL, access our API endpoint at 
+        <a className={classes.link} href={BACKEND}> {BACKEND}</a>
+        <img
+          src={externalLinkIcon}
+          alt="outbounnd web site icon"
+          className={classes.linkIcon}
+          style= {{padding: '0 2px 2px 2px',color: '#274FA6'}}
+        />
+        </span>
+        <span className={classes.text}>
+        <br />
+        <br />
+        If you are new to GraphQL and wish to learn more about query language, comprehensive tutorials and example queries are available at  
+        <a className={classes.link} href="https://graphql.org/learn/"> graphql.org</a>
+        <img
+          src={externalLinkIcon}
+          alt="outbounnd web site icon"
+          className={classes.linkIcon}
+          style= {{padding: '0 2px 2px 2px',color: '#274FA6'}}
+        />. These resources provide an excellent starting point for understanding and utilizing GraphQL effectively.
         </span>
       </Grid>
     </Grid>
@@ -93,9 +118,22 @@ const styles = () => ({
     padding: '60px 145px',
     marginBottom: '100px'
   },
+  linkIcon: {
+    color: '#274FA6',
+    width: '20px',
+    verticalAlign: 'sub',
+    margin: '0px 0px 0px 2px',
+  },
+  link: {
+    color: '#274FA6',
+    fontSize: '16px',
+    fontWeight:"bold",
+    textDecoration: 'none',
+  },
   text: {
     color: 'black',
     fontSize: '16px',
+    fontFamily: ("Lato Regular, Open Sans, sans-serif")
   },
   imageSection: {
     float: 'left',
