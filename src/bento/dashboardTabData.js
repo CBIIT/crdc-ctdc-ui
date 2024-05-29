@@ -1901,14 +1901,6 @@ export const tabContainers = [
         headerType: headerTypes.CUSTOM_ELEM,
       },
       {
-        dataField: 'specimen_type',
-        header: 'Analyte',
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
-      },
-      {
         dataField: 'tissue_category',
         header: 'Tissue Category',
         display: true,
