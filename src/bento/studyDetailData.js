@@ -35,7 +35,7 @@ export const biospecimenProfile = {
     },
     {
       index: 1,
-      label: 'ANALYTE',
+      label: 'biospecimens',
       value: 'specimen_types',
     },
   ],
@@ -50,7 +50,7 @@ export const argumentConfiguration = {
   position: 'inside',
   size: 12,
   title: {
-    text: 'Analyte',
+    text: 'Biospecimens',
     size: 13,
     color: '#444444',
     weight: 500,
