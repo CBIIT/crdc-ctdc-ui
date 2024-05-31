@@ -155,18 +155,6 @@ export const facetsConfig = [
   },
   {
     section: SAMPLES,
-    label: 'Analyte',
-    apiPath: 'specimenCountBySpecimenType',
-    apiForFiltering: 'filterSpecimenCountBySpecimenType',
-    datafield: 'specimen_type',
-    field: GROUP,
-    type: InputTypes.CHECKBOX,
-    sort_type: sortType.ALPHABET,
-    show: true,
-    defaultValue: DEFAULT_VALUE,
-  },
-  {
-    section: SAMPLES,
     label: 'Tissue Category',
     apiPath: 'specimenCountByTissueCategory',
     apiForFiltering: 'filterSpecimenCountByTissueCategory',

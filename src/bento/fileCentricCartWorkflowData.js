@@ -98,8 +98,8 @@ export const myFilesPageData = {
 };
  
 export const manifestData = {
-  keysToInclude: ['data_file_name', 'data_file_uuid','data_file_uuid', 'data_file_checksum_value','subject_id', 'parent_specimen_id', 'ctep_disease_term','meddra_disease_code', 'primary_disease_site','histology', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site', 'specimen_type','tissue_category','assessment_timepoint','User_Comment'],
-  header: ['name', 'drs_uri' ,'File ID', 'Md5sum','Participant ID', 'Biospecimen ID', 'Diagnosis','MedDRA Disease Code', 'Primary Site','Histology', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Analyte','Tissue Category','Collection Timepoint','User Comment'],
+  keysToInclude: ['data_file_name', 'data_file_uuid','data_file_uuid', 'data_file_checksum_value','subject_id', 'parent_specimen_id', 'ctep_disease_term','meddra_disease_code', 'primary_disease_site','histology', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site','tissue_category','assessment_timepoint','User_Comment'],
+  header: ['name', 'drs_uri' ,'File ID', 'Md5sum','Participant ID', 'Biospecimen ID', 'Diagnosis','MedDRA Disease Code', 'Primary Site','Histology', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Tissue Category','Collection Timepoint','User Comment'],
 };
 
 // --------------- GraphQL query - Retrieve selected cases info --------------

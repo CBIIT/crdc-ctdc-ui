@@ -35,8 +35,8 @@ export const biospecimenProfile = {
     },
     {
       index: 1,
-      label: 'ANALYTE',
-      value: 'specimen_types',
+      label: 'BIOSPECIMENS',
+      value: 'parent_specimen_types',
     },
   ],
 };
@@ -50,7 +50,7 @@ export const argumentConfiguration = {
   position: 'inside',
   size: 12,
   title: {
-    text: 'Analyte',
+    text: 'Biospecimens',
     size: 13,
     color: '#444444',
     weight: 500,
@@ -141,7 +141,7 @@ query studyByStudyShortNameQueries($study_short_name: [String]) {
   }
 
   StudySpecimenByStudyShortName(study_short_name: $study_short_name) {
-    specimen_types{
+    parent_specimen_types{
         group
         count
     }

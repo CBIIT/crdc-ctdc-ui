@@ -124,15 +124,7 @@ export const CustomHeaderCellView = (props) => {
       </>
     )
   }
-  else if (props.dataField === "specimen_type") {
-    return (
-      <>
-      <span style={{fontSize: '14px',width: '150px',textAlign: 'left'}}>
-        Analyte
-      </span>
-      </>
-    )
-  }
+  
   else if (props.dataField === "tissue_category") {
     return (
       <>
