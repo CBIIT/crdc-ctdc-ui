@@ -87,20 +87,19 @@ export const tabIndex = [
 export const DASHBOARD_QUERY_NEW = gql`
 query search(
   $subject_id: [String],
-   $ctep_disease_term: [String],
-    $stage_of_disease: [String],
-     $tumor_grade: [String], 
-     $sex: [String], 
-     $reported_gender: [String], 
-     $race: [String], $ethnicity: [String],
-      $carcinogen_exposure: [String], 
-      $targeted_therapy: [String],
-       $anatomical_collection_site: [String],
-        $specimen_type: [String],
-         $tissue_category: [String],
-          $assessment_timepoint: [String],
-           $data_file_type: [String],
-            $data_file_format: [String]) {
+  $ctep_disease_term: [String],
+  $stage_of_disease: [String],
+  $tumor_grade: [String], 
+  $sex: [String], 
+  $reported_gender: [String], 
+  $race: [String], $ethnicity: [String],
+  $carcinogen_exposure: [String], 
+  $targeted_therapy: [String],
+  $anatomical_collection_site: [String],
+  $tissue_category: [String],
+  $assessment_timepoint: [String],
+  $data_file_type: [String],
+  $data_file_format: [String]) {
   searchParticipants(
     subject_id: $subject_id
     ctep_disease_term: $ctep_disease_term
@@ -113,7 +112,6 @@ query search(
     carcinogen_exposure: $carcinogen_exposure
     targeted_therapy: $targeted_therapy
     anatomical_collection_site: $anatomical_collection_site
-    specimen_type: $specimen_type
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
     data_file_type: $data_file_type
@@ -348,7 +346,6 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $carcinogen_exposure: [String],
     $targeted_therapy: [String],
     $anatomical_collection_site: [String],
-    $specimen_type: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
     $data_file_type: [String],
@@ -370,7 +367,6 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
@@ -410,7 +406,6 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     $carcinogen_exposure: [String],
     $targeted_therapy: [String],
     $anatomical_collection_site: [String],
-    $specimen_type: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
     $data_file_type: [String],
@@ -432,7 +427,6 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
@@ -449,7 +443,6 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       specimen_id,
       parent_specimen_id,
       anatomical_collection_site,
-      specimen_type,
       tissue_category,
       assessment_timepoint
 
@@ -471,7 +464,6 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     $carcinogen_exposure: [String],
     $targeted_therapy: [String],
     $anatomical_collection_site: [String],
-    $specimen_type: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
     $data_file_type: [String],
@@ -493,7 +485,6 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
@@ -1329,7 +1320,6 @@ query participant_data_files(
   $carcinogen_exposure: [String],
   $targeted_therapy: [String],
   $anatomical_collection_site: [String],
-  $specimen_type: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
   $data_file_type: [String],
@@ -1351,7 +1341,6 @@ query participant_data_files(
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
@@ -1382,7 +1371,6 @@ query biospecimenAddAllToCart(
   $targeted_therapy: [String],
 
   $anatomical_collection_site: [String],
-  $specimen_type: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
   $parent_specimen_id: [String],
@@ -1408,7 +1396,6 @@ query biospecimenAddAllToCart(
     targeted_therapy: $targeted_therapy
     
     anatomical_collection_site: $anatomical_collection_site
-    specimen_type: $specimen_type
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
     parent_specimen_id: $parent_specimen_id
@@ -1441,7 +1428,6 @@ query fileAddSelectedToCart(
   $carcinogen_exposure: [String],
   $targeted_therapy: [String],
   $anatomical_collection_site: [String],
-  $specimen_type: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
   $data_file_type: [String],
@@ -1464,7 +1450,6 @@ query fileAddSelectedToCart(
     carcinogen_exposure: $carcinogen_exposure
     targeted_therapy: $targeted_therapy
     anatomical_collection_site: $anatomical_collection_site
-    specimen_type: $specimen_type
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
     data_file_type: $data_file_type
@@ -1493,7 +1478,6 @@ query participant_data_files(
   $carcinogen_exposure: [String],
   $targeted_therapy: [String],
   $anatomical_collection_site: [String],
-  $specimen_type: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
   $data_file_type: [String],
@@ -1515,7 +1499,6 @@ query participant_data_files(
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
@@ -1546,7 +1529,6 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
     $parent_specimen_id: [String],
 
     $anatomical_collection_site: [String],
-    $specimen_type: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
 
@@ -1570,7 +1552,6 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
@@ -1601,7 +1582,6 @@ query fileAddAllToCart(
   $carcinogen_exposure: [String],
   $targeted_therapy: [String],
   $anatomical_collection_site: [String],
-  $specimen_type: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
   $data_file_type: [String],
@@ -1623,7 +1603,6 @@ query fileAddAllToCart(
     carcinogen_exposure: $carcinogen_exposure
     targeted_therapy: $targeted_therapy
     anatomical_collection_site: $anatomical_collection_site
-    specimen_type: $specimen_type
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
     data_file_type: $data_file_type

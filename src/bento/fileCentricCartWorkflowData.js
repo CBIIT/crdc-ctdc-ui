@@ -143,7 +143,6 @@ export const GET_MY_CART_DATA_QUERY = gql`
       carcinogen_exposure
       targeted_therapy
       anatomical_collection_site
-      specimen_type
       tissue_category
       assessment_timepoint
    }
@@ -187,7 +186,6 @@ query fileOverview(
     carcinogen_exposure
     targeted_therapy
     anatomical_collection_site
-    specimen_type
     tissue_category
     assessment_timepoint
   }
@@ -233,7 +231,6 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     carcinogen_exposure
     targeted_therapy
     anatomical_collection_site
-    specimen_type
     tissue_category
     assessment_timepoint
  }
