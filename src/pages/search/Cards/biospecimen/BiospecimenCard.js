@@ -10,7 +10,6 @@ const BiospecimenCard = ({ data = {}, index }) => {
     parent_specimen_id: parentSpecimenId,
     subject_id: subjectId,
     ctep_disease_term: ctepDiseaseTerm,
-    specimen_type: biospecimenType,
     parent_specimen_type: parentSpecimenType,
     tissue_category: tissueCategory,
     anatomical_collection_site: anatomicalCollectionSite,

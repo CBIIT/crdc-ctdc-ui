@@ -164,20 +164,19 @@ export const globalStatsData = [
 export const GET_GLOBAL_STATS_DATA_QUERY = gql`
   query search(
     $subject_id: [String],
-     $ctep_disease_term: [String],
-      $stage_of_disease: [String],
-       $tumor_grade: [String], 
-       $sex: [String], 
-       $reported_gender: [String], 
-       $race: [String], $ethnicity: [String],
-        $carcinogen_exposure: [String], 
-        $targeted_therapy: [String],
-         $anatomical_collection_site: [String],
-          $specimen_type: [String],
-           $tissue_category: [String],
-            $assessment_timepoint: [String],
-             $data_file_type: [String],
-              $data_file_format: [String]) {
+    $ctep_disease_term: [String],
+    $stage_of_disease: [String],
+    $tumor_grade: [String], 
+    $sex: [String], 
+    $reported_gender: [String], 
+    $race: [String], $ethnicity: [String],
+    $carcinogen_exposure: [String], 
+    $targeted_therapy: [String],
+    $anatomical_collection_site: [String],
+    $tissue_category: [String],
+    $assessment_timepoint: [String],
+    $data_file_type: [String],
+    $data_file_format: [String]) {
     searchParticipants(
       subject_id: $subject_id
       ctep_disease_term: $ctep_disease_term
@@ -190,18 +189,17 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
       data_file_format: $data_file_format
     ) {
-      numberOfStudies
-      numberOfParticipants
-      numberOfDiagnoses
-      numberOfTargetedTherapies
-      numberOfSpecimens
-      numberOfFiles
-}
-}
+        numberOfStudies
+        numberOfParticipants
+        numberOfDiagnoses
+        numberOfTargetedTherapies
+        numberOfSpecimens
+        numberOfFiles
+      }
+    }
 `;
