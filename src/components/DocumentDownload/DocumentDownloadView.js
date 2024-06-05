@@ -31,7 +31,7 @@ export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fi
     const response = await fetch(`${FILE_SERVICE_API}${hardcodedId}`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/pdf',
+        'Content-Type': 'application/json',
       },
     });
 
