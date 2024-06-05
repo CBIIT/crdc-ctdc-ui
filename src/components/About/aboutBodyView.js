@@ -248,7 +248,6 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                       </table>
                     </div>
                   )}
-                  <br />
                 </>
               )) : ''}
             </span>
@@ -270,6 +269,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
 
 const styles = () => ({
   container: {
+    
     margin: '16px auto 16px auto',
     color: '#000000',
     fontFamily: (props) => (props.data.fontFamily ? props.data.fontFamily : 'Nunito'),
@@ -293,6 +293,7 @@ const styles = () => ({
   text: {
     // height: '476px',
     // width: '675px',
+    margin: '10px auto 0px auto',
     color: '#000000',
     fontFamily: (props) => (props.data.fontFamily ? props.data.fontFamily : 'Nunito'),
     fontSize: '16px',
@@ -300,7 +301,11 @@ const styles = () => ({
   },
   title: (props) => ({
     color: props.titleColor,
-    fontWeight: 'bold',
+    fontWeight: '400',
+    fontSize: '22px',
+    fontFamily: 'Inter',
+    margin: '0px 0px 20px 0px'
+
   }),
   italicizeText: (props) => ({
     color: props.titleColor,
@@ -312,11 +317,13 @@ const styles = () => ({
   }),
   contentSection: {
     padding: (props) => (props.data.imageLocation === 'right'
-      ? '8px 25px 8px 0px !important' : '8px 0px 8px 25px !important'),
+      ? '0px 25px 8px 0px !important' : '0px 0px 8px 25px !important'),
     float: 'left',
+    lineHeight: '8x'
   },
   imageSection: {
     float: 'left',
+    margin: '10px 0px 20px 0px'
   },
   aboutSection: {
     padding: '60px 45px',
