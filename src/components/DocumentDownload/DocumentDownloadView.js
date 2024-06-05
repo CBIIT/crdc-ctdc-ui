@@ -44,7 +44,7 @@ export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fi
 
     // Check if response status is not 200 (OK)
     if (response.status !== 200) {
-      throw new Error(`Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`);
+      throw new Error(`Failed to fetch the file from "${hardcodedId}". Server responded with: ${response.status} (${response.statusText})`);
     }
 
     // Parse response body as JSON
