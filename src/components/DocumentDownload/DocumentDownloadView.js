@@ -17,8 +17,18 @@ const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
 
 // Function to fetch and download a file
 export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fileName, fileFormat) => {
+  
+  let hardcodedId = "" 
+  if (fileFormat === "zip") {
+    hardcodedId = 'dg.4DFC/4df75011-0149-4f1e-9f5a-e9c192618c17';
+  } else if (fileFormat === "pdf") {
+    hardcodedId = 'dg.4DFC/3e2333fd-81e5-4241-b4dc-3c0266a00720';
+  } else {
+    hardcodedId = 'dg.4DFC/9f99d2ac-7d5d-43ed-99d6-998829fad00a';
+  }
+
   try {
-    const response = await fetch(`${FILE_SERVICE_API}${fileId}`, {
+    const response = await fetch(`${FILE_SERVICE_API}${hardcodedId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/pdf',
@@ -67,6 +77,7 @@ const downloadFile = async (signedUrl, fileName, fileFormat) => {
     const link = document.createElement('a');
     link.href = url;
 
+    if (fileFormat === "vcf") fileFormat +='.gz'
     // Set the file name
     link.setAttribute('download', `${fileName}.${fileFormat}`);
     document.body.appendChild(link);
