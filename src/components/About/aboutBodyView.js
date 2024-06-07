@@ -130,6 +130,10 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                         if (splitedParagraph != null && (/\*(.*)\*/.test(splitedParagraph))) {
                         return (<span className={classes.title}>{splitedParagraph.match(/\*(.*)\*/).pop()}</span>);
                         }
+                        // for indents
+                        if (splitedParagraph != null && (/>(.*)>/.test(splitedParagraph))) {
+                        return (<span className={classes.indentedText}>{splitedParagraph.match(/>(.*)>/).pop()}</span>);
+                        }
                         // For downloading things
                         if (splitedParagraph != null && (/{(.*)}/.test(splitedParagraph))) {
                           const downloadAttrs = splitedParagraph.match(/{(.*)}/).pop().split(',');
@@ -299,12 +303,21 @@ const styles = () => ({
     fontSize: '16px',
     lineHeight: (props) => (props.data.lineHeight ? props.data.lineHeight : '30px'),
   },
+  indentedText: {
+    // height: '476px',
+    // width: '675px',
+    margin: '10px auto 0px 30px',
+    color: '#000000',
+    fontFamily: (props) => (props.data.fontFamily ? props.data.fontFamily : 'Nunito'),
+    fontSize: '16px',
+    lineHeight: (props) => (props.data.lineHeight ? props.data.lineHeight : '30px'),
+  },
   title: (props) => ({
     color: props.titleColor,
     fontWeight: '400',
     fontSize: '22px',
     fontFamily: 'Inter',
-    margin: '0px 0px 20px 0px'
+    margin: '0px 0px 8px 0px'
 
   }),
   italicizeText: (props) => ({

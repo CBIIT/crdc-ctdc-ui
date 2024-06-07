@@ -116,7 +116,7 @@ const styles = () => ({
   aboutSection: {
     maxWidth: "1440px",
     padding: '60px 145px',
-    marginBottom: '100px'
+    margin:'0px 0px 0px 100px'
   },
   linkIcon: {
     color: '#274FA6',
@@ -137,12 +137,13 @@ const styles = () => ({
   },
   imageSection: {
     float: 'left',
+    margin: '4px 0 0 0'
   },
   graphQLImg: {
     width: '100%',
   },
   contentSection: {
-    padding: '8px 0px 8px 25px',
+    padding: '0px 0px 8px 25px',
     float: 'left',
   },
   flexItemOne: {
