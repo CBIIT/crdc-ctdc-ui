@@ -10,6 +10,7 @@ import { enableAuthentication } from '../../../../../bento/siteWideConfig';
 import SessionTimeOutModal from '../../../../../components/sessionTimeOutModal';
 import { useAuth } from '../../../../../components/Authentication';
 import { fetchFileToDownload } from '../../../../../components/DocumentDownload/DocumentDownloadView';
+import { useGlobal } from '../../../../../components/Global/GlobalProvider';
 
 const DocumentDownload = ({
   classes,
@@ -35,6 +36,9 @@ const DocumentDownload = ({
     return isSignedIn;
   };
 
+  const { Notification } = useGlobal();
+  const showNotification = (content, duration) => Notification.show(content, duration);
+
   return (
     <>
       <div>
@@ -45,7 +49,7 @@ const DocumentDownload = ({
               <Button
                 variant="contained"
                 classes={{ root: classes.downloadAllBtn }}
-                onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat)}
+                onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat, showNotification)}
               >
                 ZIP&nbsp;FILE
                 <img src={iconFileDownload} alt="download icon" className={classes.downloadIcon} />
