@@ -115,8 +115,8 @@ const GraphqlView = ({ classes }) => (
 const styles = () => ({
   aboutSection: {
     maxWidth: "1440px",
-    padding: '60px 145px',
-    margin:'0px 0px 0px 100px'
+    padding: '70px 172px',
+    margin:'0px auto 0px auto',
   },
   linkIcon: {
     color: '#274FA6',
