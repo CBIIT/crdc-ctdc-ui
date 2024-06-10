@@ -122,6 +122,10 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                         if (splitedParagraph != null && (/#(.*)#/.test(splitedParagraph))) {
                           return (<div className={classes.title}>{splitedParagraph.match(/#(.*)#/).pop()}</div>);
                         }
+                        // for first sub heading on page
+                        if (splitedParagraph != null && (/~(.*)~/.test(splitedParagraph))) {
+                          return (<div className={classes.firstTitle}>{splitedParagraph.match(/~(.*)~/).pop()}</div>);
+                        }
                         // For Italize inline words
                         if (splitedParagraph != null && (/!(.*)!/.test(splitedParagraph))) {
                           return (<span className={classes.italicizeText}>{splitedParagraph.match(/!(.*)!/).pop()}</span>);
@@ -306,7 +310,7 @@ const styles = () => ({
   indentedText: {
     // height: '476px',
     // width: '675px',
-    margin: '10px auto 0px 30px',
+    margin: '0px auto 0px 30px',
     color: '#000000',
     fontFamily: (props) => (props.data.fontFamily ? props.data.fontFamily : 'Nunito'),
     fontSize: '16px',
@@ -317,10 +321,20 @@ const styles = () => ({
     fontWeight: '400',
     fontSize: '22px',
     fontFamily: 'Inter',
-    margin: '0px 0px 8px 0px'
-
+    margin: '42px 0px 0px 0px',
   }),
+  firstTitle: (props) => ({
+    color: props.titleColor,
+    fontWeight: '400',
+    fontSize: '22px',
+    fontFamily: 'Inter',
+    margin: '0px 0px 0px 0px'
+  }),
+  
   italicizeText: (props) => ({
+    margin: '0px 0px 0px 0px',
+    display:'inline-block',
+    marginLeft:'30px',
     color: props.titleColor,
     fontStyle: 'italic',
   }),

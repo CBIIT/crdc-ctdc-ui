@@ -48,7 +48,7 @@
   title: "Data Terms of Use"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
   content:
-    - paragraph: "$$#Data Access#$$"
+    - paragraph: "$$~Data Access~$$"
     - paragraph: "     "
     - paragraph: "The CTDC hosts data with varying access requirements, allowing researchers to work with a wide range of data across studies while also protecting participant privacy. Data deposited within the CTDC is available through three different access tiers including open-access, registered-access, and controlled-access tiers (visit our $$[Request Access](type:internal url:/#/request-access target:_blank )$$ page for more details). Users and their associated institutions are responsible for understanding specific terms of use for each study and adhering to study-specific Data Use Agreement(s) (DUAs), Institutional Review Board policies, and other relevant guidelines. DUAs may be required to access controlled-access tier data for certain trials or studies. If a DUA is required, the authorizing entity will provide it as part of the data request process."
     - paragraph: "     "
@@ -68,7 +68,7 @@
     - paragraph: "     "
     - paragraph: "The CTDC requests that researchers who use CTDC data acknowledge it as follows: "
     - paragraph: "     "
-    - paragraph: "\"$$!The results published here are, in whole or in part, derived from the analysis of data found within the Clinical and Translational Data Commons (CTDC), part of the National Cancer Institute's Cancer Research Data Commons (CRDC). This includes data generated as part of the [Study Name] NCT XXXXXX study, https://doi.org/xxx. This data can be found within NCI’s Clinical and Translational Data Commons, found at clinical.datacommons.cancer.gov.!$$\""
+    - paragraph: "$$!\"The results published here are, in whole or in part, derived from the analysis of data found within the Clinical and Translational Data Commons (CTDC), part of the National Cancer Institute's Cancer Research Data Commons (CRDC). This includes data generated as part of the [Study Name] NCT XXXXXX study, https://doi.org/xxx. This data can be found within NCI’s Clinical and Translational Data Commons, found at clinical.datacommons.cancer.gov.\"!$$"
     - paragraph: "     "
     - paragraph: "If you have utilized data within the CTDC in your research, please contact $$[NCICTDCHelpDesk@mail.nih.gov](NCICTDCHelpDesk@mail.nih.gov)$$ so we can include your work on our website."
     - paragraph: "     "
