@@ -3,7 +3,6 @@ import { Grid, Link, withStyles } from '@material-ui/core';
 import XoomInOut from './xoomInOutView';
 import tableExternalIcon from './assets/About-Table-ExternalLink.svg';
 import externalLinkIcon from './assets/About-ExternalIcon.svg';
-import { title } from '../../bento/studyDetailData';
 
 const AboutBody = ({ classes, data, externalIconImage }) => {
   function boldText(text) {
@@ -323,12 +322,6 @@ const styles = () => ({
     fontSize: '22px',
     fontFamily: 'Inter',
     margin: '42px 0px 0px 0px',
-    '&:first-of-type': {
-      margin: '0px 0px 0px 0px',
-    },
-    '&:first-child': {
-      margin: '42px 0px 0px 0px',
-    },
   }),
   firstTitle: (props) => ({
     color: props.titleColor,
@@ -339,6 +332,9 @@ const styles = () => ({
   }),
   
   italicizeText: (props) => ({
+    margin: '0px 0px 0px 0px',
+    display:'inline-block',
+    marginLeft:'30px',
     color: props.titleColor,
     fontStyle: 'italic',
   }),
