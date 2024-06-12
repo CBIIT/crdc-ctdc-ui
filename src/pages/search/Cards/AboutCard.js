@@ -11,8 +11,8 @@ const AboutCard = ({
     // Split on highlight term and include term into parts, ignore case
     const textString = text.reduce((searchResults, currentString, currentIndex) => {
       let newResults = searchResults;
-      if (currentString.endsWith('.') || currentIndex >= text.length - 1) {
-        newResults = `${`${newResults} ${currentString}`}`;
+      if (currentString.endsWith('.')) {
+        newResults = `${`${newResults} ${currentString.slice(0, -1)}`} ...`;
       } else {
         newResults = `${`${newResults} ${currentString}`} ... `;
       }
