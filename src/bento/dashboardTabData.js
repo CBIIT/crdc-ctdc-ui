@@ -2007,7 +2007,7 @@ export const tabContainers = [
           fileName: 'data_file_name',
 
           // Case 1: Logged in and granted access, file size below {maxFileSize}
-          toolTipTextFileDownload: 'Download a copy of this file',
+          toolTipTextFileDownload: 'Click to download a copy of this file if you have been approved by dbGaP',
           iconFileDownload: downloadSuccess,
           
           // Case 2: Not logged in or access not granted, file size below {maxFileSize}

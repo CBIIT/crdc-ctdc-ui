@@ -10,6 +10,7 @@ const NotificationFunctions = () => {
     vertical: 'top',
     horizontal: 'center',
   });
+  const [customStyle, setCustomStyle] = React.useState({});
 
   // Variables
 
@@ -22,14 +23,15 @@ const NotificationFunctions = () => {
     setOpen(false);
   };
 
-  const show = (msg, timeoutDuration) => {
+  const show = (msg, timeoutDuration, style) => {
     setMessage(msg);
     setDuration(timeoutDuration);
+    setCustomStyle(style); // Add this line to set the custom style
     setOpen(true);
   };
 
   const getProps = () => ({
-    open, duration, message, location,
+    open, duration, message, location, customStyle,
   });
 
   return {

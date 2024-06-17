@@ -1,8 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import {
-  withStyles,
-} from '@material-ui/core';
+import { withStyles } from '@material-ui/core';
 import ToolTip from '@bento-core/tool-tip';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
@@ -17,7 +15,7 @@ import { useGlobal } from '../Global/GlobalProvider';
 const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
 
 // Function to fetch and download a file
-export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fileName, fileFormat, showNotification) => {
+export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification) => {
   
   let hardcodedId = "" 
   if (fileFormat === "zip") {
@@ -46,7 +44,7 @@ export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fi
 
     // Check if response status is not 200 (OK)
     if (response.status === 401) {
-      showNotification("Access Denied: You are not authorized to access this file. You must already have been granted access to download a copy of this file", 50000)
+      showUnauthorizedNotification()
       throw new Error(`Failed to fetch the file from "${hardcodedId}". Server responded with: ${response.status} (${response.statusText})`);
     }
     // Check if response status is not 200 (OK)
@@ -106,7 +104,7 @@ const DocumentDownload = ({
   fileFormat = '',
   maxFileSize = 200000,
   toolTipTextUnauthenticated = 'Login to access this file',
-  toolTipTextFileDownload = 'Download a copy of this file',
+  toolTipTextFileDownload = 'Click to download a copy of this file if you have been approved by dbGaP',
   toolTipTextFilePreview = 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
   iconFileDownload = '',
   iconFilePreview = '',
@@ -125,14 +123,21 @@ const DocumentDownload = ({
   const { isSignedIn } = useSelector((state) => state.login);
 
   const [showModal, setShowModal] = React.useState(false);
-  const [ hasAccess, setHasAccess] = React.useState(true);
+  const [ hasAccess ] = React.useState(true);
 
 
   const { Notification } = useGlobal();
-  const showUnauthorizedNotification = (content, duration) => 
+  const showUnauthorizedNotification = () => 
     {
-      setHasAccess(false)
-      Notification.show(content, duration);
+      const customElem = (
+        <span>
+          You must be logged in and must already have been granted access to download a copy of this file.{' '}
+          <a className={classes.requestAccessLink} href="/#/request-access">Request access</a>{' '}
+          through dbGaP to download this file.
+        </span>
+      );
+
+      Notification.show(customElem, 6000, classes.alertStyles);
     }
 
   /*
@@ -237,6 +242,19 @@ const styles = () => ({
     padding: '10px 15px'
   },
   customArrow: {
+  },
+  alertStyles: {
+    backgroundColor: '#155E6F !important',
+  },
+  requestAccessLink: {
+    fontWeight: 600,
+    textDecoration: 'underline !important',
+    color:'#FFFFFF',
+    fontSize: '16px',
+    '&:hover': {
+      textDecoration: 'none',
+      color: '#FFFFFF'
+    },
   },
 });
 

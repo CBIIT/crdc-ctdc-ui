@@ -16,7 +16,7 @@ const DocumentDownload = ({
   classes,
   fileFormat = '',
   toolTipTextUnauthenticated = 'You must be logged in and must already have been granted access to download a copy of this file',
-  toolTipTextFileDownload = 'Download a copy of this file',
+  toolTipTextFileDownload = 'Click to download a copy of this file if you have been approved by dbGaP',
   iconFileDownload = '',
   iconUnauthenticated = '',
   fileLocation = '',
@@ -37,7 +37,18 @@ const DocumentDownload = ({
   };
 
   const { Notification } = useGlobal();
-  const showNotification = (content, duration) => Notification.show(content, duration);
+  const showUnauthorizedNotification = () => 
+    {
+      const customElem = (
+        <span>
+          You must be logged in and must already have been granted access to download a copy of this file.{' '}
+          <a className={classes.requestAccessLink} href="/#/request-access">Request access</a>{' '}
+          through dbGaP to download this file.
+        </span>
+      );
+
+      Notification.show(customElem, 6000, classes.alertStyles);
+    }
 
   return (
     <>
@@ -49,7 +60,7 @@ const DocumentDownload = ({
               <Button
                 variant="contained"
                 classes={{ root: classes.downloadAllBtn }}
-                onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat, showNotification)}
+                onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification)}
               >
                 ZIP&nbsp;FILE
                 <img src={iconFileDownload} alt="download icon" className={classes.downloadIcon} />
@@ -145,6 +156,19 @@ const styles = () => ({
     position: 'relative',
     left: '4px',
     bottom: '13px',
+  },
+  alertStyles: {
+    backgroundColor: '#155E6F !important',
+  },
+  requestAccessLink: {
+    fontWeight: 600,
+    textDecoration: 'underline !important',
+    color:'#FFFFFF',
+    fontSize: '16px',
+    '&:hover': {
+      textDecoration: 'none',
+      color: '#FFFFFF'
+    },
   },
 });
 

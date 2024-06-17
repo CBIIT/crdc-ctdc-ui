@@ -9,8 +9,13 @@ import AboutHeader from './aboutHeader';
 import Stats from '../../components/Stats/AllStatsController';
 import followImg from './assets/design_flow.png';
 import externalIconImage from './assets/externalLinkIcon.svg';
+import { useGlobal } from '../../components/Global/GlobalProvider';
 
 const RAView = ({ classes }) => {
+  // Close alert once user navigate into Request Access from Explore or Studies pages
+  const { Notification } = useGlobal();
+  Notification.close();
+
   return (
     <>
       <Stats />
