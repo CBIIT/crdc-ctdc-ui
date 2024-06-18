@@ -58,9 +58,9 @@ const DocumentDownload = ({
             /* ** Case 1: Logged in and granted access ** */
             <div className={classes.downloadAllBtnContainer}>
               <Button
-                variant="contained"
                 classes={{ root: classes.downloadAllBtn }}
                 onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification)}
+                variant="contained"
               >
                 ZIP&nbsp;FILE
                 <img src={iconFileDownload} alt="download icon" className={classes.downloadIcon} />

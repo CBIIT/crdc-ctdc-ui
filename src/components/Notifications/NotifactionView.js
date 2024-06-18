@@ -68,7 +68,7 @@ const NotificationView = () => {
         autoHideDuration={duration || 5000}
         onClose={handleClose}
       >
-        <Alert severity="success" icon={false} className={mergedStyles}>
+        <Alert className={mergedStyles} icon={false} severity="success">
           {message}
         </Alert>
       </Snackbar>

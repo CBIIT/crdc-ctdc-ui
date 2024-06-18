@@ -174,8 +174,8 @@ const DocumentDownload = ({
               /* ** Case 1: Logged in and granted access, file size below 10MB ** */
               <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} placement="bottom">
                 <div
-                  style={{ textAlign: 'center' }}
                   onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification)}
+                  style={{ textAlign: 'center' }}
                 >
                   <CustomIcon imgSrc={iconFileDownload} />
                 </div>
