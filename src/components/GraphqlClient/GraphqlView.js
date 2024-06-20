@@ -94,7 +94,7 @@ const GraphqlView = ({ classes }) => (
         <span className={classes.text}>
         <br />
         <br />
-        If you are new to GraphQL and wish to learn more about query language, comprehensive tutorials and example queries are available at  
+        If you are new to GraphQL and want to learn more about query language, comprehensive tutorials and example queries are available at  
         <a className={classes.link} href="https://graphql.org/learn/"> graphql.org</a>
         <img
           alt="outbounnd web site icon"
