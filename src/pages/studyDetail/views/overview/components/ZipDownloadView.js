@@ -10,12 +10,13 @@ import { enableAuthentication } from '../../../../../bento/siteWideConfig';
 import SessionTimeOutModal from '../../../../../components/sessionTimeOutModal';
 import { useAuth } from '../../../../../components/Authentication';
 import { fetchFileToDownload } from '../../../../../components/DocumentDownload/DocumentDownloadView';
+import { useGlobal } from '../../../../../components/Global/GlobalProvider';
 
 const DocumentDownload = ({
   classes,
   fileFormat = '',
   toolTipTextUnauthenticated = 'You must be logged in and must already have been granted access to download a copy of this file',
-  toolTipTextFileDownload = 'Download a copy of this file',
+  toolTipTextFileDownload = 'Click to download a copy of this file if you have been approved by dbGaP',
   iconFileDownload = '',
   iconUnauthenticated = '',
   fileLocation = '',
@@ -35,6 +36,20 @@ const DocumentDownload = ({
     return isSignedIn;
   };
 
+  const { Notification } = useGlobal();
+  const showUnauthorizedNotification = () => 
+    {
+      const customElem = (
+        <span>
+          You must be logged in and must already have been granted access to download a copy of this file.{' '}
+          <a className={classes.requestAccessLink} href="/#/request-access">Request access</a>{' '}
+          through dbGaP to download this file.
+        </span>
+      );
+
+      Notification.show(customElem, 6000, classes.alertStyles);
+    }
+
   return (
     <>
       <div>
@@ -43,9 +58,9 @@ const DocumentDownload = ({
             /* ** Case 1: Logged in and granted access ** */
             <div className={classes.downloadAllBtnContainer}>
               <Button
-                variant="contained"
                 classes={{ root: classes.downloadAllBtn }}
-                onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat)}
+                onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification)}
+                variant="contained"
               >
                 ZIP&nbsp;FILE
                 <img src={iconFileDownload} alt="download icon" className={classes.downloadIcon} />
@@ -141,6 +156,19 @@ const styles = () => ({
     position: 'relative',
     left: '4px',
     bottom: '13px',
+  },
+  alertStyles: {
+    backgroundColor: '#155E6F !important',
+  },
+  requestAccessLink: {
+    fontWeight: 600,
+    textDecoration: 'underline !important',
+    color:'#FFFFFF',
+    fontSize: '16px',
+    '&:hover': {
+      textDecoration: 'none',
+      color: '#FFFFFF'
+    },
   },
 });
 

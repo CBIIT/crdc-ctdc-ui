@@ -3,6 +3,8 @@ import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { useGlobal } from '../Global/GlobalProvider';
+import { cn } from 'bento-components';
+
 
 const Alert = withStyles(() => ({
   message: {},
@@ -23,16 +25,16 @@ const useStyles = makeStyles(() => ({
 
     // Fonts
     color: '#ffffff',
-    fontFamily: 'Nunito',
+    fontFamily: 'Roboto',
     textAlign: (props) => props.textAlign || 'center',
     justifyContent: 'center',
     fontSize: '16px',
-    fontWeight: '300',
+    fontWeight: '400',
     letterSpacing: '0',
-    lineHeight: '22px',
+    lineHeight: '24px',
 
     // Background & Borders
-    backgroundColor: (props) => props.backgroundColor || '#5D53F6',
+    backgroundColor: (props) => props.backgroundColor || '#155E6F',
     borderColor: (props) => props.backgroundColor || 'none',
     borderRadius: '0px',
     boxShadow: '-4px 8px 27px 4px rgba(27,28,28,0.09)',
@@ -45,7 +47,7 @@ const useStyles = makeStyles(() => ({
 const NotificationView = () => {
   const { Notification } = useGlobal();
   const {
-    open, message, duration, location,
+    open, message, duration, location, customStyle
   } = Notification.getProps();
   const classes = useStyles();
 
@@ -54,6 +56,8 @@ const NotificationView = () => {
   const handleClose = () => {
     Notification.close();
   };
+
+  const mergedStyles = cn(classes.alertStyles, customStyle);
 
   return (
     <div className={classes.root}>
@@ -64,7 +68,7 @@ const NotificationView = () => {
         autoHideDuration={duration || 5000}
         onClose={handleClose}
       >
-        <Alert severity="success" icon={false} className={classes.alertStyles}>
+        <Alert className={mergedStyles} icon={false} severity="success">
           {message}
         </Alert>
       </Snackbar>

@@ -1,8 +1,6 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import {
-  withStyles,
-} from '@material-ui/core';
+import { withStyles } from '@material-ui/core';
 import ToolTip from '@bento-core/tool-tip';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
@@ -12,11 +10,12 @@ import CustomIcon from '../CustomIcon/CustomIconView';
 import { enableAuthentication } from '../../bento/siteWideConfig';
 import SessionTimeOutModal from '../sessionTimeOutModal';
 import { useAuth } from '../Authentication';
+import { useGlobal } from '../Global/GlobalProvider';
 
 const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
 
 // Function to fetch and download a file
-export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fileName, fileFormat) => {
+export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification) => {
   try {
     const response = await fetch(`${FILE_SERVICE_API}${fileId}`, {
       method: 'GET',
@@ -32,7 +31,12 @@ export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fi
       throw new Error('Forbidden');
     }
 
-    // Check if response status is not 200 (OK)
+    // Check if response status is not 401 (Unauthorized)
+    if (response.status === 401) {
+      showUnauthorizedNotification()
+      throw new Error(`Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`);
+    }
+    // Check if response status is not 200 (Not OK)
     if (response.status !== 200) {
       throw new Error(`Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`);
     }
@@ -67,6 +71,7 @@ const downloadFile = async (signedUrl, fileName, fileFormat) => {
     const link = document.createElement('a');
     link.href = url;
 
+    // if (fileFormat === "vcf") fileFormat +='.gz'
     // Set the file name
     link.setAttribute('download', `${fileName}.${fileFormat}`);
     document.body.appendChild(link);
@@ -88,7 +93,7 @@ const DocumentDownload = ({
   fileFormat = '',
   maxFileSize = 200000,
   toolTipTextUnauthenticated = 'Login to access this file',
-  toolTipTextFileDownload = 'Download a copy of this file',
+  toolTipTextFileDownload = 'Click to download a copy of this file if you have been approved by dbGaP',
   toolTipTextFilePreview = 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
   iconFileDownload = '',
   iconFilePreview = '',
@@ -107,6 +112,22 @@ const DocumentDownload = ({
   const { isSignedIn } = useSelector((state) => state.login);
 
   const [showModal, setShowModal] = React.useState(false);
+  const [ hasAccess ] = React.useState(true);
+
+
+  const { Notification } = useGlobal();
+  const showUnauthorizedNotification = () => 
+    {
+      const customElem = (
+        <span>
+          You must be logged in and must already have been granted access to download a copy of this file.{' '}
+          <a className={classes.requestAccessLink} href="/#/request-access">Request access</a>{' '}
+          through dbGaP to download this file.
+        </span>
+      );
+
+      Notification.show(customElem, 6000, classes.alertStyles);
+    }
 
   /*
   // Related to hasAccess()
@@ -122,7 +143,7 @@ const DocumentDownload = ({
     setShowModal(false);
   };
 
-  const hasAccess = () => {
+  // const hasAccess = () => {
     /*
     if (role === 'admin') return true;
 
@@ -130,20 +151,20 @@ const DocumentDownload = ({
       (status, rACL) => approvedACLs.includes(rACL) || status, false,
     );
     */
-    return isSignedIn;
-  };
+  //   return isSignedIn;
+  // };
 
   return (
     <>
       <div>
         {fileSize < maxFileSize && (
           <>
-            {(enableAuthentication && isSignedIn && hasAccess()) ? (
+            {(enableAuthentication && isSignedIn && hasAccess) ? (
               /* ** Case 1: Logged in and granted access, file size below 10MB ** */
               <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} placement="bottom">
                 <div
+                  onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification)}
                   style={{ textAlign: 'center' }}
-                  onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat)}
                 >
                   <CustomIcon imgSrc={iconFileDownload} />
                 </div>
@@ -210,6 +231,19 @@ const styles = () => ({
     padding: '10px 15px'
   },
   customArrow: {
+  },
+  alertStyles: {
+    backgroundColor: '#155E6F !important',
+  },
+  requestAccessLink: {
+    fontWeight: 600,
+    textDecoration: 'underline !important',
+    color:'#FFFFFF',
+    fontSize: '16px',
+    '&:hover': {
+      textDecoration: 'none',
+      color: '#FFFFFF'
+    },
   },
 });
 
