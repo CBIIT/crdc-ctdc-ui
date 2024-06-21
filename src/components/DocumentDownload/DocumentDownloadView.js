@@ -16,8 +16,17 @@ const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
 
 // Function to fetch and download a file
 export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification) => {
+  let hardcodedId = "" 
+  if (fileFormat === "zip") {
+    hardcodedId = 'dg.4DFC/4df75011-0149-4f1e-9f5a-e9c192618c17';
+  } else if (fileFormat === "pdf") {
+    hardcodedId = 'dg.4DFC/3e2333fd-81e5-4241-b4dc-3c0266a00720';
+  } else {
+    hardcodedId = 'dg.4DFC/9f99d2ac-7d5d-43ed-99d6-998829fad00a';
+  }
+
   try {
-    const response = await fetch(`${FILE_SERVICE_API}${fileId}`, {
+    const response = await fetch(`${FILE_SERVICE_API}${hardcodedId}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/pdf',
@@ -34,11 +43,11 @@ export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fi
     // Check if response status is not 401 (Unauthorized)
     if (response.status === 401) {
       showUnauthorizedNotification()
-      throw new Error(`Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`);
+      throw new Error(`Failed to fetch the file from "${hardcodedId}". Server responded with: ${response.status} (${response.statusText})`);
     }
     // Check if response status is not 200 (Not OK)
     if (response.status !== 200) {
-      throw new Error(`Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`);
+      throw new Error(`Failed to fetch the file from "${hardcodedId}". Server responded with: ${response.status} (${response.statusText})`);
     }
 
     // Parse response body as JSON
@@ -71,7 +80,7 @@ const downloadFile = async (signedUrl, fileName, fileFormat) => {
     const link = document.createElement('a');
     link.href = url;
 
-    // if (fileFormat === "vcf") fileFormat +='.gz'
+    if (fileFormat === "vcf") fileFormat +='.gz'
     // Set the file name
     link.setAttribute('download', `${fileName}.${fileFormat}`);
     document.body.appendChild(link);
