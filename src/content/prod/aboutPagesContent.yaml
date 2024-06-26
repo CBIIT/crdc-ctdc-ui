@@ -48,7 +48,7 @@
   title: "Data Terms of Use"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
   content:
-    - paragraph: "$$~Data Access~$$"
+    - paragraph: "$$~Data Access~$$ "
     - paragraph: "     "
     - paragraph: "The CTDC hosts data with varying access requirements, allowing researchers to work with a wide range of data across studies while also protecting participant privacy. Data deposited within the CTDC is available through three different access tiers including open-access, registered-access, and controlled-access tiers (visit our $$[Request Access](type:internal url:/#/request-access target:_blank )$$ page for more details). Users and their associated institutions are responsible for understanding specific terms of use for each study and adhering to study-specific Data Use Agreement(s) (DUAs), Institutional Review Board policies, and other relevant guidelines. DUAs may be required to access controlled-access tier data for certain trials or studies. If a DUA is required, the authorizing entity will provide it as part of the data request process."
     - paragraph: "     "
@@ -61,7 +61,7 @@
     - paragraph: "CTDC recommends that users follow standard scientific etiquette and practices when working with CTDC-managed data or publishing results generated using data accessed via the CTDC.  "
     - paragraph: "     "
     - paragraph: "Please acknowledge in all oral or written presentations, disclosures, or publications: "
-    - paragraph: "$$>1>$$. Clinical and Translational Data Commons, including URL ($$[clinical.datacommons.cancer.gov](https://clinical.datacommons.cancer.gov)$$) "
+    - paragraph: "$$>1>$$. Clinical and Translational Data Commons, including URL ($$[clinical.datacommons.cancer.gov](type:internal url:/#/ target:_blank )$$ )"
     - paragraph: "$$>2>$$. Study dataset(s) accessed (e.g. Cancer Moonshot Biobank)"
     - paragraph: "$$>3>$$. Study ID (e.g. NCTXXXXX) and/or accession number(s) (PHSXXXX) "
     - paragraph: "$$>4>$$. Digital Object Identifier (DOI) "
