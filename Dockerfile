@@ -10,6 +10,8 @@ RUN NODE_OPTIONS=--openssl-legacy-provider
 
 RUN NODE_OPTIONS="--max-old-space-size=4096" npm install --legacy-peer-deps
 
+RUN NODE_OPTIONS=--openssl-legacy-provider
+
 RUN NODE_OPTIONS="--max-old-space-size=4096" npm run build
 
 FROM nginx:1.25.3-alpine3.18-slim
