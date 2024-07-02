@@ -9,10 +9,12 @@ const AboutCard = ({
 
   function getHighlightedText(text, highlight, classes) {
     // Split on highlight term and include term into parts, ignore case
-    const textString = text.reduce((searchResults, currentString, currentIndex) => {
+    const textString = text.reduce((searchResults, currentString) => {
+      const punctuationRegex = /[.,:;!?]$/;
       let newResults = searchResults;
-      if (currentString.endsWith('.') || currentIndex >= text.length - 1) {
-        newResults = `${`${newResults} ${currentString}`}`;
+
+      if (punctuationRegex.test(currentString)) {
+        newResults = `${`${newResults} ${currentString.slice(0, -1)}`} ...`;
       } else {
         newResults = `${`${newResults} ${currentString}`} ... `;
       }
