@@ -303,6 +303,7 @@ const styles = () => ({
     // width: '675px',
     margin: '10px auto 0px auto',
     color: '#000000',
+    paddingTop: '5px',
     fontFamily: (props) => (props.data.fontFamily ? props.data.fontFamily : 'Nunito'),
     fontSize: '16px',
     lineHeight: (props) => (props.data.lineHeight ? props.data.lineHeight : '30px'),
@@ -321,7 +322,7 @@ const styles = () => ({
     fontWeight: '400',
     fontSize: '22px',
     fontFamily: 'Inter',
-    margin: '42px 0px 0px 0px',
+    margin: '10px 0px 0px 0px',
   }),
   firstTitle: (props) => ({
     color: props.titleColor,
