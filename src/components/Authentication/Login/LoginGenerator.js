@@ -137,10 +137,10 @@ export const LoginGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 <Grid container item className={classes.InnerBox}>
                   <p className={classes.LoginBoxTitle}>{headerMessage}</p>
                   <ul className={classes.LoginBoxInstruction}>
-                    <li>Click on the below button to go to the NIH Login page. </li>
-                    <li> Please enter your eRA Commons credentials. </li>
-                    <li><strong>Note: Logging in with another identity provider will not grant access.</strong></li>
+                    <li >Click on the button below to go to the NIH Login page. </li>
+                    <li >Enter your eRA Commons credentials. </li>
                   </ul>
+                  <p className={classes.LoginBoxInstructionP}><strong>Note: Logging in with another identity provider will not grant access.</strong></p>
                 </Grid>
                 <Grid container item xs={12} justifyContent="center" className={classes.LoginButtonGroup}>
                   {Object.values(idps).map((provider) => (

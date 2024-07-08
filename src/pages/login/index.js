@@ -46,7 +46,7 @@ function loginController(props) {
       LoginBoxInstruction: {
         margin: '27px 0px 0px 0px',
         paddingLeft: '46px',
-
+        listStyleType: 'decimal',
         width: '100%',
         fontFamily: 'Lato',
         fontWeight: 400,
@@ -54,6 +54,10 @@ function loginController(props) {
         lineHeight: '21px',
         letterSpacing: '0.2px',
         color: '#000000',
+        '& + p': {
+          paddingLeft: '29px',
+            fontSize: '15px'
+        }
       },
       LoginButtonGroup: {
         marginTop: '0px',
