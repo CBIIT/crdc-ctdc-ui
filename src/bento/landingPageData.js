@@ -72,19 +72,24 @@ export const landingPageData = {
 // --------------- GraphQL query - Retrieve Landing page data --------------
 export const GET_LANDING_PAGE_DATA_QUERY = gql`
 query search {
-  getHomePage{
-      numberOfParticipants
-      numberOfDiagnoses
-      numberOfTherapies
-      numberOfTargeted
-      numberOfNonTargeted
-      numberOfBiomarker
-      numberOfHistologyImages
-      numberOfRadiologyImages
-      specimenCountbyStageOfDisease{
-            group
-            subjects
-      }
+  getHomePage {
+    numberOfParticipants
+    numberOfDiagnoses
+    numberOfTherapies
+    numberOfTargeted
+    numberOfNonTargeted
+    dataFileCount
+    specimenCountbyStageOfDisease {
+      group
+      subjects
+      __typename
     }
+    dataFileByType {
+      group
+      subjects
+      __typename
+    }
+    __typename
+  }
 }
 `;

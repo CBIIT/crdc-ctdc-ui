@@ -7,10 +7,9 @@ import useStyles from './style';
 
 const BiospecimenCard = ({ data = {}, index }) => {
   const {
-    specimen_id: specimenId,
+    parent_specimen_id: parentSpecimenId,
     subject_id: subjectId,
     ctep_disease_term: ctepDiseaseTerm,
-    specimen_type: biospecimenType,
     parent_specimen_type: parentSpecimenType,
     tissue_category: tissueCategory,
     anatomical_collection_site: anatomicalCollectionSite,
@@ -20,7 +19,7 @@ const BiospecimenCard = ({ data = {}, index }) => {
   const classes = useStyles();
 
   const renderInfo = (label, value = '') => (
-    <div className={classes.row}>
+    <div className={classes.keyAndValueRow}>
       <Typography variant="h6" className={classes.key}>
         {label}
       </Typography>
@@ -32,33 +31,32 @@ const BiospecimenCard = ({ data = {}, index }) => {
 
   return (
     <Grid item container className={classes.card}>
-      <Grid item xs={1} className={classes.indexContainer}>
+      <Grid item className={classes.indexContainer}>
         {index+1}
       </Grid>
 
-      <Grid item xs={11}>
-        <div className={cn(classes.row, classes.titleRow)}>
+      <Grid item xs={true}>
+        <div className={cn(classes.keyAndValueRow, classes.titleRow)}>
           <span className={classes.titleKey}>BIOSPECIMEN</span>
           <Typography variant="h3" className={classes.titleValue}>
-            {specimenId}
+            {parentSpecimenId}
           </Typography>
         </div>
         <div className={classes.row}>
           <div className={classes.column}>
             {renderInfo('Participant:', subjectId)}
             {renderInfo('Diagnosis:', ctepDiseaseTerm)}
-            {renderInfo('Biospecimen type:', biospecimenType)}
             {renderInfo('Parent biospecimen:', parentSpecimenType)}
           </div>
 
-          <div className={classes.column}>
+          <div className={cn(classes.column, classes.leftColumn)}>
             {renderInfo('Tissue category:', tissueCategory)}
             {renderInfo('Anatomical collection site:', anatomicalCollectionSite)}
             {renderInfo('Collection timepoint:', assessmentTimepoint)}
           </div>
         </div>
       </Grid>
-      <Grid item className={classes.hrContainer}>
+      <Grid item xs={12} className={classes.hrContainer}>
         <hr className={classes.hr}/>
       </Grid>
     </Grid>

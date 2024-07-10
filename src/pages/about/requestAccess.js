@@ -8,10 +8,14 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import AboutHeader from './aboutHeader';
 import Stats from '../../components/Stats/AllStatsController';
 import followImg from './assets/design_flow.png';
-import raImg from './assets/request_access.png';
 import externalIconImage from './assets/externalLinkIcon.svg';
+import { useGlobal } from '../../components/Global/GlobalProvider';
 
 const RAView = ({ classes }) => {
+  // Close alert once user navigate into Request Access from Explore or Studies pages
+  const { Notification } = useGlobal();
+  Notification.close();
+
   return (
     <>
       <Stats />
@@ -19,7 +23,7 @@ const RAView = ({ classes }) => {
       <div className={classes.container}>
         <Grid container spacing={16} direction="row" className={classes.aboutSection}>
               <Grid item lg={3} md={3} sm={12} xs={12} className={classes.imageSection}>
-                 <img className={classes.followGraph} src={raImg} alt="follow graph" />
+                 <img className={classes.followGraph} src={"https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_RequestAccess.png"} alt="follow graph" />
             
               </Grid>
               <Grid item lg={9} md={9} sm={12} xs={12} className={classes.contentSection}>
@@ -47,7 +51,7 @@ const RAView = ({ classes }) => {
                       Controlled access data  
                   </div>
                   <div className={classes.content}>
-                      Controlled data within the CTDC include genomic and other potentially sensitive Personal Identifiable Information (PII). To protect the privacy of individuals who have contributed data to clinical studies, researchers who wish to access controlled data must register for an 
+                      Controlled data within the CTDC include genomic and other potentially sensitive Personal Identifiable Information (PII). To protect the privacy of individuals who have contributed data to clinical studies, researchers who want to access controlled data must register for an{' '} 
                       <Link
                               title="NIH eRA Commons"
                               target='_blank'
@@ -64,7 +68,7 @@ const RAView = ({ classes }) => {
                                   alt="outbounnd web site icon"
                                   className={classes.linkIcon}
                                 />
-                       account and apply for data access authorization through the
+                       {' '}account and apply for data access authorization through the{' '}
                            <Link
                               title=" NIH database of Genotypes and Phenotypes "
                               target='_blank'
@@ -82,34 +86,23 @@ const RAView = ({ classes }) => {
                                   className={classes.linkIcon}
                                 />
                                 
-                        (dbGaP)
-                        . See instructions below for how to access controlled data. 
+                        (dbGaP). See instructions below for how to access controlled data. 
                    </div>
                  </div>
+
+                 <img className={classes.followGraph} src={followImg} alt="follow graph" />
+
+
                 <div className={classes.text}>
                   <div className={classes.title}>
                     Accessing controlled data in the CTDC
                   </div>
-                  <div className={classes.content}>
-                      <ol>
-                        <li>Obtain an NIH eRA Commons account</li>
-                      <li>Obtain dbGaP access</li>
-                      <li>Request access to controlled data of choice through dbGaP</li>
-                      <li>Access approved datasets within the CTDC</li>
-                      </ol>
-                   </div>
-                </div>
-                  <img className={classes.followGraph} src={followImg} alt="follow graph" />
-            
 
-                   <div className={classes.header}>
-                     Accessing Cancer Moonshot Biobank access through CTDT
-                </div>
-                 
-                 <div className={classes.expansionPanel}>
+                  <div className={classes.content}>
+                             <div className={classes.expansionPanel}>
                 <ExpansionPanel>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>For Obtain an NIH eRA Commons account</Typography>
+                    <Typography className={classes.heading}>Obtain an NIH eRA Commons account</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                    <div className={classes.panelDetails}>
@@ -137,7 +130,7 @@ const RAView = ({ classes }) => {
                               title="eRA Help and Tutorials"
                               target='_blank'
                               rel="noreferrer"
-                              href="hhttps://www.era.nih.gov/help-tutorials"
+                              href="https://www.era.nih.gov/help-tutorials"
                               color="inherit"
                               className={classes.link}
                             >
@@ -175,10 +168,9 @@ const RAView = ({ classes }) => {
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
 
-
                  <ExpansionPanel>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>For Obtain dbGaP access</Typography>
+                    <Typography className={classes.heading}>Obtain dbGaP access</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                    <div className={classes.panelDetails}>
@@ -248,38 +240,42 @@ const RAView = ({ classes }) => {
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
 
-
                  <ExpansionPanel>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>For Request access to controlled data of choice through dbGaP</Typography>
+                    <Typography className={classes.heading}>Request access to controlled data of choice through dbGaP</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                   <div className={classes.panelDetails}>
                     <ul>
-                        <li>Log in to your dbGaP account using your eRA Commons username and password</li>
-                        <li>Navigate to the “My Projects” page</li>
-                        <li>Create a new research project or revise project to request access to new data</li>
-                        <li>Enter the appropriate ID for your project of interest</li>
-                        <li>E.g. “phs002192” for Cancer Moonshot Biobank dataset</li>
-                        <li>Submit request</li>
-                        <li>You will receive notification of approval</li>
+                        <li>Log in to your dbGaP account using your eRA Commons username and password.</li>
+                        <li>Navigate to the “My Projects” page.</li>
+                        <li>Create a new research project or revise project to request access to new data.</li>
+                        <li>Enter the appropriate ID for your project of interest.</li><ul>
+                        <li>E.g. “phs002192” for Cancer Moonshot Biobank dataset.</li></ul>
+                        <li>Submit request.</li>
+                        <li>You will receive notification of approval via email.</li>
                     </ul>
                     </div>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
 
-
                  <ExpansionPanel>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    <Typography className={classes.heading}>For Access approved datasets in CTDC</Typography>
+                    <Typography className={classes.heading}>Access approved datasets within the CTDC</Typography>
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     <Typography className={classes.panelDetails}>
-                      After receiving dbGaP approval for a desired dataset, you can access and download the dataset through your CTDC account or create a manifest to analyze data within the Seven Bridges’ Cancer Genomics Cloud (SB-CGC).
+                      After receiving dbGaP approval for a desired dataset, you can access and download the dataset through your CTDC account or create a manifest to analyze data within the 
+
+                                  Seven Bridges’ Cancer Genomics Cloud
+                       (SB-CGC).
                     </Typography>
                   </ExpansionPanelDetails>
                 </ExpansionPanel>
                 </div>
+                   </div>
+                </div>
+                  
             </Grid>
           </Grid>
       </div>
@@ -303,7 +299,7 @@ const styles = () => ({
     maxWidth: '1440px',
   },
   expansionPanel:{
-    padding: '10px',
+    padding: '10px 0px',
   },
   heading: {
      fontFamily: 'Inter',
@@ -352,8 +348,9 @@ const styles = () => ({
   },
 
   followGraph: {
-    padding: '30px 10px',
-    width: '100%'
+    padding: '0px 10px',
+    width: '100%',
+    marginBottom: '-5px'
   },
   title: (props) => ({
     color: props.titleColor,

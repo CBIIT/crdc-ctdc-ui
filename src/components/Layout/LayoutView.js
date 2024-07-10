@@ -8,13 +8,13 @@ import ScrollToTop from '../ScrollButton/ScrollButtonView';
 import Error from '../../pages/error/Error';
 import Home from '../../pages/landing/landingController';
 import About from '../../pages/about/aboutController';
-import Programs from '../../pages/programs/programsController';
-import ProgramDetail from '../../pages/programDetail/programDetailController';
+// import Programs from '../../pages/programs/programsController';
+// import ProgramDetail from '../../pages/programDetail/programDetailController';
 import StudyDetail from '../../pages/studyDetail/studyDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import GlobalSearchController from '../../pages/search/searchViewController';
 import Login from '../../pages/login';
-import ProfileController from '../../pages/profile/profileController';
+// import ProfileController from '../../pages/profile/profileController';
 import OverlayWindow from '../OverlayWindow/OverlayWindow';
 import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';
 import CartView from '../../pages/cart/cartController';
@@ -24,6 +24,8 @@ import UnderDev from '../../pages/error/Development';
 import Notifactions from '../Notifications/NotifactionView';
 import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
 import RAView from '../../pages/about/requestAccess'; 
+import ActivitiesController from '../ActivitiesController'; 
+import useVisitedPageSync from '../../utils/useVisitedPageSync';
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -33,7 +35,9 @@ const ScrollToTopComponent = () => {
 
 const Layout = ({ classes, isSidebarOpened }) => {
   // Access control imports
-  const { LoginRoute, MixedRoute, PrivateRoute, AdminRoute} = AuthenticationMiddlewareGenerator(AUTH_MIDDLEWARE_CONFIG);
+  const { LoginRoute } = AuthenticationMiddlewareGenerator(AUTH_MIDDLEWARE_CONFIG);
+  
+  useVisitedPageSync();
 
   return (
   <>
@@ -49,51 +53,38 @@ const Layout = ({ classes, isSidebarOpened }) => {
         <div
           className={classes.content}
         >
+
           <Route component={ScrollToTopComponent} />
+           <ActivitiesController >
           <Switch>
-            <MixedRoute exact path="/" component={Home} />
-            <MixedRoute exact path="/home" component={Home} />
-            <MixedRoute exact path="/study/:id" component={StudyDetail} />
+              <Route exact path="/" component={Home} />
+              <Route exact path="/home" component={Home} />
+              <Route exact path="/study/:id" component={StudyDetail} />
+              <Route path="/fileCentricCart" component={CartView} />
+              <Route path="/explore" component={DashTemplate} />
+              <Route exact path="/data-dictionary" component={UnderDev} />
+              <Route exact path="/data-harmonization" component={About} />
+              <Route exact path="/request-access" component={RAView} />
+              <Route exact path="/crdc"  component={UnderDev} />
+              <Route exact path="/search" component={GlobalSearchController} />
+              <Route path="/search/:id"  component={GlobalSearchController} />
+              <Route path="/graphql" component={GraphqlClient} />
 
-            {/* START: Private Routes */}
-            <PrivateRoute path="/profile" requiuredSignIn access={['member', 'non-member', 'admin']} component={ProfileController} />
-            {/* END SECTION */}
-
-            {/* SECTION: Member & Admin only Path */}
-            <PrivateRoute path="/programs" access={['admin', 'member']} component={Programs} />
-            <PrivateRoute path="/fileCentricCart" access={['admin', 'member']} component={CartView} />
-            <PrivateRoute path="/program/:id" access={['admin', 'member']} component={ProgramDetail} />
-            {/* bento 4.0 template */}
-            <PrivateRoute path="/explore" access={['admin', 'member']} component={DashTemplate} />
-            {/* END SECTION */}
-
-            {/* Psuedo Private routes where minor
-            functionality can be accessed my unauthorized users */}
-            <Route exact path="/ctdc-data-model" access={['admin', 'member', 'non-member']} component={UnderDev} />
-            <Route exact path="/data-dictionary" access={['admin', 'member', 'non-member']} component={UnderDev} />
-            <Route exact path="/data-harmonization" access={['admin', 'member', 'non-member']} component={About} />
-            <Route exact path="/data-use" access={['admin', 'member', 'non-member']} component={UnderDev} />
-            <Route exact path="/request-access" access={['admin', 'member', 'non-member']} component={RAView} />
-            <Route exact path="/crdc" access={['admin', 'member', 'non-member']} component={UnderDev} />
-
-            <Route exact path="/search" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
-            <Route path="/search/:id" access={['admin', 'member', 'non-member']} component={GlobalSearchController} />
-
-            {/* END: Private Routes */}
-            {aboutPageRoutes.map(
-              (aboutPageRoute, index) => (
-                <Route
-                  key={index}
-                  path={aboutPageRoute}
-                  component={About}
-                />
-              ),
-            )}
-            <Route path="/graphql" component={GraphqlClient} />
-            <LoginRoute path="/login" component={Login} />
-            <Route component={Error} />
-
+           
+              {/* END: Private Routes */}
+              {aboutPageRoutes.map(
+                (aboutPageRoute, index) => (
+                  <Route
+                    key={index}
+                    path={aboutPageRoute}
+                    component={About}
+                  />
+                ),
+              )}
+              <LoginRoute path="/user/login" component={Login} />
+              <Route component={Error} />
           </Switch>
+          </ActivitiesController>
           <ScrollToTop />
           <Footer />
         </div>

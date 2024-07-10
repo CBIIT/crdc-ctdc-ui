@@ -18,12 +18,6 @@ export const headerData = {
 
 export const navMobileList = [
   {
-    name: 'Home',
-    link: '/home',
-    id: 'navbar-link-home',
-    className: 'navMobileItem',
-  },
-  {
     name: 'Explore',
     link: '/explore',
     id: 'navbar-link-explore',
@@ -42,7 +36,7 @@ export const navMobileList = [
     className: 'navMobileItem clickable',
   },
   {
-    name: 'Resources',
+    name: 'For Developers',
     link: '',
     id: 'navbar-dropdown-about',
     className: 'navMobileItem clickable',
@@ -54,7 +48,7 @@ export const navMobileList = [
     className: 'navMobileItem clickable',
   },
   {
-    name: 'Request Acess',
+    name: 'Request Access',
     link: '/request-access',
     id: 'navbar-link-request-access',
     className: 'navMobileItem',
@@ -63,15 +57,6 @@ export const navMobileList = [
 
 export const navbarSublists = {
   // Example of how to do a navMobileSubTitle and subtext
-  // Home: [
-  //   {
-  //     name: 'Explore ##',
-  //     link: '',
-  //     text: 'testText',
-  //     id: 'navbar-dropdown-item-navbar-subitem-2',
-  //     className: 'navMobileSubTitle',
-  //   },
-  // ],
   "Data": [
     {
       name: 'Cloud Computing',
@@ -80,8 +65,8 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
     {
-      name: 'CTDC Data Model',
-      link: '/ctdc-data-model',
+      name: 'Data Model',
+      link: '/data-model',
       id: 'navbar-dropdown-item-CTDC-data-model',
       className: 'navMobileSubItem',
     },
@@ -92,7 +77,7 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
     {
-      name: 'Data Use Policy',
+      name: 'Data Terms of Use',
       link: '/data-use',
       id: 'navbar-dropdown-item-data-use',
       className: 'navMobileSubItem',
@@ -104,7 +89,7 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
   ],
-    "Resources": [
+    "For Developers": [
     {
       name: 'GraphQL',
       link: '/graphql',
@@ -112,14 +97,14 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
     {
-      name: 'Developers',
-      link: '/developers',
+      name: 'GitHub',
+      link: 'https://github.com/CBIIT/crdc-ctdc-starter-kit',
       id: 'navbar-dropdown-item-developers',
       className: 'navMobileSubItem',
     },
     {
-      name: 'GitHub',
-      link: 'https://github.com/CBIIT/crdc-ctdc-starter-kit',
+      name: 'Additional Information',
+      link: '/additional-information',
       id: 'navbar-dropdown-item-developers',
       className: 'navMobileSubItem',
     },

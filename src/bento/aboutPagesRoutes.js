@@ -1,7 +1,9 @@
 export default [
-  '/developers',
+  '/additional-information',
   '/purpose',
   '/support',
   '/submit',
-  '/cloud-computing'
+  '/cloud-computing',
+  '/data-use',
+  '/data-model'
 ];

@@ -3,6 +3,7 @@ import { cellTypes, dataFormatTypes } from '@bento-core/table';
 import { types, btnTypes } from '@bento-core/paginated-table';
 import { customMyFilesTabDownloadCSV } from './tableDownloadCSV';
 import CustomFooterMessage from '../pages/cart/tableConfig/CustomFooterMessage';
+import cartPageIcon from '../assets/cart/cartPageIcon.svg'
 
 export const navBarCartData = {
   cartLabel: 'Cart',
@@ -43,8 +44,8 @@ export const myFilesPageData = {
         {
           clsName: 'cart_icon',
           type: types.ICON,
-          src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Workflow.svg',
-          alt: 'Bento MyFiles header logo',
+          src: cartPageIcon,
+          alt: 'CTDC MyFiles header logo',
         },
         {
           clsName: 'cart_header_text',
@@ -97,8 +98,8 @@ export const myFilesPageData = {
 };
  
 export const manifestData = {
-  keysToInclude: ['data_file_name', 'data_file_uuid','data_file_uuid', 'data_file_checksum_value','subject_id', 'specimen_id', 'ctep_disease_term','meddra_disease_code', 'primary_disease_site','histology', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site', 'specimen_type','tissue_category','assessment_timepoint','User_Comment'],
-  header: ['name', 'drs_uri' ,'File ID', 'Md5sum','Participant ID', 'Biospecimen ID', 'Diagnosis','MedDRA Disease Code', 'Primary Site','Histology', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Biospecimen Type','Tissue Category','Collection Timepoint','User Comment'],
+  keysToInclude: ['data_file_name', 'data_file_uuid','data_file_uuid', 'data_file_checksum_value','subject_id', 'parent_specimen_id', 'ctep_disease_term','meddra_disease_code', 'primary_disease_site','histology', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site','tissue_category','assessment_timepoint','User_Comment'],
+  header: ['name', 'drs_uri' ,'File ID', 'Md5sum','Participant ID', 'Biospecimen ID', 'Diagnosis','MedDRA Disease Code', 'Primary Site','Histology', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Tissue Category','Collection Timepoint','User Comment'],
 };
 
 // --------------- GraphQL query - Retrieve selected cases info --------------
@@ -142,7 +143,6 @@ export const GET_MY_CART_DATA_QUERY = gql`
       carcinogen_exposure
       targeted_therapy
       anatomical_collection_site
-      specimen_type
       tissue_category
       assessment_timepoint
    }
@@ -171,6 +171,7 @@ query fileOverview(
     data_file_description
     subject_id
     primary_disease_site
+    parent_specimen_id
     specimen_id
     ctep_disease_term
     data_file_uuid
@@ -185,7 +186,6 @@ query fileOverview(
     carcinogen_exposure
     targeted_therapy
     anatomical_collection_site
-    specimen_type
     tissue_category
     assessment_timepoint
   }
@@ -231,7 +231,6 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     carcinogen_exposure
     targeted_therapy
     anatomical_collection_site
-    specimen_type
     tissue_category
     assessment_timepoint
  }
@@ -254,14 +253,14 @@ export const table = {
   objectKey: 'filesInList',
   extendedViewConfig: {
     pagination: true,
-    download: {
-      customDownload: true,
-      fileName: 'CTDC_My_Files_download',
-      downloadCsv: 'Download table contents as CSV',
-      ...customMyFilesTabDownloadCSV,
-    },
     manageViewColumns: {
-      title: 'View columns',
+      title: "View Columns"
+    },
+    download: {
+      downloadCsv: "Download Table Contents As CSV",
+      downloadFileName: "CTDC_My_Files_download",
+      // customDownload: true,
+      // ...customMyFilesTabDownloadCSV,
     },
   },
   columns: [
@@ -297,6 +296,8 @@ export const table = {
       display: true,
       tooltipText: 'sort',
       role: cellTypes.DISPLAY,
+      dataFormatType: dataFormatTypes.FORMAT_BYTES,
+      cellType: cellTypes.FORMAT_DATA,
     },
     {
       dataField: 'data_file_description',
@@ -308,6 +309,13 @@ export const table = {
     {
       dataField: 'specimen_id',
       header: 'Biospecimen ID',
+      display: false,
+      tooltipText: 'sort',
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: 'parent_specimen_id',
+      header: 'Parent Biospecimen ID',
       display: true,
       tooltipText: 'sort',
       role: cellTypes.DISPLAY,

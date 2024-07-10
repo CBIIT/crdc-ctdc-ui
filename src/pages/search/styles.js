@@ -1,9 +1,14 @@
 const buttonRoot = {
   height: '56px',
   fontSize: '16px',
-  marginRight: '63px',
-  padding: '0px, 10px',
+  marginRight: '20px',
   textTransform: 'none',
+  '@media (min-width: 800px)': {
+    marginRight: '33px',
+  },
+  '@media (min-width: 1000px)': {
+    marginRight: '68px',
+  }
 };
 
 const styles = () => ({
@@ -32,8 +37,8 @@ const styles = () => ({
   tabColor: { color: '#142D64' },
   allButton: {
     ...buttonRoot,
-    width: '54px',
-    minWidth: '54px',
+    width: '64px',
+    minWidth: 'fit-content',
   },
   participantButton: {
     ...buttonRoot,
@@ -46,11 +51,13 @@ const styles = () => ({
   },
   aboutButton: {
     ...buttonRoot,
-    width: '70px',
-    minWidth: '70px',
+    width: '95px',
+    minWidth: '95px',
   },
   modelButton: {
-    ...buttonRoot,
+    height: '56px',
+    fontSize: '16px',
+    textTransform: 'none',
     width: '81px',
     minWidth: '81px',
   },
@@ -72,16 +79,21 @@ const styles = () => ({
     fontWeight: '400',
     fontSize: '24px',
     lineHeight: '31.47px',
-    margin: '0px 0px 15px 0px'
+    margin: '0px 0px 15px 0px',
+    textAlign: 'center',
   },
   autocomplete: {
     margin: '0 auto',
+    width: '700px',
     '& .MuiAutocomplete-inputRoot[class*="Mui-focused"]': {
       outline: '4px solid #3395CA',
     },
     '&:hover .MuiAutocomplete-inputRoot': {
       outline: '4px solid #3395CA',
     },
+    '@media (max-width: 750px)': {
+      width: '400px',
+    }
   },
   chipSection: {
     display: 'flex',
@@ -209,6 +221,9 @@ const styles = () => ({
     fontSize: '16px',
     lineHeight: '16px',
     color: '#142D64',
+    '@media (max-width: 1000px)': {
+      marginRight: '30px',
+    }
   },
   totalResults: {
     color: '#225987',
@@ -218,9 +233,9 @@ const styles = () => ({
     lineHeight: '31px',
     letterSpacing: '0.02em',
     textAlign: 'left',
-    paddingLeft: '0px',
-    maxWidth: '940px',
-    margin: '11px auto 24px auto'
+    paddingLeft: '16px',
+    maxWidth: '959px',
+    margin: '11px auto 2px auto'
   },
   totalCount: {
     fontFamily: 'Roboto',
@@ -228,14 +243,19 @@ const styles = () => ({
   subsection: {
     borderBottom: '1px solid #8A8A8A',
     paddingBottom: '22px',
+    paddingTop: '22px',
   },
   subsectionBody: {
-    padding: '0px 2px',
-    width: '880px',
-    maxWidth: '973px',
+    padding: '0px 16px',
+    maxWidth: '959px',
+    minWidth: '500px',
   },
   paginationContainer: {
     paddingBottom: '0px',
+  },
+  noData: {
+    margin: 'auto',
+    textAlign: 'center',
   },
 });
 

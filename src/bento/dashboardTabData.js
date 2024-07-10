@@ -1,36 +1,29 @@
 /* eslint-disable */
 import gql from 'graphql-tag';
-import { cellTypes } from '@bento-core/table';
+import { cellTypes, dataFormatTypes, headerTypes } from '@bento-core/table';
 // import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
-// import { dataFormatTypes } from '@bento-core/table';
+import downloadSuccess from '../assets/dash/downloadSuccess.svg'
+import downloadLock from '../assets/dash/downloadLock.svg'
+import previewLarge from '../assets/dash/previewLarge.svg'
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
-  icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc-tooltip-icon/ctdc/images/svg/ExploreAddFileTooltipIcon.svg',
+  //  use as aletrative
+  icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   alt: 'tooltipIcon',
-  0: 'Click button to Add Associated Files associated with the selected Participant(s).',
-  1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
-  2: 'Click button to Add Associated Files.',
+  arrow: false,
   Participants: 'Add filtered files associated with selected participants(s) to My Files',
   Biospecimens: 'Add filtered files associated with selected biospecimen(s) to My Files',
   Files: 'Add selected files to My Files',
-  styles: {
-    border: '#03A383 1px solid',
-  }
 };
 
   export const tooltipContentAllFile = {
   icon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
   alt: 'tooltipIcon',
-  0: 'Click button to Add Associated Files associated with the selected Participant(s).',
-  1: 'Click button to Add Associated Files associated with the selected Biospecimen(s).',
-  2: 'Click button to Add Associated Files.',
+  arrow: false,
   Participants: 'Add filtered files associated with all participants in the current results set to My Files',
   Biospecimens: 'Add filtered files associated with all biospecimens in the current results set to My Files',
   Files: 'Add all filtered files to My Files',
-  styles: {
-    border: '#03A383 1px solid',
-  }
 };
 
 // --------------- Dahboard Table external link configuration --------------
@@ -94,20 +87,19 @@ export const tabIndex = [
 export const DASHBOARD_QUERY_NEW = gql`
 query search(
   $subject_id: [String],
-   $ctep_disease_term: [String],
-    $stage_of_disease: [String],
-     $tumor_grade: [String], 
-     $sex: [String], 
-     $reported_gender: [String], 
-     $race: [String], $ethnicity: [String],
-      $carcinogen_exposure: [String], 
-      $targeted_therapy: [String],
-       $anatomical_collection_site: [String],
-        $specimen_type: [String],
-         $tissue_category: [String],
-          $assessment_timepoint: [String],
-           $data_file_type: [String],
-            $data_file_format: [String]) {
+  $ctep_disease_term: [String],
+  $stage_of_disease: [String],
+  $tumor_grade: [String], 
+  $sex: [String], 
+  $reported_gender: [String], 
+  $race: [String], $ethnicity: [String],
+  $carcinogen_exposure: [String], 
+  $targeted_therapy: [String],
+  $anatomical_collection_site: [String],
+  $tissue_category: [String],
+  $assessment_timepoint: [String],
+  $data_file_type: [String],
+  $data_file_format: [String]) {
   searchParticipants(
     subject_id: $subject_id
     ctep_disease_term: $ctep_disease_term
@@ -120,7 +112,6 @@ query search(
     carcinogen_exposure: $carcinogen_exposure
     targeted_therapy: $targeted_therapy
     anatomical_collection_site: $anatomical_collection_site
-    specimen_type: $specimen_type
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
     data_file_type: $data_file_type
@@ -355,7 +346,6 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $carcinogen_exposure: [String],
     $targeted_therapy: [String],
     $anatomical_collection_site: [String],
-    $specimen_type: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
     $data_file_type: [String],
@@ -377,7 +367,6 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
@@ -417,7 +406,6 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     $carcinogen_exposure: [String],
     $targeted_therapy: [String],
     $anatomical_collection_site: [String],
-    $specimen_type: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
     $data_file_type: [String],
@@ -439,7 +427,6 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
@@ -456,7 +443,6 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       specimen_id,
       parent_specimen_id,
       anatomical_collection_site,
-      specimen_type,
       tissue_category,
       assessment_timepoint
 
@@ -478,7 +464,6 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     $carcinogen_exposure: [String],
     $targeted_therapy: [String],
     $anatomical_collection_site: [String],
-    $specimen_type: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
     $data_file_type: [String],
@@ -500,7 +485,6 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
@@ -519,7 +503,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       data_file_description,
       specimen_id,
       ctep_disease_term
-      
+      parent_specimen_id
       data_file_uuid
     }
   }
@@ -1336,7 +1320,6 @@ query participant_data_files(
   $carcinogen_exposure: [String],
   $targeted_therapy: [String],
   $anatomical_collection_site: [String],
-  $specimen_type: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
   $data_file_type: [String],
@@ -1358,7 +1341,6 @@ query participant_data_files(
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
@@ -1389,17 +1371,16 @@ query biospecimenAddAllToCart(
   $targeted_therapy: [String],
 
   $anatomical_collection_site: [String],
-  $specimen_type: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
-  $specimen_id: [String],
+  $parent_specimen_id: [String],
 
   $data_file_type: [String],
   $data_file_format: [String],
 
   $first: Int,
   $offset: Int= 0, 
-  $order_by: String = "file_id",
+  $order_by: String = "data_file_uuid",
   $sort_direction: String = "asc"
 ){
   biospecimen_data_files(
@@ -1415,10 +1396,9 @@ query biospecimenAddAllToCart(
     targeted_therapy: $targeted_therapy
     
     anatomical_collection_site: $anatomical_collection_site
-    specimen_type: $specimen_type
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
-    specimen_id: $specimen_id
+    parent_specimen_id: $parent_specimen_id
 
     data_file_type: $data_file_type
     data_file_format: $data_file_format
@@ -1448,7 +1428,6 @@ query fileAddSelectedToCart(
   $carcinogen_exposure: [String],
   $targeted_therapy: [String],
   $anatomical_collection_site: [String],
-  $specimen_type: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
   $data_file_type: [String],
@@ -1471,7 +1450,6 @@ query fileAddSelectedToCart(
     carcinogen_exposure: $carcinogen_exposure
     targeted_therapy: $targeted_therapy
     anatomical_collection_site: $anatomical_collection_site
-    specimen_type: $specimen_type
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
     data_file_type: $data_file_type
@@ -1500,7 +1478,6 @@ query participant_data_files(
   $carcinogen_exposure: [String],
   $targeted_therapy: [String],
   $anatomical_collection_site: [String],
-  $specimen_type: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
   $data_file_type: [String],
@@ -1522,7 +1499,6 @@ query participant_data_files(
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
@@ -1550,9 +1526,9 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
     $ethnicity: [String],
     $carcinogen_exposure: [String],
     $targeted_therapy: [String],
+    $parent_specimen_id: [String],
 
     $anatomical_collection_site: [String],
-    $specimen_type: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
 
@@ -1576,11 +1552,11 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
       anatomical_collection_site: $anatomical_collection_site
-      specimen_type: $specimen_type
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
       data_file_type: $data_file_type
       data_file_format: $data_file_format
+      parent_specimen_id: $parent_specimen_id
 
       first: $first,
       offset: $offset,
@@ -1606,7 +1582,6 @@ query fileAddAllToCart(
   $carcinogen_exposure: [String],
   $targeted_therapy: [String],
   $anatomical_collection_site: [String],
-  $specimen_type: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
   $data_file_type: [String],
@@ -1628,7 +1603,6 @@ query fileAddAllToCart(
     carcinogen_exposure: $carcinogen_exposure
     targeted_therapy: $targeted_therapy
     anatomical_collection_site: $anatomical_collection_site
-    specimen_type: $specimen_type
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
     data_file_type: $data_file_type
@@ -1708,6 +1682,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'ctep_disease_term',
@@ -1722,6 +1697,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'tumor_grade',
@@ -1729,6 +1705,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'age_at_enrollment',
@@ -1750,6 +1727,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'race',
@@ -1771,6 +1749,9 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        cellType: cellTypes.CUSTOM_ELEM,
+        removeSquareBrackets: true, // Flag to indicate if square brackets should be removed
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'targeted_therapy',
@@ -1778,6 +1759,9 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        cellType: cellTypes.CUSTOM_ELEM,
+        removeSquareBrackets: true, // Flag to indicate if square brackets should be removed
+        headerType: headerTypes.CUSTOM_ELEM,
       },
     ],
     id: 'participants_tab',
@@ -1800,8 +1784,8 @@ export const tabContainers = [
     api: GET_BIOSPECIMENS_OVERVIEW_QUERY,
     count: 'numberOfSpecimens',
     paginationAPIField: 'biospecimenOverview',
-    dataKey: 'specimen_id',
-    defaultSortField: 'specimen_id',
+    dataKey: 'parent_specimen_id',
+    defaultSortField: 'parent_specimen_id',
     defaultSortDirection: 'asc',
     tableID: 'biospecimens_tab_table',
     addAllButtonText: 'ADD FILES FOR ALL BIOSPECIMENS',
@@ -1845,6 +1829,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'ctep_disease_term',
@@ -1859,6 +1844,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'primary_disease_site',
@@ -1866,13 +1852,16 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM
       },
+      // Hidden: Using parent_specimen_id instead
       {
         dataField: 'specimen_id',
         header: 'Biospecimen ID',
-        display: true,
+        display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'parent_specimen_id',
@@ -1880,6 +1869,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'anatomical_collection_site',
@@ -1887,13 +1877,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'specimen_type',
-        header: 'Biospecimen Type',
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'tissue_category',
@@ -1901,6 +1885,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'assessment_timepoint',
@@ -1908,6 +1893,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
     ],
     id: 'biospecimens_tab',
@@ -1918,7 +1904,7 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addFilesRequestVariableKey: 'specimen_id',
+    addFilesRequestVariableKey: 'parent_specimen_id',
 
     addFilesResponseKeys: ['biospecimen_data_files', 'data_file_uuid'],
     addSelectedFilesQuery: GET_ALL_FILEIDS_BIOSPECIMENS_TAB_FOR_SELECT_ALL,
@@ -1959,6 +1945,8 @@ export const tabContainers = [
         header: 'File Name',
         display: true,
         tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM
       },
       {
         dataField: 'data_file_format',
@@ -1973,6 +1961,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'data_file_size',
@@ -1980,6 +1969,8 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        dataFormatType: dataFormatTypes.FORMAT_BYTES,
+        cellType: cellTypes.FORMAT_DATA,
       },
       {
         dataField: 'association',
@@ -1996,11 +1987,56 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
+        dataField: 'data_file_uuid', // This need to left empty if no data need to be displayed before file download icon
+        header: 'Access',
+        display: true,
+        cellType: cellTypes.CUSTOM_ELEM,
+        downloadDocument: true, // To indicate that column is document donwload
+        documentDownloadProps: {
+          // Max file size needs to bin Bytes to seperate two support file preview and download
+          maxFileSize: 80000000, // 10MB => 80,000,000 bits
+          // datafield where file file column exists in the table
+          fileSizeColumn: 'data_file_size',
+          // datafield where file file id exists in the table which is used to get file location
+          fileLocationColumn: 'data_file_uuid',
+          // datafield where file format exists in the table
+          fileFormatColumn: 'data_file_format',
+          // datafield where file case id exists in the table which is used to get file information
+          caseIdColumn: 'subject_id',
+          // datafield where file name exists
+          fileName: 'data_file_name',
+
+          // Case 1: Logged in and granted access, file size below {maxFileSize}
+          toolTipTextFileDownload: 'Click to download a copy of this file if you have been approved by dbGaP',
+          iconFileDownload: downloadSuccess,
+          
+          // Case 2: Not logged in or access not granted, file size below {maxFileSize}
+          iconUnauthenticated: downloadLock,
+          toolTipTextUnauthenticated: 'You must be logged in and must already have been granted access to download a copy of this file',
+
+          // Case 3: Regardless of login status, file size larger than {maxFileSize}
+          iconFilePreview: previewLarge,
+          toolTipTextFilePreview: 'Because of its size and/or format, this file must be accessed via the My Files workflow',
+        },
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      // Hidden: Using parent_specimen_id instead
+      {
         dataField: 'specimen_id',
         header: 'Biospecimen ID',
+        display: false,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
+      },
+      {
+        dataField: 'parent_specimen_id',
+        header: 'Parent Biospecimen ID',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'subject_id',
@@ -2008,6 +2044,7 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'ctep_disease_term',

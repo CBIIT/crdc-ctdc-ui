@@ -11,12 +11,11 @@ export const customTheme = {
       },
       '&.container_footer_link': {
         textAlign: 'right',
-        paddingRight: '100px',
-        height: '65px',
-        color: '#3E6886',
+        paddingRight: '59px',
+        height: '98px',
         fontSize: '12px',
         fontFamily: 'Lato',
-        borderBottom: '1px solid #3E6886',
+        marginTop: '5px',
         textDecoration: 'none',
       },
       '& img': {
@@ -52,7 +51,6 @@ export const customTheme = {
         backgroundColor: 'red'
       },
       '&.add_selected_button_Participants': {
-        backgroundColor: '#06846A',
         backgroundColor: '#06846A',
       },
       '&.add_selected_button_Biospecimens': {

@@ -6,6 +6,7 @@ import {
   CircularProgress,
 } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { clearAllFilters } from '@bento-core/facet-filter';
 
 import Snackbar from '../../components/Snackbar';
 import Stats from '../../components/Stats/AllStatsController';
@@ -18,9 +19,11 @@ import TabPanel from '../../components/Tab/TabPanel';
 import Styles from './studyDetailsStyle';
 import StudyThemeProvider from './studyDetailsThemeConfig';
 import Overview from './views/overview/overview';
+import store from '../../store';
 
 const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
   const studyData = data;
+  const processedTabs = tab.items;
 
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
@@ -36,14 +39,12 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
     setCurrentTab(value);
   };
 
-  const renderDefaultHeaderIcon = () => (
+  const getHeaderIcon = () => (
     <img
       src={headerIcon}
       alt="CTDC trail detail header logo"
     />
   );
-
-  const getHeaderIcon = renderDefaultHeaderIcon
 
   if (isLoading) {
     return <CircularProgress />;
@@ -57,15 +58,10 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
     );
   }
 
-  const currentStudy = "StudyfgfgPlaceholder"
-
-  let processedTabs;
-  if (!currentStudy) {
-    processedTabs = tab.items.filter((item) => item.label !== 'SUPPORTING DATA');
-  } else {
-    processedTabs = tab.items;
-  }
-
+  const linkToDashboard = () => {
+    // TODO: Once local-find is enabled; dispatch(resetAllData()) from bento-core/local-find to RESET_LOCALFIND_ALL_DATA
+    store.dispatch(clearAllFilters());
+  };
 
   return (
     <StudyThemeProvider>
@@ -102,8 +98,7 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
               <Link
                 className={classes.headerButtonLink}
                 to={(location) => ({ ...location, pathname: '/explore' })}
-                // TO DO: Once Explore page is implemented
-                // onClick={() => navigatedToDashboard(studyData.clinical_study_designation, 'Cases')}
+                onClick={() => linkToDashboard()}
               >
                 <div className={classes.headerButtonLinkNumber}>
                   { studyData.studyByStudyShortName[0].participant_count || 0}

@@ -1,3 +1,5 @@
+import cartIcon from '../assets/cart/cartIcon.svg'
+
 export const navBarstyling = {
   global: {
     backgroundColor: '#142D64',
@@ -83,7 +85,7 @@ export const navBarData = [
 export const navBarCartData = {
   cartLabel: '',
   cartLink: '/fileCentricCart',
-  cartIcon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/Icon-Cart-Navbar.svg',
+  cartIcon: cartIcon,
   cartIconAlt: 'cart_logo',
   cartLabelType: 'labelUnderCount',
 };

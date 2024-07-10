@@ -141,8 +141,9 @@ const styles = () => ({
   }),
   box: (props) => ({
     display: 'inline-flex',
-    height: props.styles.global.height ? props.styles.global.height : '47px',
+    // height: props.styles.global.height ? props.styles.global.height : '47px',
     margin: '0 auto',
+    ...props.styles.box,
   }),
   statTitle: (props) => ((props.styles.global && props.styles.global.horizontalStyle) ? {
     float: props.styles.statTitle ? props.styles.statTitle.float ? props.styles.statTitle.float : 'left' : 'left',
@@ -194,19 +195,7 @@ const styles = () => ({
     margin: props.styles.statsGroup ? props.styles.statsGroup.margin ? props.styles.statsGroup.margin : '4px 0px' : '4px 0px',
     padding: props.styles.statsGroup ? props.styles.statsGroup.padding ? props.styles.statsGroup.padding : '4px 40px 10px 60px' : '4px 40px 10px 60px',
     borderRight: props.styles.statsGroup ? props.styles.statsGroup.borderRight ? props.styles.statsGroup.borderRight : '4px solid #0B3556' : '4px solid #0B3556',
-    minWidth: '180px',
-    maxWidth: '185px',
-    '&:first-child': {
-      minWidth: '190px',
-      maxWidth: '225px',
-      padding: props.styles.statsGroup ? (props.styles.statsGroup['&:first-child'] && props.styles.statsGroup['&:first-child'].padding) ? props.styles.statsGroup['&:first-child'].padding : '6px 20px 10px 90px' : '6px 20px 10px 90px',
-    },
-    '&:last-child': {
-      borderRight: 'none',
-      minWidth: '205px',
-      maxWidth: '225px',
-      padding: props.styles.statsGroup ? (props.styles.statsGroup['&:last-child'] && props.styles.statsGroup['&:last-child'].padding) ? props.styles.statsGroup['&:last-child'].padding : '4px 40px 10px 80px' : '4px 40px 10px 80px',
-    },
+    ...props.styles.statsGroup,
   }),
   statsIcon: (props) => ({
     position: 'absolute',

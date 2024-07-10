@@ -13,23 +13,23 @@ export const programListingIcon = {
 /** used by the Global Search header autocomplete */
 export const SEARCH_KEYS = {
   public: [],
-  private: ['participants', 'biospecimens', 'participants', 'participants'],
+  private: ['gs_list'],
 };
 
 export const SEARCH_DATAFIELDS = {
   public: [],
-  private: ['subject_id', 'specimen_id', 'ctep_disease_term', 'stage_of_disease'],
+  private: ['autocomplete_list'],
 };
 
 /** used by the Global Search page results */
 export const SEARCH_PAGE_KEYS = {
-  private: [...SEARCH_KEYS.private, 'model'],
+  private: [...SEARCH_KEYS.private, 'model_search'],
   public: [],
 };
 
 export const SEARCH_PAGE_DATAFIELDS = {
   public: [],
-  private: [...SEARCH_DATAFIELDS.private, 'node_name'],
+  private: [...SEARCH_DATAFIELDS.private, 'node'],
 };
 
 /** Public search queries */
@@ -130,14 +130,15 @@ export const SEARCH = gql`
     globalSearch(input: $input) {
       participants {
         subject_id
-        ctep_disease_term
-        stage_of_disease
       }
       biospecimens {
-        specimen_id
+        parent_specimen_id
       }
-      model {
-        node_name
+      gs_list {
+        autocomplete_list
+      }
+      model_search {
+        node
       }
     }
   }
@@ -177,10 +178,9 @@ export const SEARCH_PAGE_RESULT_BIOSPECIMENS = gql`
       biospecimens {
         type
         study_short_name
-        specimen_id
+        parent_specimen_id
         subject_id
         ctep_disease_term
-        specimen_type
         parent_specimen_type
         tissue_category
         anatomical_collection_site

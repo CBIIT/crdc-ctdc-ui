@@ -93,13 +93,15 @@ export default (theme) => ({
     paddingBottm: '17px',
   },
   tabPrimaryColor: {
-    color: '#81a6b9',
-    fontWeight: '700',
+    fontFamily: 'Nunito Sans',
+    color: '#507C91',
+    fontWeight: '600',
   },
   tabHighlightColor: {
-    color: '#0B3556',
-    fontWeight: '700',
-    borderBottom: '5px solid rgb(53, 185, 235)',
+    fontFamily: 'Nunito Sans',
+    color: '#000000',
+    fontWeight: '600',
+    borderBottom: '5px solid #0296C9',
   },
   hrLine: {
     marginTop: '-2px',
@@ -111,7 +113,7 @@ export default (theme) => ({
     fontFamily: 'Raleway, sans-serif',
     paddingLeft: '32px',
     paddingRight: '32px',
-    maxWidth: '1440px',
+    maxWidth: '1800px',
     margin: "0 auto",
   },
   content: {
@@ -139,20 +141,20 @@ export default (theme) => ({
     borderBottom: '#4B619A 12px solid',
     height: '118px',
     margin: 'auto',
+    position: 'relative',
   },
   headerTitle: {
     margin: 'auto',
     float: 'left',
-    marginLeft: '100px',
-    width: 'calc(100% - 465px)',
+    marginLeft: '95px',
   },
   headerMainTitle: {
-    fontFamily: theme.custom.fontFamilyInter,
-    fontWeight: 400,
-    fontSize: '24px',
+    fontFamily: 'Inter',
+    fontWeight: 600,
+    fontSize: '26px',
     color: '#274FA6',
     paddingLeft: '3px',
-    lineHeight: '31.47px',
+    lineHeight: '31px',
     letterSpacing: '-2%',
   },
   headerMainSubTitle: {
@@ -160,15 +162,15 @@ export default (theme) => ({
     paddingLeft: '8px',
   },
   headerSubTitleCate: {
-    fontFamily: theme.custom.fontFamilyInter,
-    fontWeight: '400',
-    fontSize: '16px',
+    fontFamily: 'Inter',
+    fontWeight: 500,
+    fontSize: '18px',
     color: '#274FA6',
     paddingLeft: '3px',
-    paddingRight: '200px',
     lineHeight: '21.78px',
-    letterSpacing: '-2%',
     marginTop: '4px',
+    minWidth: 'fit-content',
+    whiteSpace: 'nowrap',
   },
   lowLetterSpace: {
     color: '#606061',
@@ -221,7 +223,7 @@ export default (theme) => ({
   headerButtonLinkText: {
     fontFamily: theme.custom.fontFamilyRaleway,
     fontWeight: 600,
-    color: '#717171',
+    color: '#666666',
     fontSize: '16px',
   },
   headerButtonLinkNumber: {
@@ -237,9 +239,9 @@ export default (theme) => ({
   logo: {
     float: 'left',
     width: '94px',
-    marginTop:'-87px',
-    marginLeft: '-73px',
-    position: 'inherit'
+    marginTop:'-75px',
+    marginLeft: '-68px',
+    position: 'absolute',
   },
   detailContainer: {
     margin: 'auto',
@@ -251,7 +253,7 @@ export default (theme) => ({
     color: '#000000',
     size: '12px',
     lineHeight: '23px',
-    maxWidth:'1440px',
+    maxWidth:'1800px',
   },
   headerButtonLink: {
     textDecoration: 'none',
@@ -287,5 +289,22 @@ export default (theme) => ({
     letterSpacing: '0.017em',
     fontWeight: '600',
     textTransform: 'uppercase',
+  },
+  '@media (max-width: 740px)': {
+    headerTitle: {
+      position: 'absolute',
+      top: '0px',
+    },
+    headerButton: {
+      marginLeft: '95px',
+      marginTop: '28px',
+      float: 'left',
+    },
+  },
+  '@media (max-width: 460px)': {
+    detailContainer: {
+      paddingLeft: '10px',
+      paddingRight: '10px',
+    },
   },
 });

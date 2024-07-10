@@ -28,7 +28,7 @@ const CustomHeaderRemove = ({
         classes={{ root: removeBtn }}
         onClick={openDialogBox}
       >
-        Remove
+        Clear Cart
       </Button>
     </Tooltip>
   </div>

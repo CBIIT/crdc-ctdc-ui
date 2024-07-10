@@ -20,10 +20,10 @@
 
 .graphiql-container {
   display: flex;
-  flex-direction: row;
+  /* flex-direction: row; */
   height: 100%;
   margin: 0;
-  overflow: hidden;
+  /* overflow: hidden; */
   width: 100%;
 }
 
@@ -177,7 +177,7 @@
   font-weight: bold;
   letter-spacing: 1px;
   line-height: 14px;
-  padding: 6px 0 8px 43px;
+  /* padding: 6px 0 8px 43px; */
   text-transform: lowercase;
   user-select: none;
 }
@@ -1349,7 +1349,7 @@ li.CodeMirror-hint-active {
   display: flex;
   height: 34px;
   line-height: 14px;
-  padding: 8px 8px 5px;
+  /* padding: 8px 8px 5px; */
   position: relative;
   user-select: none;
 }

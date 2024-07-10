@@ -4,6 +4,7 @@ import {
 } from '@material-ui/core';
 import useStyles from './style';
 import { cn } from 'bento-components';
+import { removeSquareBracketsFromString } from '../../../../utils/utils';
 
 const ParticipantCard = ({ data = {}, index })=> {
   const {
@@ -15,11 +16,12 @@ const ParticipantCard = ({ data = {}, index })=> {
     race,
     ethnicity,
     targeted_therapy: therapy,
+    stage_of_disease: stageOfDisease,
   } = data;
   const classes = useStyles();
 
   const renderInfo = (label, value='') => (
-    <div className={classes.row}>
+    <div className={classes.keyAndValueRow}>
       <Typography variant="h6" className={classes.key}>
         {label}
       </Typography>
@@ -31,12 +33,12 @@ const ParticipantCard = ({ data = {}, index })=> {
 
   return (
     <Grid item container className={classes.card}>
-      <Grid item xs={1} className={classes.indexContainer}>
+      <Grid item className={classes.indexContainer}>
         {index + 1}
       </Grid>
 
-      <Grid item xs={11}>
-        <div className={cn(classes.row, classes.titleRow)}>
+      <Grid item xs={true}>
+        <div className={cn(classes.keyAndValueRow, classes.titleRow)}>
           <span className={classes.titleKey}>PARTICIPANT</span>
           <Typography variant="h3" className={classes.titleValue}>
             {subjectId}
@@ -50,15 +52,17 @@ const ParticipantCard = ({ data = {}, index })=> {
             {renderInfo('Gender:', gender)}
           </div>
 
-          <div className={classes.column}>
+          <div className={cn(classes.column, classes.leftColumn)}>
             {renderInfo('Race:', race)}
             {renderInfo('Ethnicity:', ethnicity)}
-            {renderInfo('Therapy:', therapy)}
+            {renderInfo('Therapy:', removeSquareBracketsFromString(therapy))}
+            {renderInfo('Stage of Disease:', stageOfDisease)}
+
           </div>
         </div>
       </Grid>
 
-      <Grid item className={classes.hrContainer}>
+      <Grid item xs={12} className={classes.hrContainer}>
         <hr className={classes.hr}/>
       </Grid>
     </Grid>

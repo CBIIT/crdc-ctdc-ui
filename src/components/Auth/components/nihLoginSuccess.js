@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { redirect } from '@bento-core/authentication';
-import { useAuth } from '@bento-core/authentication';
+import { redirect } from '../../Authentication';
+import { useAuth } from '../../Authentication';
+import { LAST_VISITED_HASH_KEY } from '../../../bento/siteWideConfig';
 
 function useQuery() {
   const { search } = useLocation();
@@ -10,7 +11,8 @@ function useQuery() {
 
 function getRedirectPath(query) {
   const state = JSON.parse(query.get('state')) || {};
-  const path = `/#${state.internalRedirectPath}`;
+  const redirectHash = localStorage.getItem(LAST_VISITED_HASH_KEY)
+  const path = redirectHash ? `/${redirectHash}` : `/#${state.internalRedirectPath || ""}`;
   return path;
 }
 
@@ -31,11 +33,11 @@ function nihLoginSuccess() {
   const [notificationMessage, setNotificationMessage] = useState(message);
 
   const onSuccess = () => redirect(history, redirectPath);
-  const onError = (error) => {};
+  const onError = (error) => {console.log("Error: ", error)};
 
   useEffect(() => {
     if (nihCode) {
-      authServiceLogin(nihCode, 'nih', `${originDomain}/nihloginsuccess`, onSuccess, onError);
+      authServiceLogin(nihCode, 'dcf', `${originDomain}/login`, onSuccess, onError);
     } else {
       const { error, errorDescription } = getErrorData(query);
       if (error) {
@@ -51,7 +53,7 @@ function nihLoginSuccess() {
               {' '}
               or
               {' '}
-              <Link to="/#/login">Login Page</Link>
+              <Link to="/#/user/login">Login Page</Link>
               {' '}
               to login again.
             </span>

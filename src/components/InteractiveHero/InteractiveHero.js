@@ -21,6 +21,11 @@ import Circle4 from '../../assets/landing/animation/circle4.png';
 const ParticipantsInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
+      {' '}
+      {/* {heroData ? heroData.numberOfParticipants : 'NA'} */}
+      {/* code to Add count to the inactive view  */}
+      {' '}
+
       PARTICIPANTS
     </div>
   </div>
@@ -28,23 +33,25 @@ const ParticipantsInActiveText = ({ classes, heroData }) => (
 
 const ParticipantsActiveText = ({ classes, heroData }) => (
   <div className={classes.activeTextBG}>
-    <div className={classes.whiteText}>
-      PARTICIPANTS
-    </div>
-    <div className={classes.blueText}>
-      {' '}
+    <div>
       {heroData ? heroData.numberOfParticipants : 'NA'}
       {' '}
       PARTICIPANTS
     </div>
+    {/* <div className={classes.blueText}>
+      {' '}
+      {heroData ? heroData.numberOfParticipants : 'NA'}
+      {' '}
+      PARTICIPANTS
+    </div> */}
   </div>
 );
 
 const DiagnosesInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
-      {heroData ? heroData.numberOfDiagnoses : 'NA'}
-      {' '}
+      
+      {/* code to Add count to the inactive view  */}
       DIAGNOSES
     </div>
   </div>
@@ -56,8 +63,8 @@ const DiagnosesActiveText = ({ classes, heroData }) => {
   return (
     <div className={classes.inActiveTextBG}>
       <div className={classes.whiteText}>
-        {heroData ? heroData.numberOfDiagnoses : 'NA'}
-        {' '}
+      {heroData ? heroData.numberOfDiagnoses : 'NA'}
+      {' '}
         DIAGNOSES
       </div>
       {diagnosisData[5] ? (
@@ -82,6 +89,8 @@ const DiagnosesActiveText = ({ classes, heroData }) => {
         {diagnosisData[2].group}
       </div>):""
       }
+
+      
     </div>
   );
 };
@@ -89,68 +98,70 @@ const DiagnosesActiveText = ({ classes, heroData }) => {
 const TherapiesInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
-      {heroData ? heroData.numberOfTherapies : 'NA'}
-      {' '}
-      THERAPIES
+      TARGETED THERAPIES
     </div>
   </div>
 );
 
 const TherapiesActiveText = ({ classes, heroData }) => (
-  <div className={classes.inActiveTextBG}>
-    <div className={classes.whiteText}>
-      {heroData ? heroData.numberOfTherapies : 'NA'}
-      {' '}
-      THERAPIES
+  <div className={classes.activeTextBG}>
+    <div>
+    {heroData ? heroData.numberOfTargeted : 'NA'}
+    {' '}
+    TARGETED THERAPIES
     </div>
     <div className={classes.blueText}>
-      {' '}
-      {heroData ? heroData.numberOfTargeted : 'NA'}
-      {' '}
-      Targeted
-    </div>
-     <div className={classes.blueText}>
-      {' '}
-      {heroData ? heroData.numberOfNonTargeted : 'NA'}
-      {' '}
-      Non-Targeted
     </div>
   </div>
 );
 
 
-const ReportsInActiveText = ({ classes, heroData }) => (
+const FilesInActiveText = ({ classes, heroData }) => (
   <div className={classes.inActiveTextBG}>
     <div className={classes.whiteTextInactive}>
+      {/* {heroData ? heroData.dataFileCount : 'NA'} */}
+      {/* code to Add count to the inactive view  */}
+      {' '}
       FILES
     </div>
   </div>
 );
+const FilesActiveText = ({ classes, heroData }) => {
+  const FileData = heroData.dataFileByType;
 
-const ReportsActiveText = ({ classes, heroData }) => (
-  <div className={classes.inActiveTextBG}>
-    <div className={classes.whiteText}>
-      FILES
+  return (
+    <div className={classes.inActiveTextBG}>
+      <div className={classes.whiteText}>
+        {heroData ? heroData.dataFileCount : 'NA'}
+        {' '}
+        FILES
+      </div>
+      {FileData[0] ? (
+      <div className={classes.blueText}>
+        {FileData[0].subjects}
+        {' '}
+        {FileData[0].group}
+      </div>):""
+      }
+      
+       {FileData[1] ? (
+      <div className={classes.blueText}>
+        {FileData[1].subjects}
+        {' '}
+        {FileData[1].group}
+      </div>):""
+      }
+       {FileData[2] ? (
+      <div className={classes.blueText}>
+        {FileData[2].subjects}
+        {' '}
+        {FileData[2].group}
+      </div>):""
+      }
     </div>
-     <div className={classes.blueText}>
-      {heroData ? heroData.numberOfBiomarker : 'NA'}
-      {' '}
-      participants with biomarker results
-    </div>
-    <div className={classes.blueText}>
-      {' '}
-      {heroData ? heroData.numberOfHistologyImages : 'NA'}
-      {' '}
-      histology images
-    </div>
-     <div className={classes.blueText}>
-      {' '}
-      {heroData ? heroData.numberOfRadiologyImages : 'NA'}
-      {' '}
-      radiology images
-    </div>
-  </div>
-);
+  );
+};
+
 
 const InteractiveHero = ({ classes, heroData }) => {
   const [activeState, setActiveState] = React.useState({
@@ -202,11 +213,11 @@ const InteractiveHero = ({ classes, heroData }) => {
       </div>
       
         {activeState.isActive === 'Reports' ? (
-          <div className={classes.reportsActiveText}>
-            <ReportsActiveText heroData={heroData} classes={classes} /> 
+          <div className={classes.FilesActiveText}>
+            <FilesActiveText heroData={heroData} classes={classes} /> 
             </div>): (
             <div className={classes.reportsText}>
-              <ReportsInActiveText heroData={heroData} classes={classes} />
+              <FilesInActiveText heroData={heroData} classes={classes} />
               </div>)}
     </div>
   );
@@ -237,7 +248,7 @@ const styles = () => ({
     position: 'absolute',
     float: 'left',
     marginTop: '80px',
-    left: '162px',
+    left: '170px',
     width: '150px',
     color: '#FEFFFF',
     fontFamily: 'Oswald',
@@ -249,8 +260,8 @@ const styles = () => ({
   participantsActiveText: {
     position: 'absolute',
     float: 'left',
-    marginTop: '68px',
-    left: '162px',
+    marginTop: '80px',
+    left: '180px',
     width: '150px',
     color: '#FEFFFF',
     fontFamily: 'Oswald',
@@ -307,12 +318,12 @@ const styles = () => ({
   therapiesActiveText :{
     position: 'absolute',
     float: 'left',
-    marginTop: '349px',
-    left: '345px',
+    marginTop: '373px',
+    left: '385px',
     width: '150px',
     color: '#FFFFFF',
     fontFamily: 'Oswald',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 500,
   },
   reportsIcon: {
@@ -332,7 +343,7 @@ const styles = () => ({
     fontSize: 16,
     fontWeight: 500,
   },
-  reportsActiveText: {
+  FilesActiveText: {
     position: 'absolute',
     float: 'left',
     marginTop: '447px',
@@ -349,7 +360,7 @@ const styles = () => ({
   whiteText: {
     color: '#FEFFFF',
     fontFamily: 'Oswald',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 600,
     letterSpacing: 0,
     textAlign: 'left',

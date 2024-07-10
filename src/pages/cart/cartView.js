@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Grid, withStyles } from '@material-ui/core';
 import { TableContext, TableView } from '@bento-core/paginated-table';
 import { configColumn } from './tableConfig/Column';
@@ -23,6 +23,7 @@ const CartView = (props) => {
 
   /**
   * configure table state
+  * https://github.com/CBIIT/bento-frontend/tree/master/packages/paginated-table/src/table
   */
   const initTblState = (initailState) => ({
     ...initailState,
@@ -37,12 +38,13 @@ const CartView = (props) => {
     sortOrder: config.defaultSortDirection,
     rowsPerPage: 10,
     page: 0,
+    extendedViewConfig: config.extendedViewConfig,
   });
   
   const variables = {};
  variables.data_file_uuid = filesId;
   return (
-    <Grid>
+    <Grid className={classes.myFilesContainer}>
       <Grid item xs={12}>
         <div className={classes.myFilesWrapper}>
           <CartWrapper

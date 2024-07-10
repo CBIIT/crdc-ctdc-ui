@@ -14,7 +14,7 @@ const FooterStyled = styled.footer`
 
 const FooterContainer = styled.div`
   padding: 2rem 2rem 2rem 2rem;
-  max-width: 1400px;
+  max-width: 1800px;
   margin-left: auto;
   margin-right: auto;  
   display: flex;
@@ -138,7 +138,7 @@ const BottomFooter = styled.div`
     display: flex;
     flex-flow: wrap;
     justify-content: space-between;
-    max-width: 1400px;
+    max-width: 1800px;
     margin-left: auto;
     margin-right: auto;
     height: fit-content;

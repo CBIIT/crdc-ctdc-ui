@@ -2,6 +2,7 @@ import React from 'react';
 import { Grid, Link, withStyles } from '@material-ui/core';
 import XoomInOut from './xoomInOutView';
 import tableExternalIcon from './assets/About-Table-ExternalLink.svg';
+import externalLinkIcon from './assets/About-ExternalIcon.svg';
 
 const AboutBody = ({ classes, data, externalIconImage }) => {
   function boldText(text) {
@@ -13,6 +14,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
     });
     return boldedText;
   }
+
   return (
     <>
       <div className={classes.container}>
@@ -33,11 +35,11 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                       {/* Numbered ordered list */}
                       <ol>
                         { contentObj.listWithNumbers.map((listObj) => (
-                          listObj.listWithAlpahbets ? (
+                          listObj.listWithAlphabets ? (
                             // Alphetised sub ordered list
                             <ol type="a">
                               {/* bolding text if necessary */}
-                              { listObj.listWithAlpahbets.map((listObj1) => <li>{listObj1.includes('$$') ? boldText(listObj1) : listObj1}</li>)}
+                              { listObj.listWithAlphabets.map((listObj1) => <li>{listObj1.includes('$$') ? boldText(listObj1) : listObj1}</li>)}
                             </ol>
                           ) : <li>{listObj.includes('$$') ? boldText(listObj) : listObj}</li>
                         ))}
@@ -49,11 +51,11 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                       {/* Numbered ordered list */}
                       <ul>
                         { contentObj.listWithDots.map((listObj) => (
-                          listObj.listWithAlpahbets ? (
+                          listObj.listWithAlphabets ? (
                             // Alphetised sub ordered list
                             <ol type="a">
                               {/* bolding text if necessary */}
-                              { listObj.listWithAlpahbets.map((listObj1) => <li>{listObj1.includes('$$') ? boldText(listObj1) : listObj1}</li>)}
+                              { listObj.listWithAlphabets.map((listObj1) => <li>{listObj1.includes('$$') ? boldText(listObj1) : listObj1}</li>)}
                             </ol>
                           ) : <li> {listObj.includes('$$') ? boldText(listObj) : listObj}</li>
                         ))}
@@ -61,18 +63,18 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                     </div>
                   )}
                   {/* Ordered List with Alphabets logic */}
-                  {contentObj.listWithAlpahbets && (
+                  {contentObj.listWithAlphabets && (
                     <div className={classes.text}>
                       {/* Alphabetised ordered list */}
                       <ol type="a">
-                        { contentObj.listWithAlpahbets.map((listObj) => <li>{listObj.includes('$$') ? boldText(listObj) : listObj}</li>)}
+                        { contentObj.listWithAlphabets.map((listObj) => <li>{listObj.includes('$$') ? boldText(listObj) : listObj}</li>)}
                       </ol>
                     </div>
                   )}
 
                   {/* Paragraphs */}
                   {contentObj.paragraph && (
-                    <div className={classes.text}>
+                    <div className={classes.text} style={contentObj.paragraph.startsWith("$$*") ? {marginLeft:'30px'}:{}}>
                       { contentObj.paragraph.split('$$').map((splitedParagraph) => {
                         // Checking for regex ()[] pattern
                         if (splitedParagraph != null && ((/\[(.+)\]\((.+)\)/g.test(splitedParagraph)) || (/\((.+)\)\[(.+)\]/g.test(splitedParagraph)))) {
@@ -105,6 +107,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                                   // externalIconImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/common/images/logos/svgs/externalLinkIcon.svg',
                                   alt="outbounnd web site icon"
                                   className={classes.linkIcon}
+                                  style= {{padding: '0 2px 3px 3px'}}
                                 />
                               )}
 
@@ -119,9 +122,21 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                         if (splitedParagraph != null && (/#(.*)#/.test(splitedParagraph))) {
                           return (<div className={classes.title}>{splitedParagraph.match(/#(.*)#/).pop()}</div>);
                         }
+                        // for first sub heading on page
+                        if (splitedParagraph != null && (/~(.*)~/.test(splitedParagraph))) {
+                          return (<div className={classes.firstTitle}>{splitedParagraph.match(/~(.*)~/).pop()}</div>);
+                        }
+                        // For Italize inline words
+                        if (splitedParagraph != null && (/!(.*)!/.test(splitedParagraph))) {
+                          return (<span className={classes.italicizeText}>{splitedParagraph.match(/!(.*)!/).pop()}</span>);
+                        }
                         // For bolding inline words
                         if (splitedParagraph != null && (/\*(.*)\*/.test(splitedParagraph))) {
-                          return (<span className={classes.title}>{splitedParagraph.match(/\*(.*)\*/).pop()}</span>);
+                        return (<span className={classes.title}>{splitedParagraph.match(/\*(.*)\*/).pop()}</span>);
+                        }
+                        // for indents
+                        if (splitedParagraph != null && (/>(.*)>/.test(splitedParagraph))) {
+                        return (<span className={classes.indentedText}>{splitedParagraph.match(/>(.*)>/).pop()}</span>);
                         }
                         // For downloading things
                         if (splitedParagraph != null && (/{(.*)}/.test(splitedParagraph))) {
@@ -241,7 +256,6 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                       </table>
                     </div>
                   )}
-                  <br />
                 </>
               )) : ''}
             </span>
@@ -263,6 +277,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
 
 const styles = () => ({
   container: {
+    
     margin: '16px auto 16px auto',
     color: '#000000',
     fontFamily: (props) => (props.data.fontFamily ? props.data.fontFamily : 'Nunito'),
@@ -286,6 +301,17 @@ const styles = () => ({
   text: {
     // height: '476px',
     // width: '675px',
+    margin: '10px auto 0px auto',
+    color: '#000000',
+    paddingTop: '5px',
+    fontFamily: (props) => (props.data.fontFamily ? props.data.fontFamily : 'Nunito'),
+    fontSize: '16px',
+    lineHeight: (props) => (props.data.lineHeight ? props.data.lineHeight : '30px'),
+  },
+  indentedText: {
+    // height: '476px',
+    // width: '675px',
+    margin: '0px auto 0px 30px',
     color: '#000000',
     fontFamily: (props) => (props.data.fontFamily ? props.data.fontFamily : 'Nunito'),
     fontSize: '16px',
@@ -293,7 +319,25 @@ const styles = () => ({
   },
   title: (props) => ({
     color: props.titleColor,
-    fontWeight: 'bold',
+    fontWeight: '400',
+    fontSize: '22px',
+    fontFamily: 'Inter',
+    margin: '10px 0px 0px 0px',
+  }),
+  firstTitle: (props) => ({
+    color: props.titleColor,
+    fontWeight: '400',
+    fontSize: '22px',
+    fontFamily: 'Inter',
+    margin: '0px 0px 0px 0px'
+  }),
+  
+  italicizeText: (props) => ({
+    margin: '0px 0px 0px 0px',
+    display:'inline-block',
+    marginLeft:'30px',
+    color: props.titleColor,
+    fontStyle: 'italic',
   }),
   email: (props) => ({
     color: props.linkColor,
@@ -301,11 +345,13 @@ const styles = () => ({
   }),
   contentSection: {
     padding: (props) => (props.data.imageLocation === 'right'
-      ? '8px 25px 8px 0px !important' : '8px 0px 8px 25px !important'),
+      ? '0px 25px 8px 0px !important' : '0px 0px 8px 25px !important'),
     float: 'left',
+    lineHeight: '8x'
   },
   imageSection: {
     float: 'left',
+    margin: '10px 0px 20px 0px'
   },
   aboutSection: {
     padding: '60px 45px',
@@ -320,6 +366,7 @@ const styles = () => ({
   },
   link: (props) => ({
     color: props.linkColor,
+    fontWeight: props.linkWeight,
     '&:hover': {
       color: props.linkColor,
     },
@@ -381,9 +428,10 @@ AboutBody.defaultProps = {
     fontFamily: 'Nunito',
     lineHeight: '30px',
   },
-  linkColor: '#0296C9',
-  titleColor: '#0B3556',
-  externalIconImage: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/common/images/logos/svgs/externalLinkIcon.svg',
+  linkColor: '#274FA6',
+  linkWeight: 'bold',
+  titleColor: '#000000',
+  externalIconImage: externalLinkIcon,
 };
 
 export default withStyles(styles)(AboutBody);

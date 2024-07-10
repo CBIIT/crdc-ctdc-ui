@@ -1,4 +1,5 @@
 import { sortType, InputTypes } from '@bento-core/facet-filter';
+import { DEFAULT_VALUE } from './siteWideConfig';
 
 const CASES = 'Filter by Participants';
 const SAMPLES = 'Filter by Biospecimens';
@@ -18,7 +19,7 @@ export const facetSectionVariables = {
   'Filter by Participants': {
     isExpanded: true,
     hasSearch: false,
-    hasArrowDropDownIcon: false,
+    hasArrowDropDownIcon: true,
   },
   'Filter by Biospecimens': {
     isExpanded: true,
@@ -41,11 +42,12 @@ export const facetsConfig = [
     show: true,
     facetClasses: {
       border: '10px solid red'
-    }
+    },
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
-    label: 'Stage of Disease',
+    label: 'Disease Stage',
     apiPath: 'participantCountByStageOfDisease',
     apiForFiltering: 'filterParticipantCountByStageOfDisease',
     datafield: 'stage_of_disease',
@@ -53,6 +55,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -64,6 +67,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -75,6 +79,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.RANGE,
     show: true,
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -85,7 +90,8 @@ export const facetsConfig = [
     field: GROUP,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.CUSTOM_NUMBER,
-    show: true,
+    show: false,
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -97,6 +103,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -108,10 +115,11 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
-    label: 'Exposures',
+    label: 'Carcinogen Exposure',
     apiPath: 'participantCountByCarcinogenExposure',
     apiForFiltering: 'filterParticipantCountByCarcinogenExposure',
     datafield: 'carcinogen_exposure',
@@ -119,6 +127,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: CASES,
@@ -130,6 +139,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: SAMPLES,
@@ -141,17 +151,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
-  },
-  {
-    section: SAMPLES,
-    label: 'Biospecimen Type',
-    apiPath: 'specimenCountBySpecimenType',
-    apiForFiltering: 'filterSpecimenCountBySpecimenType',
-    datafield: 'specimen_type',
-    field: GROUP,
-    type: InputTypes.CHECKBOX,
-    sort_type: sortType.ALPHABET,
-    show: true,
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: SAMPLES,
@@ -163,6 +163,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: SAMPLES,
@@ -174,6 +175,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: FILES,
@@ -185,6 +187,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: DEFAULT_VALUE,
   },
   {
     section: FILES,
@@ -196,6 +199,7 @@ export const facetsConfig = [
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
+    defaultValue: DEFAULT_VALUE,
   },
 ];
 
@@ -243,17 +247,27 @@ export const widgetConfig = [
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
     datatable_level2_field: 'arm', // Outer Ring
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+    resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
   },
   {
-    type: 'sunburst',
-    title: 'Sex and Gender',
+    type: 'donut',
+    title: 'Sex',
     sliceTitle: "Participants",
-    dataName: 'sexesAndGenders',
-    datatable_level1_field: 'program', // Inner Ring
-    datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'arm', // Outer Ring
-    datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+    dataName: 'participantCountBySex',
   },
+  /* Covert "Sex and Gender" sunburst to Sex donut above, preserving this for future implementation.
+    {
+      type: 'sunburst',
+      title: 'Sex and Gender',
+      sliceTitle: "Participants",
+      dataName: 'sexesAndGenders',
+      datatable_level1_field: 'program', // Inner Ring
+      datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
+      datatable_level2_field: 'arm', // Outer Ring
+      datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+      resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
+    },
+  */
   {
     type: 'sunburst',
     title: 'Race and Ethnicity',
@@ -263,10 +277,11 @@ export const widgetConfig = [
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
     datatable_level2_field: 'arm',
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+    resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
   },
   {
     type: 'donut',
-    title: 'Therapy',
+    title: 'Targeted Therapy',
     sliceTitle: "Participants",
     dataName: 'participantCountByTargetedTherapy',
   },
@@ -279,6 +294,7 @@ export const widgetConfig = [
     datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
     datatable_level2_field: 'arm',
     datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
+    resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
   },
   {
     type: 'donut',

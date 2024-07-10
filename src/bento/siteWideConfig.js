@@ -26,8 +26,8 @@ export const enabledAuthProviders = ['google', 'nih', 'loginGov'];
 export const PUBLIC_ACCESS = env.PUBLIC_ACCESS || 'Metadata Only';
 
 // Node level access
-export const NODE_LEVEL_ACCESS = getEnvBoolean(env.NODE_LEVEL_ACCESS, true);
-export const NODE_LABEL = env.NODE_LABEL || 'Study Arm(s)';
+export const NODE_LEVEL_ACCESS = '';
+export const NODE_LABEL = '';
 
 // Redirect configs.
 export const REDIRECT_AFTER_SIGN_OUT = '/';
@@ -38,3 +38,9 @@ export const PING_INTERVAL = 10; // DEFAULT is 5 Seconds.
 // SHOW_WARNING_BEFORE is used to configure when to show Inactivity pop-up.
 // Value is required to be in Seconds format. DEFAULT is 300 Seconds (5 Minutes).
 export const SHOW_WARNING_BEFORE = 300;
+
+// DEFAULT_VALUE serves as a fallback when facet or widget items are empty
+export const DEFAULT_VALUE = "No value";
+
+// Constant for last visited hash key in localStorage
+export const LAST_VISITED_HASH_KEY = "lastVisitedHash";

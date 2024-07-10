@@ -6,6 +6,7 @@ export default () => ({
     display: 'flex',
     maxWidth: '1800px',
     margin: 'auto',
+    padding: '0 32px',
   },
   sideBar: {
     width: '250px',

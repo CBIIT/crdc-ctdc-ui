@@ -12,7 +12,7 @@ const HeaderBanner = styled.div`
 const HeaderContainer = styled.div`
     margin: 0 auto;
     padding-left: 32px;
-    max-width: 1400px;
+    max-width: 1800px;
     display: flex;
 
     .searchBarArea {
@@ -31,7 +31,7 @@ const HeaderContainer = styled.div`
 
 const Header = () => {
   const path = useLocation().pathname;
-
+  
   return (
     <HeaderBanner role="banner">
       <HeaderContainer>

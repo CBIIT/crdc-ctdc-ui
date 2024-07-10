@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Typography, withStyles } from '@material-ui/core';
 import Anchor from '../../../utils/Anchor';
+import LineBreaksRenderer from '../../../utils/LineBreaksRenderer';
 
 /**
  * Property Item component generates the result card key:value element
@@ -13,28 +14,46 @@ import Anchor from '../../../utils/Anchor';
  * @param {string} props.labelLink - the hyperlink of the label (e.g. to an external site)
  * @param {object} props.classes - the classes object used to style the component
  * @param {number} props.index
+ * @param {boolean} props.hasBreakLine - Flag to indicate whether line breaks should be applied.
+
  * @returns {JSX.Element}
  */
 const PropertyItem = ({ ...props }) => {
   const {
-    label, value, link, labelLink, classes, index,
+    label, linkText, value, link, labelLink, classes, index, hasBreakLine
   } = props;
   const defaultValue = '';
 
+  const renderLabel = () => (
+    <Typography variant="h6" className={classes.title} id={`section_title_${index + 1}`}>
+      {labelLink ? <Anchor link={labelLink} text={label} classes={classes} /> : `${label}:`}
+    </Typography>
+  );
+
+  const renderValue = () => (
+    <Typography variant="body1" className={classes.content} id={`section_description_${index + 1}`}>
+      {value || value === 0 ? renderValueContent() : defaultValue}
+    </Typography>
+  );
+
+  const renderValueContent = () => {
+    if (link !== undefined) {
+      return <Anchor link={link} text={linkText ? linkText : value} classes={classes} />;
+    } else if (hasBreakLine) {
+      return <LineBreaksRenderer htmlContent={value} classes={classes} />;
+    } else {
+      return value;
+    }
+  };
+
   return (
     <Grid item container className={classes.propertyContainer}>
-      {value ? (
+      {value && (
         <Grid item xs={12} className={classes.row}>
-          <Typography variant="h6" className={classes.title} id={`section_title_${index + 1}`}>
-            {labelLink ? <Anchor link={labelLink} text={label} classes={classes} /> : `${label}:`}
-          </Typography>
-          <Typography variant="body1" className={classes.content} id={`section_description_${index + 1}`}>
-            {value || value === 0 ? (
-              link ? <Anchor link={link} text={value} classes={classes} /> : value
-            ) : defaultValue}
-          </Typography>
+          {renderLabel()}
+          {renderValue()}
         </Grid>
-      ) : '' }
+      )}
     </Grid>
   );
 };
@@ -53,12 +72,12 @@ const styles = () => ({
     lineHeight: '24px',
     letterSpacing: '0em',
     textAlign: 'left',
+    marginTop: '-2px',
   },
   title: {
     textTransform: 'uppercase',
-    width: '115px',
-    maxWidth: '115px',
-    minWidth: '115px',
+    width: '212px',
+    minWidth: '212px',
     color: '#000000',
     fontFamily: 'Roboto',
     fontSize: '14px',

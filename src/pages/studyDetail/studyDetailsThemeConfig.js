@@ -9,13 +9,14 @@ export default ({
   const themesLight = _.cloneDeep(themes.light);
   themesLight.overrides.MuiTab = {
     root: {
-      minWidth: '130px',
+      maxHeight: '45px',
+      paddingTop: '0px',
       '@media (min-width: 600px)': {
         minWidth: '110px',
       },
       '&:first-child': {
         paddingLeft: '0px',
-        marginLeft: '-5px',
+        marginLeft: '-2px',
       },
     },
   };

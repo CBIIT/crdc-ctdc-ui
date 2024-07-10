@@ -5,7 +5,7 @@ import StudyView from './studyDetailView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { GET_STUDY_DETAIL_DATA_QUERY } from '../../bento/studyDetailData';
 
-const ProgramDetailContainer =  ({ match }) => {
+const StudyDetailController =  () => {
   
   const { loading, error, data } = useQuery(GET_STUDY_DETAIL_DATA_QUERY, {
     variables: { study_short_name: ["CMB"] },
@@ -22,6 +22,6 @@ const ProgramDetailContainer =  ({ match }) => {
   return <StudyView data={data} />;
 };
 
-export default ProgramDetailContainer;
+export default StudyDetailController;
 
 
