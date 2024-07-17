@@ -330,7 +330,7 @@ const styles = () => ({
     lineHeight: '24px',
   }),
   space:{
-    height:'20px',
+    height:'15px',
   },
    head: (props) => ({
     color: props.titleColor,
