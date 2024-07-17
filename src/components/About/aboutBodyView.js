@@ -327,7 +327,6 @@ const styles = () => ({
     fontWeight: '600',
     fontSize: '16px',
     fontFamily: 'Roboto',
-    margin: '10px -10px 0px 0px',
     lineHeight: '24px',
   }),
   space:{
