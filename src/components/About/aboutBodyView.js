@@ -330,7 +330,7 @@ const styles = () => ({
     margin: '10px -10px 0px 0px',
   }),
   space:{
-    height:'20px',
+    height:'15px',
   },
    head: (props) => ({
     color: props.titleColor,
