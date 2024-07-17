@@ -326,8 +326,9 @@ const styles = () => ({
     color: props.titleColor,
     fontWeight: '600',
     fontSize: '16px',
-    fontFamily: 'Inter',
+    fontFamily: 'Roboto',
     margin: '10px -10px 0px 0px',
+    lineHeight: '24px',
   }),
   space:{
     height:'20px',

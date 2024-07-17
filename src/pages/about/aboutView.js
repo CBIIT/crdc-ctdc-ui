@@ -14,7 +14,7 @@ const AboutView = ({ classes, data }) => {
       <Stats />
       <AboutHeader title={data.title} />
       <AboutBody data={{
-          fontFamily: '"Lato Regular", "Open Sans", sans-serif',
+          fontFamily: '"Roboto", "Lato Regular", "Open Sans", sans-serif',
           lineHeight: '25px',
           image: getImage(data.primaryContentImage, data.title),
           imageLocation: 'left',
