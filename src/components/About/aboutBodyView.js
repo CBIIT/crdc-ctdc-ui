@@ -114,13 +114,17 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                             </>
                           );
                         }
+                        // For space
+                        if (splitedParagraph != null && (/%(.*)%/.test(splitedParagraph))) {
+                          return (<div className={classes.space}></div>);
+                        }
                         // For email
                         if (splitedParagraph != null && (/@(.*)@/.test(splitedParagraph))) {
                           return (<span className={classes.email}>{splitedParagraph.match(/@(.*)@/).pop()}</span>);
                         }
                         // For sub headings
                         if (splitedParagraph != null && (/#(.*)#/.test(splitedParagraph))) {
-                          return (<div className={classes.title}>{splitedParagraph.match(/#(.*)#/).pop()}</div>);
+                          return (<div className={classes.head}>{splitedParagraph.match(/#(.*)#/).pop()}</div>);
                         }
                         // for first sub heading on page
                         if (splitedParagraph != null && (/~(.*)~/.test(splitedParagraph))) {
@@ -138,6 +142,7 @@ const AboutBody = ({ classes, data, externalIconImage }) => {
                         if (splitedParagraph != null && (/>(.*)>/.test(splitedParagraph))) {
                         return (<span className={classes.indentedText}>{splitedParagraph.match(/>(.*)>/).pop()}</span>);
                         }
+                      
                         // For downloading things
                         if (splitedParagraph != null && (/{(.*)}/.test(splitedParagraph))) {
                           const downloadAttrs = splitedParagraph.match(/{(.*)}/).pop().split(',');
@@ -301,7 +306,7 @@ const styles = () => ({
   text: {
     // height: '476px',
     // width: '675px',
-    margin: '10px auto 0px auto',
+    margin: '0px auto 0px auto',
     color: '#000000',
     paddingTop: '5px',
     fontFamily: (props) => (props.data.fontFamily ? props.data.fontFamily : 'Nunito'),
@@ -319,10 +324,20 @@ const styles = () => ({
   },
   title: (props) => ({
     color: props.titleColor,
-    fontWeight: '400',
-    fontSize: '22px',
+    fontWeight: '600',
+    fontSize: '16px',
+    fontFamily: 'Roboto',
+    lineHeight: '24px',
+  }),
+  space:{
+    height:'15px',
+  },
+   head: (props) => ({
+    color: props.titleColor,
+    fontWeight: '500',
+    fontSize: '20px',
     fontFamily: 'Inter',
-    margin: '10px 0px 0px 0px',
+    margin: '30px 0px 0px 0px',
   }),
   firstTitle: (props) => ({
     color: props.titleColor,

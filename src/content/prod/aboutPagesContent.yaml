@@ -19,19 +19,19 @@
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Purpose.png
   content:
      - paragraph: "The CTDC is part of the $$[Cancer Research Data Commons](https://datacommons.cancer.gov/)$$ (CRDC), an initiative from NCI’s Center for Biomedical Informatics and Information Technology (CBIIT). The goals of the CTDC are to advance cancer research and accelerate the development of innovative therapies by improving access to data from NCI-sponsored clinical studies, including genomic panel assay and clinical data. The CTDC does this through:  "
-     - paragraph: " "
+     - paragraph: "$$%space%$$"
      - paragraph: "$$*Graphical User Interface (GUI)*$$ - The CTDC’s GUI includes an Explore dashboard with search filters to help users visualize, explore, and navigate complex metadata without the need for coding or specialized technical skills." 
-     - paragraph: "     "
+     - paragraph: "$$%space%$$"
      - paragraph: "$$*Data consolidation*$$ - The CTDC consolidates data from clinical studies funded by the NCI. This allows researchers to analyze data collectively, leading to deeper insights and a better understanding of cancer’s complexities. "
-     - paragraph: "     "
+     - paragraph: "$$%space%$$"
      - paragraph: "$$*Data harmonization*$$ - Data harmonization ensures that data across studies within the CTDC are standardized and organized in a consistent manner to improve data compatibility, integration, and meta-analysis. "
-     - paragraph: "     "
+     - paragraph: "$$%space%$$"
      - paragraph: "$$*Integration with NCI Cloud Resources*$$ - Users can easily transfer selected CTDC data to the $$[Velsera Seven Bridges Cancer Genomics Cloud](https://datacommons.cancer.gov/analytical-resource/seven-bridges-cancer-genomics-cloud)$$ (SB-CGC), a cloud-based platform for cancer research funded by the NCI. Here, researchers can integrate multi-omic data across sources and leverage access to a multitude of tools and workflows for computation and analysis."
-     - paragraph: "     "
+     - paragraph: "$$%space%$$"
      - paragraph: "$$*Fueling collaborative research*$$ - By centralizing data and making them available through NCI’s Cloud Resources, the CTDC promotes secure collaboration among distributed research groups, fostering interdisciplinary partnerships. "
-     - paragraph: "     "
+     - paragraph: "$$%space%$$"
      - paragraph: "$$*Democratizing Data access*$$ - Data access in the CTDC may be open (no registration required) or controlled (registration required). The CTDC aims to make each dataset as open as possible while protecting participant privacy and adhering to regulations, agreements, and other considerations specific to each study. "
-     - paragraph: "     "
+     - paragraph: "$$%space%$$"
      - paragraph: "$$*Alignment to F.A.I.R data principles*$$ - The CTDC adheres to Findable, Accessible, Interoperable, and Reusable ($$[FAIR](https://www.go-fair.org/fair-principles/)$$) principles for scientific data management and stewardship. CTDC seeks to provide clearly organized data and guidance enabling end users to search for, find, and access data of interest. The emphasis on harmonization described above promotes the interoperability of data within and across the CRDC ecosystem and beyond and promotes reusability of data beyond the primary publication."
 - page: '/support'
   title: "Support"
@@ -42,7 +42,7 @@
   title: "Cloud computing"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
   content:
-    - paragraph: "$$#CTDC and NCI’s Cloud Resources#$$ "
+    - paragraph: "$$~CTDC and NCI’s Cloud Resources~$$ "
     - paragraph: "The CTDC supports analysis via the $$[Seven Bridges Cancer Genomics Cloud](https://datacommons.cancer.gov/analytical-resource/seven-bridges-cancer-genomics-cloud-developed-velsera#)$$(SB-CGC). SB-CGC supports data access through a web-based user interface, programmatic access to analytic tools and workflows, and collaborative data analysis and sharing pipelines. Users can transfer data of interest from the CTDC directly to SB-CGC, eliminating the need to download and store extremely large datasets. Through the SB-CGC, researchers can bring analysis tools to the data in the cloud, instead of the traditional process of bringing the data to tools on local hardware. Analyzing data through the cloud offers many benefits, including: "
     - listWithDots :
       - "State-of-the-art analysis using high-performance computing"
