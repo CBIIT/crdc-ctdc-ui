@@ -17,7 +17,7 @@ import herobg1800 from '../../assets/landing/heroGraphic/heroGraphic1800.png';
 import herobg2000 from '../../assets/landing/heroGraphic/heroGraphic2000.png';
 import InteractiveHero from '../../components/InteractiveHero/InteractiveHero';
 
-const LandingController = ({ classes, heroData }) => (
+const LandingView = ({ classes, heroData }) => (
   <div className={classes.page}>
     <div className={classes.container}>
       <div className={classes.hero}>
@@ -311,4 +311,4 @@ const styles = () => ({
     paddingTop: '43px',
   },
 });
-export default withStyles(styles, { withTheme: true })(LandingController);
+export default withStyles(styles, { withTheme: true })(LandingView);
