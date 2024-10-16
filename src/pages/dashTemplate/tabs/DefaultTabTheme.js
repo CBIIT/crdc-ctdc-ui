@@ -22,6 +22,17 @@ export const customTheme = {
       width: '250px',
       textTransform: 'none',
       fontFamily: 'Inter',
+
+      '&.participants': {
+        color: '#000000',
+      },
+      '&.biospecimens': {
+        color: '#000000'
+      },
+      '&.files': {
+        color: '#000000',
+      },
+      
       '&.Mui-selected': {
         fontWeight: '500',
         '&.participants': {
@@ -38,9 +49,6 @@ export const customTheme = {
           background: '#EDF8FD',
           color: '#035877',
           borderTop: '5px solid #0696C9',
-        },
-        '&.MuiTypography-body1': {
-          color: 'red',
         },
       },
       '& span.participants_count': {
