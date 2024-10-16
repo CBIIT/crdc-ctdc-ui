@@ -65,6 +65,17 @@ const QueryBarView = ({ data, statusReducer, localFind }) => {
         }));
       },
     },
+    customStyles: {
+      operators: {
+        color: '#5E5E5E',
+        marginLeft: '3px',
+        marginRight: '3px',
+        borderBottom: 'none',
+        textDecoration: 'none',
+        fontSize: 10,
+        fontWeight: 'bold',
+      },
+    }
   });
 
   return (
