@@ -338,7 +338,7 @@ const styles = (theme) => ({
     // fontFamily: theme.
   },
   imageValue: {
-    color: '#066D93'
+    
   },
   container: {
     fontFamily: 'Raleway, sans-serif',
