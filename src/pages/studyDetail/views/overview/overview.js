@@ -428,7 +428,7 @@ const styles = (theme) => ({
     fontStyle: 'italic',
   },
   title: {
-    color: '#067CA7',
+    color: '#066D93',
     fontFamily: theme.custom.fontFamilyInter,
     fontSize: '18px',
     letterSpacing: '0.017em',
