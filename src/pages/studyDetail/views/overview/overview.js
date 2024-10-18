@@ -338,7 +338,7 @@ const styles = (theme) => ({
     // fontFamily: theme.
   },
   imageValue: {
-    
+    color: '#066D93'
   },
   container: {
     fontFamily: 'Raleway, sans-serif',
@@ -409,7 +409,7 @@ const styles = (theme) => ({
     fontSize: '18px',
     fontWeight: 400,
     letterSpacing: '0.017em',
-    color: '#067CA7',
+    color: '#066D93',
     textTransform: 'uppercase',
   },
   content: {
