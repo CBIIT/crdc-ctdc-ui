@@ -333,7 +333,7 @@ const styles = (theme) => ({
     marginBottom: '16px'
   },
   imageKey: {
-    color: '#067CA7',
+    color: '#066D93',
     paddingRight: '15px'
     // fontFamily: theme.
   },
@@ -409,7 +409,7 @@ const styles = (theme) => ({
     fontSize: '18px',
     fontWeight: 400,
     letterSpacing: '0.017em',
-    color: '#067CA7',
+    color: '#066D93',
     textTransform: 'uppercase',
   },
   content: {
@@ -428,7 +428,7 @@ const styles = (theme) => ({
     fontStyle: 'italic',
   },
   title: {
-    color: '#067CA7',
+    color: '#066D93',
     fontFamily: theme.custom.fontFamilyInter,
     fontSize: '18px',
     letterSpacing: '0.017em',

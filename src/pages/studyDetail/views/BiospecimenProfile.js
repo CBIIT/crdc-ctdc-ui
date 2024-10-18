@@ -180,7 +180,7 @@ const styles = (theme) => ({
     padding: '0px !important',
     marginRight: '10px',
     textAlign: 'center',
-    color: '#507C91',
+    color: '#446B79',
   },
   headerButton: {
     fontFamily: theme.custom.fontFamilySans,
