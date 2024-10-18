@@ -333,7 +333,7 @@ const styles = (theme) => ({
     marginBottom: '16px'
   },
   imageKey: {
-    color: '#067CA7',
+    color: '#066D93',
     paddingRight: '15px'
     // fontFamily: theme.
   },
