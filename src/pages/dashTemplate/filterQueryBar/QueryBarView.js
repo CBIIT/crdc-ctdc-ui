@@ -65,6 +65,34 @@ const QueryBarView = ({ data, statusReducer, localFind }) => {
         }));
       },
     },
+    customStyles: {
+      operators: {
+        color: '#5E5E5E',
+        marginLeft: '3px',
+        marginRight: '3px',
+        borderBottom: 'none',
+        textDecoration: 'none',
+        fontSize: 10,
+        fontWeight: 'bold',
+      },
+      clearQueryButton: {
+        margin: '1px',
+        marginLeft: -6,
+        fontWeight: 600,
+        fontSize: '13px',
+        color: '#fff',
+        borderRadius: '15px',
+        fontFamily: 'Nunito',
+        boxSizing: 'border-box',
+        backgroundColor: '#757575',
+        textTransform: 'capitalize',
+        border: '1px solid #B4B4B4',
+        padding: '1px 5px 0px 6px',
+        '&:hover': {
+          backgroundColor: '#757575',
+        },
+      },
+    }
   });
 
   return (
