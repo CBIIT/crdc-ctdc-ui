@@ -94,7 +94,6 @@ query search(
   $reported_gender: [String], 
   $race: [String], $ethnicity: [String],
   $carcinogen_exposure: [String], 
-  $primary_diagnosis_disease_group: [String],
   $targeted_therapy: [String],
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -104,7 +103,6 @@ query search(
   searchParticipants(
     subject_id: $subject_id
     ctep_disease_term: $ctep_disease_term
-    primary_diagnosis_disease_group: $primary_diagnosis_disease_group
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
@@ -168,16 +166,6 @@ query search(
         size
         __typename
       }
-      __typename
-    }
-    participantCountByPrimaryDiagnosisDiseaseGroup{
-         group
-      subjects
-      __typename
-    }
-    filterParticipantCountByPrimaryDiagnosisDiseaseGroup{
-         group
-      subjects
       __typename
     }
     participantCountByStageOfDisease {

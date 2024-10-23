@@ -33,9 +33,9 @@ export const facetsConfig = [
   {
     section: CASES,
     label: 'Diagnosis',
-    apiPath: 'participantCountByPrimaryDiagnosisDiseaseGroup',
-    apiForFiltering: 'filterParticipantCountByPrimaryDiagnosisDiseaseGroup',
-    datafield: 'primary_diagnosis_disease_group',
+    apiPath: 'participantCountByCtepDiseaseTerm',
+    apiForFiltering: 'filterParticipantCountByCtepDiseaseTerm',
+    datafield: 'ctep_disease_term',
     field: GROUP,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
@@ -242,7 +242,7 @@ export const widgetConfig = [
     type: 'donut',
     title: 'Diagnosis',
     sliceTitle: "Participants",
-    dataName: 'participantCountByPrimaryDiagnosisDiseaseGroup',
+    dataName: 'participantCountByCtepDiseaseTerm',
   },
   {
     type: 'donut',
