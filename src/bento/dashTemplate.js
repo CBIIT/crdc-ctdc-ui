@@ -239,15 +239,10 @@ export const SUNBURST_COLORS_LEVEL_2 = [
 // sliceTitle: string (optional)
 export const widgetConfig = [
   {
-    type: 'sunburst',
-    title: 'Diagnosis and Stage of Disease',
+    type: 'donut',
+    title: 'Diagnosis',
     sliceTitle: "Participants",
-    dataName: 'diagnosesAndStageOfDiseases', 
-    datatable_level1_field: 'program', // Inner Ring
-    datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'arm', // Outer Ring
-    datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
-    resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
+    dataName: 'participantCountByCtepDiseaseTerm',
   },
   {
     type: 'donut',
@@ -269,15 +264,10 @@ export const widgetConfig = [
     },
   */
   {
-    type: 'sunburst',
-    title: 'Race and Ethnicity',
+    type: 'donut',
+    title: 'Race',
     sliceTitle: "Participants",
-    dataName: 'racesAndEthnicities',
-    datatable_level1_field: 'program',
-    datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'arm',
-    datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
-    resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
+    dataName: 'participantCountByRace',
   },
   {
     type: 'donut',
