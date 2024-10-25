@@ -95,6 +95,7 @@ query search(
   $race: [String], $ethnicity: [String],
   $carcinogen_exposure: [String], 
   $targeted_therapy: [String],
+  $targeted_therapy_string: [String],
   $anatomical_collection_site: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
@@ -111,6 +112,7 @@ query search(
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
     targeted_therapy: $targeted_therapy
+    targeted_therapy_string: $targeted_therapy_string
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
@@ -268,6 +270,16 @@ query search(
       subjects
       __typename
     }
+    participantCountByTargetedTherapyString {
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountByTargetedTherapyString {
+      group
+      subjects
+      __typename
+    }
     specimenCountByAnatomicalCollectionSite {
       group
       subjects
@@ -345,6 +357,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $ethnicity: [String],
     $carcinogen_exposure: [String],
     $targeted_therapy: [String],
+    $targeted_therapy_string: [String],
     $anatomical_collection_site: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
@@ -366,6 +379,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
+      targeted_therapy_string: $targeted_therapy_string
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
@@ -387,6 +401,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       ethnicity,
       carcinogen_exposure,
       targeted_therapy
+      targeted_therapy_string
 
       data_file_uuid
     }
@@ -1754,7 +1769,7 @@ export const tabContainers = [
         headerType: headerTypes.CUSTOM_ELEM,
       },
       {
-        dataField: 'targeted_therapy',
+        dataField: 'targeted_therapy_string',
         header: 'Targeted Therapy',
         display: true,
         tooltipText: 'sort',
