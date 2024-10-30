@@ -132,7 +132,7 @@ export const facetsConfig = [
   {
     section: CASES,
     label: 'Targeted Therapy',
-    apiPath: 'participantCountByTargetedTherapy',
+    apiPath: 'participantCountByTargetedTherapyString',
     apiForFiltering: 'filterParticipantCountByTargetedTherapyString',
     datafield: 'targeted_therapy_string',
     field: GROUP,

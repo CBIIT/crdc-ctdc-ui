@@ -6,6 +6,7 @@ import { CircularProgress } from '@material-ui/core';
 import { getFilters } from '@bento-core/facet-filter';
 import DashTemplateView from './DashTemplateView';
 import { DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
+import { getTargetedTherapyStringFilter, updateTargetedTherapyWidgetData } from './utils';
 
 const getDashData = (states) => {
   const {
@@ -41,12 +42,21 @@ const getDashData = (states) => {
       ...(localFindAutocomplete || []).map((obj) => obj.title),
     ],
   };
+  if (activeFilters.targeted_therapy_string){
+    activeFilters.targeted_therapy_string = getTargetedTherapyStringFilter(activeFilters.targeted_therapy_string)
+  }
 
   useEffect(() => {
     const controller = new AbortController();
     getData(activeFilters).then((result) => {
       if (result.searchParticipants) {
-        setDashData(result.searchParticipants);
+          const r = updateTargetedTherapyWidgetData(result.searchParticipants.participantCountByTargetedTherapyString)
+
+          console.log("||| r: ", r)
+
+        setDashData({
+          ...result.searchParticipants,
+        });
       }
     });
     return () => controller.abort();
