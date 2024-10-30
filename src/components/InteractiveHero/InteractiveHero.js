@@ -12,11 +12,11 @@ import InActiveReports from '../../assets/landing/animation/Reports_InActive.png
 
 import WhispInActive from '../../assets/landing/animation/Whisp-All_Active.png';
 import CircularIcon from './CircularIcon';
-import initial_circle from '../../assets/landing/animation/initial_circle.png';
-import Circle1 from '../../assets/landing/animation/circle1.png';
-import Circle2 from '../../assets/landing/animation/circle2.png';
-import Circle3 from '../../assets/landing/animation/circle3.png';
-import Circle4 from '../../assets/landing/animation/circle4.png';
+import initial_circle from '../../assets/landing/animation/initial_circle.svg';
+import Circle1 from '../../assets/landing/animation/circle1.svg';
+import Circle2 from '../../assets/landing/animation/circle2.svg';
+import Circle3 from '../../assets/landing/animation/circle3.svg';
+import Circle4 from '../../assets/landing/animation/circle4.svg';
 
 
 
