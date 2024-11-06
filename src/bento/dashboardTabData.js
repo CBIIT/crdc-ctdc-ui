@@ -275,6 +275,16 @@ query search(
       subjects
       __typename
     }
+    participantCountByTargetedTherapyString_2 {
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountByTargetedTherapyString_2 {
+      group
+      subjects
+      __typename
+    }
     filterParticipantCountByTargetedTherapyString {
       group
       subjects
@@ -1775,8 +1785,8 @@ export const tabContainers = [
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         cellType: cellTypes.CUSTOM_ELEM,
-        removeSquareBrackets: true, // Flag to indicate if square brackets should be removed
         headerType: headerTypes.CUSTOM_ELEM,
+        substitutionRules: [ { replace: "|", with: ", " }] // Defines character replacements
       },
     ],
     id: 'participants_tab',

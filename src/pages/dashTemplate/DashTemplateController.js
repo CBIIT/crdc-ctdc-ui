@@ -6,11 +6,11 @@ import { CircularProgress } from '@material-ui/core';
 import { getFilters } from '@bento-core/facet-filter';
 import DashTemplateView from './DashTemplateView';
 import { DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
-import { getTargetedTherapyStringFilter, updateTargetedTherapyWidgetData } from './utils';
+import { getTargetedTherapyStringFilter, updateTargetedTherapyFacetData } from './utils';
 
 const getDashData = (states) => {
   const {
-    filterState,
+    filterState, customFilterState,
     localFindUpload, localFindAutocomplete,
   } = states;
 
@@ -32,7 +32,30 @@ const getDashData = (states) => {
       .then((response) => response.data);
     return result;
   }
+  /*
+  const [validTargetedTheray, setalidTargetedTheray] = useState(null)
 
+  async function getDashQueryForTargetedTheray(activeFilters) {
+    // const result = await client.query({
+    //   query: DASHBOARD_QUERY_NEW,
+    //   variables: activeFilters,
+    // })
+    //   .then((response) => response.data);
+    // return result;
+  }
+  useEffect(() => { 
+    const controller = new AbortController();
+    if (dashData === null && validTargetedTheray === null) {
+      getDashQueryForTargetedTheray(activeFilters).then((result) => {
+        if (result.searchParticipants) {
+          setalidTargetedTheray()
+        }
+      })
+    }
+   
+    return () => controller.abort();
+  }, [filterState, localFindUpload, localFindAutocomplete]);
+*/
   const [dashData, setDashData] = useState(null);
 
   const activeFilters = {
@@ -42,20 +65,34 @@ const getDashData = (states) => {
       ...(localFindAutocomplete || []).map((obj) => obj.title),
     ],
   };
-  if (activeFilters.targeted_therapy_string){
-    activeFilters.targeted_therapy_string = getTargetedTherapyStringFilter(activeFilters.targeted_therapy_string)
+
+  if (activeFilters.targeted_therapy_string && dashData && dashData.filterParticipantCountByTargetedTherapyString_2){
+    activeFilters.targeted_therapy_string = getTargetedTherapyStringFilter(activeFilters, "targeted_therapy_string", dashData.filterParticipantCountByTargetedTherapyString_2)
+
+  } 
+  // else if (activeFilters.targeted_therapy_string && !dashData) {
+  //   // If dashData is null, used customFilterState
+  //   activeFilters.targeted_therapy_string = customFilterState
+  // } 
+  else {
+    console.log("|| I am not here: ", activeFilters, dashData)
   }
 
-  useEffect(() => {
+// "Aaaa|Bbbb", "Aaa",  => "Aaaa", "Bbbb"
+  useEffect(() => { 
     const controller = new AbortController();
     getData(activeFilters).then((result) => {
       if (result.searchParticipants) {
-          const r = updateTargetedTherapyWidgetData(result.searchParticipants.participantCountByTargetedTherapyString)
-
-          console.log("||| r: ", r)
+        const participantCountByTargetedTherapyString = updateTargetedTherapyFacetData(result.searchParticipants, "participantCountByTargetedTherapyString")
+        // console.log("||| ------- After: participantCountByTargetedTherapyString: ", participantCountByTargetedTherapyString);
+        
+        const filterParticipantCountByTargetedTherapyString = updateTargetedTherapyFacetData(result.searchParticipants, "filterParticipantCountByTargetedTherapyString")
+        // console.log("||| ------- After: filterParticipantCountByTargetedTherapyString: ", filterParticipantCountByTargetedTherapyString)
 
         setDashData({
           ...result.searchParticipants,
+          ...participantCountByTargetedTherapyString,
+          ...filterParticipantCountByTargetedTherapyString
         });
       }
     });
@@ -82,6 +119,7 @@ const DashTemplateController = ((props) => {
 
 const mapStateToProps = (state) => ({
   filterState: state.statusReducer.filterState,
+  // customFilterState: state.statusReducer.customFilterState,
   localFindUpload: state.localFind.upload,
   localFindAutocomplete: state.localFind.autocomplete,
 });
