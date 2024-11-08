@@ -83,7 +83,7 @@ export const tabIndex = [
   },
 ];
 
-// Main Query used to populate Facet, Widget components
+// First Dash Query used for Targeted Therapy
 export const TARGETED_THERAPY_QUERY = gql`
 query search_for_targeted_therapy (
   $subject_id: [String],
