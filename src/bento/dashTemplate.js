@@ -132,8 +132,8 @@ export const facetsConfig = [
   {
     section: CASES,
     label: 'Targeted Therapy',
-    apiPath: 'participantCountByTargetedTherapyString',
-    apiForFiltering: 'filterParticipantCountByTargetedTherapyString',
+    apiPath: 'participantCountBySingleTargetedTherapyCombination',
+    apiForFiltering: 'filterParticipantCountBySingleTargetedTherapyCombination',
     datafield: 'targeted_therapy_string',
     field: GROUP,
     type: InputTypes.CHECKBOX,

@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useApolloClient } from '@apollo/client';
 import { connect } from 'react-redux';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom';
 import { CircularProgress } from '@material-ui/core';
 import { getFilters } from '@bento-core/facet-filter';
 import DashTemplateView from './DashTemplateView';
-import { DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
-import { getTargetedTherapyStringFilter, updateTargetedTherapyFacetData } from './utils';
+import { DASHBOARD_QUERY_NEW, TARGETED_THERAPY_QUERY } from '../../bento/dashboardTabData';
+import { generateValidTherapyCombinations, updateTargetedTherapyFacetData } from './utils';
 
 const getDashData = (states) => {
   const {
-    filterState, customFilterState,
+    filterState,
     localFindUpload, localFindAutocomplete,
   } = states;
 
@@ -19,86 +19,103 @@ const getDashData = (states) => {
     'biospecimens': 1,
     'files': 2,
   };
+
   const { search } = useLocation();
-  const tabName = search ? new URLSearchParams(search).get('selectedTab').toLowerCase() : 'participants';
-  const tabIndex = tabIndexMap[tabName];
-
   const client = useApolloClient();
-  async function getData(activeFilters) {
-    const result = await client.query({
-      query: DASHBOARD_QUERY_NEW,
-      variables: activeFilters,
-    })
-      .then((response) => response.data);
-    return result;
-  }
-  /*
-  const [validTargetedTheray, setalidTargetedTheray] = useState(null)
 
-  async function getDashQueryForTargetedTheray(activeFilters) {
-    // const result = await client.query({
-    //   query: DASHBOARD_QUERY_NEW,
-    //   variables: activeFilters,
-    // })
-    //   .then((response) => response.data);
-    // return result;
-  }
-  useEffect(() => { 
-    const controller = new AbortController();
-    if (dashData === null && validTargetedTheray === null) {
-      getDashQueryForTargetedTheray(activeFilters).then((result) => {
-        if (result.searchParticipants) {
-          setalidTargetedTheray()
-        }
-      })
+  // Memoize tabIndex to avoid recalculating it on each render
+  const tabIndex = useMemo(() => {
+    const tabName = search ? new URLSearchParams(search).get('selectedTab').toLowerCase() : 'participants';
+    return tabIndexMap[tabName];
+  }, [search]);
+
+  const [dashData, setDashData] = useState(null)
+  const [initialDashData, setInitialDashData] = useState(null);
+  const [hasLoadedInitialData, setHasLoadedInitialData] = useState(false);
+
+  const targeted_therapy_datafield = "targeted_therapy_string";
+
+  // Compute activeFilters, ensuring it updates only when dependencies change
+  const activeFilters = useMemo(() => {
+    const baseFilters = {
+      ...getFilters(filterState),
+      subject_ids: [
+        ...(localFindUpload || []).map((obj) => obj.subject_id),
+        ...(localFindAutocomplete || []).map((obj) => obj.title),
+      ],
+    };
+
+    const sourceData = dashData
+      ? dashData.filterParticipantCountBySingleTargetedTherapyCombinationForFacet
+      : initialDashData && initialDashData.filterParticipantCountBySingleTargetedTherapyCombinationForFacet;
+
+    if (baseFilters[targeted_therapy_datafield] && sourceData) {
+      baseFilters[targeted_therapy_datafield] = generateValidTherapyCombinations(
+        baseFilters,
+        targeted_therapy_datafield,
+        sourceData
+      );
     }
-   
-    return () => controller.abort();
+
+    return baseFilters;
+  }, [filterState, localFindUpload, localFindAutocomplete, initialDashData, dashData]);
+
+  // Fetch initial targeted therapy data only once
+  useEffect(() => {
+    // if targeted theray is empty skip this call and go strail to the second query: activeFilters[targeted_therapy_datafield]
+    if (!hasLoadedInitialData) {
+      const fetchInitialData = async () => {
+        try {
+          const result = await client.query({
+            query: TARGETED_THERAPY_QUERY,
+            variables: activeFilters,
+          });
+          if (result.data && result.data.searchParticipants) {
+            setInitialDashData(result.data.searchParticipants);
+            setHasLoadedInitialData(true);
+          }
+        } catch (error) {
+          console.error("Error fetching initial targeted therapy data:", error);
+        }
+      };
+
+      fetchInitialData();
+    }
   }, [filterState, localFindUpload, localFindAutocomplete]);
-*/
-  const [dashData, setDashData] = useState(null);
 
-  const activeFilters = {
-    ...getFilters(filterState),
-    subject_ids: [
-      ...(localFindUpload || []).map((obj) => obj.subject_id),
-      ...(localFindAutocomplete || []).map((obj) => obj.title),
-    ],
-  };
+  // Load dashboard data after initial targeted therapy data is loaded and activeFilters is generated
+  useEffect(() => {
+    if (!hasLoadedInitialData) return;
 
-  if (activeFilters.targeted_therapy_string && dashData && dashData.filterParticipantCountByTargetedTherapyString_2){
-    activeFilters.targeted_therapy_string = getTargetedTherapyStringFilter(activeFilters, "targeted_therapy_string", dashData.filterParticipantCountByTargetedTherapyString_2)
-
-  } 
-  // else if (activeFilters.targeted_therapy_string && !dashData) {
-  //   // If dashData is null, used customFilterState
-  //   activeFilters.targeted_therapy_string = customFilterState
-  // } 
-  else {
-    console.log("|| I am not here: ", activeFilters, dashData)
-  }
-
-// "Aaaa|Bbbb", "Aaa",  => "Aaaa", "Bbbb"
-  useEffect(() => { 
-    const controller = new AbortController();
-    getData(activeFilters).then((result) => {
-      if (result.searchParticipants) {
-        const participantCountByTargetedTherapyString = updateTargetedTherapyFacetData(result.searchParticipants, "participantCountByTargetedTherapyString")
-        // console.log("||| ------- After: participantCountByTargetedTherapyString: ", participantCountByTargetedTherapyString);
-        
-        const filterParticipantCountByTargetedTherapyString = updateTargetedTherapyFacetData(result.searchParticipants, "filterParticipantCountByTargetedTherapyString")
-        // console.log("||| ------- After: filterParticipantCountByTargetedTherapyString: ", filterParticipantCountByTargetedTherapyString)
-
-        setDashData({
-          ...result.searchParticipants,
-          ...participantCountByTargetedTherapyString,
-          ...filterParticipantCountByTargetedTherapyString
+    const fetchDashData = async () => {
+      try {
+        const result = await client.query({
+          query: DASHBOARD_QUERY_NEW,
+          variables: activeFilters,
         });
+
+        if (result.data && result.data.searchParticipants) {
+          const transformData = (key) => updateTargetedTherapyFacetData(result.data.searchParticipants, key);
+          
+          const targetedTherapyCombination = transformData("participantCountBySingleTargetedTherapyCombination");
+          const filterTargetedTherapyCombination = transformData("filterParticipantCountBySingleTargetedTherapyCombination");
+
+          setDashData({
+            ...result.data.searchParticipants,
+            ...targetedTherapyCombination,
+            ...filterTargetedTherapyCombination,
+          });
+        }
+      } catch (error) {
+        console.error("Error fetching dashboard data:", error);
       }
-    });
-    return () => controller.abort();
-  }, [filterState, localFindUpload, localFindAutocomplete]);
-  return { dashData, activeFilters, tabIndex };
+    };
+
+    fetchDashData();
+  }, [hasLoadedInitialData, filterState, localFindUpload, localFindAutocomplete]);
+
+return { dashData, activeFilters, tabIndex };
+
 };
 
 const DashTemplateController = ((props) => {
@@ -119,7 +136,6 @@ const DashTemplateController = ((props) => {
 
 const mapStateToProps = (state) => ({
   filterState: state.statusReducer.filterState,
-  // customFilterState: state.statusReducer.customFilterState,
   localFindUpload: state.localFind.upload,
   localFindAutocomplete: state.localFind.autocomplete,
 });

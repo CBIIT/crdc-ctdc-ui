@@ -84,6 +84,73 @@ export const tabIndex = [
 ];
 
 // Main Query used to populate Facet, Widget components
+export const TARGETED_THERAPY_QUERY = gql`
+query search_for_targeted_therapy (
+  $subject_id: [String],
+  $ctep_disease_term: [String],
+  $stage_of_disease: [String],
+  $tumor_grade: [String], 
+  $sex: [String], 
+  $reported_gender: [String], 
+  $race: [String], $ethnicity: [String],
+  $carcinogen_exposure: [String], 
+  $targeted_therapy: [String],
+  $targeted_therapy_string: [String],
+  $anatomical_collection_site: [String],
+  $tissue_category: [String],
+  $assessment_timepoint: [String],
+  $data_file_type: [String],
+  $data_file_format: [String]) {
+  searchParticipants(
+    subject_id: $subject_id
+    ctep_disease_term: $ctep_disease_term
+    stage_of_disease: $stage_of_disease
+    tumor_grade: $tumor_grade
+    sex: $sex
+    reported_gender: $reported_gender
+    race: $race
+    ethnicity: $ethnicity
+    carcinogen_exposure: $carcinogen_exposure
+    targeted_therapy: $targeted_therapy
+    targeted_therapy_string: $targeted_therapy_string
+    anatomical_collection_site: $anatomical_collection_site
+    tissue_category: $tissue_category
+    assessment_timepoint: $assessment_timepoint
+    data_file_type: $data_file_type
+    data_file_format: $data_file_format
+  ) {
+    # Used to help create/compare valid TargetedTherapy combinations under generateValidCombinations()
+    filterParticipantCountBySingleTargetedTherapyCombinationForFacet {
+      group
+      subjects
+    }
+    participantCountBySingleTargetedTherapyCombinationForFacet {
+      group
+      subjects
+    }
+
+    participantCountByTargetedTherapy {
+      group
+      subjects
+    }
+    filterParticipantCountByTargetedTherapy {
+      group
+      subjects
+    }
+
+    participantCountBySingleTargetedTherapyCombination  {
+      group
+      subjects
+    }
+    filterParticipantCountBySingleTargetedTherapyCombination  {
+      group
+      subjects
+    }
+  }
+}
+`;
+
+// Main Query used to populate Facet, Widget components
 export const DASHBOARD_QUERY_NEW = gql`
 query search(
   $subject_id: [String],
@@ -270,22 +337,22 @@ query search(
       subjects
       __typename
     }
-    participantCountByTargetedTherapyString {
+    participantCountBySingleTargetedTherapyCombination {
       group
       subjects
       __typename
     }
-    participantCountByTargetedTherapyString_2 {
+    participantCountBySingleTargetedTherapyCombinationForFacet {
       group
       subjects
       __typename
     }
-    filterParticipantCountByTargetedTherapyString_2 {
+    filterParticipantCountBySingleTargetedTherapyCombinationForFacet {
       group
       subjects
       __typename
     }
-    filterParticipantCountByTargetedTherapyString {
+    filterParticipantCountBySingleTargetedTherapyCombination {
       group
       subjects
       __typename
