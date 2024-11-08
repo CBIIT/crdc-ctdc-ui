@@ -83,9 +83,9 @@ export const tabIndex = [
   },
 ];
 
-// Main Query used to populate Facet, Widget components
-export const DASHBOARD_QUERY_NEW = gql`
-query search(
+// First Dash Query used for Targeted Therapy
+export const TARGETED_THERAPY_QUERY = gql`
+query search_for_targeted_therapy (
   $subject_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
@@ -95,6 +95,7 @@ query search(
   $race: [String], $ethnicity: [String],
   $carcinogen_exposure: [String], 
   $targeted_therapy: [String],
+  $targeted_therapy_string: [String],
   $anatomical_collection_site: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
@@ -111,6 +112,74 @@ query search(
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
     targeted_therapy: $targeted_therapy
+    targeted_therapy_string: $targeted_therapy_string
+    anatomical_collection_site: $anatomical_collection_site
+    tissue_category: $tissue_category
+    assessment_timepoint: $assessment_timepoint
+    data_file_type: $data_file_type
+    data_file_format: $data_file_format
+  ) {
+    # Used to help create/compare valid TargetedTherapy combinations under generateValidCombinations()
+    filterParticipantCountBySingleTargetedTherapyCombinationForFacet {
+      group
+      subjects
+    }
+    participantCountBySingleTargetedTherapyCombinationForFacet {
+      group
+      subjects
+    }
+
+    participantCountByTargetedTherapy {
+      group
+      subjects
+    }
+    filterParticipantCountByTargetedTherapy {
+      group
+      subjects
+    }
+
+    participantCountBySingleTargetedTherapyCombination  {
+      group
+      subjects
+    }
+    filterParticipantCountBySingleTargetedTherapyCombination  {
+      group
+      subjects
+    }
+  }
+}
+`;
+
+// Main Query used to populate Facet, Widget components
+export const DASHBOARD_QUERY_NEW = gql`
+query search(
+  $subject_id: [String],
+  $ctep_disease_term: [String],
+  $stage_of_disease: [String],
+  $tumor_grade: [String], 
+  $sex: [String], 
+  $reported_gender: [String], 
+  $race: [String], $ethnicity: [String],
+  $carcinogen_exposure: [String], 
+  $targeted_therapy: [String],
+  $targeted_therapy_string: [String],
+  $anatomical_collection_site: [String],
+  $tissue_category: [String],
+  $assessment_timepoint: [String],
+  $data_file_type: [String],
+  $data_file_format: [String]) {
+  searchParticipants(
+    subject_id: $subject_id
+    ctep_disease_term: $ctep_disease_term
+    stage_of_disease: $stage_of_disease
+    tumor_grade: $tumor_grade
+    sex: $sex
+    reported_gender: $reported_gender
+    race: $race
+    ethnicity: $ethnicity
+    carcinogen_exposure: $carcinogen_exposure
+    targeted_therapy: $targeted_therapy
+    targeted_therapy_string: $targeted_therapy_string
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
@@ -268,6 +337,26 @@ query search(
       subjects
       __typename
     }
+    participantCountBySingleTargetedTherapyCombination {
+      group
+      subjects
+      __typename
+    }
+    participantCountBySingleTargetedTherapyCombinationForFacet {
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountBySingleTargetedTherapyCombinationForFacet {
+      group
+      subjects
+      __typename
+    }
+    filterParticipantCountBySingleTargetedTherapyCombination {
+      group
+      subjects
+      __typename
+    }
     specimenCountByAnatomicalCollectionSite {
       group
       subjects
@@ -345,6 +434,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $ethnicity: [String],
     $carcinogen_exposure: [String],
     $targeted_therapy: [String],
+    $targeted_therapy_string: [String],
     $anatomical_collection_site: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
@@ -366,6 +456,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
       targeted_therapy: $targeted_therapy
+      targeted_therapy_string: $targeted_therapy_string
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
@@ -387,6 +478,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       ethnicity,
       carcinogen_exposure,
       targeted_therapy
+      targeted_therapy_string
 
       data_file_uuid
     }
@@ -1754,14 +1846,14 @@ export const tabContainers = [
         headerType: headerTypes.CUSTOM_ELEM,
       },
       {
-        dataField: 'targeted_therapy',
+        dataField: 'targeted_therapy_string',
         header: 'Targeted Therapy',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         cellType: cellTypes.CUSTOM_ELEM,
-        removeSquareBrackets: true, // Flag to indicate if square brackets should be removed
         headerType: headerTypes.CUSTOM_ELEM,
+        substitutionRules: [ { replace: "|", with: ", " }] // Defines character replacements
       },
     ],
     id: 'participants_tab',
