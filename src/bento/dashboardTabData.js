@@ -91,31 +91,37 @@ query search_for_targeted_therapy (
   $stage_of_disease: [String],
   $tumor_grade: [String], 
   $sex: [String], 
-  $reported_gender: [String], 
-  $race: [String], $ethnicity: [String],
+  # $reported_gender: [String], 
+  $race: [String], 
+  $ethnicity: [String],
   $carcinogen_exposure: [String], 
-  $targeted_therapy: [String],
+  # $targeted_therapy: [String],
   $targeted_therapy_string: [String],
+
   $anatomical_collection_site: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
+
   $data_file_type: [String],
-  $data_file_format: [String]) {
+  $data_file_format: [String]
+) {
   searchParticipants(
     subject_id: $subject_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
-    reported_gender: $reported_gender
+    # reported_gender: $reported_gender
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
-    targeted_therapy: $targeted_therapy
+    # targeted_therapy: $targeted_therapy
     targeted_therapy_string: $targeted_therapy_string
+    
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
+
     data_file_type: $data_file_type
     data_file_format: $data_file_format
   ) {
@@ -156,33 +162,39 @@ query search(
   $subject_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
-  $tumor_grade: [String], 
-  $sex: [String], 
-  $reported_gender: [String], 
-  $race: [String], $ethnicity: [String],
-  $carcinogen_exposure: [String], 
-  $targeted_therapy: [String],
+  $tumor_grade: [String],
+  $sex: [String],
+  # $reported_gender: [String],
+  $race: [String],
+  $ethnicity: [String],
+  $carcinogen_exposure: [String],
+  # $targeted_therapy: [String],
   $targeted_therapy_string: [String],
+
   $anatomical_collection_site: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
+
   $data_file_type: [String],
-  $data_file_format: [String]) {
+  $data_file_format: [String]
+) {
   searchParticipants(
     subject_id: $subject_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
-    reported_gender: $reported_gender
+    # reported_gender: $reported_gender
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
-    targeted_therapy: $targeted_therapy
+    # targeted_therapy: $targeted_therapy
     targeted_therapy_string: $targeted_therapy_string
+
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
+
     data_file_type: $data_file_type
     data_file_format: $data_file_format
   ) {
@@ -429,17 +441,20 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
-    $reported_gender: [String],
+    # $reported_gender: [String],
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
-    $targeted_therapy: [String],
+    # $targeted_therapy: [String],
     $targeted_therapy_string: [String],
+
     $anatomical_collection_site: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
+
     $data_file_type: [String],
-    $data_file_format: [String],
+    $data_file_format: [String]
+
     $first: Int,
     $offset: Int,
     $order_by: String,
@@ -451,17 +466,20 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      reported_gender: $reported_gender
+      # reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy: $targeted_therapy
+      # targeted_therapy: $targeted_therapy
       targeted_therapy_string: $targeted_therapy_string
+
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
+
       data_file_type: $data_file_type
       data_file_format: $data_file_format
+
       first: $first
       offset: $offset
       order_by: $order_by
@@ -477,7 +495,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       race,
       ethnicity,
       carcinogen_exposure,
-      targeted_therapy
+      # targeted_therapy
       targeted_therapy_string
 
       data_file_uuid
@@ -492,16 +510,20 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
-    $reported_gender: [String],
+    # $reported_gender: [String],
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
-    $targeted_therapy: [String],
+    # $targeted_therapy: [String],
+    $targeted_therapy_string: [String],
+
     $anatomical_collection_site: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
+
     $data_file_type: [String],
-    $data_file_format: [String],
+    $data_file_format: [String]
+
     $first: Int,
     $offset: Int,
     $order_by: String,
@@ -513,16 +535,20 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      reported_gender: $reported_gender
+      # reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy: $targeted_therapy
+      # targeted_therapy: $targeted_therapy
+      targeted_therapy_string: $targeted_therapy_string
+
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
+
       data_file_type: $data_file_type
       data_file_format: $data_file_format
+
       first: $first
       offset: $offset
       order_by: $order_by
@@ -550,16 +576,20 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
-    $reported_gender: [String],
+    # $reported_gender: [String],
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
-    $targeted_therapy: [String],
+    # $targeted_therapy: [String],
+    $targeted_therapy_string: [String],
+
     $anatomical_collection_site: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
+
     $data_file_type: [String],
-    $data_file_format: [String],
+    $data_file_format: [String]
+
     $first: Int,
     $offset: Int,
     $order_by: String,
@@ -571,16 +601,20 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      reported_gender: $reported_gender
+      # reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy: $targeted_therapy
+      # targeted_therapy: $targeted_therapy
+      targeted_therapy_string: $targeted_therapy_string
+
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
+
       data_file_type: $data_file_type
       data_file_format: $data_file_format
+
       first: $first
       offset: $offset
       order_by: $order_by
@@ -601,803 +635,6 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
   }
 `;
 
-// Original DASHBOARD_QUERY_NEW for reference
-export const ORIGINAL_DASHBOARD_QUERY_NEW = gql`
-query search (          
-    $subject_ids: [String],
-    $programs: [String] ,
-    $studies: [String] ,
-    $diagnoses: [String] ,
-    $rc_scores: [String] ,
-    $tumor_sizes: [String] ,
-    $chemo_regimen: [String] ,
-    $tumor_grades: [String] ,
-    $er_status: [String] ,
-    $pr_status: [String] ,
-    $endo_therapies: [String] ,
-    $meno_status: [String] ,
-    $tissue_type: [String],
-    $composition: [String],
-    $association: [String],
-    $file_type: [String],
-    $age_at_index: [Float]
-){
-    searchSubjects (          
-        subject_ids: $subject_ids,
-        programs: $programs,
-        studies: $studies,
-        diagnoses: $diagnoses,
-        rc_scores: $rc_scores,
-        tumor_sizes: $tumor_sizes,
-        chemo_regimen: $chemo_regimen,
-        tumor_grades: $tumor_grades,
-        er_status: $er_status,
-        pr_status: $pr_status,
-        endo_therapies: $endo_therapies,
-        meno_status: $meno_status,
-        tissue_type: $tissue_type,
-        composition: $composition,
-        association: $association,       
-        file_type: $file_type,
-        age_at_index: $age_at_index
-    ) {
-        numberOfPrograms
-        numberOfStudies
-        numberOfSubjects
-        numberOfSamples
-        numberOfLabProcedures
-        numberOfFiles
-        armsByPrograms {
-            program
-            caseSize
-            children {
-                arm
-                caseSize
-                size
-            }
-        }
-        subjectCountByProgram {
-            group
-            subjects
-        }
-        subjectCountByStudy {
-            group
-            subjects
-        }
-        subjectCountByDiagnoses {
-            group
-            subjects
-        }
-        subjectCountByRecurrenceScore {
-            group
-            subjects
-        }
-        subjectCountByTumorSize {
-            group
-            subjects
-        }
-        subjectCountByChemotherapyRegimen {
-            group
-            subjects
-        }
-        subjectCountByEndocrineTherapy {
-            group
-            subjects
-        }
-        subjectCountByTumorGrade{
-            group
-            subjects
-        }
-        subjectCountByErStatus{
-            group
-            subjects
-        }
-        subjectCountByPrStatus{
-            group
-            subjects
-        }
-        subjectCountByMenopauseStatus{
-            group
-            subjects
-        }
-        subjectCountByFileType {
-            group
-            subjects
-        }
-        subjectCountByFileAssociation {
-            group
-            subjects
-        }
-        subjectCountByTissueComposition {
-            group
-            subjects
-        }
-        subjectCountByTissueType {
-            group
-            subjects
-        }
-        filterSubjectCountByProgram {
-            group
-            subjects
-        }
-        filterSubjectCountByStudy{
-            group
-            subjects
-        }
-        filterSubjectCountByDiagnoses{
-            group
-            subjects
-        }
-        filterSubjectCountByRecurrenceScore{
-            group
-            subjects
-        }
-        filterSubjectCountByTumorSize{
-            group
-            subjects
-        }
-        filterSubjectCountByTumorGrade{
-            group
-            subjects
-        }
-        filterSubjectCountByErStatus{
-            group
-            subjects
-        }
-        filterSubjectCountByPrStatus{
-            group
-            subjects
-        }
-        filterSubjectCountByChemotherapyRegimen{
-            group
-            subjects
-        }
-        filterSubjectCountByEndocrineTherapy{
-            group
-            subjects
-        }
-        filterSubjectCountByMenopauseStatus{
-            group
-            subjects
-        }
-        filterSubjectCountByTissueType{
-            group
-            subjects
-        }
-        filterSubjectCountByTissueComposition{
-            group
-            subjects
-        }
-        filterSubjectCountByFileAssociation{
-            group
-            subjects
-        }
-        filterSubjectCountByFileType{
-            group
-            subjects
-        }
-        filterSubjectCountByAge{
-            lowerBound
-            upperBound
-            subjects
-        }
-    }
-}
-`;
-
-// Unused Query
-export const DASHBOARD_QUERY = gql`
-    query search (          
-      $programs: [String] ,
-      $studies: [String] ,
-      $diagnoses: [String] ,
-      $rc_scores: [String] ,
-      $tumor_sizes: [String] ,
-      $chemo_regimen: [String] ,
-      $tumor_grades: [String] ,
-      $er_status: [String] ,
-      $pr_status: [String] ,
-      $endo_therapies: [String] ,
-      $meno_status: [String] ,
-      $tissue_type: [String],
-      $composition: [String],
-      $association: [String],
-      $file_type: [String],
-      $age_at_index: [Float]
-  ){
-      searchSubjects (          
-          programs: $programs,
-          studies: $studies,
-          diagnoses: $diagnoses,
-          rc_scores: $rc_scores,
-          tumor_sizes: $tumor_sizes,
-          chemo_regimen: $chemo_regimen,
-          tumor_grades: $tumor_grades,
-          er_status: $er_status,
-          pr_status: $pr_status,
-          endo_therapies: $endo_therapies,
-          meno_status: $meno_status,
-          tissue_type: $tissue_type,
-          composition: $composition,
-          association: $association,       
-          file_type: $file_type,
-          age_at_index: $age_at_index
-      ) {
-          numberOfPrograms
-          numberOfStudies
-          numberOfSubjects
-          numberOfSamples
-          numberOfLabProcedures
-          numberOfFiles
-          armsByPrograms {
-              program
-              caseSize
-              children {
-                  arm
-                  caseSize
-                  size
-              }
-  
-          }
-  
-      subjectCountByProgram {
-              group
-              subjects
-          }
-          subjectCountByStudy {
-              group
-              subjects
-          }
-          subjectCountByDiagnoses {
-              group
-              subjects
-          }
-          subjectCountByRecurrenceScore {
-              group
-              subjects
-          }
-          subjectCountByTumorSize {
-              group
-              subjects
-          }
-          subjectCountByChemotherapyRegimen {
-              group
-              subjects
-          }
-          subjectCountByEndocrineTherapy {
-              group
-              subjects
-          }
-          subjectCountByTumorGrade{
-              group
-              subjects
-          }
-          subjectCountByErStatus{
-              group
-              subjects
-          }
-          subjectCountByPrStatus{
-              group
-              subjects
-          }
-          subjectCountByMenopauseStatus{
-              group
-              subjects
-          }
-          subjectCountByFileType {
-              group
-              subjects
-          }
-          subjectCountByFileAssociation {
-              group
-              subjects
-          }
-          subjectCountByTissueComposition {
-              group
-              subjects
-          }
-          subjectCountByTissueType {
-              group
-              subjects
-          }
-  
-          filterSubjectCountByProgram {
-              group
-              subjects
-          }
-          filterSubjectCountByStudy{
-              group
-              subjects
-          }
-          filterSubjectCountByDiagnoses{
-              group
-              subjects
-          }
-          filterSubjectCountByRecurrenceScore{
-              group
-              subjects
-          }
-          filterSubjectCountByTumorSize{
-              group
-              subjects
-          }
-          filterSubjectCountByTumorGrade{
-              group
-              subjects
-          }
-          filterSubjectCountByErStatus{
-              group
-              subjects
-          }
-          filterSubjectCountByPrStatus{
-              group
-              subjects
-          }
-          filterSubjectCountByChemotherapyRegimen{
-              group
-              subjects
-          }
-          filterSubjectCountByEndocrineTherapy{
-              group
-              subjects
-          }
-          filterSubjectCountByMenopauseStatus{
-              group
-              subjects
-          }
-          filterSubjectCountByTissueType{
-              group
-              subjects
-          }
-          filterSubjectCountByTissueComposition{
-              group
-              subjects
-          }
-          filterSubjectCountByFileAssociation{
-              group
-              subjects
-          }
-          filterSubjectCountByFileType{
-              group
-              subjects
-          }
-          filterSubjectCountByAge{
-            lowerBound
-            upperBound
-            subjects
-        }
-  
-      }
-  }
-  
-   `;
-
-// Unused Query
-export const FILTER_GROUP_QUERY = gql`
-  query groupCounts($subject_ids: [String]){
-   armsByPrograms(subject_ids: $subject_ids) {
-     program
-     caseSize
-     children {
-         arm
-         caseSize
-         size
-     }
- }
- subjectCountByDiagnoses (subject_ids: $subject_ids){
-  group
-  subjects
-}
-subjectCountByRecurrenceScore (subject_ids: $subject_ids){
-  group
-  subjects
-}
-subjectCountByTumorSize(subject_ids: $subject_ids) {
-  group
-  subjects
-}
-subjectCountByChemotherapyRegimen(subject_ids: $subject_ids) {
-  group
-  subjects
-}
-subjectCountByEndocrineTherapy (subject_ids: $subject_ids){
-  group
-  subjects
-}
-   
-}
- `;
-
-// Unused Query
-export const FILTER_QUERY = gql`
-query search (          
-  $programs: [String] ,
-  $studies: [String] ,
-  $diagnoses: [String] ,
-  $rc_scores: [String] ,
-  $tumor_sizes: [String] ,
-  $chemo_regimen: [String] ,
-  $tumor_grades: [String] ,
-  $er_status: [String] ,
-  $pr_status: [String] ,
-  $endo_therapies: [String] ,
-  $meno_status: [String] ,
-  $tissue_type: [String],
-  $composition: [String],
-  $association: [String],
-  $file_type: [String],
-  $age_at_index: [Float]
-){
-  searchSubjects (          
-      programs: $programs,
-      studies: $studies,
-      diagnoses: $diagnoses,
-      rc_scores: $rc_scores,
-      tumor_sizes: $tumor_sizes,
-      chemo_regimen: $chemo_regimen,
-      tumor_grades: $tumor_grades,
-      er_status: $er_status,
-      pr_status: $pr_status,
-      endo_therapies: $endo_therapies,
-      meno_status: $meno_status,
-      tissue_type: $tissue_type,
-      composition: $composition,
-      association: $association,       
-      file_type: $file_type,
-      age_at_index: $age_at_index
-  ) {
-      numberOfPrograms
-      numberOfStudies
-      numberOfSubjects
-      numberOfSamples
-      numberOfLabProcedures
-      numberOfFiles
-      armsByPrograms {
-          program
-          caseSize
-          children {
-              arm
-              caseSize
-              size
-          }
-
-      }
-
-  subjectCountByProgram {
-          group
-          subjects
-      }
-      subjectCountByStudy {
-          group
-          subjects
-      }
-      subjectCountByDiagnoses {
-          group
-          subjects
-      }
-      subjectCountByRecurrenceScore {
-          group
-          subjects
-      }
-      subjectCountByTumorSize {
-          group
-          subjects
-      }
-      subjectCountByChemotherapyRegimen {
-          group
-          subjects
-      }
-      subjectCountByEndocrineTherapy {
-          group
-          subjects
-      }
-      subjectCountByTumorGrade{
-          group
-          subjects
-      }
-      subjectCountByErStatus{
-          group
-          subjects
-      }
-      subjectCountByPrStatus{
-          group
-          subjects
-      }
-      subjectCountByMenopauseStatus{
-          group
-          subjects
-      }
-      subjectCountByFileType {
-          group
-          subjects
-      }
-      subjectCountByFileAssociation {
-          group
-          subjects
-      }
-      subjectCountByTissueComposition {
-          group
-          subjects
-      }
-      subjectCountByTissueType {
-          group
-          subjects
-      }
-
-      filterSubjectCountByProgram {
-          group
-          subjects
-      }
-      filterSubjectCountByStudy{
-          group
-          subjects
-      }
-      filterSubjectCountByDiagnoses{
-          group
-          subjects
-      }
-      filterSubjectCountByRecurrenceScore{
-          group
-          subjects
-      }
-      filterSubjectCountByTumorSize{
-          group
-          subjects
-      }
-      filterSubjectCountByTumorGrade{
-          group
-          subjects
-      }
-      filterSubjectCountByErStatus{
-          group
-          subjects
-      }
-      filterSubjectCountByPrStatus{
-          group
-          subjects
-      }
-      filterSubjectCountByChemotherapyRegimen{
-          group
-          subjects
-      }
-      filterSubjectCountByEndocrineTherapy{
-          group
-          subjects
-      }
-      filterSubjectCountByMenopauseStatus{
-          group
-          subjects
-      }
-      filterSubjectCountByTissueType{
-          group
-          subjects
-      }
-      filterSubjectCountByTissueComposition{
-          group
-          subjects
-      }
-      filterSubjectCountByFileAssociation{
-          group
-          subjects
-      }
-      filterSubjectCountByFileType{
-          group
-          subjects
-      }
-      filterSubjectCountByAge{
-        lowerBound
-        upperBound
-        subjects
-      }
-
-  }
-}
-`;
-
-// Query for Tab - Files Table
-export const GET_FILES_OVERVIEW_QUERY_ORIGINAL = gql`
-query fileOverview(
-    $subject_ids: [String],
-    $file_ids: [String],
-    $programs: [String] ,
-    $studies: [String] ,
-    $diagnoses: [String] ,
-    $rc_scores: [String] ,
-    $tumor_sizes: [String] ,
-    $chemo_regimen: [String] ,
-    $tumor_grades: [String] ,
-    $er_status: [String] ,
-    $pr_status: [String] ,
-    $endo_therapies: [String] ,
-    $meno_status: [String] ,
-    $tissue_type: [String],
-    $composition: [String],
-    $association: [String],
-    $file_type: [String],
-    $age_at_index: [Float],
-    $first: Int, 
-    $offset: Int, 
-    $order_by:  String
-    $sort_direction: String ){
-    fileOverview(
-        subject_ids: $subject_ids,
-        file_ids: $file_ids,
-        programs: $programs,
-        studies: $studies,
-        diagnoses: $diagnoses,
-        rc_scores: $rc_scores,
-        tumor_sizes: $tumor_sizes,
-        chemo_regimen: $chemo_regimen,
-        tumor_grades: $tumor_grades,
-        er_status: $er_status,
-        pr_status: $pr_status,
-        endo_therapies: $endo_therapies,
-        meno_status: $meno_status,
-        tissue_type: $tissue_type,
-        composition: $composition,
-        association: $association,       
-        file_type: $file_type,
-        age_at_index: $age_at_index,
-        first: $first, 
-        offset: $offset, 
-        order_by: $order_by,
-        sort_direction: $sort_direction
-    ){
-        file_id,
-        program_id,
-        file_name,
-        association,
-        file_description,
-        file_format,
-        file_size,
-        program,
-        arm,
-        acl,
-        subject_id,
-        sample_id,
-        diagnosis,
-    }
-}
-`;
-
-// Query for Tab - Samples Table
-export const GET_SAMPLES_OVERVIEW_QUERY = gql`
-query sampleOverview(
-    $subject_ids: [String],
-    $sample_ids: [String],
-    $programs: [String] ,
-    $studies: [String] ,
-    $diagnoses: [String] ,
-    $rc_scores: [String] ,
-    $tumor_sizes: [String] ,
-    $chemo_regimen: [String] ,
-    $tumor_grades: [String] ,
-    $er_status: [String] ,
-    $pr_status: [String] ,
-    $endo_therapies: [String] ,
-    $meno_status: [String] ,
-    $tissue_type: [String],
-    $composition: [String],
-    $association: [String],
-    $file_type: [String],
-    $age_at_index: [Float],
-    $first: Int, 
-    $offset: Int, 
-    $order_by:  String
-    $sort_direction: String ){
-    sampleOverview(
-        subject_ids: $subject_ids,
-        sample_ids: $sample_ids,
-        programs: $programs,
-        studies: $studies,
-        diagnoses: $diagnoses,
-        rc_scores: $rc_scores,
-        tumor_sizes: $tumor_sizes,
-        chemo_regimen: $chemo_regimen,
-        tumor_grades: $tumor_grades,
-        er_status: $er_status,
-        pr_status: $pr_status,
-        endo_therapies: $endo_therapies,
-        meno_status: $meno_status,
-        tissue_type: $tissue_type,
-        composition: $composition,
-        association: $association,       
-        file_type: $file_type,
-        age_at_index: $age_at_index,
-        first: $first, 
-        offset: $offset, 
-        order_by: $order_by,
-        sort_direction: $sort_direction
-    ){
-        sample_id,
-        subject_id,
-        program,
-        program_id,
-        arm,
-        diagnosis,
-        tissue_type,
-        tissue_composition,
-        sample_anatomic_site,
-        sample_procurement_method,
-        platform,
-        files 
-    }
-}
-`;
-
-// Query for Tab - Cases Table
-export const GET_CASES_OVERVIEW_QUERY = gql`
-query subjectOverview(
-    $subject_ids: [String],
-    $programs: [String] ,
-    $studies: [String] ,
-    $diagnoses: [String] ,
-    $rc_scores: [String] ,
-    $tumor_sizes: [String] ,
-    $chemo_regimen: [String] ,
-    $tumor_grades: [String] ,
-    $er_status: [String] ,
-    $pr_status: [String] ,
-    $endo_therapies: [String] ,
-    $meno_status: [String] ,
-    $tissue_type: [String],
-    $composition: [String],
-    $association: [String],
-    $file_type: [String],
-    $age_at_index: [Float],
-    $first: Int, 
-    $offset: Int, 
-    $order_by:  String
-    $sort_direction: String ){
-    subjectOverview(
-        subject_ids: $subject_ids,
-        programs: $programs,
-        studies: $studies,
-        diagnoses: $diagnoses,
-        rc_scores: $rc_scores,
-        tumor_sizes: $tumor_sizes,
-        chemo_regimen: $chemo_regimen,
-        tumor_grades: $tumor_grades,
-        er_status: $er_status,
-        pr_status: $pr_status,
-        endo_therapies: $endo_therapies,
-        meno_status: $meno_status,
-        tissue_type: $tissue_type,
-        composition: $composition,
-        association: $association,       
-        file_type: $file_type,
-        age_at_index: $age_at_index,
-        first: $first, 
-        offset: $offset, 
-        order_by: $order_by,
-        sort_direction: $sort_direction
-        
-        ) {
-        subject_id
-        program
-        program_id
-        study_acronym
-        study_short_description
-        study_info
-        diagnosis
-        recurrence_score
-        tumor_size
-        tumor_grade
-        er_status
-        pr_status
-        chemotherapy
-        endocrine_therapy
-        menopause_status
-        age_at_index
-        survival_time
-        survival_time_unit
-        files
-        lab_procedures
-        samples
-    }
-}
-`;
-
 // --------------- GraphQL Query - Add Associated Files under Cases table to Cart ---------------
 export const GET_ALL_FILEIDS_PARTICIPANTS_TAB_FOR_SELECT_ALL = gql`
 query participant_data_files(
@@ -1406,16 +643,20 @@ query participant_data_files(
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
-  $reported_gender: [String],
+  # $reported_gender: [String],
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
-  $targeted_therapy: [String],
+  # $targeted_therapy: [String],
+  $targeted_therapy_string: [String],
+
   $anatomical_collection_site: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
+
   $data_file_type: [String],
-  $data_file_format: [String],
+  $data_file_format: [String]
+
   $first: Int,
   $offset: Int,
   $order_by: String,
@@ -1427,16 +668,20 @@ query participant_data_files(
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      reported_gender: $reported_gender
+      # reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy: $targeted_therapy
+      # targeted_therapy: $targeted_therapy
+      targeted_therapy_string: $targeted_therapy_string
+
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
+
       data_file_type: $data_file_type
       data_file_format: $data_file_format
+
       first: $first
       offset: $offset
       order_by: $order_by
@@ -1456,19 +701,19 @@ query biospecimenAddAllToCart(
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
-  $reported_gender: [String],
+  # $reported_gender: [String],
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
-  $targeted_therapy: [String],
+  # $targeted_therapy: [String],
+  $targeted_therapy_string: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
-  $parent_specimen_id: [String],
 
   $data_file_type: [String],
-  $data_file_format: [String],
+  $data_file_format: [String]
 
   $first: Int,
   $offset: Int= 0, 
@@ -1481,16 +726,16 @@ query biospecimenAddAllToCart(
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
-    reported_gender: $reported_gender
+    # reported_gender: $reported_gender
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
-    targeted_therapy: $targeted_therapy
-    
+    # targeted_therapy: $targeted_therapy
+    targeted_therapy_string: $targeted_therapy_string
+
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
-    parent_specimen_id: $parent_specimen_id
 
     data_file_type: $data_file_type
     data_file_format: $data_file_format
@@ -1508,44 +753,50 @@ query biospecimenAddAllToCart(
 // --------------- GraphQL Query - Add Associated Files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FILES_TAB_FOR_SELECT_ALL = gql`
 query fileAddSelectedToCart(
-  $data_file_uuid: [String],
   $subject_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
-  $reported_gender: [String],
+  # $reported_gender: [String],
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
-  $targeted_therapy: [String],
+  # $targeted_therapy: [String],
+  $targeted_therapy_string: [String],
+
   $anatomical_collection_site: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
+
   $data_file_type: [String],
-  $data_file_format: [String],
+  $data_file_format: [String]
+
   $first: Int,
   $offset: Int= 0, 
   $order_by: String = "data_file_uuid",
   $sort_direction: String = "asc"
  ){
   fileOverview(
-    data_file_uuid: $data_file_uuid,
     subject_id: $subject_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
-    reported_gender: $reported_gender
+    # reported_gender: $reported_gender
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
-    targeted_therapy: $targeted_therapy
+    # targeted_therapy: $targeted_therapy
+    targeted_therapy_string: $targeted_therapy_string
+
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
+
     data_file_type: $data_file_type
     data_file_format: $data_file_format
+
     first: $first
     offset: $offset
     order_by: $order_by
@@ -1564,16 +815,21 @@ query participant_data_files(
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
-  $reported_gender: [String],
+  # $reported_gender: [String],
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
-  $targeted_therapy: [String],
+  # $targeted_therapy: [String],
+  $targeted_therapy_string: [String],
+
   $anatomical_collection_site: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
+
   $data_file_type: [String],
-  $data_file_format: [String],
+  $data_file_format: [String]
+
+
   $first: Int,
   $offset: Int,
   $order_by: String,
@@ -1585,16 +841,20 @@ query participant_data_files(
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      reported_gender: $reported_gender
+      # reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy: $targeted_therapy
+      # targeted_therapy: $targeted_therapy
+      targeted_therapy_string: $targeted_therapy_string
+
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
+
       data_file_type: $data_file_type
       data_file_format: $data_file_format
+
       first: $first
       offset: $offset
       order_by: $order_by
@@ -1613,19 +873,19 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
     $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
-    $reported_gender: [String],
+    # $reported_gender: [String],
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
-    $targeted_therapy: [String],
-    $parent_specimen_id: [String],
+    # $targeted_therapy: [String],
+    $targeted_therapy_string: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
 
     $data_file_type: [String],
-    $data_file_format: [String],
+    $data_file_format: [String]
 
     $first: Int,
     $offset: Int= 0, 
@@ -1638,17 +898,19 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      reported_gender: $reported_gender
+      # reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy: $targeted_therapy
+      # targeted_therapy: $targeted_therapy
+      targeted_therapy_string: $targeted_therapy_string
+
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
+
       data_file_type: $data_file_type
       data_file_format: $data_file_format
-      parent_specimen_id: $parent_specimen_id
 
       first: $first,
       offset: $offset,
@@ -1668,16 +930,20 @@ query fileAddAllToCart(
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
-  $reported_gender: [String],
+  # $reported_gender: [String],
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
-  $targeted_therapy: [String],
+  # $targeted_therapy: [String],
+  $targeted_therapy_string: [String],
+
   $anatomical_collection_site: [String],
   $tissue_category: [String],
   $assessment_timepoint: [String],
+
   $data_file_type: [String],
-  $data_file_format: [String],
+  $data_file_format: [String]
+
   $first: Int,
   $offset: Int= 0, 
   $order_by: String = "data_file_uuid",
@@ -1689,16 +955,20 @@ query fileAddAllToCart(
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
-    reported_gender: $reported_gender
+    # reported_gender: $reported_gender
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
-    targeted_therapy: $targeted_therapy
+    # targeted_therapy: $targeted_therapy
+    targeted_therapy_string: $targeted_therapy_string
+
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
+
     data_file_type: $data_file_type
     data_file_format: $data_file_format
+
     first: $first
     offset: $offset
     order_by: $order_by
