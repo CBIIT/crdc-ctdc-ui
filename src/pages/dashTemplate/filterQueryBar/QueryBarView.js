@@ -20,13 +20,17 @@ const QueryBarView = ({ data, statusReducer, localFind }) => {
   const sectionOrder = facetsConfig.map((v) => v.datafield);
   const mappedFilterState = Object.keys(statusReducer || {}).map((facet) => {
     const config = facetsConfig.find((config) => config.datafield === facet);
-
+    // Skip facets without a matching config, e.g., outdated facets in local storage
+    if (!config) {
+      console.warn(`No configuration found for facet: ${facet}`);
+      return null;
+    }
     return {
       ...config,
       items: statusReducer[facet],
       data: data[config.apiForFiltering],
-    }
-  });
+    };
+  }).filter(Boolean); // Remove null entries for skipped facets   
   mappedFilterState.sort((a, b) => sectionOrder.indexOf(a.datafield) - sectionOrder.indexOf(b.datafield));
 
   const { QueryBar } = QueryBarGenerator({
