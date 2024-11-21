@@ -106,7 +106,7 @@ export const navbarSublists = {
       name: 'Additional Information',
       link: '/additional-information',
       id: 'navbar-dropdown-item-developers',
-      classname: 'navMobileSubItem',
+      className: 'navMobileSubItem',
     },
     {
       name: 'GitHub',
