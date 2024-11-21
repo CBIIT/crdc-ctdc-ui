@@ -8,6 +8,9 @@ import { useGlobal } from '../../Global/GlobalProvider';
 import { useAuth } from '../../Authentication';
 import CartContainer from '../../Cart/CartContainer';
 import { navMobileList, navbarSublists } from '../../../config/globalHeaderData';
+import Divider from "@material-ui/core/Divider";
+import { Height } from '@material-ui/icons';
+import { Box } from '@material-ui/core';
 
 
 const Nav = styled.div`
@@ -238,7 +241,7 @@ const DropdownContainer = styled.div`
   }
 `;
 
-const StyledLoginLink = styled(Link)`
+const StyledLink = styled(Link)`
   color: #00846A;
   font-size: 14px;
   font-family: Poppins;
@@ -248,7 +251,7 @@ const StyledLoginLink = styled(Link)`
   letter-spacing: 0.42px;
   text-decoration: none;
   text-transform: uppercase;
-  padding: 10px 0 10px 0;
+  padding: 10px 12px 10px 12px;
   margin-bottom: 4.5px;
   margin-right: -1px;
 `;
@@ -273,7 +276,7 @@ const CartSpan = styled.span`
       margin-right: -1px;
       cursor: pointer;
     }
-    `
+    `;
 
 const NameDropdown = styled.div`
     top: 60.5px;
@@ -475,10 +478,14 @@ const NavBar = () => {
                     {displayName}
                   </div>
                 <CartContainer />
+                <Box sx={{width: "2px", height: "24px", bgcolor: "#7C7C7C", margin: "13px 2px 13px 2px"}}></Box>
+                <StyledLink id="header-navbar-files-button" to="/fileCentricCart">Files</StyledLink>
               </CartSpan> 
               ):(
          <CartSpan>
-         <StyledLoginLink  id="header-navbar-login-button" to="/user/login">Login</StyledLoginLink>
+         <StyledLink  id="header-navbar-login-button" to="/user/login">Login</StyledLink>
+         <Box sx={{width: "2px", height: "24px", bgcolor: "#7C7C7C", margin: "13px 2px 13px 2px"}}></Box>
+         <StyledLink  id="header-navbar-files-button" to="/fileCentricCart">Files</StyledLink>
           <CartContainer />
         </CartSpan> 
         )}

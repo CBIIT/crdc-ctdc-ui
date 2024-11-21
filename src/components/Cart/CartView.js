@@ -41,16 +41,6 @@ const CartContainer = styled.div`
     font-weight: 500;
     line-height: normal;
   }
-  .cartLabel {
-    min-width: 16px;
-    color: #00846A;
-    font-family: Raleway;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-    text-align: start;
-    font-size: 12px;
-    text-transform: uppercase;
-  }
 `;
 
 const getCartLabel = (labelType) => {
@@ -60,9 +50,6 @@ const getCartLabel = (labelType) => {
           <div className="cartCounter2Wrapper">
             <div className="cartCounter2">
               {props.numberOfFiles || 0}
-            </div>
-            <div className="cartLabel">
-              Files
             </div>
           </div>
         );
