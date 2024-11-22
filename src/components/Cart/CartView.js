@@ -21,6 +21,7 @@ const CartContainer = styled.div`
   },
   .cartIcon{
      height: 63px;
+     margin-left: 5px;
   },
   .cartCounter {
     min-width: 16px;
@@ -30,8 +31,8 @@ const CartContainer = styled.div`
     transform: scale(1) translate(0%, -50%);
   },
   .cartCounter2Wrapper {
-    padding-top: 4px;
-    margin-left: -3px;
+    padding-top: 0px;
+    margin-left: -12px;
   },
   .cartCounter2 {
     color: #6D6D6D;

@@ -8,8 +8,6 @@ import { useGlobal } from '../../Global/GlobalProvider';
 import { useAuth } from '../../Authentication';
 import CartContainer from '../../Cart/CartContainer';
 import { navMobileList, navbarSublists } from '../../../config/globalHeaderData';
-import Divider from "@material-ui/core/Divider";
-import { Height } from '@material-ui/icons';
 import { Box } from '@material-ui/core';
 
 
@@ -251,7 +249,7 @@ const StyledLink = styled(Link)`
   letter-spacing: 0.42px;
   text-decoration: none;
   text-transform: uppercase;
-  padding: 10px 12px 10px 12px;
+  padding: 10px 8px 10px 8px;
   margin-bottom: 4.5px;
   margin-right: -1px;
 `;
