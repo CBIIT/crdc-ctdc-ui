@@ -3,8 +3,8 @@ import { Grid, withStyles } from '@material-ui/core';
 import { TableContext, TableView } from '@bento-core/paginated-table';
 import { configColumn } from './tableConfig/Column';
 import { themeConfig } from './tableConfig/Theme';
-import styles from './cartView.style';
-import CartWrapper from './cartWrapper';
+import styles from './CartStyle';
+import CartWrapper from './CartWrapper';
 import {paginationOptions} from './tableConfig/PaginationOptions';
 const CartView = (props) => {
   const {
@@ -44,7 +44,7 @@ const CartView = (props) => {
   const variables = {};
  variables.data_file_uuid = filesId;
   return (
-    <Grid className={classes.myFilesContainer}>
+    <Grid container className={classes.myFilesContainer}>
       <Grid item xs={12}>
         <div className={classes.myFilesWrapper}>
           <CartWrapper
