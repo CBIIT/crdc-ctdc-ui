@@ -21,6 +21,7 @@ const CartContainer = styled.div`
   },
   .cartIcon{
      height: 63px;
+     margin-left: 5px;
   },
   .cartCounter {
     min-width: 16px;
@@ -30,8 +31,8 @@ const CartContainer = styled.div`
     transform: scale(1) translate(0%, -50%);
   },
   .cartCounter2Wrapper {
-    padding-top: 4px;
-    margin-left: -3px;
+    padding-top: 0px;
+    margin-left: -12px;
   },
   .cartCounter2 {
     color: #6D6D6D;
@@ -40,16 +41,6 @@ const CartContainer = styled.div`
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-  }
-  .cartLabel {
-    min-width: 16px;
-    color: #00846A;
-    font-family: Raleway;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-    text-align: start;
-    font-size: 12px;
-    text-transform: uppercase;
   }
 `;
 
@@ -60,9 +51,6 @@ const getCartLabel = (labelType) => {
           <div className="cartCounter2Wrapper">
             <div className="cartCounter2">
               {props.numberOfFiles || 0}
-            </div>
-            <div className="cartLabel">
-              Files
             </div>
           </div>
         );

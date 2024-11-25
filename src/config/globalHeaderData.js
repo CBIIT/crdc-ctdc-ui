@@ -18,6 +18,12 @@ export const headerData = {
 
 export const navMobileList = [
   {
+    name: 'Home',
+    link: '/',
+    id: 'navbar-link-home',
+    className: 'navMobileItem',
+  },
+  {
     name: 'Explore',
     link: '/explore',
     id: 'navbar-link-explore',
@@ -36,7 +42,7 @@ export const navMobileList = [
     className: 'navMobileItem clickable',
   },
   {
-    name: 'For Developers',
+    name: 'Resources',
     link: '',
     id: 'navbar-dropdown-about',
     className: 'navMobileItem clickable',
@@ -89,7 +95,7 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
   ],
-    "For Developers": [
+    "Resources": [
     {
       name: 'GraphQL',
       link: '/graphql',
@@ -97,14 +103,14 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
     {
-      name: 'GitHub',
-      link: 'https://github.com/CBIIT/crdc-ctdc-starter-kit',
+      name: 'Additional Information',
+      link: '/additional-information',
       id: 'navbar-dropdown-item-developers',
       className: 'navMobileSubItem',
     },
     {
-      name: 'Additional Information',
-      link: '/additional-information',
+      name: 'GitHub',
+      link: 'https://github.com/CBIIT/crdc-ctdc-starter-kit',
       id: 'navbar-dropdown-item-developers',
       className: 'navMobileSubItem',
     },
