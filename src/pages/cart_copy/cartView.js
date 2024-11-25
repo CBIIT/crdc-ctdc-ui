@@ -6,6 +6,7 @@ import { themeConfig } from './tableConfig/Theme';
 import styles from './CartStyle';
 import CartWrapper from './CartWrapper';
 import {paginationOptions} from './tableConfig/PaginationOptions';
+import HeaderView from './components/header/HeaderView';
 const CartView = (props) => {
   const {
     classes,
@@ -18,6 +19,7 @@ const CartView = (props) => {
   // access table state
   const tableContext = useContext(TableContext);
   const { context } = tableContext;
+
   const [isUpdated,setIsUpdated] = useState(false);
   props ={ ...props, removeCheck: () => {setIsUpdated(true)}}
 
@@ -42,9 +44,12 @@ const CartView = (props) => {
   });
   
   const variables = {};
- variables.data_file_uuid = filesId;
+  variables.data_file_uuid = filesId;
+
   return (
     <Grid container className={classes.myFilesContainer}>
+      <HeaderView filesId={filesId} />
+      
       <Grid item xs={12}>
         <div className={classes.myFilesWrapper}>
           <CartWrapper

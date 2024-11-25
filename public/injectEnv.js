@@ -16,6 +16,10 @@ window.injectedEnv = {
   // About Content API:
   REACT_APP_ABOUT_CONTENT_URL: 'https://raw.githubusercontent.com/CBIIT/bento-ctdc-static-content/develop/aboutPagesContent.yaml',
 
+  // Cart README: TODO: Change to CTDC
+  REACT_APP_FILE_CENTRIC_CART_README: 'https://raw.githubusercontent.com/CBIIT/icdc-readMe-content/dev/My_Files_Cart_Page_README.md',
+
+
   // IDP Auth url
   REACT_APP_NIH_AUTH_URL: 'https://stsstg.nih.gov/auth/oauth/v2/authorize',
   // Client IDs for IDP

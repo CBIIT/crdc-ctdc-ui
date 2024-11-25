@@ -1,7 +1,8 @@
 /*eslint-disable*/
 import JSZip from 'jszip';
+/*
 import { saveAs } from 'file-saver';
-import { json2csv } from 'json-2-csv';
+import { json2csv } from 'json-2-csv'; */
 
 export function createFileName(fileName, format = '.csv') {
   const date = new Date();
@@ -98,7 +99,7 @@ export function downloadJson(tableData, comments, fileName, manifestData) {
   tempLink.click();
   document.body.removeChild(tempLink);
 }
-
+/*
 export const downloadJsonV2 = (tableData, comments, fileName, manifestData) => {
   const payload = tableData.map((el) => ({
     ...el,
@@ -123,6 +124,7 @@ export const downloadJsonV2 = (tableData, comments, fileName, manifestData) => {
   };
   json2csv(payload, json2csvCallback, json2csvOptions);
 };
+
 
 export const downloadAndZipJson = (dataArray, setLoading, studyCode) => {
   const filteredArr = dataArray.filter((el) => el.node.length !== 0);
@@ -151,3 +153,4 @@ export const downloadAndZipJson = (dataArray, setLoading, studyCode) => {
     setLoading(false);
   }
 };
+*/
