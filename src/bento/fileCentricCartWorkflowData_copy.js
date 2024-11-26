@@ -121,7 +121,7 @@ export const myFilesPageData = {
 export const manifestData = {
   keysToInclude: [
     'data_file_name', 
-    'data_file_uuid', // drs_uri
+    'drs_uri', // drs_uri was data_file_uuid
     'data_file_uuid',
     'data_file_checksum_value',
     'subject_id',
@@ -143,7 +143,7 @@ export const manifestData = {
     'anatomical_collection_site',
     'tissue_category',
     'assessment_timepoint',
-    'User_Comment'
+    // 'User_Comment'
   ],
   header: [
     'name',
@@ -216,6 +216,7 @@ export const GET_MY_CART_DATA_QUERY = gql`
       anatomical_collection_site
       tissue_category
       assessment_timepoint
+      drs_uri
    }
   }
 `;
@@ -304,6 +305,7 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     anatomical_collection_site
     tissue_category
     assessment_timepoint
+    drs_uri
  }
 }`;
 

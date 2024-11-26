@@ -25,10 +25,12 @@ import {
   GET_MY_CART_DATA_QUERY, //CREATE_MANIFEST,
   // GET_STORE_MANIFEST_DATA_QUERY,
   myFilesPageData,
+  manifestData
 } from '../../../../bento/fileCentricCartWorkflowData_copy';
 import env from '../../../../utils/env';
 import DownloadFileManifestDialog from './downloadFileManifestDialog';
-import { downloadCsvString } from '../../utils';
+import { convertToCSV, downloadCsvString } from '../../utils';
+import { CartContext } from '@bento-core/cart';
 
 const LABEL = 'Export and Download';
 
@@ -69,6 +71,13 @@ const DropDownView = ({
   // download all or selected files
   const tableContext = useContext(TableContext);
   const { context } = tableContext;
+
+  const cartContext = useContext(CartContext);
+  const { context: cartContxt } = cartContext; // { cart: {comment: "", manifestData: {...}, queryVariables: {data_file_uuid: [...]}, table:{...} }}
+
+  const comment = cartContxt.cart ? cartContxt.cart.comment : ""
+
+  console.log("||| cartContext: ", context)
   const { selectedRows = [], selectedFileIds = [] } = context;
   const noSelectedRows = useMemo(() => selectedRows.length === 0, [selectedRows]);
   const cartIsEmpty = useMemo(() => filesId.length === 0, [filesId]);
@@ -76,28 +85,66 @@ const DropDownView = ({
 
   useQuery(GET_MY_CART_DATA_QUERY, {
     variables: {
-      uuid: allFiles ? filesId : selectedFileIds,
-      first: allFiles ? filesId.length : selectedFileIds.length
+      data_file_uuid: allFiles ? filesId : selectedRows,
+      first: allFiles ? filesId.length : selectedRows.length
     },
-    skip: allFiles ? !filesId : !selectedFileIds,
-    onCompleted: ({ createManifest}) => {
-        // console.log
-        setManifest(createManifest);
+    skip: allFiles ? !filesId : !selectedRows,
+    onCompleted: ({ filesInList }) => {
+        console.log("|| GET_MY_CART_DATA_QUERY: ", filesInList)
+
+        const stringManifest = convertToCSV(filesInList, comment, manifestData.keysToInclude, manifestData.header)
+        // console.log("|| stringManifest: ", stringManifest)
+
+        setManifest(stringManifest);
     }
   })
+  // console.log("|| State manifest: ", manifest)
 
-  const {data}= useQuery(STORE_MANIFEST_QUERY, {
-    variables: {
-        manifest
-    },
-    skip: !manifest,
-    context: { clientName: 'interopService' },
-    fetchPolicy: 'no-cache',
-})
 
-  const sbgUrl = useMemo(() => defaultTo(data?.storeManifest, ""), [data]);
+//   const {data}= useQuery(STORE_MANIFEST_QUERY, {
+//     variables: {
+//         manifest
+//     },
+//     skip: !manifest,
+//     context: { clientName: 'interopService' },
+//     fetchPolicy: 'no-cache',
+// })
 
-  
+const [data, setData] = useState(null);
+const [loading, setLoading] = useState(false);
+const [error, setError] = useState(null);
+
+useEffect(() => {
+  const fetchData = async () => {
+      if (!manifest) return;
+
+      setLoading(true);
+      try {
+          const response = await axios.post(
+              'https://4250bc0d-7018-4a95-bffb-d4dceb96fb4d.mock.pstmn.io/api/files/get-manifest-file-signed-url',
+              { manifest }, // POST body
+              {
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+              }
+          );
+          console.log("|| response.data: ", data)
+
+          setData(response.data);
+      } catch (err) {
+          setError(err);
+      } finally {
+          setLoading(false);
+      }
+  };
+
+  fetchData();
+}, [manifest]);
+
+  console.log("|||| return_data: ", data)
+
+  const sbgUrl = useMemo(() => defaultTo(data && data.manifestSignedUrl, ""), [data]);
 
   const isDropDownDisabled = useMemo(() => {
     switch (allFiles) {
@@ -268,6 +315,7 @@ const DropDownView = ({
     switch (currLabel) {
       case EXPORT_TO_CANCER_GENOMICS_CLOUD: {
         if (sbgUrl) {
+
             window.open(`https://cgc.sbgenomics.com/import-redirect/drs/csv?URL=${encodeURIComponent(sbgUrl)}`, '_blank');
         }
         break;

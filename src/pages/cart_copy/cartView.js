@@ -20,6 +20,8 @@ const CartView = (props) => {
   const tableContext = useContext(TableContext);
   const { context } = tableContext;
 
+  console.log("||| tableContext: ", context)
+
   const [isUpdated,setIsUpdated] = useState(false);
   props ={ ...props, removeCheck: () => {setIsUpdated(true)}}
 

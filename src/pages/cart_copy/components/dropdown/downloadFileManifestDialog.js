@@ -11,7 +11,7 @@ import {
 import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
 import DownloadFileManifestIcon from '../../assets/dwnldFileManifest.svg';
-import { CREATE_MANIFEST, myFilesPageData } from '../../../../bento/fileCentricCartWorkflowData_copy';
+import { GET_MY_CART_DATA_QUERY, myFilesPageData } from '../../../../bento/fileCentricCartWorkflowData_copy';
 import { downloadCsvString } from '../../utils';
 import { TableContext } from '../../../../bento-core';
 
@@ -111,9 +111,9 @@ const DownloadFileManifestDialog = React.forwardRef(({
     const { selectedFileIds = [] } = context;
     const downloadFilesId = allFiles ? filesId : selectedFileIds;
     const result = await client.query({
-      query: CREATE_MANIFEST,
+      query: GET_MY_CART_DATA_QUERY,
       variables: {
-        uuid: downloadFilesId,
+        data_file_uuid: downloadFilesId,
       },
     }).then((response) => response.data.createManifest);
     downloadCsvString(result, myFilesPageData.manifestFileName)
