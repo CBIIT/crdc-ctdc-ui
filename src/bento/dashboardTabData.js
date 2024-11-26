@@ -453,7 +453,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $assessment_timepoint: [String],
 
     $data_file_type: [String],
-    $data_file_format: [String]
+    $data_file_format: [String],
 
     $first: Int,
     $offset: Int,
@@ -522,7 +522,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     $assessment_timepoint: [String],
 
     $data_file_type: [String],
-    $data_file_format: [String]
+    $data_file_format: [String],
 
     $first: Int,
     $offset: Int,
@@ -588,7 +588,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     $assessment_timepoint: [String],
 
     $data_file_type: [String],
-    $data_file_format: [String]
+    $data_file_format: [String],
 
     $first: Int,
     $offset: Int,
@@ -635,8 +635,8 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
   }
 `;
 
-// --------------- GraphQL Query - Add Associated Files under Cases table to Cart ---------------
-export const GET_ALL_FILEIDS_PARTICIPANTS_TAB_FOR_SELECT_ALL = gql`
+// --------------- GraphQL Query - "ADD FILES FOR SELECTED PARTICIPANTS" under Participants tab ---------------
+export const GET_FILE_IDS_FOR_SELECTED_PARTICIPANTS = gql`
 query participant_data_files(
   $subject_id: [String],
   $ctep_disease_term: [String],
@@ -655,7 +655,7 @@ query participant_data_files(
   $assessment_timepoint: [String],
 
   $data_file_type: [String],
-  $data_file_format: [String]
+  $data_file_format: [String],
 
   $first: Int,
   $offset: Int,
@@ -693,9 +693,11 @@ query participant_data_files(
 }
   `;
 
-// --------------- GraphQL Query - Add Associated Files under Biospecimens table to Cart ---------------
-export const GET_ALL_FILEIDS_BIOSPECIMENS_TAB_FOR_SELECT_ALL = gql`
+// --------------- GraphQL Query - "ADD FILES FOR SELECTED BIOSPECIMENS" under Biospecimens tab ---------------
+export const GET_FILE_IDS_FOR_SELECTED_BIOSPECIMENS = gql`
 query biospecimenAddAllToCart(
+  $parent_specimen_id: [String], # Helps in adding the selected Biospecimen(s)-files to the cart
+
   $subject_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
@@ -713,7 +715,7 @@ query biospecimenAddAllToCart(
   $assessment_timepoint: [String],
 
   $data_file_type: [String],
-  $data_file_format: [String]
+  $data_file_format: [String],
 
   $first: Int,
   $offset: Int= 0, 
@@ -721,6 +723,8 @@ query biospecimenAddAllToCart(
   $sort_direction: String = "asc"
 ){
   biospecimen_data_files(
+    parent_specimen_id: $parent_specimen_id
+
     subject_id: $subject_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
@@ -750,9 +754,11 @@ query biospecimenAddAllToCart(
 }
 `;
 
-// --------------- GraphQL Query - Add Associated Files under Files table to Cart ---------------
-export const GET_ALL_FILEIDS_FILES_TAB_FOR_SELECT_ALL = gql`
+// --------------- GraphQL Query - "ADD SELECTED FILES" under Files tab ---------------
+export const GET_FILE_IDS_FOR_SELECTED_FILES = gql`
 query fileAddSelectedToCart(
+  $data_file_uuid: [String], # Helps in adding the selected files to the cart
+
   $subject_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
@@ -770,7 +776,7 @@ query fileAddSelectedToCart(
   $assessment_timepoint: [String],
 
   $data_file_type: [String],
-  $data_file_format: [String]
+  $data_file_format: [String],
 
   $first: Int,
   $offset: Int= 0, 
@@ -778,6 +784,8 @@ query fileAddSelectedToCart(
   $sort_direction: String = "asc"
  ){
   fileOverview(
+    data_file_uuid: $data_file_uuid,
+
     subject_id: $subject_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
@@ -807,8 +815,8 @@ query fileAddSelectedToCart(
 }
 `;
 
-// --------------- GraphQL Query - Add all files under Cases table to Cart ---------------
-export const GET_ALL_FILEIDS_FROM_PARTICIPANTS_TAB_FOR_ADD_ALL_CART = gql`
+// --------------- GraphQL Query - "ADD FILES FOR ALL PARTICIPANTS" under Participants tab ---------------
+export const GET_ALL_FILE_IDS_FOR_PARTICIPANTS = gql`
 query participant_data_files(
   $subject_id: [String],
   $ctep_disease_term: [String],
@@ -827,8 +835,7 @@ query participant_data_files(
   $assessment_timepoint: [String],
 
   $data_file_type: [String],
-  $data_file_format: [String]
-
+  $data_file_format: [String],
 
   $first: Int,
   $offset: Int,
@@ -865,8 +872,8 @@ query participant_data_files(
 }
 }`;
 
-// --------------- GraphQL Query - Add all files under Biospecimens table to Cart ---------------
-export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
+// --------------- GraphQL Query - "ADD FILES FOR ALL BIOSPECIMENS" under Biospecimens tab ---------------
+export const GET_ALL_FILE_IDS_FOR_BIOSPECIMENS = gql`
   query biospecimenAddAllToCart(
     $subject_id: [String],
     $ctep_disease_term: [String],
@@ -885,11 +892,11 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
     $assessment_timepoint: [String],
 
     $data_file_type: [String],
-    $data_file_format: [String]
+    $data_file_format: [String],
 
     $first: Int,
     $offset: Int= 0, 
-    $order_by: String = "file_id",
+    $order_by: String = "data_file_uuid",
     $sort_direction: String = "asc"
   ){
     biospecimen_data_files(
@@ -922,8 +929,8 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
   }
 `;
 
-// --------------- GraphQL Query - Add all files under Files table to Cart ---------------
-export const GET_ALL_FILEIDS_FROM_FILES_TAB_FOR_ADD_ALL_CART = gql`
+// --------------- GraphQL Query - "ADD ALL FILES" under Files tab ---------------
+export const GET_ALL_FILE_IDS_FOR_FILES = gql`
 query fileAddAllToCart(
   $subject_id: [String],
   $ctep_disease_term: [String],
@@ -942,8 +949,8 @@ query fileAddAllToCart(
   $assessment_timepoint: [String],
 
   $data_file_type: [String],
-  $data_file_format: [String]
-
+  $data_file_format: [String],
+  
   $first: Int,
   $offset: Int= 0, 
   $order_by: String = "data_file_uuid",
@@ -1137,8 +1144,8 @@ export const tabContainers = [
     addFilesRequestVariableKey: 'subject_id',
     addFilesResponseKeys: ['participant_data_files', 'data_file_uuid'],
     addAllFilesResponseKeys: ['participant_data_files', 'data_file_uuid'],
-    addAllFileQuery: GET_ALL_FILEIDS_FROM_PARTICIPANTS_TAB_FOR_ADD_ALL_CART,
-    addSelectedFilesQuery: GET_ALL_FILEIDS_PARTICIPANTS_TAB_FOR_SELECT_ALL,
+    addAllFileQuery: GET_ALL_FILE_IDS_FOR_PARTICIPANTS,
+    addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_PARTICIPANTS,
   },
   {
     name: 'Biospecimens',
@@ -1269,10 +1276,10 @@ export const tabContainers = [
     addFilesRequestVariableKey: 'parent_specimen_id',
 
     addFilesResponseKeys: ['biospecimen_data_files', 'data_file_uuid'],
-    addSelectedFilesQuery: GET_ALL_FILEIDS_BIOSPECIMENS_TAB_FOR_SELECT_ALL,
+    addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_BIOSPECIMENS,
 
     addAllFilesResponseKeys: ['biospecimen_data_files', 'data_file_uuid'],
-    addAllFileQuery: GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART,
+    addAllFileQuery: GET_ALL_FILE_IDS_FOR_BIOSPECIMENS,
   },
   {
     name: 'Files',
@@ -1428,10 +1435,10 @@ export const tabContainers = [
     addFilesRequestVariableKey: 'data_file_uuid',
     
     addFilesResponseKeys: ['fileOverview','data_file_uuid'],
-    addSelectedFilesQuery: GET_ALL_FILEIDS_FILES_TAB_FOR_SELECT_ALL,
+    addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_FILES,
 
     addAllFilesResponseKeys: ['fileOverview', 'data_file_uuid'],
-    addAllFileQuery: GET_ALL_FILEIDS_FROM_FILES_TAB_FOR_ADD_ALL_CART,
+    addAllFileQuery: GET_ALL_FILE_IDS_FOR_FILES,
   },
 ];
 
