@@ -43,7 +43,7 @@ export const downloadCsvString = (csvString, fileName) => {
     URL.revokeObjectURL(url); 
 }
 
-export function convertToCSV(jsonse, comments, keysToInclude, header) {
+export function convertToCSV(jsonse, comments="", keysToInclude, header) {
   const objArray = typeof jsonse !== "object" ? JSON.parse(jsonse) : jsonse;
 
   // Start with the header row
@@ -70,8 +70,11 @@ export function convertToCSV(jsonse, comments, keysToInclude, header) {
       })
       .join(","); // Join all fields for the row with commas
 
+     // Check if comments are not empty
+    const hasValidComments = comments && comments.length > 0;
+
     // Add comments to the first data row
-    if (index === 0 && comments) {
+    if (index === 0 && hasValidComments) {
       let formattedComments = comments.replace(/"/g, '""');
       if (formattedComments.search(/("|,|\n)/g) >= 0) {
         formattedComments = `"${formattedComments}"`;

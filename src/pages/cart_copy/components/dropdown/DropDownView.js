@@ -25,7 +25,7 @@ import {
   GET_MY_CART_DATA_QUERY, //CREATE_MANIFEST,
   // GET_STORE_MANIFEST_DATA_QUERY,
   myFilesPageData,
-  manifestData
+  manifestData as manifestDataConfig
 } from '../../../../bento/fileCentricCartWorkflowData_copy';
 import env from '../../../../utils/env';
 import DownloadFileManifestDialog from './downloadFileManifestDialog';
@@ -77,10 +77,11 @@ const DropDownView = ({
 
   const comment = cartContxt.cart ? cartContxt.cart.comment : ""
 
-  console.log("||| cartContext: ", context)
+  console.log("||| cartContext: ", comment)
   const { selectedRows = [], selectedFileIds = [] } = context;
   const noSelectedRows = useMemo(() => selectedRows.length === 0, [selectedRows]);
   const cartIsEmpty = useMemo(() => filesId.length === 0, [filesId]);
+  const [manifestData, setManifestData] = useState([]);
   const [manifest, setManifest] = useState('');
 
   useQuery(GET_MY_CART_DATA_QUERY, {
@@ -92,10 +93,12 @@ const DropDownView = ({
     onCompleted: ({ filesInList }) => {
         console.log("|| GET_MY_CART_DATA_QUERY: ", filesInList)
 
-        const stringManifest = convertToCSV(filesInList, comment, manifestData.keysToInclude, manifestData.header)
+        // const stringManifest = convertToCSV(filesInList, comment, manifestData.keysToInclude, manifestData.header)
         // console.log("|| stringManifest: ", stringManifest)
 
-        setManifest(stringManifest);
+        console.log("|| GET_MY_CART_DATA_QUERY: ", filesInList);
+
+        setManifestData(filesInList); // Store raw data for manifest generation
     }
   })
   // console.log("|| State manifest: ", manifest)
@@ -110,9 +113,31 @@ const DropDownView = ({
 //     fetchPolicy: 'no-cache',
 // })
 
+
+// Generate manifest when `comment` or `manifestData` changes
+// useEffect(() => {
+//   if (manifestData.length > 0) {
+
+//         // const stringManifest = convertToCSV(filesInList, comment, manifestData.keysToInclude, manifestData.header)
+
+//     const stringManifest = convertToCSV(
+//       manifestData,
+//       comment,
+//       manifestDataConfig.keysToInclude,
+//       manifestDataConfig.header
+//     );
+//     console.log("|| Updated stringManifest: ", stringManifest);
+//     setManifest(stringManifest);
+//   }
+// }, [manifestData, comment]);
+
+
 const [data, setData] = useState(null);
 const [loading, setLoading] = useState(false);
 const [error, setError] = useState(null);
+
+// const getURL = "https://4250bc0d-7018-4a95-bffb-d4dceb96fb4d.mock.pstmn.io/api/files/get-manifest-file-signed-url";
+const getURL = "http://localhost:3000/api/files/get-manifest-file-signed-url";
 
 useEffect(() => {
   const fetchData = async () => {
@@ -120,9 +145,9 @@ useEffect(() => {
 
       setLoading(true);
       try {
-          const response = await axios.post(
-              'https://4250bc0d-7018-4a95-bffb-d4dceb96fb4d.mock.pstmn.io/api/files/get-manifest-file-signed-url',
-              { manifest }, // POST body
+          console.log("|| Getting URL .... manifest: ", manifest)
+          const response = await axios.post( getURL,
+              { "manifest": manifest }, // POST body
               {
                   headers: {
                       'Content-Type': 'application/json',
@@ -141,6 +166,12 @@ useEffect(() => {
 
   fetchData();
 }, [manifest]);
+
+
+// {
+//  "manifestSignedUrl": "..."
+
+// }
 
   console.log("|||| return_data: ", data)
 
@@ -312,16 +343,37 @@ useEffect(() => {
   }, []);
 
   const initiateDownload = async (currLabel) => {
+
     switch (currLabel) {
       case EXPORT_TO_CANCER_GENOMICS_CLOUD: {
-        if (sbgUrl) {
+        const response = await axios.post( getURL,
+          { "manifest": convertToCSV(
+            manifestData,
+            comment,
+            manifestDataConfig.keysToInclude,
+            manifestDataConfig.header
+          ) }, // POST body
+          {
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+          }
+      );
+      
 
-            window.open(`https://cgc.sbgenomics.com/import-redirect/drs/csv?URL=${encodeURIComponent(sbgUrl)}`, '_blank');
+        if (response.data.manifestSignedUrl) {
+
+            window.open(`https://cgc.sbgenomics.com/import-redirect/drs/csv?URL=${encodeURIComponent(response.data.manifestSignedUrl)}`, '_blank');
         }
         break;
       }
       case DOWNLOAD_FILE_MANIFEST: {
-        downloadCsvString(manifest, myFilesPageData.manifestFileName)
+        downloadCsvString(convertToCSV(
+          manifestData,
+          comment,
+          manifestDataConfig.keysToInclude,
+          manifestDataConfig.header
+        ), myFilesPageData.manifestFileName)
         break;
       }
       default: noop(data);
