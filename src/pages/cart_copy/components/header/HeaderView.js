@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Grid,
   withStyles,
-  Divider,
   Button,
   FormControlLabel,
   Radio,
@@ -19,7 +18,6 @@ import ReadMoreSVG from '../readMore';
 import env from '../../../../utils/env';
 import DropDownView from '../dropdown/DropDownView';
 import HeaderThemeprovider from './HeaderTheme';
-import { CartContext } from '@bento-core/cart';
 
 const HeaderView = ({
   classes,
@@ -34,13 +32,8 @@ const HeaderView = ({
   const getReadMe = async (url) => {
     const { data } = await axios.get(url);
 
-    // console.log("|| data: ", data)
     setContent(data);
   };
-
-
-
-  
 
   useEffect(() => {
     getReadMe(env.REACT_APP_FILE_CENTRIC_CART_README);

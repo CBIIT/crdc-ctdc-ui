@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useMemo } from 'react';
+import React, { useEffect, useState, useContext, useMemo, Fragment } from 'react';
 import {
   withStyles,
   MenuItem,
@@ -11,78 +11,55 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import { useQuery } from '@apollo/client';
-import { noop } from 'lodash';
 import axios from 'axios';
-import gql from 'graphql-tag';
+import { noop } from 'lodash';
+import { CartContext } from '@bento-core/cart';
 import { TableContext, ToolTip as Tooltip } from '../../../../bento-core';
 import styles from './DropDownStyle';
-import cgcIcon from '../../assets/cgc.svg';
-import linkIcon from '../../assets/linkIcon.svg';
-import arrowDownPng from '../../assets/arrowDown.png';
-import arrowUpPng from '../../assets/arrowUp.png';
-import { defaultTo } from 'lodash';
 import {
-  GET_MY_CART_DATA_QUERY, //CREATE_MANIFEST,
-  // GET_STORE_MANIFEST_DATA_QUERY,
+  GET_MY_CART_DATA_QUERY,
   myFilesPageData,
   manifestData as manifestDataConfig
 } from '../../../../bento/fileCentricCartWorkflowData_copy';
 import env from '../../../../utils/env';
 import DownloadFileManifestDialog from './downloadFileManifestDialog';
 import { convertToCSV, downloadCsvString } from '../../utils';
-import { CartContext } from '@bento-core/cart';
+
+import cgcIcon from '../../assets/cgc.svg';
+import linkIcon from '../../assets/linkIcon.svg';
+import arrowDownPng from '../../assets/arrowDown.png';
+import arrowUpPng from '../../assets/arrowUp.png';
 
 const LABEL = 'Export and Download';
+const EXPORT_TO_CANCER_GENOMICS_CLOUD = 'Export to Cancer Genomics Cloud';
+const DOWNLOAD_FILE_MANIFEST = 'Download File Manifest';
 
-const {
-  EXPORT_TO_CANCER_GENOMICS_CLOUD,
-  DOWNLOAD_FILE_MANIFEST,
-} = {
-  EXPORT_TO_CANCER_GENOMICS_CLOUD: 'Export to Cancer Genomics Cloud',
-  DOWNLOAD_FILE_MANIFEST: 'Download File Manifest'
+const TOOLTIP_CONTENT = {
+  EMPTY_CART: 'Add some files to the cart to get started.',
+  NO_SELECTED_ROWS: 'Select at least one file from the table below.',
 };
 
-const OPTIONS = [
-  EXPORT_TO_CANCER_GENOMICS_CLOUD,
-];
-
-const getReadMe = async (setContent, url) => {
-  const { data } = await axios.get(url);
-  setContent(data);
-};
-
-const STORE_MANIFEST_QUERY = gql`
-    query storeManifest($manifest: String!) {
-        storeManifest(manifest: $manifest)
-    }
-`;
-
-const emptyCartTooltipContent = "Add some files to the cart to get started.";
-const noSelectedRowsTooltipContent = "Select at least one file from the table below."
-
-const DropDownView = ({
-  classes,
-  filesId = [],
-  allFiles,
-}) => {
+const DropDownView = ({ classes, filesId = [], allFiles }) => {
   const [open, setOpen] = useState(false);
+  const [manifestData, setManifestData] = useState([]);
+  const [manifestString, setManifestString] = useState('');
+
   const anchorRef = React.useRef(null);
 
-  // download all or selected files
-  const tableContext = useContext(TableContext);
-  const { context } = tableContext;
+  // Context
+  const { context: tableContext } = useContext(TableContext);
+  const { selectedRows = [], selectedFileIds = [] } = tableContext;
+  const { context: cartContext } = useContext(CartContext);
+  const { cart: { comment = '' } = {} } = cartContext; // { cart: {comment: "", manifestData: {...}, queryVariables: {data_file_uuid: [...]}, table:{...} }}
 
-  const cartContext = useContext(CartContext);
-  const { context: cartContxt } = cartContext; // { cart: {comment: "", manifestData: {...}, queryVariables: {data_file_uuid: [...]}, table:{...} }}
-
-  const comment = cartContxt.cart ? cartContxt.cart.comment : ""
-
-  console.log("||| cartContext: ", comment)
-  const { selectedRows = [], selectedFileIds = [] } = context;
+  // Derived States
+  const isCartEmpty = useMemo(() => filesId.length === 0, [filesId]);
   const noSelectedRows = useMemo(() => selectedRows.length === 0, [selectedRows]);
-  const cartIsEmpty = useMemo(() => filesId.length === 0, [filesId]);
-  const [manifestData, setManifestData] = useState([]);
-  const [manifest, setManifest] = useState('');
+  const isDropDownDisabled = useMemo(() => (allFiles ? isCartEmpty : noSelectedRows), [
+    allFiles,
+    isCartEmpty,
+    noSelectedRows,
+  ]);
 
   useQuery(GET_MY_CART_DATA_QUERY, {
     variables: {
@@ -90,229 +67,77 @@ const DropDownView = ({
       first: allFiles ? filesId.length : selectedRows.length
     },
     skip: allFiles ? !filesId : !selectedRows,
-    onCompleted: ({ filesInList }) => {
-        console.log("|| GET_MY_CART_DATA_QUERY: ", filesInList)
-
-        // const stringManifest = convertToCSV(filesInList, comment, manifestData.keysToInclude, manifestData.header)
-        // console.log("|| stringManifest: ", stringManifest)
-
-        console.log("|| GET_MY_CART_DATA_QUERY: ", filesInList);
-
-        setManifestData(filesInList); // Store raw data for manifest generation
+    onCompleted: ({ filesInList }) => { 
+      setManifestData(filesInList); // Store raw data for manifest generation
     }
   })
-  // console.log("|| State manifest: ", manifest)
 
-
-//   const {data}= useQuery(STORE_MANIFEST_QUERY, {
-//     variables: {
-//         manifest
-//     },
-//     skip: !manifest,
-//     context: { clientName: 'interopService' },
-//     fetchPolicy: 'no-cache',
-// })
-
-
-// Generate manifest when `comment` or `manifestData` changes
-// useEffect(() => {
-//   if (manifestData.length > 0) {
-
-//         // const stringManifest = convertToCSV(filesInList, comment, manifestData.keysToInclude, manifestData.header)
-
-//     const stringManifest = convertToCSV(
-//       manifestData,
-//       comment,
-//       manifestDataConfig.keysToInclude,
-//       manifestDataConfig.header
-//     );
-//     console.log("|| Updated stringManifest: ", stringManifest);
-//     setManifest(stringManifest);
-//   }
-// }, [manifestData, comment]);
-
-
-const [data, setData] = useState(null);
-const [loading, setLoading] = useState(false);
-const [error, setError] = useState(null);
-
-// const getURL = "https://4250bc0d-7018-4a95-bffb-d4dceb96fb4d.mock.pstmn.io/api/files/get-manifest-file-signed-url";
-const getURL = "http://localhost:3000/api/files/get-manifest-file-signed-url";
-
-useEffect(() => {
-  const fetchData = async () => {
-      if (!manifest) return;
-
-      setLoading(true);
-      try {
-          console.log("|| Getting URL .... manifest: ", manifest)
-          const response = await axios.post( getURL,
-              { "manifest": manifest }, // POST body
-              {
-                  headers: {
-                      'Content-Type': 'application/json',
-                  },
-              }
-          );
-          console.log("|| response.data: ", data)
-
-          setData(response.data);
-      } catch (err) {
-          setError(err);
-      } finally {
-          setLoading(false);
-      }
-  };
-
-  fetchData();
-}, [manifest]);
-
-
-// {
-//  "manifestSignedUrl": "..."
-
-// }
-
-  console.log("|||| return_data: ", data)
-
-  const sbgUrl = useMemo(() => defaultTo(data && data.manifestSignedUrl, ""), [data]);
-
-  const isDropDownDisabled = useMemo(() => {
-    switch (allFiles) {
-        case true:
-            return cartIsEmpty
-        case false:
-            return noSelectedRows
+  // Generate Manifest String
+  useEffect(() => {
+    if (manifestData.length > 0) {
+      const generatedManifest = convertToCSV(manifestData, comment, manifestDataConfig.keysToInclude, manifestDataConfig.header)
+      setManifestString(generatedManifest);
     }
-  }, [allFiles, filesId, noSelectedRows])
+  }, [manifestData, comment]);
 
-  const dropDownTooltipTitle = useMemo(() => {
-    switch (allFiles) {
-        case true:
-            return cartIsEmpty 
-            ? emptyCartTooltipContent
-            : ""
-            break;
-        case false:
-            return cartIsEmpty 
-            ? emptyCartTooltipContent
-            : noSelectedRows 
-            ? noSelectedRowsTooltipContent
-            : ""
-    }
-  }, [allFiles, noSelectedRows, cartIsEmpty])
-
-  const exportToCGCTooltipTitle = useMemo(() => {
-    switch (allFiles) {
-        case true:
-            switch (cartIsEmpty) {
-                case true:
-                   return <>Files in the cart can be easily exported into the<a
-                   style={{ color: '#165F83' }}
-                   target="_blank"
-                   rel="noreferrer"
-                   href="https://www.cancergenomicscloud.org/"
-                 >
-                   <span style={{ textDecoration: 'underline', margin: 0, padding: 0 }}>
-                   {" Cancer Genomics Cloud."}
-                   <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />
-                   </span>
-                 </a></> 
-                case false:
-                    return ""
-                default:
-                    break;
-            }
-            break;
-    
-        case false:
-            switch (noSelectedRows) {
-                case true:
-                   return <>Files in the cart can be easily exported into the<a
-                   style={{ color: '#165F83' }}
-                   target="_blank"
-                   rel="noreferrer"
-                   href="https://www.cancergenomicscloud.org/"
-                 >
-                   <span style={{ textDecoration: 'underline', margin: 0, padding: 0 }}>
-                   {" Cancer Genomics Cloud."}
-                   <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />
-                   </span>
-                 </a></> 
-                case false:
-                    return ""
-                default:
-                    break;
-            }
-            break;
-    }
-    
-  }, [cartIsEmpty, noSelectedRows, allFiles])
-
-  const downloadFileManifestTooltipTitle = useMemo(() => {
-    switch (allFiles) {
-        case true:
-            switch (cartIsEmpty) {
-                case true:
-                   return <>Files in the cart can be downloaded as a file manifest with <a
-                   style={{ color: '#165F83' }}
-                   target="_blank"
-                   rel="noreferrer"
-                   href="https://www.ga4gh.org/product/data-repository-service-drs/"
-                 >
-                   <span style={{ textDecoration: 'underline', margin: 0, padding: 0 }}>
-                   {"DRS"}
-                   <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />
-                   </span>
-                 </a> identifiers and other useful metadata.</> 
-                case false:
-                    return ""
-                default:
-                    break;
-            }
-            break;
-    
-        case false:
-            switch (noSelectedRows) {
-                case true:
-                   return <>Files in the cart can be downloaded as a file manifest with <a
-                   style={{ color: '#165F83' }}
-                   target="_blank"
-                   rel="noreferrer"
-                   href="https://www.ga4gh.org/product/data-repository-service-drs/"
-                 >
-                   <span style={{ textDecoration: 'underline', margin: 0, padding: 0 }}>
-                   {"DRS"}
-                   <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />
-                   </span>
-                 </a> identifiers and other useful metadata.</> 
-                case false:
-                    return ""
-                default:
-                    break;
-            }
-            break;
-    }
-    
-  }, [cartIsEmpty, noSelectedRows, allFiles]) 
-
-  // close dropdown if allFile is false and any row is not selected
   useEffect(() => {
     setOpen(false);
   }, [selectedRows]);
 
-  const handleToggle = () => {
-    setOpen((prevOpen) => !prevOpen);
-  };
+  const dropDownTooltipTitle = useMemo(() => {
+    if (allFiles) return isCartEmpty ? TOOLTIP_CONTENT.EMPTY_CART : '';
 
-  const dropDownIcon = open ? (<img src={arrowUpPng} alt="arrow down icon" />)
-    : (<img src={arrowDownPng} alt="arrow down icon" />);
+    return isCartEmpty 
+            ? TOOLTIP_CONTENT.EMPTY_CART 
+            : noSelectedRows 
+              ? TOOLTIP_CONTENT.NO_SELECTED_ROWS : ""
+  
+  }, [allFiles, isCartEmpty, noSelectedRows]);
 
-  const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
-      return;
+  const exportToCGCTooltipTitle = useMemo(() => {
+    if (isDropDownDisabled) {
+      return (
+        <span>
+          Files in the cart can be easily exported into the{' '}
+          <a
+            href="https://www.cancergenomicscloud.org/"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: '#165F83', textDecoration: 'underline'}}
+          >
+            Cancer Genomics Cloud.
+          </a>
+          <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />
+        </span>
+      );
     }
+    return '';
+  }, [isDropDownDisabled]);
 
+  const downloadFileManifestTooltipTitle = useMemo(() => {
+    if (isDropDownDisabled) {
+      return (
+        <span>
+          Files in the cart can be downloaded as a file manifest with{' '}
+          <a
+            href="https://www.ga4gh.org/product/data-repository-service-drs/"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: '#165F83', textDecoration: 'underline'}}
+          >
+            DRS
+          </a>
+          <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />
+          identifiers and other useful metadata.
+        </span>
+      );
+    }
+    return '';
+  }, [isDropDownDisabled]);
+
+  const handleToggle = () => setOpen((prevOpen) => !prevOpen);
+  const handleClose = (event) => {
+    if (anchorRef.current && anchorRef.current.contains(event.target)) return;
     setOpen(false);
   };
 
@@ -333,50 +158,25 @@ useEffect(() => {
     prevOpen.current = open;
   }, [open]);
 
-  const [label] = useState(LABEL);
-  const [content, setContent] = useState(undefined);
-  // eslint-disable-next-line no-unused-vars
   const [downloadFileManifestDialogOpen, setDownloadFileManifestDialogOpen] = React.useState(false);
 
-  useEffect(() => {
-    getReadMe(setContent, env.REACT_APP_FILE_CENTRIC_CART_README);
-  }, []);
-
-  const initiateDownload = async (currLabel) => {
-
-    switch (currLabel) {
+  const initiateDownload = async (action) => {
+    switch (action) {
       case EXPORT_TO_CANCER_GENOMICS_CLOUD: {
-        const response = await axios.post( getURL,
-          { "manifest": convertToCSV(
-            manifestData,
-            comment,
-            manifestDataConfig.keysToInclude,
-            manifestDataConfig.header
-          ) }, // POST body
-          {
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-          }
-      );
-      
-
-        if (response.data.manifestSignedUrl) {
-
-            window.open(`https://cgc.sbgenomics.com/import-redirect/drs/csv?URL=${encodeURIComponent(response.data.manifestSignedUrl)}`, '_blank');
+        const { data: { manifestSignedUrl = '' } } = await axios.post(env.REACT_APP_FILE_SERVICE_API + 'get-manifest-file-signed-url', 
+          { manifest: manifestString }, 
+          { headers: { 'Content-Type': 'application/json' } }
+        );
+        if (manifestSignedUrl) {
+          window.open(`https://cgc.sbgenomics.com/import-redirect/drs/csv?URL=${encodeURIComponent(manifestSignedUrl)}`, '_blank');
         }
         break;
       }
       case DOWNLOAD_FILE_MANIFEST: {
-        downloadCsvString(convertToCSV(
-          manifestData,
-          comment,
-          manifestDataConfig.keysToInclude,
-          manifestDataConfig.header
-        ), myFilesPageData.manifestFileName)
+        downloadCsvString(manifestString, myFilesPageData.manifestFileName)
         break;
       }
-      default: noop(data);
+      default: noop();
         break;
     }
     noop();
@@ -390,18 +190,9 @@ useEffect(() => {
     setDownloadFileManifestDialogOpen(false);
   };
 
-  const getMenuItem = (type) => {
-    let icon;
-    switch (type) {
-      case EXPORT_TO_CANCER_GENOMICS_CLOUD:
-        icon = cgcIcon;
-        break;
-      default:
-        icon = undefined;
-        break;
-    }
+  const getMenuItem = () => {
     return (
-      <>
+      <Fragment>
         <MenuItem>
           <Tooltip
             arrow
@@ -448,11 +239,9 @@ useEffect(() => {
             </span>
           </Tooltip>
         </MenuItem>
-      </>
+      </Fragment>
     );
   };
-
-  const options = OPTIONS.map((item) => getMenuItem(item));
 
   return (
     <>
@@ -478,13 +267,13 @@ useEffect(() => {
                 startIcon: classes.availableDownloadDropdownBtnStartIcon,
                 endIcon: classes.endIcon,
               }}
-              endIcon={dropDownIcon}
+              endIcon={<img src={open ? arrowUpPng : arrowDownPng} alt="dropdown icon" />}
               ref={anchorRef}
               aria-controls={open ? 'menu-list-grow' : undefined}
               aria-haspopup="true"
               onClick={handleToggle}
             >
-              {label}
+              {LABEL}
             </Button>
           </div>
         </Tooltip>
@@ -512,7 +301,7 @@ useEffect(() => {
                       root: classes.dropdownMenuList,
                     }}
                   >
-                    {options}
+                    {getMenuItem()}
                   </MenuList>
                 </ClickAwayListener>
               </Paper>
