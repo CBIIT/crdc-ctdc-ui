@@ -14,7 +14,7 @@ import {
   myFilesPageData,
 } from '../../../../bento/fileCentricCartWorkflowData_copy';
 import ReadMeDialogComponent from '../../../../components/ReadMeDialog/ReadMe.controller';
-import ReadMoreSVG from '../readMore';
+import ReadMoreSVG from '../../assets/ReadMoreSVG.svg';
 import env from '../../../../utils/env';
 import DropDownView from '../dropdown/DropDownView';
 import HeaderThemeprovider from './HeaderTheme';
@@ -52,30 +52,36 @@ const HeaderView = ({
     <HeaderThemeprovider>
       <div className={classes.cartHeader}>
         <div className={classes.cartHeaderLogo}>
-          <img
+          <div style={{position: 'relative', minWidth: '98px'}}>
+            <img
               className={classes.logo}
               src={myFilesPageData.headerIconSrc}
               alt={myFilesPageData.headerIconAlt}
-          />
-          <span className={classes.pageTitle}>My Files</span>
+            />
+          </div>
+
+          <Grid container alignItems="center" className={classes.headerContent}>
+            <span className={classes.pageTitle}>{'Cart > Selected Files'}</span>
+            <Button
+              onClick={displayReadMeHandler}
+              color="primary"
+              variant="contained"
+              endIcon={<img src={ReadMoreSVG} alt="Read More icon" />}
+              classes={{
+                root: classes.readMeBtnRoot,
+                label: classes.readMeBtnLabel,
+                endIcon: classes.readmeEndIcon
+              }}
+            >
+              README
+            </Button>
+          </Grid>
+          
         </div>
-        <div className={classes.readMeBtn}>
-          <Button
-            onClick={displayReadMeHandler}
-            color="primary"
-            variant="contained"
-            endIcon={<ReadMoreSVG />}
-            classes={{
-              root: classes.readMeBtnRoot,
-              label: classes.readMeBtnLabel,
-            }}
-          >
-            README
-          </Button>
-        </div>
+        
       </div>
 
-      <Grid xs={12} md={12} lg={12} className={classes.actionBtn}>
+      <Grid container alignItems="center" justifyContent="flex-end" xs={12} md={12} lg={12} className={classes.actionBtn}>
         <FormControl>
           <RadioGroup
             row

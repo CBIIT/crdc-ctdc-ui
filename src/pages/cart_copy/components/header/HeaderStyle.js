@@ -1,31 +1,54 @@
+const PRIMARY_BLUE_COLOR = '#067CA5';
+const SECONDARY_GREEN_COLOR = '#08A383';
+const DARKER_GREEN_COLOR = '#0B7867';
+
+
 export default () => ({
   cartHeader: {
-    marginBottom: '14px',
     width: '100%',
-    height: '85px',
-    borderBottom: '3px solid #686F7F',
+    height: '77px',
+    borderBottom: '10px solid #067CA5',
   },
   cartHeaderLogo: {
-    float: 'left',
+    position: 'relative',
     display: 'flex',
-    height: '100px',
-    lineHeight: '100px',
-    fontSize: '25px',
-    color: '#C25700',
-    fontFamily: 'Raleway',
-    fontWeight: '500',
-    width: '215px',
+    lineHeight: '31.47px',
+    fontSize: '26px',
+    color: SECONDARY_GREEN_COLOR,
+    fontFamily: 'Inter',
+    fontWeight: '600',
+    letterSpacing: '-0.02em',
+    textAlign: 'left',
+    marginRight: '0px',
+
+    // border: '1px solid green',
+
+  },
+  headerContent: {
+    display: 'flex',
+    alignItems: 'center',
+    paddingTop: '10px',
+    // Add responsiveness for small screens
+    '@media (max-width: 717px)': {
+      paddingTop: '0px',
+    },
   },
   pageTitle: {
     maginLeft: '10px',
+    // border: '1px solid blue',
+    whiteSpace: 'nowrap',
+    marginRight: '41px'
   },
   container: {
     padding: "30px 30px",
   },
   logo: {
-    width: '85px',
+    position: 'absolute',
+    width: '98px',
     marginRight: '15px',
     zIndex: '100',
+    top: '-15px',
+    // border: '1px solid black',
   },
   header: {
 
@@ -38,32 +61,39 @@ export default () => ({
     zIndex: '0',
   },
   readMeBtn: {
-    paddingTop: '35px',
-    marginLeft: '5px',
   },
   readMeBtnRoot: {
     boxShadow: 'none',
-    background: '#3C597C',
-    borderRadius: '8px',
-    border: '1.25px solid #0B3556',
-    height: '38px',
+    background: DARKER_GREEN_COLOR,
+    borderRadius: '10px',
+    height: '46px',
     '&:hover': {
-      backgroundColor: '#3C597C',
+      backgroundColor: DARKER_GREEN_COLOR,
       boxShadow: 'none',
     },
+    padding: '11px 20px 11px 22px'
   },
   readMeBtnLabel: {
     color: '#ffffff',
-    fontFamily: 'Lato',
-    fontSize: '16px',
-    fontWeight: 400,
+    fontFamily: 'Roboto',
+    fontSize: '14px',
+    fontWeight: 500,
     fontStyle: 'normal',
+    textAlign: 'left',
+    lineHeight: '16px',
+    // border:' 1px solid blue'
+  },
+  readmeEndIcon: {
+    marginLeft: '70px',
   },
   actionContainer: {
     padding: '0px 40px',
   },
   actionBtn: {
     textAlign: 'right',
-    paddingRight: '80px',
+    paddingRight: '29px',
+    marginBottom: '10px',
+    height: '65px',
   },
 });
+

@@ -50,7 +50,6 @@ const CartView = (props) => {
 
   return (
     <Grid container className={classes.myFilesContainer}>
-      <HeaderView filesId={filesId} />
       
       <Grid item xs={12}>
         <div className={classes.myFilesWrapper}>
@@ -59,6 +58,8 @@ const CartView = (props) => {
             queryVariables={variables}
             totalRowCount={filesId.length}
           >
+            <HeaderView filesId={filesId} />
+
             <TableView
               initState={initTblState}
               checkedItemReset={isUpdated}

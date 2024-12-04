@@ -36,6 +36,7 @@ export const myFilesPageData = {
   tooltipMessage: 'To access and analyze files: select and remove unwanted files,  click the “Download Manifest” button, and upload the resulting Manifest file to your Seven Bridges Genomics account.',
   errorMessage: 'An error has occurred in loading CART',
   layout: [
+    /*
     {
       container: 'outer_layout',
       size: 'xl',
@@ -75,6 +76,7 @@ export const myFilesPageData = {
         }
       ]
     },
+    */
     {
       container: 'paginatedTable',
       paginatedTable: true,
@@ -97,7 +99,7 @@ export const myFilesPageData = {
   mainTitle: 'My Files',
   subTitle: '',
   downButtonText: 'DOWNLOAD MANIFEST',
-  headerIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/master/icdc/images/svgs/Icon-MyCases.svg',
+  headerIconSrc: cartPageIcon,
   headerIconAlt: 'Bento MyFiles header logo',
   // manifestFileName: 'ICDC File Manifest',
   tooltipIcon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Tooltip.SpeechBubble.svg',
@@ -326,15 +328,15 @@ export const table = {
   objectKey: 'filesInList',
   extendedViewConfig: {
     pagination: true,
-    manageViewColumns: {
-      title: "View Columns"
-    },
-    download: {
+    manageViewColumns: false, //{ title: "View Columns" },
+    download: false,
+    
+    /*{
       downloadCsv: "Download Table Contents As CSV",
       downloadFileName: "CTDC_My_Files_download",
       // customDownload: true,
       // ...customMyFilesTabDownloadCSV,
-    },
+    }, */
   },
   columns: [
     {

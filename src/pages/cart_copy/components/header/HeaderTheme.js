@@ -1,5 +1,6 @@
 import React from 'react';
 import { MuiThemeProvider } from '@material-ui/core';
+import { DROP_DOWN_WIDTH } from '../dropdown/DropDownStyle';
 
 export default ({
     children,
@@ -19,19 +20,20 @@ export default ({
       MuiFormControlLabel: {
         label: {
           color: '#525252',
-          fontFamily: 'Lato',
+          fontFamily: 'Roboto',
           fontSize: '16px',
           fontWeight: '400',
+          lineHeight: '16px',
         },
         root: {
           "&.selectFilesBtn":{
-              marginRight: '30px',
+              marginRight: '51px',
           }
         }
       },
       MuiList: {
         root: {
-            width: '250px',
+            width: DROP_DOWN_WIDTH,
         }
       },
       MuiListItem: {
@@ -56,6 +58,24 @@ export default ({
           },
         },
       },
+      MuiButton: {
+        root: {
+          padding: '0px'
+        },
+        text: {
+          padding: '0px'
+        }
+      },
+      MuiMenuItem: {
+        root: {
+          border: '1px solid #004D73'
+        }
+      },
+      MuiPopper: {
+        root: {
+          // border: '1px solid green'
+        }
+      }
     }
   };
   return (

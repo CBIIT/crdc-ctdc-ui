@@ -17,9 +17,10 @@ export default () => ({
     marginRight: 'auto',
     paddingBottom: '45px',
     background: 'white',
-    paddingRight: '3%',
-    paddingLeft: '3%',
+    paddingRight: '53px',//'3%',
+    paddingLeft: '53px',//'3%',
     maxWidth:'1440px',
+    // minWidth: ''
   },
   customTooltip: {
     border: '#03A383 1px solid',

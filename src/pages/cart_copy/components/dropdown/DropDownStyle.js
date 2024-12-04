@@ -1,4 +1,6 @@
-import zIndex from "@material-ui/core/styles/zIndex";
+export const DROP_DOWN_WIDTH = '250px';
+const BLUE = '#004D73';
+const WHITE = '#FFFFFF'
 
 export default () => ({
   dropDownBtnContainer : {
@@ -6,45 +8,49 @@ export default () => ({
   },
   disableDropDownBtn: {
     opacity: '0.5',
-    backgroundColor: '#F2F2F2',
     cursor: 'not-allowed',
   },
   availableDownloadDropdownBtnIsOpen: {
-    backgroundColor: '#F2F2F2',
-    borderTop: '1px solid #155F97',
-    borderRight: '1px solid #155F97',
-    borderLeft: '1px solid #155F97',
-    borderTopRightRadius: '8px',
-    borderTopLeftRadius: '8px',
+    backgroundColor: BLUE,
+    borderTop: `1px solid ${BLUE}`,
+    borderRight: `1px solid ${BLUE}`,
+    borderLeft: `1px solid ${BLUE}`,
+    borderTopRightRadius: '10px',
+    borderTopLeftRadius: '10px',
     borderBottomRightRadius: '0px',
-    width: '250px',
     borderBottomLeftRadius: '0px',
+
+    width: DROP_DOWN_WIDTH,
     boxShadow: 'none',
+    textWrap: 'nowrap',
     '&:hover': {
-      backgroundColor: '#F2F2F2',
+      backgroundColor: BLUE,
       boxShadow: 'none',
     },
   },
   availableDownloadDropdownBtn: {
-    backgroundColor: '#F2F2F2',
-    border: '1px solid #155F97',
-    borderRadius: '8px',
+    backgroundColor: BLUE,
+    border: `1px solid ${BLUE}`,
+    borderRadius: '10px',
+
+    width: DROP_DOWN_WIDTH,
     boxShadow: 'none',
-    width: '250px',
     textWrap: 'nowrap',
     '&:hover': {
-      backgroundColor: '#F2F2F2',
+      backgroundColor: BLUE,
       boxShadow: 'none',
     },
   },
   availableDownloadDropdownBtnLabel: {
-    color: '#09557B',
+    height: '46px',
+    color: WHITE,
     fontStyle: 'normal',
-    fontWeight: 400,
-    fontSize: '15px',
-    fontFamily: 'Lato',
-    textTransform: 'capitalize',
-    paddingRight: '6px',
+    fontWeight: 500,
+    fontSize: '14px',
+    fontFamily: 'Roboto',
+    textTransform: 'uppercase',
+    lineHeight: '14px',
+    padding: '16px 20px',
   },
   availableDownloadBtn: {
     backgroundColor: '#3C597C !important',
@@ -56,27 +62,33 @@ export default () => ({
   availableDownloadDropdownBtnStartIcon: {
     margin: '0px',
   },
+
+  // ------------------------ Drop Down Box ---------------------
   dropdownMenuList: {
     paddingTop: '0px',
     paddingBottom: '0px',
-    backgroundColor: '#0d71a3',
-    color: '#ffffff',
-    borderBottomRightRadius: '8px',
-    borderBottomLeftRadius: '8px',
-    border: '2px solid #0d71a3',
+
+    // backgroundColor: WHITE,
+
+    borderBottomRightRadius: '10px',
+    borderBottomLeftRadius: '10px',
+    // border: `2px solid ${BLUE}`,
+    textTransform: 'uppercase'
   },
   dropdownPaper: {
-    maxWidth: '250px',
-    borderBottomRightRadius: '8px',
-    borderBottomLeftRadius: '8px',
-    zIndex: '100',
+    maxWidth: DROP_DOWN_WIDTH,
+    borderBottomRightRadius: '10px',
+    borderBottomLeftRadius: '10px',
+    // border: `2px solid ${BLUE}`,
+
+    zIndex: 100,
   },
   downloadFileManifestBtn: {
     backgroundColor: '#3C597C',
     borderRadius: '8px',
     border: '1px solid #3C597C',
     boxShadow: 'none',
-    width: '250px',
+    width: DROP_DOWN_WIDTH,
     fontFamily: 'Lato',
     fontStyle: 'normal',
     // maxWidth: '287px',
@@ -90,8 +102,8 @@ export default () => ({
     },
   },
   endIcon: {
-    marginRight: '12px',
-    marginLeft: '30px',
+    // marginRight: '12px',
+    marginLeft: '21px',
   },
   downloadFileManifestTooltipWrapper: {
     // display: 'flex',
@@ -106,12 +118,17 @@ export default () => ({
     marginLeft: '7px',
   },
   cgcLabal: {
+    fontFamily: 'Roboto',
+    fontSize: '14px',
+    lineHeight: '14px',
+    fontWeight: 500,
+    textAlign: 'left',
+
     float: 'left',
     width: '180px',
     textWrap: 'wrap',
-    lineHeight: '18px',
-    fontSize: '15px',
-    fontFamily: 'Lato',
+    color: BLUE,
+    // border: '1px solid black',
   },
   linkIcon: {
     width: '12px',
@@ -119,12 +136,19 @@ export default () => ({
     marginLeft: '3px',
   },
   fileManifestLabal: {
+    fontFamily: 'Roboto',
+    fontSize: '14px',
+    lineHeight: '14px',
+    fontWeight: 500,
+    textAlign: 'left',
+
     float: 'left',
     width: '190px',
     height: '35px',
-    lineHeight: '35px',
-    fontSize: '15px',
-    fontFamily: 'Lato',
+    textWrap: 'wrap',
+    color: BLUE,
+    // border: '1px solid black'
+
   },
   downloadFileIcon: {
     width: '20px',

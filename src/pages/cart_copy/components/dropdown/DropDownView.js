@@ -25,10 +25,12 @@ import env from '../../../../utils/env';
 import DownloadFileManifestDialog from './downloadFileManifestDialog';
 import { convertToCSV, downloadCsvString } from '../../utils';
 
-import cgcIcon from '../../assets/cgc.svg';
+import cgcIcon from '../../assets/exportToCancerGenomicsCloudIcon.svg';
+import dfmIcon from '../../assets/downloadFileManifestIcon.svg';
+
 import linkIcon from '../../assets/linkIcon.svg';
-import arrowDownPng from '../../assets/arrowDown.png';
-import arrowUpPng from '../../assets/arrowUp.png';
+import arrowDownSvg from '../../assets/arrowDown.svg';
+import arrowUpSvg from '../../assets/arrowUp.svg';
 
 const LABEL = 'Export and Download';
 const EXPORT_TO_CANCER_GENOMICS_CLOUD = 'Export to Cancer Genomics Cloud';
@@ -229,13 +231,9 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
                 initiateDownload(DOWNLOAD_FILE_MANIFEST)
             }}>
               <span className={classes.fileManifestLabal}>
-                Download File Manifest
+                {DOWNLOAD_FILE_MANIFEST}
               </span>
-              <img
-                className={classes.downloadFileIcon}
-                src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/DMN_title_bar_download_icon.svg"
-                alt="icon"
-              />
+              <img className={classes.downloadFileIcon} src={dfmIcon} alt="icon"/>
             </span>
           </Tooltip>
         </MenuItem>
@@ -263,11 +261,11 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
                   [classes.disableDropDownBtn]: isDropDownDisabled
                 }),
                 label: classes.availableDownloadDropdownBtnLabel,
-                contained: classes.availableDownloadBtnContained,
+                // contained: classes.availableDownloadBtnContained,
                 startIcon: classes.availableDownloadDropdownBtnStartIcon,
                 endIcon: classes.endIcon,
               }}
-              endIcon={<img src={open ? arrowUpPng : arrowDownPng} alt="dropdown icon" />}
+              endIcon={<img src={open ? arrowUpSvg : arrowDownSvg} alt="dropdown icon" />}
               ref={anchorRef}
               aria-controls={open ? 'menu-list-grow' : undefined}
               aria-haspopup="true"
@@ -283,6 +281,7 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
           role={undefined}
           transition
           disablePortal
+          style={{zIndex: 99999}}
         >
           {({ TransitionProps, placement }) => (
             <Grow
