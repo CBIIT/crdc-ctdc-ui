@@ -42,9 +42,6 @@ export default ({
           color: '#fff',
           overflow: 'auto',
           whiteSpace: 'wrap',
-          '&.donwloadManiFestBtn': {
-            borderTop: '1px solid #fff',
-          },
           '&:hover': {
             background: '#1A3D69',
           }
@@ -68,14 +65,20 @@ export default ({
       },
       MuiMenuItem: {
         root: {
-          border: '1px solid #004D73'
+          border: '2px solid #004D73',
+          borderTop: '0px',
+
+          '&.downloadManifestBtn': {
+            borderTop: '0px',
+            borderBottomRightRadius: '10px',
+            borderBottomLeftRadius: '10px',
+          },
+          '&:hover': {
+            backgroundColor: '#C4DEEA',
+          },
         }
+        
       },
-      MuiPopper: {
-        root: {
-          // border: '1px solid green'
-        }
-      }
     }
   };
   return (

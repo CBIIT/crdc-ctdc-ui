@@ -120,17 +120,19 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
     if (isDropDownDisabled) {
       return (
         <span>
-          Files in the cart can be downloaded as a file manifest with{' '}
+          To access and analyze files: select and remove unwanted files,
+          click the “Download File Manifest” button, and upload the
+          resulting Manifest file to your{' '}
           <a
-            href="https://www.ga4gh.org/product/data-repository-service-drs/"
+            href="https://cgc-accounts.sbgenomics.com/auth/login?next=https%3A%2F%2Fcgc-accounts.sbgenomics.com%2F"
             target="_blank"
             rel="noreferrer"
             style={{ color: '#165F83', textDecoration: 'underline'}}
           >
-            DRS
+            Seven Bridges Genomics
           </a>
           <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />
-          identifiers and other useful metadata.
+          account.
         </span>
       );
     }
@@ -201,6 +203,7 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
             interactive
             title={exportToCGCTooltipTitle}
             placement="right"
+            classes={{tooltip: classes.menuItemTooltip, arrow: classes.arrow}} 
           >
           <span style={{ cursor: isDropDownDisabled && 'not-allowed'}} onClick={() => {
             if (isDropDownDisabled) {
@@ -220,9 +223,9 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
           <Tooltip
             arrow
             interactive
-            maxWidth={250}
             title={downloadFileManifestTooltipTitle}
             placement="right"
+            classes={{tooltip: classes.menuItemTooltip, arrow: classes.arrow}} 
           >
             <span onClick={() => {
                 if(isDropDownDisabled) {
@@ -247,9 +250,9 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
         {' '}
         <Tooltip
           arrow
-          maxWidth={200}
           placement="left"
           title={dropDownTooltipTitle}
+          classes={{ tooltip: classes.customTooltip, arrow: classes.arrow }} 
         >
           <div>
             <Button
@@ -283,29 +286,20 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
           disablePortal
           style={{zIndex: 99999}}
         >
-          {({ TransitionProps, placement }) => (
-            <Grow
-              {...TransitionProps}
-              style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
-            >
-              <Paper
-                className={classes.dropdownPaper}
+          <Paper className={classes.dropdownPaper}>
+            <ClickAwayListener onClickAway={handleClose}>
+              <MenuList
+                autoFocusItem={open}
+                id="menu-list-grow"
+                onKeyDown={handleListKeyDown}
+                classes={{
+                  root: classes.dropdownMenuList,
+                }}
               >
-                <ClickAwayListener onClickAway={handleClose}>
-                  <MenuList
-                    autoFocusItem={open}
-                    id="menu-list-grow"
-                    onKeyDown={handleListKeyDown}
-                    classes={{
-                      root: classes.dropdownMenuList,
-                    }}
-                  >
-                    {getMenuItem()}
-                  </MenuList>
-                </ClickAwayListener>
-              </Paper>
-            </Grow>
-          )}
+                {getMenuItem()}
+              </MenuList>
+            </ClickAwayListener>
+          </Paper>
         </Popper>
       </div>
       <DownloadFileManifestDialog

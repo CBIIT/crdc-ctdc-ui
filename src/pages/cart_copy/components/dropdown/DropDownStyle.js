@@ -1,10 +1,26 @@
 export const DROP_DOWN_WIDTH = '250px';
 const BLUE = '#004D73';
 const WHITE = '#FFFFFF'
+const EXPORT_AND_DOWNLOAD_BTN_HEIGHT = '46px';
+const tooltipStyle = {
+  backgroundColor: '#FFFFFF !important',
+  color:'#000000',
+  border: '2px solid #B1B1B1 !important',
+  minWidth: '282px',
+  maxWidth: '282px',
+
+  fontFamily: 'Nunito',
+  fontSize: '14px',
+  fontWeight: '500',
+  lineHeight: '16px',
+  textAlign: 'left',
+  padding: '12px',
+}
 
 export default () => ({
   dropDownBtnContainer : {
     float: 'right',
+    maxHeight: EXPORT_AND_DOWNLOAD_BTN_HEIGHT
   },
   disableDropDownBtn: {
     opacity: '0.5',
@@ -42,7 +58,7 @@ export default () => ({
     },
   },
   availableDownloadDropdownBtnLabel: {
-    height: '46px',
+    height: EXPORT_AND_DOWNLOAD_BTN_HEIGHT,
     color: WHITE,
     fontStyle: 'normal',
     fontWeight: 500,
@@ -66,40 +82,16 @@ export default () => ({
   // ------------------------ Drop Down Box ---------------------
   dropdownMenuList: {
     paddingTop: '0px',
+    marginTop: '-1px',
     paddingBottom: '0px',
-
-    // backgroundColor: WHITE,
-
-    borderBottomRightRadius: '10px',
-    borderBottomLeftRadius: '10px',
-    // border: `2px solid ${BLUE}`,
     textTransform: 'uppercase'
   },
   dropdownPaper: {
     maxWidth: DROP_DOWN_WIDTH,
+    borderRadius: '0px',
     borderBottomRightRadius: '10px',
     borderBottomLeftRadius: '10px',
-    // border: `2px solid ${BLUE}`,
-
     zIndex: 100,
-  },
-  downloadFileManifestBtn: {
-    backgroundColor: '#3C597C',
-    borderRadius: '8px',
-    border: '1px solid #3C597C',
-    boxShadow: 'none',
-    width: DROP_DOWN_WIDTH,
-    fontFamily: 'Lato',
-    fontStyle: 'normal',
-    // maxWidth: '287px',
-    fontWeight: 400,
-    fontSize: '16px',
-    textTransform: 'none',
-    color: '#fff',
-    '&:hover': {
-      backgroundColor: '#1A3D69',
-      boxShadow: 'none',
-    },
   },
   endIcon: {
     // marginRight: '12px',
@@ -112,6 +104,20 @@ export default () => ({
   downloadFileManifestTooltip: {
     // display: 'flex',
     gap: '8px'
+  },
+  menuItemTooltip: {
+    ...tooltipStyle,
+
+    left: '-22px'
+  },
+  customTooltip: {
+    ...tooltipStyle
+  },
+  arrow: {
+    color: (props) => props.arrowColor || '#FFFFFF',
+    '&::before': {
+      border: '2px solid #B1B1B1',
+    },
   },
   cgcIcon: {
     marginTop: '10px',
@@ -128,12 +134,14 @@ export default () => ({
     width: '180px',
     textWrap: 'wrap',
     color: BLUE,
+    paddingTop: '5px',
     // border: '1px solid black',
   },
   linkIcon: {
     width: '12px',
     height: '12px',
-    marginLeft: '3px',
+    marginLeft: '2px',
+    marginBottom: '-2px',
   },
   fileManifestLabal: {
     fontFamily: 'Roboto',
@@ -143,12 +151,12 @@ export default () => ({
     textAlign: 'left',
 
     float: 'left',
-    width: '190px',
+    width: '105px',
     height: '35px',
     textWrap: 'wrap',
     color: BLUE,
-    // border: '1px solid black'
-
+    marginRight: '89px',
+    paddingTop: '5px',
   },
   downloadFileIcon: {
     width: '20px',
