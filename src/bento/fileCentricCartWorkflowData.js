@@ -63,7 +63,7 @@ export const manifestData = {
     'data_file_name',   // ('name' - 1/4 required fields)
     'drs_uri',          // ('drs_uri' - 2/4 required fields)
     'study_short_name', // ('study_short_name' - 3/4 required fields)
-    'subject_id',       // ('Participant ID' - 4/4 required fields)
+    'subject_id',       // ('participant_id' - 4/4 required fields)
 
     'data_file_uuid',
     'data_file_checksum_value',
@@ -91,7 +91,7 @@ export const manifestData = {
     'name',
     'drs_uri',
     'study_short_name',
-    'Participant ID', // subject_id
+    'participant_id',
 
     'File ID',
     'Md5sum',
