@@ -50,7 +50,7 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
 
   // Context
   const { context: tableContext } = useContext(TableContext);
-  const { selectedRows = [], selectedFileIds = [] } = tableContext;
+  const { selectedRows = [], } = tableContext;
   const { context: cartContext } = useContext(CartContext);
   const { cart: { comment = '' } = {} } = cartContext; // { cart: {comment: "", manifestData: {...}, queryVariables: {data_file_uuid: [...]}, table:{...} }}
 
@@ -187,9 +187,8 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
     noop();
   };
 
-  const handleDownloadFileManifestDialogOpen = () => {
-    setDownloadFileManifestDialogOpen(true);
-  };
+  // Handler for opening a dialog that allows the user to enter a comment using a textarea
+  // const handleDownloadFileManifestDialogOpen = () => setDownloadFileManifestDialogOpen(true);
 
   const handleDownloadFileManifestDialogClose = () => {
     setDownloadFileManifestDialogOpen(false);
