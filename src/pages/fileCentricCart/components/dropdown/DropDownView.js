@@ -19,7 +19,8 @@ import styles from './DropDownStyle';
 import {
   GET_MY_CART_DATA_QUERY,
   myFilesPageData,
-  manifestData as manifestDataConfig
+  manifestData as manifestDataConfig,
+  getManifestFileSignedUrlEndPoint
 } from '../../../../bento/fileCentricCartWorkflowData';
 import env from '../../../../utils/env';
 import DownloadFileManifestDialog from './downloadFileManifestDialog';
@@ -45,6 +46,7 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
   const [open, setOpen] = useState(false);
   const [manifestData, setManifestData] = useState([]);
   const [manifestString, setManifestString] = useState('');
+  const [downloadFileManifestDialogOpen, setDownloadFileManifestDialogOpen] = React.useState(false);
 
   const anchorRef = React.useRef(null);
 
@@ -154,37 +156,64 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
 
   // return focus to the button when we transitioned from !open -> open
   const prevOpen = React.useRef(open);
-  React.useEffect(() => {
+  useEffect(() => {
     if (prevOpen.current === true && open === false) {
       anchorRef.current.focus();
     }
-
     prevOpen.current = open;
   }, [open]);
 
-  const [downloadFileManifestDialogOpen, setDownloadFileManifestDialogOpen] = React.useState(false);
 
-  const initiateDownload = async (action) => {
-    switch (action) {
-      case EXPORT_TO_CANCER_GENOMICS_CLOUD: {
-        const { data: { manifestSignedUrl = '' } } = await axios.post(env.REACT_APP_FILE_SERVICE_API + 'get-manifest-file-signed-url', 
-          { manifest: manifestString }, 
-          { headers: { 'Content-Type': 'application/json' } }
-        );
-        if (manifestSignedUrl) {
-          window.open(`https://cgc.sbgenomics.com/import-redirect/drs/csv?URL=${encodeURIComponent(manifestSignedUrl)}`, '_blank');
-        }
-        break;
-      }
-      case DOWNLOAD_FILE_MANIFEST: {
-        const manifestFileNam = createFileName(myFilesPageData.manifestFileName, '.csv')
-        downloadCsvString(manifestString, manifestFileNam)
-        break;
-      }
-      default: noop();
-        break;
+  // Fetch Manifest Signed URL
+  const fetchManifestSignedUrl = async () => {
+    const url = env.REACT_APP_FILE_SERVICE_API + getManifestFileSignedUrlEndPoint;
+    const data = { manifest: manifestString };
+    const headers = { 'Content-Type': 'application/json' };
+  
+    try {
+      const response = await axios.post(url, data, { headers });
+      return response.data.manifestSignedUrl || '';
+    } catch (error) {
+      console.error('Error fetching manifest signed URL:', error);
+      return '';
     }
-    noop();
+  };
+  
+  const initiateDownload = async (action) => {
+    try {
+      switch (action) {
+        case EXPORT_TO_CANCER_GENOMICS_CLOUD: {
+          const manifestSignedUrl = await fetchManifestSignedUrl();
+  
+          if (manifestSignedUrl) {
+            window.open(
+              `https://cgc.sbgenomics.com/import-redirect/drs/csv?URL=${encodeURIComponent(manifestSignedUrl)}`,
+              '_blank'
+            );
+          } else {
+            console.error('Failed to retrieve manifest signed URL.');
+          }
+          break;
+        }
+  
+        case DOWNLOAD_FILE_MANIFEST: {
+          if (!manifestString) {
+            console.error('Downloading File Manifest failed. Manifest string is empty.');
+            break;
+          }
+  
+          const manifestFileName = createFileName(myFilesPageData.manifestFileName, '.csv');
+          downloadCsvString(manifestString, manifestFileName);
+          break;
+        }
+  
+        default:
+          noop();
+          break;
+      }
+    } catch (error) {
+      console.error('Error initiating download:', error);
+    }
   };
 
   // Handler for opening a dialog that allows the user to enter a comment using a textarea
