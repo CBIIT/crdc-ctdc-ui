@@ -12,7 +12,7 @@ import axios from 'axios';
 import styles from './HeaderStyle';
 import {
   myFilesPageData,
-} from '../../../../bento/fileCentricCartWorkflowData_copy';
+} from '../../../../bento/fileCentricCartWorkflowData';
 import ReadMeDialogComponent from '../../../../components/ReadMeDialog/ReadMe.controller';
 import ReadMoreSVG from '../../assets/ReadMoreSVG.svg';
 import env from '../../../../utils/env';

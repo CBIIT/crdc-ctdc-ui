@@ -36,7 +36,6 @@ export const myFilesPageData = {
   tooltipMessage: 'To access and analyze files: select and remove unwanted files,  click the “Download Manifest” button, and upload the resulting Manifest file to your Seven Bridges Genomics account.',
   errorMessage: 'An error has occurred in loading CART',
   layout: [
-    /*
     {
       container: 'outer_layout',
       size: 'xl',
@@ -60,119 +59,47 @@ export const myFilesPageData = {
         },
       ],
     },
-    {
-      container: 'buttons',
-      size: 'xl',
-      clsName: 'container_header',
-      items: [
-        {
-          title: 'Download File Manifest',
-          clsName: 'download_manifest',
-          type: types.BUTTON,
-          role: btnTypes.DOWNLOAD_MANIFEST,
-          btnType: btnTypes.DOWNLOAD_MANIFEST,
-          usePopup: false,
-          tooltipCofig: tooltipContent
-        }
-      ]
-    },
-    */
-    {
-      container: 'paginatedTable',
-      paginatedTable: true,
-    },
-    {
-      container: 'buttons',
-      size: 'xl',
-      clsName: 'container_footer',
-      items: [
-        {
-          clsName: 'manifest_comments',
-          type: types.TEXT_INPUT,
-          placeholder: 'User Comment',
-        }
-      ],
-    },
-  ],
-
-
-  mainTitle: 'My Files',
-  subTitle: '',
-  downButtonText: 'DOWNLOAD MANIFEST',
-  headerIconSrc: cartPageIcon,
-  headerIconAlt: 'Bento MyFiles header logo',
-  // manifestFileName: 'ICDC File Manifest',
-  tooltipIcon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Tooltip.SpeechBubble.svg',
-  // tooltipAlt: 'tooltip icon',
-  downloadBtnTooltipMessage: 'To access and analyze files: select and remove unwanted files,  click the “Download File Manifest” button, and upload the resulting Manifest file to your Seven Bridges Genomics account.',
-  userCommentsTooltipMessage: 'If you wish to annotate the file manifest with comments regarding the files included, enter them here. Comments will be saved as part of the file manifest.',
-  textareaPlaceholder: 'User Comments',
-  // errorMessage: 'An error has occurred in loading CART',
-  popUpWindow: {
-    showNumberOfFileBeRemoved: true,
-    messagePart1: 'Remove ',
-    messagePart2: 'All files (',
-    messagePart3: ') ',
-    messagePart4: 'From Cart',
-    okButtonText: 'Ok',
-    cancelButtonText: 'Cancel',
+  
+  {
+    container: 'paginatedTable',
+    paginatedTable: true,
   },
+  {
+    container: 'buttons',
+    size: 'xl',
+    clsName: 'container_footer',
+    items: [{
+      clsName: 'manifest_comments',
+      type: types.CUSTOM_ELEM,
+      customViewElem: CustomFooterMessage,
+      text: 'To access and analyze files, select and remove unwanted files, click the "Download File Manifest" button, and upload the resulting manifest file to your Velsera Seven Bridges Cancer Genomics Cloud account. [Note "Velsera Seven Bridges Cancer Genomics Cloud account" should be hyperlinked to https://cgc-accounts.sbgenomics.com/auth/login?next=https%3A%2F%2Fcgc-accounts.sbgenomics.com%2F with external icon ]',
 
+    },{
+      clsName: 'manifest_comments',
+      type: types.TEXT_INPUT,
+      placeholder: 'User Comment',
+    }],
+  },
+  {
+  container: 'buttons',
+  size: 'xl',
+  clsName: 'container_header',
+  items: [
+    {
+      title: 'Download File Manifest',
+      clsName: 'download_manifest',
+      type: types.BUTTON,
+      role: btnTypes.DOWNLOAD_MANIFEST,
+      btnType: btnTypes.DOWNLOAD_MANIFEST,
+      usePopup: false,
+      tooltipCofig: tooltipContent
+    }],
+},]
 };
  
 export const manifestData = {
-  keysToInclude: [
-    'data_file_name', 
-    'drs_uri', // drs_uri was data_file_uuid
-    'data_file_uuid',
-    'data_file_checksum_value',
-    'subject_id',
-    'parent_specimen_id',
-    'ctep_disease_term',
-    'meddra_disease_code',
-    'primary_disease_site',
-    'histology',
-    'stage_of_disease',
-    'tumor_grade',
-    'age_at_enrollment',
-    'sex',
-    'reported_gender',
-    'race',
-    'ethnicity',
-    'carcinogen_exposure',
-    'targeted_therapy',
-    'parent_specimen_id',
-    'anatomical_collection_site',
-    'tissue_category',
-    'assessment_timepoint',
-    // 'User_Comment'
-  ],
-  header: [
-    'name',
-    'drs_uri',
-    'File ID',
-    'Md5sum',
-    'Participant ID',
-    'Biospecimen ID',
-    'Diagnosis',
-    'MedDRA Disease Code',
-    'Primary Site',
-    'Histology',
-    'Stage of Disease',
-    'Tumor Grade',
-    'Age',
-    'Sex',
-    'Gender',
-    'Race',
-    'Ethnicity',
-    'Carcinogen Exposure',
-    'Targeted Therapy',
-    'Parent Biospecimen ID',
-    'Anatomical Collection Site',
-    'Tissue Category',
-    'Collection Timepoint',
-    'User Comment'
-  ],
+  keysToInclude: ['data_file_name', 'data_file_uuid','data_file_uuid', 'data_file_checksum_value','subject_id', 'parent_specimen_id', 'ctep_disease_term','meddra_disease_code', 'primary_disease_site','histology', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site','tissue_category','assessment_timepoint','User_Comment'],
+  header: ['name', 'drs_uri' ,'File ID', 'Md5sum','Participant ID', 'Biospecimen ID', 'Diagnosis','MedDRA Disease Code', 'Primary Site','Histology', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Tissue Category','Collection Timepoint','User Comment'],
 };
 
 // --------------- GraphQL query - Retrieve selected cases info --------------
@@ -218,7 +145,6 @@ export const GET_MY_CART_DATA_QUERY = gql`
       anatomical_collection_site
       tissue_category
       assessment_timepoint
-      drs_uri
    }
   }
 `;
@@ -307,7 +233,6 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     anatomical_collection_site
     tissue_category
     assessment_timepoint
-    drs_uri
  }
 }`;
 
@@ -328,20 +253,20 @@ export const table = {
   objectKey: 'filesInList',
   extendedViewConfig: {
     pagination: true,
-    manageViewColumns: false, //{ title: "View Columns" },
-    download: false,
-    
-    /*{
+    manageViewColumns: {
+      title: "View Columns"
+    },
+    download: {
       downloadCsv: "Download Table Contents As CSV",
       downloadFileName: "CTDC_My_Files_download",
       // customDownload: true,
       // ...customMyFilesTabDownloadCSV,
-    }, */
+    },
   },
   columns: [
     {
       cellType: cellTypes.CHECKBOX,
-      display: true,
+      display: false,
       role: cellTypes.CHECKBOX,
     },
     {

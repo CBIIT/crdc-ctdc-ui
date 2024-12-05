@@ -2,7 +2,7 @@ export const DROP_DOWN_WIDTH = '250px';
 const BLUE = '#004D73';
 const WHITE = '#FFFFFF'
 const EXPORT_AND_DOWNLOAD_BTN_HEIGHT = '46px';
-const tooltipStyle = {
+const commonTooltipStyle = {
   backgroundColor: '#FFFFFF !important',
   color:'#000000',
   border: '2px solid #B1B1B1 !important',
@@ -106,12 +106,12 @@ export default () => ({
     gap: '8px'
   },
   menuItemTooltip: {
-    ...tooltipStyle,
+    ...commonTooltipStyle,
 
     left: '-22px'
   },
   customTooltip: {
-    ...tooltipStyle
+    ...commonTooltipStyle
   },
   arrow: {
     color: (props) => props.arrowColor || '#FFFFFF',

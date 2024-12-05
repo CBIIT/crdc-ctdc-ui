@@ -20,7 +20,7 @@ import {
   GET_MY_CART_DATA_QUERY,
   myFilesPageData,
   manifestData as manifestDataConfig
-} from '../../../../bento/fileCentricCartWorkflowData_copy';
+} from '../../../../bento/fileCentricCartWorkflowData';
 import env from '../../../../utils/env';
 import DownloadFileManifestDialog from './downloadFileManifestDialog';
 import { convertToCSV, downloadCsvString } from '../../utils';
@@ -286,20 +286,27 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
           disablePortal
           style={{zIndex: 99999}}
         >
-          <Paper className={classes.dropdownPaper}>
-            <ClickAwayListener onClickAway={handleClose}>
-              <MenuList
-                autoFocusItem={open}
-                id="menu-list-grow"
-                onKeyDown={handleListKeyDown}
-                classes={{
-                  root: classes.dropdownMenuList,
-                }}
-              >
-                {getMenuItem()}
-              </MenuList>
-            </ClickAwayListener>
-          </Paper>
+          {({ TransitionProps, placement }) => (
+            <Grow
+              {...TransitionProps}
+              style={{ transformOrigin: placement === 'bottom' ? 'center top' : 'center bottom' }}
+            >
+              <Paper className={classes.dropdownPaper}>
+                <ClickAwayListener onClickAway={handleClose}>
+                  <MenuList
+                    autoFocusItem={open}
+                    id="menu-list-grow"
+                    onKeyDown={handleListKeyDown}
+                    classes={{
+                      root: classes.dropdownMenuList,
+                    }}
+                  >
+                    {getMenuItem()}
+                  </MenuList>
+                </ClickAwayListener>
+              </Paper>
+            </Grow>
+          )}
         </Popper>
       </div>
       <DownloadFileManifestDialog

@@ -6,7 +6,7 @@ import { useHistory } from 'react-router';
 import { useSelector } from 'react-redux';
 import { useGlobal } from '../../Global/GlobalProvider';
 import { useAuth } from '../../Authentication';
-import CartContainer from '../../Cart/CartContainer';
+import CartContainer from '../../Cart/CartController';
 import { navMobileList, navbarSublists } from '../../../config/globalHeaderData';
 
 

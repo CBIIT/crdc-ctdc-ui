@@ -1,5 +1,5 @@
 import { types, btnTypes } from '@bento-core/paginated-table';
-import { myFilesPageData, tooltipContent } from '../../../bento/fileCentricCartWorkflowData_copy';
+import { myFilesPageData, tooltipContent } from '../../../bento/fileCentricCartWorkflowData';
 
 export const wrapperConfig = [
   {

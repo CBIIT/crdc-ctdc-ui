@@ -1,8 +1,7 @@
 import gql from 'graphql-tag';
 import { cellTypes, dataFormatTypes } from '@bento-core/table';
-import { types, btnTypes } from '@bento-core/paginated-table';
+import { types } from '@bento-core/paginated-table';
 import { customMyFilesTabDownloadCSV } from './tableDownloadCSV';
-import CustomFooterMessage from '../pages/cart/tableConfig/CustomFooterMessage';
 import cartPageIcon from '../assets/cart/cartPageIcon.svg'
 
 export const navBarCartData = {
@@ -37,69 +36,81 @@ export const myFilesPageData = {
   errorMessage: 'An error has occurred in loading CART',
   layout: [
     {
-      container: 'outer_layout',
+      container: 'paginatedTable',
+      paginatedTable: true,
+    },
+    {
+      container: 'buttons',
       size: 'xl',
-      clsName: 'container_outer_layout',
+      clsName: 'container_footer',
       items: [
         {
-          clsName: 'cart_icon',
-          type: types.ICON,
-          src: cartPageIcon,
-          alt: 'CTDC MyFiles header logo',
-        },
-        {
-          clsName: 'cart_header_text',
-          text: 'Cart >',
-          type: types.TEXT,
-        },
-        {
-          clsName: 'cart_sel_files_text',
-          text: 'Selected Files',
-          type: types.TEXT,
-        },
+          clsName: 'manifest_comments',
+          type: types.TEXT_INPUT,
+          placeholder: 'User Comment',
+        }
       ],
     },
-  
-  {
-    container: 'paginatedTable',
-    paginatedTable: true,
-  },
-  {
-    container: 'buttons',
-    size: 'xl',
-    clsName: 'container_footer',
-    items: [{
-      clsName: 'manifest_comments',
-      type: types.CUSTOM_ELEM,
-      customViewElem: CustomFooterMessage,
-      text: 'To access and analyze files, select and remove unwanted files, click the "Download File Manifest" button, and upload the resulting manifest file to your Velsera Seven Bridges Cancer Genomics Cloud account. [Note "Velsera Seven Bridges Cancer Genomics Cloud account" should be hyperlinked to https://cgc-accounts.sbgenomics.com/auth/login?next=https%3A%2F%2Fcgc-accounts.sbgenomics.com%2F with external icon ]',
+  ],
 
-    },{
-      clsName: 'manifest_comments',
-      type: types.TEXT_INPUT,
-      placeholder: 'User Comment',
-    }],
-  },
-  {
-  container: 'buttons',
-  size: 'xl',
-  clsName: 'container_header',
-  items: [
-    {
-      title: 'Download File Manifest',
-      clsName: 'download_manifest',
-      type: types.BUTTON,
-      role: btnTypes.DOWNLOAD_MANIFEST,
-      btnType: btnTypes.DOWNLOAD_MANIFEST,
-      usePopup: false,
-      tooltipCofig: tooltipContent
-    }],
-},]
+  downButtonText: 'DOWNLOAD MANIFEST',
+  headerIconSrc: cartPageIcon,
+  headerIconAlt: 'CTDC Cart header logo',
 };
  
 export const manifestData = {
-  keysToInclude: ['data_file_name', 'data_file_uuid','data_file_uuid', 'data_file_checksum_value','subject_id', 'parent_specimen_id', 'ctep_disease_term','meddra_disease_code', 'primary_disease_site','histology', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'reported_gender', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site','tissue_category','assessment_timepoint','User_Comment'],
-  header: ['name', 'drs_uri' ,'File ID', 'Md5sum','Participant ID', 'Biospecimen ID', 'Diagnosis','MedDRA Disease Code', 'Primary Site','Histology', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Gender', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Tissue Category','Collection Timepoint','User Comment'],
+  keysToInclude: [
+    'data_file_name', 
+    'drs_uri', // drs_uri was data_file_uuid
+    'data_file_uuid',
+    'data_file_checksum_value',
+    'subject_id',
+    'parent_specimen_id',
+    'ctep_disease_term',
+    'meddra_disease_code',
+    'primary_disease_site',
+    'histology',
+    'stage_of_disease',
+    'tumor_grade',
+    'age_at_enrollment',
+    'sex',
+    'reported_gender',
+    'race',
+    'ethnicity',
+    'carcinogen_exposure',
+    'targeted_therapy',
+    'parent_specimen_id',
+    'anatomical_collection_site',
+    'tissue_category',
+    'assessment_timepoint',
+    // 'User_Comment'
+  ],
+  header: [
+    'name',
+    'drs_uri',
+    'File ID',
+    'Md5sum',
+    'Participant ID',
+    'Biospecimen ID',
+    'Diagnosis',
+    'MedDRA Disease Code',
+    'Primary Site',
+    'Histology',
+    'Stage of Disease',
+    'Tumor Grade',
+    'Age',
+    'Sex',
+    'Gender',
+    'Race',
+    'Ethnicity',
+    'Carcinogen Exposure',
+    'Targeted Therapy',
+    'Parent Biospecimen ID',
+    'Anatomical Collection Site',
+    'Tissue Category',
+    'Collection Timepoint',
+    'User Comment'
+  ],
 };
 
 // --------------- GraphQL query - Retrieve selected cases info --------------
@@ -145,6 +156,7 @@ export const GET_MY_CART_DATA_QUERY = gql`
       anatomical_collection_site
       tissue_category
       assessment_timepoint
+      drs_uri
    }
   }
 `;
@@ -233,6 +245,7 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     anatomical_collection_site
     tissue_category
     assessment_timepoint
+    drs_uri
  }
 }`;
 
@@ -253,20 +266,20 @@ export const table = {
   objectKey: 'filesInList',
   extendedViewConfig: {
     pagination: true,
-    manageViewColumns: {
-      title: "View Columns"
-    },
-    download: {
+    manageViewColumns: false, //{ title: "View Columns" },
+    download: false,
+    
+    /*{
       downloadCsv: "Download Table Contents As CSV",
       downloadFileName: "CTDC_My_Files_download",
       // customDownload: true,
       // ...customMyFilesTabDownloadCSV,
-    },
+    }, */
   },
   columns: [
     {
       cellType: cellTypes.CHECKBOX,
-      display: false,
+      display: true,
       role: cellTypes.CHECKBOX,
     },
     {

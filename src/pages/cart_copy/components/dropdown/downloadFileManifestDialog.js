@@ -11,7 +11,7 @@ import {
 import TextField from '@material-ui/core/TextField';
 import CloseIcon from '@material-ui/icons/Close';
 import DownloadFileManifestIcon from '../../assets/dwnldFileManifest.svg';
-import { GET_MY_CART_DATA_QUERY, myFilesPageData } from '../../../../bento/fileCentricCartWorkflowData_copy';
+import { GET_MY_CART_DATA_QUERY, myFilesPageData } from '../../../../bento/fileCentricCartWorkflowData';
 import { downloadCsvString } from '../../utils';
 import { TableContext } from '../../../../bento-core';
 

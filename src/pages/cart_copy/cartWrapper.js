@@ -4,7 +4,7 @@ import { Wrapper } from '@bento-core/paginated-table';
 import { customTheme } from './wrapperConfig/Theme';
 import {
   myFilesPageData, table, manifestData,
-} from '../../bento/fileCentricCartWorkflowData_copy';
+} from '../../bento/fileCentricCartWorkflowData';
 import CustomToolTipContent from './tooltip/customToolTipContent';
 
 const Header = ({
