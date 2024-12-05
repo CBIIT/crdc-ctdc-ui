@@ -45,7 +45,7 @@ export const downloadMarkdownPdf = async (title, content) => {
   readMeContent.innerHTML += htmlWithPageBreaks;
 
   /** set pdf fileneame */
-  const fileName = createFileName('ICDC-MY-FILES-CART-README', 'pdf');
+  const fileName = createFileName('CTDC-MY-FILES-CART-README', 'pdf', false);
   /** configure pdf increase pixel of the PDF */
   const options = {
     margin: [0.5, 0.5, 0.5, 0.5],
