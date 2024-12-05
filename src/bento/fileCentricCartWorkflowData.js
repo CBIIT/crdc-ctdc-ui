@@ -28,7 +28,6 @@ export const tooltipContent = {
   },
 };
 
-//BENTO-2455 Configuration set for Bento 4.0.
 export const myFilesPageData = {
   manifestFileName: 'CTDC File Manifest',
   tooltipIcon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
@@ -61,10 +60,10 @@ export const myFilesPageData = {
  
 export const manifestData = {
   keysToInclude: [
-    'data_file_name',  // ('name' - 1/4 required fields)
-    'drs_uri',         // ('drs_uri' - 2/4 required fields)
-    // 'study_short_name', // TODO: Add this field ('study_short_name' - 3/4 required fields)
-    'subject_id',      // ('Participant ID' - 4/4 required fields)
+    'data_file_name',   // ('name' - 1/4 required fields)
+    'drs_uri',          // ('drs_uri' - 2/4 required fields)
+    'study_short_name', // ('study_short_name' - 3/4 required fields)
+    'subject_id',       // ('Participant ID' - 4/4 required fields)
 
     'data_file_uuid',
     'data_file_checksum_value',
@@ -91,8 +90,8 @@ export const manifestData = {
   header: [
     'name',
     'drs_uri',
-    // 'Study Short Name', // TODO: Uncomment when this field is added
-    'Participant ID',
+    'study_short_name',
+    'Participant ID', // subject_id
 
     'File ID',
     'Md5sum',
@@ -118,7 +117,7 @@ export const manifestData = {
   ],
 };
 
-// --------------- GraphQL query - Retrieve selected cases info --------------
+// --------------- GraphQL query --------------
 export const GET_MY_CART_DATA_QUERY = gql`
   query filesInList(
     $data_file_uuid: [String],
@@ -133,7 +132,9 @@ export const GET_MY_CART_DATA_QUERY = gql`
       first: $first,
       order_by: $order_by,
       sort_direction: $sort_direction
-    ){ data_file_name
+    ){
+      study_short_name
+      data_file_name
       data_file_format
       data_file_type
       data_file_size
@@ -165,49 +166,6 @@ export const GET_MY_CART_DATA_QUERY = gql`
    }
   }
 `;
-export const GET_MY_CART_DATA_QUERY2 = gql`
-query fileOverview(
-  $data_file_uuid: [String]
-  $offset: Int = 0,
-  $first: Int = 10,
-  $order_by:String ="data_file_name",
-  $sort_direction:String="asc"
-){
-  fileOverview(
-    data_file_uuid: $data_file_uuid
-    offset: $offset,
-      first: $first,
-      order_by: $order_by,
-      sort_direction: $sort_direction
-  ){
-    data_file_name
-    data_file_format
-    data_file_type
-    data_file_size
-    association
-    data_file_description
-    subject_id
-    primary_disease_site
-    parent_specimen_id
-    specimen_id
-    ctep_disease_term
-    data_file_uuid
-    stage_of_disease
-    tumor_grade
-    age_at_enrollment
-    sex
-    reported_gender
-    race
-    data_file_checksum_value
-    ethnicity
-    carcinogen_exposure
-    targeted_therapy
-    anatomical_collection_site
-    tissue_category
-    assessment_timepoint
-  }
-}`;
-
 
 export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
   $data_file_uuid: [String],
@@ -222,7 +180,9 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     first: $first,
     order_by: $order_by,
     sort_direction: $sort_direction
-  ){ data_file_name
+  ){
+    study_short_name
+    data_file_name
     data_file_format
     data_file_type
     data_file_size
