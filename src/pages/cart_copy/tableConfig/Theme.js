@@ -154,6 +154,7 @@ export const tblPgn = {
       paddingRight: '0px',
       borderTop: '3px solid #e7e5e5',
       borderBottom: '3px solid #e7e5e5',
+      marginBottom: '26px'
     },
     toolbar: {
       minHeight: '45px',
