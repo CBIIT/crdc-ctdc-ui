@@ -4,7 +4,7 @@ import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import { json2csv } from 'json-2-csv'; */
 
-export function createFileName(fileName, format = '.csv') {
+export function createFileName(fileName, format = '.csv', applyFormat=true) {
   const date = new Date();
   const yyyy = date.getFullYear();
   let dd = date.getDate();
@@ -26,16 +26,19 @@ export function createFileName(fileName, format = '.csv') {
 
   if (seconds < 10) { seconds = `0${seconds}`; }
 
+
   return `${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}${format}`;
 }
 
 export const downloadCsvString = (csvString, fileName) => {
+    const ensureCsvExtension = (name) => name.toLowerCase().endsWith('.csv') ? name : `${name}.csv`;
+    
     const blob = new Blob([csvString], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
 
     const link = document.createElement('a');
     link.href = url;
-    link.download = `${fileName}.csv`;
+    link.download = ensureCsvExtension(fileName);
     document.body.appendChild(link);
     link.click();
 

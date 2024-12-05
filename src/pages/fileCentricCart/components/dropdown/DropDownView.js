@@ -23,7 +23,7 @@ import {
 } from '../../../../bento/fileCentricCartWorkflowData';
 import env from '../../../../utils/env';
 import DownloadFileManifestDialog from './downloadFileManifestDialog';
-import { convertToCSV, downloadCsvString } from '../../utils';
+import { convertToCSV, createFileName, downloadCsvString } from '../../utils';
 
 import cgcIcon from '../../assets/exportToCancerGenomicsCloudIcon.svg';
 import dfmIcon from '../../assets/downloadFileManifestIcon.svg';
@@ -177,7 +177,8 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
         break;
       }
       case DOWNLOAD_FILE_MANIFEST: {
-        downloadCsvString(manifestString, myFilesPageData.manifestFileName)
+        const manifestFileNam = createFileName(myFilesPageData.manifestFileName, '.csv')
+        downloadCsvString(manifestString, manifestFileNam)
         break;
       }
       default: noop();
