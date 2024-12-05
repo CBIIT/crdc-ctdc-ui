@@ -61,11 +61,13 @@ export const myFilesPageData = {
  
 export const manifestData = {
   keysToInclude: [
-    'data_file_name', 
-    'drs_uri', // drs_uri was data_file_uuid
+    'data_file_name',  // ('name' - 1/4 required fields)
+    'drs_uri',         // ('drs_uri' - 2/4 required fields)
+    // 'study_short_name', // TODO: Add this field ('study_short_name' - 3/4 required fields)
+    'subject_id',      // ('Participant ID' - 4/4 required fields)
+
     'data_file_uuid',
     'data_file_checksum_value',
-    'subject_id',
     'parent_specimen_id',
     'ctep_disease_term',
     'meddra_disease_code',
@@ -89,9 +91,11 @@ export const manifestData = {
   header: [
     'name',
     'drs_uri',
+    // 'Study Short Name', // TODO: Uncomment when this field is added
+    'Participant ID',
+
     'File ID',
     'Md5sum',
-    'Participant ID',
     'Biospecimen ID',
     'Diagnosis',
     'MedDRA Disease Code',
