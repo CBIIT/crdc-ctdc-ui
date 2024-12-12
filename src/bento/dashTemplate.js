@@ -140,6 +140,8 @@ export const facetsConfig = [
     sort_type: sortType.ALPHABET,
     show: true,
     defaultValue: DEFAULT_VALUE,
+
+    displayFacetCount: false,
   },
   {
     section: SAMPLES,
