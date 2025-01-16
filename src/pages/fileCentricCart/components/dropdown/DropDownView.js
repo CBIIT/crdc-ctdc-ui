@@ -166,7 +166,7 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
 
   // Fetch Manifest Signed URL
   const fetchManifestSignedUrl = async () => {
-    const url = env.REACT_APP_FILE_SERVICE_API + getManifestFileSignedUrlEndPoint;
+    const url = env.REACT_APP_INTEROP_SERVICE_URL + getManifestFileSignedUrlEndPoint;
     const data = { manifest: manifestString };
     const headers = { 'Content-Type': 'application/json' };
   
