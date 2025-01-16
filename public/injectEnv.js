@@ -9,6 +9,7 @@ window.injectedEnv = {
   REACT_APP_BACKEND_PUBLIC_API: 'https://4250bc0d-7018-4a95-bffb-d4dceb96fb4d.mock.pstmn.io/v1/graphql',
   REACT_APP_FILE_SERVICE_API: 'https://clinical-dev.datacommons.cancer.gov/api/files/',
   REACT_APP_AUTH_SERVICE_API: 'https://clinical-dev.datacommons.cancer.gov/api/auth/',
+  REACT_APP_INTEROP_SERVICE_URL: 'https://clinical-dev.datacommons.cancer.gov/api/interoperation/',
 
   REACT_APP_USER_SERVICE_API: 'http://localhost:3000/api/users/',
   REACT_APP_LOGIN_URL: 'https://nci-crdc-staging.datacommons.io/user/oauth2/authorize?client_id=9ZpYjAWqntLON2Z4Jdvstwe9yCwPA3aFFpQOaZo4&response_type=code&redirect_uri=http://localhost:3000/login&scope=openid%20user',
