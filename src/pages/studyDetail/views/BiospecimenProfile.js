@@ -16,10 +16,25 @@ import {
   timePointArgumentConfiguration,
   argumentConfiguration,
   seriesSetting,
-} from '../../../bento/studyDetailData';
-import TabPanel from '../../../components/Tab/TabPanel';
+} from '../../../bento/studyDetailData.js';
+import TabPanel from '../../../components/Tab/TabPanel.js';
 // import { navigatedToDashboard } from '../../../utils/utils';
-import store from '../../../store';
+import store from '../../../store/index.js';
+import BiospecimenProfileModal from './biospecimen-profile-modal.js';
+import { useBiospecimenProfileModal } from './biospecimen-profile-modal-store.js';
+import {
+  BarChartWrapper,
+  // Content,
+  // DetailContainerHeader,
+  // DetailContainerItems,
+  // HeaderButton,
+  // HeaderButtonLink,
+  // HeaderButtonLinkNumber,
+  // HeaderButtonLinkSpan,
+  // HeaderButtonLinkText,
+  // MarginTopTenGrid,
+  // StyledTabs,
+} from './biospecimen-profile-styled.js'
 
 const tooltipContent = ({ argument, originalValue }) => (
   <div>
@@ -29,13 +44,23 @@ const tooltipContent = ({ argument, originalValue }) => (
 );
 
 const BiospecimenProfile = ({ classes, d }) => {
-  // const studyCode = data.study[0].clinical_study_designation;
-  const [currentTab, setCurrentTab] = useState(0);
-  const handleTabChange = (event, value) => {
-    setCurrentTab(value);
-  };
 
   let data = d["StudySpecimenByStudyShortName"][0];
+
+  const [_, {setIsModalOpen}] = useBiospecimenProfileModal();
+
+  const accessionId = data.accessionId;
+  const studyName = d.studyByStudyShortName[0].study_short_name;
+  const studyCode = d.studyByStudyShortName[0].study_id;
+
+  // console.log("bp name: ", studyName);
+  // console.log("bp code: ", studyCode);
+
+  const [currentTab, setCurrentTab] = useState(0);
+
+  const handleTabChange = (event, value) => {
+    setCurrentTab(value);
+  }
   const tabCount = biospecimenProfile.tabs.filter((tab) => (data[tab.value]
     && data[tab.value].length > 0));
 
@@ -72,15 +97,29 @@ const BiospecimenProfile = ({ classes, d }) => {
 
   const renderTabContent = (item, index) => (
     <TabPanel index={item.index} value={currentTab} key={index}>
-      <BarChart
-        data={data[item.value]}
-        palette={palette}
-        tooltipContent={tooltipContent}
-        argument={item.label === 'TIMEPOINT' ? timePointArgumentConfiguration : argumentConfiguration}
-        value={valueConfiguration}
-        seriesSetting={seriesSetting}
-        size= {{ maxHeight: 300, maxWidth: 300, }}
-      />
+      <BarChartWrapper>
+        <div
+          onClick={async () => {
+            await setIsModalOpen(true);
+          }}
+        >
+          <BarChart
+            data={data[item.value]}
+            palette={palette}
+            tooltipContent={tooltipContent}
+            argument={item.label === 'TIMEPOINT' ? timePointArgumentConfiguration : argumentConfiguration}
+            value={valueConfiguration}
+            seriesSetting={seriesSetting}
+            size= {{ maxHeight: 300, maxWidth: 300, }}
+          />
+        </div>
+        <BiospecimenProfileModal
+          biospecimenProfile={biospecimenProfile}
+          data={data}
+          studyName = {studyName}
+          studyCode= {studyCode}
+        />
+      </BarChartWrapper>
     </TabPanel>
   );
 
@@ -110,7 +149,7 @@ const BiospecimenProfile = ({ classes, d }) => {
             </div>
           </Grid>
           <Grid item xs={12} className={classes.tabContainer}>
-            { tabItem(biospecimenProfile.tabs) }
+            { tabItem(biospecimenProfile.tabs)}
           </Grid>
           <Grid container className={classes.detailContainerItems}>
             { biospecimenProfile.tabs.map((item, index) => renderTabContent(item, index)) }
