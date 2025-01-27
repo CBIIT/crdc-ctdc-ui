@@ -67,7 +67,7 @@ export const CustomHeaderCellView = (props) => {
       </>
     )
   }
-  else if (props.dataField === "subject_id") {
+  else if (props.dataField === "participant_id") {
     return (
       <>
       <span style={{fontSize: '14px',width: '170px',textAlign: 'left'}}>

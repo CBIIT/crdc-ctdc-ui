@@ -106,7 +106,7 @@ function generateValidCombinations(strings, validCombinations, joinByChar = '|')
 
 /**
  * Aggregates therapy data by combining entries with multiple values in `group`
- * and summing the `subjects` count for each therapy.
+ * and summing the `participants` count for each therapy.
  * 
  * @param {Object} searchParticipants - Data object containing facet data by `dataApiKey`.
  * @param {string} dataApiKey - Key for accessing targeted data.
@@ -114,26 +114,26 @@ function generateValidCombinations(strings, validCombinations, joinByChar = '|')
  * 
  * Example:
  * Input: [
- *   { "group": "Atezolizumab", "subjects": 13 },
- *   { "group": "Atezolizumab|Encorafenib + Cetuximab", "subjects": 1 }
+ *   { "group": "Atezolizumab", "participants": 13 },
+ *   { "group": "Atezolizumab|Encorafenib + Cetuximab", "participants": 1 }
  * ]
  * Output: [
- *   { "group": "Atezolizumab", "subjects": 14 },
- *   { "group": "Encorafenib + Cetuximab", "subjects": 1 }
+ *   { "group": "Atezolizumab", "participants": 14 },
+ *   { "group": "Encorafenib + Cetuximab", "participants": 1 }
  * ]
  */
 const updateTargetedTherapyFacetData = (searchParticipants, dataApiKey) => {
   const facetItemData = searchParticipants[dataApiKey];
   const therapyCounts = new Map();
 
-  facetItemData.forEach(({ group, subjects }) => {
+  facetItemData.forEach(({ group, participants }) => {
     group.split('|').forEach(therapy => { 
-      therapyCounts.set(therapy, (therapyCounts.get(therapy) || 0) + subjects);
+      therapyCounts.set(therapy, (therapyCounts.get(therapy) || 0) + participants);
     });
   });
 
   // Convert the Map back to an array format
-  const newResult = Array.from(therapyCounts, ([group, subjects]) => ({ group, subjects }));
+  const newResult = Array.from(therapyCounts, ([group, participants]) => ({ group, participants }));
 
   return { [dataApiKey]: newResult };
 };
