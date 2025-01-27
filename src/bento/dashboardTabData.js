@@ -491,7 +491,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       tumor_grade,
       age_at_enrollment,
       sex,
-      reported_gender,
+      # reported_gender,
       race,
       ethnicity,
       carcinogen_exposure,
@@ -1093,7 +1093,7 @@ export const tabContainers = [
       {
         dataField: 'reported_gender',
         header: 'Gender',
-        display: true,
+        display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         headerType: headerTypes.CUSTOM_ELEM,
