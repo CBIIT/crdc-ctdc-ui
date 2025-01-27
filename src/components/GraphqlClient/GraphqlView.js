@@ -44,7 +44,7 @@ query search {
     numberOfTherapies
     specimenCountbyStageOfDisease {
       group
-      subjects
+      participants
       __typename
     }
     __typename
