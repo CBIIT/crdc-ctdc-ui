@@ -8,7 +8,7 @@ import { removeSquareBracketsFromString } from '../../../../utils/utils';
 
 const ParticipantCard = ({ data = {}, index })=> {
   const {
-    subject_id: subjectId,
+    participant_id: participantId,
     ctep_disease_term: ctepDiseaseTerm,
     age_at_enrollment: age,
     sex,
@@ -41,7 +41,7 @@ const ParticipantCard = ({ data = {}, index })=> {
         <div className={cn(classes.keyAndValueRow, classes.titleRow)}>
           <span className={classes.titleKey}>PARTICIPANT</span>
           <Typography variant="h3" className={classes.titleValue}>
-            {subjectId}
+            {participantId}
           </Typography>
         </div>
         <div className={classes.row}>
