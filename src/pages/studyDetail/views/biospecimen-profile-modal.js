@@ -183,9 +183,9 @@ const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCod
               </Box>
               <Box
                 sx={{
-                  height: '1px',  // Set the height of the line
-                  backgroundColor: '#42779A',  // Line color
-                  marginLeft: '10px',  // Space between tabs and line
+                  height: '1px', 
+                  backgroundColor: '#42779A', 
+                  marginLeft: '10px', 
                   marginTop: '-8px',
                   marginBottom: '15px',
                 }}
