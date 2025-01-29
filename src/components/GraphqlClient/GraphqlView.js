@@ -21,35 +21,130 @@ const defaultQuery =
 # validation errors highlighted within the text.
 #
 # GraphQL queries typically start with a "{" character. Lines that starts
-# with a # are ignored.
+# with a '#' are ignored.
 #
-# An example GraphQL query might look like:
-#
-#     {
-#       field(arg: "value") {
-#         subField
-#       }
-#     }
-#
+
+# You can paste this query below and remove the # before each line by highlighting the text and pressing CTRL + ? (or command + ? on a Mac)
+# And try it out 
 # Keyboard shortcuts:
 #
 #       Run Query:  Ctrl-Enter (or press the play button above)
 #
 #   Auto Complete:  Ctrl-Space (or just start typing)
 #
-query search {
-  getHomePage {
-    numberOfParticipants
-    numberOfDiagnoses
-    numberOfTherapies
-    specimenCountbyStageOfDisease {
-      group
-      subjects
-      __typename
+# An example GraphQL query might look like this query that we use for the global stats bar at the top of this screen:
+
+    query search(
+		# Variables defined to be searched with you can use these variables in the query Variables section to constrain results
+    # to constrain results copy '"sex": ["Male"],' and paste it into the query variables where '"sex": [],' is and
+    # the results will reflect all data that is related to participants who are male
+    # you can use the lists on the facets on the explore page to find variables to filter queries here
+    $subject_id: [String],
+    $ctep_disease_term: [String],
+    $stage_of_disease: [String],
+    $tumor_grade: [String], 
+    $sex: [String], 
+    $reported_gender: [String], 
+    $race: [String], $ethnicity: [String],
+    $carcinogen_exposure: [String], 
+    $targeted_therapy: [String],
+    $anatomical_collection_site: [String],
+    $specimen_type: [String],
+    $tissue_category: [String],
+    $assessment_timepoint: [String],
+    $data_file_type: [String],
+    $data_file_format: [String]
+    ){
+    searchParticipants(
+      subject_id: $subject_id
+      ctep_disease_term: $ctep_disease_term
+      stage_of_disease: $stage_of_disease
+      tumor_grade: $tumor_grade
+      sex: $sex
+      reported_gender: $reported_gender
+      race: $race
+      ethnicity: $ethnicity
+      carcinogen_exposure: $carcinogen_exposure
+      targeted_therapy: $targeted_therapy
+      anatomical_collection_site: $anatomical_collection_site
+      specimen_type: $specimen_type
+      tissue_category: $tissue_category
+      assessment_timepoint: $assessment_timepoint
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+    )  {
+    # These are the return types of the query they define the results that will show up on the window to the right
+      numberOfStudies
+      numberOfParticipants
+      numberOfDiagnoses
+      numberOfTargetedTherapies
+      numberOfSpecimens
+      numberOfFiles
     }
-    __typename
-  }
 }
+
+
+# Below is the GraphiQL integrated development environment (IDE), from here you can query the data within the Clinical and Translational Data Commons database. 
+# The default query below is the same query that is used to query data from
+# the Clinical and Translational Data Commons database for the Explore page.
+# query participantOverview(
+#     $subject_id: [String],
+#     $ctep_disease_term: [String],
+#     $stage_of_disease: [String],
+#     $tumor_grade: [String],
+#     $sex: [String],
+#     $reported_gender: [String],
+#     $race: [String],
+#     $ethnicity: [String],
+#     $carcinogen_exposure: [String],
+#     $targeted_therapy: [String],
+#     $anatomical_collection_site: [String],
+#     $specimen_type: [String],
+#     $tissue_category: [String],
+#     $assessment_timepoint: [String],
+#     $data_file_type: [String],
+#     $data_file_format: [String],
+#     $first: Int,
+#     $offset: Int,
+#     $order_by: String,
+#     $sort_direction: String
+#   ){
+#     participantOverview(
+#       subject_id: $subject_id
+#       ctep_disease_term: $ctep_disease_term
+#       stage_of_disease: $stage_of_disease
+#       tumor_grade: $tumor_grade
+#       sex: $sex
+#       reported_gender: $reported_gender
+#       race: $race
+#       ethnicity: $ethnicity
+#       carcinogen_exposure: $carcinogen_exposure
+#       targeted_therapy: $targeted_therapy
+#       anatomical_collection_site: $anatomical_collection_site
+#       specimen_type: $specimen_type
+#       tissue_category: $tissue_category
+#       assessment_timepoint: $assessment_timepoint
+#       data_file_type: $data_file_type
+#       data_file_format: $data_file_format
+#       first: $first
+#       offset: $offset
+#       order_by: $order_by
+#       sort_direction: $sort_direction
+#     ){
+#       subject_id,
+#       ctep_disease_term,
+#       stage_of_disease,
+#       tumor_grade,
+#       age_at_enrollment,
+#       sex,
+#       reported_gender,
+#       race,
+#       ethnicity,
+#       carcinogen_exposure,
+#       targeted_therapy
+#       data_file_uuid
+#     }
+#   }
 
 `;
 
@@ -104,11 +199,27 @@ const GraphqlView = ({ classes }) => (
           style= {{padding: '0 2px 2px 2px',color: '#274FA6'}}
         />. These resources provide an excellent starting point for understanding and utilizing GraphQL effectively.
         </span>
+        <span className={classes.text}>
+        <br />
+        <br />
+        Below is the GraphiQL integrated development environment (IDE), from here you can query the data within the Clinical and Translational Data Commons database. The default query below is the same query that is used to query data from the Clinical and Translational Data Commons database for the Global Stats Bar.
+        </span>
       </Grid>
     </Grid>
  
     <div className={classes.grapqhQlContainer}>
-      <GraphiQL editorTheme="solarized light" fetcher={graphQLFetcher} query={defaultQuery}/>
+      <GraphiQL editorTheme="solarized light" fetcher={graphQLFetcher} query={defaultQuery} variables='{
+  "participant_id": [],
+  "ctep_disease_term": [],
+  "stage_of_disease": [],
+  "tumor_grade": [],
+  "sex": [],
+  "reported_gender": [],
+  "race": [],
+  "ethnicity": [],
+  "carcinogen_exposure": [],
+  "targeted_therapy": []
+}'/>
     </div>
 
 </>);
@@ -167,7 +278,7 @@ const styles = () => ({
   grapqhQlContainer: {
     display: 'flex',
     height: '100px',
-    minHeight: '500px',
+    minHeight: '800px',
     maxWidth: '1800px',
     margin: 'auto',
     // Modified the default CSS for compliance with 508 color contrast standards
