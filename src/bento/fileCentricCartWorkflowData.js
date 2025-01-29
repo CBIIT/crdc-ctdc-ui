@@ -76,7 +76,6 @@ export const manifestData = {
     'tumor_grade',
     'age_at_enrollment',
     'sex',
-    'reported_gender',
     'race',
     'ethnicity',
     'carcinogen_exposure',
@@ -104,7 +103,6 @@ export const manifestData = {
     'Tumor Grade',
     'Age',
     'Sex',
-    'Gender',
     'Race',
     'Ethnicity',
     'Carcinogen Exposure',
@@ -153,7 +151,6 @@ export const GET_MY_CART_DATA_QUERY = gql`
       tumor_grade
       age_at_enrollment
       sex
-      reported_gender
       race
       data_file_checksum_value
       ethnicity
