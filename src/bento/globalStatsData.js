@@ -168,7 +168,6 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
     $stage_of_disease: [String],
     $tumor_grade: [String], 
     $sex: [String], 
-    $reported_gender: [String], 
     $race: [String], $ethnicity: [String],
     $carcinogen_exposure: [String], 
     $targeted_therapy: [String],
@@ -183,7 +182,6 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
