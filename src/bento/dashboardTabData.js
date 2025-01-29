@@ -91,7 +91,6 @@ query search(
   $stage_of_disease: [String],
   $tumor_grade: [String], 
   $sex: [String], 
-  # $reported_gender: [String], 
   $race: [String], $ethnicity: [String],
   $carcinogen_exposure: [String], 
   $targeted_therapy: [String],
@@ -106,7 +105,6 @@ query search(
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
-    # reported_gender: $reported_gender
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
@@ -125,17 +123,6 @@ query search(
     numberOfFiles
     
     diagnosesAndStageOfDiseases {
-      program
-      caseSize
-      children {
-        arm
-        caseSize
-        size
-        __typename
-      }
-      __typename
-    }
-    sexesAndGenders {
       program
       caseSize
       children {
@@ -214,16 +201,6 @@ query search(
       __typename
     }
     filterParticipantCountBySex {
-      group
-      subjects
-      __typename
-    }
-    participantCountByReportedGender {
-      group
-      subjects
-      __typename
-    }
-    filterParticipantCountByReportedGender {
       group
       subjects
       __typename
@@ -340,7 +317,6 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
-    # $reported_gender: [String],
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
@@ -361,7 +337,6 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      # reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
@@ -382,7 +357,6 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       tumor_grade,
       age_at_enrollment,
       sex,
-      # reported_gender,
       race,
       ethnicity,
       carcinogen_exposure,
@@ -400,7 +374,6 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
-    # $reported_gender: [String],
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
@@ -421,7 +394,6 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      # reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
@@ -458,7 +430,6 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
-    # $reported_gender: [String],
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
@@ -479,7 +450,6 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      # reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
@@ -1314,7 +1284,6 @@ query participant_data_files(
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
-  # $reported_gender: [String],
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
@@ -1335,7 +1304,6 @@ query participant_data_files(
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      # reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
@@ -1364,7 +1332,6 @@ query biospecimenAddAllToCart(
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
-  # $reported_gender: [String],
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
@@ -1389,7 +1356,6 @@ query biospecimenAddAllToCart(
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
-    # reported_gender: $reported_gender
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
@@ -1422,7 +1388,6 @@ query fileAddSelectedToCart(
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
-  # $reported_gender: [String],
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
@@ -1444,7 +1409,6 @@ query fileAddSelectedToCart(
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
-    # reported_gender: $reported_gender
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
@@ -1472,7 +1436,6 @@ query participant_data_files(
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
-  # $reported_gender: [String],
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
@@ -1493,7 +1456,6 @@ query participant_data_files(
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      # reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
@@ -1521,7 +1483,6 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
     $stage_of_disease: [String],
     $tumor_grade: [String],
     $sex: [String],
-    # $reported_gender: [String],
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
@@ -1546,7 +1507,6 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      # reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
@@ -1576,7 +1536,6 @@ query fileAddAllToCart(
   $stage_of_disease: [String],
   $tumor_grade: [String],
   $sex: [String],
-  # $reported_gender: [String],
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
@@ -1597,7 +1556,6 @@ query fileAddAllToCart(
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
     sex: $sex
-    # reported_gender: $reported_gender
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
@@ -1720,14 +1678,6 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-      },
-      {
-        dataField: 'reported_gender',
-        header: 'Gender',
-        display: false,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'race',
