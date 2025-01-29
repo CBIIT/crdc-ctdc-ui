@@ -198,7 +198,6 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     tumor_grade
     age_at_enrollment
     sex
-    reported_gender
     race
     data_file_checksum_value
     ethnicity
