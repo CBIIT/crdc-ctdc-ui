@@ -81,15 +81,12 @@ query search {
     dataFileCount
     specimenCountbyStageOfDisease {
       group
-      participants
-      __typename
+      subjects
     }
     dataFileByType {
       group
-      participants
-      __typename
+      subjects
     }
-    __typename
   }
 }
 `;

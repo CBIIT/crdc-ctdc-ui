@@ -128,29 +128,29 @@ query search_for_targeted_therapy (
     # Used to help create/compare valid TargetedTherapy combinations under generateValidCombinations()
     filterParticipantCountBySingleTargetedTherapyCombinationForFacet {
       group
-      participants
+      subjects
     }
     participantCountBySingleTargetedTherapyCombinationForFacet {
       group
-      participants
+      subjects
     }
 
     participantCountByTargetedTherapy {
       group
-      participants
+      subjects
     }
     filterParticipantCountByTargetedTherapy {
-      group
-      participants
+        group
+  subjects
     }
 
     participantCountBySingleTargetedTherapyCombination  {
       group
-      participants
+      subjects
     }
     filterParticipantCountBySingleTargetedTherapyCombination  {
       group
-      participants
+      subjects
     }
   }
 }
@@ -251,185 +251,148 @@ query search(
     }
     participantCountByStageOfDisease {
       group
-      participants
-      __typename
+      subjects
     }
     filterParticipantCountByStageOfDisease {
       group
-      participants
-      __typename
+      subjects
     }
     participantCountByCtepDiseaseTerm {
       group
-      participants
-      __typename
+      subjects
     }
     filterParticipantCountByCtepDiseaseTerm {
       group
-      participants
-      __typename
+      subjects
     }
     participantCountBySnomedDiseaseCode{
       group
-      participants
-      __typename
+      subjects
     }
     filterParticipantCountBySnomedDiseaseCode{
       group
-      participants
-      __typename
+      subjects
     }
     participantCountByTumorGrade {
       group
-      participants
-    #   __typename
+      subjects
     }
     filterParticipantCountByTumorGrade {
       group
-      participants
-    #   __typename
+      subjects
     }
     participantCountBySex {
       group
-      participants
-      __typename
+      subjects
     }
     filterParticipantCountBySex {
       group
-      participants
-      __typename
+      subjects
     }
     participantCountByReportedGender {
       group
-      participants
-      __typename
+      subjects
     }
     filterParticipantCountByReportedGender {
       group
-      participants
-      __typename
+      subjects
     }
     participantCountByRace {
       group
-      participants
-      __typename
+      subjects
     }
     filterParticipantCountByRace {
       group
-      participants
-      __typename
+      subjects
     }
     participantCountByEthnicity {
       group
-      participants
-      __typename
+      subjects
     }
     filterParticipantCountByEthnicity {
       group
-      participants
-      __typename
+      subjects
     }
     participantCountByCarcinogenExposure {
       group
-      participants
-      __typename
+      subjects
     }
     filterParticipantCountByCarcinogenExposure {
       group
-      participants
-      __typename
+      subjects
     }
     participantCountByTargetedTherapy {
       group
-      participants
-      __typename
+      subjects
     }
     filterParticipantCountByTargetedTherapy {
       group
-      participants
-      __typename
+      subjects
     }
     participantCountBySingleTargetedTherapyCombination {
       group
-      participants
-      __typename
+      subjects
     }
     participantCountBySingleTargetedTherapyCombinationForFacet {
       group
-      participants
-      __typename
+      subjects
     }
     filterParticipantCountBySingleTargetedTherapyCombinationForFacet {
       group
-      participants
-      __typename
+      subjects
     }
     filterParticipantCountBySingleTargetedTherapyCombination {
       group
-      participants
-      __typename
+      subjects
     }
     specimenCountByAnatomicalCollectionSite {
       group
-      participants
-      __typename
+      subjects
     }
     filterSpecimenCountByAnatomicalCollectionSite {
       group
-      participants
-      __typename
+      subjects
     }
     specimenCountByTissueCategory {
       group
-      participants
-      __typename
+      subjects
     }
     filterSpecimenCountByTissueCategory {
       group
-      participants
-      __typename
+      subjects
     }
     specimenCountBySpecimenType {
       group
-      participants
-      __typename
+      subjects
     }
     filterSpecimenCountBySpecimenType {
       group
-      participants
-      __typename
+      subjects
     }
     participantCountByAssessmentTimepoint {
       group
-      participants
-      __typename
+      subjects
     }
     filterParticipantCountByAssessmentTimepoint {
       group
-      participants
-      __typename
+      subjects
     }
     dataFileCountByDataFileType {
       group
-      participants
-      __typename
+      subjects
     }
     filterDataFileCountByDataFileType {
       group
-      participants
-      __typename
+      subjects
     }
     dataFileCountByDataFileFormat {
       group
-      participants
-      __typename
+      subjects
     }
     filterDataFileCountByDataFileFormat {
       group
-      participants
-      __typename
+      subjects
     }
-    __typename
   }
 }
 `;

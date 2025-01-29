@@ -71,7 +71,7 @@ const DiagnosesActiveText = ({ classes, heroData }) => {
       </div>
       {diagnosisData[5] ? (
       <div className={classes.blueText}>
-        {diagnosisData[5].participants}
+        {diagnosisData[5].subjects}
         {' '}
         {diagnosisData[5].group}
       </div>):""
@@ -79,14 +79,14 @@ const DiagnosesActiveText = ({ classes, heroData }) => {
       
        {diagnosisData[1] ? (
       <div className={classes.blueText}>
-        {diagnosisData[1].participants}
+        {diagnosisData[1].subjects}
         {' '}
         {diagnosisData[1].group}
       </div>):""
       }
        {diagnosisData[2] ? (
       <div className={classes.blueText}>
-        {diagnosisData[2].participants}
+        {diagnosisData[2].subjects}
         {' '}
         {diagnosisData[2].group}
       </div>):""
@@ -140,7 +140,7 @@ const FilesActiveText = ({ classes, heroData }) => {
       </div>
       {FileData[0] ? (
       <div className={classes.blueText}>
-        {FileData[0].participants}
+        {FileData[0].subjects}
         {' '}
         {FileData[0].group}
       </div>):""
@@ -148,14 +148,14 @@ const FilesActiveText = ({ classes, heroData }) => {
       
        {FileData[1] ? (
       <div className={classes.blueText}>
-        {FileData[1].participants}
+        {FileData[1].subjects}
         {' '}
         {FileData[1].group}
       </div>):""
       }
        {FileData[2] ? (
       <div className={classes.blueText}>
-        {FileData[2].participants}
+        {FileData[2].subjects}
         {' '}
         {FileData[2].group}
       </div>):""
