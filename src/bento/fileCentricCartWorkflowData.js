@@ -63,7 +63,7 @@ export const manifestData = {
     'data_file_name',   // ('name' - 1/4 required fields)
     'drs_uri',          // ('drs_uri' - 2/4 required fields)
     'study_short_name', // ('study_short_name' - 3/4 required fields)
-    'subject_id',       // ('participant_id' - 4/4 required fields)
+    'participant_id',       // ('participant_id' - 4/4 required fields)
 
     'data_file_uuid',
     'data_file_checksum_value',
@@ -143,7 +143,7 @@ export const GET_MY_CART_DATA_QUERY = gql`
       meddra_disease_code
       histology
       data_file_description
-      subject_id
+      participant_id
       primary_disease_site
       specimen_id
       ctep_disease_term
@@ -188,7 +188,7 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     data_file_size
     association
     data_file_description
-    subject_id
+    participant_id
     ctep_disease_term
     meddra_disease_code
     histology
@@ -299,7 +299,7 @@ export const table = {
       role: cellTypes.DISPLAY,
     },
     {
-      dataField: 'subject_id',
+      dataField: 'participant_id',
       header: 'Participant ID',
       display: true,
       tooltipText: 'sort',

@@ -86,7 +86,7 @@ export const tabIndex = [
 // First Dash Query used for Targeted Therapy
 export const TARGETED_THERAPY_QUERY = gql`
 query search_for_targeted_therapy (
-  $subject_id: [String],
+  $participant_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String], 
@@ -106,7 +106,7 @@ query search_for_targeted_therapy (
   $data_file_format: [String]
 ) {
   searchParticipants(
-    subject_id: $subject_id
+    participant_id: $participant_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -140,8 +140,8 @@ query search_for_targeted_therapy (
       subjects
     }
     filterParticipantCountByTargetedTherapy {
-      group
-      subjects
+        group
+  subjects
     }
 
     participantCountBySingleTargetedTherapyCombination  {
@@ -159,7 +159,7 @@ query search_for_targeted_therapy (
 // Main Query used to populate Facet, Widget components
 export const DASHBOARD_QUERY_NEW = gql`
 query search(
-  $subject_id: [String],
+  $participant_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -179,7 +179,7 @@ query search(
   $data_file_format: [String]
 ) {
   searchParticipants(
-    subject_id: $subject_id
+    participant_id: $participant_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -252,191 +252,154 @@ query search(
     participantCountByStageOfDisease {
       group
       subjects
-      __typename
     }
     filterParticipantCountByStageOfDisease {
       group
       subjects
-      __typename
     }
     participantCountByCtepDiseaseTerm {
       group
       subjects
-      __typename
     }
     filterParticipantCountByCtepDiseaseTerm {
       group
       subjects
-      __typename
     }
     participantCountBySnomedDiseaseCode{
       group
       subjects
-      __typename
     }
     filterParticipantCountBySnomedDiseaseCode{
       group
       subjects
-      __typename
     }
     participantCountByTumorGrade {
       group
       subjects
-    #   __typename
     }
     filterParticipantCountByTumorGrade {
       group
       subjects
-    #   __typename
     }
     participantCountBySex {
       group
       subjects
-      __typename
     }
     filterParticipantCountBySex {
       group
       subjects
-      __typename
     }
     participantCountByReportedGender {
       group
       subjects
-      __typename
     }
     filterParticipantCountByReportedGender {
       group
       subjects
-      __typename
     }
     participantCountByRace {
       group
       subjects
-      __typename
     }
     filterParticipantCountByRace {
       group
       subjects
-      __typename
     }
     participantCountByEthnicity {
       group
       subjects
-      __typename
     }
     filterParticipantCountByEthnicity {
       group
       subjects
-      __typename
     }
     participantCountByCarcinogenExposure {
       group
       subjects
-      __typename
     }
     filterParticipantCountByCarcinogenExposure {
       group
       subjects
-      __typename
     }
     participantCountByTargetedTherapy {
       group
       subjects
-      __typename
     }
     filterParticipantCountByTargetedTherapy {
       group
       subjects
-      __typename
     }
     participantCountBySingleTargetedTherapyCombination {
       group
       subjects
-      __typename
     }
     participantCountBySingleTargetedTherapyCombinationForFacet {
       group
       subjects
-      __typename
     }
     filterParticipantCountBySingleTargetedTherapyCombinationForFacet {
       group
       subjects
-      __typename
     }
     filterParticipantCountBySingleTargetedTherapyCombination {
       group
       subjects
-      __typename
     }
     specimenCountByAnatomicalCollectionSite {
       group
       subjects
-      __typename
     }
     filterSpecimenCountByAnatomicalCollectionSite {
       group
       subjects
-      __typename
     }
     specimenCountByTissueCategory {
       group
       subjects
-      __typename
     }
     filterSpecimenCountByTissueCategory {
       group
       subjects
-      __typename
     }
     specimenCountBySpecimenType {
       group
       subjects
-      __typename
     }
     filterSpecimenCountBySpecimenType {
       group
       subjects
-      __typename
     }
     participantCountByAssessmentTimepoint {
       group
       subjects
-      __typename
     }
     filterParticipantCountByAssessmentTimepoint {
       group
       subjects
-      __typename
     }
     dataFileCountByDataFileType {
       group
       subjects
-      __typename
     }
     filterDataFileCountByDataFileType {
       group
       subjects
-      __typename
     }
     dataFileCountByDataFileFormat {
       group
       subjects
-      __typename
     }
     filterDataFileCountByDataFileFormat {
       group
       subjects
-      __typename
     }
-    __typename
   }
 }
 `;
 
 export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
   query participantOverview(
-    $subject_id: [String],
+    $participant_id: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
@@ -461,7 +424,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $sort_direction: String
   ){
     participantOverview(
-      subject_id: $subject_id
+      participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -485,7 +448,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       order_by: $order_by
       sort_direction: $sort_direction
     ){
-      subject_id,
+      participant_id,
       ctep_disease_term,
       stage_of_disease,
       tumor_grade,
@@ -505,7 +468,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
 
 export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
   query biospecimenOverview(
-    $subject_id: [String],
+    $participant_id: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
@@ -530,7 +493,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     $sort_direction: String
   ){
     biospecimenOverview(
-      subject_id: $subject_id
+      participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -554,7 +517,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       order_by: $order_by
       sort_direction: $sort_direction
     ){
-      subject_id,
+      participant_id,
       ctep_disease_term,
       stage_of_disease
       primary_disease_site,
@@ -571,7 +534,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
 
 export const GET_FILES_OVERVIEW_QUERY = gql`
   query fileOverview(
-    $subject_id: [String],
+    $participant_id: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
@@ -596,7 +559,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     $sort_direction: String
   ){
     fileOverview(
-      subject_id: $subject_id
+      participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -620,7 +583,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       order_by: $order_by
       sort_direction: $sort_direction
     ){
-      subject_id,
+      participant_id,
       data_file_name,
       data_file_format,
       data_file_type,
@@ -638,7 +601,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
 // --------------- GraphQL Query - "ADD FILES FOR SELECTED PARTICIPANTS" under Participants tab ---------------
 export const GET_FILE_IDS_FOR_SELECTED_PARTICIPANTS = gql`
 query participant_data_files(
-  $subject_id: [String],
+  $participant_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -663,7 +626,7 @@ query participant_data_files(
   $sort_direction: String
 ) {
   participant_data_files(
-      subject_id: $subject_id
+      participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -698,7 +661,7 @@ export const GET_FILE_IDS_FOR_SELECTED_BIOSPECIMENS = gql`
 query biospecimenAddAllToCart(
   $parent_specimen_id: [String], # Helps in adding the selected Biospecimen(s)-files to the cart
 
-  $subject_id: [String],
+  $participant_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -725,7 +688,7 @@ query biospecimenAddAllToCart(
   biospecimen_data_files(
     parent_specimen_id: $parent_specimen_id
 
-    subject_id: $subject_id
+    participant_id: $participant_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -759,7 +722,7 @@ export const GET_FILE_IDS_FOR_SELECTED_FILES = gql`
 query fileAddSelectedToCart(
   $data_file_uuid: [String], # Helps in adding the selected files to the cart
 
-  $subject_id: [String],
+  $participant_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -786,7 +749,7 @@ query fileAddSelectedToCart(
   fileOverview(
     data_file_uuid: $data_file_uuid,
 
-    subject_id: $subject_id
+    participant_id: $participant_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -818,7 +781,7 @@ query fileAddSelectedToCart(
 // --------------- GraphQL Query - "ADD FILES FOR ALL PARTICIPANTS" under Participants tab ---------------
 export const GET_ALL_FILE_IDS_FOR_PARTICIPANTS = gql`
 query participant_data_files(
-  $subject_id: [String],
+  $participant_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -843,7 +806,7 @@ query participant_data_files(
   $sort_direction: String
 ) {
   participant_data_files(
-      subject_id: $subject_id
+      participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -875,7 +838,7 @@ query participant_data_files(
 // --------------- GraphQL Query - "ADD FILES FOR ALL BIOSPECIMENS" under Biospecimens tab ---------------
 export const GET_ALL_FILE_IDS_FOR_BIOSPECIMENS = gql`
   query biospecimenAddAllToCart(
-    $subject_id: [String],
+    $participant_id: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
@@ -900,7 +863,7 @@ export const GET_ALL_FILE_IDS_FOR_BIOSPECIMENS = gql`
     $sort_direction: String = "asc"
   ){
     biospecimen_data_files(
-      subject_id: $subject_id
+      participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -932,7 +895,7 @@ export const GET_ALL_FILE_IDS_FOR_BIOSPECIMENS = gql`
 // --------------- GraphQL Query - "ADD ALL FILES" under Files tab ---------------
 export const GET_ALL_FILE_IDS_FOR_FILES = gql`
 query fileAddAllToCart(
-  $subject_id: [String],
+  $participant_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -957,7 +920,7 @@ query fileAddAllToCart(
   $sort_direction: String = "asc"
  ){
   fileOverview(
-    subject_id: $subject_id
+    participant_id: $participant_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -1022,8 +985,8 @@ export const tabContainers = [
     api: GET_PARTICIPANTS_OVERVIEW_QUERY,
     paginationAPIField: 'participantOverview',
     count: 'numberOfParticipants',
-    dataKey: 'subject_id',
-    defaultSortField: 'subject_id',
+    dataKey: 'participant_id',
+    defaultSortField: 'participant_id',
     defaultSortDirection: 'asc',
     tableID: 'participants_tab_table',
     addAllButtonText: 'ADD FILES FOR ALL PARTICIPANTS',
@@ -1046,7 +1009,7 @@ export const tabContainers = [
         role: cellTypes.CHECKBOX,
       },
       {
-        dataField: 'subject_id',
+        dataField: 'participant_id',
         header: 'Participant ID',
         display: true,
         tooltipText: 'sort',
@@ -1141,7 +1104,7 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addFilesRequestVariableKey: 'subject_id',
+    addFilesRequestVariableKey: 'participant_id',
     addFilesResponseKeys: ['participant_data_files', 'data_file_uuid'],
     addAllFilesResponseKeys: ['participant_data_files', 'data_file_uuid'],
     addAllFileQuery: GET_ALL_FILE_IDS_FOR_PARTICIPANTS,
@@ -1193,7 +1156,7 @@ export const tabContainers = [
         role: cellTypes.CHECKBOX,
       },
       {
-        dataField: 'subject_id',
+        dataField: 'participant_id',
         header: 'Participant ID',
         display: true,
         tooltipText: 'sort',
@@ -1371,7 +1334,7 @@ export const tabContainers = [
           // datafield where file format exists in the table
           fileFormatColumn: 'data_file_format',
           // datafield where file case id exists in the table which is used to get file information
-          caseIdColumn: 'subject_id',
+          caseIdColumn: 'participant_id',
           // datafield where file name exists
           fileName: 'data_file_name',
 
@@ -1408,7 +1371,7 @@ export const tabContainers = [
         headerType: headerTypes.CUSTOM_ELEM,
       },
       {
-        dataField: 'subject_id',
+        dataField: 'participant_id',
         header: 'Participant ID',
         display: true,
         tooltipText: 'sort',
