@@ -44,8 +44,8 @@ const defaultQuery =
     $stage_of_disease: [String],
     $tumor_grade: [String], 
     $sex: [String], 
-    $reported_gender: [String], 
-    $race: [String], $ethnicity: [String],
+    $race: [String], 
+    $ethnicity: [String],
     $carcinogen_exposure: [String], 
     $targeted_therapy: [String],
     $anatomical_collection_site: [String],
@@ -61,7 +61,6 @@ const defaultQuery =
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
       sex: $sex
-      reported_gender: $reported_gender
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
@@ -93,7 +92,6 @@ const defaultQuery =
 #     $stage_of_disease: [String],
 #     $tumor_grade: [String],
 #     $sex: [String],
-#     $reported_gender: [String],
 #     $race: [String],
 #     $ethnicity: [String],
 #     $carcinogen_exposure: [String],
@@ -137,7 +135,6 @@ const defaultQuery =
 #       tumor_grade,
 #       age_at_enrollment,
 #       sex,
-#       reported_gender,
 #       race,
 #       ethnicity,
 #       carcinogen_exposure,
@@ -145,6 +142,7 @@ const defaultQuery =
 #       data_file_uuid
 #     }
 #   }
+
 
 `;
 
@@ -214,7 +212,6 @@ const GraphqlView = ({ classes }) => (
   "stage_of_disease": [],
   "tumor_grade": [],
   "sex": [],
-  "reported_gender": [],
   "race": [],
   "ethnicity": [],
   "carcinogen_exposure": [],
