@@ -36,7 +36,7 @@ const defaultQuery =
 
     query search(
 		# Variables defined to be searched with you can use these variables in the query Variables section to constrain results
-    # to constrain results copy '"sex": ["Male"],' and paste it into the query variables where '"sex": [],' is and
+    # to constrain results copy '"sex": ["Male"] and paste it below in the variables window
     # the results will reflect all data that is related to participants who are male
     # you can use the lists on the facets on the explore page to find variables to filter queries here
     $participant_id: [String],
