@@ -39,7 +39,7 @@ const defaultQuery =
     # to constrain results copy '"sex": ["Male"],' and paste it into the query variables where '"sex": [],' is and
     # the results will reflect all data that is related to participants who are male
     # you can use the lists on the facets on the explore page to find variables to filter queries here
-    $subject_id: [String],
+    $participant_id: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String], 
@@ -56,7 +56,7 @@ const defaultQuery =
     $data_file_format: [String]
     ){
     searchParticipants(
-      subject_id: $subject_id
+      participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -88,7 +88,7 @@ const defaultQuery =
 # The default query below is the same query that is used to query data from
 # the Clinical and Translational Data Commons database for the Explore page.
 # query participantOverview(
-#     $subject_id: [String],
+#     $participant_id: [String],
 #     $ctep_disease_term: [String],
 #     $stage_of_disease: [String],
 #     $tumor_grade: [String],
@@ -110,7 +110,7 @@ const defaultQuery =
 #     $sort_direction: String
 #   ){
 #     participantOverview(
-#       subject_id: $subject_id
+#       participant_id: $participant_id
 #       ctep_disease_term: $ctep_disease_term
 #       stage_of_disease: $stage_of_disease
 #       tumor_grade: $tumor_grade
@@ -131,7 +131,7 @@ const defaultQuery =
 #       order_by: $order_by
 #       sort_direction: $sort_direction
 #     ){
-#       subject_id,
+#       participant_id,
 #       ctep_disease_term,
 #       stage_of_disease,
 #       tumor_grade,
