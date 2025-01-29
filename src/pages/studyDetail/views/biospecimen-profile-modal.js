@@ -7,6 +7,7 @@ import { Box, IconButton, Dialog, DialogContent, Tab, Tabs, Grid } from '@materi
 import { TabContext, TabPanel, } from '@material-ui/lab';
 import CloseIcon from '@material-ui/icons/Close';
 import {
+  StyledDialogTitle,
   StyledLink,
 } from './biospecimen-profile-modal-styled.js';
 
@@ -61,7 +62,7 @@ const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCod
         maxWidth= 'md'
         fullWidth={true}
       >
-        <Box
+        <StyledDialogTitle
           sx={{
             fontFamily: 'Inter',
             color: '#066D93',
@@ -78,7 +79,7 @@ const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCod
           <Box sx={{ fontWeight: '500' }}>
             {studyName} {studyCode}
           </Box>
-        </Box>
+        </StyledDialogTitle>
         <Box sx= {{position: 'absolute', top: '10px', right: '12px'}}>
           <IconButton aria-label="close modal" onClick={handleClose}>
               <CloseIcon />

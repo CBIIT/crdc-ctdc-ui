@@ -41,7 +41,7 @@ export const biospecimenProfile = {
   ],
 };
 
-export const palette = ['#2A4B83', '#9F2A23', '#A8C4DF', '#CC703E', '#DFC798', '#C2C1C0', '#517D98', '#0B3556', '#1D79A8', '#FF7F15', '#39C0F0', '#8E9CEF', '#4BC41E' ];
+export const palette = ['#0A8B8B', '#6AC6B6', '#C33B27', '#FDB915', '#381F5F', '#007EA5', '#8B5996', '#0A8B8B', '#6AC6B6', '#C33B27', '#FDB915', '#381F5F', '#007EA5' ];
 
 /* * Xaxis config value */
 export const argumentConfiguration = {
