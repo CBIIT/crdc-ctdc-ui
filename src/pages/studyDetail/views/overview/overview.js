@@ -8,7 +8,7 @@ import {
   // eslint-disable-next-line no-unused-vars
   externalIcon,
 } from '../../../../bento/studyDetailData';
-import BiospecimenProfile from '../BiospecimenProfile';
+import BiospecimenProfile from '../BiospecimenProfile.js';
 import OverviewThemeProvider from './overviewThemeConfig';
 import ZipDownloadView from './components/ZipDownloadView';
 import downloadSuccess from '../../../../assets/study/zipDownloadIcon.svg'

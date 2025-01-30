@@ -1,7 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useApolloClient } from '@apollo/client';
 import { connect } from 'react-redux';
-import { useLocation } from 'react-router-dom/cjs/react-router-dom';
 import { CircularProgress } from '@material-ui/core';
 import { getFilters } from '@bento-core/facet-filter';
 import DashTemplateView from './DashTemplateView';
@@ -14,20 +13,7 @@ const getDashData = (states) => {
     localFindUpload, localFindAutocomplete,
   } = states;
 
-  const tabIndexMap = {
-    'participants': 0,
-    'biospecimens': 1,
-    'files': 2,
-  };
-
-  const { search } = useLocation();
   const client = useApolloClient();
-
-  // Memoize tabIndex to avoid recalculating it on each render
-  const tabIndex = useMemo(() => {
-    const tabName = search ? new URLSearchParams(search).get('selectedTab').toLowerCase() : 'participants';
-    return tabIndexMap[tabName];
-  }, [search]);
 
   const [dashData, setDashData] = useState(null)
   const [initialDashData, setInitialDashData] = useState(null);
@@ -115,12 +101,12 @@ const getDashData = (states) => {
     fetchDashData();
   }, [hasLoadedInitialData, filterState, localFindUpload, localFindAutocomplete]);
 
-return { dashData, activeFilters, tabIndex };
+return { dashData, activeFilters };
 
 };
 
 const DashTemplateController = ((props) => {
-  const { dashData, activeFilters, tabIndex } = getDashData(props);
+  const { dashData, activeFilters } = getDashData(props);
   if (!dashData) {
     return (<CircularProgress />);
   }
@@ -130,7 +116,6 @@ const DashTemplateController = ((props) => {
       {...props}
       dashData={dashData}
       activeFilters={activeFilters}
-      tabIndex={tabIndex}
     />
   );
 });

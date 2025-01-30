@@ -20,6 +20,7 @@ import Styles from './studyDetailsStyle';
 import StudyThemeProvider from './studyDetailsThemeConfig';
 import Overview from './views/overview/overview';
 import store from '../../store';
+import { onClearAllFilters } from '../dashTemplate/sideBar/BentoFilterUtils';
 
 const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
   const studyData = data;
@@ -60,7 +61,7 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
 
   const linkToDashboard = () => {
     // TODO: Once local-find is enabled; dispatch(resetAllData()) from bento-core/local-find to RESET_LOCALFIND_ALL_DATA
-    store.dispatch(clearAllFilters());
+    onClearAllFilters();
   };
 
   return (
