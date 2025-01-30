@@ -35,6 +35,8 @@ import {
   // MarginTopTenGrid,
   // StyledTabs,
 } from './biospecimen-profile-styled.js'
+import useDashboardTabs from '../../dashTemplate/components/dashboard-tabs-store.js';
+import { onClearAllFilters } from '../../dashTemplate/sideBar/BentoFilterUtils.js';
 
 const tooltipContent = ({ argument, originalValue }) => (
   <div>
@@ -48,6 +50,7 @@ const BiospecimenProfile = ({ classes, d }) => {
   let data = d["StudySpecimenByStudyShortName"][0];
 
   const [_, {setIsModalOpen}] = useBiospecimenProfileModal();
+  const [, actions] = useDashboardTabs();
 
   const accessionId = data.accessionId;
   const studyName = d.studyByStudyShortName[0].study_short_name;
@@ -64,11 +67,10 @@ const BiospecimenProfile = ({ classes, d }) => {
   const tabCount = biospecimenProfile.tabs.filter((tab) => (data[tab.value]
     && data[tab.value].length > 0));
 
-  const biospecimenTabPathName = "/explore?selectedTab=biospecimens"
-
   const linkToDashboard = () => {
     // TODO: Once local-find is enabled; dispatch(resetAllData()) from bento-core/local-find to RESET_LOCALFIND_ALL_DATA
-    store.dispatch(clearAllFilters());
+    onClearAllFilters();
+    actions.changeCurrentTab(1);
   };
 
   const tabItem = (items) => (
@@ -137,7 +139,7 @@ const BiospecimenProfile = ({ classes, d }) => {
               <span className={classes.headerButtonLinkSpan}>
                 <Link
                   className={classes.headerButtonLink}
-                  to={biospecimenTabPathName}
+                  to={(location) => ({ ...location, pathname: '/explore' })}
                   onClick={() => linkToDashboard()}
                 >
                   <span className={classes.headerButtonLinkNumber}>

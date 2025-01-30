@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import TabPanel from './TabPanel';
 import { tabContainers } from '../../../bento/dashboardTabData';
 import { Tabs as BentoTabs }  from '@bento-core/tab';
 import { customTheme } from './DefaultTabTheme';
+import useDashboardTabs from '../components/dashboard-tabs-store';
 
 const Tabs = (props) => {
-  const [currentTab, setCurrentTab] = useState(props.tabIndex || 0);
-  const handleTabChange = (event, value) => {
-    setCurrentTab(value);
+  const [state, actions] = useDashboardTabs();
+  const handleTabChange = (_event, value) => {
+    actions.changeCurrentTab(value);
   };
 
   /**
@@ -26,19 +27,19 @@ const Tabs = (props) => {
     <>
       <BentoTabs
         tabItems={getTabs(tabContainers)}
-        currentTab={currentTab}
+        currentTab={state.currentTab}
         handleTabChange={handleTabChange}
         customTheme={customTheme}
       />
       {
         tabContainers.map((tab, index) => (
           <>
-            <div hidden={currentTab !== index}>
+            <div hidden={state.currentTab !== index}>
               <TabPanel
                 {...props}
                 tab={tab}
                 config={tab}
-                activeTab={index === currentTab}
+                activeTab={index === state.currentTab}
               />
             </div>
           </>

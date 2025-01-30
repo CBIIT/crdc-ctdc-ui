@@ -1,6 +1,5 @@
 import React from 'react';
 import { BarChartV2 } from '../../../components/BarChartV2/index.js';
-import { navigatedToDashboard } from '../../../utils/utils.js';
 import { argumentConfiguration, palette, timePointArgumentConfiguration } from '../../../bento/studyDetailData.js';
 import { useBiospecimenProfileModal } from './biospecimen-profile-modal-store.js';
 import { Box, IconButton, Dialog, DialogContent, Tab, Tabs, Grid } from '@material-ui/core';
@@ -10,6 +9,8 @@ import {
   StyledDialogTitle,
   StyledLink,
 } from './biospecimen-profile-modal-styled.js';
+import useDashboardTabs from '../../dashTemplate/components/dashboard-tabs-store.js';
+import { onClearAllFilters } from '../../dashTemplate/sideBar/BentoFilterUtils.js';
 
 const tabLabels = ['Timepoint', 'Biospecimens'];
 
@@ -18,8 +19,7 @@ const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCod
   const [{ isModalOpen, currentTab }, { setIsModalOpen, setCurrentTab }] =
     useBiospecimenProfileModal();
 
-  const [, actions] = useBiospecimenProfileModal();
-  const filterStudy = `${studyCode}`;
+  const [, actions] = useDashboardTabs();
 
   const handleTabChange = async (event, newValue) => {
     await setCurrentTab(newValue);
@@ -34,9 +34,14 @@ const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCod
   };
 
   const linkToDashboard = async () => {
-    navigatedToDashboard(filterStudy);
-    await setIsModalOpen(false);
-    await setCurrentTab('1');
+    setIsModalOpen(false);
+    /*
+      onClearAllFilters() - Clears all selected filters on the Dashboard page.
+      navigatedToDashboard(filterStudy) - Clears all selected filters and selects a study.
+        This will take effect once CTDC supports multiple studies.
+    */ 
+    onClearAllFilters();
+    actions.changeCurrentTab(1);
   };
 
   return(
