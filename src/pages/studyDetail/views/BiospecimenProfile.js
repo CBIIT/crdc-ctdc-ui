@@ -8,7 +8,6 @@ import {
 import { Link } from 'react-router-dom';
 import { BarChart } from 'bento-components';
 
-import { clearAllFilters } from '@bento-core/facet-filter';
 import {
   biospecimenProfile,
   palette,
@@ -19,7 +18,6 @@ import {
 } from '../../../bento/studyDetailData.js';
 import TabPanel from '../../../components/Tab/TabPanel.js';
 // import { navigatedToDashboard } from '../../../utils/utils';
-import store from '../../../store/index.js';
 import BiospecimenProfileModal from './biospecimen-profile-modal.js';
 import { useBiospecimenProfileModal } from './biospecimen-profile-modal-store.js';
 import {
@@ -49,15 +47,11 @@ const BiospecimenProfile = ({ classes, d }) => {
 
   let data = d["StudySpecimenByStudyShortName"][0];
 
-  const [_, {setIsModalOpen}] = useBiospecimenProfileModal();
+  const [, {setIsModalOpen}] = useBiospecimenProfileModal();
   const [, actions] = useDashboardTabs();
 
-  const accessionId = data.accessionId;
   const studyName = d.studyByStudyShortName[0].study_short_name;
   const studyCode = d.studyByStudyShortName[0].study_id;
-
-  // console.log("bp name: ", studyName);
-  // console.log("bp code: ", studyCode);
 
   const [currentTab, setCurrentTab] = useState(0);
 
