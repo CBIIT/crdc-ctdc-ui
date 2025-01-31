@@ -5,7 +5,7 @@ window.injectedEnv = {
   REACT_APP_APPLICATION_VERSION: 'YYYY_MM_DD/HH:MM',
 
   // Services API End Points:
-  REACT_APP_BACKEND_API: 'https://clinical.datacommons.cancer.gov/v1/graphql/',
+  REACT_APP_BACKEND_API: 'https://clinical-dev.datacommons.cancer.gov/v1/graphql/',
   REACT_APP_BACKEND_PUBLIC_API: 'https://4250bc0d-7018-4a95-bffb-d4dceb96fb4d.mock.pstmn.io/v1/graphql',
   REACT_APP_FILE_SERVICE_API: 'https://clinical.datacommons.cancer.gov/api/files/',
   REACT_APP_AUTH_SERVICE_API: 'https://clinical.datacommons.cancer.gov/api/auth/',
