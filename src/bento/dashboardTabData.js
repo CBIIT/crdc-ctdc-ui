@@ -86,7 +86,7 @@ export const tabIndex = [
 // Main Query used to populate Facet, Widget components
 export const DASHBOARD_QUERY_NEW = gql`
 query search(
-  $subject_id: [String],
+  $participant_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String], 
@@ -100,7 +100,7 @@ query search(
   $data_file_type: [String],
   $data_file_format: [String]) {
   searchParticipants(
-    subject_id: $subject_id
+    participant_id: $participant_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -312,7 +312,7 @@ query search(
 
 export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
   query participantOverview(
-    $subject_id: [String],
+    $participant_id: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
@@ -332,7 +332,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $sort_direction: String
   ){
     participantOverview(
-      subject_id: $subject_id
+      participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -351,7 +351,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       order_by: $order_by
       sort_direction: $sort_direction
     ){
-      subject_id,
+      participant_id,
       ctep_disease_term,
       stage_of_disease,
       tumor_grade,
@@ -369,7 +369,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
 
 export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
   query biospecimenOverview(
-    $subject_id: [String],
+    $participant_id: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
@@ -389,7 +389,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     $sort_direction: String
   ){
     biospecimenOverview(
-      subject_id: $subject_id
+      participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -408,7 +408,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       order_by: $order_by
       sort_direction: $sort_direction
     ){
-      subject_id,
+      participant_id,
       ctep_disease_term,
       stage_of_disease
       primary_disease_site,
@@ -425,7 +425,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
 
 export const GET_FILES_OVERVIEW_QUERY = gql`
   query fileOverview(
-    $subject_id: [String],
+    $participant_id: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
@@ -445,7 +445,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     $sort_direction: String
   ){
     fileOverview(
-      subject_id: $subject_id
+      participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -464,7 +464,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       order_by: $order_by
       sort_direction: $sort_direction
     ){
-      subject_id,
+      participant_id,
       data_file_name,
       data_file_format,
       data_file_type,
@@ -1279,7 +1279,7 @@ query subjectOverview(
 // --------------- GraphQL Query - Add Associated Files under Cases table to Cart ---------------
 export const GET_ALL_FILEIDS_PARTICIPANTS_TAB_FOR_SELECT_ALL = gql`
 query participant_data_files(
-  $subject_id: [String],
+  $participant_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -1299,7 +1299,7 @@ query participant_data_files(
   $sort_direction: String
 ) {
   participant_data_files(
-      subject_id: $subject_id
+      participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -1327,7 +1327,7 @@ query participant_data_files(
 // --------------- GraphQL Query - Add Associated Files under Biospecimens table to Cart ---------------
 export const GET_ALL_FILEIDS_BIOSPECIMENS_TAB_FOR_SELECT_ALL = gql`
 query biospecimenAddAllToCart(
-  $subject_id: [String],
+  $participant_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -1351,7 +1351,7 @@ query biospecimenAddAllToCart(
   $sort_direction: String = "asc"
 ){
   biospecimen_data_files(
-    subject_id: $subject_id
+    participant_id: $participant_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -1383,7 +1383,7 @@ query biospecimenAddAllToCart(
 export const GET_ALL_FILEIDS_FILES_TAB_FOR_SELECT_ALL = gql`
 query fileAddSelectedToCart(
   $data_file_uuid: [String],
-  $subject_id: [String],
+  $participant_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -1404,7 +1404,7 @@ query fileAddSelectedToCart(
  ){
   fileOverview(
     data_file_uuid: $data_file_uuid,
-    subject_id: $subject_id
+    participant_id: $participant_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -1431,7 +1431,7 @@ query fileAddSelectedToCart(
 // --------------- GraphQL Query - Add all files under Cases table to Cart ---------------
 export const GET_ALL_FILEIDS_FROM_PARTICIPANTS_TAB_FOR_ADD_ALL_CART = gql`
 query participant_data_files(
-  $subject_id: [String],
+  $participant_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -1451,7 +1451,7 @@ query participant_data_files(
   $sort_direction: String
 ) {
   participant_data_files(
-      subject_id: $subject_id
+      participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -1478,7 +1478,7 @@ query participant_data_files(
 // --------------- GraphQL Query - Add all files under Biospecimens table to Cart ---------------
 export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
   query biospecimenAddAllToCart(
-    $subject_id: [String],
+    $participant_id: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
@@ -1502,7 +1502,7 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
     $sort_direction: String = "asc"
   ){
     biospecimen_data_files(
-      subject_id: $subject_id
+      participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -1531,7 +1531,7 @@ export const GET_ALL_FILEIDS_FROM_BIOSPECIMENS_TAB_FOR_ADD_ALL_CART = gql`
 // --------------- GraphQL Query - Add all files under Files table to Cart ---------------
 export const GET_ALL_FILEIDS_FROM_FILES_TAB_FOR_ADD_ALL_CART = gql`
 query fileAddAllToCart(
-  $subject_id: [String],
+  $participant_id: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -1551,7 +1551,7 @@ query fileAddAllToCart(
   $sort_direction: String = "asc"
  ){
   fileOverview(
-    subject_id: $subject_id
+    participant_id: $participant_id
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -1611,8 +1611,8 @@ export const tabContainers = [
     api: GET_PARTICIPANTS_OVERVIEW_QUERY,
     paginationAPIField: 'participantOverview',
     count: 'numberOfParticipants',
-    dataKey: 'subject_id',
-    defaultSortField: 'subject_id',
+    dataKey: 'participant_id',
+    defaultSortField: 'participant_id',
     defaultSortDirection: 'asc',
     tableID: 'participants_tab_table',
     addAllButtonText: 'ADD FILES FOR ALL PARTICIPANTS',
@@ -1635,7 +1635,7 @@ export const tabContainers = [
         role: cellTypes.CHECKBOX,
       },
       {
-        dataField: 'subject_id',
+        dataField: 'participant_id',
         header: 'Participant ID',
         display: true,
         tooltipText: 'sort',
@@ -1722,7 +1722,7 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addFilesRequestVariableKey: 'subject_id',
+    addFilesRequestVariableKey: 'participant_id',
     addFilesResponseKeys: ['participant_data_files', 'data_file_uuid'],
     addAllFilesResponseKeys: ['participant_data_files', 'data_file_uuid'],
     addAllFileQuery: GET_ALL_FILEIDS_FROM_PARTICIPANTS_TAB_FOR_ADD_ALL_CART,
@@ -1774,7 +1774,7 @@ export const tabContainers = [
         role: cellTypes.CHECKBOX,
       },
       {
-        dataField: 'subject_id',
+        dataField: 'participant_id',
         header: 'Participant ID',
         display: true,
         tooltipText: 'sort',
@@ -1952,7 +1952,7 @@ export const tabContainers = [
           // datafield where file format exists in the table
           fileFormatColumn: 'data_file_format',
           // datafield where file case id exists in the table which is used to get file information
-          caseIdColumn: 'subject_id',
+          caseIdColumn: 'participant_id',
           // datafield where file name exists
           fileName: 'data_file_name',
 
@@ -1989,7 +1989,7 @@ export const tabContainers = [
         headerType: headerTypes.CUSTOM_ELEM,
       },
       {
-        dataField: 'subject_id',
+        dataField: 'participant_id',
         header: 'Participant ID',
         display: true,
         tooltipText: 'sort',
