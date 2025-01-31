@@ -12,7 +12,6 @@ const ParticipantCard = ({ data = {}, index })=> {
     ctep_disease_term: ctepDiseaseTerm,
     age_at_enrollment: age,
     sex,
-    reported_gender: gender,
     race,
     ethnicity,
     targeted_therapy: therapy,
@@ -49,11 +48,11 @@ const ParticipantCard = ({ data = {}, index })=> {
             {renderInfo('Diagnosis:', ctepDiseaseTerm)}
             {renderInfo('Age:', age)}
             {renderInfo('Sex:', sex)}
-            {renderInfo('Gender:', gender)}
+            {renderInfo('Race:', race)}
           </div>
 
           <div className={cn(classes.column, classes.leftColumn)}>
-            {renderInfo('Race:', race)}
+            
             {renderInfo('Ethnicity:', ethnicity)}
             {renderInfo('Therapy:', removeSquareBracketsFromString(therapy))}
             {renderInfo('Stage of Disease:', stageOfDisease)}
