@@ -39,12 +39,12 @@ export default {
           link: 'https://github.com/CBIIT/crdc-ctdc-starter-kit/releases',
         },
         {
-          text: 'FE Version: v1.0.1',
-          link: '',
+          text: 'FE Version: v1.0.2',
+          
         },
         {
-          text: 'BE Version: v1.0.0',
-          link: '',
+          text: 'BE Version: v1.0.1',
+          
         },
       ],
     },
