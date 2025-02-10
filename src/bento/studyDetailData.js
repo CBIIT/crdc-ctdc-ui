@@ -98,7 +98,7 @@ export const valueConfiguration = {
 
 /** common series setting */
 export const seriesSetting = {
-  maxBarWidth: 16,
+  maxBarWidth: 200,
 };
 
 // --------------- GraphQL query configuration --------------
