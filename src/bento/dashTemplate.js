@@ -83,18 +83,6 @@ export const facetsConfig = [
   },
   {
     section: CASES,
-    label: 'Gender',
-    apiPath: 'participantCountByReportedGender',
-    apiForFiltering: 'filterParticipantCountByReportedGender',
-    datafield: 'reported_gender',
-    field: GROUP,
-    type: InputTypes.CHECKBOX,
-    sort_type: sortType.CUSTOM_NUMBER,
-    show: false,
-    defaultValue: DEFAULT_VALUE,
-  },
-  {
-    section: CASES,
     label: 'Race',
     apiPath: 'participantCountByRace',
     apiForFiltering: 'filterParticipantCountByRace',
@@ -255,19 +243,6 @@ export const widgetConfig = [
     sliceTitle: "Participants",
     dataName: 'participantCountBySex',
   },
-  /* Covert "Sex and Gender" sunburst to Sex donut above, preserving this for future implementation.
-    {
-      type: 'sunburst',
-      title: 'Sex and Gender',
-      sliceTitle: "Participants",
-      dataName: 'sexesAndGenders',
-      datatable_level1_field: 'program', // Inner Ring
-      datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-      datatable_level2_field: 'arm', // Outer Ring
-      datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
-      resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
-    },
-  */
   {
     type: 'sunburst',
     title: 'Race and Ethnicity',

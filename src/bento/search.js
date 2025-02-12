@@ -129,7 +129,7 @@ export const SEARCH = gql`
   query globalSearch($input: String){
     globalSearch(input: $input) {
       participants {
-        subject_id
+        participant_id
       }
       biospecimens {
         parent_specimen_id
@@ -157,11 +157,10 @@ export const SEARCH_PAGE_RESULT_PARTICIPANTS = gql`
         ctep_disease_term
         stage_of_disease
         sex
-        reported_gender
         race
         targeted_therapy
         ethnicity
-        subject_id
+        participant_id
         age_at_enrollment
       }
     }
@@ -179,7 +178,7 @@ export const SEARCH_PAGE_RESULT_BIOSPECIMENS = gql`
         type
         study_short_name
         parent_specimen_id
-        subject_id
+        participant_id
         ctep_disease_term
         parent_specimen_type
         tissue_category

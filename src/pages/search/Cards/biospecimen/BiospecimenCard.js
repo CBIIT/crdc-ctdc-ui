@@ -8,7 +8,7 @@ import useStyles from './style';
 const BiospecimenCard = ({ data = {}, index }) => {
   const {
     parent_specimen_id: parentSpecimenId,
-    subject_id: subjectId,
+    participant_id: participantId,
     ctep_disease_term: ctepDiseaseTerm,
     parent_specimen_type: parentSpecimenType,
     tissue_category: tissueCategory,
@@ -44,7 +44,7 @@ const BiospecimenCard = ({ data = {}, index }) => {
         </div>
         <div className={classes.row}>
           <div className={classes.column}>
-            {renderInfo('Participant:', subjectId)}
+            {renderInfo('Participant:', participantId)}
             {renderInfo('Diagnosis:', ctepDiseaseTerm)}
             {renderInfo('Parent biospecimen:', parentSpecimenType)}
           </div>

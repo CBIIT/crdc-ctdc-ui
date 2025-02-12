@@ -203,7 +203,7 @@ function searchView(props) {
   const { SearchBar } = SearchBarGenerator({
     classes,
     config: {
-      placeholder: 'e.g. colon, MSB-01068, panitumimab, FFPE, CMB, gender',
+      placeholder: 'e.g. colon, MSB-01068, panitumimab, FFPE, CMB',
       iconType: 'image',
       maxSuggestions: 0,
       minimumInputLength: 0,
