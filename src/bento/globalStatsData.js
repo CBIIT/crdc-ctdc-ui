@@ -166,16 +166,21 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
     $participant_id: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
-    $tumor_grade: [String], 
-    $sex: [String], 
-    $race: [String], $ethnicity: [String],
-    $carcinogen_exposure: [String], 
-    $targeted_therapy: [String],
+    $tumor_grade: [String],
+    $sex: [String],
+    $race: [String],
+    $ethnicity: [String],
+    $carcinogen_exposure: [String],
+    # $targeted_therapy: [String],
+    $targeted_therapy_string: [String],
+
     $anatomical_collection_site: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
+
     $data_file_type: [String],
-    $data_file_format: [String]) {
+    $data_file_format: [String]
+  ) {
     searchParticipants(
       participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
@@ -185,10 +190,13 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy: $targeted_therapy
+      # targeted_therapy: $targeted_therapy
+      targeted_therapy_string: $targeted_therapy_string
+
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
+
       data_file_type: $data_file_type
       data_file_format: $data_file_format
     ) {

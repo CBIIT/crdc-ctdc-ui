@@ -8,7 +8,6 @@ import {
 import { Link } from 'react-router-dom';
 import { BarChart } from 'bento-components';
 
-import { clearAllFilters } from '@bento-core/facet-filter';
 import {
   biospecimenProfile,
   palette,
@@ -16,10 +15,26 @@ import {
   timePointArgumentConfiguration,
   argumentConfiguration,
   seriesSetting,
-} from '../../../bento/studyDetailData';
-import TabPanel from '../../../components/Tab/TabPanel';
+} from '../../../bento/studyDetailData.js';
+import TabPanel from '../../../components/Tab/TabPanel.js';
 // import { navigatedToDashboard } from '../../../utils/utils';
-import store from '../../../store';
+import BiospecimenProfileModal from './biospecimen-profile-modal.js';
+import { useBiospecimenProfileModal } from './biospecimen-profile-modal-store.js';
+import {
+  BarChartWrapper,
+  // Content,
+  // DetailContainerHeader,
+  // DetailContainerItems,
+  // HeaderButton,
+  // HeaderButtonLink,
+  // HeaderButtonLinkNumber,
+  // HeaderButtonLinkSpan,
+  // HeaderButtonLinkText,
+  // MarginTopTenGrid,
+  // StyledTabs,
+} from './biospecimen-profile-styled.js'
+import useDashboardTabs from '../../dashTemplate/components/dashboard-tabs-store.js';
+import { onClearAllFilters } from '../../dashTemplate/sideBar/BentoFilterUtils.js';
 
 const tooltipContent = ({ argument, originalValue }) => (
   <div>
@@ -29,21 +44,27 @@ const tooltipContent = ({ argument, originalValue }) => (
 );
 
 const BiospecimenProfile = ({ classes, d }) => {
-  // const studyCode = data.study[0].clinical_study_designation;
-  const [currentTab, setCurrentTab] = useState(0);
-  const handleTabChange = (event, value) => {
-    setCurrentTab(value);
-  };
 
   let data = d["StudySpecimenByStudyShortName"][0];
+
+  const [, {setIsModalOpen}] = useBiospecimenProfileModal();
+  const [, actions] = useDashboardTabs();
+
+  const studyName = d.studyByStudyShortName[0].study_short_name;
+  const studyCode = d.studyByStudyShortName[0].study_id;
+
+  const [currentTab, setCurrentTab] = useState(0);
+
+  const handleTabChange = (event, value) => {
+    setCurrentTab(value);
+  }
   const tabCount = biospecimenProfile.tabs.filter((tab) => (data[tab.value]
     && data[tab.value].length > 0));
 
-  const biospecimenTabPathName = "/explore?selectedTab=biospecimens"
-
   const linkToDashboard = () => {
     // TODO: Once local-find is enabled; dispatch(resetAllData()) from bento-core/local-find to RESET_LOCALFIND_ALL_DATA
-    store.dispatch(clearAllFilters());
+    onClearAllFilters();
+    actions.changeCurrentTab(1);
   };
 
   const tabItem = (items) => (
@@ -72,15 +93,29 @@ const BiospecimenProfile = ({ classes, d }) => {
 
   const renderTabContent = (item, index) => (
     <TabPanel index={item.index} value={currentTab} key={index}>
-      <BarChart
-        data={data[item.value]}
-        palette={palette}
-        tooltipContent={tooltipContent}
-        argument={item.label === 'TIMEPOINT' ? timePointArgumentConfiguration : argumentConfiguration}
-        value={valueConfiguration}
-        seriesSetting={seriesSetting}
-        size= {{ maxHeight: 300, maxWidth: 300, }}
-      />
+      <BarChartWrapper>
+        <div
+          onClick={async () => {
+            await setIsModalOpen(true);
+          }}
+        >
+          <BarChart
+            data={data[item.value]}
+            palette={palette}
+            tooltipContent={tooltipContent}
+            argument={item.label === 'TIMEPOINT' ? timePointArgumentConfiguration : argumentConfiguration}
+            value={valueConfiguration}
+            seriesSetting={seriesSetting}
+            size= {{ maxHeight: 300, maxWidth: 300, }}
+          />
+        </div>
+        <BiospecimenProfileModal
+          biospecimenProfile={biospecimenProfile}
+          data={data}
+          studyName = {studyName}
+          studyCode= {studyCode}
+        />
+      </BarChartWrapper>
     </TabPanel>
   );
 
@@ -98,7 +133,7 @@ const BiospecimenProfile = ({ classes, d }) => {
               <span className={classes.headerButtonLinkSpan}>
                 <Link
                   className={classes.headerButtonLink}
-                  to={biospecimenTabPathName}
+                  to={(location) => ({ ...location, pathname: '/explore' })}
                   onClick={() => linkToDashboard()}
                 >
                   <span className={classes.headerButtonLinkNumber}>
@@ -110,7 +145,7 @@ const BiospecimenProfile = ({ classes, d }) => {
             </div>
           </Grid>
           <Grid item xs={12} className={classes.tabContainer}>
-            { tabItem(biospecimenProfile.tabs) }
+            { tabItem(biospecimenProfile.tabs)}
           </Grid>
           <Grid container className={classes.detailContainerItems}>
             { biospecimenProfile.tabs.map((item, index) => renderTabContent(item, index)) }
@@ -180,7 +215,7 @@ const styles = (theme) => ({
     padding: '0px !important',
     marginRight: '10px',
     textAlign: 'center',
-    color: '#507C91',
+    color: '#446B79',
   },
   headerButton: {
     fontFamily: theme.custom.fontFamilySans,

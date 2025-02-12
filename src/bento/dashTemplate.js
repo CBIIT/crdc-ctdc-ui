@@ -5,6 +5,7 @@ const CASES = 'Filter by Participants';
 const SAMPLES = 'Filter by Biospecimens';
 const FILES = 'Filter by Data Files';
 const GROUP = 'group';
+const COUNT = 'subjects';
 
 // --------------- Facet resetIcon link configuration --------------
 // Ideal size for resetIcon is 16x16 px
@@ -37,6 +38,7 @@ export const facetsConfig = [
     apiForFiltering: 'filterParticipantCountByCtepDiseaseTerm',
     datafield: 'ctep_disease_term',
     field: GROUP,
+    count: COUNT,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
@@ -52,6 +54,7 @@ export const facetsConfig = [
     apiForFiltering: 'filterParticipantCountByStageOfDisease',
     datafield: 'stage_of_disease',
     field: GROUP,
+    count: COUNT,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
@@ -64,6 +67,7 @@ export const facetsConfig = [
     apiForFiltering: 'filterParticipantCountByTumorGrade',
     datafield: 'tumor_grade',
     field: GROUP,
+    count: COUNT,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
@@ -76,6 +80,7 @@ export const facetsConfig = [
     apiForFiltering: 'filterParticipantCountBySex',
     datafield: 'sex',
     field: GROUP,
+    count: COUNT,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.RANGE,
     show: true,
@@ -88,6 +93,7 @@ export const facetsConfig = [
     apiForFiltering: 'filterParticipantCountByRace',
     datafield: 'race',
     field: GROUP,
+    count: COUNT,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
@@ -100,6 +106,7 @@ export const facetsConfig = [
     apiForFiltering: 'filterParticipantCountByEthnicity',
     datafield: 'ethnicity',
     field: GROUP,
+    count: COUNT,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
@@ -112,6 +119,7 @@ export const facetsConfig = [
     apiForFiltering: 'filterParticipantCountByCarcinogenExposure',
     datafield: 'carcinogen_exposure',
     field: GROUP,
+    count: COUNT,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
@@ -120,14 +128,17 @@ export const facetsConfig = [
   {
     section: CASES,
     label: 'Targeted Therapy',
-    apiPath: 'participantCountByTargetedTherapy',
-    apiForFiltering: 'filterParticipantCountByTargetedTherapy',
-    datafield: 'targeted_therapy',
+    apiPath: 'participantCountBySingleTargetedTherapyCombination',
+    apiForFiltering: 'filterParticipantCountBySingleTargetedTherapyCombination',
+    datafield: 'targeted_therapy_string',
     field: GROUP,
+    count: COUNT,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
     defaultValue: DEFAULT_VALUE,
+
+    displayFacetCount: false,
   },
   {
     section: SAMPLES,
@@ -136,6 +147,7 @@ export const facetsConfig = [
     apiForFiltering: 'filterSpecimenCountByAnatomicalCollectionSite',
     datafield: 'anatomical_collection_site',
     field: GROUP,
+    count: COUNT,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
@@ -148,6 +160,7 @@ export const facetsConfig = [
     apiForFiltering: 'filterSpecimenCountByTissueCategory',
     datafield: 'tissue_category',
     field: GROUP,
+    count: COUNT,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
@@ -160,6 +173,7 @@ export const facetsConfig = [
     apiForFiltering: 'filterParticipantCountByAssessmentTimepoint',
     datafield: 'assessment_timepoint',
     field: GROUP,
+    count: COUNT,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
@@ -172,6 +186,7 @@ export const facetsConfig = [
     apiForFiltering: 'filterDataFileCountByDataFileType',
     datafield: 'data_file_type',
     field: GROUP,
+    count: COUNT,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
@@ -184,6 +199,7 @@ export const facetsConfig = [
     apiForFiltering: 'filterDataFileCountByDataFileFormat',
     datafield: 'data_file_format',
     field: GROUP,
+    count: COUNT,
     type: InputTypes.CHECKBOX,
     sort_type: sortType.ALPHABET,
     show: true,
@@ -227,15 +243,10 @@ export const SUNBURST_COLORS_LEVEL_2 = [
 // sliceTitle: string (optional)
 export const widgetConfig = [
   {
-    type: 'sunburst',
-    title: 'Diagnosis and Stage of Disease',
+    type: 'donut',
+    title: 'Diagnosis',
     sliceTitle: "Participants",
-    dataName: 'diagnosesAndStageOfDiseases', 
-    datatable_level1_field: 'program', // Inner Ring
-    datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'arm', // Outer Ring
-    datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
-    resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
+    dataName: 'participantCountByCtepDiseaseTerm',
   },
   {
     type: 'donut',
@@ -244,15 +255,10 @@ export const widgetConfig = [
     dataName: 'participantCountBySex',
   },
   {
-    type: 'sunburst',
-    title: 'Race and Ethnicity',
+    type: 'donut',
+    title: 'Race',
     sliceTitle: "Participants",
-    dataName: 'racesAndEthnicities',
-    datatable_level1_field: 'program',
-    datatable_level1_colors: SUNBURST_COLORS_LEVEL_1,
-    datatable_level2_field: 'arm',
-    datatable_level2_colors: SUNBURST_COLORS_LEVEL_2,
-    resetSunburstOnMouseOut: true, // Reset emphasis on mouse out
+    dataName: 'participantCountByRace',
   },
   {
     type: 'donut',

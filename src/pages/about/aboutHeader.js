@@ -18,7 +18,7 @@ const styles = () => ({
   slope2Text: {
     height: '65px',
     width: '252px',
-    color: '#087CA5',
+    color: '#076D92',
     fontFamily: 'Raleway',
     fontSize: '25px',
     fontWeight: 'bold',

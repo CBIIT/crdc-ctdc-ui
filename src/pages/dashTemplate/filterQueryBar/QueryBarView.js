@@ -20,13 +20,17 @@ const QueryBarView = ({ data, statusReducer, localFind }) => {
   const sectionOrder = facetsConfig.map((v) => v.datafield);
   const mappedFilterState = Object.keys(statusReducer || {}).map((facet) => {
     const config = facetsConfig.find((config) => config.datafield === facet);
-
+    // Skip facets without a matching config, e.g., outdated facets in local storage
+    if (!config) {
+      console.warn(`No configuration found for facet: ${facet}`);
+      return null;
+    }
     return {
       ...config,
       items: statusReducer[facet],
       data: data[config.apiForFiltering],
-    }
-  });
+    };
+  }).filter(Boolean); // Remove null entries for skipped facets   
   mappedFilterState.sort((a, b) => sectionOrder.indexOf(a.datafield) - sectionOrder.indexOf(b.datafield));
 
   const { QueryBar } = QueryBarGenerator({
@@ -65,6 +69,34 @@ const QueryBarView = ({ data, statusReducer, localFind }) => {
         }));
       },
     },
+    customStyles: {
+      operators: {
+        color: '#5E5E5E',
+        marginLeft: '3px',
+        marginRight: '3px',
+        borderBottom: 'none',
+        textDecoration: 'none',
+        fontSize: 10,
+        fontWeight: 'bold',
+      },
+      clearQueryButton: {
+        margin: '1px',
+        marginLeft: -6,
+        fontWeight: 600,
+        fontSize: '13px',
+        color: '#fff',
+        borderRadius: '15px',
+        fontFamily: 'Nunito',
+        boxSizing: 'border-box',
+        backgroundColor: '#757575',
+        textTransform: 'capitalize',
+        border: '1px solid #B4B4B4',
+        padding: '1px 5px 0px 6px',
+        '&:hover': {
+          backgroundColor: '#757575',
+        },
+      },
+    }
   });
 
   return (

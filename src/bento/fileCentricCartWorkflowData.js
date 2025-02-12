@@ -1,10 +1,10 @@
 import gql from 'graphql-tag';
 import { cellTypes, dataFormatTypes } from '@bento-core/table';
-import { types, btnTypes } from '@bento-core/paginated-table';
+import { types } from '@bento-core/paginated-table';
 import { customMyFilesTabDownloadCSV } from './tableDownloadCSV';
-import CustomFooterMessage from '../pages/cart/tableConfig/CustomFooterMessage';
 import cartPageIcon from '../assets/cart/cartPageIcon.svg'
 
+export const getManifestFileSignedUrlEndPoint = 'get-manifest-file-signed-url'
 export const navBarCartData = {
   cartLabel: 'Cart',
   cartLink: '/fileCentricCart',
@@ -28,7 +28,6 @@ export const tooltipContent = {
   },
 };
 
-//BENTO-2455 Configuration set for Bento 4.0.
 export const myFilesPageData = {
   manifestFileName: 'CTDC File Manifest',
   tooltipIcon: 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg',
@@ -37,72 +36,86 @@ export const myFilesPageData = {
   errorMessage: 'An error has occurred in loading CART',
   layout: [
     {
-      container: 'outer_layout',
+      container: 'paginatedTable',
+      paginatedTable: true,
+    },
+    {
+      container: 'buttons',
       size: 'xl',
-      clsName: 'container_outer_layout',
+      clsName: 'container_footer',
       items: [
         {
-          clsName: 'cart_icon',
-          type: types.ICON,
-          src: cartPageIcon,
-          alt: 'CTDC MyFiles header logo',
-        },
-        {
-          clsName: 'cart_header_text',
-          text: 'Cart >',
-          type: types.TEXT,
-        },
-        {
-          clsName: 'cart_sel_files_text',
-          text: 'Selected Files',
-          type: types.TEXT,
-        },
+          clsName: 'manifest_comments',
+          type: types.TEXT_INPUT,
+          placeholder: 'User Comment',
+        }
       ],
     },
-  
-  {
-    container: 'paginatedTable',
-    paginatedTable: true,
-  },
-  {
-    container: 'buttons',
-    size: 'xl',
-    clsName: 'container_footer',
-    items: [{
-      clsName: 'manifest_comments',
-      type: types.CUSTOM_ELEM,
-      customViewElem: CustomFooterMessage,
-      text: 'To access and analyze files, select and remove unwanted files, click the "Download File Manifest" button, and upload the resulting manifest file to your Velsera Seven Bridges Cancer Genomics Cloud account. [Note "Velsera Seven Bridges Cancer Genomics Cloud account" should be hyperlinked to https://cgc-accounts.sbgenomics.com/auth/login?next=https%3A%2F%2Fcgc-accounts.sbgenomics.com%2F with external icon ]',
+  ],
 
-    },{
-      clsName: 'manifest_comments',
-      type: types.TEXT_INPUT,
-      placeholder: 'User Comment',
-    }],
-  },
-  {
-  container: 'buttons',
-  size: 'xl',
-  clsName: 'container_header',
-  items: [
-    {
-      title: 'Download File Manifest',
-      clsName: 'download_manifest',
-      type: types.BUTTON,
-      role: btnTypes.DOWNLOAD_MANIFEST,
-      btnType: btnTypes.DOWNLOAD_MANIFEST,
-      usePopup: false,
-      tooltipCofig: tooltipContent
-    }],
-},]
+  downButtonText: 'DOWNLOAD MANIFEST',
+  headerIconSrc: cartPageIcon,
+  headerIconAlt: 'CTDC Cart header logo',
 };
  
 export const manifestData = {
-  keysToInclude: ['data_file_name', 'data_file_uuid','data_file_uuid', 'data_file_checksum_value','participant_id', 'parent_specimen_id', 'ctep_disease_term','meddra_disease_code', 'primary_disease_site','histology', 'stage_of_disease','tumor_grade', 'age_at_enrollment', 'sex', 'race','ethnicity','carcinogen_exposure','targeted_therapy','parent_specimen_id','anatomical_collection_site','tissue_category','assessment_timepoint','User_Comment'],
-  header: ['name', 'drs_uri' ,'File ID', 'Md5sum','Participant ID', 'Biospecimen ID', 'Diagnosis','MedDRA Disease Code', 'Primary Site','Histology', 'Stage of Disease', 'Tumor Grade', 'Age', 'Sex', 'Race', 'Ethnicity', 'Carcinogen Exposure', 'Targeted Therapy', 'Parent Biospecimen ID', 'Anatomical Collection Site','Tissue Category','Collection Timepoint','User Comment'],
+  keysToInclude: [
+    'data_file_name',   // ('name' - 1/4 required fields)
+    'drs_uri',          // ('drs_uri' - 2/4 required fields)
+    'study_short_name', // ('study_short_name' - 3/4 required fields)
+    'participant_id',       // ('participant_id' - 4/4 required fields)
+
+    'data_file_uuid',
+    'data_file_checksum_value',
+    'parent_specimen_id',
+    'ctep_disease_term',
+    'meddra_disease_code',
+    'primary_disease_site',
+    'histology',
+    'stage_of_disease',
+    'tumor_grade',
+    'age_at_enrollment',
+    'sex',
+    'race',
+    'ethnicity',
+    'carcinogen_exposure',
+    'targeted_therapy',
+    'parent_specimen_id',
+    'anatomical_collection_site',
+    'tissue_category',
+    'assessment_timepoint',
+    // 'User_Comment'
+  ],
+  header: [
+    'name',
+    'drs_uri',
+    'study_short_name',
+    'participant_id',
+
+    'File ID',
+    'Md5sum',
+    'Biospecimen ID',
+    'Diagnosis',
+    'MedDRA Disease Code',
+    'Primary Site',
+    'Histology',
+    'Stage of Disease',
+    'Tumor Grade',
+    'Age',
+    'Sex',
+    'Race',
+    'Ethnicity',
+    'Carcinogen Exposure',
+    'Targeted Therapy',
+    'Parent Biospecimen ID',
+    'Anatomical Collection Site',
+    'Tissue Category',
+    'Collection Timepoint',
+    'User Comment'
+  ],
 };
 
-// --------------- GraphQL query - Retrieve selected cases info --------------
+// --------------- GraphQL query --------------
 export const GET_MY_CART_DATA_QUERY = gql`
   query filesInList(
     $data_file_uuid: [String],
@@ -117,7 +130,9 @@ export const GET_MY_CART_DATA_QUERY = gql`
       first: $first,
       order_by: $order_by,
       sort_direction: $sort_direction
-    ){ data_file_name
+    ){
+      study_short_name
+      data_file_name
       data_file_format
       data_file_type
       data_file_size
@@ -144,51 +159,10 @@ export const GET_MY_CART_DATA_QUERY = gql`
       anatomical_collection_site
       tissue_category
       assessment_timepoint
+      drs_uri
    }
   }
 `;
-export const GET_MY_CART_DATA_QUERY2 = gql`
-query fileOverview(
-  $data_file_uuid: [String]
-  $offset: Int = 0,
-  $first: Int = 10,
-  $order_by:String ="data_file_name",
-  $sort_direction:String="asc"
-){
-  fileOverview(
-    data_file_uuid: $data_file_uuid
-    offset: $offset,
-      first: $first,
-      order_by: $order_by,
-      sort_direction: $sort_direction
-  ){
-    data_file_name
-    data_file_format
-    data_file_type
-    data_file_size
-    association
-    data_file_description
-    participant_id
-    primary_disease_site
-    parent_specimen_id
-    specimen_id
-    ctep_disease_term
-    data_file_uuid
-    stage_of_disease
-    tumor_grade
-    age_at_enrollment
-    sex
-    race
-    data_file_checksum_value
-    ethnicity
-    carcinogen_exposure
-    targeted_therapy
-    anatomical_collection_site
-    tissue_category
-    assessment_timepoint
-  }
-}`;
-
 
 export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
   $data_file_uuid: [String],
@@ -203,7 +177,9 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     first: $first,
     order_by: $order_by,
     sort_direction: $sort_direction
-  ){ data_file_name
+  ){
+    study_short_name
+    data_file_name
     data_file_format
     data_file_type
     data_file_size
@@ -230,6 +206,7 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     anatomical_collection_site
     tissue_category
     assessment_timepoint
+    drs_uri
  }
 }`;
 
@@ -250,20 +227,20 @@ export const table = {
   objectKey: 'filesInList',
   extendedViewConfig: {
     pagination: true,
-    manageViewColumns: {
-      title: "View Columns"
-    },
-    download: {
+    manageViewColumns: false, //{ title: "View Columns" },
+    download: false,
+    
+    /*{
       downloadCsv: "Download Table Contents As CSV",
       downloadFileName: "CTDC_My_Files_download",
       // customDownload: true,
       // ...customMyFilesTabDownloadCSV,
-    },
+    }, */
   },
   columns: [
     {
       cellType: cellTypes.CHECKBOX,
-      display: false,
+      display: true,
       role: cellTypes.CHECKBOX,
     },
     {
