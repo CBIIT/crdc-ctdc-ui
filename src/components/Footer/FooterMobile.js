@@ -118,6 +118,10 @@ const FooterLinksContainer = styled.div`
   .footItemLink:hover {
     text-decoration: underline;
   }
+  
+  .footItemText:hover {
+    text-decoration: none !important;
+  }
 
   .dropbtn {
     display:flex;
@@ -347,9 +351,12 @@ const FooterMobile = () => {
                         linkItem.items.map((item, itemidx) => {
                           const itemkey = `item_${itemidx}`;
                           return (
-                            item.link.includes('http')
-                              ? <a className="footItemLink" key={itemkey} href={item.link} target="_blank" rel="noopener noreferrer">{item.text}</a>
-                              : <a className="footItemLink" key={itemkey} href={item.link}>{item.text}</a>
+                            item.link
+                              ? item.link.includes('http')
+                                ? <a className="footItemLink" key={itemkey} href={item.link} target="_blank" rel="noopener noreferrer">{item.text}</a>
+                                : <a className="footItemLink" key={itemkey} href={item.link}>{item.text}</a>
+                              : <a className="footItemLink footItemText" key={itemkey} href={item.link}>{item.text}</a>
+
                           );
                         })
                       }

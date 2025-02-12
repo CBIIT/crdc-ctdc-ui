@@ -157,7 +157,6 @@ export const SEARCH_PAGE_RESULT_PARTICIPANTS = gql`
         ctep_disease_term
         stage_of_disease
         sex
-        reported_gender
         race
         targeted_therapy
         ethnicity

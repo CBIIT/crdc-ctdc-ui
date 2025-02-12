@@ -125,6 +125,14 @@ const FooterLinksContainer = styled.div`
   .footItemLink:hover {
     text-decoration: underline;
   }
+
+  .footItemText {
+    font-family: Open Sans;
+    color: #FFFFFF;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 22px;
+  }
 `;
 
 const BottomFooter = styled.div`
@@ -278,10 +286,12 @@ const FooterDesktop = () => {
                                         return (
                                           <div className="footItemSubtitle" key={itemkey}>
                                             {
-                                                    item.link.includes('http')
-                                                    ? <a className="footItemLink" href={item.link} target="_blank" rel="noopener noreferrer">{item.text}</a>
-                                                    : <Link className="footItemLink" to={item.link}>{item.text}</Link>
-                                                }
+                                              item.link 
+                                                ? item.link.includes('http') 
+                                                  ? <a className="footItemLink" href={item.link} target="_blank" rel="noopener noreferrer">{item.text}</a>
+                                                  : <Link className="footItemLink" to={item.link}>{item.text}</Link>
+                                                : <span className="footItemText">{item.text} </span>
+                                            }
                                           </div>
                                         );
                                     })
