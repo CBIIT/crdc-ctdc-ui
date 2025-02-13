@@ -6,7 +6,7 @@
   "dependencies": {
     "@apollo/client": "^3.6.9",
     "@apollo/react-components": "^4.0.0",
-    "@babel/core": "7.2.2",
+    "@babel/core": "7.26.0",
     "@bento-core/all": "*",
     "@bento-core/authentication": "1.0.0-CTDC.0",
     "@bento-core/cart": "^1.0.1-ctdc.3",
