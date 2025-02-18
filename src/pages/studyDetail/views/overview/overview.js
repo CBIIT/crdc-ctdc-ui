@@ -407,7 +407,7 @@ const styles = (theme) => ({
   detailContainerHeaderText: {
     fontFamily: theme.custom.fontFamilyInter,
     fontSize: '18px',
-    fontWeight: 400,
+    fontWeight: 500,
     letterSpacing: '0.017em',
     color: '#066D93',
     textTransform: 'uppercase',

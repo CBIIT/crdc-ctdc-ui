@@ -150,9 +150,6 @@ const BiospecimenProfile = ({ classes, d }) => {
           <Grid container className={classes.detailContainerItems}>
             { biospecimenProfile.tabs.map((item, index) => renderTabContent(item, index)) }
           </Grid>
-          <Grid container>
-            <p className={classes.helpfulDirectionText}>Move cursor over barchart to see data count in detail</p>
-          </Grid>
         </>
       ) : (
         <Grid container className={classes.detailContainerCL}>
@@ -180,9 +177,10 @@ const styles = (theme) => ({
   detailContainerHeader: {
     textTransform: 'uppercase',
     fontFamily: theme.custom.fontFamilyInter,
-    fontSize: '16px',
+    fontSize: '18px',
     letterSpacing: '0.017em',
     color: '#066D93',
+    fontWeight: '500',
   },
   container: {
     fontFamily: 'Raleway, sans-serif',
@@ -221,34 +219,41 @@ const styles = (theme) => ({
     fontFamily: theme.custom.fontFamilySans,
     marginTop: '15px',
     textAlign: 'center',
-    height: '33px',
-    background: '#F6F4F4',
-    padding: '2px 10px 0px 10px',
-    border: '3px solid #81A6B9',
-    width: '220px',
+    height: '37px',
+    background: '#E7E5E5',
+    padding: '5px 0px 0px 8px',
+    //border: '3px solid #81A6B9',
+    width: '218px',
   },
   headerButtonLinkSpan: {
     fontFamily: theme.custom.fontFamilyInter,
-    height: '50px',
-    background: '#F6F4F4',
+    height: '60px',
+    //background: '#F6F4F4',
     width: '200px',
     fontSize: '14px',
   },
   headerButtonLinkText: {
     fontFamily: theme.custom.fontFamilyInter,
     color: '#0B3556',
+    fontWeight: '400',
+    fontSize: '12px',
+    lineHeight: '14px',
+    textAlign: 'center',
   },
   headerButtonLinkNumber: {
     fontFamily: theme.custom.fontFamilyInter,
-    margin: '0 4px',
+    margin: '0px 8px 0px -8px',
     fontSize: '14px',
-    color: '#AA581D',
+    fontWeight: '700',
+    lineHeight: '14px',
+    color: '#990099',
+    borderBottom: '2px solid #990099', 
   },
   headerButtonLink: {
     textDecoration: 'none',
     lineHeight: '14px',
     fontSize: '12px',
-    color: '#0296c9',
+    color: '#990099',
     '&:hover': {
       textDecoration: 'underline',
     },
