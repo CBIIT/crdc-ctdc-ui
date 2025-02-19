@@ -38,6 +38,7 @@ export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fi
     }
     // Check if response status is not 200 (Not OK)
     if (response.status !== 200) {
+      showUnauthorizedNotification()
       throw new Error(`Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`);
     }
 
