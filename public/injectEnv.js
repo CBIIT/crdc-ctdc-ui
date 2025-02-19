@@ -12,7 +12,7 @@ window.injectedEnv = {
   REACT_APP_INTEROP_SERVICE_URL: 'https://clinical-dev.datacommons.cancer.gov/api/interoperation/',
 
   REACT_APP_USER_SERVICE_API: 'http://localhost:3000/api/users/',
-  REACT_APP_LOGIN_URL: 'https://nci-crdc-staging.datacommons.io/user/oauth2/authorize?client_id=9ZpYjAWqntLON2Z4Jdvstwe9yCwPA3aFFpQOaZo4&response_type=code&redirect_uri=http://localhost:3000/login&scope=openid%20user',
+  REACT_APP_LOGIN_URL: 'https://nci-crdc-staging.datacommons.io/user/oauth2/authorize?client_id=HADoUzN9BWzbzwxdu0soRvRHSnegiWaoShVhB09O&response_type=code&redirect_uri=http://localhost:3000/login&scope=openid%20user',
 
   // About Content API:
   REACT_APP_ABOUT_CONTENT_URL: 'https://raw.githubusercontent.com/CBIIT/bento-ctdc-static-content/develop/aboutPagesContent.yaml',
