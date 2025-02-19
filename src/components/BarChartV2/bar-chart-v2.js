@@ -105,6 +105,7 @@ const BarChartV2 = ({
               hoveredGroup === entry.group
                 ? '0px 0px 10px rgba(0,0,0,0.5)'
                 : 'none',
+            marginBottom: hoveredGroup === entry.group && index % 2 !== 0 ? '3px' : '0px',
           }}
         >
           <span
