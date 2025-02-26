@@ -54,9 +54,6 @@ const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCod
     actions.changeCurrentTab(1);
   };
 
-  console.log("value: ", value);
-  console.log("currentTab: ", currentTab)
-
   return(
     <>
       <Box
