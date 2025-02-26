@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { BarChartV2 } from '../../../components/BarChartV2/index.js';
 import { argumentConfiguration, palette, timePointArgumentConfiguration } from '../../../bento/studyDetailData.js';
 import { useBiospecimenProfileModal } from './biospecimen-profile-modal-store.js';
@@ -11,15 +11,25 @@ import {
 } from './biospecimen-profile-modal-styled.js';
 import useDashboardTabs from '../../dashTemplate/components/dashboard-tabs-store.js';
 import { onClearAllFilters } from '../../dashTemplate/sideBar/BentoFilterUtils.js';
+import { set } from 'lodash';
 
 const tabLabels = ['Timepoint', 'Biospecimens'];
 
-const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCode }) => {
+const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCode, value }) => {
 
   const [{ isModalOpen, currentTab }, { setIsModalOpen, setCurrentTab }] =
     useBiospecimenProfileModal();
 
   const [, actions] = useDashboardTabs();
+
+  useEffect(() => {
+    if (value === 2) {
+      setCurrentTab('2');
+    } 
+    else {
+      setCurrentTab('1');
+    }
+  }, [value, setCurrentTab]);
 
   const handleTabChange = async (event, newValue) => {
     await setCurrentTab(newValue);
@@ -43,6 +53,9 @@ const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCod
     onClearAllFilters();
     actions.changeCurrentTab(1);
   };
+
+  console.log("value: ", value);
+  console.log("currentTab: ", currentTab)
 
   return(
     <>
