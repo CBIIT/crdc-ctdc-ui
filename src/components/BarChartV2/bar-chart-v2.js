@@ -72,8 +72,6 @@ const BarChartV2 = ({
 }) => {
   const [hoveredGroup, setHoveredGroup] = useState(null);
 
-  // console.log("X axis: ", xAxisLabel);
-  // console.log("Y Axis: ", yAxisLabel);
 
   const CustomTooltip = ({ active, payload }) => {
     if (active && payload && payload.length) {
@@ -145,6 +143,7 @@ const BarChartV2 = ({
           }}
         />
         <YAxis
+          domain={[0,dataMax => (Math.ceil(dataMax/100)*100)]}
           label={{
             value: yAxisLabel,
             angle: -90,
