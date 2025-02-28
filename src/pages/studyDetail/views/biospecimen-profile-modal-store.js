@@ -2,7 +2,6 @@ import { createStore, createHook } from 'react-sweet-state';
 
 const initialState = {
   isModalOpen: false,
-  currentTab: 0,
 };
 
 const actions = {

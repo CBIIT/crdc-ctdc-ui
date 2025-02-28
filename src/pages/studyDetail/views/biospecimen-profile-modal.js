@@ -11,7 +11,6 @@ import {
 } from './biospecimen-profile-modal-styled.js';
 import useDashboardTabs from '../../dashTemplate/components/dashboard-tabs-store.js';
 import { onClearAllFilters } from '../../dashTemplate/sideBar/BentoFilterUtils.js';
-import { set } from 'lodash';
 
 const tabLabels = ['Timepoint', 'Biospecimens'];
 
