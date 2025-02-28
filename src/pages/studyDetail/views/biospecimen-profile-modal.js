@@ -15,25 +15,12 @@ import { set } from 'lodash';
 
 const tabLabels = ['Timepoint', 'Biospecimens'];
 
-const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCode, value }) => {
+const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCode, handleTabChange, currentTab }) => {
 
-  const [{ isModalOpen, currentTab }, { setIsModalOpen, setCurrentTab }] =
+  const [{ isModalOpen}, { setIsModalOpen}] =
     useBiospecimenProfileModal();
 
   const [, actions] = useDashboardTabs();
-
-  useEffect(() => {
-    if (value === 2) {
-      setCurrentTab('2');
-    } 
-    else {
-      setCurrentTab('1');
-    }
-  }, [value, setCurrentTab]);
-
-  const handleTabChange = async (event, newValue) => {
-    await setCurrentTab(newValue);
-  };
 
   const showModal = async () => {
     await setIsModalOpen(true);
@@ -53,6 +40,9 @@ const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCod
     onClearAllFilters();
     actions.changeCurrentTab(1);
   };
+
+  console.log("handleTabChange: ", handleTabChange);
+  console.log("currentTab: ", currentTab);
 
   return(
     <>
@@ -131,9 +121,9 @@ const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCod
                 >
                   {tabLabels.map((tabLabel, index) => (
                     <Tab 
-                      key={`tab-label-${index + 1}`} 
+                      key={`tab-label-${index}`} 
                       label={tabLabel} 
-                      value={String(index + 1)}
+                      value={index}
                     />
                   ))}
                 </Tabs>
@@ -210,7 +200,7 @@ const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCod
                 {biospecimenProfile && biospecimenProfile.tabs && biospecimenProfile.tabs.map((item,index) => {
                   return(
                     <TabPanel 
-                      value = {String(index+1)}
+                      value = {index}
                       sx={{
                         padding: '0px'
                       }}
