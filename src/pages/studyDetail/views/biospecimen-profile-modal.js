@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { BarChartV2 } from '../../../components/BarChartV2/index.js';
 import { argumentConfiguration, palette, timePointArgumentConfiguration } from '../../../bento/studyDetailData.js';
 import { useBiospecimenProfileModal } from './biospecimen-profile-modal-store.js';
@@ -40,9 +40,6 @@ const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCod
     onClearAllFilters();
     actions.changeCurrentTab(1);
   };
-
-  console.log("handleTabChange: ", handleTabChange);
-  console.log("currentTab: ", currentTab);
 
   return(
     <>
