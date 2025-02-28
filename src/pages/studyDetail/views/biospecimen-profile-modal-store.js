@@ -2,7 +2,6 @@ import { createStore, createHook } from 'react-sweet-state';
 
 const initialState = {
   isModalOpen: false,
-  currentTab: '1',
 };
 
 const actions = {
@@ -11,13 +10,6 @@ const actions = {
     ({ setState }) => {
       setState({
         isModalOpen,
-      });
-    },
-  setCurrentTab:
-    (currentTab) =>
-    ({ setState }) => {
-      setState({
-        currentTab,
       });
     },
 };

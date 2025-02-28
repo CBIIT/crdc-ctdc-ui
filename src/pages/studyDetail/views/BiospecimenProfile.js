@@ -114,6 +114,8 @@ const BiospecimenProfile = ({ classes, d }) => {
           data={data}
           studyName = {studyName}
           studyCode= {studyCode}
+          handleTabChange = {handleTabChange}
+          currentTab = {currentTab}
         />
       </BarChartWrapper>
     </TabPanel>
