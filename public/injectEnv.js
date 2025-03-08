@@ -17,7 +17,7 @@ window.injectedEnv = {
   // About Content API:
   REACT_APP_ABOUT_CONTENT_URL: 'https://raw.githubusercontent.com/CBIIT/bento-ctdc-static-content/develop/aboutPagesContent.yaml',
 
-  REACT_APP_FILE_CENTRIC_CART_README: 'https://raw.githubusercontent.com/CBIIT/ctdc-readMe-content/refs/heads/main/My_Files_Cart_Page_README.md',
+  REACT_APP_FILE_CENTRIC_CART_README: 'https://raw.githubusercontent.com/CBIIT/ctdc-readMe-content/refs/heads/dev/My_Files_Cart_Page_README.md',
 
 
   // IDP Auth url
