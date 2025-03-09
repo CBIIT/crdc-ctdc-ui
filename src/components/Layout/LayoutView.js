@@ -26,6 +26,7 @@ import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
 import RAView from '../../pages/about/requestAccess'; 
 import ActivitiesController from '../ActivitiesController'; 
 import useVisitedPageSync from '../../utils/useVisitedPageSync';
+import studiesContainer from '../../pages/studies/studiesController';
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -59,6 +60,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
           <Switch>
               <Route exact path="/" component={Home} />
               <Route exact path="/home" component={Home} />
+              <Route path="/study" component={studiesContainer} />
               <Route exact path="/study/:id" component={StudyDetail} />
               <Route path="/fileCentricCart" component={CartView} />
               <Route path="/explore" component={DashTemplate} />
