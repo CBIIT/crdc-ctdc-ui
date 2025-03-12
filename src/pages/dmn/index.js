@@ -7,6 +7,7 @@ const DataModelNavigator = () => {
     <div style={{ width: '100%', height: '1000px' }}>
       <iframe
         src={dmnUrl}
+        scrolling="no"
         title="Data Model Navigator"
         style={{ width: '100%', height: '1000px', border: 'none' }}
         sandbox="allow-scripts allow-same-origin"
