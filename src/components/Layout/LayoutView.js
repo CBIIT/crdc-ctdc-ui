@@ -26,6 +26,7 @@ import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
 import RAView from '../../pages/about/requestAccess'; 
 import ActivitiesController from '../ActivitiesController'; 
 import useVisitedPageSync from '../../utils/useVisitedPageSync';
+import DataModelNavigator from '../../pages/dmn';
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -69,6 +70,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
               <Route exact path="/search" component={GlobalSearchController} />
               <Route path="/search/:id"  component={GlobalSearchController} />
               <Route path="/graphql" component={GraphqlClient} />
+              <Route path="/data-model" component={DataModelNavigator} />
 
            
               {/* END: Private Routes */}
