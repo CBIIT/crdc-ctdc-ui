@@ -17,7 +17,7 @@ import html2pdf from 'html2pdf.js';
 import styles from './ReadMe.style';
 import CustomTheme from './ReadMe.theme.config';
 import footerLine from './assets/footer_line.png';
-import nihLogo from './assets/icdc_nih_logo.png';
+import nihLogo from './assets/ctdc_logo.svg';
 import { createFileName } from '../../pages/fileCentricCart/utils';
 import PdfDownloadIcon from './assets/Download_PDF.svg';
 
@@ -63,6 +63,10 @@ export const downloadMarkdownPdf = async (title, content) => {
     },
   };
 
+  const currentDomain = window.location.hostname.toUpperCase();
+  const currentPath = window.location.pathname + window.location.hash; // Get path and hash dynamically
+  const fullUrl = `${currentDomain}${currentPath}`;
+
   html2pdf()
     .set(options)
     .from(readMeContent)
@@ -85,7 +89,7 @@ export const downloadMarkdownPdf = async (title, content) => {
         pdf.setFontSize(8);
         pdf.setTextColor(0);
         pdf.text(pgWidth - 2.3, pgHeight - 0.5, `${date}     |      ${i}`);
-        pdf.text(pgWidth - 8, pgHeight - 0.5, 'CANINECOMMONS.CANCER.GOV/#/FileCentricCart');
+        pdf.text(pgWidth - 8, pgHeight - 0.5, fullUrl);
         pdf.addImage(footerLine, 'JPEG', pgWidth - 8, pgHeight - 0.75, 7.5, 0.05);
         // if (i === 1) {
         // pdf.addImage(nihLogo, 'JPEG', pgWidth - 7.75, pgHeight - 10.75, 4, 0.5);
