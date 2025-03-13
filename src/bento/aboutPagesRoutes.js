@@ -4,5 +4,6 @@ export default [
   '/support',
   '/submit',
   '/cloud-computing',
-  '/data-use'
+  '/data-use',
+  '/data-model'
 ];
