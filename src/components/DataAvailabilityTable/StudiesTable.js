@@ -4,6 +4,7 @@ import {
   TableContext,
 } from '../../bento-core';
 import { themeConfig } from './tableThemeConfig';
+import CustomTableHeader from './header/CustomTblHeader';
 
 const StudiesTable = ({
   table,
@@ -26,6 +27,7 @@ const StudiesTable = ({
       totalRowCount={data.length || 0}
       customthemeConfig={{ ...themeConfig(context) }}
       rowsPerPage={rowsPerPage}
+      customTableHeader={CustomTableHeader}
     />
   );
 };

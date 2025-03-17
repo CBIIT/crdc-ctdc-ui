@@ -38,6 +38,7 @@ import {
   dataFormatTypes,
   headerTypes,
   formatBytes,
+  actionCellTypes,
 } from '@bento-core/table';
 import { cartReducerGenerator } from '@bento-core/cart';
 import {
@@ -96,6 +97,7 @@ export {
   headerTypes,
   btnTypes,
   types,
+  actionCellTypes,
   onColumnViewChange,
   onColumnSort,
   onChangeSortDirection,
