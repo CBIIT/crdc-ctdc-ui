@@ -15,7 +15,6 @@ const StudyLink = (props) => {
     linkAttr,
   } = props;
 
-  console.log("|| props - StudyLink: ", props)
   const { rootPath, pathParams } = linkAttr;
   const url = pathParams.map((attr) => `#${rootPath}/`.concat(props[attr]));
   const StudyIcon = getStudyIcon(classes, studyDisposition(study_id));

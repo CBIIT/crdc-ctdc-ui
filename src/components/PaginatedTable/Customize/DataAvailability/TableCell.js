@@ -82,7 +82,6 @@ const DataAvailabilityCellView = (props) => {
   };
 
   const value = props[dataField];
-  console.log(`dataField ${dataField} || value: ${value}`, )
   
   const currentStudyData = interOpData?.getAllStudies
     .filter((study) => study.study_id === study_id); 
