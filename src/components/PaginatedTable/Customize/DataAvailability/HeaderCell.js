@@ -5,9 +5,10 @@ const DataAvailabilityHeader = ({
   classes,
   icon,
   dataField,
+  iconAlt,
 }) => (
   <>
-    <img src={icon} alt={dataField} className={classes.icon} />
+    <img src={icon} alt={iconAlt} className={classes.icon} />
   </>
 );
 

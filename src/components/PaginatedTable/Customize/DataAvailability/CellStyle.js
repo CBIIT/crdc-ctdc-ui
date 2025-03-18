@@ -3,7 +3,7 @@ export default () => ({
     textAlign: 'center',
   },
   dataAvailIndicatorIcon: {
-    color: '#00579E',
+    color: '#4E71CB',
     height: '13px',
     width: '13px',
   },
@@ -15,25 +15,48 @@ export default () => ({
     width: '20px',
   },
   crdcLinkStyle: {
-    color: '#DC762F',
+    color: '#A520A5',
+    textDecoration: 'none',
   },
   crdcApiFailed: {
-    color: '#DC762F',
+    color: '#A520A5',
   },
   defaultDalTooltip: {
     maxWidth: 'none',
-  },
-  externalLinkDalTooltip: {
-    maxWidth: 'none',
-    padding: '0px 12px',
+    padding: '10px 15px !important',
+    margin: '0px',
+    border: '1px solid #CECECE',
+    borderRadius: '5px',
+    boxShadow: '0px 4px 10px 0px #00000040',
+
+    fontFamily: 'Open Sans',
+    fontWeight: 600,
+    fontSize: '13px',
+    lineHeight: '19px',
+    letterSspacing: '0%',
   },
   legend: {
     zIndex: '1000',
   },
   crdcLinks: {
-    paddingLeft: '1em',
     textAlign: 'left',
+
+    listStyle: 'none',
+    padding: '0px',
+    margin: '0px'
   },
+  crdcLinksLi: {
+    marginBottom: '5px',
+    display: 'flex',
+    alignItems: 'center',
+
+    fontFamily: 'Open Sans',
+    fontWeight: 600,
+    fontSize: '13px',
+    lineHeight: '19px',
+    letterSpacing: '0%',
+  },
+
   legendTooltip: {
     position: 'relative',
     bottom: '0.5em',

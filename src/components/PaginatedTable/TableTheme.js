@@ -195,8 +195,8 @@ export const extendedView = ({
         position: 'relative',
         textAlign: 'right',
         '&.downloadAndColumnView': {
-          maxHeight: '2px',
-          minHeight: '0px',
+          maxHeight: '50px',
+          minHeight: '50px',
           '& button': {
             marginTop: '-50px',
             '&.download-icon': {

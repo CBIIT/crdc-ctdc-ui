@@ -11,18 +11,19 @@ import { cellTypes } from '../../../../bento-core';
 const StudyLink = (props) => {
   const {
     classes,
-    clinical_study_designation: studyDesignation,
-    study_disposition: studyDispositionValue,
+    study_id,
     linkAttr,
   } = props;
+
+  console.log("|| props - StudyLink: ", props)
   const { rootPath, pathParams } = linkAttr;
   const url = pathParams.map((attr) => `#${rootPath}/`.concat(props[attr]));
-  const StudyIcon = getStudyIcon(classes, studyDisposition(studyDispositionValue));
+  const StudyIcon = getStudyIcon(classes, studyDisposition(study_id));
   return (
     <>
       <Link href={url} className={cellTypes.LINK}>
         <Typography className={classes.studyLink}>
-          {studyDesignation}
+          {study_id}
         </Typography>
       </Link>
       {

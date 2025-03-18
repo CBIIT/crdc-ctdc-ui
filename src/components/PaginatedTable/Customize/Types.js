@@ -10,22 +10,28 @@ export const customizeColumn = {
   DataValue: 'dataValue',
   csvDataRow: 'csvDataRow',
   clinicalDataNode: 'clinicalDataNode',
-  clinicalDataDescription: 'clinicalDataDescription'
+  clinicalDataDescription: 'clinicalDataDescription',
+
+  STUDY_CODE: 'study_id',
+  ADDITIONAL_CRDC_NODES: 'image_collection'
+
 };
 
+// Body Cell
 export const customizeLandScapeView = {
-  CASE_FILES: 'numberOfCaseFiles',
-  STUDY_FILES: 'numberOfStudyFiles',
-  IMAGE: 'numberOfImageCollections',
-  PUBLICATTION: 'numberOfPublications',
-  CRDCLinks: 'CRDCLinks',
+  PARTICIPANT_FILES: 'participant_count',
+  STUDY_FILES: 'study_file_count',
+  IMAGE_COLLECTIONS: 'image_collection_count',
+  PUBLICATIONS: 'numberOfPublication',
+  ADDITIONAL_CRDC_NODES: 'image_collection'
 };
 
 export const customizeHeader = {
-  CASE_FILES: 'numberOfCaseFiles',
-  STUDY_FILES: 'numberOfStudyFiles',
-  IMAGE: 'numberOfImageCollections',
-  PUBLICATTION: 'numberOfPublications',
-  CRDCLinks: 'CRDCLinks',
   DELETE: 'DELETE',
+
+  PARTICIPANT_FILES: 'participant_count',
+  STUDY_FILES: 'study_file_count',
+  IMAGE_COLLECTIONS: 'image_collection_count',
+  PUBLICATIONS: 'numberOfPublication',
+  ADDITIONAL_CRDC_NODES: 'image_collection'
 };

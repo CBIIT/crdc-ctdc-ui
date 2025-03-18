@@ -1,10 +1,10 @@
 const dynamicDataAvailColStyling = (table, isBody = false) => {
   const dataAvailabilityCols = [
-    'numberofcasefiles',
-    'numberofstudyfiles',
-    'numberofimagecollections',
-    'numberofpublications',
-    'crdclinks',
+    'participant_count',
+    'study_file_count',
+    'image_collection_count',
+    'dates_of_conduct',
+    'image_collection',
   ];
   const { columns = [] } = table;
   const displayDavaAvailCols = columns
@@ -39,11 +39,12 @@ const dynamicDataAvailColStyling = (table, isBody = false) => {
 };
 
 export const tblBody = (table) => {
-  const customDataAvailColStyles = dynamicDataAvailColStyling(table, true);
   return {
     tblBody: {
       MuiTableCell: {
         root: {
+          fontFamily: 'Nunito',
+
           minHeight: '45px',
           padding: '16px',
           color: '#004C73',
@@ -51,7 +52,7 @@ export const tblBody = (table) => {
           '& a': {
             color: '#00579E',
             cursor: 'pointer',
-            fontFamily: 'Open Sans',
+            fontFamily: 'Nunito',
             fontWeight: '600',
             '& p': {
               fontSize: '15px',
@@ -66,7 +67,7 @@ export const tblBody = (table) => {
           '& p': {
             fontSize: '16px',
             fontStyle: 'normal',
-            fontFamily: 'Open Sans',
+            fontFamily: 'Nunito',
             fontWeight: '400',
             letterSpacing: '0.025em',
           },
@@ -76,9 +77,8 @@ export const tblBody = (table) => {
           padding: '0 0 0 5px',
         },
         body: {
-          color: '#323232',
+          color: '#13344A',
           padding: '15px',
-          ...customDataAvailColStyles,
         },
       },
       MuiTooltip: {
@@ -88,7 +88,7 @@ export const tblBody = (table) => {
           maxWidth: '220px',
           fontSize: '0.75rem',
           border: '2px solid #a7afb3',
-          fontFamily: 'Open Sans',
+          fontFamily: 'Nunito',
           fontWeight: '600',
           textAlign: 'left',
           lineHeight: '1.6',
@@ -123,19 +123,22 @@ export const tblBody = (table) => {
 };
 
 export const headerTheme = (table) => {
-  const customDataAvailColStyles = dynamicDataAvailColStyling(table);
 
   return {
     tblHeader: {
+      
       MuiTableSortLabel: {
         root: {
           color: '#0B3556',
           position: 'relative',
-          fontSize: '18px',
-          fontFamily: "Nunito Sans",
-          fontWeight: '400',
-          letterSpacing: '0.06em',
           textDecoration: 'none',
+
+          fontFamily: 'Roboto',
+          fontWeight: 600,
+          fontSize: '16px',
+          lineHeight: '100%',
+          letterSpacing: '0%',
+
           '&:hover': {
             color: '#13344A',
           },
@@ -148,44 +151,44 @@ export const headerTheme = (table) => {
           paddingLeft: '15px',
           paddingRight: '15px',
           '&.data_availability': {
+            color: '#13344A',
+            fontFamily: 'Roboto',
+            fontWeight: '600',
+            fontSize: '16px',
             textAlign: 'center',
-            color: '#fff',
-            fontFamily: 'Nunito Sans',
-            fontSize: '18px',
-            fontWeight: '400',
             padding: '0',
           },
           '&.group_1': {
             padding: '0',
           },
-          '&.numberOfCaseFiles': {
+          '&.participant_count': {
             textAlign: 'center',
             padding: '15px',
           },
-          '&.numberOfStudyFiles': {
+          '&.study_file_count': {
             textAlign: 'center',
             padding: '15px',
           },
-          '&.numberOfImageCollections': {
+          '&.image_collection_count': {
             textAlign: 'center',
             padding: '15px',
           },
-          '&.numberOfPublications': {
+          '&.numberOfPublication': {
             textAlign: 'center',
             padding: '15px',
           },
-          '&.CRDCLinks': {
+          '&.image_collection': {
             textAlign: 'center',
             padding: '15px',
           },
-          ...customDataAvailColStyles,
+          // ...customDataAvailColStyles,
         },
         head: {
           '&.other_columns_right': {
-            borderLeft: '1px solid #EDF0F1'
+            // borderLeft: '1px solid #EDF0F1'
           },
           '&.other_columns_left': {
-            borderRight: '1px solid #EDF0F1'
+            // borderRight: '1px solid #EDF0F1'
           },
         },
         paddingCheckbox: {
@@ -197,16 +200,19 @@ export const headerTheme = (table) => {
       MuiTableRow: {
         head: {
           height: '40px',
-          borderBottom: '3px solid #004c73',
-          background: '#f5f5f5',
+          borderTop: '3px solid #0E6292',
+          borderBottom: '3px solid #0E6292',
+          background: 'white',
           '&.column_grouping': {
-            background: '#4C6973',
+            background: 'white',
             padding: '0',
-            height: '55px',
+            height: '50px',
+            color: '#13344A'
           },
           
         },
       },
+      /*
       MuiTooltip: {
         tooltip: {
           backgroundColor: '#ffffff',
@@ -222,6 +228,7 @@ export const headerTheme = (table) => {
           borderRadius: '0px',
         },
       },
+      */
     },
   };
 };
@@ -283,29 +290,43 @@ export const extendedView = {
     },
   },
   MuiToolbar: {
+    position: 'relative',
     root: {
       minHeight: '45px',
       display: 'block',
-      position: 'relative',
+      position: 'relative !important',
       textAlign: 'right',
       '& svg': {
         fill: '#fff'
       },
+
       '&.downloadAndColumnView': {
-        maxHeight: '2px',
-        minHeight: '0px',
+        position: 'absolute',
+        maxHeight: '50px',
+        minHeight: '50px',
+        top: '-70px',
         '& button': {
           marginBottom: '-50px',
           zIndex: '10',
           '&.download-icon': {
             marginRight: '-10px',
+            zIndex: '10',
+            '& svg': {
+              fill: '#606060'
+            }
           },
           '&.manageViewColumnBtn': {
             zIndex: '10',
+            '& svg': {
+              fill: '#606060'
+            }
           },
         },
       },
     },
+    gutters: {
+      paddingRight: '8px',
+    }
   },
 };
 
@@ -322,7 +343,7 @@ const tblPgn = {
     root: {
       paddingRight: '43px',
       background: '#ffffff',
-      borderTop: '3px solid #42779a',
+      borderTop: '3px solid #E7E5E5',
       borderBottom: '3px solid #e7e5e5',
       '&:last-child': {
         paddingRight: '43px',

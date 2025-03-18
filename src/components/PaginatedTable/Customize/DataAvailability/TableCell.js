@@ -6,6 +6,7 @@ import { withStyles, Tooltip } from '@material-ui/core';
 import { FiberManualRecordRounded } from '@material-ui/icons';
 import Styles from './CellStyle';
 import CustomThemeProvider from './CustomTheme';
+import { customizeColumn, customizeHeader } from '../Types';
 
 export function studyDisposition(value) {
   const embargo = 'under embargo';
@@ -24,32 +25,38 @@ const DataAvailabilityCellView = (props) => {
     classes,
     column,
     interOpData,
-    clinical_study_designation: studyDesignation,
+    study_id,
     dataField,
-    numberOfCaseFiles = 0,
-    numberOfStudyFiles = 0,
+
+    participant_count = 0,
+    study_file_count = 0,
     numberOfPublications = 0,
-    // header,
+    // image_collection,
   } = props;
   const generateCRDCLinks = (linksArray, clinicalStudyDesignation) => (
     <ul className={classes.crdcLinks}>
       {linksArray.map((link) => (
-        <li>
+        <li className={classes.crdcLinksLi}>
           {
-            link.url.toLowerCase() !== 'api failed' ? (
-              <a className={classes.crdcLinkStyle} target="_blank" rel="noreferrer" href={link.url}>
-                {`${link.repository} | ICDC-${clinicalStudyDesignation}`}
+            link.image_collection_url.toLowerCase() !== 'api failed' ? (
+              <>
+                <a className={classes.crdcLinkStyle} target="_blank" rel="noreferrer" href={link.image_collection_url}>
+                  {link.image_collection_name}
+                </a>
                 <img
-                  style={{
-                    width: '1.5em',
-                  }}
-                  src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/ExternalLink.svg"
-                  alt="external link icon"
-                />
-              </a>
+                    style={{
+                      width: '15px',
+                      marginLeft: '5px',
+                      // paddingTop: '10px'
+                    }}
+                    src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExternalLinkIcon.svg"
+                    alt="External link icon"
+                  />
+              </>
+              
             ) : (
               <div className={classes.crdcApiFailed}>
-                {`${link.repository} | ${link.url}`}
+                {`${link.image_collection_name} | ${link.image_collection_url}`}
               </div>
             )
           }
@@ -57,36 +64,36 @@ const DataAvailabilityCellView = (props) => {
       ))}
     </ul>
   );
-  const studyData = interOpData?.studiesByProgram;
+  const studyData = interOpData?.getAllStudies;
   const generateIndicatorTooltipTitle = () => {
     switch (dataField) {
-      case 'numberOfCaseFiles':
-        return `${numberOfCaseFiles} Case File(s)`;
-      case 'numberOfStudyFiles':
-        return `${numberOfStudyFiles} Study File(s)`;
-      case 'numberOfImageCollections':
-        return `${studyData.length && studyData[0].numberOfImageCollections} Image Collection(s)`;
+      case 'participant_count':
+        return `${participant_count} Case File(s)`;
+      case 'study_file_count':
+        return `${study_file_count} Study File(s)`;
+      case 'image_collection_count':
+        return `${studyData.length && studyData[0].image_collection_count} Image Collection(s)`;
       case 'numberOfPublications':
         return `${numberOfPublications} Publication(s)`;
       default: {
-        return studyData.length
-        && generateCRDCLinks(
-          studyData[0].CRDCLinks, studyData[0].clinical_study_designation,
-        );
+        return studyData.length && generateCRDCLinks(studyData[0].image_collection);
       }
     }
   };
 
   const value = props[dataField];
-  const currentStudyData = interOpData?.studiesByProgram
-    .filter((study) => study.clinical_study_designation === studyDesignation);
+  console.log(`dataField ${dataField} || value: ${value}`, )
+  
+  const currentStudyData = interOpData?.getAllStudies
+    .filter((study) => study.study_id === study_id); 
+  // const currentStudyData = image_collection;
   let flag;
-  if (dataField === 'CRDCLinks' && currentStudyData?.[0]?.CRDCLinks.length) {
+  if (dataField === customizeHeader.ADDITIONAL_CRDC_NODES && currentStudyData?.[0]?.image_collection.length) {
     flag = true;
   } else {
     flag = Array.isArray(value) ? value.length > 0 : value > 0;
   }
-  const title = generateIndicatorTooltipTitle(column, value, currentStudyData);
+  const title = generateIndicatorTooltipTitle(column, value);
   return (
     <CustomThemeProvider>
       {
@@ -94,11 +101,12 @@ const DataAvailabilityCellView = (props) => {
       <div className={classes.dataAvailIndicator}>
         <Tooltip
           classes={{
-            tooltip: dataField === 'CRDCLinks'
-              ? classes.externalLinkDalTooltip : classes.defaultDalTooltip,
+            tooltip: classes.defaultDalTooltip,
           }}
           title={title}
-          interactive={dataField === 'CRDCLinks'}
+          interactive={dataField === customizeColumn.ADDITIONAL_CRDC_NODES}
+          placement="right"
+
         >
           <FiberManualRecordRounded className={classes.dataAvailIndicatorIcon} />
         </Tooltip>

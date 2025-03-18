@@ -5,43 +5,56 @@ import {
   withStyles,
 //   withStyles,
 } from '@material-ui/core';
-import SpeechBubble from '../../assets/speechBubble.svg'
+import questionMarkIcon from '../../assets/questionMark.svg'
+import booksOnAShelfIcon from '../../../../assets/study/books_on_a_shelf.svg';
+import fileDrawerIcon from '../../../../assets/study/file_drawer.svg';
+import photographIcon from '../../../../assets/study/photograph.svg';
+import documentAndPenIcon from '../../../../assets/study/document_and_pen.svg';
+import abstractGraphIcon from '../../../../assets/study/abstract_graph.svg';
 
-const ICDC_DATA_AVAIL_ICONS = [
+const CTDC_DATA_AVAIL_ICONS = [
   {
-    label: 'Case Files',
-    icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/CaseFiles_.svg',
+    label: 'Participant Files',
+    icon: booksOnAShelfIcon,
+    iconAlt: 'Books on a shelf',
   },
   {
     label: 'Study Files',
-    icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/master/icdc/images/svgs/StudyFiles_.svg',
+    icon: fileDrawerIcon,
+    iconAlt: 'File drawer',
   },
   {
     label: 'Image Collections',
-    icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/StudyDataAvail-ImageCollection.svg',
+    icon: photographIcon,
+    iconAlt: 'Photograph',
   },
   {
     label: 'Publications',
-    icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/StudyDataAvail-Publications.svg',
+    icon: documentAndPenIcon,
+    iconAlt: 'Document and pen',
   },
   {
     label: 'Additional CRDC Nodes',
-    icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/StudyDataAvail-CRDCnodes.svg',
+    icon: abstractGraphIcon,
+    iconAlt: 'Abstract graph',
   },
 ];
 
-export const generateDataAvailabilityTooltipText = () => (
-  <div style={{ display: 'grid', paddingTop: '0em' }}>
-    <h3 style={{ textAlign: 'center' }}>Data Availability:</h3>
-    {
-      ICDC_DATA_AVAIL_ICONS.map((item) => (
-        <div style={{ display: 'flex', gap: '2em', marginBottom: '0.5em' }}>
-          <img src={item.icon} alt={`${item.label} icon`} style={{ width: '3em' }} />
-          {' '}
-          {item.label}
-        </div>
-      ))
-    }
+export const generateDataAvailabilityTooltipText = (classes) => (
+  <div className={classes.tooltipDataAvailDiv}>
+    <p className={classes.tooltipText}>
+      View available data counts and links to associated nodes within the CRDC community
+    </p>
+    <div style={{margin: '20px 0px 0px 33px' }}>
+      {
+        CTDC_DATA_AVAIL_ICONS.map((item, index) => (
+          <div key={index} className={classes.tooltipDataAvailIcon} style={{ marginBottom: index !== CTDC_DATA_AVAIL_ICONS.length - 1 ? '16px' : '0px' }}>
+            <img src={item.icon} alt={item.iconAlt} />
+            {item.label}
+          </div>
+        ))
+      }
+    </div>
   </div>
 );
 
@@ -51,26 +64,38 @@ const AvailabilityColumnGrouping = ({
   <span styles={classes.group}>
     Data Availability
     <Tooltip
-      title={generateDataAvailabilityTooltipText()}
-      interactive
+      title={generateDataAvailabilityTooltipText(classes)}
+      interactive={true}
       classes={{
         tooltip: classes.dalTooltip,
         popper: classes.dalPopper,
       }}
       placement="top"
     >
-      <IconButton aria-label="help">
-        <img
-          style={{ width: '0.7em', marginBottom: '0.6em' }}
-          src={SpeechBubble}
-          alt="tooltip"
-        />
-      </IconButton>
+    <IconButton
+      aria-label="help"
+      disableRipple
+      className={classes.customIconButton} 
+    >
+      <img
+        src={questionMarkIcon}
+        alt="tooltip"
+      />
+    </IconButton>
+  
     </Tooltip>
   </span>
 );
 
 const styles = () => ({
+  customIconButton: {
+    '&:hover': {
+      backgroundColor: 'rgba(249, 249, 249, 0.2)', // white
+    },
+    top: '-6.5px',
+    left: '-8px'
+  },
+  
   group: {
     marginRight: '24em',
     fontSize: '16px',
@@ -82,11 +107,37 @@ const styles = () => ({
     textAlign: 'center',
   },
   dalTooltip: {
-    padding: '0px 12px !important',
+    padding: '10px 15px 30px 15px !important',
+    margin: '0px',
+    maxWidth: '269px',
+    border: '1px solid #CECECE',
+    borderRadius: '5px',
+    boxShadow: '0px 4px 10px 0px #00000059'
   },
   dalPopper: {
-    left: '-278px !important',
+    margin: '0px',
+    padding: '0px'
   },
+  tooltipDataAvailDiv: {
+    display: 'grid',
+    paddingTop: '0em',
+
+    fontFamily: 'Open Sans',
+    fontWeight: 600,
+    fontSize: '13px',
+    lineHeight: '19px',
+    letterSpacing: '0%',
+  },
+  tooltipText: {
+    color: '#223D4C',
+    margin: '0px'
+  },
+  tooltipDataAvailIcon: {
+    display: 'flex',
+    gap: '8px', 
+    color: '#4B619A',
+  }
+  
 });
 
 export default withStyles(styles)(AvailabilityColumnGrouping);

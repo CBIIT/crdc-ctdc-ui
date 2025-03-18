@@ -118,6 +118,7 @@ const DocumentDownloadView = ({
   />
 );
 
+// Custom Cell View
 export const CustomCellView = (props) => {
   const { dataField, clinicalDataDescription, clinicalDataNode, caseCount, csvDataRow } = props;
   const hasNoValues = caseCount === " " && defaultTo(csvDataRow, []).length === 0;
@@ -135,7 +136,7 @@ export const CustomCellView = (props) => {
       return (
         <NumberOfCasesView {...props} />
       );
-    case customizeColumn.studyDesignation:
+    case customizeColumn.STUDY_CODE:
       return (
         <StudyLink {...props} />
       );
@@ -152,11 +153,12 @@ export const CustomCellView = (props) => {
       return (
         <ArmsCohortList {...props} />
       );
-    case customizeLandScapeView.CASE_FILES:
+      ///
+    case customizeLandScapeView.PARTICIPANT_FILES: 
     case customizeLandScapeView.STUDY_FILES:
-    case customizeLandScapeView.IMAGE:
-    case customizeLandScapeView.CRDCLinks:
-    case customizeLandScapeView.PUBLICATTION:
+    case customizeLandScapeView.IMAGE_COLLECTIONS:
+    case customizeLandScapeView.PUBLICATIONS:
+    case customizeLandScapeView.ADDITIONAL_CRDC_NODES:
       return (
         <DataAvailabilityCellView {...props} />
       );
@@ -177,21 +179,23 @@ export const CustomCellView = (props) => {
   }
 };
 
+// Custom Header View
 export const CustomHeaderCellView = (props) => {
   const {
     dataField,
     icon,
+    iconAlt,
     openDialogBox,
     cellType,
   } = props;
   switch (dataField || cellType) {
-    case customizeHeader.CASE_FILES:
+    case customizeHeader.PARTICIPANT_FILES:
     case customizeHeader.STUDY_FILES:
-    case customizeHeader.IMAGE:
-    case customizeHeader.CRDCLinks:
-    case customizeHeader.PUBLICATTION:
+    case customizeHeader.IMAGE_COLLECTIONS:
+    case customizeHeader.PUBLICATIONS:
+    case customizeHeader.ADDITIONAL_CRDC_NODES:
       return (
-        <DataAvailabilityHeader icon={icon} dataField={dataField} />
+        <DataAvailabilityHeader icon={icon} iconAlt={iconAlt} dataField={dataField} />
       );
     case customizeHeader.DELETE:
       return (
