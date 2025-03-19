@@ -3,6 +3,12 @@ import {
   cellTypes,
   headerTypes,
 } from '../bento-core';
+import booksOnAShelfIcon from '../assets/study/books_on_a_shelf.svg';
+import fileDrawerIcon from '../assets/study/file_drawer.svg';
+import photographIcon from '../assets/study/photograph.svg';
+import documentAndPenIcon from '../assets/study/document_and_pen.svg';
+import abstractGraphIcon from '../assets/study/abstract_graph.svg';
+import clipboardWithChecklist from '../assets/study/clipboard_with_checklist.svg'
 
 export const tableLayOut = [
   {
@@ -14,28 +20,28 @@ export const tableLayOut = [
 export const pageData = {
   embargoFileIcon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Icon-Embargo-File.svg',
   studyListingIcon: {
-    src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/master/icdc/images/svgs/Icon-StudiesDetail.svg',
-    alt: 'ICDC Studies detail header logo',
+    src: clipboardWithChecklist,
+    alt: 'Clipboard with checklist',
   },
   externalLinkIcon: {
-    src: 'https://raw.githubusercontent.com/CBIIT/bento-frontend/master/src/assets/program/externalLinkIcon.svg',
+    src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExternalLinkIcon.svg',
     alt: 'External link icon',
   },
   table: {
-    numbOfRowPerPage: 25,
+    numbOfRowPerPage: 10,
     // Table title
     title: 'Studies',
     // Field name for table data, need to be updated only when using a different GraphQL query
-    dataField: 'studiesByProgram',
+    dataField: 'getAllStudies',
     // toggle D.A.L unified tooltip above D.A.L icons on table toolbar
     legendTooltip: true,
-    defaultSortField: 'clinical_study_designation',
+    defaultSortField: 'study_id',
     defaultSortDirection: 'asc',
     extendedViewConfig: {
       download: {
         customDownload: false,
         // downloaded File Name
-        downloadFileName: 'ICDC_Studies_download',
+        downloadFileName: 'CTDC_Studies_download',
         downloadCsv: 'Download Table Contents As CSV',
       },
       manageViewColumns: {
@@ -44,36 +50,25 @@ export const pageData = {
     },
     columns: [
       {
-        dataField: 'clinical_study_designation',
+        dataField: 'study_id',
         header: 'Study Code',
         display: true,
         cellType: cellTypes.CUSTOM_ELEM,
         linkAttr: {
           rootPath: '/study',
-          pathParams: ['clinical_study_designation'],
+          pathParams: ['study_id'],
         },
         tooltipText: 'sort',
       },
       {
-        dataField: 'program_id',
-        header: 'Program',
-        cellType: cellTypes.LINK,
-        linkAttr: {
-          rootPath: '/program',
-          pathParams: ['program_id'],
-        },
-        role: cellTypes.DISPLAY,
-        display: true,
-      },
-      {
-        dataField: 'clinical_study_name',
+        dataField: 'study_name',
         header: 'Study Name',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'numberOfCaseFiles',
+        dataField: 'participant_count',
         iconLabel: 'Number of Case Files',
         header: 'Case File(s)',
         display: true,
@@ -84,10 +79,11 @@ export const pageData = {
         role: cellTypes.DISPLAY,
         cellType: cellTypes.CUSTOM_ELEM,
         headerType: headerTypes.CUSTOM_ELEM,
-        icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/CaseFiles_.svg',
+        icon: booksOnAShelfIcon,
+        iconAlt: 'Books on a shelf',
       },
       {
-        dataField: 'numberOfStudyFiles',
+        dataField: 'study_file_count',
         header: 'Study File(s)',
         display: true,
         columnDefaultValues: {
@@ -97,10 +93,11 @@ export const pageData = {
         cellType: cellTypes.CUSTOM_ELEM,
         headerType: headerTypes.CUSTOM_ELEM,
         tooltipText: 'sort',
-        icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/master/icdc/images/svgs/StudyFiles_.svg',
+        icon: fileDrawerIcon,
+        iconAlt: 'File drawer',
       },
       {
-        dataField: 'numberOfImageCollections',
+        dataField: 'image_collection_count',
         header: 'Image Collection(s)',
         display: true,
         columnDefaultValues: {
@@ -110,10 +107,11 @@ export const pageData = {
         cellType: cellTypes.CUSTOM_ELEM,
         headerType: headerTypes.CUSTOM_ELEM,
         tooltipText: 'sort',
-        icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/StudyDataAvail-ImageCollection.svg',
+        icon: photographIcon,
+        iconAlt: 'Photograph',
       },
       {
-        dataField: 'numberOfPublications',
+        dataField: 'numberOfPublication', // numberOfPublications
         header: 'Publication(s)',
         display: true,
         columnDefaultValues: {
@@ -123,11 +121,12 @@ export const pageData = {
         cellType: cellTypes.CUSTOM_ELEM,
         headerType: headerTypes.CUSTOM_ELEM,
         tooltipText: 'sort',
-        icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/StudyDataAvail-Publications.svg',
+        icon: documentAndPenIcon,
+        iconAlt: 'Document and pen',
       },
       {
-        dataField: 'CRDCLinks',
-        header: 'icon',
+        dataField: 'image_collection',
+        header: 'Additional CRDC Nodes',
         display: true,
         columnDefaultValues: {
           0: 'Not Applicable',
@@ -136,52 +135,53 @@ export const pageData = {
         cellType: cellTypes.CUSTOM_ELEM,
         headerType: headerTypes.CUSTOM_ELEM,
         tooltipText: 'sort',
-        icon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/StudyDataAvail-CRDCnodes.svg',
+        icon: abstractGraphIcon,
+        iconAlt: 'Abstract graph',
       },
       {
-        dataField: 'clinical_study_type',
+        dataField: 'study_type',
         header: 'Study Type',
         role: cellTypes.DISPLAY,
         display: true,
         tooltipText: 'sort',
       },
-      {
-        dataField: 'accession_id',
-        header: 'Accession ID',
-        display: true,
-        role: cellTypes.DISPLAY,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'study_disposition',
-        header: 'Study Disposition',
-        display: false,
-        role: cellTypes.DISPLAY,
-        tooltipText: 'sort',
-      },
-      {
-        dataField: 'numberOfCases',
-        header: 'Cases',
-        link: '/explore',
-        display: true,
-        cellType: cellTypes.CUSTOM_ELEM,
-        role: cellTypes.DISPLAY,
-        tooltipText: 'sort',
-      },
+      // {
+      //   dataField: 'accession_id',
+      //   header: 'Accession ID',
+      //   display: true,
+      //   role: cellTypes.DISPLAY,
+      //   tooltipText: 'sort',
+      // },
+      // {
+      //   dataField: 'study_disposition',
+      //   header: 'Study Disposition',
+      //   display: false,
+      //   role: cellTypes.DISPLAY,
+      //   tooltipText: 'sort',
+      // },
+      // {
+      //   dataField: 'numberOfCases',
+      //   header: 'Cases',
+      //   link: '/explore',
+      //   display: true,
+      //   cellType: cellTypes.CUSTOM_ELEM,
+      //   role: cellTypes.DISPLAY,
+      //   tooltipText: 'sort',
+      // },
     ],
     columnGroups: [
       {
         clsName: 'other_columns_left',
-        columnIndexes: [0, 2],
+        columnIndexes: [0, 1],
       },
       {
         clsName: 'data_availability',
         custom: true,
-        columnIndexes: [3, 7],
+        columnIndexes: [2, 6],
       },
       {
         clsName: 'other_columns_right',
-        columnIndexes: [8, 11],
+        columnIndexes: [7, 8],
       },
     ],
   },
@@ -201,23 +201,65 @@ export const textLabels = {
 
 // --------------- GraphQL query - Retrieve program info --------------
 export const GET_STUDY_DATA_QUERY = gql`{
-    studiesByProgram {
-        program_id
-        clinical_study_designation
-        clinical_study_name
-        clinical_study_type
-        numberOfCases
-        numberOfCaseFiles
-        numberOfStudyFiles
-        numberOfImageCollections
-        numberOfPublications
-        accession_id
-        study_disposition
-        numberOfCRDCNodes
-        CRDCLinks {
-          text
-          url
-        }
+  getAllStudies {
+    study_id
+    study_name
+    study_short_name
+    study_description
+    study_type
+    dates_of_conduct
+    participant_count
+    image_collection_count
+    study_file_count
+
+    associated_links {
+      associated_link_name
+      associated_link_url
+      associated_link_id
+    }
+    image_collection {
+      image_collection_name
+      repository_name
+      image_collection_url
+      image_type_included
+      collection_access
     }
   }
-  `;
+}`;
+
+export const GET_STUDY_DATA_INTEROPS_QUERY = gql`
+  query getAllStudies {
+    getAllStudies {
+        study_id
+        study_short_name
+        image_collection: associated_links {
+          image_collection_name: associated_link_name,
+          image_collection_url: associated_link_url,
+            metadata {
+                
+                ... on IDCMetadata {
+                    collection_id,
+                    cancer_type,
+                    date_updated,
+                    description,
+                    doi,
+                    image_types,
+                    location,
+                    species,
+                    subject_count,
+                    supporting_data
+                }
+                ... on TCIAMetadata {
+                    Collection,
+                    Aggregate_PatientID,
+                    Aggregate_Modality,
+                    Aggregate_BodyPartExamined,
+                    Aggregate_ImageCount,
+                    Aggregate_ImageBool
+                }
+            }
+        },
+       image_collection_count
+    }
+  }
+`;
