@@ -17,7 +17,7 @@ window.injectedEnv = {
   // About Content API:
   REACT_APP_ABOUT_CONTENT_URL: 'https://raw.githubusercontent.com/CBIIT/bento-ctdc-static-content/develop/aboutPagesContent.yaml',
 
-  REACT_APP_FILE_CENTRIC_CART_README: 'https://raw.githubusercontent.com/CBIIT/ctdc-readMe-content/refs/heads/main/My_Files_Cart_Page_README.md',
+  REACT_APP_FILE_CENTRIC_CART_README: 'https://raw.githubusercontent.com/CBIIT/ctdc-readMe-content/refs/heads/dev/My_Files_Cart_Page_README.md',
 
 
   // IDP Auth url
@@ -35,4 +35,6 @@ window.injectedEnv = {
   // No Longer Used.
   REACT_APP_BACKEND_GETUSERINFO_API: 'https://k9dc.essential-dev.com/fence/login/',
   REACT_APP_USER_LOGOUT_URL: 'https://k9dc.essential-dev.com/fence/logout',
+
+  REACT_APP_DMN_URL: 'https://cbiit.github.io/crdc-data-model-navigator/?config=https://raw.githubusercontent.com/CBIIT/ctdc-data-model-navigator-landing/refs/heads/main/example/CTDC/1.0.0/'
 };
