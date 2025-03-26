@@ -57,7 +57,7 @@ const DataAvailabilityCellView = (props) => {
       ))}
     </ul>
   );
-  console.log("/////", interOpData);
+
   const studyData = interOpData && interOpData?.studiesByProgram;
   const generateIndicatorTooltipTitle = () => {
     switch (dataField) {

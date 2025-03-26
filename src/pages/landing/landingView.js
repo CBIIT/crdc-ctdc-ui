@@ -72,7 +72,7 @@ const LandingView = ({ classes, heroData }) => (
                     {' '}
                   </div>
                   <div className={classes.blueButtonRight}>
-                    <Link to="/study/NCT04314401" className={classes.blueButton}>GO TO STUDY LISTING</Link>
+                    <Link to="/studyies" className={classes.blueButton}>GO TO STUDY LISTING</Link>
                   </div>
                 </div>
               </div>
