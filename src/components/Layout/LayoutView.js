@@ -26,6 +26,7 @@ import DashTemplate from '../../pages/dashTemplate/DashTemplateController';
 import RAView from '../../pages/about/requestAccess'; 
 import ActivitiesController from '../ActivitiesController'; 
 import useVisitedPageSync from '../../utils/useVisitedPageSync';
+import StudiesContainer from '../../pages/studies/studiesController';
 import DataModelNavigator from '../../pages/dmn';
 
 const ScrollToTopComponent = () => {
@@ -49,42 +50,37 @@ const Layout = ({ classes, isSidebarOpened }) => {
         <AuthSessionTimeoutController />
         <Header />
         <OverlayWindow />
-        {/* Reminder: Ajay need to replace the ICDC with env variable and
-          change build npm to read env variable */}
-        <div
-          className={classes.content}
-        >
-
+        <div className={classes.content}>
           <Route component={ScrollToTopComponent} />
-           <ActivitiesController >
+            <ActivitiesController >
           <Switch>
-              <Route exact path="/" component={Home} />
-              <Route exact path="/home" component={Home} />
-              <Route exact path="/study/:id" component={StudyDetail} />
-              <Route path="/fileCentricCart" component={CartView} />
-              <Route path="/explore" component={DashTemplate} />
-              <Route exact path="/data-dictionary" component={UnderDev} />
-              <Route exact path="/data-harmonization" component={About} />
-              <Route exact path="/request-access" component={RAView} />
-              <Route exact path="/crdc"  component={UnderDev} />
-              <Route exact path="/search" component={GlobalSearchController} />
-              <Route path="/search/:id"  component={GlobalSearchController} />
-              <Route path="/graphql" component={GraphqlClient} />
-              <Route path="/data-model" component={DataModelNavigator} />
+            <Route exact path="/" component={Home} />
+            <Route exact path="/home" component={Home} />
+            <Route exact path="/studies" component={StudiesContainer} />
+            <Route exact path="/study/:id" component={StudyDetail} />
+            <Route exact path="/fileCentricCart" component={CartView} />
+            <Route path="/explore" component={DashTemplate} />
+            <Route exact path="/data-dictionary" component={UnderDev} />
+            <Route exact path="/data-harmonization" component={About} />
+            <Route exact path="/request-access" component={RAView} />
+            <Route exact path="/crdc"  component={UnderDev} />
+            <Route exact path="/search" component={GlobalSearchController} />
+            <Route exact path="/search/:id"  component={GlobalSearchController} />
+            <Route exact path="/graphql" component={GraphqlClient} />
+            <Route exact path="/data-model" component={DataModelNavigator} />
 
-           
-              {/* END: Private Routes */}
-              {aboutPageRoutes.map(
-                (aboutPageRoute, index) => (
-                  <Route
-                    key={index}
-                    path={aboutPageRoute}
-                    component={About}
-                  />
-                ),
-              )}
-              <LoginRoute path="/user/login" component={Login} />
-              <Route component={Error} />
+            {/* END: Private Routes */}
+            {aboutPageRoutes.map(
+              (aboutPageRoute, index) => (
+                <Route
+                  key={index}
+                  path={aboutPageRoute}
+                  component={About}
+                />
+              ),
+            )}
+            <LoginRoute path="/user/login" component={Login} />
+            <Route component={Error} />
           </Switch>
           </ActivitiesController>
           <ScrollToTop />

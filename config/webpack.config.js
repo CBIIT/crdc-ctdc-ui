@@ -336,7 +336,14 @@ module.exports = function(webpackEnv) {
                   'babel-preset-react-app/webpack-overrides'
                 ),
 
+                /* Include these presets here in case they are not included automatically in the future: */
+                presets: [
+                  require.resolve('@babel/preset-env'), // Use preset-env to compile modern JavaScript down to ES5
+                  require.resolve('@babel/preset-react'), // Use preset-react to compile JSX and other React-specific code
+                ],
+                 
                 plugins: [
+                  require.resolve('@babel/plugin-proposal-optional-chaining'), // Enables optional chaining syntax for handling potentially undefined properties (?.)
                   [
                     require.resolve('babel-plugin-named-asset-import'),
                     {
