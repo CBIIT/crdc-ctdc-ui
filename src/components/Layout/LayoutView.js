@@ -27,6 +27,7 @@ import RAView from '../../pages/about/requestAccess';
 import ActivitiesController from '../ActivitiesController'; 
 import useVisitedPageSync from '../../utils/useVisitedPageSync';
 import DataModelNavigator from '../../pages/dmn';
+import SysInfo from '../../pages/sysinfo/sysinfo';
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -71,6 +72,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
               <Route path="/search/:id"  component={GlobalSearchController} />
               <Route path="/graphql" component={GraphqlClient} />
               <Route path="/data-model" component={DataModelNavigator} />
+              <Route path="/sysinfo" component={SysInfo} />
 
            
               {/* END: Private Routes */}

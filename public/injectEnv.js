@@ -11,6 +11,12 @@ window.injectedEnv = {
   REACT_APP_AUTH_SERVICE_API: 'https://clinical-dev.datacommons.cancer.gov/api/auth/',
   REACT_APP_INTEROP_SERVICE_URL: 'https://clinical-dev.datacommons.cancer.gov/api/interoperation/',
 
+  REACT_APP_FRONTEND_VERSION: '1.0.0',
+  REACT_APP_BACKEND_VERSION: '2.0.0',
+  REACT_APP_AUTH_SERVICE_VERSION: '3.0.0',
+  REACT_APP_FILE_SERVICE_VERSION: '4.0.0',
+  REACT_APP_INTEROP_SERVICE_VERSION: '5.0.0',
+
   REACT_APP_USER_SERVICE_API: 'http://localhost:3000/api/users/',
   REACT_APP_LOGIN_URL: 'https://nci-crdc-staging.datacommons.io/user/oauth2/authorize?client_id=HADoUzN9BWzbzwxdu0soRvRHSnegiWaoShVhB09O&response_type=code&redirect_uri=http://localhost:3000/login&scope=openid%20user',
 
