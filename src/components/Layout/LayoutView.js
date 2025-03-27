@@ -28,6 +28,7 @@ import ActivitiesController from '../ActivitiesController';
 import useVisitedPageSync from '../../utils/useVisitedPageSync';
 import StudiesContainer from '../../pages/studies/studiesController';
 import DataModelNavigator from '../../pages/dmn';
+import SysInfo from '../../pages/sysinfo/sysinfo';
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -68,6 +69,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route exact path="/search/:id"  component={GlobalSearchController} />
             <Route exact path="/graphql" component={GraphqlClient} />
             <Route exact path="/data-model" component={DataModelNavigator} />
+            <Route exact path="/sysinfo" component={SysInfo} />
 
             {/* END: Private Routes */}
             {aboutPageRoutes.map(
