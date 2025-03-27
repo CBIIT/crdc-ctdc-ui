@@ -11,6 +11,21 @@ const useStyles = makeStyles({
   table: {
     // minWidth: 650,
   },
+  spacing: {
+    marginTop: '16px',
+  },
+  container: {
+    padding: '16px 32px 80px 32px',
+    fontFamily: 'Raleway, sans-serif',
+    maxWidth: '1800px',
+    margin: "0 auto",
+  },
+  shadow: {
+    position: 'absolute',
+    background: 'linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0))',
+    width: '100%',
+    height: '10px',
+}
 });
 
 function createRow(key, value) {
@@ -108,48 +123,51 @@ const SysInfo = () => {
   ];
 
   return (
-    <>
-      <Grid item xs={12} id="table_core">
-        <CustomDataTable
-          options={{
-            selectableRows: 'none',
-          }}
-          title="Core"
-          data={coreServicesData}
-          columns={getColumns(coreServiceOptions, classes)}
-        />
-      </Grid>
-      <Grid item xs={12} id="table_micro">
-        <CustomDataTable
-          options={{
-            selectableRows: 'none',
-          }}
-          title="Micro Services"
-          data={microservicesData}
-          columns={getColumns(microservicesOptions, classes)}
-        />
-      </Grid>
-      <Grid item xs={12} id="table_env">
-        <CustomDataTable
-          options={{
-            selectableRows: 'none',
-          }}
-          title="Environment Variables"
-          data={environmentVariablesData}
-          columns={getColumns(environmentVariableOptions, classes)}
-        />
-      </Grid>
-      <Grid item xs={12} id="table_file">
-        <CustomDataTable
-          options={{
-            selectableRows: 'none',
-          }}
-          title="Dependencies"
-          data={dependenciesData}
-          columns={getColumns(dependenciesOptions, classes)}
-        />
-      </Grid>
-    </>
+    <div>
+      <div class={classes.shadow}></div>
+      <div className={classes.container}>
+        <Grid item xs={12} id="table_core">
+          <CustomDataTable
+            options={{
+              selectableRows: 'none',
+            }}
+            title="Core"
+            data={coreServicesData}
+            columns={getColumns(coreServiceOptions, classes)}
+          />
+        </Grid>
+        <Grid item xs={12} id="table_micro" className={classes.spacing}>
+          <CustomDataTable
+            options={{
+              selectableRows: 'none',
+            }}
+            title="Micro Services"
+            data={microservicesData}
+            columns={getColumns(microservicesOptions, classes)}
+          />
+        </Grid>
+        <Grid item xs={12} id="table_env" className={classes.spacing}>
+          <CustomDataTable
+            options={{
+              selectableRows: 'none',
+            }}
+            title="Environment Variables"
+            data={environmentVariablesData}
+            columns={getColumns(environmentVariableOptions, classes)}
+          />
+        </Grid>
+        <Grid item xs={12} id="table_file" className={classes.spacing}>
+          <CustomDataTable
+            options={{
+              selectableRows: 'none',
+            }}
+            title="Dependencies"
+            data={dependenciesData}
+            columns={getColumns(dependenciesOptions, classes)}
+          />
+        </Grid>
+      </div>
+    </div>
   );
 };
 
