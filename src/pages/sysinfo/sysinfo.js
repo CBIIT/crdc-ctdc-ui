@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { CustomDataTable, TableFilter } from '@bento-core/data-table';
+import React from 'react';
+import { CustomDataTable } from '@bento-core/data-table';
 import { getColumns } from '@bento-core/util';
 import { makeStyles, Grid } from '@material-ui/core';
 import env from '../../utils/env';
