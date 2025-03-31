@@ -112,7 +112,8 @@ const styles = () => ({
     maxWidth: '269px',
     border: '1px solid #CECECE',
     borderRadius: '5px',
-    boxShadow: '0px 4px 10px 0px #00000059'
+    boxShadow: '0px 4px 10px 0px #00000059',
+    backgroundColor: '#FFFFFF',
   },
   dalPopper: {
     margin: '0px',
