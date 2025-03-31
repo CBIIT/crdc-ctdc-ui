@@ -19,6 +19,11 @@ export function studyDisposition(value) {
   }
   return undefined;
 }
+function getFormattedCollectionId(collection_id) {
+  if(collection_id)
+    return collection_id.toUpperCase().replace(/_/g, '-');
+  return collection_id
+}
 
 const DataAvailabilityCellView = (props) => {
   const {
@@ -31,37 +36,43 @@ const DataAvailabilityCellView = (props) => {
     participant_count = 0,
     study_file_count = 0,
     numberOfPublications = 0,
-    // image_collection,
   } = props;
   const generateCRDCLinks = (linksArray, clinicalStudyDesignation) => (
     <ul className={classes.crdcLinks}>
-      {linksArray.map((link) => (
-        <li className={classes.crdcLinksLi}>
-          {
-            link.image_collection_url.toLowerCase() !== 'api failed' ? (
+      {linksArray
+        .filter((link) => link.image_collection_name && link.image_collection_url) // Exclude null values
+        .map((link) => (
+          <li key={link.image_collection_name} className={classes.crdcLinksLi}>
+            {link.image_collection_url.toLowerCase() !== 'api failed' ? (
               <>
-                <a className={classes.crdcLinkStyle} target="_blank" rel="noreferrer" href={link.image_collection_url}>
-                  {link.image_collection_name}
+                <a
+                  className={classes.crdcLinkStyle}
+                  target="_blank"
+                  rel="noreferrer"
+                  href={link.image_collection_url}
+                >
+                  {
+                    link?.metadata?.collection_id
+                      ? `${link?.image_collection_name } | ${getFormattedCollectionId(link?.metadata?.collection_id)}`
+                      : `${link?.repository_name || ""} | ${link?.image_collection_name}`
+                  }
                 </a>
                 <img
-                    style={{
-                      width: '15px',
-                      marginLeft: '5px',
-                      // paddingTop: '10px'
-                    }}
-                    src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExternalLinkIcon.svg"
-                    alt="External link icon"
-                  />
+                  style={{
+                    width: '15px',
+                    marginLeft: '5px',
+                  }}
+                  src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExternalLinkIcon.svg"
+                  alt="External link icon"
+                />
               </>
-              
             ) : (
               <div className={classes.crdcApiFailed}>
-                {`${link.image_collection_name} | ${link.image_collection_url}`}
+                {`${link?.metadata?.collection_id || link.image_collection_name} | ${link.image_collection_url}`}
               </div>
-            )
-          }
-        </li>
-      ))}
+            )}
+          </li>
+        ))}
     </ul>
   );
   const studyData = interOpData?.getAllStudies;
@@ -72,11 +83,11 @@ const DataAvailabilityCellView = (props) => {
       case 'study_file_count':
         return `${study_file_count} Study File(s)`;
       case 'image_collection_count':
-        return `${studyData.length && studyData[0].image_collection_count} Image Collection(s)`;
+        return `${studyData?.length && studyData[0]?.image_collection_count} Image Collection(s)`;
       case 'numberOfPublications':
         return `${numberOfPublications} Publication(s)`;
       default: {
-        return studyData.length && generateCRDCLinks(studyData[0].image_collection);
+        return studyData.length && generateCRDCLinks(studyData[0]?.image_collection);
       }
     }
   };
