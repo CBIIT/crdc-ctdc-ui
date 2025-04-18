@@ -70,7 +70,7 @@ export const pageData = {
       {
         dataField: 'participant_count',
         iconLabel: 'Number of Case Files',
-        header: 'Case File(s)',
+        header: 'Participant File(s)',
         display: true,
         columnDefaultValues: {
           0: 'Not Applicable',

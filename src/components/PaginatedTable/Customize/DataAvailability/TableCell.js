@@ -79,7 +79,7 @@ const DataAvailabilityCellView = (props) => {
   const generateIndicatorTooltipTitle = () => {
     switch (dataField) {
       case 'participant_count':
-        return `${participant_count} Case File(s)`;
+        return `${participant_count} Participant File(s)`;
       case 'study_file_count':
         return `${study_file_count} Study File(s)`;
       case 'image_collection_count':
