@@ -10,8 +10,8 @@ import { Grid} from '@material-ui/core';
 import externalLinkIcon from '../../components/About/assets/About-ExternalIcon.svg';
 const BACKEND = env.REACT_APP_BACKEND_API;
 
-const defaultQuery =
-`# Welcome to GraphiQL
+const defaultQuery = `
+# Welcome to GraphiQL
 #
 # GraphiQL is an in-browser tool for writing, validating, and
 # testing GraphQL queries.
@@ -158,68 +158,72 @@ function graphQLFetcher(graphQLParams) {
 }
 
 const GraphqlView = ({ classes }) => (
-<>
-<Stats />
+  <main>
+    <Stats />
     <AboutHeader title="GraphQL"/>
  
     <Grid className={classes.aboutSection} container direction="row" spacing={16}>
-    <Grid className={classes.imageSection} item lg={3} md={3} sm={10} xs={12}>
-      <img alt="GraphQl" className={classes.graphQLImg} src={graphGridImage}></img>
+      <Grid className={classes.imageSection} item lg={3} md={3} sm={10} xs={12}>
+        <img alt="GraphQl" className={classes.graphQLImg} src={graphGridImage}></img>
       </Grid>
  
       <Grid className={classes.contentSection} item lg={9} md={9} sm={12} xs={12}>
         <span className={classes.text}>  
-        GraphQL is a powerful query language for APIs. It provides a more efficient, powerful, and flexible alternative to the traditional REST API. Unlike traditional REST APIs, which typically require multiple endpoints to retrieve various pieces of data, GraphQL allows clients (the systems making the queries) to fetch exactly what they need in a single request. The Clinical and Translational Data Commons (CTDC) leverages this technology by offering a GraphQL API interface, which enables users to interact with CTDC data directly from their own systems, such as through Jupyter notebooks.
+          GraphQL is a powerful query language for APIs. It provides a more efficient, powerful, and flexible alternative to the traditional REST API. Unlike traditional REST APIs, which typically require multiple endpoints to retrieve various pieces of data, GraphQL allows clients (the systems making the queries) to fetch exactly what they need in a single request. The Clinical and Translational Data Commons (CTDC) leverages this technology by offering a GraphQL API interface, which enables users to interact with CTDC data directly from their own systems, such as through Jupyter notebooks.
         </span>
         <br />
         <br />
         <span className={classes.text}>
-          
-        To begin querying the CTDC data via GraphQL, access our API endpoint at 
-        <a className={classes.link} href={BACKEND}> {BACKEND}</a>.
-        <img
-          alt="outbounnd web site icon"
-          src={externalLinkIcon}
-          className={classes.linkIcon}
-          style= {{padding: '0 2px 2px 2px',color: '#274FA6'}}
-        />
+            To begin querying the CTDC data via GraphQL, access our API endpoint at 
+          <a className={classes.link} href={BACKEND}> {BACKEND}</a>.
+          <img
+            alt="outbounnd web site icon"
+            src={externalLinkIcon}
+            className={classes.linkIcon}
+            style= {{padding: '0 2px 2px 2px',color: '#274FA6'}}
+          />
         </span>
+        <br />
+        <br />
         <span className={classes.text}>
-        <br />
-        <br />
-        If you are new to GraphQL and want to learn more about query language, comprehensive tutorials and example queries are available at  
-        <a className={classes.link} href="https://graphql.org/learn/"> graphql.org</a>
-        <img
-          alt="outbounnd web site icon"
-          src={externalLinkIcon}
-
-          className={classes.linkIcon}
-          style= {{padding: '0 2px 2px 2px',color: '#274FA6'}}
-        />. These resources provide an excellent starting point for understanding and utilizing GraphQL effectively.
+          If you are new to GraphQL and want to learn more about query language, comprehensive tutorials and example queries are available at  
+          <a className={classes.link} href="https://graphql.org/learn/"> graphql.org</a>
+          <img
+            alt="outbounnd web site icon"
+            src={externalLinkIcon}
+            className={classes.linkIcon}
+            style= {{padding: '0 2px 2px 2px',color: '#274FA6'}}
+          />. These resources provide an excellent starting point for understanding and utilizing GraphQL effectively.
         </span>
+        <br />
+        <br />
         <span className={classes.text}>
-        <br />
-        <br />
-        Below is the GraphiQL integrated development environment (IDE), from here you can query the data within the Clinical and Translational Data Commons database. The default query below is the same query that is used to query data from the Clinical and Translational Data Commons database for the Global Stats Bar.
+          Below is the GraphiQL integrated development environment (IDE), from here you can query the data within the Clinical and Translational Data Commons database. The default query below is the same query that is used to query data from the Clinical and Translational Data Commons database for the Global Stats Bar.
         </span>
       </Grid>
     </Grid>
  
     <div className={classes.grapqhQlContainer}>
-      <GraphiQL editorTheme="solarized light" fetcher={graphQLFetcher} query={defaultQuery} variables='{
-  "participant_id": [],
-  "ctep_disease_term": [],
-  "stage_of_disease": [],
-  "tumor_grade": [],
-  "sex": [],
-  "race": [],
-  "ethnicity": [],
-  "carcinogen_exposure": [],
-  "targeted_therapy": []
-}'/>
+      <GraphiQL
+        editorTheme="solarized light"
+        fetcher={graphQLFetcher}
+        query={defaultQuery}
+        variables='{
+          "participant_id": [],
+          "ctep_disease_term": [],
+          "stage_of_disease": [],
+          "tumor_grade": [],
+          "sex": [],
+          "race": [],
+          "ethnicity": [],
+          "carcinogen_exposure": [],
+          "targeted_therapy": []
+        }'
+      />
     </div>
+  </main>
+);
 
-</>);
 const styles = () => ({
   aboutSection: {
     maxWidth: "1440px",

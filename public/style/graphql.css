@@ -447,7 +447,7 @@
 }
 
 .CodeMirror-hint-information .infoType {
-  color: #CA9800;
+  color: #946F00; /* was #CA9800 */
   cursor: pointer;
   display: inline;
   margin-right: 0.5em;
@@ -605,7 +605,7 @@ div.CodeMirror-lint-tooltip > * + * {
 /* Type */
 
 .cm-atom {
-  color: #CA9800;
+  color: #946F00; /* was #CA9800 */
 }
 
 /* BASICS */
@@ -1133,7 +1133,7 @@ span.CodeMirror-selectedtext { background: none; }
 }
 
 .CodeMirror-info .type-name {
-  color: #CA9800;
+  color: #946F00; /* was #CA9800 */
 }
 
 .CodeMirror-info .field-name {
@@ -1492,7 +1492,7 @@ li.CodeMirror-hint-active {
 }
 
 .graphiql-container .type-name {
-  color: #CA9800;
+  color: #946F00; /* was #CA9800 */
 }
 
 .graphiql-container .field-name {
