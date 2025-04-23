@@ -19,7 +19,7 @@ export const customizeColumn = {
 
 // Body Cell
 export const customizeLandScapeView = {
-  PARTICIPANT_FILES: 'participant_count',
+  PARTICIPANT_FILES: 'participant_file_count',
   STUDY_FILES: 'study_file_count',
   IMAGE_COLLECTIONS: 'image_collection_count',
   PUBLICATIONS: 'numberOfPublication',
@@ -29,7 +29,7 @@ export const customizeLandScapeView = {
 export const customizeHeader = {
   DELETE: 'DELETE',
 
-  PARTICIPANT_FILES: 'participant_count',
+  PARTICIPANT_FILES: 'participant_file_count',
   STUDY_FILES: 'study_file_count',
   IMAGE_COLLECTIONS: 'image_collection_count',
   PUBLICATIONS: 'numberOfPublication',

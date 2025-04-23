@@ -68,8 +68,8 @@ export const pageData = {
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'participant_count',
-        iconLabel: 'Number of Case Files',
+        dataField: 'participant_file_count',
+        iconLabel: 'Number of Participant Files',
         header: 'Participant File(s)',
         display: true,
         columnDefaultValues: {
@@ -209,6 +209,7 @@ export const GET_STUDY_DATA_QUERY = gql`{
     study_type
     dates_of_conduct
     participant_count
+    participant_file_count
     image_collection_count
     study_file_count
 
