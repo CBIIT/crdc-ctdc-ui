@@ -33,7 +33,7 @@ const DataAvailabilityCellView = (props) => {
     study_id,
     dataField,
 
-    participant_count = 0,
+    participant_file_count = 0,
     study_file_count = 0,
     numberOfPublications = 0,
   } = props;
@@ -78,8 +78,8 @@ const DataAvailabilityCellView = (props) => {
   const studyData = interOpData?.getAllStudies;
   const generateIndicatorTooltipTitle = () => {
     switch (dataField) {
-      case 'participant_count':
-        return `${participant_count} Case File(s)`;
+      case 'participant_file_count':
+        return `${participant_file_count} Participant File(s)`;
       case 'study_file_count':
         return `${study_file_count} Study File(s)`;
       case 'image_collection_count':

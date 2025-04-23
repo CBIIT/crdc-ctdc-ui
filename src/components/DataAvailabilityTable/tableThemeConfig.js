@@ -1,6 +1,6 @@
 const dynamicDataAvailColStyling = (table, isBody = false) => {
   const dataAvailabilityCols = [
-    'participant_count',
+    'participant_file_count',
     'study_file_count',
     'image_collection_count',
     'dates_of_conduct',
@@ -161,7 +161,7 @@ export const headerTheme = (table) => {
           '&.group_1': {
             padding: '0',
           },
-          '&.participant_count': {
+          '&.participant_file_count': {
             textAlign: 'center',
             padding: '15px',
           },
