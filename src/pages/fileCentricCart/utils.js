@@ -1,5 +1,6 @@
 /*eslint-disable*/
 import JSZip from 'jszip';
+import { USER_COMMENT } from '../../bento/fileCentricCartWorkflowData';
 /*
 import { saveAs } from 'file-saver';
 import { json2csv } from 'json-2-csv'; */
@@ -41,41 +42,46 @@ export const downloadCsvString = (csvString, fileName) => {
 export function convertToCSV(jsonse, comments="", keysToInclude, header) {
   const objArray = typeof jsonse !== "object" ? JSON.parse(jsonse) : jsonse;
 
+  // Validate header and keysToInclude
+  if (!Array.isArray(header) || header.length === 0) {
+    throw new Error("Header must be a non-empty array.");
+  }
+  if (!Array.isArray(keysToInclude) || keysToInclude.length === 0) {
+    throw new Error("Keys to include must be a non-empty array.");
+  }
   // Start with the header row
   let csvString = header.join(",") + "\r\n";
+  
+  // Check if comments are not empty
+  const hasValidComments = comments && comments.length > 0;
 
   objArray.forEach((entry, index) => {
     let line = keysToInclude
       .map((keyName) => {
         let fieldValue = entry[keyName];
 
+          // Add comments to the first data row
+        if (index === 0 && keyName === USER_COMMENT && hasValidComments) {
+          let formattedComments = comments.replace(/"/g, '""');
+          if (formattedComments.search(/("|,|\n)/g) >= 0) {
+            formattedComments = `"${formattedComments}"`;
+          }
+          return formattedComments;
+        }
+
         // Check if the field value is a string and contains characters that need to be escaped.
         if (typeof fieldValue === "string") {
           fieldValue = fieldValue.replace(/"/g, '""'); // Escape double quotes
-
           // Enclose the field value in double quotes if it contains commas, newlines, or double quotes
           if (fieldValue.search(/("|,|\n)/g) >= 0) {
             fieldValue = `"${fieldValue}"`;
           }
         }
 
-        return fieldValue !== null && fieldValue !== undefined
-          ? fieldValue
-          : "";
+        // Return the field value or an empty string for null/undefined
+        return fieldValue !== null && fieldValue !== undefined ? fieldValue : "";
       })
       .join(","); // Join all fields for the row with commas
-
-     // Check if comments are not empty
-    const hasValidComments = comments && comments.length > 0;
-
-    // Add comments to the first data row
-    if (index === 0 && hasValidComments) {
-      let formattedComments = comments.replace(/"/g, '""');
-      if (formattedComments.search(/("|,|\n)/g) >= 0) {
-        formattedComments = `"${formattedComments}"`;
-      }
-      line += `,${formattedComments}`;
-    }
 
     // Append the current row to the CSV string
     csvString += line + "\r\n";
