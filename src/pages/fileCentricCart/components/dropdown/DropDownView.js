@@ -79,8 +79,18 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
   // Generate Manifest String
   useEffect(() => {
     if (manifestData.length > 0) {
-      const generatedManifest = convertToCSV(manifestData, comment, manifestDataConfig.keysToInclude, manifestDataConfig.header)
-      setManifestString(generatedManifest);
+      try {
+        const generatedManifest = convertToCSV(
+          manifestData,
+          comment,
+          manifestDataConfig.keysToInclude,
+          manifestDataConfig.header
+        );
+        setManifestString(generatedManifest);
+      } catch (error) {
+        console.error("Error generating CSV:", error);
+        setManifestString(""); // Reset the manifest string to avoid invalid data
+      }
     }
   }, [manifestData, comment]);
 
