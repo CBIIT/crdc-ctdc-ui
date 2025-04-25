@@ -57,7 +57,9 @@ export const myFilesPageData = {
   headerIconSrc: cartPageIcon,
   headerIconAlt: 'CTDC Cart header logo',
 };
- 
+
+export const USER_COMMENT = "User_Comment";
+
 export const manifestData = {
   keysToInclude: [
     'data_file_name',   // ('name' - 1/4 required fields)
@@ -84,7 +86,7 @@ export const manifestData = {
     'anatomical_collection_site',
     'tissue_category',
     'assessment_timepoint',
-    // 'User_Comment'
+    'User_Comment'
   ],
   header: [
     'name',
