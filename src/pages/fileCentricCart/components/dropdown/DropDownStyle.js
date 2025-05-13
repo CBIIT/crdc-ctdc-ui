@@ -5,14 +5,14 @@ const EXPORT_AND_DOWNLOAD_BTN_HEIGHT = '46px';
 const commonTooltipStyle = {
   backgroundColor: '#FFFFFF !important',
   color:'#000000',
-  border: '2px solid #B1B1B1 !important',
+  border: '1px solid #B1B1B1 !important',
   minWidth: '282px',
   maxWidth: '282px',
 
   fontFamily: 'Nunito',
-  fontSize: '14px',
+  fontSize: '13px',
   fontWeight: '500',
-  lineHeight: '16px',
+  lineHeight: '13px',
   textAlign: 'left',
   padding: '12px',
 }
@@ -116,7 +116,7 @@ export default () => ({
   arrow: {
     color: (props) => props.arrowColor || '#FFFFFF',
     '&::before': {
-      border: '2px solid #B1B1B1',
+      border: '1px solid #B1B1B1',
     },
   },
   cgcIcon: {
@@ -140,8 +140,7 @@ export default () => ({
   linkIcon: {
     width: '12px',
     height: '12px',
-    marginLeft: '2px',
-    marginBottom: '-2px',
+    verticalAlign: 'middle', // Aligns the icon with text
   },
   fileManifestLabal: {
     fontFamily: 'Roboto',

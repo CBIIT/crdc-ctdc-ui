@@ -65,6 +65,7 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
     noSelectedRows,
   ]);
 
+  // Fetch Manifest Data
   useQuery(GET_MY_CART_DATA_QUERY, {
     variables: {
       data_file_uuid: allFiles ? filesId : selectedRows,
@@ -76,7 +77,7 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
     }
   })
 
-  // Generate Manifest String
+  // Generate Manifest String/CSV
   useEffect(() => {
     if (manifestData.length > 0) {
       try {
@@ -98,6 +99,7 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
     setOpen(false);
   }, [selectedRows]);
 
+  // Tooltip Titles
   const dropDownTooltipTitle = useMemo(() => {
     if (allFiles) return isCartEmpty ? TOOLTIP_CONTENT.EMPTY_CART : '';
 
@@ -119,9 +121,10 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
             rel="noreferrer"
             style={{ color: '#165F83', textDecoration: 'underline'}}
           >
-            Cancer Genomics Cloud.
-          </a>
+            Cancer Genomics Cloud
+          </a>{' '}
           <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />
+          {'.'}
         </span>
       );
     }
@@ -132,20 +135,20 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
     if (isDropDownDisabled) {
       return (
         <span>
-          To access and analyze files: select and remove unwanted files,
-          click the “Download File Manifest” button, and upload the
-          resulting Manifest file to your{' '}
-          <a
-            href="https://cgc-accounts.sbgenomics.com/auth/login?next=https%3A%2F%2Fcgc-accounts.sbgenomics.com%2F"
-            target="_blank"
-            rel="noreferrer"
-            style={{ color: '#165F83', textDecoration: 'underline'}}
-          >
-            Seven Bridges Genomics
-          </a>
-          <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />
-          account.
-        </span>
+        Files in the cart can be downloaded as a file manifest with{' '}
+        <a
+          href="https://www.ga4gh.org/product/data-repository-service-drs/"
+          target="_blank"
+          rel="noreferrer"
+          style={{ color: '#165F83', textDecoration: 'underline'}}
+        >
+          DRS 
+        </a>{' '}
+        <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />{' '}
+        identifiers and other useful metadata.
+      </span>
+      
+
       );
     }
     return '';
@@ -188,7 +191,8 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
       return '';
     }
   };
-  
+
+  // Handle Download Actions
   const initiateDownload = async (action) => {
     try {
       switch (action) {
@@ -233,6 +237,7 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
     setDownloadFileManifestDialogOpen(false);
   };
 
+  // Render Menu Items
   const getMenuItem = () => {
     return (
       <Fragment>
@@ -241,7 +246,7 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
             arrow
             interactive
             title={exportToCGCTooltipTitle}
-            placement="right"
+            placement="left"
             classes={{tooltip: classes.menuItemTooltip, arrow: classes.arrow}} 
           >
           <span style={{ cursor: isDropDownDisabled && 'not-allowed'}} onClick={() => {
@@ -263,7 +268,7 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
             arrow
             interactive
             title={downloadFileManifestTooltipTitle}
-            placement="right"
+            placement="left"
             classes={{tooltip: classes.menuItemTooltip, arrow: classes.arrow}} 
           >
             <span onClick={() => {
