@@ -22,6 +22,7 @@ const StudiesTable = ({
       config={{
         ...table,
         interOpData,
+        data
       }}
       tableLayOut={tableLayOut}
       totalRowCount={data.length || 0}

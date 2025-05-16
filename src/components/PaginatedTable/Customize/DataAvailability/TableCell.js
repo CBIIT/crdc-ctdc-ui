@@ -6,8 +6,16 @@ import { withStyles, Tooltip } from '@material-ui/core';
 import { FiberManualRecordRounded } from '@material-ui/icons';
 import Styles from './CellStyle';
 import CustomThemeProvider from './CustomTheme';
-import { customizeColumn, customizeHeader } from '../Types';
+import { customizeColumn } from '../Types';
 
+// Utility function to format collection IDs
+function getFormattedCollectionId(collection_id) {
+  return collection_id
+    ? collection_id.toUpperCase().replace(/_/g, '-')
+    : collection_id;
+}
+
+// Utility function to determine study disposition
 export function studyDisposition(value) {
   const embargo = 'under embargo';
   const pending = 'pending';
@@ -19,42 +27,29 @@ export function studyDisposition(value) {
   }
   return undefined;
 }
-function getFormattedCollectionId(collection_id) {
-  if(collection_id)
-    return collection_id.toUpperCase().replace(/_/g, '-');
-  return collection_id
-}
 
-const DataAvailabilityCellView = (props) => {
-  const {
-    classes,
-    column,
-    interOpData,
-    study_id,
-    dataField,
-
-    participant_file_count = 0,
-    study_file_count = 0,
-    numberOfPublications = 0,
-  } = props;
-  const generateCRDCLinks = (linksArray, clinicalStudyDesignation) => (
+const generateCRDCLinks = (linksArray, classes) => {
+  if (!Array.isArray(linksArray)) {
+    console.warn('generateCRDCLinks: linksArray is not an array', linksArray);
+    return <div>No links available</div>;
+  }
+  
+  return (
     <ul className={classes.crdcLinks}>
       {linksArray
-        .filter((link) => link.image_collection_name && link.image_collection_url) // Exclude null values
+        .filter((link) => link.associated_link_name && link.associated_link_url) // Exclude null values
         .map((link) => (
-          <li key={link.image_collection_name} className={classes.crdcLinksLi}>
-            {link.image_collection_url.toLowerCase() !== 'api failed' ? (
+          <li key={link.associated_link_name} className={classes.crdcLinksLi}>
+            {link.associated_link_url.toLowerCase() !== 'api failed' ? (
               <>
                 <a
                   className={classes.crdcLinkStyle}
                   target="_blank"
                   rel="noreferrer"
-                  href={link.image_collection_url}
+                  href={link.associated_link_url}
                 >
                   {
-                    link?.metadata?.collection_id
-                      ? `${link?.image_collection_name } | ${getFormattedCollectionId(link?.metadata?.collection_id)}`
-                      : `${link?.repository_name || ""} | ${link?.image_collection_name}`
+                    link?.metadataIDC?.collection_id ?  `${link?.associated_link_name} | ${getFormattedCollectionId(link?.metadataIDC?.collection_id)}` : `${link?.associated_link_name} | ${getFormattedCollectionId(link?.metadataTCIA?.collection)}`
                   }
                 </a>
                 <img
@@ -68,14 +63,30 @@ const DataAvailabilityCellView = (props) => {
               </>
             ) : (
               <div className={classes.crdcApiFailed}>
-                {`${link?.metadata?.collection_id || link.image_collection_name} | ${link.image_collection_url}`}
+                {`${link?.metadata?.collection_id || link.image_collection_name} | ${link.associated_link_url}`}
               </div>
             )}
           </li>
         ))}
     </ul>
-  );
-  const studyData = interOpData?.getAllStudies;
+  )
+};
+
+// Main component
+const DataAvailabilityCellView = (props) => {
+  const {
+    classes,
+    dataField,
+    participant_file_count = 0,
+    study_file_count = 0,
+    numberOfPublications = 0,
+    image_collection_count = 0,
+    image_collection,
+  } = props;
+  
+  const value = props[dataField];
+
+  // Generate tooltip title based on the data field
   const generateIndicatorTooltipTitle = () => {
     switch (dataField) {
       case 'participant_file_count':
@@ -83,46 +94,39 @@ const DataAvailabilityCellView = (props) => {
       case 'study_file_count':
         return `${study_file_count} Study File(s)`;
       case 'image_collection_count':
-        return `${studyData?.length && studyData[0]?.image_collection_count} Image Collection(s)`;
+        return `${image_collection_count} Image Collection(s)`;
       case 'numberOfPublications':
         return `${numberOfPublications} Publication(s)`;
-      default: {
-        return studyData.length && generateCRDCLinks(studyData[0]?.image_collection);
-      }
+      case 'image_collection':
+        return image_collection.length > 0 && generateCRDCLinks(image_collection, classes);
+      default:
+        return '';
     }
   };
 
-  const value = props[dataField];
-  
-  const currentStudyData = interOpData?.getAllStudies
-    .filter((study) => study.study_id === study_id); 
-  // const currentStudyData = image_collection;
-  let flag;
-  if (dataField === customizeHeader.ADDITIONAL_CRDC_NODES && currentStudyData?.[0]?.image_collection.length) {
-    flag = true;
-  } else {
-    flag = Array.isArray(value) ? value.length > 0 : value > 0;
-  }
-  const title = generateIndicatorTooltipTitle(column, value);
+// Determine if the indicator should be displayed
+  const shouldDisplayIndicator = Array.isArray(value)
+    ? value.length > 0
+    : value > 0;
+
+  const title = generateIndicatorTooltipTitle();
+
   return (
     <CustomThemeProvider>
-      {
-      flag && (
-      <div className={classes.dataAvailIndicator}>
-        <Tooltip
-          classes={{
-            tooltip: classes.defaultDalTooltip,
-          }}
-          title={title}
-          interactive={dataField === customizeColumn.ADDITIONAL_CRDC_NODES}
-          placement="right"
-
-        >
-          <FiberManualRecordRounded className={classes.dataAvailIndicatorIcon} />
-        </Tooltip>
-      </div>
-      )
-    }
+      {shouldDisplayIndicator && (
+        <div className={classes.dataAvailIndicator}>
+          <Tooltip
+            classes={{
+              tooltip: classes.defaultDalTooltip,
+            }}
+            title={title}
+            interactive={dataField === customizeColumn.ADDITIONAL_CRDC_NODES}
+            placement="right"
+          >
+            <FiberManualRecordRounded className={classes.dataAvailIndicatorIcon} />
+          </Tooltip>
+        </div>
+      )}
     </CustomThemeProvider>
   );
 };
