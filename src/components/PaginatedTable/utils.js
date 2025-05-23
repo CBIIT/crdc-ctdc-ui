@@ -1,7 +1,6 @@
 import { formatBytes } from '../../bento-core';
 
 export function formatImageCollection(image_collection) {
-  console.log("|| formatImageCollection image_collection: ", image_collection)
   // Validate that image_collection is an array and not empty
   if (!Array.isArray(image_collection) || image_collection.length === 0) {
     return 'Not Applicable'; // Fallback for invalid or empty image_collection
@@ -64,9 +63,6 @@ export function convertToCSV(jsonse, keysToInclude, header) {
       if (line !== '') line += ',';
       if (keyName === 'file_size') {
         line += entry[keyName] !== null ? `"${formatBytes(entry[keyName])}"` : ' ';
-      } 
-      else if (keyName === 'image_collection') {
-        line += entry[keyName] !== null ? `"${formatImageCollection(entry[keyName])}"` : ' ';
       } else {
         line += entry[keyName] !== null ? `"${entry[keyName] ||'Not Applicable'}"` : ' ';
       }

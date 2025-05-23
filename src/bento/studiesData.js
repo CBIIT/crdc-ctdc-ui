@@ -50,8 +50,8 @@ export const pageData = {
           "participant_file_count",
           "study_file_count",
           "image_collection_count",
-          "numberOfPublication",
-          "image_collection",
+          "numberOfPublications",
+          "unique_repository",
           "study_type",
         ],
         header: [
@@ -132,7 +132,7 @@ export const pageData = {
         iconAlt: 'Photograph',
       },
       {
-        dataField: 'numberOfPublication', // numberOfPublications
+        dataField: 'numberOfPublications', // numberOfPublications
         header: 'Publication(s)',
         display: true,
         columnDefaultValues: {
@@ -146,7 +146,7 @@ export const pageData = {
         iconAlt: 'Document and pen',
       },
       {
-        dataField: 'image_collection',
+        dataField: 'unique_repository',
         header: 'Additional CRDC Nodes',
         display: true,
         columnDefaultValues: {
@@ -166,29 +166,6 @@ export const pageData = {
         display: true,
         tooltipText: 'sort',
       },
-      // {
-      //   dataField: 'accession_id',
-      //   header: 'Accession ID',
-      //   display: true,
-      //   role: cellTypes.DISPLAY,
-      //   tooltipText: 'sort',
-      // },
-      // {
-      //   dataField: 'study_disposition',
-      //   header: 'Study Disposition',
-      //   display: false,
-      //   role: cellTypes.DISPLAY,
-      //   tooltipText: 'sort',
-      // },
-      // {
-      //   dataField: 'numberOfCases',
-      //   header: 'Cases',
-      //   link: '/explore',
-      //   display: true,
-      //   cellType: cellTypes.CUSTOM_ELEM,
-      //   role: cellTypes.DISPLAY,
-      //   tooltipText: 'sort',
-      // },
     ],
     columnGroups: [
       {
@@ -225,27 +202,13 @@ export const GET_STUDY_DATA_QUERY = gql`{
   getAllStudies {
     study_id
     study_name
-    study_short_name
-    study_description
-    study_type
-    dates_of_conduct
-    participant_count
     participant_file_count
-    image_collection_count
     study_file_count
+    image_collection_count
+    # numberOfPublications TODO: Fetch this value from the backend API when it's implemented
+    study_type
 
-    associated_links {
-      associated_link_name
-      associated_link_url
-      associated_link_id
-    }
-    image_collection {
-      image_collection_name
-      repository_name
-      image_collection_url
-      image_type_included
-      collection_access
-    }
+    study_short_name
   }
 }`;
 
@@ -257,6 +220,8 @@ query search {
         study_id
         study_short_name
         image_collection_count
+        unique_repository
+
         image_collection: associated_links {
           associated_link_name
           associated_link_url

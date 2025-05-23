@@ -39,9 +39,11 @@ const studiesContainer = () => {
     ...data,
     getAllStudies: data?.getAllStudies?.map((study) => ({
       ...study,
-      numberOfPublication: 0, // TODO: Fetch this value from the backend API when it's implemented
+      numberOfPublications: 0, // TODO: Fetch this value from the backend API when it's implemented
       image_collection:
         interOpData?.getInteropData?.[0]?.data?.getAllStudies?.image_collection || [],
+      unique_repository:
+        interOpData?.getInteropData?.[0]?.data?.getAllStudies?.unique_repository || [],
     })),
   };
   
