@@ -13,7 +13,7 @@ export const customizeColumn = {
   clinicalDataDescription: 'clinicalDataDescription',
 
   STUDY_CODE: 'study_id',
-  ADDITIONAL_CRDC_NODES: 'image_collection'
+  ADDITIONAL_CRDC_NODES: 'unique_repository'
 
 };
 
@@ -21,9 +21,9 @@ export const customizeColumn = {
 export const customizeLandScapeView = {
   PARTICIPANT_FILES: 'participant_file_count',
   STUDY_FILES: 'study_file_count',
-  IMAGE_COLLECTIONS: 'image_collection_count',
-  PUBLICATIONS: 'numberOfPublication',
-  ADDITIONAL_CRDC_NODES: 'image_collection'
+  IMAGE_COLLECTION_COUNT: 'image_collection_count',
+  PUBLICATIONS: 'numberOfPublications',
+  ADDITIONAL_CRDC_NODES: 'unique_repository'
 };
 
 export const customizeHeader = {
@@ -31,7 +31,7 @@ export const customizeHeader = {
 
   PARTICIPANT_FILES: 'participant_file_count',
   STUDY_FILES: 'study_file_count',
-  IMAGE_COLLECTIONS: 'image_collection_count',
-  PUBLICATIONS: 'numberOfPublication',
-  ADDITIONAL_CRDC_NODES: 'image_collection'
+  IMAGE_COLLECTION_COUNT: 'image_collection_count',
+  PUBLICATIONS: 'numberOfPublications',
+  ADDITIONAL_CRDC_NODES: 'unique_repository'
 };

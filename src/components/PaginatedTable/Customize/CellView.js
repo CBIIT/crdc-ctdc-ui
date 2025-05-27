@@ -156,7 +156,7 @@ export const CustomCellView = (props) => {
       ///
     case customizeLandScapeView.PARTICIPANT_FILES: 
     case customizeLandScapeView.STUDY_FILES:
-    case customizeLandScapeView.IMAGE_COLLECTIONS:
+    case customizeLandScapeView.IMAGE_COLLECTION_COUNT:
     case customizeLandScapeView.PUBLICATIONS:
     case customizeLandScapeView.ADDITIONAL_CRDC_NODES:
       return (
@@ -191,7 +191,7 @@ export const CustomHeaderCellView = (props) => {
   switch (dataField || cellType) {
     case customizeHeader.PARTICIPANT_FILES:
     case customizeHeader.STUDY_FILES:
-    case customizeHeader.IMAGE_COLLECTIONS:
+    case customizeHeader.IMAGE_COLLECTION_COUNT:
     case customizeHeader.PUBLICATIONS:
     case customizeHeader.ADDITIONAL_CRDC_NODES:
       return (

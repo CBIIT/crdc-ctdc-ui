@@ -1,5 +1,32 @@
 import { formatBytes } from '../../bento-core';
 
+export function formatImageCollection(image_collection) {
+  // Validate that image_collection is an array and not empty
+  if (!Array.isArray(image_collection) || image_collection.length === 0) {
+    return 'Not Applicable'; // Fallback for invalid or empty image_collection
+  }
+
+  // Extract unique repository_name, image_collection_name or associated_link_name
+  const uniqueRepositories = new Set(
+    image_collection.map((item) => {
+      if (item.repository_name) {
+        return item.repository_name;
+      }
+      if (item.image_collection_name) {
+        return item.image_collection_name;
+      }
+      if (item.associated_link_name) {
+        return item.associated_link_name;
+      }
+
+      return 'Unknown'; // Fallback for items without valid properties
+    })
+  );
+
+  // Convert the Set back to an array and join the values with a comma
+  return Array.from(uniqueRepositories).join(', ');
+}
+
 export function createFileName(fileName) {
   const date = new Date();
   const yyyy = date.getFullYear();
@@ -37,7 +64,7 @@ export function convertToCSV(jsonse, keysToInclude, header) {
       if (keyName === 'file_size') {
         line += entry[keyName] !== null ? `"${formatBytes(entry[keyName])}"` : ' ';
       } else {
-        line += entry[keyName] !== null ? `"${entry[keyName]}"` : ' ';
+        line += entry[keyName] !== null ? `"${entry[keyName] ||'Not Applicable'}"` : ' ';
       }
       return line;
     });
@@ -60,7 +87,7 @@ export function downloadJson(tableData, tableDownloadCSV) {
   let tempLink = '';
   tempLink = document.createElement('a');
   tempLink.setAttribute('href', JsonURL);
-  tempLink.setAttribute('download', createFileName(tableDownloadCSV.fileName || ''));
+  tempLink.setAttribute('download', createFileName(tableDownloadCSV.downloadFileName || ''));
   document.body.appendChild(tempLink);
   tempLink.click();
   document.body.removeChild(tempLink);

@@ -25,26 +25,43 @@ export const ExtendedViewConfig = (config) => {
       variables.first = 10000;
       return variables;
     };
+    const handleInterOpData = (data, download) => {
+      if (data) {
+        downloadJson(data, download);
+      } else {
+        console.warn("No interOpData found.");
+      }
+    };
 
     const client = useApolloClient();
     // active filters or table query veriables
-    download.downloadTable = (filterItems = {}) => {
-      const queryVariables = getQueryVeriables(filterItems);
-      client
-        .query({
+    download.downloadTable = async (filterItems = {}) => {
+      try {
+        // Downloading the data if the data is provided from config
+        if (config.data) {
+          handleInterOpData(config.data, download);
+          return;
+        }
+    
+        // Prepare query variables
+        const queryVariables = getQueryVeriables(filterItems);
+    
+        // Fetch data using Apollo Client
+        const result = await client.query({
           query: download.query,
-          variables: {
-            ...queryVariables,
-          },
-        })
-        .then((result) => {
-          if (result.data[config.paginationAPIField]) {
-            downloadJson(
-              result.data[config.paginationAPIField],
-              download,
-            );
-          }
+          variables: { ...queryVariables },
         });
+    
+        // Handle the result
+        const data = result?.data?.[config.paginationAPIField];
+        if (data) {
+          downloadJson(data, download);
+        } else {
+          console.warn("No data found for the provided query.");
+        }
+      } catch (error) {
+        console.error("Error downloading table data:", error);
+      }
     };
   }
   return extendedViewConfig;

@@ -33,16 +33,37 @@ export const pageData = {
     title: 'Studies',
     // Field name for table data, need to be updated only when using a different GraphQL query
     dataField: 'getAllStudies',
+    paginationAPIField: 'getAllStudies',
     // toggle D.A.L unified tooltip above D.A.L icons on table toolbar
     legendTooltip: true,
     defaultSortField: 'study_id',
     defaultSortDirection: 'asc',
     extendedViewConfig: {
       download: {
-        customDownload: false,
+        customDownload: true,
         // downloaded File Name
         downloadFileName: 'CTDC_Studies_download',
         downloadCsv: 'Download Table Contents As CSV',
+        keysToInclude: [
+          "study_id",
+          "study_name",
+          "participant_file_count",
+          "study_file_count",
+          "image_collection_count",
+          "numberOfPublications",
+          "unique_repository",
+          "study_type",
+        ],
+        header: [
+          "Study Code",
+          "Study Name",
+          "Participant File(s)",
+          "Study File(s)",
+          "Image Collection(s)",
+          "Publication(s)",
+          "Additional CRDC Nodes",
+          "Study Type",
+        ]
       },
       manageViewColumns: {
         title: 'View Columns',
@@ -111,7 +132,7 @@ export const pageData = {
         iconAlt: 'Photograph',
       },
       {
-        dataField: 'numberOfPublication', // numberOfPublications
+        dataField: 'numberOfPublications', // numberOfPublications
         header: 'Publication(s)',
         display: true,
         columnDefaultValues: {
@@ -125,7 +146,7 @@ export const pageData = {
         iconAlt: 'Document and pen',
       },
       {
-        dataField: 'image_collection',
+        dataField: 'unique_repository',
         header: 'Additional CRDC Nodes',
         display: true,
         columnDefaultValues: {
@@ -145,29 +166,6 @@ export const pageData = {
         display: true,
         tooltipText: 'sort',
       },
-      // {
-      //   dataField: 'accession_id',
-      //   header: 'Accession ID',
-      //   display: true,
-      //   role: cellTypes.DISPLAY,
-      //   tooltipText: 'sort',
-      // },
-      // {
-      //   dataField: 'study_disposition',
-      //   header: 'Study Disposition',
-      //   display: false,
-      //   role: cellTypes.DISPLAY,
-      //   tooltipText: 'sort',
-      // },
-      // {
-      //   dataField: 'numberOfCases',
-      //   header: 'Cases',
-      //   link: '/explore',
-      //   display: true,
-      //   cellType: cellTypes.CUSTOM_ELEM,
-      //   role: cellTypes.DISPLAY,
-      //   tooltipText: 'sort',
-      // },
     ],
     columnGroups: [
       {
@@ -204,63 +202,52 @@ export const GET_STUDY_DATA_QUERY = gql`{
   getAllStudies {
     study_id
     study_name
-    study_short_name
-    study_description
-    study_type
-    dates_of_conduct
-    participant_count
     participant_file_count
-    image_collection_count
     study_file_count
+    image_collection_count
+    # numberOfPublications TODO: Fetch this value from the backend API when it's implemented
+    study_type
 
-    associated_links {
-      associated_link_name
-      associated_link_url
-      associated_link_id
-    }
-    image_collection {
-      image_collection_name
-      repository_name
-      image_collection_url
-      image_type_included
-      collection_access
-    }
+    study_short_name
   }
 }`;
 
 export const GET_STUDY_DATA_INTEROPS_QUERY = gql`
-  query getAllStudies {
-    getAllStudies {
+query search {
+  getInteropData {
+    data{
+      getAllStudies {
         study_id
         study_short_name
+        image_collection_count
+        unique_repository
+
         image_collection: associated_links {
-          image_collection_name: associated_link_name,
-          image_collection_url: associated_link_url,
-            metadata {
-                
-                ... on IDCMetadata {
-                    collection_id,
-                    cancer_type,
-                    date_updated,
-                    description,
-                    doi,
-                    image_types,
-                    location,
-                    species,
-                    subject_count,
-                    supporting_data
-                }
-                ... on TCIAMetadata {
-                    Collection,
-                    Aggregate_PatientID,
-                    Aggregate_Modality,
-                    Aggregate_BodyPartExamined,
-                    Aggregate_ImageCount,
-                    Aggregate_ImageBool
-                }
-            }
-        },
-       image_collection_count
+          associated_link_name
+          associated_link_url
+          metadataIDC {
+            collection_id
+            cancer_type
+            date_updated
+            doi
+            description
+            image_types
+            location
+            species
+            subject_count
+            supporting_data
+          }
+          metadataTCIA{
+            collection
+            aggregate_PatientID
+            aggregate_Modality
+            aggregate_BodyPartExamined
+            aggregate_ImageCount
+            aggregate_ImageBool
+          }
+          }
+        }
+      }
     }
   }
 `;

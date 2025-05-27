@@ -3,8 +3,8 @@ const dynamicDataAvailColStyling = (table, isBody = false) => {
     'participant_file_count',
     'study_file_count',
     'image_collection_count',
-    'dates_of_conduct',
-    'image_collection',
+    'numberOfPublications',
+    'unique_repository',
   ];
   const { columns = [] } = table;
   const displayDavaAvailCols = columns
@@ -173,11 +173,11 @@ export const headerTheme = (table) => {
             textAlign: 'center',
             padding: '15px',
           },
-          '&.numberOfPublication': {
+          '&.numberOfPublications': {
             textAlign: 'center',
             padding: '15px',
           },
-          '&.image_collection': {
+          '&.unique_repository': {
             textAlign: 'center',
             padding: '15px',
           },
