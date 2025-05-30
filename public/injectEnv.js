@@ -42,5 +42,5 @@ window.injectedEnv = {
   REACT_APP_BACKEND_GETUSERINFO_API: 'https://k9dc.essential-dev.com/fence/login/',
   REACT_APP_USER_LOGOUT_URL: 'https://k9dc.essential-dev.com/fence/logout',
 
-  REACT_APP_DMN_URL: 'https://cbiit.github.io/crdc-data-model-navigator/?config=https://raw.githubusercontent.com/CBIIT/ctdc-data-model-navigator-landing/refs/heads/main/example/CTDC/1.0.0/'
+  REACT_APP_DMN_URL: 'https://cbiit.github.io/crdc-data-model-navigator/?config=https://raw.githubusercontent.com/CBIIT/ctdc-model/refs/heads/develop/ctdc-navigator-resources/'
 };
