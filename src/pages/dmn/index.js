@@ -10,7 +10,7 @@ const DataModelNavigator = () => {
         scrolling="no"
         title="Data Model Navigator"
         style={{ width: '100%', height: '1000px', border: 'none' }}
-        sandbox="allow-popups allow-scripts allow-same-origin"
+        sandbox="allow-downloads allow-popups allow-scripts allow-same-origin"
       />
     </div>
   );
