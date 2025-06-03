@@ -174,14 +174,7 @@ const GraphqlView = ({ classes }) => (
         <br />
         <br />
         <span className={classes.text}>
-            To begin querying the CTDC data via GraphQL, access our API endpoint at 
-          <a className={classes.link} href={BACKEND}> {BACKEND}</a>.
-          <img
-            alt="outbounnd web site icon"
-            src={externalLinkIcon}
-            className={classes.linkIcon}
-            style= {{padding: '0 2px 2px 2px',color: '#274FA6'}}
-          />
+            To begin querying the CTDC data via GraphQL, access our API endpoint at <b>{BACKEND}</b>.
         </span>
         <br />
         <br />
