@@ -233,6 +233,10 @@ const styles = (theme) => ({
     //background: '#F6F4F4',
     width: '200px',
     fontSize: '14px',
+    cursor: 'default',
+    '&:hover': {
+      cursor: 'default',
+    },
   },
   headerButtonLinkText: {
     fontFamily: theme.custom.fontFamilyInter,
