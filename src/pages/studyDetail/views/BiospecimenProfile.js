@@ -261,7 +261,7 @@ const styles = (theme) => ({
     fontSize: '12px',
     color: '#990099',
     '&:hover': {
-      textDecoration: 'underline',
+      textDecoration: 'none',
     },
   },
   tabs: {
