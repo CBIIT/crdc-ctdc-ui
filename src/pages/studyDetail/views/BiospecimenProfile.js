@@ -8,7 +8,6 @@ import {
 import { Link } from 'react-router-dom';
 import { BarChart } from 'bento-components';
 
-import { clearAllFilters } from '@bento-core/facet-filter';
 import {
   biospecimenProfile,
   palette,
@@ -16,10 +15,26 @@ import {
   timePointArgumentConfiguration,
   argumentConfiguration,
   seriesSetting,
-} from '../../../bento/studyDetailData';
-import TabPanel from '../../../components/Tab/TabPanel';
+} from '../../../bento/studyDetailData.js';
+import TabPanel from '../../../components/Tab/TabPanel.js';
 // import { navigatedToDashboard } from '../../../utils/utils';
-import store from '../../../store';
+import BiospecimenProfileModal from './biospecimen-profile-modal.js';
+import { useBiospecimenProfileModal } from './biospecimen-profile-modal-store.js';
+import {
+  BarChartWrapper,
+  // Content,
+  // DetailContainerHeader,
+  // DetailContainerItems,
+  // HeaderButton,
+  // HeaderButtonLink,
+  // HeaderButtonLinkNumber,
+  // HeaderButtonLinkSpan,
+  // HeaderButtonLinkText,
+  // MarginTopTenGrid,
+  // StyledTabs,
+} from './biospecimen-profile-styled.js'
+import useDashboardTabs from '../../dashTemplate/components/dashboard-tabs-store.js';
+import { onClearAllFilters } from '../../dashTemplate/sideBar/BentoFilterUtils.js';
 
 const tooltipContent = ({ argument, originalValue }) => (
   <div>
@@ -29,21 +44,27 @@ const tooltipContent = ({ argument, originalValue }) => (
 );
 
 const BiospecimenProfile = ({ classes, d }) => {
-  // const studyCode = data.study[0].clinical_study_designation;
-  const [currentTab, setCurrentTab] = useState(0);
-  const handleTabChange = (event, value) => {
-    setCurrentTab(value);
-  };
 
   let data = d["StudySpecimenByStudyShortName"][0];
+
+  const [, {setIsModalOpen}] = useBiospecimenProfileModal();
+  const [, actions] = useDashboardTabs();
+
+  const studyName = d.studyByStudyShortName[0].study_short_name;
+  const studyCode = d.studyByStudyShortName[0].study_id;
+
+  const [currentTab, setCurrentTab] = useState(0);
+
+  const handleTabChange = (event, value) => {
+    setCurrentTab(value);
+  }
   const tabCount = biospecimenProfile.tabs.filter((tab) => (data[tab.value]
     && data[tab.value].length > 0));
 
-  const biospecimenTabPathName = "/explore?selectedTab=biospecimens"
-
   const linkToDashboard = () => {
     // TODO: Once local-find is enabled; dispatch(resetAllData()) from bento-core/local-find to RESET_LOCALFIND_ALL_DATA
-    store.dispatch(clearAllFilters());
+    onClearAllFilters();
+    actions.changeCurrentTab(1);
   };
 
   const tabItem = (items) => (
@@ -72,15 +93,31 @@ const BiospecimenProfile = ({ classes, d }) => {
 
   const renderTabContent = (item, index) => (
     <TabPanel index={item.index} value={currentTab} key={index}>
-      <BarChart
-        data={data[item.value]}
-        palette={palette}
-        tooltipContent={tooltipContent}
-        argument={item.label === 'TIMEPOINT' ? timePointArgumentConfiguration : argumentConfiguration}
-        value={valueConfiguration}
-        seriesSetting={seriesSetting}
-        size= {{ maxHeight: 300, maxWidth: 300, }}
-      />
+      <BarChartWrapper>
+        <div
+          onClick={async () => {
+            await setIsModalOpen(true);
+          }}
+        >
+          <BarChart
+            data={data[item.value]}
+            palette={palette}
+            tooltipContent={tooltipContent}
+            argument={item.label === 'TIMEPOINT' ? timePointArgumentConfiguration : argumentConfiguration}
+            value={valueConfiguration}
+            seriesSetting={seriesSetting}
+            size= {{ maxHeight: 300, maxWidth: 300, }}
+          />
+        </div>
+        <BiospecimenProfileModal
+          biospecimenProfile={biospecimenProfile}
+          data={data}
+          studyName = {studyName}
+          studyCode= {studyCode}
+          handleTabChange = {handleTabChange}
+          currentTab = {currentTab}
+        />
+      </BarChartWrapper>
     </TabPanel>
   );
 
@@ -98,7 +135,7 @@ const BiospecimenProfile = ({ classes, d }) => {
               <span className={classes.headerButtonLinkSpan}>
                 <Link
                   className={classes.headerButtonLink}
-                  to={biospecimenTabPathName}
+                  to={(location) => ({ ...location, pathname: '/explore' })}
                   onClick={() => linkToDashboard()}
                 >
                   <span className={classes.headerButtonLinkNumber}>
@@ -110,13 +147,10 @@ const BiospecimenProfile = ({ classes, d }) => {
             </div>
           </Grid>
           <Grid item xs={12} className={classes.tabContainer}>
-            { tabItem(biospecimenProfile.tabs) }
+            { tabItem(biospecimenProfile.tabs)}
           </Grid>
           <Grid container className={classes.detailContainerItems}>
             { biospecimenProfile.tabs.map((item, index) => renderTabContent(item, index)) }
-          </Grid>
-          <Grid container>
-            <p className={classes.helpfulDirectionText}>Move cursor over barchart to see data count in detail</p>
           </Grid>
         </>
       ) : (
@@ -145,9 +179,10 @@ const styles = (theme) => ({
   detailContainerHeader: {
     textTransform: 'uppercase',
     fontFamily: theme.custom.fontFamilyInter,
-    fontSize: '16px',
+    fontSize: '18px',
     letterSpacing: '0.017em',
     color: '#066D93',
+    fontWeight: '500',
   },
   container: {
     fontFamily: 'Raleway, sans-serif',
@@ -180,40 +215,47 @@ const styles = (theme) => ({
     padding: '0px !important',
     marginRight: '10px',
     textAlign: 'center',
-    color: '#507C91',
+    color: '#446B79',
   },
   headerButton: {
     fontFamily: theme.custom.fontFamilySans,
     marginTop: '15px',
     textAlign: 'center',
-    height: '33px',
-    background: '#F6F4F4',
-    padding: '2px 10px 0px 10px',
-    border: '3px solid #81A6B9',
-    width: '220px',
+    height: '37px',
+    background: '#E7E5E5',
+    padding: '5px 0px 0px 8px',
+    //border: '3px solid #81A6B9',
+    width: '218px',
   },
   headerButtonLinkSpan: {
     fontFamily: theme.custom.fontFamilyInter,
-    height: '50px',
-    background: '#F6F4F4',
+    height: '60px',
+    //background: '#F6F4F4',
     width: '200px',
     fontSize: '14px',
   },
   headerButtonLinkText: {
     fontFamily: theme.custom.fontFamilyInter,
     color: '#0B3556',
+    fontWeight: '400',
+    fontSize: '12px',
+    lineHeight: '14px',
+    textAlign: 'center',
   },
   headerButtonLinkNumber: {
     fontFamily: theme.custom.fontFamilyInter,
-    margin: '0 4px',
+    margin: '0px 8px 0px -8px',
     fontSize: '14px',
-    color: '#AA581D',
+    fontWeight: '700',
+    lineHeight: '14px',
+    color: '#990099',
+    borderBottom: '2px solid #990099', 
   },
   headerButtonLink: {
     textDecoration: 'none',
     lineHeight: '14px',
     fontSize: '12px',
-    color: '#0296c9',
+    color: '#990099',
     '&:hover': {
       textDecoration: 'underline',
     },

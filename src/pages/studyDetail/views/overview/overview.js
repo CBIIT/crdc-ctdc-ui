@@ -8,7 +8,7 @@ import {
   // eslint-disable-next-line no-unused-vars
   externalIcon,
 } from '../../../../bento/studyDetailData';
-import BiospecimenProfile from '../BiospecimenProfile';
+import BiospecimenProfile from '../BiospecimenProfile.js';
 import OverviewThemeProvider from './overviewThemeConfig';
 import ZipDownloadView from './components/ZipDownloadView';
 import downloadSuccess from '../../../../assets/study/zipDownloadIcon.svg'
@@ -333,7 +333,7 @@ const styles = (theme) => ({
     marginBottom: '16px'
   },
   imageKey: {
-    color: '#067CA7',
+    color: '#066D93',
     paddingRight: '15px'
     // fontFamily: theme.
   },
@@ -407,9 +407,9 @@ const styles = (theme) => ({
   detailContainerHeaderText: {
     fontFamily: theme.custom.fontFamilyInter,
     fontSize: '18px',
-    fontWeight: 400,
+    fontWeight: 500,
     letterSpacing: '0.017em',
-    color: '#067CA7',
+    color: '#066D93',
     textTransform: 'uppercase',
   },
   content: {
@@ -428,7 +428,7 @@ const styles = (theme) => ({
     fontStyle: 'italic',
   },
   title: {
-    color: '#067CA7',
+    color: '#066D93',
     fontFamily: theme.custom.fontFamilyInter,
     fontSize: '18px',
     letterSpacing: '0.017em',

@@ -3,10 +3,11 @@ import { Typography } from '@material-ui/core';
 import { cellTypes, headerTypes } from '@bento-core/table';
 import DocumentDownloadView from '../../../../components/DocumentDownload/DocumentDownloadView';
 import { removeSquareBracketsFromString } from '../../../../utils/utils';
+import { applySubstitutions } from '../../utils';
 
 export const CustomCellView = (props) => {
   const {
-    downloadDocument, documentDownloadProps,
+    downloadDocument, documentDownloadProps, substitutionRules,
     displayEmpty, dataField, removeSquareBrackets
   } = props;
   if (downloadDocument) {
@@ -24,11 +25,18 @@ export const CustomCellView = (props) => {
         fileName={props[documentDownloadProps.fileName]}
       />
     );
-  }else if (removeSquareBrackets) { 
+  } else if (removeSquareBrackets) { 
     return (
       // If removeSquareBrackets flag is true, remove square brackets
       <Typography>
-        {displayEmpty || props[dataField] ? removeSquareBracketsFromString(props[dataField]) : ""}
+        {props[dataField] ? removeSquareBracketsFromString(props[dataField]) : ""}
+      </Typography>
+    );
+  } else if (substitutionRules) { 
+    return (
+      // If removeSquareBrackets flag is true, remove square brackets
+      <Typography>
+        {props[dataField] ? applySubstitutions(props[dataField], substitutionRules) : "" }
       </Typography>
     );
   } else if (typeof displayEmpty === "boolean") {
@@ -69,7 +77,7 @@ export const CustomHeaderCellView = (props) => {
     )
   
   }
-  else if (props.dataField === "targeted_therapy") {
+  else if (props.dataField === "targeted_therapy_string") {
     return (
       <>
       <span style={{fontSize: '14px',width: '170px',textAlign: 'left'}}>

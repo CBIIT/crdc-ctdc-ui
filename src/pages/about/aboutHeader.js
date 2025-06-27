@@ -5,7 +5,7 @@ const AboutHeader = ({ classes, title }) => (
   <div className={classes.container}>
     <div className={classes.header}>
       <div className={classes.slope} />
-      <div className={classes.slope2}><span className={classes.slope2Text}>{title}</span></div>
+      <h1 className={classes.slope2}><span className={classes.slope2Text}>{title}</span></h1>
     </div>
   </div>
 );
@@ -18,7 +18,7 @@ const styles = () => ({
   slope2Text: {
     height: '65px',
     width: '252px',
-    color: '#087CA5',
+    color: '#076D92',
     fontFamily: 'Raleway',
     fontSize: '25px',
     fontWeight: 'bold',

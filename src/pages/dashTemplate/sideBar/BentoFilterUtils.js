@@ -1,5 +1,5 @@
 
-import { clearAllAndSelectFacet } from '@bento-core/facet-filter';
+import { clearAllAndSelectFacet, clearAllFilters } from '@bento-core/facet-filter';
 import {
   GET_IDS_BY_TYPE, GET_SUBJECT_IDS,
 } from '../../../bento/localSearchData';
@@ -14,6 +14,13 @@ export const getFacetValues = (facet, facetValue) => ({[facet]: { [facetValue]: 
 export const onClearAllAndSelectFacetValue = (facet, facetValue) => {
   const filterValue = getFacetValues(facet, facetValue );
   store.dispatch(clearAllAndSelectFacet(filterValue));
+}
+
+/**
+* set filter item to inital state
+*/
+export const onClearAllFilters = (facet, facetValue) => {
+  store.dispatch(clearAllFilters());
 }
 
 /**

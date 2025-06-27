@@ -3,7 +3,7 @@ import {
   GET_MY_CART_DATA_QUERY,
   GET_MY_CART_DATA_QUERY_DESC,
   table,
-} from '../../../bento/fileCentricCartWorkflowData';
+} from '../../../bento/fileCentricCartWorkflowData_OLD';
 
 // pagination table behavior
 // customizeOnRowSelect,

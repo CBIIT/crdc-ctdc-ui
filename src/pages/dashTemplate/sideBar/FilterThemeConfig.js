@@ -79,7 +79,7 @@ const theme = {
     MuiTypography: {
       root: {
         '&.filter_by_participantsSubjects': {
-          color: '#065B43',
+          color: '#217D5E',
           fontSize: '12px',
           fontFamily: 'Nunito',
           fontWeight: 400,

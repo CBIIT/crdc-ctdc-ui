@@ -1,55 +1,93 @@
-import { EqualizerTwoTone } from "@material-ui/icons";
+/*eslint-disable*/
+import JSZip from 'jszip';
+import { USER_COMMENT } from '../../bento/fileCentricCartWorkflowData';
+/*
+import { saveAs } from 'file-saver';
+import { json2csv } from 'json-2-csv'; */
 
-export function createFileName(fileName) {
+export function createFileName(fileName, format = '.csv', applyFormat=true) {
   const date = new Date();
+
+  const padZero = (value) => (value < 10 ? `0${value}` : value);
+
   const yyyy = date.getFullYear();
-  let dd = date.getDate();
-  let mm = (date.getMonth() + 1);
-
-  if (dd < 10) { dd = `0${dd}`; }
-
-  if (mm < 10) { mm = `0${mm}`; }
+  const mm = padZero(date.getMonth() + 1);
+  const dd = padZero(date.getDate());
+  const hours = padZero(date.getHours());
+  const minutes = padZero(date.getMinutes());
+  const seconds = padZero(date.getSeconds());
 
   const todaysDate = `${yyyy}-${mm}-${dd}`;
+  const time = `${hours}-${minutes}-${seconds}`;
 
-  let hours = date.getHours();
-  let minutes = date.getMinutes();
-  let seconds = date.getSeconds();
-
-  if (hours < 10) { hours = `0${hours}`; }
-
-  if (minutes < 10) { minutes = `0${minutes}`; }
-
-  if (seconds < 10) { seconds = `0${seconds}`; }
-
-  return `${fileName} ${todaysDate} ${hours}-${minutes}-${seconds}${'.csv'}`;
+  return `${fileName} ${todaysDate} ${time}${applyFormat ? format : ''}`;
 }
 
-export function convertToCSV(jsonse, comments, keysToInclude, header) {
-  const objArray = jsonse;
-  const array = typeof objArray !== 'object' ? JSON.parse(objArray) : objArray;
-  let str = '';
-  array.map((entry, index) => {
-    let line = '';
-    keysToInclude.map((keyName) => {
-      if (line !== '') line += ',';
-      let columnResult = keyName == 'data_file_uuid'? "drs://nci-crdc.datacommons.io/dg.4DFC/"+ entry[keyName] : entry[keyName];
-      if (typeof columnResult === 'string') columnResult.replace(/"/g, '""');
-      if (typeof columnResult === 'string' && columnResult.search(/("|,|\n)/g) >= 0) columnResult = `"${columnResult}"`;
-      line += columnResult !== null ? columnResult : ' ';
-      return line;
-    });
-    if (index === 0) {
-      str = header.join(',');
-      let commentResult = comments.replace(/"/g, '""');
-      if (commentResult.search(/("|,|\n)/g) >= 0) commentResult = `"${commentResult}"`;
-      str += `\r\n${line},${commentResult}\r\n`;
-    } else {
-      str += `${line}\r\n`;
-    }
-    return str;
+export const downloadCsvString = (csvString, fileName) => {
+    const ensureCsvExtension = (name) => name.toLowerCase().endsWith('.csv') ? name : `${name}.csv`;
+    
+    const blob = new Blob([csvString], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = ensureCsvExtension(fileName);
+    document.body.appendChild(link);
+    link.click();
+
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url); 
+}
+
+export function convertToCSV(jsonse, comments="", keysToInclude, header) {
+  const objArray = typeof jsonse !== "object" ? JSON.parse(jsonse) : jsonse;
+
+  // Validate header and keysToInclude
+  if (!Array.isArray(header) || header.length === 0) {
+    throw new Error("Header must be a non-empty array.");
+  }
+  if (!Array.isArray(keysToInclude) || keysToInclude.length === 0) {
+    throw new Error("Keys to include must be a non-empty array.");
+  }
+  // Start with the header row
+  let csvString = header.join(",") + "\r\n";
+  
+  // Check if comments are not empty
+  const hasValidComments = comments && comments.length > 0;
+
+  objArray.forEach((entry, index) => {
+    let line = keysToInclude
+      .map((keyName) => {
+        let fieldValue = entry[keyName];
+
+          // Add comments to the first data row
+        if (index === 0 && keyName === USER_COMMENT && hasValidComments) {
+          let formattedComments = comments.replace(/"/g, '""');
+          if (formattedComments.search(/("|,|\n)/g) >= 0) {
+            formattedComments = `"${formattedComments}"`;
+          }
+          return formattedComments;
+        }
+
+        // Check if the field value is a string and contains characters that need to be escaped.
+        if (typeof fieldValue === "string") {
+          fieldValue = fieldValue.replace(/"/g, '""'); // Escape double quotes
+          // Enclose the field value in double quotes if it contains commas, newlines, or double quotes
+          if (fieldValue.search(/("|,|\n)/g) >= 0) {
+            fieldValue = `"${fieldValue}"`;
+          }
+        }
+
+        // Return the field value or an empty string for null/undefined
+        return fieldValue !== null && fieldValue !== undefined ? fieldValue : "";
+      })
+      .join(","); // Join all fields for the row with commas
+
+    // Append the current row to the CSV string
+    csvString += line + "\r\n";
   });
-  return str;
+
+  return csvString;
 }
 
 export function downloadJson(tableData, comments, fileName, manifestData) {
@@ -65,3 +103,58 @@ export function downloadJson(tableData, comments, fileName, manifestData) {
   tempLink.click();
   document.body.removeChild(tempLink);
 }
+/*
+export const downloadJsonV2 = (tableData, comments, fileName, manifestData) => {
+  const payload = tableData.map((el) => ({
+    ...el,
+    user_comments: comments || null
+  }))
+  const json2csvCallback = (err, csv) => {
+    if (err) { throw err; }
+    const exportData = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
+    const JsonURL = window.URL.createObjectURL(exportData);
+    let tempLink = '';
+    tempLink = document.createElement('a');
+    tempLink.setAttribute('href', JsonURL);
+    tempLink.setAttribute('download', createFileName(fileName));
+    document.body.appendChild(tempLink);
+    tempLink.click();
+    document.body.removeChild(tempLink);
+  };
+
+  const json2csvOptions = {
+    excludeKeys: ['__typename'],
+    keys: manifestData
+  };
+  json2csv(payload, json2csvCallback, json2csvOptions);
+};
+
+
+export const downloadAndZipJson = (dataArray, setLoading, studyCode) => {
+  const filteredArr = dataArray.filter((el) => el.node.length !== 0);
+  const processedFiles = [];
+  const zip = new JSZip();
+
+  filteredArr.forEach((dataObj) => {
+    const jsonse = JSON.stringify(dataObj.node);
+    const csv = convertToCSV(jsonse,
+      dataObj.comments,
+      dataObj.metadata.keysToInclude, dataObj.metadata.header);
+    processedFiles.push({
+      name: createFileName(`${dataObj.fileName}`),
+      content: csv,
+    });
+  });
+
+  processedFiles.forEach((file) => {
+    zip.file(file.name, file.content);
+  });
+
+  zip.generateAsync({ type: 'blob' }).then((content) => {
+    saveAs(content, createFileName(`ICDC_Clinical_Data-${studyCode}`, '.zip'));
+  });
+  if (setLoading) {
+    setLoading(false);
+  }
+};
+*/

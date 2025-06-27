@@ -24,7 +24,7 @@ export default () => ({
   resetText: {
     marginTop: '0px',
     marginLeft: '8px',
-    color: '#0E6292',
+    color: '#4B78A0',
     fontSize: 14,
   },
   resetTextDisabled: {
