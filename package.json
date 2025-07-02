@@ -105,7 +105,7 @@
     "tinycolor2": "^1.4.1",
     "url-loader": "1.1.2",
     "uuid": "^3.3.3",
-    "webpack": "4.28.3",
+    "webpack": "5.0.0",
     "webpack-dev-server": "^3.11.0",
     "webpack-manifest-plugin": "2.0.4",
     "workbox-webpack-plugin": "3.6.3"
