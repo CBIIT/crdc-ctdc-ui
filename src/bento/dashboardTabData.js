@@ -973,6 +973,11 @@ export const tabContainers = [
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         headerType: headerTypes.CUSTOM_ELEM,
+        cellType: cellTypes.LINK,
+        linkAttr: {
+          rootPath: '/participant',
+          pathParams: ['participant_id'],
+        },
       },
       {
         dataField: 'ctep_disease_term',
