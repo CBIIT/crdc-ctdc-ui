@@ -110,7 +110,7 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
   
   }, [allFiles, isCartEmpty, noSelectedRows]);
 
-  const exportToCGCTooltipTitle = useMemo(() => (
+  const exportToCGCTooltipTitle = (
     <span>
       Files in the cart can be easily exported into the{' '}
       <a
@@ -124,9 +124,9 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
       <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />
       {'.'}
     </span>
-  ));
+  );
 
-  const downloadFileManifestTooltipTitle = useMemo(() => (
+  const downloadFileManifestTooltipTitle = (
     <span>
       Files in the cart can be downloaded as a file manifest with{' '}
       <a
@@ -140,8 +140,7 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
       <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />{' '}
       identifiers and other useful metadata.
     </span>
-
-  ));
+  );
 
   const handleToggle = () => setOpen((prevOpen) => !prevOpen);
   const handleClose = (event) => {
