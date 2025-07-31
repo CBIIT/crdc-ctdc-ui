@@ -110,37 +110,49 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
   
   }, [allFiles, isCartEmpty, noSelectedRows]);
 
-  const exportToCGCTooltipTitle = (
-    <span>
-      Files in the cart can be easily exported into the{' '}
-      <a
-        href="https://www.cancergenomicscloud.org/"
-        target="_blank"
-        rel="noreferrer"
-        style={{ color: '#165F83', textDecoration: 'underline'}}
-      >
-        Cancer Genomics Cloud
-      </a>{' '}
-      <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />
-      {'.'}
-    </span>
-  );
+  const exportToCGCTooltipTitle = useMemo(() => {
+    if (isDropDownDisabled) {
+      return (
+        <span>
+          Files in the cart can be easily exported into the{' '}
+          <a
+            href="https://www.cancergenomicscloud.org/"
+            target="_blank"
+            rel="noreferrer"
+            style={{ color: '#165F83', textDecoration: 'underline'}}
+          >
+            Cancer Genomics Cloud
+          </a>{' '}
+          <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />
+          {'.'}
+        </span>
+      );
+    }
+    return '';
+  }, [isDropDownDisabled]);
 
-  const downloadFileManifestTooltipTitle = (
-    <span>
-      Files in the cart can be downloaded as a file manifest with{' '}
-      <a
-        href="https://www.ga4gh.org/product/data-repository-service-drs/"
-        target="_blank"
-        rel="noreferrer"
-        style={{ color: '#165F83', textDecoration: 'underline'}}
-      >
-        DRS 
-      </a>{' '}
-      <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />{' '}
-      identifiers and other useful metadata.
-    </span>
-  );
+  const downloadFileManifestTooltipTitle = useMemo(() => {
+    if (isDropDownDisabled) {
+      return (
+        <span>
+        Files in the cart can be downloaded as a file manifest with{' '}
+        <a
+          href="https://www.ga4gh.org/product/data-repository-service-drs/"
+          target="_blank"
+          rel="noreferrer"
+          style={{ color: '#165F83', textDecoration: 'underline'}}
+        >
+          DRS 
+        </a>{' '}
+        <img className={classes.linkIcon} src={linkIcon} alt="linkIcon" />{' '}
+        identifiers and other useful metadata.
+      </span>
+      
+
+      );
+    }
+    return '';
+  }, [isDropDownDisabled]);
 
   const handleToggle = () => setOpen((prevOpen) => !prevOpen);
   const handleClose = (event) => {
