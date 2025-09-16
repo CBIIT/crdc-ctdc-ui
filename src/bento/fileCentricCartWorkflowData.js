@@ -69,7 +69,7 @@ export const manifestData = {
 
     'data_file_uuid',
     'data_file_checksum_value',
-    'parent_specimen_id',
+    'specimen_record_id',
     'ctep_disease_term',
     'meddra_disease_code',
     'primary_disease_site',
@@ -82,7 +82,7 @@ export const manifestData = {
     'ethnicity',
     'carcinogen_exposure',
     'targeted_therapy',
-    'parent_specimen_id',
+    'specimen_record_id',
     'anatomical_collection_site',
     'tissue_category',
     'assessment_timepoint',
@@ -109,7 +109,7 @@ export const manifestData = {
     'Ethnicity',
     'Carcinogen Exposure',
     'Targeted Therapy',
-    'Parent Biospecimen ID',
+    'Specimen Record ID',
     'Anatomical Collection Site',
     'Tissue Category',
     'Collection Timepoint',
@@ -148,7 +148,7 @@ export const GET_MY_CART_DATA_QUERY = gql`
       specimen_id
       ctep_disease_term
       data_file_uuid
-      parent_specimen_id
+      specimen_record_id
       stage_of_disease
       tumor_grade
       age_at_enrollment
@@ -191,7 +191,7 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     ctep_disease_term
     meddra_disease_code
     histology
-    parent_specimen_id
+    specimen_record_id
     primary_disease_site
     specimen_id
     ctep_disease_term
@@ -290,8 +290,8 @@ export const table = {
       role: cellTypes.DISPLAY,
     },
     {
-      dataField: 'parent_specimen_id',
-      header: 'Parent Biospecimen ID',
+      dataField: 'specimen_record_id',
+      header: 'Specimen Record ID',
       display: true,
       tooltipText: 'sort',
       role: cellTypes.DISPLAY,
