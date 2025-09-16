@@ -139,7 +139,7 @@ const BiospecimenProfile = ({ classes, d }) => {
                   onClick={() => linkToDashboard()}
                 >
                   <span className={classes.headerButtonLinkNumber}>
-                    {0 || data.sample_count}
+                    {0 || data.specimen_count}
                   </span>
                   <span className={classes.headerButtonLinkText}>Associated Biospecimens</span>
                 </Link>

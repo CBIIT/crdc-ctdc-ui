@@ -36,7 +36,7 @@ export const biospecimenProfile = {
     {
       index: 1,
       label: 'BIOSPECIMENS',
-      value: 'parent_specimen_types',
+      value: 'specimen_types',
     },
   ],
 };
@@ -116,7 +116,7 @@ query studyByStudyShortNameQueries($study_short_name: [String]) {
     associated_links {
       associated_link_name
       associated_link_url
-      associated_link_id
+      associated_link_record_id
     }
     image_collection {
       image_collection_name
@@ -141,7 +141,7 @@ query studyByStudyShortNameQueries($study_short_name: [String]) {
   }
 
   StudySpecimenByStudyShortName(study_short_name: $study_short_name) {
-    parent_specimen_types{
+    specimen_types{
         group
         count
     }
@@ -149,7 +149,7 @@ query studyByStudyShortNameQueries($study_short_name: [String]) {
        group
        count
     }
-    sample_count
+    specimen_count
   }
 }
 

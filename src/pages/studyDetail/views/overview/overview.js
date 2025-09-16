@@ -147,7 +147,7 @@ const Overview = ({
                       <Grid item xs={12} className={classes.title}>
                         ASSOCIATED LINKS
                       </Grid>
-                      {associatedLinks.sort((a, b) => customSorting(a.associated_link_id, b.associated_link_id))
+                      {associatedLinks.sort((a, b) => customSorting(a.associated_link_record_id, b.associated_link_record_id))
                         .map((link, index) => (
                           <Grid item xs={12} className={classes.content} key={index}>
                             <a
