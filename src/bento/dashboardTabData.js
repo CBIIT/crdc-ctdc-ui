@@ -494,7 +494,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       stage_of_disease
       primary_disease_site,
       specimen_id,
-      parent_specimen_id,
+      specimen_record_id,
       anatomical_collection_site,
       tissue_category,
       assessment_timepoint
@@ -562,7 +562,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       data_file_description,
       specimen_id,
       ctep_disease_term
-      parent_specimen_id
+      specimen_record_id
       data_file_uuid
     }
   }
@@ -627,7 +627,7 @@ query participant_data_files(
 // --------------- GraphQL Query - "ADD FILES FOR SELECTED BIOSPECIMENS" under Biospecimens tab ---------------
 export const GET_FILE_IDS_FOR_SELECTED_BIOSPECIMENS = gql`
 query biospecimenAddAllToCart(
-  $parent_specimen_id: [String], # Helps in adding the selected Biospecimen(s)-files to the cart
+  $specimen_record_id: [String], # Helps in adding the selected Biospecimen(s)-files to the cart
 
   $participant_id: [String],
   $ctep_disease_term: [String],
@@ -653,7 +653,7 @@ query biospecimenAddAllToCart(
   $sort_direction: String = "asc"
 ){
   biospecimen_data_files(
-    parent_specimen_id: $parent_specimen_id
+    specimen_record_id: $specimen_record_id
 
     participant_id: $participant_id
     ctep_disease_term: $ctep_disease_term
@@ -1066,8 +1066,8 @@ export const tabContainers = [
     api: GET_BIOSPECIMENS_OVERVIEW_QUERY,
     count: 'numberOfSpecimens',
     paginationAPIField: 'biospecimenOverview',
-    dataKey: 'parent_specimen_id',
-    defaultSortField: 'parent_specimen_id',
+    dataKey: 'specimen_record_id',
+    defaultSortField: 'specimen_record_id',
     defaultSortDirection: 'asc',
     tableID: 'biospecimens_tab_table',
     addAllButtonText: 'ADD FILES FOR ALL BIOSPECIMENS',
@@ -1136,7 +1136,7 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
         headerType: headerTypes.CUSTOM_ELEM
       },
-      // Hidden: Using parent_specimen_id instead
+      // Hidden: Using specimen_record_id instead
       {
         dataField: 'specimen_id',
         header: 'Biospecimen ID',
@@ -1146,8 +1146,8 @@ export const tabContainers = [
         headerType: headerTypes.CUSTOM_ELEM,
       },
       {
-        dataField: 'parent_specimen_id',
-        header: 'Parent Biospecimen ID',
+        dataField: 'specimen_record_id',
+        header: 'Specimen Record ID',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1186,7 +1186,7 @@ export const tabContainers = [
     tableMsg: {
       noMatch: 'No Matching Records Found',
     },
-    addFilesRequestVariableKey: 'parent_specimen_id',
+    addFilesRequestVariableKey: 'specimen_record_id',
 
     addFilesResponseKeys: ['biospecimen_data_files', 'data_file_uuid'],
     addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_BIOSPECIMENS,
@@ -1303,7 +1303,7 @@ export const tabContainers = [
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
-      // Hidden: Using parent_specimen_id instead
+      // Hidden: Using specimen_record_id instead
       {
         dataField: 'specimen_id',
         header: 'Biospecimen ID',
@@ -1313,8 +1313,8 @@ export const tabContainers = [
         headerType: headerTypes.CUSTOM_ELEM,
       },
       {
-        dataField: 'parent_specimen_id',
-        header: 'Parent Biospecimen ID',
+        dataField: 'specimen_record_id',
+        header: 'Specimen Record ID',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
