@@ -41,7 +41,7 @@ export const SEARCH_PUBLIC = gql`
             program_count
             study_count
             subject_count
-            sample_count
+            specimen_count
             file_count
             about_page{
                 page
@@ -97,7 +97,7 @@ export const SEARCH_PAGE_RESULTS_PUBLIC = gql`
             about_count
             study_count
             subject_count
-            sample_count
+            specimen_count
             file_count
         }
     }
@@ -132,7 +132,7 @@ export const SEARCH = gql`
         participant_id
       }
       biospecimens {
-        parent_specimen_id
+        specimen_record_id
       }
       gs_list {
         autocomplete_list
@@ -177,10 +177,10 @@ export const SEARCH_PAGE_RESULT_BIOSPECIMENS = gql`
       biospecimens {
         type
         study_short_name
-        parent_specimen_id
+        specimen_record_id
         participant_id
         ctep_disease_term
-        parent_specimen_type
+        specimen_type
         tissue_category
         anatomical_collection_site
         assessment_timepoint

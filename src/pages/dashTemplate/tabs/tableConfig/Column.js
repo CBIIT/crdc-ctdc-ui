@@ -105,11 +105,11 @@ export const CustomHeaderCellView = (props) => {
       </>
     )
   }
-  else if (props.dataField === "parent_specimen_id") {
+  else if (props.dataField === "specimen_record_id") {
     return (
       <>
       <span style={{fontSize: '14px',width: '200px',textAlign: 'left'}}>
-      Parent Biospecimen ID
+        Specimen Record ID
       </span>
       </>
     )
