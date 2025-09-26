@@ -992,7 +992,7 @@ export const tabContainers = [
       {
         dataField: 'tumor_grade',
         header: 'Tumor Grade',
-        display: true,
+        display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         headerType: headerTypes.CUSTOM_ELEM,
