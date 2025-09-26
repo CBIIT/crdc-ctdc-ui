@@ -984,7 +984,7 @@ export const tabContainers = [
       {
         dataField: 'stage_of_disease',
         header: 'Stage of Disease',
-        display: true,
+        display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         headerType: headerTypes.CUSTOM_ELEM,
@@ -1123,7 +1123,7 @@ export const tabContainers = [
       {
         dataField: 'stage_of_disease',
         header: 'Stage of Disease',
-        display: true,
+        display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         headerType: headerTypes.CUSTOM_ELEM,
