@@ -138,7 +138,6 @@ export const GET_MY_CART_DATA_QUERY = gql`
       data_file_format
       data_file_type
       data_file_size
-      association
       ctep_disease_term
       meddra_disease_code
       histology
@@ -185,7 +184,6 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     data_file_format
     data_file_type
     data_file_size
-    association
     data_file_description
     participant_id
     ctep_disease_term
