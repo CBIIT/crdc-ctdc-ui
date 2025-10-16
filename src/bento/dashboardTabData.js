@@ -558,7 +558,6 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       data_file_format,
       data_file_type,
       data_file_size,
-      association,
       data_file_description,
       specimen_id,
       ctep_disease_term
@@ -1253,13 +1252,6 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
         dataFormatType: dataFormatTypes.FORMAT_BYTES,
         cellType: cellTypes.FORMAT_DATA,
-      },
-      {
-        dataField: 'association',
-        header: 'Association',
-        display: true,
-        tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
       },
       {
         dataField: 'data_file_description',
