@@ -54,7 +54,7 @@
     "html2pdf.js": "^0.10.1",
     "identity-obj-proxy": "3.0.0",
     "isomorphic-fetch": "^2.2.1",
-    "jest": "23.6.0",
+    "jest": "30.0.0",
     "jest-pnp-resolver": "1.0.2",
     "jest-resolve": "23.6.0",
     "jest-watch-typeahead": "^0.2.1",
@@ -106,7 +106,7 @@
     "url-loader": "1.1.2",
     "uuid": "^3.3.3",
     "webpack": "4.28.3",
-    "webpack-dev-server": "^3.11.0",
+    "webpack-dev-server": "^5.2.1",
     "webpack-manifest-plugin": "2.0.4",
     "workbox-webpack-plugin": "3.6.3"
   },
