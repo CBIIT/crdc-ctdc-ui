@@ -85,7 +85,7 @@
     "react-scroll": "^1.7.16",
     "react-sweet-state": "2.7.2",
     "react-swipeable-views": "^0.13.9",
-    "react-syntax-highlighter": "^10.2.0",
+    "react-syntax-highlighter": "^16.0.0",
     "react-toastify": "^4.5.2",
     "react-use-googlelogin": "^0.12.5",
     "react-uuid": "^1.0.2",
