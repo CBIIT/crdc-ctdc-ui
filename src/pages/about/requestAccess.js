@@ -39,14 +39,6 @@ const RAView = ({ classes }) => {
                   </div>
                 </div>
                 <div className={classes.text}>
-                 <div className={classes.title}>
-                Registered access data 
-                </div>
-                <div className={classes.content}>
-                 Registered tier datasets may contain some individual-level data or data under collaborative agreements that require users to register for access and agree to certain terms of use prior to access. Terms of use vary by study. 
-                </div>
-                </div>
-                <div className={classes.text}>
                    <div className={classes.title}>
                       Controlled access data  
                   </div>

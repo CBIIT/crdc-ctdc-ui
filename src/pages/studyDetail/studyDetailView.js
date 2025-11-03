@@ -21,10 +21,13 @@ import StudyThemeProvider from './studyDetailsThemeConfig';
 import Overview from './views/overview/overview';
 import store from '../../store';
 import { onClearAllFilters } from '../dashTemplate/sideBar/BentoFilterUtils';
+import useDashboardTabs from '../dashTemplate/components/dashboard-tabs-store';
 
 const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
   const studyData = data;
   const processedTabs = tab.items;
+
+  const [, actions] = useDashboardTabs();
 
   const [snackbarState, setsnackbarState] = React.useState({
     open: false,
@@ -62,6 +65,7 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
   const linkToDashboard = () => {
     // TODO: Once local-find is enabled; dispatch(resetAllData()) from bento-core/local-find to RESET_LOCALFIND_ALL_DATA
     onClearAllFilters();
+    actions.changeCurrentTab(0);
   };
 
   return (

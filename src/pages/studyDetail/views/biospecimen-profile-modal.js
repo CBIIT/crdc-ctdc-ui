@@ -163,7 +163,7 @@ const BiospecimenProfileModal = ({ biospecimenProfile, data, studyName, studyCod
                           borderBottom: '2px solid #990099',            
                         }}
                       >
-                        {data.sample_count}
+                        {data.specimen_count}
                       </Box>
                       <Box
                         component={'span'}

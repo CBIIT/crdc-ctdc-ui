@@ -41,8 +41,6 @@ const defaultQuery = `
     # you can use the lists on the facets on the explore page to find variables to filter queries here
     $participant_id: [String],
     $ctep_disease_term: [String],
-    $stage_of_disease: [String],
-    $tumor_grade: [String], 
     $sex: [String], 
     $race: [String], 
     $ethnicity: [String],
@@ -58,8 +56,6 @@ const defaultQuery = `
     searchParticipants(
       participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
-      stage_of_disease: $stage_of_disease
-      tumor_grade: $tumor_grade
       sex: $sex
       race: $race
       ethnicity: $ethnicity
@@ -89,8 +85,6 @@ const defaultQuery = `
 # query participantOverview(
 #     $participant_id: [String],
 #     $ctep_disease_term: [String],
-#     $stage_of_disease: [String],
-#     $tumor_grade: [String],
 #     $sex: [String],
 #     $race: [String],
 #     $ethnicity: [String],
@@ -110,8 +104,6 @@ const defaultQuery = `
 #     participantOverview(
 #       participant_id: $participant_id
 #       ctep_disease_term: $ctep_disease_term
-#       stage_of_disease: $stage_of_disease
-#       tumor_grade: $tumor_grade
 #       sex: $sex
 #       reported_gender: $reported_gender
 #       race: $race
@@ -131,8 +123,6 @@ const defaultQuery = `
 #     ){
 #       participant_id,
 #       ctep_disease_term,
-#       stage_of_disease,
-#       tumor_grade,
 #       age_at_enrollment,
 #       sex,
 #       race,
@@ -204,8 +194,6 @@ const GraphqlView = ({ classes }) => (
         variables='{
           "participant_id": [],
           "ctep_disease_term": [],
-          "stage_of_disease": [],
-          "tumor_grade": [],
           "sex": [],
           "race": [],
           "ethnicity": [],

@@ -2,7 +2,65 @@
   title: "Data Submission"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
   content:
-    - paragraph: "CTDC is not accepting external data submissions at this time. Learn how to $$[submit data to other data repositories](type:internal url:https://datacommons.cancer.gov/data/submit-data target:_blank )$$ within the Cancer Research Data Commons."
+    - paragraph: "The Clinical and Translational Data Commons (CTDC) is designed to facilitate the integration and analysis of a wide array of clinical and translational research data. To support this initiative, the CTDC will accept a variety of data types, each crucial for the comprehensive understanding of clinical outcomes and the translational pathway from laboratory and clinical research to clinical applications."
+    - paragraph: "Those interested in submitting data to the CTDC must first fill out a data submission request through $$[the CRDC Submission Portal](https://hub.datacommons.cancer.gov/)$$. Requests will be reviewed to assess alignment with CTDC and CRDC’s mission and overall data requirements. Review times can be expected to be four to six weeks. For more information regarding submission requests and data submission, see $$[CRDC’s Submit Data page](https://datacommons.cancer.gov/submit)$$ or contact $$[NCICRDC@mail.nih.gov✉️](type: email NCICRDC@mail.nih.gov)$$."
+    - paragraph: "Below are the primary categories of data the CTDC currently accepts:"
+    - paragraph: "$$*De-identified Clinical Data:*$$"
+    - listWithDots:
+      - "Patient demographics"
+      - "Clinical outcomes"
+      - "Treatment regimens"
+      - "Follow-up data (disease progression, etc.)"
+      - "Pathology reports"
+    - paragraph: "$$*Molecular Sequencing Data:*$$"
+    - listWithDots:
+      - "Whole genome sequencing data"
+      - "Exome sequencing data"
+      - "Transcriptome data (e.g., RNA-Seq)"
+      - "Epigenetic data (e.g., methylation profiles)"
+      - "Variant and gene expression data"
+    - paragraph: "$$*Biomarker Data:*$$"
+    - listWithDots:
+      - "Proteomics"
+      - "Metabolomics"
+      - "Immunohistochemistry"
+      - "Other omics data relevant to biomarker discovery"
+    - paragraph: "$$*Pharmacological Data*$$"
+    - listWithDots:
+      - "Drug dosing and administration records"
+      - "Pharmacokinetics and pharmacodynamics data"
+      - "Adverse event profiles"
+    - paragraph: "$$*Patient-Reported Outcomes*$$"
+    - listWithDots:
+      - "Quality of life assessments"
+      - "Symptom diaries"
+      - "Functional status evaluations"
+    - paragraph: "$$*Data from Non-interventional Studies*$$"
+    - listWithDots:
+      - "Observational cohort data"
+      - "Retrospective study data"
+      - "Real-world evidence"
+    - paragraph: "$$*Imaging Data*$$"
+    - listWithDots:
+      - "CTDC accepts a variety of imaging data files and accompanying metadata. Image files are not viewable directly on CTDC but can be migrate to NCI’s cloud resources for analysis. Alternatively, data submitters can provide links to corresponding imaging files already deposited within The Cancer Imaging Archive (TCIA) and the Imaging Data Commons (IDC) to be included with their submitted data set in the CTDC."
+    - paragraph: "The CTDC will accept image files from the following sources:"
+    - listWithDots:
+      - "Radiological images (e.g., MRI, CT scans, X-rays)"
+      - "Pathological images (e.g., histology slides)"
+      - "Derived quantitative features (e.g., radiomics)"
+    - paragraph: "Please contact us regarding sources not listed here."
+    - paragraph: "$$*State of Data:*$$ All data submitted to the CTDC should be cleaned, ready to share for secondary use, curated, and annotated with sufficient metadata to ensure high quality and usability for further analysis. Please ensure that data is free of errors and discrepancies and is in allowable standardized formats. To protect patient privacy, all data must be de-identified by the submitter prior to submission to the CTDC. All submissions will be processed by the CRDC Data Hub to ensure compliance with CRDC standards."
+    - paragraph: "$$*Data Formats:*$$ The CTDC will accept data primarily in standardized, interoperable formats to ensure ease of integration and analysis. Accepted structured data formats include, but are not limited to:"
+    - listWithDots :
+      - "$$*Clinical*$$: CSV, JSON, or XML"
+      - "$$*Genomic*$$: VCF for genetic mutation data, BAM for aligned DNA sequencing reads, and FASTQ for raw sequence data"
+      - "$$*Statistical and Bioinformatics:*$$ CSV or TSV"
+      - "$$*Metadata and Documentation:*$$ XML, JSON, YAML"
+      - "$$*Reports:*$$ PDF"
+      - "$$*Images:*$$ DICOM, JPEG, TIFF, PNG, SVS, NDPI, MRXS"
+    - paragraph: "We will also link to corresponding imaging files already deposited within The Cancer Imaging Archive (TCIA) and the Imaging Data Commons (IDC) as described above."
+    - paragraph: "$$*Data Model:*$$ The CTDC is committed to evolving and enhancing its data model to meet the dynamic needs of clinical and translational research. The CTDC collaborates with NCI's Semantic Infrastructure Team. This collaboration assists with data mapping to common data elements (CDEs) within NCI's Cancer Data Standards Registry and Repository (caDSR). The team also supports the development of new CDEs as needed. We may work collaboratively with data submitters to update our data model to accommodate new types of data or to refine existing data structures, ensuring the CTDC remains at the forefront of research innovation."
+
 - page: '/additional-information'
   title: "Additional Information"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Developers.png
@@ -37,7 +95,7 @@
   title: "Support"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Support.png
   content:
-    - paragraph: "If you have any questions, please contact us at $$[NCICTDCHelpDesk@mail.nih.gov](NCICTDCHelpDesk@mail.nih.gov)$$."
+    - paragraph: "If you have any questions, please contact us at $$[NCICRDC@mail.nih.gov✉️](type: email NCICRDC@mail.nih.gov)$$."
 - page: '/cloud-computing'
   title: "Cloud computing"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
@@ -77,14 +135,14 @@
     - paragraph: "     "
     - paragraph: "$$!\"The results published here are, in whole or in part, derived from the analysis of data found within the Clinical and Translational Data Commons (CTDC), part of the National Cancer Institute's Cancer Research Data Commons (CRDC). This includes data generated as part of the [Study Name] NCT XXXXXX study, https://doi.org/xxx. This data can be found within NCI’s Clinical and Translational Data Commons, found at clinical.datacommons.cancer.gov.\"!$$"
     - paragraph: "     "
-    - paragraph: "If you have utilized data within the CTDC in your research, please contact $$[NCICTDCHelpDesk@mail.nih.gov](NCICTDCHelpDesk@mail.nih.gov)$$ so we can include your work on our website."
+    - paragraph: "If you have utilized data within the CTDC in your research, please contact $$[NCICRDC@mail.nih.gov](NCICRDC@mail.nih.gov)$$ so we can include your work on our website."
     - paragraph: "     "
     - paragraph: "$$#Intellectual Property#$$"
     - paragraph: "     "
     - paragraph: "CTDC discourages users from making intellectual property (IP) claims derived directly from the available dataset(s). CTDC-provided data, and conclusions derived thereof, shall remain freely available, without license requirements. However, the CTDC also recognizes the importance of the subsequent development of IP on downstream discoveries, especially in therapeutics, which will be necessary to support full investment in products that the public needs. "
     - paragraph: "     "
     - paragraph: "$$#Questions#$$"
-    - paragraph: "Please contact $$[NCICTDCHelpDesk@mail.nih.gov](NCICTDCHelpDesk@mail.nih.gov)$$ with any questions or concerns related to data."
+    - paragraph: "Please contact $$[NCICRDC@mail.nih.gov](NCICRDC@mail.nih.gov)$$ with any questions or concerns related to data."
 - page: '/data-harmonization'
   title: "Data Harmonization"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
@@ -105,8 +163,6 @@
   content:
     - paragraph: "PUBLIC ACCESS DATA"
     - paragraph: "Public tier datasets contain de-identified aggregated data available to the public without the need for account registration or data access approval."
-    - paragraph: "REGISTERED ACCESS DATA"
-    - paragraph: "Registered tier datasets may contain some individual-level data or data under collaborative agreements that require users to register for access and agree to certain terms of use prior to access. Terms of use vary by study. "
     - paragraph: "CONTROLLED ACCESS DATA"
     - paragraph: "Controlled data within the CTDC include genomic and other potentially sensitive Personal Identifiable Information (PII). To protect the privacy of individuals who have contributed data to clinical studies, researchers who want to access controlled data must register for an  account and apply for data access authorization through the $$[NIH database of Genotypes and Phenotypes](https://dbgap.ncbi.nlm.nih.gov/aa/wga.cgi?page=login)$$ (dbGaP). See instructions below for how to access controlled data.."
     - paragraph: "ACCESSING CONTROLLED DATA IN THE CTDC"

@@ -7,10 +7,10 @@ import useStyles from './style';
 
 const BiospecimenCard = ({ data = {}, index }) => {
   const {
-    parent_specimen_id: parentSpecimenId,
+    specimen_record_id: specimenRecordId,
     participant_id: participantId,
     ctep_disease_term: ctepDiseaseTerm,
-    parent_specimen_type: parentSpecimenType,
+    specimen_type: specimenType,
     tissue_category: tissueCategory,
     anatomical_collection_site: anatomicalCollectionSite,
     assessment_timepoint: assessmentTimepoint,
@@ -39,14 +39,14 @@ const BiospecimenCard = ({ data = {}, index }) => {
         <div className={cn(classes.keyAndValueRow, classes.titleRow)}>
           <span className={classes.titleKey}>BIOSPECIMEN</span>
           <Typography variant="h3" className={classes.titleValue}>
-            {parentSpecimenId}
+            {specimenRecordId}
           </Typography>
         </div>
         <div className={classes.row}>
           <div className={classes.column}>
             {renderInfo('Participant:', participantId)}
             {renderInfo('Diagnosis:', ctepDiseaseTerm)}
-            {renderInfo('Parent biospecimen:', parentSpecimenType)}
+            {renderInfo('Parent biospecimen:', specimenType)}
           </div>
 
           <div className={cn(classes.column, classes.leftColumn)}>
