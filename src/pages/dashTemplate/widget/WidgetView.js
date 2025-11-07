@@ -15,6 +15,7 @@ import { Typography } from '../../../components/Wrappers/Wrappers';
 import { formatWidgetData } from './WidgetUtils';
 import sunburstStyle from './SunburstStyle'
 import { DEFAULT_VALUE } from '../../../bento/siteWideConfig';
+import emptyResultsDonutViewConfig from './CustomizeDonutViewConfig';
 
 const WidgetView = ({
   classes,
@@ -48,7 +49,11 @@ const WidgetView = ({
       },
     }
   };
-  const { Widget } = useCallback(WidgetGenerator(widgetGeneratorConfig), []);
+  const { Widget } = useCallback(WidgetGenerator(widgetGeneratorConfig), [theme]);
+  const { Widget: CustomizeWidgetView } = useCallback(WidgetGenerator({
+    ...widgetGeneratorConfig,
+    DonutConfig: emptyResultsDonutViewConfig(),
+  }), [theme]);
 
   const titleTransformer = (sunburstTitle) => {
     if (sunburstTitle.includes(':')) {
@@ -59,6 +64,37 @@ const WidgetView = ({
     }
     return sunburstTitle;
   };
+
+  const EmptyWidget = ({ index, widget }) => (
+    <Grid key={`empty-widget-${index}`} item lg={4} md={6} sm={12} xs={12}>
+      <CustomizeWidgetView
+        header={
+          <Typography
+            size="md"
+            weight="bold"
+            family="Raleway"
+            color="widgetTitle"
+          >
+            {widget.title}
+          </Typography>
+        }
+        bodyClass={classes.fullHeightBody}
+        className={classes.card}
+        bottomDivider
+        customBackGround
+        padAngle={0.02}
+        chartType="donut"
+        sliceTitle={widget.sliceTitle}
+        data={[
+          {
+            group: '',
+            subjects: 1,
+          },
+        ]}
+      />
+    </Grid>
+  );
+
   
   return (
     <>
@@ -95,10 +131,10 @@ const WidgetView = ({
           {widgetConfig.slice(0, 6).map((widget, index) => {
             const dataset = displayWidgets[widget.dataName];
             if (!dataset || dataset.length === 0) {
-              return <></>;
+              return ( <EmptyWidget index={index} widget={widget} />);
             }
             if (widget.type === 'sunburst' && (!dataset.children || !dataset.children.length)) {
-              return <></>;
+              return ( <EmptyWidget index={index} widget={widget} />);
             }
             return (
               <Grid key={index} item lg={4} md={6} sm={12} xs={12}>
