@@ -50,7 +50,7 @@ const WidgetView = ({
     }
   };
   const { Widget } = useCallback(WidgetGenerator(widgetGeneratorConfig), [theme]);
-  const { Widget: CustmizeWidgetView } = useCallback(WidgetGenerator({
+  const { Widget: CustomizeWidgetView } = useCallback(WidgetGenerator({
     ...widgetGeneratorConfig,
     DonutConfig: emptyResultsDonutViewConfig(),
   }), [theme]);
@@ -65,9 +65,9 @@ const WidgetView = ({
     return sunburstTitle;
   };
 
-  const EmptyWidget = ({ index = 0, widget }) => (
-    <Grid key={index} item lg={4} md={6} sm={12} xs={12}>
-      <CustmizeWidgetView
+  const EmptyWidget = ({ key, widget }) => (
+    <Grid key={key} item lg={4} md={6} sm={12} xs={12}>
+      <CustomizeWidgetView
         header={
           <Typography
             size="md"
@@ -131,10 +131,10 @@ const WidgetView = ({
           {widgetConfig.slice(0, 6).map((widget, index) => {
             const dataset = displayWidgets[widget.dataName];
             if (!dataset || dataset.length === 0) {
-              return ( <EmptyWidget key={`empty-widget-${index}`}  widget={widget} index={index}/>);
+              return ( <EmptyWidget key={`empty-widget-${index}`}  widget={widget} />);
             }
             if (widget.type === 'sunburst' && (!dataset.children || !dataset.children.length)) {
-              return ( <EmptyWidget key={`empty-widget-${index}`}  widget={widget} index={index}/>);
+              return ( <EmptyWidget key={`empty-widget-${index}`}  widget={widget} />);
             }
             return (
               <Grid key={index} item lg={4} md={6} sm={12} xs={12}>
