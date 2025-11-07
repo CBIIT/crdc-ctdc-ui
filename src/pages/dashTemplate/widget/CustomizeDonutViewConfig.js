@@ -1,3 +1,4 @@
+import React from "react";
 import { Sector } from "recharts";
 
 export default () => ({
