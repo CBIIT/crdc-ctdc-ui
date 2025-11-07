@@ -65,8 +65,8 @@ const WidgetView = ({
     return sunburstTitle;
   };
 
-  const EmptyWidget = ({ key, widget }) => (
-    <Grid key={key} item lg={4} md={6} sm={12} xs={12}>
+  const EmptyWidget = ({ index, widget }) => (
+    <Grid key={`empty-widget-${index}`} item lg={4} md={6} sm={12} xs={12}>
       <CustomizeWidgetView
         header={
           <Typography
@@ -131,10 +131,10 @@ const WidgetView = ({
           {widgetConfig.slice(0, 6).map((widget, index) => {
             const dataset = displayWidgets[widget.dataName];
             if (!dataset || dataset.length === 0) {
-              return ( <EmptyWidget key={`empty-widget-${index}`}  widget={widget} />);
+              return ( <EmptyWidget index={index} widget={widget} />);
             }
             if (widget.type === 'sunburst' && (!dataset.children || !dataset.children.length)) {
-              return ( <EmptyWidget key={`empty-widget-${index}`}  widget={widget} />);
+              return ( <EmptyWidget index={index} widget={widget} />);
             }
             return (
               <Grid key={index} item lg={4} md={6} sm={12} xs={12}>
