@@ -61,17 +61,16 @@ const Overview = ({
         alt='outbounnd web site icon'/>
     )
   }
-  const associatedLinks = JSON.parse(JSON.stringify(data.studyByStudyShortName[0].associated_links));
-  const diagnoses = JSON.parse(JSON.stringify(data.studyDiagnosisByStudyShortName[0].ctep_disease_terms));
-  const participantFileTypes = JSON.parse(JSON.stringify(data.StudyDataFileByStudyShortName[0].list_type));
-  const imageCollection = JSON.parse(JSON.stringify(data.studyByStudyShortName[0].image_collection));
-  const { study_name, study_description, study_type, dates_of_conduct } = data.studyByStudyShortName[0];
-
+  const associatedLinks = JSON.parse(JSON.stringify(data?.studyByStudyShortName[0]?.associated_links));
+  const diagnoses = JSON.parse(JSON.stringify(data?.studyDiagnosisByStudyShortName[0]?.ctep_disease_terms));
+  const participantFileTypes = JSON.parse(JSON.stringify(data?.StudyDataFileByStudyShortName[0]?.list_type));
+  const imageCollection = JSON.parse(JSON.stringify(data?.studyByStudyShortName[0]?.image_collection));
+  const { study_name, study_description, study_type, dates_of_conduct } = data?.studyByStudyShortName[0];
   // TODO: BE API need to provide this
   const zipData = {
-    data_file_uuid: JSON.parse(JSON.stringify(data.StudyDataFileByStudyShortName[0].study_data_files[0].data_file_uuid)),
-    data_file_name: JSON.parse(JSON.stringify(data.StudyDataFileByStudyShortName[0].study_data_files[0].data_file_name)),
-    data_file_format: JSON.parse(JSON.stringify(data.StudyDataFileByStudyShortName[0].study_data_files[0].data_file_format)),
+    data_file_uuid: JSON.parse(JSON.stringify(data?.StudyDataFileByStudyShortName[0]?.study_data_files[0]?.data_file_uuid)),
+    data_file_name: JSON.parse(JSON.stringify(data?.StudyDataFileByStudyShortName[0]?.study_data_files[0]?.data_file_name)),
+    data_file_format: JSON.parse(JSON.stringify(data?.StudyDataFileByStudyShortName[0]?.study_data_files[0]?.data_file_format)),
 }
   // const zipData = {
   //   data_file_uuid: 'dg.4DFC/4df75011-0149-4f1e-9f5a-e9c192618c17',
@@ -91,7 +90,7 @@ const Overview = ({
    '*' separeted data
     */
   const separetByCommaIfnot = (imageList) => {
-    if(imageList.includes("*")){
+    if(imageList && imageList.includes("*")){
       return imageList.replace(/\s/g, "").split("*").join(", ");
     }
 
@@ -147,7 +146,7 @@ const Overview = ({
                       <Grid item xs={12} className={classes.title}>
                         ASSOCIATED LINKS
                       </Grid>
-                      {associatedLinks.sort((a, b) => customSorting(a.associated_link_id, b.associated_link_id))
+                      {associatedLinks.sort((a, b) => customSorting(a.associated_link_record_id, b.associated_link_record_id))
                         .map((link, index) => (
                           <Grid item xs={12} className={classes.content} key={index}>
                             <a
@@ -285,7 +284,7 @@ const Overview = ({
                           </span>
 
                           <span className={classes.imageValue}>
-                            {separetByCommaIfnot(image.image_type_included)}
+                            {separetByCommaIfnot(image?.image_type_included)}
                           </span>
                         </div>
                       ))}

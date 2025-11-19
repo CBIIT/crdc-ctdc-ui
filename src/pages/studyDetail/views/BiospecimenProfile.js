@@ -139,7 +139,7 @@ const BiospecimenProfile = ({ classes, d }) => {
                   onClick={() => linkToDashboard()}
                 >
                   <span className={classes.headerButtonLinkNumber}>
-                    {0 || data.sample_count}
+                    {0 || data.specimen_count}
                   </span>
                   <span className={classes.headerButtonLinkText}>Associated Biospecimens</span>
                 </Link>
@@ -233,6 +233,10 @@ const styles = (theme) => ({
     //background: '#F6F4F4',
     width: '200px',
     fontSize: '14px',
+    cursor: 'default',
+    '&:hover': {
+      cursor: 'default',
+    },
   },
   headerButtonLinkText: {
     fontFamily: theme.custom.fontFamilyInter,
@@ -257,7 +261,7 @@ const styles = (theme) => ({
     fontSize: '12px',
     color: '#990099',
     '&:hover': {
-      textDecoration: 'underline',
+      textDecoration: 'none',
     },
   },
   tabs: {
