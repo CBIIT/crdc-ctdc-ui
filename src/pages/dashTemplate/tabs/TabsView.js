@@ -37,6 +37,11 @@ const Tabs = (props) => {
             <div hidden={state.currentTab !== index}>
               <TabPanel
                 {...props}
+                activeFilters={{
+                  order_by: tab.defaultSortField,
+                  sort_direction: tab.defaultSortDirection,
+                  ...props.activeFilters,
+                }}
                 tab={tab}
                 config={tab}
                 activeTab={index === state.currentTab}
