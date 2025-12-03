@@ -67,21 +67,26 @@ const downloadFile = async (signedUrl, fileName, fileFormat) => {
       responseType: 'blob',
     });
 
+    // Optionally append fileFormat to fileName
+    let downloadName = fileName;
+    if (fileFormat && !fileName.endsWith(fileFormat)) {
+      downloadName += `.${fileFormat}`;
+    }
+
     // Create a URL for the blob
     const url = window.URL.createObjectURL(response.data);
     const link = document.createElement('a');
     link.href = url;
 
-    // if (fileFormat === "vcf") fileFormat +='.gz'
-    // Set the file name
-    link.setAttribute('download', `${fileName}.${fileFormat}`);
+    link.setAttribute('download', downloadName);
     document.body.appendChild(link);
 
     // Trigger the download
     link.click();
 
-    // Cleanup and remove the link
-    link.parentNode.removeChild(link);
+    // Cleanup up
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(url);
   } catch (error) {
     console.error('Failed to download file:', error);
   }
