@@ -84,7 +84,7 @@ const downloadFile = async (signedUrl, fileName, fileFormat) => {
     // Trigger the download
     link.click();
 
-    // Cleanup up
+    // Clean up
     document.body.removeChild(link);
     window.URL.revokeObjectURL(url);
   } catch (error) {
