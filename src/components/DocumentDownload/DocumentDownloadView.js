@@ -69,7 +69,7 @@ const downloadFile = async (signedUrl, fileName, fileFormat) => {
 
     // Optionally append fileFormat to fileName
     let downloadName = fileName;
-    if (fileFormat && !fileName.endsWith(fileFormat)) {
+    if (fileFormat && !fileName.endsWith(`.${fileFormat}`)) {
       downloadName += `.${fileFormat}`;
     }
 
