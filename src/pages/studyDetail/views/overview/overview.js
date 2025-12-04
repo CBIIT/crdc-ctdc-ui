@@ -20,24 +20,21 @@ const documentDownloadProps = {
     // datafield where file format exists in the table
     fileFormatColumn: 'data_file_format',
     // datafield where file name exists
-    fileName: 'data_file_name',
+    fileNameColumn: 'data_file_name',
 
-    // Case 1: Logged in and granted access, file size below {maxFileSize}
+    // Case 1: Logged in and granted access
     toolTipTextFileDownload: 'Click to download a copy of this file if you have been approved by dbGaP',
     iconFileDownload: downloadSuccess,
     
-    // Case 2: Not logged in or access not granted, file size below {maxFileSize}
+    // Case 2: Not logged in or access not granted
     iconUnauthenticated: downloadSuccess,
     toolTipTextUnauthenticated: 'You must be logged in and must already have been granted access to download a copy of this file',
 
     toolTipIcon,
 }
 
-const Overview = ({
-  classes,
-  data,
-}) => {
-
+const Overview = ({ classes, data }) => {
+  // ----- Helpers -----
   const getAccessTypeString = (accessType) => {
     switch (accessType) {
       case 'Download':
@@ -51,57 +48,45 @@ const Overview = ({
     }
   };
 
-  const ExternalLinkIcon = () => {
-    return (
-      <img 
-        src={externalIcon}
-        width={14}
-        height={14}
-        className={classes.externalLinkIcon}
-        alt='outbounnd web site icon'/>
-    )
-  }
-  const associatedLinks = JSON.parse(JSON.stringify(data?.studyByStudyShortName[0]?.associated_links));
-  const diagnoses = JSON.parse(JSON.stringify(data?.studyDiagnosisByStudyShortName[0]?.ctep_disease_terms));
-  const participantFileTypes = JSON.parse(JSON.stringify(data?.StudyDataFileByStudyShortName[0]?.list_type));
-  const imageCollection = JSON.parse(JSON.stringify(data?.studyByStudyShortName[0]?.image_collection));
-  const { study_name, study_description, study_type, dates_of_conduct } = data?.studyByStudyShortName[0];
-  // TODO: BE API need to provide this
-  const zipData = {
-    data_file_uuid: JSON.parse(JSON.stringify(data?.StudyDataFileByStudyShortName[0]?.study_data_files[0]?.data_file_uuid)),
-    data_file_name: JSON.parse(JSON.stringify(data?.StudyDataFileByStudyShortName[0]?.study_data_files[0]?.data_file_name)),
-    data_file_format: JSON.parse(JSON.stringify(data?.StudyDataFileByStudyShortName[0]?.study_data_files[0]?.data_file_format)),
-}
-  // const zipData = {
-  //   data_file_uuid: 'dg.4DFC/4df75011-0149-4f1e-9f5a-e9c192618c17',
-  //   data_file_name: 'CMB-all-files.CTDCV1',
-  //   data_file_format: 'zip'
-  // }
   const customSorting = (a, b) => {
-    let val = 0
-    if(a < b) { val = -1; }
-    if(a > b) { val = 1; }
-    return val;
-  }
-  
-  /* 
-    This function repalces '*' with ',' because
-    there are caseses where the database might have 
-   '*' separeted data
-    */
-  const separetByCommaIfnot = (imageList) => {
-    if(imageList && imageList.includes("*")){
-      return imageList.replace(/\s/g, "").split("*").join(", ");
-    }
+    if (a < b) return -1;
+    if (a > b) return 1;
+    return 0;
+  };
 
-    return imageList;
-}
+  const ExternalLinkIcon = () => (
+    <img
+      src={externalIcon}
+      width={14}
+      height={14}
+      className={classes.externalLinkIcon}
+      alt="outbound web site icon"
+    />
+  );
+
+  // ----- Data extraction -----
+  const study = data?.studyByStudyShortName?.[0] || {};
+  const associatedLinks = [...(study.associated_links || [])];
+  const imageCollection = [...(study.image_collection || [])];
+  const diagnoses = [...(data?.studyDiagnosisByStudyShortName?.[0]?.ctep_disease_terms || [])];
+  const participantFileTypes = [...(data?.StudyDataFileByStudyShortName?.[0]?.list_type || [])];
+
+  const { study_name, study_description, study_type, dates_of_conduct } = study;
+
+  // Study data files / ZIP file
+  const studyDataFiles = data?.StudyDataFileByStudyShortName?.[0]?.study_data_files || [];
+  const zipFileData = studyDataFiles.find(file => file?.data_file_format?.toLowerCase() === 'zip');
+
+  const hasZipFile = Boolean(zipFileData);
+  const missingZipTooltip =
+    'No ZIP file is available for download for this study.';
 
   return (
     <OverviewThemeProvider>
       <div className={classes.container}>
         <div className={classes.detailContainer}>
           <Grid container>
+            {/* Left Container Detail */}
             <Grid item lg={5} md={4} sm={6} xs={12} className={classes.borderRight}>
               <Grid container direction="row" className={classes.detailContainerLeft}>
                 <Grid item xs={12} className={classes.title}>
@@ -160,7 +145,8 @@ const Overview = ({
                       ))}
                     </Grid>
                   </Grid>
-
+                  
+                  {/* AVAILABLE DOWNLOADS / ZIP FILE */}
                   <Grid item xs={12} className={classes.detailContainerItem}>
                     <Grid item container direction="row">
                       <Grid item xs={12} className={classes.title}>
@@ -172,18 +158,34 @@ const Overview = ({
                         represented within the application can be downloaded in the form of a .zip file by selecting
                         the ZIP FILE download option below.
 
-                        <ZipDownloadView
-                          fileFormat={zipData[documentDownloadProps.fileFormatColumn]}
-                          fileName={zipData[documentDownloadProps.fileName]}
-                          fileLocation={zipData[documentDownloadProps.fileLocationColumn]}
-                          toolTipTextFileDownload={documentDownloadProps.toolTipTextFileDownload}
-                          iconFileDownload={documentDownloadProps.iconFileDownload}
+                        {hasZipFile ? (
+                          /* CASE 1 — ZIP file exists: enabled button */
+                          <ZipDownloadView
+                            disabled={false}
 
-                          iconUnauthenticated={documentDownloadProps.iconUnauthenticated}
-                          toolTipTextUnauthenticated={documentDownloadProps.toolTipTextUnauthenticated}
+                            fileFormat={zipFileData[documentDownloadProps.fileFormatColumn]}
+                            fileName={zipFileData[documentDownloadProps.fileNameColumn]}
+                            fileLocation={zipFileData[documentDownloadProps.fileLocationColumn]}
 
-                          toolTipIcon={documentDownloadProps.toolTipIcon}
-                        />
+                            toolTipTextFileDownload={documentDownloadProps.toolTipTextFileDownload}
+                            iconFileDownload={documentDownloadProps.iconFileDownload}
+
+                            iconUnauthenticated={documentDownloadProps.iconUnauthenticated}
+                            toolTipTextUnauthenticated={documentDownloadProps.toolTipTextUnauthenticated}
+
+                            toolTipIcon={documentDownloadProps.toolTipIcon}
+                          />
+                        ) : (
+                          /* CASE 2 — No ZIP file: always disabled with custom tooltip */
+                          <ZipDownloadView
+                            disabled={true}
+
+                            toolTipTextFileDownload={missingZipTooltip}
+                            iconFileDownload={documentDownloadProps.iconFileDownload}
+
+                            toolTipIcon={documentDownloadProps.toolTipIcon}
+                          />
+                        )}
                       </Grid>
                     </Grid>
                   </Grid>
@@ -284,7 +286,7 @@ const Overview = ({
                           </span>
 
                           <span className={classes.imageValue}>
-                            {separetByCommaIfnot(image?.image_type_included)}
+                            {image?.image_type_included}
                           </span>
                         </div>
                       ))}
