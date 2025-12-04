@@ -75,7 +75,7 @@ const Overview = ({ classes, data }) => {
 
   // Study data files / ZIP file
   const studyDataFiles = data?.StudyDataFileByStudyShortName?.[0]?.study_data_files || [];
-  const zipFileData = studyDataFiles.find(file => file?.data_file_format?.toLowerCase() === 'ziip');
+  const zipFileData = studyDataFiles.find(file => file?.data_file_format?.toLowerCase() === 'zip');
 
   const hasZipFile = Boolean(zipFileData);
   const missingZipTooltip =
