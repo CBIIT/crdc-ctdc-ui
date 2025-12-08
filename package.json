@@ -109,6 +109,7 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
+    "test:ci": "TZ=UTC CI=true node scripts/test.js --passWithNoTests --coverage --maxWorkers=2",
     "test:coverage": "node scripts/test.js --coverage",
     "lint": "eslint src",
     "lint-fix": "eslint src --fix"
