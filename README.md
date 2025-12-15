@@ -1,6 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
+[![Coverage Status](https://coveralls.io/repos/github/CBIIT/crdc-ctdc-ui/badge.svg)](https://coveralls.io/github/CBIIT/crdc-ctdc-ui)
 
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/aea34d83cecf4c5b82c9fb017bc032d6)](https://app.codacy.com/gh/CBIIT/bento-frontend?utm_source=github.com&utm_medium=referral&utm_content=CBIIT/bento-frontend&utm_campaign=Badge_Grade_Dashboard)
 
