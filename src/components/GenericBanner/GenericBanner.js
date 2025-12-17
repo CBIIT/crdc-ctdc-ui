@@ -37,7 +37,6 @@ const GenericBanner = ({
 }) => {
   const STATIC_CONTENT_URL = env.REACT_APP_STATIC_CONTENT_URL;
 
-  console.log("GenericBanner: Using STATIC_CONTENT_URL =", STATIC_CONTENT_URL);
   // Compute the YAML content URL, handle missing env var
   let yamlUrlToUse = "";
 
@@ -91,7 +90,7 @@ const GenericBanner = ({
       })
       .catch((err) => {
         // Hide banner if fetch/parsing fails
-        console.error("GenericBanner:Failed to fetch or parse banner YAML:", err);
+        console.error("GenericBanner: Failed to fetch or parse banner YAML:", err);
         setShow(false);
         setRemoteText(undefined);
         setRemoteStyle({});
@@ -101,8 +100,8 @@ const GenericBanner = ({
   // Default banner styles, merged with props and remote YAML
   const mergedStyle = {
     width: "100%",
-    background: "#E8F1F7",    // White by default
-    color: "#1F3A4D",         // Black text
+    background: "#E8F1F7",
+    color: "#1F3A4D",
     padding: "10px 32px",
     fontWeight: 600,
     height: "auto",
