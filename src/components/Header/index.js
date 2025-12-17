@@ -4,6 +4,7 @@ import HeaderDesktop from './HeaderDesktop';
 import HeaderTablet from './HeaderTablet';
 import HeaderMobile from './HeaderMobile';
 import USABanner from './USABanner';
+import GenericBanner from '../GenericBanner/GenericBanner';
 
 const HeaderContainer = styled.div`
  @media (min-width: 1024px) {
@@ -43,9 +44,12 @@ const HeaderContainer = styled.div`
   }
 `;
 
+
+
 const Header = () => (
   <HeaderContainer>
     <USABanner />
+    <GenericBanner />
     <div className="desktop">
       <HeaderDesktop />
     </div>
