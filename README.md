@@ -1,34 +1,44 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Introduction
 
-## Available Scripts
+The CTDC UI is the front-end repository of NCI's Clinical and Translational Data Commons (CTDC) project, built on FNLCR's Bento Framework. It is a React application utilizing JavaScript, CSS, MUI, Babel, Jest, and Apollo Client, among other dependencies.
+
 [![Coverage Status](https://coveralls.io/repos/github/CBIIT/crdc-ctdc-ui/badge.svg)](https://coveralls.io/github/CBIIT/crdc-ctdc-ui)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/249be7203f084fa9bb7482e7ddcb626a)](https://app.codacy.com/gh/CBIIT/crdc-ctdc-ui/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/aea34d83cecf4c5b82c9fb017bc032d6)](https://app.codacy.com/gh/CBIIT/bento-frontend?utm_source=github.com&utm_medium=referral&utm_content=CBIIT/bento-frontend&utm_campaign=Badge_Grade_Dashboard)
+---
 
-In the project directory, you can run:
-To run the independently of backend update the REACT_APP_BACKEND_API varibale from REACT_APP_BACKEND_API=http://localhost:8084/v1/graphql/
- to REACT_APP_BACKEND_API=https://api-dev.bento-tools.org/v1/graphql/
+**Prerequisites:**
+- Node.js 16.17.1
+- npm 8.15.0
 
-"npm install" and then "npm start"
-### `npm start`
+---
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Installation
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+To run the CTDC UI project locally, follow these steps:
 
-### `npm test`
+1. **Clone the repository:**
+    ```bash
+    git clone https://github.com/CBIIT/crdc-ctdc-ui.git
+    cd crdc-ctdc-ui
+    ```
+2. **Install dependencies:**
+    ```bash
+    npm install --legacy-peer-deps
+    ```
+3. **Start the development server:**
+    ```bash
+    npm start
+    ```
+4. **Open your browser and visit [http://localhost:3000](http://localhost:3000)** to access the application.
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+To update backend or other service API, edit the configuration in [`public/injectEnv.js`](public/injectEnv.js).
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Scripts
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+- `npm start` – Run the app in development mode at [http://localhost:3000](http://localhost:3000)
+- `npm test` – Run tests in watch mode (Jest & React Testing Library)
+- `npm run build` – Build the app for production to the `build` folder
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
