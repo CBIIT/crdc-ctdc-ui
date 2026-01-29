@@ -1,9 +1,9 @@
 /*eslint-disable*/
 import JSZip from 'jszip';
 import { USER_COMMENT } from '../../bento/fileCentricCartWorkflowData';
-/*
+
 import { saveAs } from 'file-saver';
-import { json2csv } from 'json-2-csv'; */
+import { json2csv } from 'json-2-csv';
 
 export function createFileName(fileName, format = '.csv', applyFormat=true) {
   const date = new Date();
@@ -103,7 +103,7 @@ export function downloadJson(tableData, comments, fileName, manifestData) {
   tempLink.click();
   document.body.removeChild(tempLink);
 }
-/*
+
 export const downloadJsonV2 = (tableData, comments, fileName, manifestData) => {
   const payload = tableData.map((el) => ({
     ...el,
@@ -157,4 +157,4 @@ export const downloadAndZipJson = (dataArray, setLoading, studyCode) => {
     setLoading(false);
   }
 };
-*/
+

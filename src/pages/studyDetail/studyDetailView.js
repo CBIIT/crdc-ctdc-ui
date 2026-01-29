@@ -1,29 +1,32 @@
-import React from 'react';
+import React from "react";
 import {
   Grid,
   withStyles,
   Typography,
   CircularProgress,
-} from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import { clearAllFilters } from '@bento-core/facet-filter';
+} from "@material-ui/core";
+import { Link } from "react-router-dom";
 
-import Snackbar from '../../components/Snackbar';
-import Stats from '../../components/Stats/AllStatsController';
-import {
-  headerIcon,
-  tab,
-} from '../../bento/studyDetailData';
-import Tab from '../../components/Tab/Tab';
-import TabPanel from '../../components/Tab/TabPanel';
-import Styles from './studyDetailsStyle';
-import StudyThemeProvider from './studyDetailsThemeConfig';
-import Overview from './views/overview/overview';
-import store from '../../store';
-import { onClearAllFilters } from '../dashTemplate/sideBar/BentoFilterUtils';
-import useDashboardTabs from '../dashTemplate/components/dashboard-tabs-store';
+import Snackbar from "../../components/Snackbar";
+import Stats from "../../components/Stats/AllStatsController";
+import { headerIcon, tab } from "../../bento/studyDetailData";
+import Tab from "../../components/Tab/Tab";
+import TabPanel from "../../components/Tab/TabPanel";
+import Styles from "./studyDetailsStyle";
+import StudyThemeProvider from "./studyDetailsThemeConfig";
+import Overview from "./views/overview/overview";
+import { onClearAllFilters } from "../dashTemplate/sideBar/BentoFilterUtils";
+import useDashboardTabs from "../dashTemplate/components/dashboard-tabs-store";
+import ClinicalDataController from "./views/clinical-data/ClinicalDataController";
 
-const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
+const StudyDetailView = ({
+  classes,
+  data,
+  clinicalData,
+  studyCode,
+  isLoading = false,
+  isError = false,
+}) => {
   const studyData = data;
   const processedTabs = tab.items;
 
@@ -68,6 +71,11 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
     actions.changeCurrentTab(0);
   };
 
+  const {
+    // clinicalDataNodeNames,
+    clinicalDataNodeCounts,
+    clinicalDataNodeCaseCounts,
+  } = clinicalData;
   return (
     <StudyThemeProvider>
       <Snackbar
@@ -88,14 +96,12 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
               <span>
                 {studyData.studyByStudyShortName[0].study_short_name}&nbsp;{'>'}
                 <span className={classes.headerMainSubTitle}>
-                   {studyData.studyByStudyShortName[0].study_id}
+                  {studyData.studyByStudyShortName[0].study_id}
                 </span>
               </span>
             </div>
             <div className={classes.headerSubTitleCate}>
-              <span>
-                {studyData.studyByStudyShortName[0].study_name}
-              </span>
+              <span>{studyData.studyByStudyShortName[0].study_name}</span>
             </div>
           </div>
           <div className={classes.headerButton}>
@@ -106,7 +112,7 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
                 onClick={() => linkToDashboard()}
               >
                 <div className={classes.headerButtonLinkNumber}>
-                  { studyData.studyByStudyShortName[0].participant_count || 0}
+                  {studyData.studyByStudyShortName[0].participant_count || 0}
                 </div>
                 <span className={classes.headerButtonLinkText}>Associated Participants</span>
               </Link>
@@ -127,26 +133,32 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
           </Grid>
         </div>
       </div>
-      {
-        processedTabs.map((processedTab, index) => {
-          switch (processedTab.label) {
-            case 'OVERVIEW': return (
+      {processedTabs.map((processedTab, index) => {
+        switch (processedTab.label) {
+          case "OVERVIEW":
+            return (
               <TabPanel value={currentTab} index={index}>
                 <Overview data={data} />
               </TabPanel>
             );
 
-            case 'ADDITIONAL DETAILS': return (
+          case "CLINICAL DATA":
+            return (
               <TabPanel value={currentTab} index={index}>
-                <p>ADDITIONAL DETAILS</p>
+                <ClinicalDataController
+                  dataCount={{
+                    caseCount: clinicalDataNodeCaseCounts,
+                    nodeCount: clinicalDataNodeCounts,
+                  }}
+                  studyCode={studyCode}
+                />
               </TabPanel>
             );
-          
-            default:
-              return null;
-          }
-        })
-      }
+
+          default:
+            return null;
+        }
+      })}
     </StudyThemeProvider>
   );
 };

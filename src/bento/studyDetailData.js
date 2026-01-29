@@ -23,6 +23,11 @@ export const tab = {
       label: 'OVERVIEW',
       value: 'overview',
     },
+    {
+      index: 1,
+      label: 'CLINICAL DATA',
+      value: 'clinical_data',
+    },
   ],
 };
 
