@@ -379,6 +379,24 @@ module.exports = function(webpackEnv) {
                     { helpers: true },
                   ],
                 ],
+                // Transform modern JS syntax (class properties, nullish coalescing ??, optional chaining ?.) 
+                // in node_modules packages like fast-png and json-2-csv
+                plugins: [
+                  [
+                    require.resolve("@babel/plugin-transform-class-properties"),
+                    { loose: true },
+                  ],
+                  [
+                    require.resolve("@babel/plugin-transform-private-methods"),
+                    { loose: true },
+                  ],
+                  [
+                    require.resolve("@babel/plugin-transform-private-property-in-object"),
+                    { loose: true },
+                  ],
+                  require.resolve("@babel/plugin-transform-nullish-coalescing-operator"),
+                  require.resolve("@babel/plugin-transform-optional-chaining"),
+                ],
                 cacheDirectory: true,
                 cacheCompression: isEnvProduction,
 
