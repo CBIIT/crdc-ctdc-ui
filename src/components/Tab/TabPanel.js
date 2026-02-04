@@ -4,12 +4,13 @@ const TabPanel = ({
   children,
   value,
   index,
+  maxWidth,
 }) => (
   <div
     role="tabpanel"
     hidden={value !== index}
   >
-    <div>{children}</div>
+    <div style={{ maxWidth, margin: "0 auto" }}>{children}</div>
   </div>
 );
 

@@ -20,8 +20,8 @@ const ClinicalDataView = ({ tblRows, classes, studyCode }) => {
           from any node for which a CSV download option is displayed.
         </p>
         <p className={classes.paragraph}>
-          The node-specific counts indicate the number of cases represented
-          within a node into which data has been propagated versus the number of
+          The node-specific counts indicate the number of participants represented
+          within anode into which data has been propagated versus the number of
           records within such nodes.
         </p>
       </div>

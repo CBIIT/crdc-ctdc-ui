@@ -2,13 +2,13 @@ export const tblHeader = {
   MuiTableSortLabel: {
     root: {
       position: 'relative',
-      fontFamily: 'Nunito Sans',
-      fontSize: '18px',
-      fontWeight: '400',
-      lineHeight: '18px',
-      color: '#0B3556 !important',
+      fontFamily: 'Roboto',
+      fontSize: '16px',
+      fontWeight: '600',
+      lineHeight: '100%',
+      color: '#13344A !important',
       '&.active': {
-        color: '#0B3556',
+        color: '#13344A',
       },
       '&:hover': {
         color: '#003559',
@@ -20,15 +20,13 @@ export const tblHeader = {
     icon: {
       color: '#003559 !important',
     },
-    active: {
-      textDecoration: 'underline',
-    },
   },
   MuiTableCell: {
     root: {
       padding: '15px 5px 15px 5px',
       '& span': {
-        color: '#0B3556',
+        color: '#13344A',
+        fontWeight: '600',
       },
       '&.clinicalDataNode': {
         width: '20%',
@@ -57,36 +55,52 @@ export const tblHeader = {
   },
   MuiTableRow: {
     head: {
-      backgroundColor: '#F2F2F2',
-      borderTop: '3px solid #686F7F',
-      borderBottom: '3px solid #686F7F',
+      backgroundColor: '#ffffff',
+      // borderTop: '3px solid #0E6292',
+      borderBottom: '3px solid #0E6292',
       height: '40px',
-      background: '#ffffff',
     },
   },
+  // MuiTooltip: {
+  //   tooltip: {
+  //     backgroundColor: '#ffffff',
+  //     color: 'red',
+  //     maxWidth: '220px',
+  //     fontSize: '0.75rem',
+  //     border: '2px solid #a7afb3',
+  //     fontFamily: 'Open Sans',
+  //     fontWeight: '600',
+  //     textAlign: 'left',
+  //     lineHeight: '1.6',
+  //     padding: '10px 12px',
+  //     borderRadius: '0px',
+
+
+  //       background: 'gray !important',
+  //     marginTop: '0px',
+  //     marginLeft: '0px',
+  //     color: 'white !important',
+  //     border: 'none !important',
+  //   },
+  //   arrow: {
+  //     color: '#ffffff',
+  //     marginTop: '-0.71em',
+  //     marginLeft: '0px',
+  //     marginRight: '4px',
+  //     fontSize: '1.25rem',
+  //     '&:before': {
+  //       border: '2px solid #a7afb3',
+  //     },
+  //   },
+  // },
+
   MuiTooltip: {
-    tooltip: {
-      backgroundColor: '#ffffff',
-      color: '#1c2023',
-      maxWidth: '220px',
-      fontSize: '0.75rem',
-      border: '2px solid #a7afb3',
-      fontFamily: 'Open Sans',
-      fontWeight: '600',
-      textAlign: 'left',
-      lineHeight: '1.6',
-      padding: '10px 12px',
-      borderRadius: '0px',
-    },
-    arrow: {
-      color: '#ffffff',
-      marginTop: '-0.71em',
+    tooltipPlacementBottom: {
+      background: 'gray !important',
+      marginTop: '0px',
       marginLeft: '0px',
-      marginRight: '4px',
-      fontSize: '1.25rem',
-      '&:before': {
-        border: '2px solid #a7afb3',
-      },
+      color: 'white !important',
+      border: 'none !important',
     },
   },
 };

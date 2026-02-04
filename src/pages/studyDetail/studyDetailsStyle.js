@@ -290,7 +290,7 @@ export default (theme) => ({
     fontWeight: '600',
     textTransform: 'uppercase',
   },
-  '@media (max-width: 740px)': {
+  '@media (max-width: 745px)': {
     headerTitle: {
       position: 'absolute',
       top: '0px',

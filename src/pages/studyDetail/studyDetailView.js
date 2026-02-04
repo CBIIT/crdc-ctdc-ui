@@ -137,14 +137,14 @@ const StudyDetailView = ({
         switch (processedTab.label) {
           case "OVERVIEW":
             return (
-              <TabPanel value={currentTab} index={index}>
+              <TabPanel value={currentTab} index={index} maxWidth="1800px">
                 <Overview data={data} />
               </TabPanel>
             );
 
           case "CLINICAL DATA":
             return (
-              <TabPanel value={currentTab} index={index}>
+              <TabPanel value={currentTab} index={index} maxWidth="1800px">
                 <ClinicalDataController
                   dataCount={{
                     caseCount: clinicalDataNodeCaseCounts,
