@@ -43,13 +43,7 @@ const ClinicalDataController = ({ studyCode, classes, dataCount }) => {
 
   const nodeData = {...clinicalData, ...clinicalTrialData}
 
-
-
-
-    // const { data, loading, error } = ClinicalMockData;
-
-
-
+  
   if (loading || !description) {
     return <div className={classes.container}>{/* <SkeletonLoader /> */}</div>;
   }
