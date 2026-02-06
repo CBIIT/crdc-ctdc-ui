@@ -1,5 +1,4 @@
 import { cellTypes } from '@bento-core/table';
-import { part } from 'file-loader';
 import gql from 'graphql-tag';
 
 // --------------- Tooltip configuration --------------

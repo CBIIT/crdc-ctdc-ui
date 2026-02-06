@@ -5,14 +5,8 @@ import yaml from "js-yaml";
 import { useQuery } from "@apollo/client";
 import ClinicalDataView from "./ClinicalDataView";
 import styles from "./ClinicalDataStyle";
-import {
-  GET_CILICAL_DATA_OF_STUDY,
-  table,
-} from "../../../../bento/ICDC_studyDetailsData";
 import env from "../../../../utils/env";
-import { ClinicalMockData } from "./ClinicalMockData";
-import { studyClinicalDataQuery, table as table_2} from "../../../../bento/studyDetailData";
-import { node } from "prop-types";
+import { studyClinicalDataQuery, table} from "../../../../bento/studyDetailData";
 // import { SkeletonLoader } from "../../../../components/Skeleton";
 
 const ClinicalDataController = ({ studyCode, classes, dataCount }) => {
@@ -82,7 +76,7 @@ const ClinicalDataController = ({ studyCode, classes, dataCount }) => {
 
     console.log("|| Data:", nodeData);
 
-  const rows = table_2.rows.map((row) => {
+  const rows = table.rows.map((row) => {
     console.log("|| Row dataKey:", row.dataKey);
     
     return {
