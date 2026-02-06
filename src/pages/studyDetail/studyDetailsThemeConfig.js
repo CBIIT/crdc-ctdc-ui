@@ -1,5 +1,5 @@
 import React from 'react';
-import _ from 'lodash';
+import _, { min } from 'lodash';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import themes, { overrides } from '../../themes';
 
@@ -9,14 +9,16 @@ export default ({
   const themesLight = _.cloneDeep(themes.light);
   themesLight.overrides.MuiTab = {
     root: {
-      maxHeight: '45px',
-      paddingTop: '0px',
+      maxHeight: '46px',
+      padding: '0px',
+      marginRight: '40px',
+      textTransform: 'none',
       '@media (min-width: 600px)': {
         minWidth: '110px',
+        marginRight: '20px',
       },
       '&:first-child': {
         paddingLeft: '0px',
-        marginLeft: '-2px',
       },
     },
   };

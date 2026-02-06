@@ -23,34 +23,28 @@ export const tblHeader = {
   },
   MuiTableCell: {
     root: {
-      padding: '15px 5px 15px 5px',
+      padding: '12px 16px 12px 16px',
       '& span': {
         color: '#13344A',
         fontWeight: '600',
+        fontFamily: 'Roboto'
       },
       '&.clinicalDataNode': {
-        width: '20%',
-        paddingLeft: '25px',
+        paddingLeft: '16px',
       },
       '&.csvDownload': {
-        width: '10%',
-        textAlign: 'center',
       },
       '&.clinicalDataDescription': {
-        width: '30%',
-        textAlign: 'center',
       },
       '&.caseCount': {
-        width: '20%',
-        textAlign: 'center',
       },
       '&.recordCount': {
-        textAlign: 'center',
       },
       '&.nodeCount': {
-        width: '20%',
-        textAlign: 'center',
       },
+      '&.csvDataRow': {
+        paddingRight: '16px',
+      }
     },
   },
   MuiTableRow: {
@@ -112,7 +106,7 @@ const tblContainer = {
       overflowX: 'none',
       borderRadius: '0',
       maxHeight: '600px',
-      marginBottom: '40px',
+      // marginBottom: '40px',
     },
   },
   MuiTable: {
@@ -224,11 +218,11 @@ const tblBody = {
   MuiTableCell: {
     root: {
       minHeight: '45px',
-      padding: '10px 5px 10px 5px',
+      padding: '16px',
       borderBottom: 'none',
       '&.property': {
         '& p': {
-          fontFamily: 'Open Sans',
+          fontFamily: 'Nunito',
           fontSize: '15px',
           fontWeight: '600',
           lineHeight: '20px',
@@ -237,22 +231,22 @@ const tblBody = {
         },
       },
       '&.clinicalDataNode': {
-        width: '20%',
-        padding: '10px 5px 10px 25px',
+        width: '10%',
+        // padding: '16px 5px 16px 16px',
         '& p': {
-          fontFamily: 'Open Sans',
+          fontFamily: 'Nunito',
           fontSize: '15px',
           fontWeight: '600',
           lineHeight: '20px',
           letterSpacing: '0em',
           color: '#0296C9',
-          textTransform: 'uppercase',
+          // textTransform: 'uppercase',
         },
       },
       '&.clinicalDataDescription': {
-        width: '30%',
+        width: '50%',
         '& p': {
-          fontFamily: 'Open Sans',
+          fontFamily: 'Nunito',
           fontSize: '16px',
           fontWeight: '400',
           lineHeight: '20px',
@@ -261,30 +255,31 @@ const tblBody = {
         },
       },
       '&.caseCount': {
-        width: '20%',
-        textAlign: 'center',
         '& p': {
           color: '#0B3556',
-          fontFamily: 'Open Sans',
+          fontFamily: 'Nunito',
           fontSize: '16px',
         },
       },
       '&.nodeCount': {
-        width: '20%',
-        textAlign: 'center',
         '& p': {
           color: '#0B3556',
-          fontFamily: 'Open Sans',
+          fontFamily: 'Nunito',
           fontSize: '16px',
         },
       },
       '&.recordCount': {
-        textAlign: 'center',
+        '& p': {
+          color: '#0B3556',
+          fontFamily: 'Nunito',
+          fontSize: '16px',
+        },
       },
       '&.csvDownload': {
-        width: '10%',
-        textAlign: 'center',
       },
+      '&.csvDataRow': {
+
+      }
     },
   },
 };

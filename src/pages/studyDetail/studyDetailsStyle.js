@@ -93,18 +93,12 @@ export default (theme) => ({
     paddingBottm: '17px',
   },
   tabPrimaryColor: {
-    fontFamily: 'Nunito Sans',
-    color: '#507C91',
-    fontWeight: '600',
+    color: '#446B79',
   },
   tabHighlightColor: {
-    fontFamily: 'Nunito Sans',
     color: '#000000',
-    fontWeight: '600',
-    borderBottom: '5px solid #0296C9',
   },
   hrLine: {
-    marginTop: '-2px',
     marginBottom: '0',
     borderTop: '1px solid #000000',
   },
