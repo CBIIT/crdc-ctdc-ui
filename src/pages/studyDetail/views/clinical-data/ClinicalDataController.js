@@ -11,6 +11,8 @@ import {
 } from "../../../../bento/ICDC_studyDetailsData";
 import env from "../../../../utils/env";
 import { ClinicalMockData } from "./ClinicalMockData";
+import { studyClinicalDataQuery, table as table_2} from "../../../../bento/studyDetailData";
+import { node } from "prop-types";
 // import { SkeletonLoader } from "../../../../components/Skeleton";
 
 const ClinicalDataController = ({ studyCode, classes, dataCount }) => {
@@ -36,16 +38,21 @@ const ClinicalDataController = ({ studyCode, classes, dataCount }) => {
   /**
    * table CSV download data
    */
-  // const { data, loading, error } = useQuery(GET_CILICAL_DATA_OF_STUDY, {
-  //   variables: {
-  //     study_code: studyCode,
-  //   },
-  //   context: {
-  //     uri: "https://4250bc0d-7018-4a95-bffb-d4dceb96fb4d.mock.pstmn.io/v1/graphql",
-  //   },
-  // });
+  const { data, loading, error } = useQuery(studyClinicalDataQuery, {
+    variables: {
+      study_short_name: studyCode,
+    },
+  });
 
-    const { data, loading, error } = ClinicalMockData;
+  const clinicalData = data?.clinicalData?.at(0);
+  const clinicalTrialData = data?.clinicalTrialData?.at(0);
+
+  const nodeData = {...clinicalData, ...clinicalTrialData}
+
+
+
+
+    // const { data, loading, error } = ClinicalMockData;
 
 
 
@@ -67,29 +74,29 @@ const ClinicalDataController = ({ studyCode, classes, dataCount }) => {
   const { caseCount, nodeCount } = dataCount;
 
   const getFileName = (title) =>
-    `ICDC_Clinical_Data-${studyCode}-${title.toUpperCase()}`.replace(" ", "_");
+    `CTDC_Clinical_Data-${studyCode}-${title.toUpperCase()}`.replace(" ", "_");
 
   /**
    * prepare data for table row and download CVS File download
    */
-  const rows = table.rows.map((row) => {
-    const rowData = data[row.dataKey];
-    // ICDC-3579
-    const caseCnt = rowData
-      ? rowData[row.caseCountKey]
-      : caseCount[row.countKey] || 0;
-    const csvDownloadData = rowData
-      ? rowData[row.rowKey]
-      : data[row.csvDownload] || [];
+
+    console.log("|| Data:", nodeData);
+
+  const rows = table_2.rows.map((row) => {
+    console.log("|| Row dataKey:", row.dataKey);
+    
     return {
       ...row,
+
       clinicalDataNode: row.title,
       clinicalDataDescription: description[row.countKey] || "",
+
       recordCount: nodeCount[row.countKey] || 0,
-      caseCount: caseCnt,
-      csvDataRow: csvDownloadData,
+      caseCount: caseCount[row.countKey] || 0,
+
+      csvDataRow: nodeData ? nodeData[row.csvDownload] : [],
       fileName: getFileName(row.title),
-      node: data[row.csvDownload] || [],
+      node: nodeData[row.csvDownload] || [],
       metadata: row.manifest,
     };
   });

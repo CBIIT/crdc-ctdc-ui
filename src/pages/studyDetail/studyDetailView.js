@@ -22,7 +22,6 @@ import ClinicalDataController from "./views/clinical-data/ClinicalDataController
 const StudyDetailView = ({
   classes,
   data,
-  clinicalData,
   studyCode,
   isLoading = false,
   isError = false,
@@ -71,11 +70,11 @@ const StudyDetailView = ({
     actions.changeCurrentTab(0);
   };
 
-  const {
-    // clinicalDataNodeNames,
-    clinicalDataNodeCounts,
-    clinicalDataNodeCaseCounts,
-  } = clinicalData;
+  const _clinicalDataNodeCounts = {...data?.clinicalDataNodeCounts?.at(0), ...data?.clinicalTrialDataNodeCounts?.at(0)}
+  const _clinicalDataNodeParticipantCounts = {...data?.clinicalDataParticipantCounts?.at(0), ...data?.clinicalTrialDataParticipantCounts?.at(0)}
+
+  console.log("StudyDetailView clinicalDataNodeCounts:", _clinicalDataNodeCounts);
+  console.log("StudyDetailView clinicalDataNodeParticipantCounts:", _clinicalDataNodeParticipantCounts);
   return (
     <StudyThemeProvider>
       <Snackbar
@@ -134,21 +133,21 @@ const StudyDetailView = ({
         </div>
       </div>
       {processedTabs.map((processedTab, index) => {
-        switch (processedTab.label) {
-          case "OVERVIEW":
+        switch (processedTab.value) {
+          case "overview":
             return (
               <TabPanel value={currentTab} index={index} maxWidth="1800px">
                 <Overview data={data} />
               </TabPanel>
             );
 
-          case "CLINICAL DATA":
+          case "clinical_data":
             return (
               <TabPanel value={currentTab} index={index} maxWidth="1800px">
                 <ClinicalDataController
                   dataCount={{
-                    caseCount: clinicalDataNodeCaseCounts,
-                    nodeCount: clinicalDataNodeCounts,
+                    caseCount: _clinicalDataNodeParticipantCounts,
+                    nodeCount: _clinicalDataNodeCounts,
                   }}
                   studyCode={studyCode}
                 />

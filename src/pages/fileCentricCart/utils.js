@@ -151,7 +151,7 @@ export const downloadAndZipJson = (dataArray, setLoading, studyCode) => {
   });
 
   zip.generateAsync({ type: 'blob' }).then((content) => {
-    saveAs(content, createFileName(`ICDC_Clinical_Data-${studyCode}`, '.zip'));
+    saveAs(content, createFileName(`CTDC_Clinical_Data-${studyCode}`, '.zip'));
   });
   if (setLoading) {
     setLoading(false);

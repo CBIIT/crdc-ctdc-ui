@@ -5,7 +5,7 @@ window.injectedEnv = {
   REACT_APP_APPLICATION_VERSION: 'YYYY_MM_DD/HH:MM',
 
   // Services API End Points:
-  REACT_APP_BACKEND_API: 'https://clinical-dev.datacommons.cancer.gov/v1/graphql/',
+  REACT_APP_BACKEND_API: 'http://localhost:8080/v1/graphql/',
   REACT_APP_BACKEND_PUBLIC_API: 'https://4250bc0d-7018-4a95-bffb-d4dceb96fb4d.mock.pstmn.io/v1/graphql',
   REACT_APP_FILE_SERVICE_API: 'https://clinical-dev.datacommons.cancer.gov/api/files/',
   REACT_APP_AUTH_SERVICE_API: 'https://clinical-dev.datacommons.cancer.gov/api/auth/',
@@ -26,9 +26,8 @@ window.injectedEnv = {
 
   REACT_APP_FILE_CENTRIC_CART_README: 'https://raw.githubusercontent.com/CBIIT/ctdc-readMe-content/refs/heads/dev/My_Files_Cart_Page_README.md',
 
-  // TODO: Update to CTDC data model URLs
-  REACT_APP_DATA_MODEL: 'https://raw.githubusercontent.com/CBIIT/icdc-model-tool/develop/model-desc/icdc-model.yml',
-  REACT_APP_DATA_MODEL_PROPS: 'https://raw.githubusercontent.com/CBIIT/icdc-model-tool/develop/model-desc/icdc-model-props.yml',
+  REACT_APP_DATA_MODEL: 'https://raw.githubusercontent.com/CBIIT/ctdc-model/refs/heads/prod/model-desc/ctdc_model_file.yaml',
+  REACT_APP_DATA_MODEL_PROPS: 'https://raw.githubusercontent.com/CBIIT/ctdc-model/refs/heads/prod/model-desc/ctdc_model_properties_file.yaml',
 
 
 

@@ -2,7 +2,7 @@ import React from "react";
 import { withStyles } from "@material-ui/core";
 import styles from "./ClinicalDataStyle";
 import PaginatedTableView from "../../../../components/PaginatedTable/TableView";
-import { table, tableLayOut } from "../../../../bento/ICDC_studyDetailsData";
+import { table, tableLayOut } from "../../../../bento/studyDetailData";
 import { themeConfig } from "./DataTheme";
 import DownloadBtn from "./components/downloadBtn";
 import { downloadAndZipJson } from "../../../fileCentricCart/utils";
