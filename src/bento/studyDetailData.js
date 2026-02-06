@@ -19,16 +19,15 @@ export const externalIcon = 'https://raw.githubusercontent.com/CBIIT/datacommons
 
 export const tab = {
   items: [
-    
     {
       index: 0,
-      label: 'Clinical Data',
-      value: 'clinical_data',
+      label: 'Overview',
+      value: 'overview',
     },
     {
       index: 1,
-      label: 'Overview',
-      value: 'overview',
+      label: 'Clinical Data',
+      value: 'clinical_data',
     },
   ],
 };

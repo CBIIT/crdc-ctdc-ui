@@ -1,3 +1,5 @@
+import { max } from "lodash";
+
 export const tblHeader = {
   MuiTableSortLabel: {
     root: {
@@ -244,7 +246,7 @@ const tblBody = {
         },
       },
       '&.clinicalDataDescription': {
-        width: '50%',
+        width: '68%',
         '& p': {
           fontFamily: 'Nunito',
           fontSize: '16px',
