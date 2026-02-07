@@ -25,7 +25,6 @@ const ClinicalDataNodeWrapper = styled('span')({
     fontWeight: '600',
     lineHeight: '20px',
     letterSpacing: '0em',
-    textTransform: 'uppercase',
 })
 
 const ClinicalDataDescriptionWrapper = styled('span')({

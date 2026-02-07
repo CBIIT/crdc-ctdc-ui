@@ -477,7 +477,7 @@ export const radiotherapyNodeMetadata = {
 
 export const table = {
   title: "Imaging Data Commons (IDC)",
-  defaultSortField: "dataNode",
+  defaultSortField: "clinicalDataNode",
   // 'asc' or 'desc'
   defaultSortDirection: "asc",
   columns: [
@@ -503,7 +503,7 @@ export const table = {
       sort: "asc",
       display: true,
       tooltipText:
-        "For each of the nodes listed below, the number of cases represented by one or more records within that node",
+        "For each of the nodes listed below, the number of participants represented by one or more records within that node",
       columnDefaultValues: {
         0: " ",
       },
@@ -514,7 +514,7 @@ export const table = {
       sort: "asc",
       display: true,
       tooltipText:
-        "For each of the nodes listed below, the total number of records within each node. Cases may have multiple/numerous records within certain nodes",
+        "For each of the nodes listed below, the total number of records within each node. Participants may have multiple/numerous records within certain nodes",
       columnDefaultValues: {
         0: " ",
       },
@@ -528,37 +528,37 @@ export const table = {
   ],
   rows: [
     {
-      title: "diagnosis",
+      title: "Diagnosis",
       countKey: "diagnosis",
       csvDownload: "diagnosisNodeData",
       manifest: diagnosisNodeMetadata,
     },
     {
-      title: "participant_status",
+      title: "Participant Status",
       countKey: "participant_status",
       csvDownload: "participantStatusNodeData",
       manifest: participantStatusNodeMetadata,
     },
     {
-      title: "targeted_therapy",
+      title: "Targeted Therapy",
       countKey: "targeted_therapy",
       csvDownload: "targetedTherapyNodeData",
       manifest: targetedTherapyNodeMetadata,
     },
     {
-      title: "non_targeted_therapy",
+      title: "Non Targeted Therapy",
       countKey: "non_targeted_therapy",
       csvDownload: "nonTargetedTherapyNodeData",
       manifest: nonTargetedTherapyNodeMetadata,
     },
     {
-      title: "surgery",
+      title: "Surgery",
       countKey: "surgery",
       csvDownload: "surgeryNodeData",
       manifest: surgeryNodeMetadata,
     },
     {
-      title: "radiotherapy",
+      title: "Radiotherapy",
       countKey: "radiotherapy",
       csvDownload: "radiotherapyNodeData",
       manifest: radiotherapyNodeMetadata,

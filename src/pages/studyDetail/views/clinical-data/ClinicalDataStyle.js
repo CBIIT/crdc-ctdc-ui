@@ -25,7 +25,7 @@ export default () => ({
   },
   paginatedTableWrapper: {
     overflowY: 'auto',
-    marginBottom: '32px',
+    marginBottom: '100px',
     borderTop: '3px solid #0E6292',
     borderBottom: '3px solid #0E6292',
 

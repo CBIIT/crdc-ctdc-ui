@@ -33,6 +33,7 @@ export const tblHeader = {
       },
       '&.clinicalDataNode': {
         paddingLeft: '16px',
+        whiteSpace: 'nowrap'
       },
       '&.csvDownload': {
       },
@@ -57,46 +58,30 @@ export const tblHeader = {
       height: '40px',
     },
   },
-  // MuiTooltip: {
-  //   tooltip: {
-  //     backgroundColor: '#ffffff',
-  //     color: 'red',
-  //     maxWidth: '220px',
-  //     fontSize: '0.75rem',
-  //     border: '2px solid #a7afb3',
-  //     fontFamily: 'Open Sans',
-  //     fontWeight: '600',
-  //     textAlign: 'left',
-  //     lineHeight: '1.6',
-  //     padding: '10px 12px',
-  //     borderRadius: '0px',
-
-
-  //       background: 'gray !important',
-  //     marginTop: '0px',
-  //     marginLeft: '0px',
-  //     color: 'white !important',
-  //     border: 'none !important',
-  //   },
-  //   arrow: {
-  //     color: '#ffffff',
-  //     marginTop: '-0.71em',
-  //     marginLeft: '0px',
-  //     marginRight: '4px',
-  //     fontSize: '1.25rem',
-  //     '&:before': {
-  //       border: '2px solid #a7afb3',
-  //     },
-  //   },
-  // },
-
   MuiTooltip: {
-    tooltipPlacementBottom: {
-      background: 'gray !important',
-      marginTop: '0px',
+    tooltip: {
+      maxWidth: "285px",
+      padding: "10px 15px",
+
+      fontFamily: "Open Sans",
+      fontWeight: 600,
+      fontSize: "13px",
+      lineHeight: "19px",
+      color: '#223D4C',
+      border: "1px solid #C3C3C3",
+      boxShadow: "0px 4px 10px 0px #00000040",
+      borderRadius: "5px",
+      backgroundColor: "#FFFFFF",
+    },
+    arrow: {
+      color: '#ffffff',
+      marginTop: '-0.71em',
       marginLeft: '0px',
-      color: 'white !important',
-      border: 'none !important',
+      marginRight: '4px',
+      fontSize: '1.25rem',
+      '&:before': {
+        border: "1px solid #C3C3C3",
+      },
     },
   },
 };
@@ -105,10 +90,9 @@ const tblContainer = {
   MuiTableContainer: {
     root: {
       boxShadow: 'none',
-      overflowX: 'none',
+      overflowX: 'auto',
       borderRadius: '0',
       maxHeight: '600px',
-      // marginBottom: '40px',
     },
   },
   MuiTable: {

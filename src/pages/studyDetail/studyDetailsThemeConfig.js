@@ -13,9 +13,9 @@ export default ({
       padding: '0px',
       marginRight: '40px',
       textTransform: 'none',
+      minWidth: 'fit-content',
       '@media (min-width: 600px)': {
-        minWidth: '110px',
-        marginRight: '20px',
+        minWidth: 'fit-content',
       },
       '&:first-child': {
         paddingLeft: '0px',
