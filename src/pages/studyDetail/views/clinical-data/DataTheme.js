@@ -1,5 +1,3 @@
-import { max } from "lodash";
-
 export const tblHeader = {
   MuiTableSortLabel: {
     root: {

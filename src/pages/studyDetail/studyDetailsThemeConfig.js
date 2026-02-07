@@ -1,5 +1,5 @@
 import React from 'react';
-import _, { min } from 'lodash';
+import _ from 'lodash';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import themes, { overrides } from '../../themes';
 

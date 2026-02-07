@@ -11,19 +11,7 @@ const DownloadBtn = ({ classes, loading, handleCSVDownload }) => (
       classes={{ root: classes.downloadAllBtn }}
       onClick={handleCSVDownload}
     >
-      Download All
-      { /*{loading ? <CircularProgress size={25} /> : "Download All"}
-      {!loading && (
-        <img
-          src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/DMN_title_bar_download_icon.svg"
-          alt="download icon"
-          style={{
-            width: "20px",
-            height: "20px",
-            marginLeft: "20px",
-          }}
-        />
-      )} */}
+      {loading ? <CircularProgress size={25} /> : "Download All"}
     </Button>
     <Tooltip
       title="Click to download all available clinical data in the form of multiple csv files"
