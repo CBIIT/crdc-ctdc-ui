@@ -16,7 +16,7 @@ const CsvDownlaod = ({
   return (
     <>
       {
-        (csvDataRow.length > 0) && (
+        (csvDataRow?.length > 0) && (
           <ToolTip
             classes={{ tooltip: classes.tooltipText }}
             title="Click to download the contents of this node"

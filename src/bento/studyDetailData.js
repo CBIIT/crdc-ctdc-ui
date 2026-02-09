@@ -107,68 +107,6 @@ export const seriesSetting = {
   maxBarWidth: 200,
 };
 
-export const studyClinicalDataCountQuery = gql`
-query clinicalDataTab($study_short_name: [String]) {
-  # NodeCounts for Clinical Data Tab
-  clinicalDataNodeCounts: clinicalData(study_short_name: $study_short_name) {
-    diagnosis: diagnosisNodeCount # Clinical: diagnosis
-    participant_status: participantStatusNodeCount # Clinical: participant_status
-  }
-  
-  clinicalTrialDataNodeCounts: clinicalTrialData(study_short_name: $study_short_name) {
-    targeted_therapy: targetedTherapyNodeCount # Clinical Trial: targeted_therapy
-    non_targeted_therapy: nonTargetedTherapyNodeCount # Clinical Trial:non_targeted_therapy
-    surgery: surgeryNodeCount # Clinical Trial: surgery
-    radiotherapy: radiotherapyNodeCount # Clinical Trial: radiotherapy
-  }
-
-  # ParticipantCounts for Clinical Data Tab
-  clinicalDataNodeParticipantCounts: clinicalData(study_short_name: $study_short_name) {
-    diagnosis: diagnosisParticipantCount # Clinical: diagnosis
-    participant_status: participantStatusParticipantCount # Clinical: participant_status
-  }
-  
-  clinicalTrialDataNodeParticipantCounts: clinicalTrialData(study_short_name: $study_short_name) {
-    targeted_therapy: targetedTherapyParticipantCount # Clinical Trial: targeted_therapy
-    non_targeted_therapy: nonTargetedTherapyParticipantCount # Clinical Trial:non_targeted_therapy
-    surgery: surgeryParticipantCount # Clinical Trial: surgery
-    radiotherapy: radiotherapyParticipantCount # Clinical Trial: radiotherapy
-  }
-
-  # TODO: consider merging clinicalData and clinicalTrialData queries into one to optimize data fetching
-  clinicalData(study_short_name: $study_short_name) {
-    study_short_name
-    unique_node_types
-    # Clinical: diagnosis
-    diagnosisParticipantCount
-    diagnosisNodeCount
-
-    # Clinical: participant_status
-    participantStatusNodeCount
-    participantStatusParticipantCount
-      
-  }
-  clinicalTrialData(study_short_name: $study_short_name) {
-    study_short_name
-
-    # Clinical Trial: targeted_therapy
-    targetedTherapyParticipantCount
-    targetedTherapyNodeCount
-
-    # Clinical Trial:non_targeted_therapy
-    nonTargetedTherapyParticipantCount
-    nonTargetedTherapyNodeCount
-
-    # Clinical Trial: surgery
-    surgeryParticipantCount
-    surgeryNodeCount
-
-    # Clinical Trial: radiotherapy
-    radiotherapyParticipantCount
-    radiotherapyNodeCount
-  }
-}`;
-
 export const studyClinicalDataQuery = gql`
   query clinicalDataTab($study_short_name: [String]) {
     clinicalData(study_short_name: $study_short_name) {

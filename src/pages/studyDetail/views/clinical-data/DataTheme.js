@@ -109,11 +109,6 @@ export const customTheme = {
       paddingLeft: '10%',
     },
   },
-  MuiTable: {
-    root: {
-      borderTop: '5px solid red',
-    },
-  },
   MuiTableContainer: {
     root: {
       width: '100%',
