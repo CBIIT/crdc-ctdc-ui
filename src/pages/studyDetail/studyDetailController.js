@@ -23,12 +23,12 @@ const hasValidStudyData = (data) => {
  */
 const StudyDetailController = ({ match }) => {
   // TODO: Update API to use study_id from match params instead of hardcoded value
-  const studyId = match.params.id;
-  const studyShortName = "CMB";
+  const study_id = match.params.id;
+  const study_short_name = "CMB";
 
 
   const { loading, error, data } = useQuery(GET_STUDY_DETAIL_DATA_QUERY, {
-    variables: { study_short_name: [studyShortName] },
+    variables: { study_short_name },
   });
 
   // Loading state
@@ -42,7 +42,7 @@ const StudyDetailController = ({ match }) => {
   }
 
   // Success state - render study view
-  return <StudyView data={data} study_short_name={studyShortName} study_id={studyId} />;
+  return <StudyView data={data} study_short_name={study_short_name} study_id={study_id} />;
 };
 
 export default StudyDetailController;

@@ -1,25 +1,25 @@
 /**
  * Generates a standardized CSV filename for clinical data export
- * 
+ *
  * @param {string} studyShortName - Study identifier
  * @param {string} title - Data category title
  * @returns {string} Formatted filename
- * 
+ *
  * @example
- * generateFileName("CMB", "Diagnosis") 
+ * generateFileName("CMB", "Diagnosis")
  * // => "CTDC_Clinical_Data-CMB-DIAGNOSIS"
  */
 export const generateFileName = (studyShortName, title) => {
   return `CTDC_Clinical_Data-${studyShortName}-${title.toUpperCase()}`.replace(
-    / /g,
-    "_"
+    /\s+/g,
+    "_",
   );
 };
 
 /**
  * Transforms table configuration rows into view-ready data rows
- * 
- * 
+ *
+ *
  * @param {Object} params - Parameters object
  * @param {Array} params.tableRows - Table row configuration from studyDetailData
  * @param {Object} params.descriptions - Node descriptions keyed by node name
@@ -28,7 +28,7 @@ export const generateFileName = (studyShortName, title) => {
  * @param {Object} params.nodeCount - Record counts by node type
  * @param {string} params.studyShortName - Study identifier for filename generation
  * @returns {Array} Array of enriched row objects ready for display
- * 
+ *
  * @example
  * const rows = prepareTableRows({
  *   tableRows: table.rows,
