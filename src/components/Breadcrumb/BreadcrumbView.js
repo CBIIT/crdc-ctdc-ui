@@ -19,10 +19,10 @@ const CustomBreadcrumb = ({ classes, separator="/", data }) => (
             </Link>,
           );
         } else {
-          acc.push(<span className={classes.headerNavSpan}>{current.name}</span>);
+          acc.push(<span key={`breadcrumb-${index}`}>{current.name}</span>);
         }
         if (index < data.length - 1) {
-          acc.push(<span className={classes.separator}>{separator}</span>);
+          acc.push(<span key={`separator-${index}`} className={classes.separator}>{separator}</span>);
         }
         return acc;
       }, []).map((item) => (item))

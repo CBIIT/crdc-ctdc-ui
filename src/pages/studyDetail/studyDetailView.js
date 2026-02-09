@@ -63,23 +63,15 @@ const StudyDetailView = ({
     actions.changeCurrentTab(0);
   };
 
-  const _clinicalDataNodeCounts = {
+  const clinicalDataNodeCounts = {
     ...data?.clinicalDataNodeCounts?.at(0),
     ...data?.clinicalTrialDataNodeCounts?.at(0),
   };
-  const _clinicalDataNodeParticipantCounts = {
+  const clinicalDataNodeParticipantCounts = {
     ...data?.clinicalDataParticipantCounts?.at(0),
     ...data?.clinicalTrialDataParticipantCounts?.at(0),
   };
 
-  console.log(
-    "StudyDetailView clinicalDataNodeCounts:",
-    _clinicalDataNodeCounts,
-  );
-  console.log(
-    "StudyDetailView clinicalDataNodeParticipantCounts:",
-    _clinicalDataNodeParticipantCounts,
-  );
   return (
     <StudyThemeProvider>
       <Stats />
@@ -148,8 +140,8 @@ const StudyDetailView = ({
               <TabPanel value={currentTab} index={index} maxWidth="1800px">
                 <ClinicalDataController
                   dataCount={{
-                    caseCount: _clinicalDataNodeParticipantCounts,
-                    nodeCount: _clinicalDataNodeCounts,
+                    caseCount: clinicalDataNodeParticipantCounts,
+                    nodeCount: clinicalDataNodeCounts,
                   }}
                   study_short_name={study_short_name}
                   study_id={study_id}

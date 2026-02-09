@@ -372,7 +372,7 @@ export const radiotherapyNodeMetadata = makeManifest([
 ]);
 
 export const table = {
-  title: "Imaging Data Commons (IDC)",
+  title: "Clinical and Translational Data Commons",
   defaultSortField: "clinicalDataNode",
   // 'asc' or 'desc'
   defaultSortDirection: "asc",

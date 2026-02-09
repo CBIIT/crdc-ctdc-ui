@@ -213,6 +213,7 @@ const BiospecimenProfileModal = ({
                   biospecimenProfile.tabs.map((item, index) => {
                     return (
                       <TabPanel
+                        key={item.value}
                         value={index}
                         sx={{
                           padding: "0px",
