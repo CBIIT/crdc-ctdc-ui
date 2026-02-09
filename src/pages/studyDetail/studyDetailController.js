@@ -28,7 +28,7 @@ const StudyDetailController = ({ match }) => {
 
 
   const { loading, error, data } = useQuery(GET_STUDY_DETAIL_DATA_QUERY, {
-    variables: { study_short_name },
+    variables: { study_short_name: [study_short_name] },
   });
 
   // Loading state
