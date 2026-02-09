@@ -21,7 +21,7 @@ const ClinicalDataView = ({ tblRows, classes, study_short_name }) => {
         </p>
         <p className={classes.paragraph}>
           The node-specific counts indicate the number of participants represented
-          within anode into which data has been propagated versus the number of
+          within a node into which data has been propagated versus the number of
           records within such nodes.
         </p>
       </div>
