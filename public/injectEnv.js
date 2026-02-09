@@ -26,7 +26,7 @@ window.injectedEnv = {
 
   REACT_APP_FILE_CENTRIC_CART_README: 'https://raw.githubusercontent.com/CBIIT/ctdc-readMe-content/refs/heads/dev/My_Files_Cart_Page_README.md',
 
-  REACT_APP_DATA_MODEL: 'https://raw.githubusercontent.com/CBIIT/ctdc-model/refs/heads/prod/model-desc/ctdc_model_file.yaml',
+  REACT_APP_DATA_MODEL_FILE: 'https://raw.githubusercontent.com/CBIIT/ctdc-model/refs/heads/prod/model-desc/ctdc_model_file.yaml',
 
 
 

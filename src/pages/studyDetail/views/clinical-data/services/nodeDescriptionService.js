@@ -31,10 +31,10 @@ export const fetchNodeDescriptions = async () => {
   // Start new fetch
   nodeDescriptionPromise = (async () => {
     try {
-      const DATA_MODEL_URL = env.REACT_APP_DATA_MODEL;
+      const DATA_MODEL_URL = env.REACT_APP_DATA_MODEL_FILE;
 
       if (!DATA_MODEL_URL) {
-        throw new Error("REACT_APP_DATA_MODEL environment variable is not set");
+        throw new Error("REACT_APP_DATA_MODEL_FILE environment variable is not set");
       }
 
       const response = await axios.get(DATA_MODEL_URL);
