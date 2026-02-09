@@ -9,7 +9,7 @@ import env from "../../../../utils/env";
 import { studyClinicalDataQuery, table} from "../../../../bento/studyDetailData";
 // import { SkeletonLoader } from "../../../../components/Skeleton";
 
-const ClinicalDataController = ({ studyCode, classes, dataCount }) => {
+const ClinicalDataController = ({ study_short_name, classes, dataCount }) => {
   /**
    * Set node description from ymal files
    */
@@ -34,7 +34,7 @@ const ClinicalDataController = ({ studyCode, classes, dataCount }) => {
    */
   const { data, loading, error } = useQuery(studyClinicalDataQuery, {
     variables: {
-      study_short_name: studyCode,
+      study_short_name: study_short_name,
     },
   });
 
@@ -62,7 +62,7 @@ const ClinicalDataController = ({ studyCode, classes, dataCount }) => {
   const { caseCount, nodeCount } = dataCount;
 
   const getFileName = (title) =>
-    `CTDC_Clinical_Data-${studyCode}-${title.toUpperCase()}`.replace(" ", "_");
+    `CTDC_Clinical_Data-${study_short_name}-${title.toUpperCase()}`.replace(" ", "_");
 
   /**
    * prepare data for table row and download CVS File download
@@ -89,7 +89,7 @@ const ClinicalDataController = ({ studyCode, classes, dataCount }) => {
     };
   });
 
-  return <ClinicalDataView tblRows={rows} studyCode={studyCode} />;
+  return <ClinicalDataView tblRows={rows} study_short_name />;
 };
 
 export default withStyles(styles)(ClinicalDataController);

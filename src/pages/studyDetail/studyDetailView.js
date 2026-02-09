@@ -18,16 +18,22 @@ import Overview from "./views/overview/overview";
 import { onClearAllFilters } from "../dashTemplate/sideBar/BentoFilterUtils";
 import useDashboardTabs from "../dashTemplate/components/dashboard-tabs-store";
 import ClinicalDataController from "./views/clinical-data/ClinicalDataController";
-
+import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 const StudyDetailView = ({
   classes,
   data,
-  studyCode,
+  study_short_name,
+  study_id,
   isLoading = false,
   isError = false,
 }) => {
   const studyData = data;
   const processedTabs = tab.items;
+
+  const breadCrumbJson = [
+    { name: 'Studies', to: '/studies', isALink: true },
+    { name: study_short_name + '.' + study_id, to: '', isALink: false },
+  ];
 
   const [, actions] = useDashboardTabs();
 
@@ -85,7 +91,13 @@ const StudyDetailView = ({
       />
 
       <Stats />
+
+      
+
       <div className={classes.container}>
+        <div className={classes.breadCrumb}>
+          <CustomBreadcrumb separator=">" data={breadCrumbJson} />
+        </div>
         <div className={classes.header}>
           <div className={classes.logo}>
             { getHeaderIcon() }
@@ -149,7 +161,7 @@ const StudyDetailView = ({
                     caseCount: _clinicalDataNodeParticipantCounts,
                     nodeCount: _clinicalDataNodeCounts,
                   }}
-                  studyCode={studyCode}
+                  study_short_name={study_short_name}
                 />
               </TabPanel>
             );

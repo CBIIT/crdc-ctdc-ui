@@ -7,9 +7,9 @@ import { themeConfig } from "./DataTheme";
 import DownloadBtn from "./components/downloadBtn";
 import { downloadAndZipJson } from "../../../fileCentricCart/utils";
 
-const ClinicalDataView = ({ tblRows, classes, studyCode }) => {
+const ClinicalDataView = ({ tblRows, classes, study_short_name }) => {
   const downloadAndZipCvsFiles = () => {
-    downloadAndZipJson(tblRows, null, studyCode);
+    downloadAndZipJson(tblRows, null, study_short_name);
   };
 
   return (

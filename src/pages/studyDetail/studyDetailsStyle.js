@@ -103,7 +103,7 @@ export default (theme) => ({
     borderTop: '1px solid #000000',
   },
   container: {
-    paddingTop: '42px',
+    // paddingTop: '42px',
     fontFamily: 'Raleway, sans-serif',
     paddingLeft: '32px',
     paddingRight: '32px',
@@ -180,7 +180,9 @@ export default (theme) => ({
     marginBottom: '-9px',
   },
   breadCrumb: {
-    marginLeft: '-3px',
+    marginLeft: '2px',
+    marginTop: '5px',
+    marginBottom: '20px',
   },
   borderRight: {
     borderRight: '#81a6b9 1px solid',
