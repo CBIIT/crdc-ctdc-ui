@@ -43,7 +43,7 @@ const ClinicalDataController = ({ study_short_name, classes, dataCount }) => {
 
   // Fetch clinical data via GraphQL
   const { data, loading, error } = useQuery(studyClinicalDataQuery, {
-    variables: { study_short_name },
+    variables: { study_short_name: [study_short_name] },
   });
 
   // Loading state - wait for both data sources
