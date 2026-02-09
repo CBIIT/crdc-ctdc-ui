@@ -12,7 +12,7 @@
 export const generateFileName = (studyShortName, title) => {
   return `CTDC_Clinical_Data-${studyShortName}-${title.toUpperCase()}`.replace(
     /\s+/g,
-    "_",
+    "_"
   );
 };
 
