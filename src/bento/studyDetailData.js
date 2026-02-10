@@ -153,7 +153,6 @@ export const studyClinicalDataQuery = gql`
         participant_ids
         off_study
         off_study_reason
-        participant_id
         participant_status_record_id
         survival_status
       }
