@@ -180,6 +180,8 @@ export default (theme) => ({
     marginBottom: '-9px',
   },
   breadCrumb: {
+    position: 'relative',
+    zIndex: 1,
     marginLeft: '2px',
     marginTop: '5px',
     marginBottom: '20px',
