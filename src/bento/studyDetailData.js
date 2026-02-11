@@ -111,6 +111,7 @@ query studyByStudyShortNameQueries($study_short_name: [String]) {
     study_short_name
     study_description
     study_type
+    study_accession
     dates_of_conduct
     participant_count
     associated_links {
