@@ -169,6 +169,15 @@ export const CustomHeaderCellView = (props) => {
       </>
     )
   }
+  else if (props.dataField === "study_accession_id") {
+    return (
+      <>
+      <span style={{fontSize: '14px',width: '130px',textAlign: 'left'}}>
+        {props.header}
+      </span>
+      </>
+    )
+  }
     return <> {props.header}</>
 }
 
