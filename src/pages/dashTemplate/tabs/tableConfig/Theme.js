@@ -3,15 +3,17 @@ export const tblHeader = {
     root: {
       color: '#13344A',
       position: 'relative',
-      fontSize: '11pt',
-      fontFamily: 'Lato Regular,Raleway, sans-serif',
-      fontWeight: 'bold',
-      letterSpacing: '0.06em',
+      fontSize: '16px',
+      fontFamily: 'Roboto',
+      fontWeight: 600,
       textDecoration: 'none',
+      whiteSpace: 'nowrap !important',
+      textAlign: 'left',
       '&:hover': {
         color: '#13344A',
       },
-      '&:hover $svg': {
+      '&$active': {
+        color: '#13344A',
       },
     },
   },
@@ -28,8 +30,14 @@ const tblBody = {
     root: {
       minHeight: '45px',
       padding: '0px 5px 0px 20px',
-      color: '#004C73',
+      color: '#13344A',
       borderBottom: 'none',
+
+      fontFamily: 'Nunito',
+      fontWeight: 400,
+      fontSize: '16px',
+      lineHeight: '16px',
+      textAlign: 'left',
     },
     paddingCheckbox: {
       width: '48px',
