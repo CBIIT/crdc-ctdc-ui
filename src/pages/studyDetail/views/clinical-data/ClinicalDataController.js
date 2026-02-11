@@ -86,7 +86,7 @@ const ClinicalDataController = ({ study_id, study_short_name, classes, dataCount
     nodeData,
     caseCount,
     nodeCount,
-    studyId: study_id,
+    studyShortName: study_short_name,
   });
 
   return (
