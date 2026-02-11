@@ -554,6 +554,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       sort_direction: $sort_direction
     ){
       participant_id,
+      study_accession
       data_file_name,
       data_file_format,
       data_file_type,
@@ -971,7 +972,6 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'ctep_disease_term',
@@ -986,7 +986,6 @@ export const tabContainers = [
         display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'tumor_grade',
@@ -994,7 +993,6 @@ export const tabContainers = [
         display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'age_at_enrollment',
@@ -1032,7 +1030,6 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
         cellType: cellTypes.CUSTOM_ELEM,
         removeSquareBrackets: true, // Flag to indicate if square brackets should be removed
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'targeted_therapy_string',
@@ -1041,7 +1038,6 @@ export const tabContainers = [
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         cellType: cellTypes.CUSTOM_ELEM,
-        headerType: headerTypes.CUSTOM_ELEM,
         substitutionRules: [ { replace: "|", with: ", " }] // Defines character replacements
       },
     ],
@@ -1110,7 +1106,6 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'ctep_disease_term',
@@ -1125,7 +1120,6 @@ export const tabContainers = [
         display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'primary_disease_site',
@@ -1133,7 +1127,6 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM
       },
       // Hidden: Using specimen_record_id instead
       {
@@ -1142,7 +1135,6 @@ export const tabContainers = [
         display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'specimen_record_id',
@@ -1150,7 +1142,6 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'anatomical_collection_site',
@@ -1158,7 +1149,6 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'tissue_category',
@@ -1166,7 +1156,6 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'assessment_timepoint',
@@ -1174,7 +1163,6 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
     ],
     id: 'biospecimens_tab',
@@ -1222,12 +1210,18 @@ export const tabContainers = [
         role: cellTypes.CHECKBOX,
       },
       {
+        dataField: 'study_accession',
+        header: 'Study Accession',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
         dataField: 'data_file_name',
         header: 'File Name',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM
       },
       {
         dataField: 'data_file_format',
@@ -1242,7 +1236,6 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'data_file_size',
@@ -1302,7 +1295,6 @@ export const tabContainers = [
         display: false,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'specimen_record_id',
@@ -1310,7 +1302,6 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'participant_id',
@@ -1318,7 +1309,6 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
-        headerType: headerTypes.CUSTOM_ELEM,
       },
       {
         dataField: 'ctep_disease_term',
