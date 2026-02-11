@@ -36,7 +36,7 @@ export const generateFileName = (studyShortName, title) => {
  *   nodeData: { diagnosisNodeData: [...] },
  *   caseCount: { diagnosis: 150 },
  *   nodeCount: { diagnosis: 200 },
- *   studyShortName: "CMBb"
+ *   studyShortName: "CMB"
  * });
  */
 export const prepareTableRows = ({

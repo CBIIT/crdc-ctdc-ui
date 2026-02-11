@@ -22,11 +22,12 @@ import {
  * - Transform data for view (delegated to utils)
  *
  * @param {Object} props
- * @param {string} props.study_short_name - Study identifier
+ * @param {string} props.study_id - Study identifier
+ * @param {string} props.study_short_name - Study short name
  * @param {Object} props.classes - Material-UI styles
  * @param {Object} props.dataCount - Counts for participants and records
  */
-const ClinicalDataController = ({ study_short_name, classes, dataCount }) => {
+const ClinicalDataController = ({ study_id, study_short_name, classes, dataCount }) => {
   const [description, setDescription] = useState(null);
   const [descriptionError, setDescriptionError] = useState(null);
 
@@ -43,7 +44,7 @@ const ClinicalDataController = ({ study_short_name, classes, dataCount }) => {
 
   // Fetch clinical data via GraphQL
   const { data, loading, error } = useQuery(studyClinicalDataQuery, {
-    variables: { study_short_name: [study_short_name] },
+    variables: { study_id: [study_id]},
   });
 
   // Loading state - wait for both data sources
@@ -85,7 +86,7 @@ const ClinicalDataController = ({ study_short_name, classes, dataCount }) => {
     nodeData,
     caseCount,
     nodeCount,
-    studyShortName: study_short_name,
+    studyId: study_id,
   });
 
   return (

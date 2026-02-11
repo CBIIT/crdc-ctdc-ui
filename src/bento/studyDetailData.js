@@ -122,8 +122,8 @@ export const seriesSetting = {
 };
 
 export const studyClinicalDataQuery = gql`
-  query clinicalDataTab($study_short_name: [String]) {
-    clinicalData(study_short_name: $study_short_name) {
+  query clinicalDataTab($study_id: [String]) {
+    clinicalData(study_id: $study_id) {
       study_short_name
       unique_node_types
 
@@ -157,7 +157,7 @@ export const studyClinicalDataQuery = gql`
         survival_status
       }
     }
-    clinicalTrialData(study_short_name: $study_short_name) {
+    clinicalTrialData(study_id: $study_id) {
       study_short_name
 
       # Clinical Trial: targeted_therapy
@@ -216,14 +216,14 @@ export const studyClinicalDataQuery = gql`
 
 // --------------- GraphQL query configuration --------------
 export const GET_STUDY_DETAIL_DATA_QUERY = gql`
-  query studyByStudyShortNameQueries($study_short_name: [String]) {
+  query studyByStudyShortNameQueries($study_id: [String]) {
     # Clinical Data Tab: Node Counts
-    clinicalDataNodeCounts: clinicalData(study_short_name: $study_short_name) {
+    clinicalDataNodeCounts: clinicalData(study_id: $study_id) {
       diagnosis: diagnosisNodeCount
       participant_status: participantStatusNodeCount
     }
     clinicalTrialDataNodeCounts: clinicalTrialData(
-      study_short_name: $study_short_name
+      study_id: $study_id
     ) {
       targeted_therapy: targetedTherapyNodeCount
       non_targeted_therapy: nonTargetedTherapyNodeCount
@@ -233,13 +233,13 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
 
     # Clinical Data Tab: Participant Counts
     clinicalDataParticipantCounts: clinicalData(
-      study_short_name: $study_short_name
+      study_id: $study_id
     ) {
       diagnosis: diagnosisParticipantCount
       participant_status: participantStatusParticipantCount
     }
     clinicalTrialDataParticipantCounts: clinicalTrialData(
-      study_short_name: $study_short_name
+      study_id: $study_id
     ) {
       targeted_therapy: targetedTherapyParticipantCount
       non_targeted_therapy: nonTargetedTherapyParticipantCount
@@ -247,7 +247,7 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
       radiotherapy: radiotherapyParticipantCount
     }
 
-    studyByStudyShortName(study_short_name: $study_short_name) {
+    studyByStudyShortName(study_id: $study_id) {
       study_id
       study_name
       study_short_name
@@ -269,11 +269,11 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
       }
     }
 
-    studyDiagnosisByStudyShortName(study_short_name: $study_short_name) {
+    studyDiagnosisByStudyShortName(study_id: $study_id) {
       ctep_disease_terms
     }
 
-    StudyDataFileByStudyShortName(study_short_name: $study_short_name) {
+    StudyDataFileByStudyShortName(study_id: $study_id) {
       list_type
       study_data_files {
         data_file_uuid
@@ -282,7 +282,7 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
       }
     }
 
-    StudySpecimenByStudyShortName(study_short_name: $study_short_name) {
+    StudySpecimenByStudyShortName(study_id: $study_id) {
       specimen_types {
         group
         count

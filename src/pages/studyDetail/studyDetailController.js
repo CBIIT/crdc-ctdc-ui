@@ -22,13 +22,10 @@ const hasValidStudyData = (data) => {
  * @param {Object} props.match - React Router match object containing route params
  */
 const StudyDetailController = ({ match }) => {
-  // TODO: Update API to use study_id from match params instead of hardcoded value
   const study_id = match.params.id;
-  const study_short_name = "CMB";
-
 
   const { loading, error, data } = useQuery(GET_STUDY_DETAIL_DATA_QUERY, {
-    variables: { study_short_name: [study_short_name] },
+    variables: { study_id: [study_id] },
   });
 
   // Loading state
@@ -42,7 +39,7 @@ const StudyDetailController = ({ match }) => {
   }
 
   // Success state - render study view
-  return <StudyView data={data} study_short_name={study_short_name} study_id={study_id} />;
+  return <StudyView data={data} study_id={study_id} />;
 };
 
 export default StudyDetailController;

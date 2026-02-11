@@ -21,13 +21,13 @@ import CustomBreadcrumb from "../../components/Breadcrumb/BreadcrumbView";
 const StudyDetailView = ({
   classes,
   data,
-  study_short_name,
   study_id,
   isLoading = false,
   isError = false,
 }) => {
   const studyData = data;
   const processedTabs = tab.items;
+  const study_short_name = studyData?.studyByStudyShortName?.at(0)?.study_short_name;
 
   const breadCrumbJson = [
     { name: "Studies", to: "/studies", isALink: true },
@@ -143,8 +143,8 @@ const StudyDetailView = ({
                     caseCount: clinicalDataNodeParticipantCounts,
                     nodeCount: clinicalDataNodeCounts,
                   }}
-                  study_short_name={study_short_name}
                   study_id={study_id}
+                  study_short_name={study_short_name}
                 />
               </TabPanel>
             );
