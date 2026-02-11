@@ -7,7 +7,7 @@ export const tblHeader = {
       fontFamily: 'Roboto',
       fontWeight: 600,
       textDecoration: 'none',
-      whiteSpace: 'nowrap !important',
+      whiteSpace: 'nowrap',
       textAlign: 'left',
       '&:hover': {
         color: '#13344A',
