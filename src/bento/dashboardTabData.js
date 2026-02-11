@@ -554,7 +554,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       sort_direction: $sort_direction
     ){
       participant_id,
-      study_accession_id
+      study_accession
       data_file_name,
       data_file_format,
       data_file_type,
@@ -1210,7 +1210,7 @@ export const tabContainers = [
         role: cellTypes.CHECKBOX,
       },
       {
-        dataField: 'study_accession_id',
+        dataField: 'study_accession',
         header: 'Study Accession',
         display: true,
         tooltipText: 'sort',
