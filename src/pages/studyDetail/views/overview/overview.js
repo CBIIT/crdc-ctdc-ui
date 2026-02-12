@@ -71,7 +71,7 @@ const Overview = ({ classes, data }) => {
   const diagnoses = [...(data?.studyDiagnosisByStudyShortName?.[0]?.ctep_disease_terms || [])];
   const participantFileTypes = [...(data?.StudyDataFileByStudyShortName?.[0]?.list_type || [])];
 
-  const { study_name, study_description, study_type, dates_of_conduct } = study;
+  const { study_name, study_description, study_type, dates_of_conduct, study_accession } = study;
 
   // Study data files / ZIP file
   const studyDataFiles = data?.StudyDataFileByStudyShortName?.[0]?.study_data_files || [];
@@ -113,6 +113,16 @@ const Overview = ({ classes, data }) => {
                       </Grid>
                       <Grid item xs={12} className={classes.content}>
                         { study_type || "" }
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                  <Grid item xs={12} className={classes.detailContainerItem}>
+                    <Grid item container direction="row">
+                      <Grid item xs={12} className={classes.title}>
+                        STUDY ACCESSION                  
+                      </Grid>
+                      <Grid item xs={12} className={classes.content}>
+                        { study_accession || "" }
                       </Grid>
                     </Grid>
                   </Grid>

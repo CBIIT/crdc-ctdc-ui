@@ -222,9 +222,7 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
       diagnosis: diagnosisNodeCount
       participant_status: participantStatusNodeCount
     }
-    clinicalTrialDataNodeCounts: clinicalTrialData(
-      study_id: $study_id
-    ) {
+    clinicalTrialDataNodeCounts: clinicalTrialData(study_id: $study_id) {
       targeted_therapy: targetedTherapyNodeCount
       non_targeted_therapy: nonTargetedTherapyNodeCount
       surgery: surgeryNodeCount
@@ -232,15 +230,11 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
     }
 
     # Clinical Data Tab: Participant Counts
-    clinicalDataParticipantCounts: clinicalData(
-      study_id: $study_id
-    ) {
+    clinicalDataParticipantCounts: clinicalData(study_id: $study_id) {
       diagnosis: diagnosisParticipantCount
       participant_status: participantStatusParticipantCount
     }
-    clinicalTrialDataParticipantCounts: clinicalTrialData(
-      study_id: $study_id
-    ) {
+    clinicalTrialDataParticipantCounts: clinicalTrialData(study_id: $study_id) {
       targeted_therapy: targetedTherapyParticipantCount
       non_targeted_therapy: nonTargetedTherapyParticipantCount
       surgery: surgeryParticipantCount
@@ -253,6 +247,7 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
       study_short_name
       study_description
       study_type
+      study_accession
       dates_of_conduct
       participant_count
       associated_links {
