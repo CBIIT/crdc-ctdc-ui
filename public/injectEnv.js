@@ -26,6 +26,10 @@ window.injectedEnv = {
 
   REACT_APP_FILE_CENTRIC_CART_README: 'https://raw.githubusercontent.com/CBIIT/ctdc-readMe-content/refs/heads/dev/My_Files_Cart_Page_README.md',
 
+  REACT_APP_DATA_MODEL_FILE: 'https://raw.githubusercontent.com/CBIIT/ctdc-model/refs/heads/prod/model-desc/ctdc_model_file.yaml',
+
+  REACT_APP_DMN_URL: 'https://dp2mdhy99qjlv.cloudfront.net/?config=https://raw.githubusercontent.com/cbiit/ctdc-model/refs/heads/develop',
+
 
   // IDP Auth url
   REACT_APP_NIH_AUTH_URL: 'https://stsstg.nih.gov/auth/oauth/v2/authorize',
@@ -43,5 +47,4 @@ window.injectedEnv = {
   REACT_APP_BACKEND_GETUSERINFO_API: 'https://k9dc.essential-dev.com/fence/login/',
   REACT_APP_USER_LOGOUT_URL: 'https://k9dc.essential-dev.com/fence/logout',
 
-  REACT_APP_DMN_URL: 'https://cbiit.github.io/crdc-data-model-navigator/?config=https://raw.githubusercontent.com/CBIIT/ctdc-model/refs/heads/develop/ctdc-navigator-resources/'
 };

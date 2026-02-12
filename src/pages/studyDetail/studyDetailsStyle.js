@@ -93,23 +93,17 @@ export default (theme) => ({
     paddingBottm: '17px',
   },
   tabPrimaryColor: {
-    fontFamily: 'Nunito Sans',
-    color: '#507C91',
-    fontWeight: '600',
+    color: '#446B79',
   },
   tabHighlightColor: {
-    fontFamily: 'Nunito Sans',
     color: '#000000',
-    fontWeight: '600',
-    borderBottom: '5px solid #0296C9',
   },
   hrLine: {
-    marginTop: '-2px',
     marginBottom: '0',
     borderTop: '1px solid #000000',
   },
   container: {
-    paddingTop: '42px',
+    // paddingTop: '42px',
     fontFamily: 'Raleway, sans-serif',
     paddingLeft: '32px',
     paddingRight: '32px',
@@ -186,7 +180,11 @@ export default (theme) => ({
     marginBottom: '-9px',
   },
   breadCrumb: {
-    marginLeft: '-3px',
+    position: 'relative',
+    zIndex: 1,
+    marginLeft: '2px',
+    marginTop: '5px',
+    marginBottom: '20px',
   },
   borderRight: {
     borderRight: '#81a6b9 1px solid',
@@ -290,7 +288,7 @@ export default (theme) => ({
     fontWeight: '600',
     textTransform: 'uppercase',
   },
-  '@media (max-width: 740px)': {
+  '@media (max-width: 745px)': {
     headerTitle: {
       position: 'absolute',
       top: '0px',

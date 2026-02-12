@@ -40,12 +40,16 @@ const TabItems = ({
       <Tabs
         onChange={(event, value) => handleTabChange(event, value)}
         value={currentTab}
-        TabIndicatorProps={{ style: { background: 'none' } }}
+        variant="scrollable"
+        scrollButtons="auto"  // or "on" to always show, "off" to hide
+        TabIndicatorProps={{ 
+          style: {  background: '#0296C9', height: 5, },
+        }}
+        style={{borderBottom: '1px solid #000000'}}
         orientation={orientation}
       >
         {TABs}
       </Tabs>
-      <hr className={styleClasses.hrLine} />
     </>
   );
 };

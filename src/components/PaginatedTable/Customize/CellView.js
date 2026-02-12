@@ -20,16 +20,15 @@ import CsvDownload from './components/CsvDownload';
 import { defaultTo } from 'lodash';
 
 const ClinicalDataNodeWrapper = styled('span')({
-    fontFamily: 'Open Sans',
+    fontFamily: 'Nunito',
     fontSize: '15px',
     fontWeight: '600',
     lineHeight: '20px',
     letterSpacing: '0em',
-    textTransform: 'uppercase',
 })
 
 const ClinicalDataDescriptionWrapper = styled('span')({
-    fontFamily: 'Open Sans',
+    fontFamily: 'Nunito',
     fontSize: '16px',
     fontWeight: '400',
     lineHeight: '20px',

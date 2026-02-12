@@ -1,42 +1,40 @@
-import React from 'react';
+import React from "react";
 import {
   Grid,
   withStyles,
   Typography,
   CircularProgress,
-} from '@material-ui/core';
-import { Link } from 'react-router-dom';
-import { clearAllFilters } from '@bento-core/facet-filter';
+} from "@material-ui/core";
+import { Link } from "react-router-dom";
 
-import Snackbar from '../../components/Snackbar';
-import Stats from '../../components/Stats/AllStatsController';
-import {
-  headerIcon,
-  tab,
-} from '../../bento/studyDetailData';
-import Tab from '../../components/Tab/Tab';
-import TabPanel from '../../components/Tab/TabPanel';
-import Styles from './studyDetailsStyle';
-import StudyThemeProvider from './studyDetailsThemeConfig';
-import Overview from './views/overview/overview';
-import store from '../../store';
-import { onClearAllFilters } from '../dashTemplate/sideBar/BentoFilterUtils';
-import useDashboardTabs from '../dashTemplate/components/dashboard-tabs-store';
-
-const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
+import Stats from "../../components/Stats/AllStatsController";
+import { headerIcon, tab } from "../../bento/studyDetailData";
+import Tab from "../../components/Tab/Tab";
+import TabPanel from "../../components/Tab/TabPanel";
+import Styles from "./studyDetailsStyle";
+import StudyThemeProvider from "./studyDetailsThemeConfig";
+import Overview from "./views/overview/overview";
+import { onClearAllFilters } from "../dashTemplate/sideBar/BentoFilterUtils";
+import useDashboardTabs from "../dashTemplate/components/dashboard-tabs-store";
+import ClinicalDataController from "./views/clinical-data/ClinicalDataController";
+import CustomBreadcrumb from "../../components/Breadcrumb/BreadcrumbView";
+const StudyDetailView = ({
+  classes,
+  data,
+  study_id,
+  isLoading = false,
+  isError = false,
+}) => {
   const studyData = data;
   const processedTabs = tab.items;
+  const study_short_name = studyData?.studyByStudyShortName?.at(0)?.study_short_name;
+
+  const breadCrumbJson = [
+    { name: "Studies", to: "/studies", isALink: true },
+    { name: study_short_name + "." + study_id, to: "", isALink: false },
+  ];
 
   const [, actions] = useDashboardTabs();
-
-  const [snackbarState, setsnackbarState] = React.useState({
-    open: false,
-    value: 0,
-  });
-
-  function closeSnack() {
-    setsnackbarState({ open: false });
-  }
 
   const [currentTab, setCurrentTab] = React.useState(0);
   const handleTabChange = (event, value) => {
@@ -44,10 +42,7 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
   };
 
   const getHeaderIcon = () => (
-    <img
-      src={headerIcon}
-      alt="CTDC trail detail header logo"
-    />
+    <img src={headerIcon} alt="CTDC trail detail header logo" />
   );
 
   if (isLoading) {
@@ -68,47 +63,51 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
     actions.changeCurrentTab(0);
   };
 
+  const clinicalDataNodeCounts = {
+    ...data?.clinicalDataNodeCounts?.at(0),
+    ...data?.clinicalTrialDataNodeCounts?.at(0),
+  };
+  const clinicalDataNodeParticipantCounts = {
+    ...data?.clinicalDataParticipantCounts?.at(0),
+    ...data?.clinicalTrialDataParticipantCounts?.at(0),
+  };
+
   return (
     <StudyThemeProvider>
-      <Snackbar
-        snackbarState={snackbarState}
-        closeSnack={closeSnack}
-        autoHideDuration={3000}
-        classes={classes}
-      />
-
       <Stats />
+
       <div className={classes.container}>
+        <div className={classes.breadCrumb}>
+          <CustomBreadcrumb separator=">" data={breadCrumbJson} />
+        </div>
         <div className={classes.header}>
-          <div className={classes.logo}>
-            { getHeaderIcon() }
-          </div>
+          <div className={classes.logo}>{getHeaderIcon()}</div>
           <div className={classes.headerTitle}>
             <div className={classes.headerMainTitle}>
               <span>
-                {studyData.studyByStudyShortName[0].study_short_name}&nbsp;{'>'}
+                {studyData.studyByStudyShortName[0].study_short_name}&nbsp;{">"}
                 <span className={classes.headerMainSubTitle}>
-                   {studyData.studyByStudyShortName[0].study_id}
+                  {studyData.studyByStudyShortName[0].study_id}
                 </span>
               </span>
             </div>
             <div className={classes.headerSubTitleCate}>
-              <span>
-                {studyData.studyByStudyShortName[0].study_name}
-              </span>
+              <span>{studyData.studyByStudyShortName[0].study_name}</span>
             </div>
           </div>
           <div className={classes.headerButton}>
             <span className={classes.headerButtonLinkSpan}>
               <Link
                 className={classes.headerButtonLink}
-                to={(location) => ({ ...location, pathname: '/explore' })}
+                to={(location) => ({ ...location, pathname: "/explore" })}
                 onClick={() => linkToDashboard()}
               >
                 <div className={classes.headerButtonLinkNumber}>
-                  { studyData.studyByStudyShortName[0].participant_count || 0}
+                  {studyData.studyByStudyShortName[0].participant_count || 0}
                 </div>
-                <span className={classes.headerButtonLinkText}>Associated Participants</span>
+                <span className={classes.headerButtonLinkText}>
+                  Associated Participants
+                </span>
               </Link>
             </span>
           </div>
@@ -127,26 +126,33 @@ const StudyDetailView = ({ classes, data, isLoading=false, isError=false}) => {
           </Grid>
         </div>
       </div>
-      {
-        processedTabs.map((processedTab, index) => {
-          switch (processedTab.label) {
-            case 'OVERVIEW': return (
-              <TabPanel value={currentTab} index={index}>
+      {processedTabs.map((processedTab, index) => {
+        switch (processedTab.value) {
+          case "overview":
+            return (
+              <TabPanel value={currentTab} index={index} maxWidth="1800px">
                 <Overview data={data} />
               </TabPanel>
             );
 
-            case 'ADDITIONAL DETAILS': return (
-              <TabPanel value={currentTab} index={index}>
-                <p>ADDITIONAL DETAILS</p>
+          case "clinical_data":
+            return (
+              <TabPanel value={currentTab} index={index} maxWidth="1800px">
+                <ClinicalDataController
+                  dataCount={{
+                    caseCount: clinicalDataNodeParticipantCounts,
+                    nodeCount: clinicalDataNodeCounts,
+                  }}
+                  study_id={study_id}
+                  study_short_name={study_short_name}
+                />
               </TabPanel>
             );
-          
-            default:
-              return null;
-          }
-        })
-      }
+
+          default:
+            return null;
+        }
+      })}
     </StudyThemeProvider>
   );
 };
