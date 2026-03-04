@@ -211,14 +211,13 @@ const tblBody = {
       },
       '&.clinicalDataNode': {
         width: '10%',
-        // padding: '16px 5px 16px 16px',
         '& p': {
           fontFamily: 'Nunito',
-          fontSize: '15px',
-          fontWeight: '600',
-          lineHeight: '20px',
+          fontSize: '16px',
+          fontWeight: '700',
+          lineHeight: '16px',
           letterSpacing: '0em',
-          color: '#0296C9',
+          color: '#027DA7',
           // textTransform: 'uppercase',
         },
       },

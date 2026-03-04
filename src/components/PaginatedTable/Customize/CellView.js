@@ -21,9 +21,9 @@ import { defaultTo } from 'lodash';
 
 const ClinicalDataNodeWrapper = styled('span')({
     fontFamily: 'Nunito',
-    fontSize: '15px',
-    fontWeight: '600',
-    lineHeight: '20px',
+    fontSize: '16px',
+    fontWeight: '700',
+    lineHeight: '16px',
     letterSpacing: '0em',
 })
 
@@ -170,9 +170,9 @@ export const CustomCellView = (props) => {
         <CsvDownload {...props} />
       );
     case customizeColumn.clinicalDataNode: 
-      return <ClinicalDataNodeWrapper style={{ color: hasNoValues ? '#A1A1A1' : '#0296C9' }}>{clinicalDataNode}</ClinicalDataNodeWrapper>
+      return <ClinicalDataNodeWrapper style={{ color: hasNoValues ? '#AAAAAA' : '#027DA7' }}>{clinicalDataNode}</ClinicalDataNodeWrapper>
     case customizeColumn.clinicalDataDescription:
-        return <ClinicalDataDescriptionWrapper style={{ color: hasNoValues ? '#A1A1A1' : '#0B3556' }}>{clinicalDataDescription}</ClinicalDataDescriptionWrapper>
+        return <ClinicalDataDescriptionWrapper style={{ color: hasNoValues ? '#AAAAAA' : '#13344A' }}>{clinicalDataDescription}</ClinicalDataDescriptionWrapper>
     default:
       return (<></>);
   }
