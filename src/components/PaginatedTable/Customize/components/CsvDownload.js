@@ -40,7 +40,7 @@ const CsvDownlaod = ({
 
 const styles = {
   tooltipText:{
-    maxWidth: "auto",
+    maxWidth: "175px",
     padding: "10px 15px",
 
     fontFamily: "Open Sans",

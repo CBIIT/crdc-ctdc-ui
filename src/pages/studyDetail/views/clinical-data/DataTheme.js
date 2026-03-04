@@ -211,45 +211,27 @@ const tblBody = {
       },
       '&.clinicalDataNode': {
         width: '10%',
-        // padding: '16px 5px 16px 16px',
-        '& p': {
-          fontFamily: 'Nunito',
-          fontSize: '15px',
-          fontWeight: '600',
-          lineHeight: '20px',
-          letterSpacing: '0em',
-          color: '#0296C9',
-          // textTransform: 'uppercase',
-        },
       },
       '&.clinicalDataDescription': {
         width: '68%',
-        '& p': {
-          fontFamily: 'Nunito',
-          fontSize: '16px',
-          fontWeight: '400',
-          lineHeight: '20px',
-          letterSpacing: '0em',
-          color: '#0B3556',
-        },
       },
       '&.caseCount': {
         '& p': {
-          color: '#0B3556',
+          color: '#13344A',
           fontFamily: 'Nunito',
           fontSize: '16px',
         },
       },
       '&.nodeCount': {
         '& p': {
-          color: '#0B3556',
+          color: '#13344A',
           fontFamily: 'Nunito',
           fontSize: '16px',
         },
       },
       '&.recordCount': {
         '& p': {
-          color: '#0B3556',
+          color: '#13344A',
           fontFamily: 'Nunito',
           fontSize: '16px',
         },
@@ -257,7 +239,6 @@ const tblBody = {
       '&.csvDownload': {
       },
       '&.csvDataRow': {
-
       }
     },
   },
