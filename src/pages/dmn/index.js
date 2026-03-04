@@ -6,8 +6,7 @@ const DataModelNavigator = () => {
   return (
     <div style={{ 
       width: '100%', 
-      height: '1000px',
-      boxShadow: 'inset 0 8px 10px -5px rgba(0, 0, 0, 0.3)',
+      height: '1000px'
     }}>
       <iframe
         src={dmnUrl}
