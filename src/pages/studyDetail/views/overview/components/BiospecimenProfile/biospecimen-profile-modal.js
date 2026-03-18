@@ -69,7 +69,8 @@ const BiospecimenProfileModal = ({
           fontFamily: "Inter",
           fontWeight: "600",
           fontSize: "16px",
-          marginTop: "8px",
+          marginTop: "16px",
+          marginLeft: '50px'
         }}
       >
         Open Expanded View

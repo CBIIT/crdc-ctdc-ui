@@ -104,7 +104,11 @@ class BarChart extends PureComponent {
           {/* value or y axis */}
           <ValueAxis allowDecimals={value.allowDecimals}>
             <Tick {...value.tick} />
-            <Title text={value.title.text}>
+            <Title
+              text={argument.title.text}
+              margin={argument.title.margin}
+              alignment={argument.title.alignment}
+            >
               <Font {...value.title} />
             </Title>
             <ChartGrid visible={value.chartGrid.visible} />
@@ -115,7 +119,11 @@ class BarChart extends PureComponent {
 
           {/* argument axis */}
           <ArgumentAxis>
-            <Title text={argument.title.text}>
+            <Title
+              text={argument.title.text}
+              margin={argument.title.margin}
+              alignment={argument.title.alignment}
+            >
               <Font {...argument.title} />
             </Title>
             <Label visible={argument.visible} position={argument.label.position}>

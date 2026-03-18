@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Grid, withStyles, Tabs, Tab } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { BarChart } from "bento-components";
+import BarChart from "../../../../../../components/BarChart/index.js";
 
 import {
   biospecimenProfile,

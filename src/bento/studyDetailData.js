@@ -71,10 +71,13 @@ export const argumentConfiguration = {
   size: 12,
   title: {
     text: "Biospecimens",
-    size: 13,
+    margin: 15,
+    alignment: "center",
+
+    size: 12,
     color: "#444444",
-    weight: 500,
-    family: "Inter",
+    weight: 400,
+    family: "Roboto",
   },
   label: {
     size: 20,
@@ -99,10 +102,10 @@ export const valueConfiguration = {
   allowDecimals: false,
   title: {
     text: "Biospecimen Count",
-    size: 13,
+    size: 12,
     color: "#444444",
-    weight: 500,
-    family: "Inter",
+    weight: 400,
+    family: "Roboto",
   },
   chartGrid: {
     visible: true,
