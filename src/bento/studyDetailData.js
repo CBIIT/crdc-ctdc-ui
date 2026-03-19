@@ -124,6 +124,22 @@ export const seriesSetting = {
   maxBarWidth: 200,
 };
 
+export const tooltipConfig = {
+  enable: true,
+  family: 'Open Sans',
+  size: 13,
+  color: '#929292', // border Color
+  width: 1,
+  blur: 4,
+  offsetX: 0,
+  offsetY: 4,
+  opacity: 0.25,
+  shadowColor: '#000000',
+  arrowLength: 10,
+  paddingTopBottom: 10,
+  interactive: false,
+};
+
 export const studyClinicalDataQuery = gql`
   query clinicalDataTab($study_id: [String]) {
     clinicalData(study_id: $study_id) {

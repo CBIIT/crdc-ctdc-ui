@@ -10,6 +10,7 @@ import {
   timePointArgumentConfiguration,
   argumentConfiguration,
   seriesSetting,
+  tooltipConfig,
 } from "../../../../../../bento/studyDetailData.js";
 import TabPanel from "../../../../../../components/Tab/TabPanel.js";
 // import { navigatedToDashboard } from '../../../utils/utils';
@@ -31,12 +32,12 @@ import {
 import useDashboardTabs from "../../../../../dashTemplate/components/dashboard-tabs-store.js";
 import { onClearAllFilters } from "../../../../../dashTemplate/sideBar/BentoFilterUtils.js";
 
-const tooltipContent = ({ argument, originalValue }) => (
-  <div>
-    <span style={{ fontWeight: 600, color: "#444444" }}>{argument}, </span>
-    <span style={{ color: "#444444", fontWeight: 900 }}>{originalValue}</span>
-  </div>
-);
+  const tooltipContent = ({ argument, originalValue }) => (
+    <div>
+      <span style={{ fontWeight: 400, color: "#444444" }}>{argument}, </span>
+      <span style={{ color: "#444444", fontWeight: 700 }}>{originalValue}</span>
+    </div>
+  );
 
 const BiospecimenProfile = ({ classes, d }) => {
   let data = d["StudySpecimenByStudyShortName"][0];
@@ -101,6 +102,7 @@ const BiospecimenProfile = ({ classes, d }) => {
             data={data[item.value]}
             palette={palette}
             tooltipContent={tooltipContent}
+            tooltipConfig={tooltipConfig}
             argument={
               item.label === "TIMEPOINT"
                 ? timePointArgumentConfiguration

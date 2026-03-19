@@ -105,9 +105,9 @@ class BarChart extends PureComponent {
           <ValueAxis allowDecimals={value.allowDecimals}>
             <Tick {...value.tick} />
             <Title
-              text={argument.title.text}
-              margin={argument.title.margin}
-              alignment={argument.title.alignment}
+              text={value.title.text}
+              margin={value.title.margin}
+              alignment={value.title.alignment}
             >
               <Font {...value.title} />
             </Title>
@@ -133,11 +133,22 @@ class BarChart extends PureComponent {
 
           {/* tooltip */}
           {tooltipContent && (
-          <CartToolTip enabled={tooltipConfig.enable} contentRender={tooltipContent}>
-            <Font family={tooltipConfig.family} size={tooltipConfig.size} />
-            <Border color={tooltipConfig.color} width={tooltipConfig.width} />
-            <Shadow blur={tooltipConfig.blur} offsetY={tooltipConfig.offsetY} opacity={tooltipConfig.opacity} />
-          </CartToolTip>
+            <CartToolTip
+              enabled={tooltipConfig.enable}
+              contentRender={tooltipContent}
+              arrowLength={tooltipConfig.arrowLength}
+              paddingTopBottom={tooltipConfig.paddingTopBottom}
+            >
+              <Font family={tooltipConfig.family} size={tooltipConfig.size} />
+              <Border color={tooltipConfig.color} width={tooltipConfig.width} />
+              <Shadow
+                blur={tooltipConfig.blur}
+                offsetX={tooltipConfig.offsetX}
+                offsetY={tooltipConfig.offsetY}
+                opacity={tooltipConfig.opacity}
+                color={tooltipConfig.shadowColor}
+              />
+            </CartToolTip>
           )}
         </Chart>
       </>
