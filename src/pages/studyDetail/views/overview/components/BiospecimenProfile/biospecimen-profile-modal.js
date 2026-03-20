@@ -229,6 +229,7 @@ const BiospecimenProfileModal = ({
                               : argumentConfiguration.title.text
                           }
                           yAxisLabel={"Biospecimen Count"}
+                          tooltipCursor={false}
                         />
                       </TabPanel>
                     );

@@ -35,11 +35,25 @@ const styles = theme => ({
   },
   tooltipWrapper: {
     backgroundColor: '#fff',
-    padding: '10px',
-    border: '1px solid #ccc',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+    padding: '0px 10px',
+    border: '1px solid #929292',
+    boxShadow: '0px 4px 4px 0px #00000040',
     display: 'flex',
     gap: '4px',
+    position: 'relative',
+  },
+  tooltipArrow: {
+    position: 'absolute',
+    left: '50%',
+    bottom: '-6.8px',
+    width: '12px',
+    height: '12px',
+    backgroundColor: '#fff',
+    borderTop: 'none',
+    borderRight: '1px solid #929292',
+    borderBottom: '1px solid #929292',
+    borderLeft: 'none',
+    transform: 'translateX(-50%) rotate(45deg)',
   },
   container: {
     display: 'flex',
@@ -68,6 +82,7 @@ const BarChartV2 = ({
   palette,
   xAxisLabel,
   yAxisLabel,
+  tooltipCursor,
   classes,
 }) => {
   const [hoveredGroup, setHoveredGroup] = useState(null);
@@ -82,6 +97,7 @@ const BarChartV2 = ({
         <div className={classes.tooltipWrapper}>
           <p className={classes.groupTooltipText}>{`${data.group},`}</p>
           <p className={classes.countTooltipText}>{`${data.count}`}</p>
+          <span className={classes.tooltipArrow} />
         </div>
       );
     }
@@ -152,7 +168,7 @@ const BarChartV2 = ({
             style: { fontFamily: 'Inter', fontWeight: '400', color: '#444444' },
           }}
         />
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip content={<CustomTooltip />} cursor={tooltipCursor}/>
         <Bar dataKey="count">
           {chartData.map((_entry, index) => (
             <Cell
