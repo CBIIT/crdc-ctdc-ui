@@ -71,10 +71,13 @@ export const argumentConfiguration = {
   size: 12,
   title: {
     text: "Biospecimens",
-    size: 13,
+    margin: 15,
+    alignment: "center",
+
+    size: 12,
     color: "#444444",
-    weight: 500,
-    family: "Inter",
+    weight: 400,
+    family: "Roboto",
   },
   label: {
     size: 20,
@@ -99,10 +102,10 @@ export const valueConfiguration = {
   allowDecimals: false,
   title: {
     text: "Biospecimen Count",
-    size: 13,
+    size: 12,
     color: "#444444",
-    weight: 500,
-    family: "Inter",
+    weight: 400,
+    family: "Roboto",
   },
   chartGrid: {
     visible: true,
@@ -119,6 +122,22 @@ export const valueConfiguration = {
 /** common series setting */
 export const seriesSetting = {
   maxBarWidth: 200,
+};
+
+export const tooltipConfig = {
+  enable: true,
+  family: 'Open Sans',
+  size: 13,
+  color: '#929292', // border Color
+  width: 1,
+  blur: 4,
+  offsetX: 0,
+  offsetY: 4,
+  opacity: 0.25,
+  shadowColor: '#000000',
+  arrowLength: 10,
+  paddingTopBottom: 10,
+  interactive: false,
 };
 
 export const studyClinicalDataQuery = gql`
