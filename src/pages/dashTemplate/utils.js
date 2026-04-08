@@ -80,12 +80,14 @@ function generateValidCombinations(strings, validCombinations, joinByChar = '|')
   function combine(current, remaining) {
     const combinedString = current.join(joinByChar);
 
-    // Skip if the current combination does not match any valid prefix
-    if (!validPrefixes.has(combinedString)) return;
+    // Skip prefix check if current is empty (initial call)
+    if (current.length > 0) {
+      // Skip if the current combination does not match any valid prefix
+      if (!validPrefixes.has(combinedString)) return;
 
-    // Add to result if it's a fully valid combination
-    if (validSet.has(combinedString)) result.push(combinedString);
-
+      // Add to result if it's a fully valid combination
+      if (validSet.has(combinedString)) result.push(combinedString);
+    }
     // Recursively combine remaining elements
     for (let i = 0; i < remaining.length; i++) {
       combine([...current, remaining[i]], remaining.slice(i + 1));

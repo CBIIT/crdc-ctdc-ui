@@ -16,14 +16,9 @@ const CsvDownlaod = ({
   return (
     <>
       {
-        (csvDataRow.length > 0) && (
+        (csvDataRow?.length > 0) && (
           <ToolTip
-            maxWidth="auto"
-            lineHeight="1.5"
-            fontFamily="Nunito"
-            fontSize="14px"
-            fontWeight="500"
-            padding="10px 19px"
+            classes={{ tooltip: classes.tooltipText }}
             title="Click to download the contents of this node"
           >
             <div
@@ -44,6 +39,20 @@ const CsvDownlaod = ({
 };
 
 const styles = {
+  tooltipText:{
+    maxWidth: "175px",
+    padding: "10px 15px",
+
+    fontFamily: "Open Sans",
+    fontWeight: 600,
+    fontSize: "13px",
+    lineHeight: "19px",
+    color: '#223D4C',
+    border: "1px solid #C3C3C3",
+    boxShadow: "0px 4px 10px 0px #00000040",
+    borderRadius: "5px",
+    backgroundColor: "#FFFFFF",
+  },
   icon: {
     width: '24.71px',
     height: '24.72px',

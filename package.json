@@ -8,6 +8,11 @@
     "@apollo/react-components": "^4.0.0",
     "@babel/core": "^7.26.9",
     "@babel/plugin-proposal-optional-chaining": "^7.21.0",
+    "@babel/plugin-transform-class-properties": "^7.25.9",
+    "@babel/plugin-transform-nullish-coalescing-operator": "^7.25.9",
+    "@babel/plugin-transform-optional-chaining": "^7.25.9",
+    "@babel/plugin-transform-private-methods": "^7.25.9",
+    "@babel/plugin-transform-private-property-in-object": "^7.25.9",
     "@babel/preset-env": "^7.26.9",
     "@babel/preset-react": "^7.26.3",
     "@bento-core/all": "1.1.0",
@@ -27,7 +32,6 @@
     "axios": "^0.21.1",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^9.0.0",
-    "babel-jest": "23.6.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-named-asset-import": "^0.3.4",
     "babel-preset-react-app": "^7.0.1",
@@ -44,6 +48,7 @@
     "eslint-loader": "2.1.1",
     "eslint-plugin-flowtype": "2.50.1",
     "file-loader": "2.0.0",
+    "file-saver": "^2.0.5",
     "font-awesome": "4.7.0",
     "fork-ts-checker-webpack-plugin-alt": "0.4.14",
     "fs-extra": "7.0.1",
@@ -54,11 +59,8 @@
     "html2pdf.js": "^0.10.1",
     "identity-obj-proxy": "3.0.0",
     "isomorphic-fetch": "^2.2.1",
-    "jest": "23.6.0",
-    "jest-pnp-resolver": "1.0.2",
-    "jest-resolve": "23.6.0",
-    "jest-watch-typeahead": "^0.2.1",
     "js-yaml": "^3.13.1",
+    "json-2-csv": "^5.5.6",
     "line-awesome": "github:icons8/line-awesome",
     "lodash": "^4.17.20",
     "marked": "^4.2.3",
@@ -114,6 +116,8 @@
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js",
+    "test:ci": "TZ=UTC CI=true node scripts/test.js --passWithNoTests --coverage --maxWorkers=2",
+    "test:coverage": "node scripts/test.js --coverage",
     "lint": "eslint src",
     "lint-fix": "eslint src --fix"
   },
@@ -140,7 +144,9 @@
       "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts,tsx}"
     ],
     "testEnvironment": "jsdom",
-    "testURL": "http://localhost",
+    "testEnvironmentOptions": {
+      "url": "http://localhost"
+    },
     "transform": {
       "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
@@ -167,21 +173,36 @@
       "node"
     ],
     "watchPlugins": [
-      "/Users/doddapanenis2/Desktop/Develop/icdc-frontend/node_modules/jest-watch-typeahead/filename.js",
-      "/Users/doddapanenis2/Desktop/Develop/icdc-frontend/node_modules/jest-watch-typeahead/testname.js"
+      "jest-watch-typeahead/filename",
+      "jest-watch-typeahead/testname"
     ]
   },
   "babel": {
     "presets": [
       "react-app"
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-optional-chaining",
+      ["@babel/plugin-transform-class-properties", { "loose": true }],
+      ["@babel/plugin-transform-private-property-in-object", { "loose": true }],
+      ["@babel/plugin-transform-private-methods", { "loose": true }]
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^14.3.1",
+    "@testing-library/user-event": "^14.6.1",
+    "babel-jest": "^29.7.0",
     "eslint": "^6.2.2",
     "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-jsx-a11y": "^6.8.0",
     "eslint-plugin-react": "^7.20.5",
-    "eslint-plugin-react-hooks": "^1.7.0"
+    "eslint-plugin-react-hooks": "^1.7.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jest-pnp-resolver": "^1.2.3",
+    "jest-resolve": "^29.7.0",
+    "jest-watch-typeahead": "^2.2.2"
   }
 }

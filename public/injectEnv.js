@@ -21,9 +21,14 @@ window.injectedEnv = {
   REACT_APP_LOGIN_URL: 'https://nci-crdc-staging.datacommons.io/user/oauth2/authorize?client_id=HADoUzN9BWzbzwxdu0soRvRHSnegiWaoShVhB09O&response_type=code&redirect_uri=http://localhost:3000/login&scope=openid%20user',
 
   // About Content API:
-  REACT_APP_ABOUT_CONTENT_URL: 'https://raw.githubusercontent.com/CBIIT/bento-ctdc-static-content/develop/aboutPagesContent.yaml',
+  REACT_APP_ABOUT_CONTENT_URL: 'https://raw.githubusercontent.com/CBIIT/bento-ctdc-static-content/refs/heads/develop/aboutPagesContent.yaml',
+  REACT_APP_STATIC_CONTENT_URL: 'https://raw.githubusercontent.com/CBIIT/bento-ctdc-static-content/refs/heads/develop/',
 
   REACT_APP_FILE_CENTRIC_CART_README: 'https://raw.githubusercontent.com/CBIIT/ctdc-readMe-content/refs/heads/dev/My_Files_Cart_Page_README.md',
+
+  REACT_APP_DATA_MODEL_FILE: 'https://raw.githubusercontent.com/CBIIT/ctdc-model/refs/heads/prod/model-desc/ctdc_model_file.yaml',
+
+  REACT_APP_DMN_URL: 'https://dp2mdhy99qjlv.cloudfront.net/?config=https://raw.githubusercontent.com/cbiit/ctdc-model/refs/heads/develop',
 
 
   // IDP Auth url
@@ -42,5 +47,4 @@ window.injectedEnv = {
   REACT_APP_BACKEND_GETUSERINFO_API: 'https://k9dc.essential-dev.com/fence/login/',
   REACT_APP_USER_LOGOUT_URL: 'https://k9dc.essential-dev.com/fence/logout',
 
-  REACT_APP_DMN_URL: 'https://cbiit.github.io/crdc-data-model-navigator/?config=https://raw.githubusercontent.com/CBIIT/ctdc-model/refs/heads/develop/ctdc-navigator-resources/'
 };

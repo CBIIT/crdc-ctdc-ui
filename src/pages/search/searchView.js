@@ -218,6 +218,8 @@ function searchView(props) {
     classes,
     config: {
       resultCardMap: {
+        participant: ParticipantCard,
+        biospecimen: BiospecimenCard,
         participants: ParticipantCard,
         biospecimens: BiospecimenCard,
         property: ValueCard,

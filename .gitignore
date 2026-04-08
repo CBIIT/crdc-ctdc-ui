@@ -60,3 +60,6 @@ yarn-error.log
 bower_components/
 *.pid
 *.log
+
+# Ignore test coverage directory
+coverage/

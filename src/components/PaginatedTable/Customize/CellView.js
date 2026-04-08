@@ -19,22 +19,23 @@ import DataValue from './components/DataValue';
 import CsvDownload from './components/CsvDownload';
 import { defaultTo } from 'lodash';
 
-const ClinicalDataNodeWrapper = styled('span')({
-    fontFamily: 'Open Sans',
-    fontSize: '15px',
-    fontWeight: '600',
-    lineHeight: '20px',
-    letterSpacing: '0em',
-    textTransform: 'uppercase',
-})
+const ClinicalDataNodeWrapper = styled('span')(({ $hasNoValues }) => ({
+  fontFamily: 'Nunito',
+  fontSize: '16px',
+  fontWeight: '700',
+  lineHeight: '16px',
+  letterSpacing: '0em',
+  ...($hasNoValues ? { color: '#AAAAAA' } : { color: '#027DA7' }),
+}));
 
-const ClinicalDataDescriptionWrapper = styled('span')({
-    fontFamily: 'Open Sans',
-    fontSize: '16px',
-    fontWeight: '400',
-    lineHeight: '20px',
-    letterSpacing: '0em',
-})
+const ClinicalDataDescriptionWrapper = styled('span')(({ $hasNoValues }) => ({
+  fontFamily: 'Nunito',
+  fontSize: '16px',
+  fontWeight: '400',
+  lineHeight: '20px',
+  letterSpacing: '0em',
+  ...($hasNoValues ? { color: '#AAAAAA' } : { color: '#13344A' }),
+}));
 
 const CaseIdLink = (props) => {
   const {
@@ -171,9 +172,9 @@ export const CustomCellView = (props) => {
         <CsvDownload {...props} />
       );
     case customizeColumn.clinicalDataNode: 
-      return <ClinicalDataNodeWrapper style={{ color: hasNoValues ? '#A1A1A1' : '#0296C9' }}>{clinicalDataNode}</ClinicalDataNodeWrapper>
+      return <ClinicalDataNodeWrapper $hasNoValues={hasNoValues}>{clinicalDataNode}</ClinicalDataNodeWrapper>
     case customizeColumn.clinicalDataDescription:
-        return <ClinicalDataDescriptionWrapper style={{ color: hasNoValues ? '#A1A1A1' : '#0B3556' }}>{clinicalDataDescription}</ClinicalDataDescriptionWrapper>
+        return <ClinicalDataDescriptionWrapper $hasNoValues={hasNoValues}>{clinicalDataDescription}</ClinicalDataDescriptionWrapper>
     default:
       return (<></>);
   }

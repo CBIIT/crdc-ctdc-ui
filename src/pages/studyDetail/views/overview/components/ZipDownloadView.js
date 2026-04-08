@@ -22,6 +22,7 @@ const DocumentDownload = ({
   fileLocation = '',
   fileName,
   toolTipIcon,
+  disabled = false, //  allow parent to fully disable the button (e.g., when no ZIP exists)
 }) => {
   const { signInWithAuthURL, signOut } = useAuth();
   const { isSignedIn } = useSelector((state) => state.login);
@@ -31,57 +32,100 @@ const DocumentDownload = ({
     setShowModal(false);
   };
 
-  // Can be more than isSignedIn by checking if currect user has the required ACLs
+  // Can be more than isSignedIn by checking if current user has the required ACLs
   const hasAccess = () => {
     return isSignedIn;
   };
 
   const { Notification } = useGlobal();
-  const showUnauthorizedNotification = () => 
-    {
-      const customElem = (
-        <span>
-          You must be logged in and must already have been granted access to download a copy of this file.{' '}
-          <a className={classes.requestAccessLink} href="/#/request-access">Request access</a>{' '}
-          through dbGaP to download this file.
-        </span>
-      );
+  const showUnauthorizedNotification = () => {
+    const customElem = (
+      <span>
+        You must be logged in and must already have been granted access to download a copy of this file.{' '}
+        <a className={classes.requestAccessLink} href="/#/request-access">Request access</a>{' '}
+        through dbGaP to download this file.
+      </span>
+    );
 
-      Notification.show(customElem, 6000, classes.alertStyles);
-    }
+    Notification.show(customElem, 6000, classes.alertStyles);
+  };
+
+  // Decide what to render based on `disabled` and auth state
+  let buttonBlock = null;
+
+  if (disabled) {
+    // Case 0: No file available (e.g., no ZIP) – always disabled,
+    buttonBlock = (
+      <div className={classes.downloadAllBtnContainer}>
+        <Button
+          classes={{ root: classes.disabledDownloadAllBtn }}
+          disabled
+        >
+          ZIP&nbsp;FILE
+          <img src={iconUnauthenticated || iconFileDownload} alt="download icon" className={classes.downloadIcon} />
+        </Button>
+        <ToolTip
+          classes={{ tooltip: classes.customTooltip }}
+          title={toolTipTextFileDownload}
+          placement="right"
+        >
+          <img src={toolTipIcon} alt="tooltip" className={classes.tooltipIcon} />
+        </ToolTip>
+      </div>
+    );
+  } else if (enableAuthentication && isSignedIn && hasAccess()) {
+    // Case 1: Logged in and granted access
+    buttonBlock = (
+      <div className={classes.downloadAllBtnContainer}>
+        <Button
+          classes={{ root: classes.downloadAllBtn }}
+          onClick={() =>
+            fetchFileToDownload(
+              fileLocation,
+              signOut,
+              setShowModal,
+              fileName,
+              fileFormat,
+              showUnauthorizedNotification,
+            )
+          }
+          variant="contained"
+        >
+          ZIP&nbsp;FILE
+          <img src={iconFileDownload} alt="download icon" className={classes.downloadIcon} />
+        </Button>
+        <ToolTip
+          classes={{ tooltip: classes.customTooltip }}
+          title={toolTipTextFileDownload}
+          placement="right"
+        >
+          <img src={toolTipIcon} alt="tooltip" className={classes.tooltipIcon} />
+        </ToolTip>
+      </div>
+    );
+  } else {
+    // Case 2: Not logged in or access not granted
+    buttonBlock = (
+      <div className={classes.downloadAllBtnContainer}>
+        <Button classes={{ root: classes.disabledDownloadAllBtn }} disabled>
+          ZIP&nbsp;FILE
+          <img src={iconUnauthenticated} alt="download icon" className={classes.downloadIcon} />
+        </Button>
+        <ToolTip
+          classes={{ tooltip: classes.customTooltip }}
+          title={toolTipTextUnauthenticated}
+          placement="right"
+        >
+          <img src={toolTipIcon} alt="tooltip" className={classes.tooltipIcon} />
+        </ToolTip>
+      </div>
+    );
+  }
 
   return (
     <>
       <div>
-        <>
-          {(enableAuthentication && isSignedIn && hasAccess()) ? (
-            /* ** Case 1: Logged in and granted access ** */
-            <div className={classes.downloadAllBtnContainer}>
-              <Button
-                classes={{ root: classes.downloadAllBtn }}
-                onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification)}
-                variant="contained"
-              >
-                ZIP&nbsp;FILE
-                <img src={iconFileDownload} alt="download icon" className={classes.downloadIcon} />
-              </Button>
-              <ToolTip classes={{ tooltip: classes.customTooltip }} title={toolTipTextFileDownload} placement="right">
-                <img src={toolTipIcon} alt="tooltip" className={classes.tooltipIcon}/>
-              </ToolTip>
-            </div>
-          /* ** Case 2: Not logged in or access not granted ** */
-          ) : (
-            <div className={classes.downloadAllBtnContainer}>
-              <Button classes={{ root: classes.disabledDownloadAllBtn }}>
-                ZIP&nbsp;FILE
-                <img src={iconUnauthenticated} alt="download icon" className={classes.downloadIcon} />
-              </Button>
-              <ToolTip classes={{ tooltip: classes.customTooltip }} title={toolTipTextUnauthenticated} placement="right">
-                <img src={toolTipIcon} alt="tooltip" className={classes.tooltipIcon}/>
-              </ToolTip>
-            </div>
-          )}
-        </>
+        {buttonBlock}
 
         <SessionTimeOutModal
           open={showModal}
@@ -109,8 +153,8 @@ const commonStyles = {
     textAlign: 'center',
     boxShadow: 'none',
     filter: 'none',
-  }
-}
+  },
+};
 
 const styles = () => ({
   downloadAllBtnContainer: {
@@ -163,11 +207,11 @@ const styles = () => ({
   requestAccessLink: {
     fontWeight: 600,
     textDecoration: 'underline !important',
-    color:'#FFFFFF',
+    color: '#FFFFFF',
     fontSize: '16px',
     '&:hover': {
       textDecoration: 'none',
-      color: '#FFFFFF'
+      color: '#FFFFFF',
     },
   },
 });

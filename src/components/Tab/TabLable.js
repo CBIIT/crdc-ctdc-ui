@@ -17,11 +17,17 @@ const tabLabel = ({
 
 const styles = () => ({
   defaultStyle: {
-    fontFamily: 'Open Sans',
-    textTransform: 'none',
-    fontSize: '17px',
-    height: '45px',
-    marginBottom: '-5px',
+    height: '46px',
+    paddingTop: '8px',
+
+    fontFamily: 'Inter',
+    fontWeight: 500,
+    fontSize: '20px',
+    lineHeight: '100%',
+    letterSpacing: 0,
+    textAlign: 'center',
+    verticalAlign: 'middle',
+
   },
 });
 
