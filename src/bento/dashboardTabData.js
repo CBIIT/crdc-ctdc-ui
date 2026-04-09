@@ -497,7 +497,10 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       specimen_record_id,
       anatomical_collection_site,
       tissue_category,
-      assessment_timepoint
+      assessment_timepoint,
+      surgical_procedure,
+      specimen_type,
+      tumor_grade
 
       data_file_uuid
     }
