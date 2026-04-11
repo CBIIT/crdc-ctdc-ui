@@ -89,12 +89,12 @@ const BiospecimenButtons = ({ classes }) => {
       <div className={classes.biospecimenButtonRow}>
         <span>
           <Button
-            className={classes.cartButton}
+            className={classes.biospecimenCartButton}
             disabled={selectedRows.length === 0 || loading}
             onClick={handleAddToCart}
             disableElevation
           >
-            Add Files for Selected Biospecimens
+            Add Files for{<br />}Selected Biospecimens
           </Button>
         </span>
         <Tooltip title={BIOSPECIMEN_BUTTON_TOOLTIP} placement="top-end" classes={{ tooltip: classes.tooltipBody }}>

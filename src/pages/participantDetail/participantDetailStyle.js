@@ -197,7 +197,7 @@ export default (theme) => ({
     justifyContent: 'flex-end',
     gap: '6px',
     paddingTop: '12px',
-    paddingBottom: '180px',
+    paddingBottom: '28px',
     paddingRight: '29px',
     backgroundColor: '#E1EEEC',
   },
@@ -224,7 +224,7 @@ export default (theme) => ({
     color: '#13344A',
   },
 
-  // Teal solid cart button
+  // -- Add Selected Files button --
   cartButton: {
     backgroundColor: '#06846A',
     color: '#FFFFFF',
@@ -233,7 +233,32 @@ export default (theme) => ({
     fontSize: '14px',
     lineHeight: '14px',
     textTransform: 'uppercase',
+    padding: '16px 22px',
+    width: 'fit-content',
+    height: '46px',
+    borderRadius: '10px',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#046D57',
+    },
+    '&.Mui-disabled': {
+      backgroundColor: '#06846A',
+      color: '#FFFFFF',
+      opacity: 0.5,
+    },
+  },
+
+  // --Add Files for Selected Biospecimens button --
+  biospecimenCartButton: {
+    backgroundColor: '#06846A',
+    color: '#FFFFFF',
+    fontFamily: 'Roboto',
+    fontWeight: 500,
+    fontSize: '14px',
+    lineHeight: '18px',
+    textTransform: 'uppercase',
     padding: '7px 16px',
+    radius: '10px',
     width: '214px',
     height: '46px',
     cursor: 'pointer',
