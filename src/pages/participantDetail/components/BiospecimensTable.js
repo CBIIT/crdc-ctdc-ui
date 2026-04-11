@@ -1,4 +1,6 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useApolloClient } from '@apollo/client';
 import { Tooltip, Button } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
 import jbrowseIcon from '../../../assets/participant/jbrowse_icon.png';
@@ -6,10 +8,18 @@ import {
   TableContextProvider,
   TableView,
   TableContext,
+  onRowSeclect,
 } from '@bento-core/paginated-table';
-import { themeConfig } from '../../dashTemplate/tabs/tableConfig/Theme';
-import { customTheme } from '../../dashTemplate/tabs/wrapperConfig/Theme';
+import { onAddCartFiles } from '@bento-core/cart';
+import { themeConfig, customTheme } from '../tableThemeConfig';
 import { biospecimenColumns, BIOSPECIMEN_BUTTON_TOOLTIP } from '../../../bento/participantDetailData';
+import { GET_FILE_IDS_FOR_SELECTED_BIOSPECIMENS } from '../../../bento/dashboardTabData';
+import {
+  maximumNumberOfFilesAllowedInTheCart,
+  alertMessage,
+} from '../../../bento/fileCentricCartWorkflowData';
+import SnackbarView from '@bento-core/paginated-table/dist/wrapper/components/Snackbar/Snackbar';
+import AddToCartDialogAlertView from '@bento-core/paginated-table/dist/wrapper/components/AddToCartDialog/AddToCartDialogAlertView';
 
 const initBiospecimenTableState = (initialState) => ({
   ...initialState,
@@ -35,33 +45,71 @@ const initBiospecimenTableState = (initialState) => ({
 const BiospecimenButtons = ({ classes }) => {
   const { context } = useContext(TableContext);
   const selectedRows = context?.selectedRows || [];
+  const dispatch = useDispatch();
+  const client = useApolloClient();
+  const filesId = useSelector((state) => state.cartReducer.filesId);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [displayAlert, setDisplayAlert] = useState(false);
+  const [addedCount, setAddedCount] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  const handleAddToCart = async () => {
+    setLoading(true);
+    try {
+      const result = await client.query({
+        query: GET_FILE_IDS_FOR_SELECTED_BIOSPECIMENS,
+        variables: { specimen_record_id: selectedRows, first: 10000 },
+        fetchPolicy: 'network-only',
+      });
+      const fileIds = (result?.data?.biospecimen_data_files || []).map((f) => f.data_file_uuid);
+      const newUniqueFiles = fileIds.filter((id) => !filesId.includes(id));
+      if (filesId.length + newUniqueFiles.length > maximumNumberOfFilesAllowedInTheCart) {
+        setDisplayAlert(true);
+        return;
+      }
+      dispatch(onAddCartFiles(fileIds));
+      setAddedCount(newUniqueFiles.length);
+      setOpenSnackbar(true);
+      context.dispatch(onRowSeclect([]));
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
-    <div className={classes.biospecimenButtonRow}>
-      <span>
-        <Button
-          className={classes.cartButton}
-          disabled={selectedRows.length === 0}
-          onClick={() => {
-            // TODO: Wire up to AddToCart flow
-          }}
-          disableElevation
-        >
-          Add Files for Selected Biospecimens
-        </Button>
-      </span>
-      <Tooltip title={BIOSPECIMEN_BUTTON_TOOLTIP} placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
-        <HelpIcon className={classes.questionMarkIcon} />
-      </Tooltip>
-      <span>
-        <Button className={classes.jbrowseButton} disabled disableElevation>
-          View in&nbsp;<img src={jbrowseIcon} alt="JBrowse" className={classes.jbrowseIcon} /><strong>J</strong>Browse
-        </Button>
-      </span>
-      <Tooltip title="View in JBrowse (coming soon)" placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
-        <HelpIcon className={classes.questionMarkIcon} />
-      </Tooltip>
-    </div>
+    <>
+      <SnackbarView open={openSnackbar} count={addedCount} onClose={() => setOpenSnackbar(false)} />
+      {displayAlert && (
+        <AddToCartDialogAlertView
+          open={displayAlert}
+          alertMessage={alertMessage}
+          onClose={() => setDisplayAlert(false)}
+        />
+      )}
+      <div className={classes.biospecimenButtonRow}>
+        <span>
+          <Button
+            className={classes.cartButton}
+            disabled={selectedRows.length === 0 || loading}
+            onClick={handleAddToCart}
+            disableElevation
+          >
+            Add Files for Selected Biospecimens
+          </Button>
+        </span>
+        <Tooltip title={BIOSPECIMEN_BUTTON_TOOLTIP} placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
+          <HelpIcon className={classes.questionMarkIcon} />
+        </Tooltip>
+        <span>
+          <Button className={classes.jbrowseButton} disabled disableElevation>
+            View in&nbsp;<img src={jbrowseIcon} alt="JBrowse" className={classes.jbrowseIcon} />JBrowse
+          </Button>
+        </span>
+        <Tooltip title="View in JBrowse (coming soon)" placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
+          <HelpIcon className={classes.questionMarkIcon} />
+        </Tooltip>
+      </div>
+    </>
   );
 };
 

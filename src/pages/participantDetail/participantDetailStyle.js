@@ -57,7 +57,7 @@ export default (theme) => ({
     color: '#274FA6',
   },
   headerParticipantId: {
-    fontWeight: 700,
+    fontWeight: 600,
     color: '#274FA6',
   },
 
@@ -94,7 +94,7 @@ export default (theme) => ({
     fontFamily: 'Inter',
     fontWeight: 500,
     fontSize: '18px',
-    color: '#1D9A8F',
+    color: '#066D93',
     textTransform: 'uppercase',
     lineHeight: '100%',
     letterSpacing: '0',
@@ -238,12 +238,12 @@ export default (theme) => ({
     height: '46px',
     cursor: 'pointer',
     '&:hover': {
-      backgroundColor: '#177A72',
+      backgroundColor: '#046D57',
     },
     '&.Mui-disabled': {
       backgroundColor: '#06846A',
       color: '#FFFFFF',
-      cursor: 'not-allowed',
+      opacity: 0.5,
     },
   },
 
@@ -262,12 +262,20 @@ export default (theme) => ({
     padding: '5px 14px',
     borderRadius: '3px',
     border: '1px solid #09557B',
-    cursor: 'not-allowed',
-    opacity: 0.7,
     display: 'flex',
     alignItems: 'center',
     gap: '5px',
     height: '46px',
+    '&:hover': {
+      backgroundColor: '#E0EDF5',
+    },
+    '&.Mui-disabled': {
+      color: '#09557B',
+      border: '1px solid #09557B',
+      backgroundColor: '#FFFFFF',
+      cursor: 'not-allowed',
+      opacity: 0.5,
+    },
   },
   jbrowseIcon: {
     width: 'fit-content',
@@ -294,8 +302,8 @@ export default (theme) => ({
     padding: '8px 12px',
     borderRadius: '4px',
     maxWidth: '220px',
-    boxShadow: '0px 0px 12px rgba(0, 0, 0, 0.2)',
-    border: '1px solid #afafaf',
+    boxShadow: '0px 4px 10px 0px #00000040',
+    border: '1px solid #C3C3C3',
   },
 
   // ---- Misc shared ----

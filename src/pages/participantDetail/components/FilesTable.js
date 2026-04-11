@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Tooltip, Button } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
 import jbrowseIcon from '../../../assets/participant/jbrowse_icon.png';
@@ -6,10 +7,17 @@ import {
   TableContextProvider,
   TableView,
   TableContext,
+  onRowSeclect,
 } from '@bento-core/paginated-table';
-import { themeConfig } from '../../dashTemplate/tabs/tableConfig/Theme';
-import { customTheme } from '../../dashTemplate/tabs/wrapperConfig/Theme';
+import { onAddCartFiles } from '@bento-core/cart';
+import { themeConfig, customTheme } from '../tableThemeConfig';
 import { filesColumns, FILES_BUTTON_TOOLTIP } from '../../../bento/participantDetailData';
+import {
+  maximumNumberOfFilesAllowedInTheCart,
+  alertMessage,
+} from '../../../bento/fileCentricCartWorkflowData';
+import SnackbarView from '@bento-core/paginated-table/dist/wrapper/components/Snackbar/Snackbar';
+import AddToCartDialogAlertView from '@bento-core/paginated-table/dist/wrapper/components/AddToCartDialog/AddToCartDialogAlertView';
 
 const initFilesTableState = (initialState) => ({
   ...initialState,
@@ -35,33 +43,58 @@ const initFilesTableState = (initialState) => ({
 const FileButtons = ({ classes }) => {
   const { context } = useContext(TableContext);
   const selectedRows = context?.selectedRows || [];
+  const dispatch = useDispatch();
+  const filesId = useSelector((state) => state.cartReducer.filesId);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [displayAlert, setDisplayAlert] = useState(false);
+  const [addedCount, setAddedCount] = useState(0);
+
+  const handleAddToCart = () => {
+    const newUniqueFiles = selectedRows.filter((id) => !filesId.includes(id));
+    if (filesId.length + newUniqueFiles.length > maximumNumberOfFilesAllowedInTheCart) {
+      setDisplayAlert(true);
+      return;
+    }
+    dispatch(onAddCartFiles(selectedRows));
+    setAddedCount(newUniqueFiles.length);
+    setOpenSnackbar(true);
+    context.dispatch(onRowSeclect([]));
+  };
 
   return (
-    <div className={classes.tableButtonRow}>
-      <span>
-        <Button
-          className={classes.cartButton}
-          disabled={selectedRows.length === 0}
-          onClick={() => {
-            // TODO: Wire up to AddToCart flow
-          }}
-          disableElevation
-        >
-          Add Selected Files
-        </Button>
-      </span>
-      <Tooltip title={FILES_BUTTON_TOOLTIP} placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
-        <HelpIcon className={classes.questionMarkIcon} />
-      </Tooltip>
-      <span>
-        <Button className={classes.jbrowseButton} disabled disableElevation>
-          View in&nbsp;<img src={jbrowseIcon} alt="JBrowse" className={classes.jbrowseIcon} /><strong>J</strong>Browse
-        </Button>
-      </span>
-      <Tooltip title="View in JBrowse (coming soon)" placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
-        <HelpIcon className={classes.questionMarkIcon} />
-      </Tooltip>
-    </div>
+    <>
+      <SnackbarView open={openSnackbar} count={addedCount} onClose={() => setOpenSnackbar(false)} />
+      {displayAlert && (
+        <AddToCartDialogAlertView
+          open={displayAlert}
+          alertMessage={alertMessage}
+          onClose={() => setDisplayAlert(false)}
+        />
+      )}
+      <div className={classes.tableButtonRow}>
+        <span>
+          <Button
+            className={classes.cartButton}
+            disabled={selectedRows.length === 0}
+            onClick={handleAddToCart}
+            disableElevation
+          >
+            Add Selected Files
+          </Button>
+        </span>
+        <Tooltip title={FILES_BUTTON_TOOLTIP} placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
+          <HelpIcon className={classes.questionMarkIcon} />
+        </Tooltip>
+        <span>
+          <Button className={classes.jbrowseButton} disabled disableElevation>
+            View in&nbsp;<img src={jbrowseIcon} alt="JBrowse" className={classes.jbrowseIcon} />JBrowse
+          </Button>
+        </span>
+        <Tooltip title="View in JBrowse (coming soon)" placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
+          <HelpIcon className={classes.questionMarkIcon} />
+        </Tooltip>
+      </div>
+    </>
   );
 };
 

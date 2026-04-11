@@ -12,7 +12,6 @@ import About from '../../pages/about/aboutController';
 // import ProgramDetail from '../../pages/programDetail/programDetailController';
 import StudyDetail from '../../pages/studyDetail/studyDetailController';
 import ParticipantDetail from '../../pages/participantDetail/participantDetailController';
-import ParticipantDetailMockPage, { ParticipantDetailEmptyMockPage } from '../../pages/participantDetail/__mocks__/ParticipantDetailMockPage';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import GlobalSearchController from '../../pages/search/searchViewController';
 import Login from '../../pages/login';
@@ -62,8 +61,6 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route exact path="/studies" component={StudiesContainer} />
             <Route exact path="/study/:id" component={StudyDetail} />
             <Route exact path="/participant/:id" component={ParticipantDetail} />
-            <Route exact path="/participant-mock" component={ParticipantDetailMockPage} />
-            <Route exact path="/participant-mock-empty" component={ParticipantDetailEmptyMockPage} />
             <Route exact path="/fileCentricCart" component={CartView} />
             <Route path="/explore" component={DashTemplate} />
             <Route exact path="/data-dictionary" component={UnderDev} />
