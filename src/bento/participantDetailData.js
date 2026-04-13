@@ -1,92 +1,12 @@
-import gql from 'graphql-tag';
 import participantIcon from '../assets/participant/Frame 1.png';
 
 // --------------- Page Header Icon --------------
 export const headerIcon = participantIcon;
 
-// --------------- Tooltip icons used on cart buttons --------------
-export const tooltipIcon = {
-  src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Tooltip.SpeechBubble.svg',
-  alt: 'tooltip',
-};
-
 // --------------- Cart button tooltip text --------------
 export const BIOSPECIMEN_BUTTON_TOOLTIP =
   'Add files associated with selected biospecimen(s) to cart';
 export const FILES_BUTTON_TOOLTIP = 'Add selected file(s) to cart';
-
-// --------------- GraphQL stub query - participant header & info panel --------------
-// TODO: Sync with backend once participantDetail query is implemented
-export const GET_PARTICIPANT_DETAIL_DATA_QUERY = gql`
-  query participantDetail($participant_id: String) {
-    participantDetail(participant_id: $participant_id) {
-      participant_id
-      study_short_name
-      study_id
-      program_acronym
-      age_at_enrollment
-      race
-      ethnicity
-      sex
-      primary_diagnosis_disease_group
-      primary_disease_site
-      stage_of_disease
-      targeted_therapy
-      best_response_to_targeted_therapy
-    }
-  }
-`;
-
-// --------------- GraphQL stub query - associated biospecimens --------------
-// TODO: Replace with a participant-scoped biospecimen query once backend exposes it.
-// When live, filter by participant_id: [$participant_id]
-export const GET_PARTICIPANT_BIOSPECIMENS_QUERY = gql`
-  query participantBiospecimens($participant_id: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
-    biospecimenOverview(
-      participant_id: $participant_id
-      first: $first
-      offset: $offset
-      order_by: $order_by
-      sort_direction: $sort_direction
-    ) {
-      participant_id
-      age_at_enrollment
-      sex
-      race
-      surgical_procedure
-      specimen_type
-      diagnosis
-      stage_of_disease
-      tumor_grade
-      targeted_therapy
-      specimen_record_id
-      data_file_uuid
-    }
-  }
-`;
-
-// --------------- GraphQL stub query - associated files --------------
-// TODO: Replace with a participant-scoped file query once backend exposes it.
-// When live, filter by participant_id: [$participant_id]
-export const GET_PARTICIPANT_FILES_QUERY = gql`
-  query participantFiles($participant_id: [String], $first: Int, $offset: Int, $order_by: String, $sort_direction: String) {
-    fileOverview(
-      participant_id: $participant_id
-      first: $first
-      offset: $offset
-      order_by: $order_by
-      sort_direction: $sort_direction
-    ) {
-      participant_id
-      file_name
-      file_type
-      file_format
-      file_size
-      file_description
-      data_file_uuid
-    }
-  }
-`;
 
 // --------------- Associated Biospecimens table column definitions --------------
 // Column format: MUI DataTable column objects
