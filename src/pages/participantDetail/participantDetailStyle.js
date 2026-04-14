@@ -112,7 +112,6 @@ export default (theme) => ({
   infoPanelLabel: {
     fontFamily: 'Roboto',
     fontWeight: '700',
-    fontStyle: 'bold',
     fontSize: '16px',
     color: '#004D73',
     textTransform: 'uppercase',
