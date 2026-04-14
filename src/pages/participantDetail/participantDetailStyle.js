@@ -258,7 +258,7 @@ export default (theme) => ({
     lineHeight: '18px',
     textTransform: 'uppercase',
     padding: '7px 16px',
-    radius: '10px',
+    borderRadius: '10px',
     width: '214px',
     height: '46px',
     cursor: 'pointer',
