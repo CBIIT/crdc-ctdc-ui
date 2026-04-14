@@ -280,7 +280,7 @@ export default (theme) => ({
     fontFamily: 'Lato',
     fontWeight: 400,
     fontSize: '16px',
-    fontStyle: 'Regular',
+    fontStyle: 'normal',
     textTransform: 'none',
     lineHeight: '16px',
     letterSpacing: '0.03em',
