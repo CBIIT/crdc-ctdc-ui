@@ -116,7 +116,7 @@ export default (theme) => ({
     fontSize: '16px',
     color: '#004D73',
     textTransform: 'uppercase',
-    letterSpacing: '-1%',
+    letterSpacing: '-0.01em',
     lineHeight: '22px',
     minWidth: '185px',
     width: '185px',
