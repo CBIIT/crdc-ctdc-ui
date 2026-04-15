@@ -98,7 +98,12 @@ const BiospecimenButtons = ({ classes }) => {
           </Button>
         </span>
         <Tooltip title={BIOSPECIMEN_BUTTON_TOOLTIP} placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
-          <HelpIcon className={classes.questionMarkIcon} />
+          <button
+            aria-label={`Help: ${BIOSPECIMEN_BUTTON_TOOLTIP}`}
+            className={classes.tooltipIconButton}
+          >
+            <HelpIcon className={classes.questionMarkIcon} aria-hidden="true" />
+          </button>
         </Tooltip>
         <span>
           <Button className={classes.jbrowseButton} disabled disableElevation>
@@ -106,7 +111,12 @@ const BiospecimenButtons = ({ classes }) => {
           </Button>
         </span>
         <Tooltip title="View in JBrowse (coming soon)" placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
-          <HelpIcon className={classes.questionMarkIcon} />
+          <button
+            aria-label="Help: View in JBrowse (coming soon)"
+            className={classes.tooltipIconButton}
+          >
+            <HelpIcon className={classes.questionMarkIcon} aria-hidden="true" />
+          </button>
         </Tooltip>
       </div>
     </>
