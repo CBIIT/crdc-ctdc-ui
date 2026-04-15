@@ -3,6 +3,16 @@ import { customTheme } from '../dashTemplate/tabs/wrapperConfig/Theme';
 
 export const themeConfig = {
   ...baseThemeConfig,
+  tblHeader: {
+    ...baseThemeConfig.tblHeader,
+    MuiTableCell: {
+      root: {
+        '&.participant_id': {
+          paddingLeft: '0px',
+        },
+      },
+    },
+  },
   tblBody: {
     ...baseThemeConfig.tblBody,
     MuiTableRow: {
@@ -16,6 +26,15 @@ export const themeConfig = {
       colorSecondary: {
         '&.Mui-checked': {
           color: '#13344A',
+        },
+      },
+    },
+    MuiTableCell: {
+      ...baseThemeConfig.tblBody.MuiTableCell,
+      root: {
+        ...baseThemeConfig.tblBody.MuiTableCell.root,
+        '&.participant_id': {
+          paddingLeft: '0px',
         },
       },
     },
