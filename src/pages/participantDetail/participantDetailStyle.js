@@ -285,7 +285,7 @@ export default (theme) => ({
     lineHeight: '16px',
     letterSpacing: '0.03em',
     padding: '5px 14px',
-    borderRadius: '3px',
+    borderRadius: '10px',
     border: '1px solid #09557B',
     display: 'flex',
     alignItems: 'center',
