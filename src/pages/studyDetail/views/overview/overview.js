@@ -81,6 +81,13 @@ const Overview = ({ classes, data }) => {
   const missingZipTooltip =
     'No ZIP file is available for download for this study.';
 
+  // Config for download buttons
+  const downloadButtons = [
+    { buttonText: 'Variant Call Files', tooltip: 'Download all variant call files (VCF) for this study' },
+    { buttonText: 'Variant Reports', tooltip: 'Download all variant reports (pdf) for this study' },
+    { buttonText: 'Radiology Images', tooltip: 'Download all radiology images (DICOM) for this study' },
+  ];
+
   return (
     <OverviewThemeProvider>
       <div className={classes.container}>
@@ -168,34 +175,25 @@ const Overview = ({ classes, data }) => {
                         represented within the application can be downloaded in the form of a .zip file by selecting
                         the ZIP FILE download option below.
 
-                        {hasZipFile ? (
-                          /* CASE 1 — ZIP file exists: enabled button */
+                        {downloadButtons.map((btn, index) => (
                           <ZipDownloadView
-                            disabled={false}
+                            key={index}
+                            disabled={!hasZipFile}
 
-                            fileFormat={zipFileData[documentDownloadProps.fileFormatColumn]}
-                            fileName={zipFileData[documentDownloadProps.fileNameColumn]}
-                            fileLocation={zipFileData[documentDownloadProps.fileLocationColumn]}
+                            fileFormat={hasZipFile ? zipFileData[documentDownloadProps.fileFormatColumn] : undefined}
+                            fileName={hasZipFile ? zipFileData[documentDownloadProps.fileNameColumn] : undefined}
+                            fileLocation={hasZipFile ? zipFileData[documentDownloadProps.fileLocationColumn] : undefined}
 
-                            toolTipTextFileDownload={documentDownloadProps.toolTipTextFileDownload}
+                            toolTipTextFileDownload={hasZipFile ? btn.tooltip : missingZipTooltip}
                             iconFileDownload={documentDownloadProps.iconFileDownload}
 
                             iconUnauthenticated={documentDownloadProps.iconUnauthenticated}
                             toolTipTextUnauthenticated={documentDownloadProps.toolTipTextUnauthenticated}
 
                             toolTipIcon={documentDownloadProps.toolTipIcon}
+                            buttonText={btn.buttonText}
                           />
-                        ) : (
-                          /* CASE 2 — No ZIP file: always disabled with custom tooltip */
-                          <ZipDownloadView
-                            disabled={true}
-
-                            toolTipTextFileDownload={missingZipTooltip}
-                            iconFileDownload={documentDownloadProps.iconFileDownload}
-
-                            toolTipIcon={documentDownloadProps.toolTipIcon}
-                          />
-                        )}
+                        ))}
                       </Grid>
                     </Grid>
                   </Grid>
