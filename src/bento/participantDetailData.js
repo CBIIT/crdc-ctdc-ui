@@ -1,4 +1,4 @@
-import participantIcon from '../assets/participant/Frame 1.png';
+import participantIcon from '../assets/participant/participant_id_icon.png';
 
 // --------------- Page Header Icon --------------
 export const headerIcon = participantIcon;

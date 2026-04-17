@@ -200,17 +200,6 @@ export default (theme) => ({
     paddingRight: '29px',
     backgroundColor: '#E1EEEC',
   },
-  biospecimenButtonRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'flex-end',
-    gap: '6px',
-    paddingTop: '12px',
-    paddingBottom: '28px',
-    paddingRight: '29px',
-    backgroundColor: '#E1EEEC',
-  },
 
   emptyTableMessage: {
     display: 'flex',

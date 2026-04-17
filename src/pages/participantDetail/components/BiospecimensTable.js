@@ -86,7 +86,7 @@ const BiospecimenButtons = ({ classes }) => {
           onClose={() => setDisplayAlert(false)}
         />
       )}
-      <div className={classes.biospecimenButtonRow}>
+      <div className={classes.tableButtonRow}>
         <span>
           <Button
             className={classes.biospecimenCartButton}
