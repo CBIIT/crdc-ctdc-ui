@@ -1,0 +1,350 @@
+export default (theme) => ({
+  // ---- Page container ----
+  container: {
+    fontFamily: 'Raleway, sans-serif',
+    paddingLeft: '32px',
+    paddingRight: '32px',
+    maxWidth: '1800px',
+    margin: '0 auto',
+  },
+
+  // ---- Header ----
+  header: {
+    paddingLeft: '35px',
+    paddingTop: '31px',
+    borderBottom: '12px solid #106856',
+    height: '118px',
+    margin: 'auto',
+    position: 'relative',
+  },
+  logo: {
+    float: 'left',
+    width: '94px',
+    marginTop: '-75px',
+    marginLeft: '-68px',
+    position: 'absolute',
+  },
+  headerTitle: {
+    margin: 'auto',
+    float: 'left',
+    marginLeft: '95px',
+    marginTop: '6px',
+  },
+  headerMainSubTitle: {
+    fontFamily: 'Inter',
+    fontWeight: 600,
+    fontSize: '26px',
+    color: '#274FA6',
+    lineHeight: '31px',
+    letterSpacing: '-0.02em',
+    paddingLeft: '8px',
+  },
+  headerMainTitle: {
+    fontFamily: 'Inter',
+    fontWeight: 400,
+    fontSize: '26px',
+    color: '#274FA6',
+    paddingLeft: '3px',
+    lineHeight: '31px',
+    letterSpacing: '-0.02em',
+  },
+  headerParticipantLabel: {
+    fontWeight: 400,
+    color: '#274FA6',
+  },
+  headerArrow: {
+    fontWeight: 400,
+    color: '#274FA6',
+  },
+  headerParticipantId: {
+    fontWeight: 600,
+    color: '#274FA6',
+  },
+
+  // ---- Breadcrumb ----
+  breadCrumb: {
+    position: 'relative',
+    zIndex: 1,
+    marginLeft: '2px',
+    marginTop: '5px',
+    marginBottom: '20px',
+  },
+
+  // ---- Info panel: outer wrapper ----
+  infoPanelContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginTop: '28px',
+    marginBottom: '10px',
+  },
+
+  // ---- Info panel: each third-width section ----
+  infoPanelSection: {
+    flex: '1 1 0',
+    minWidth: 0,
+    padding: '0px 45px 60px',
+    background: '#FFFFFF',
+    borderRight: '1px solid #AEAEAE',
+    '&:last-child': {
+      borderRight: 'none',
+    },
+  },
+  infoPanelSectionTitle: {
+    fontFamily: 'Inter',
+    fontWeight: 500,
+    fontSize: '18px',
+    color: '#066D93',
+    textTransform: 'uppercase',
+    lineHeight: '100%',
+    letterSpacing: '0',
+    marginBottom: '20px',
+  },
+
+  // ---- Info panel: each field row ----
+  infoPanelRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginBottom: '6px',
+    paddingLeft: '10px',
+  },
+  infoPanelLabel: {
+    fontFamily: 'Roboto',
+    fontWeight: '700',
+    fontSize: '16px',
+    color: '#004D73',
+    textTransform: 'uppercase',
+    letterSpacing: '-0.01em',
+    lineHeight: '22px',
+    width: '200px',
+    flexShrink: 0,
+    whiteSpace: 'normal',
+    wordBreak: 'break-word',
+  },
+  infoPanelValue: {
+    marginLeft: 'auto',
+    fontFamily: 'Roboto',
+    fontWeight: 400,
+    fontSize: '16px',
+    lineHeight: '22px',
+    color: '#4B4B4B',
+    width: '216px',
+    textAlign: 'left',
+  },
+
+  // ---- Table sections ----
+  tableSection: {
+    paddingBottom: '0px',
+    backgroundColor: '#E1EEEC',
+    marginLeft: '-32px',
+    marginRight: '-32px',
+    paddingLeft: '32px',
+    paddingRight: '32px',
+    position: 'relative',
+    paddingTop: '51px',
+  },
+  tableWrapper: {
+    // Title + icons share the same row: title is absolute-left, toolbar defines row height
+    '& .downloadAndColumnView': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      minHeight: 'unset',
+      height: '56px',
+      padding: '0 15px 0 0',
+      backgroundColor: '#E1EEEC',
+    },
+    // Header cells
+    '& .MuiTableCell-head': {
+      fontFamily: 'Roboto',
+      fontWeight: 600,
+      fontSize: '16px',
+      lineHeight: '100%',
+      letterSpacing: '0',
+      color: '#13344A',
+      paddingLeft: '20px',
+    },
+    // Body cells
+    '& .MuiTableCell-body': {
+      fontFamily: 'Nunito',
+      fontWeight: 400,
+      fontSize: '16px',
+      color: '#13344A',
+    },
+    backgroundColor: '#FFFFFF',
+  },
+  tableSectionTitle: {
+    fontFamily: 'Inter',
+    fontWeight: 500,
+    fontSize: '20px',
+    color: '#000000',
+    position: 'absolute',
+    top: 0,
+    left: '95px',
+    height: '56px',
+    display: 'flex',
+    alignItems: 'center',
+    zIndex: 1,
+    paddingTop: '70px',
+  },
+
+  // ---- Button row below each table ----
+  tableButtonRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-end',
+    gap: '6px',
+    paddingTop: '12px',
+    paddingBottom: '28px',
+    paddingRight: '29px',
+    backgroundColor: '#E1EEEC',
+  },
+
+  emptyTableMessage: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '48px 0',
+    fontFamily: 'Nunito',
+    fontWeight: 400,
+    fontSize: '16px',
+    color: '#13344A',
+  },
+
+  // -- Add Selected Files button --
+  cartButton: {
+    backgroundColor: '#06846A',
+    color: '#FFFFFF',
+    fontFamily: 'Roboto',
+    fontWeight: 500,
+    fontSize: '14px',
+    lineHeight: '14px',
+    textTransform: 'uppercase',
+    padding: '16px 22px',
+    width: 'fit-content',
+    height: '46px',
+    borderRadius: '10px',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#046D57',
+    },
+    '&.Mui-disabled': {
+      backgroundColor: '#06846A',
+      color: '#FFFFFF',
+      opacity: 0.5,
+    },
+  },
+
+  // --Add Files for Selected Biospecimens button --
+  biospecimenCartButton: {
+    backgroundColor: '#06846A',
+    color: '#FFFFFF',
+    fontFamily: 'Roboto',
+    fontWeight: 500,
+    fontSize: '14px',
+    lineHeight: '18px',
+    textTransform: 'uppercase',
+    padding: '7px 16px',
+    borderRadius: '10px',
+    width: '214px',
+    height: '46px',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#046D57',
+    },
+    '&.Mui-disabled': {
+      backgroundColor: '#06846A',
+      color: '#FFFFFF',
+      opacity: 0.5,
+    },
+  },
+
+  // Outlined teal JBrowse button
+  jbrowseButton: {
+    backgroundColor: '#FFFFFF',
+    width: 'fit-content',
+    color: '#09557B',
+    fontFamily: 'Lato',
+    fontWeight: 400,
+    fontSize: '16px',
+    fontStyle: 'normal',
+    textTransform: 'none',
+    lineHeight: '16px',
+    letterSpacing: '0.03em',
+    padding: '5px 14px',
+    borderRadius: '10px',
+    border: '1px solid #09557B',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '5px',
+    height: '46px',
+    '&:hover': {
+      backgroundColor: '#E0EDF5',
+    },
+    '&.Mui-disabled': {
+      color: '#09557B',
+      border: '1px solid #09557B',
+      backgroundColor: '#FFFFFF',
+      cursor: 'not-allowed',
+      opacity: 0.5,
+    },
+  },
+  jbrowseIcon: {
+    width: 'fit-content',
+    height: 'fit-content',
+    padding: '0px 7px',
+  },
+
+  // Small question-mark icon next to buttons
+  questionMarkIcon: {
+    fontSize: '18px',
+    color: '#000000',
+    cursor: 'pointer',
+    verticalAlign: 'top',
+    marginRight: '10px',
+  },
+
+  // Accessible wrapper button for tooltip trigger icons
+  tooltipIconButton: {
+    background: 'none',
+    border: 'none',
+    cursor: 'pointer',
+    padding: 0,
+    display: 'inline-flex',
+    alignItems: 'center',
+    '&:focus': {
+      outline: '2px solid #005EA2',
+      outlineOffset: '2px',
+    },
+  },
+
+  // ---- Tooltip styling ----
+  tooltipBody: {
+    backgroundColor: '#FFFFFF',
+    color: '#004D73',
+    fontSize: '12px',
+    fontWeight: '600',
+    fontFamily: 'Lato, sans-serif',
+    padding: '8px 12px',
+    borderRadius: '4px',
+    maxWidth: '220px',
+    boxShadow: '0px 4px 10px 0px #00000040',
+    border: '1px solid #C3C3C3',
+  },
+
+  // ---- Misc shared ----
+  root: {
+    fontFamily: '"Open Sans", sans-serif',
+    fontSize: '9px',
+    letterSpacing: '0.025em',
+    color: '#000',
+    background: '#f3f3f3',
+  },
+  fakeToolbar: {
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    fontSize: '12px',
+  },
+});
