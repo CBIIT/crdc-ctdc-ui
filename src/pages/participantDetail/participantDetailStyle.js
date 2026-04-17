@@ -74,16 +74,15 @@ export default (theme) => ({
   infoPanelContainer: {
     display: 'flex',
     flexDirection: 'row',
-    gap: '16px',
     marginTop: '28px',
     marginBottom: '10px',
-    width: '100%',
   },
 
   // ---- Info panel: each third-width section ----
   infoPanelSection: {
-    flex: 1,
-    padding: '10px 45px 60px',
+    flex: '1 1 0',
+    minWidth: 0,
+    padding: '0px 45px 60px',
     background: '#FFFFFF',
     borderRight: '1px solid #AEAEAE',
     '&:last-child': {
@@ -117,19 +116,20 @@ export default (theme) => ({
     textTransform: 'uppercase',
     letterSpacing: '-0.01em',
     lineHeight: '22px',
-    minWidth: '185px',
-    width: '185px',
+    width: '200px',
     flexShrink: 0,
     whiteSpace: 'normal',
     wordBreak: 'break-word',
   },
   infoPanelValue: {
-    paddingLeft: '15px',
+    marginLeft: 'auto',
     fontFamily: 'Roboto',
     fontWeight: 400,
     fontSize: '16px',
     lineHeight: '22px',
     color: '#4B4B4B',
+    width: '216px',
+    textAlign: 'left',
   },
 
   // ---- Table sections ----
