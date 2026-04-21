@@ -497,7 +497,10 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       specimen_record_id,
       anatomical_collection_site,
       tissue_category,
-      assessment_timepoint
+      assessment_timepoint,
+      surgical_procedure,
+      specimen_type,
+      tumor_grade
 
       data_file_uuid
     }
@@ -971,7 +974,11 @@ export const tabContainers = [
         header: 'Participant ID',
         display: true,
         tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
+        cellType: cellTypes.LINK,
+        linkAttr: {
+          rootPath: '/participant',
+          pathParams: ['participant_id'],
+        },
       },
       {
         dataField: 'ctep_disease_term',
