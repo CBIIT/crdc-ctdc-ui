@@ -19,6 +19,21 @@ import DataValue from './components/DataValue';
 import CsvDownload from './components/CsvDownload';
 import { defaultTo } from 'lodash';
 
+// Renders DocumentDownload by mapping documentDownloadProps column-field names to actual row values
+const DocumentDownloadCellView = (props) => {
+  const { documentDownloadProps } = props;
+  return (
+    <DocumentDownload
+      {...documentDownloadProps}
+      fileSize={props[documentDownloadProps.fileSizeColumn]}
+      fileFormat={props[documentDownloadProps.fileFormatColumn]}
+      fileLocation={props[documentDownloadProps.fileLocationColumn]}
+      fileName={props[documentDownloadProps.fileName]}
+      caseId={props[documentDownloadProps.caseIdColumn]}
+    />
+  );
+};
+
 const ClinicalDataNodeWrapper = styled('span')(({ $hasNoValues }) => ({
   fontFamily: 'Nunito',
   fontSize: '16px',
@@ -225,6 +240,12 @@ export const CustomizeCellView = ({
   */
   // const displayColumns = columns.filter((col) => col.display);
   const displayCustomView = [...columns].map((column) => {
+    if (column.cellType === cellTypes.CUSTOM_ELEM && column.downloadDocument) {
+      return {
+        ...column,
+        customCellRender: (props) => <DocumentDownloadCellView {...props} />,
+      };
+    }
     if (column.cellType === cellTypes.CUSTOM_ELEM) {
       return {
         ...column,
