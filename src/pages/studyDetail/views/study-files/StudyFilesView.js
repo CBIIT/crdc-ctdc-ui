@@ -17,11 +17,8 @@ import AddToCartDialogAlertView from '@bento-core/paginated-table/dist/wrapper/c
 
 const FILES_BUTTON_TOOLTIP = 'Add filtered files associated with all participants in the current results set to My Files';
 
-const studyFilesWrapperConfig = [
-  {
-    container: 'paginatedTable',
-    paginatedTable: true,
-  },
+const studyFilesTableLayout = [
+  { container: 'paginatedTable', paginatedTable: true },
 ];
 
 const StudyFileButtons = ({ classes }) => {
@@ -94,9 +91,9 @@ const StudyFilesView = ({ studyDataFiles = [], classes }) => (
           activeFilters={{}}
           tblRows={studyDataFiles}
           isServer={false}
-          tableLayOut={studyFilesWrapperConfig}
+          tableLayOut={studyFilesTableLayout}
           customthemeConfig={studyFilesThemeConfig}
-          activeTab
+          activeTab={true}
         />
         <StudyFileButtons classes={classes} />
       </TableContextProvider>

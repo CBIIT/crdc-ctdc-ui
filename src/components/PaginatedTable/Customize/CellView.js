@@ -24,12 +24,17 @@ const DocumentDownloadCellView = (props) => {
   const { documentDownloadProps } = props;
   return (
     <DocumentDownload
-      {...documentDownloadProps}
+      maxFileSize={documentDownloadProps.maxFileSize}
+      toolTipTextFileDownload={documentDownloadProps.toolTipTextFileDownload}
+      toolTipTextUnauthenticated={documentDownloadProps.toolTipTextUnauthenticated}
+      toolTipTextFilePreview={documentDownloadProps.toolTipTextFilePreview}
+      iconFileDownload={documentDownloadProps.iconFileDownload}
+      iconUnauthenticated={documentDownloadProps.iconUnauthenticated}
+      iconFilePreview={documentDownloadProps.iconFilePreview}
       fileSize={props[documentDownloadProps.fileSizeColumn]}
       fileFormat={props[documentDownloadProps.fileFormatColumn]}
       fileLocation={props[documentDownloadProps.fileLocationColumn]}
       fileName={props[documentDownloadProps.fileName]}
-      caseId={props[documentDownloadProps.caseIdColumn]}
     />
   );
 };

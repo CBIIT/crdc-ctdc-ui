@@ -1,5 +1,3 @@
-import { VerticalAlignTop } from "@material-ui/icons";
-
 export default () => ({
   container: {
     position: 'relative',
