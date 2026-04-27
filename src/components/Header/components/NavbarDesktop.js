@@ -43,7 +43,7 @@ const NavContainer = styled.div`
     position: relative;
     display: flex;
     justify-content: space-between;
-    align-items: end;
+    align-items: flex-end;
 `;
 
 const UlContainer = styled.ul`
@@ -56,6 +56,7 @@ const UlContainer = styled.ul`
 const LiSection = styled.li`
   display: inline-block;
   position: relative;
+  vertical-align: top;
   line-height: 50px;
   letter-spacing: 1px;
   text-align: center;
