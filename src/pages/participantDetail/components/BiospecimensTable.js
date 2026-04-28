@@ -12,7 +12,7 @@ import {
 } from '@bento-core/paginated-table';
 import { onAddCartFiles } from '@bento-core/cart';
 import { themeConfig, customTheme } from '../tableThemeConfig';
-import { biospecimenColumns, BIOSPECIMEN_BUTTON_TOOLTIP } from '../../../bento/participantDetailData';
+import { biospecimenColumns, BIOSPECIMEN_BUTTON_TOOLTIP, showJBrowseButton } from '../../../bento/participantDetailData';
 import { GET_FILE_IDS_FOR_SELECTED_BIOSPECIMENS } from '../../../bento/dashboardTabData';
 import {
   maximumNumberOfFilesAllowedInTheCart,
@@ -42,7 +42,7 @@ const initBiospecimenTableState = (initialState) => ({
   },
 });
 
-const BiospecimenButtons = ({ classes }) => {
+const BiospecimenButtons = ({ classes, hasFiles, biospecimens }) => {
   const { context } = useContext(TableContext);
   const selectedRows = context?.selectedRows || [];
   const dispatch = useDispatch();
@@ -52,6 +52,12 @@ const BiospecimenButtons = ({ classes }) => {
   const [displayAlert, setDisplayAlert] = useState(false);
   const [addedCount, setAddedCount] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [tooltipOpen, setTooltipOpen] = useState(false);
+
+  // Check if any selected biospecimen has associated files
+  const selectedHaveFiles = selectedRows.length > 0 && biospecimens
+    .filter((b) => selectedRows.includes(b.specimen_record_id))
+    .some((b) => b.data_file_uuid && b.data_file_uuid.length > 0);
 
   const handleAddToCart = async () => {
     setLoading(true);
@@ -87,43 +93,61 @@ const BiospecimenButtons = ({ classes }) => {
         />
       )}
       <div className={classes.tableButtonRow}>
-        <span>
-          <Button
-            className={classes.biospecimenCartButton}
-            disabled={selectedRows.length === 0 || loading}
-            onClick={handleAddToCart}
-            disableElevation
-          >
-            Add Files for{<br />}Selected Biospecimens
-          </Button>
-        </span>
-        <Tooltip title={BIOSPECIMEN_BUTTON_TOOLTIP} placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
-          <button
-            aria-label={`Help: ${BIOSPECIMEN_BUTTON_TOOLTIP}`}
-            className={classes.tooltipIconButton}
-          >
-            <HelpIcon className={classes.questionMarkIcon} aria-hidden="true" />
-          </button>
-        </Tooltip>
-        <span>
-          <Button className={classes.jbrowseButton} disabled disableElevation>
-            View in&nbsp;<img src={jbrowseIcon} alt="JBrowse" className={classes.jbrowseIcon} />JBrowse
-          </Button>
-        </span>
-        <Tooltip title="View in JBrowse (coming soon)" placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
-          <button
-            aria-label="Help: View in JBrowse (coming soon)"
-            className={classes.tooltipIconButton}
-          >
-            <HelpIcon className={classes.questionMarkIcon} aria-hidden="true" />
-          </button>
-        </Tooltip>
+        {hasFiles && (
+          <>
+            <span>
+              <Button
+                className={classes.biospecimenCartButton}
+                disabled={selectedRows.length === 0 || !selectedHaveFiles || loading}
+                onClick={handleAddToCart}
+                disableElevation
+              >
+                Add Files for{<br />}Selected Biospecimens
+              </Button>
+            </span>
+            <Tooltip
+              title={BIOSPECIMEN_BUTTON_TOOLTIP}
+              placement="top-end"
+              classes={{ tooltip: classes.tooltipBody }}
+              open={tooltipOpen}
+              onClose={() => setTooltipOpen(false)}
+              disableHoverListener
+              disableFocusListener
+              disableTouchListener
+            >
+              <button
+                aria-label={`Help: ${BIOSPECIMEN_BUTTON_TOOLTIP}`}
+                className={classes.tooltipIconButton}
+                onClick={() => setTooltipOpen(!tooltipOpen)}
+              >
+                <HelpIcon className={classes.questionMarkIcon} aria-hidden="true" />
+              </button>
+            </Tooltip>
+          </>
+        )}
+        {showJBrowseButton && (
+          <>
+            <span>
+              <Button className={classes.jbrowseButton} disabled disableElevation>
+                View in&nbsp;<img src={jbrowseIcon} alt="JBrowse" className={classes.jbrowseIcon} />JBrowse
+              </Button>
+            </span>
+            <Tooltip title="View in JBrowse (coming soon)" placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
+              <button
+                aria-label="Help: View in JBrowse (coming soon)"
+                className={classes.tooltipIconButton}
+              >
+                <HelpIcon className={classes.questionMarkIcon} aria-hidden="true" />
+              </button>
+            </Tooltip>
+          </>
+        )}
       </div>
     </>
   );
 };
 
-const BiospecimensTable = ({ classes, biospecimens = [] }) => (
+const BiospecimensTable = ({ classes, biospecimens = [], files = [] }) => (
   <div className={classes.tableSection}>
     <div className={classes.tableSectionTitle}>Associated Biospecimens</div>
     <div className={classes.tableWrapper}>
@@ -136,7 +160,11 @@ const BiospecimensTable = ({ classes, biospecimens = [] }) => (
           server={false}
           tblRows={biospecimens}
         />
-        <BiospecimenButtons classes={classes} />
+        <BiospecimenButtons
+          classes={classes}
+          hasFiles={files.length > 0}
+          biospecimens={biospecimens}
+        />
       </TableContextProvider>
     </div>
   </div>

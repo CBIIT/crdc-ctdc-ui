@@ -4,6 +4,7 @@ export default (theme) => ({
     fontFamily: 'Raleway, sans-serif',
     paddingLeft: '32px',
     paddingRight: '32px',
+    paddingBottom: '0px',
     maxWidth: '1800px',
     margin: '0 auto',
   },
@@ -141,7 +142,10 @@ export default (theme) => ({
     paddingLeft: '32px',
     paddingRight: '32px',
     position: 'relative',
-    paddingTop: '51px',
+    paddingTop: '40px',
+    '&:last-child': {
+      paddingBottom: '90px',
+    },
   },
   tableWrapper: {
     // Title + icons share the same row: title is absolute-left, toolbar defines row height
@@ -150,8 +154,8 @@ export default (theme) => ({
       alignItems: 'center',
       justifyContent: 'flex-end',
       minHeight: 'unset',
-      height: '56px',
-      padding: '0 15px 0 0',
+      height: '40px',
+      padding: '0 20px 0 0',
       backgroundColor: '#E1EEEC',
     },
     // Header cells
@@ -159,10 +163,11 @@ export default (theme) => ({
       fontFamily: 'Roboto',
       fontWeight: 600,
       fontSize: '16px',
-      lineHeight: '100%',
+      lineHeight: '1',
       letterSpacing: '0',
       color: '#13344A',
-      paddingLeft: '20px',
+      minHeight: 'unset',
+      padding: '0px 5px 0px 20px',
     },
     // Body cells
     '& .MuiTableCell-body': {
@@ -179,13 +184,9 @@ export default (theme) => ({
     fontSize: '20px',
     color: '#000000',
     position: 'absolute',
-    top: 0,
-    left: '95px',
-    height: '56px',
-    display: 'flex',
-    alignItems: 'center',
+    top: '48px',
+    left: '52px',
     zIndex: 1,
-    paddingTop: '70px',
   },
 
   // ---- Button row below each table ----
@@ -196,7 +197,7 @@ export default (theme) => ({
     justifyContent: 'flex-end',
     gap: '6px',
     paddingTop: '12px',
-    paddingBottom: '28px',
+    paddingBottom: '12px',
     paddingRight: '29px',
     backgroundColor: '#E1EEEC',
   },
@@ -314,8 +315,7 @@ export default (theme) => ({
     display: 'inline-flex',
     alignItems: 'center',
     '&:focus': {
-      outline: '2px solid #005EA2',
-      outlineOffset: '2px',
+      outline: 'none',
     },
   },
 

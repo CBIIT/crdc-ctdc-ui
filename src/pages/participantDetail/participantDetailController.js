@@ -72,6 +72,7 @@ const ParticipantDetailController = ({ match }) => {
     primary_diagnosis_disease_group: overviewRecord.ctep_disease_term,
     targeted_therapy: formattedTargetedTherapy,
     primary_disease_site: biospecimenRecord.primary_disease_site,
+    program_acronym: participant_id.split('-')[0],
   };
 
   const biospecimens = (biospecimensData?.biospecimenOverview || []).map((b) => ({

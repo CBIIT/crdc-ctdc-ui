@@ -8,26 +8,24 @@ export const BIOSPECIMEN_BUTTON_TOOLTIP =
   'Add files associated with selected biospecimen(s) to cart';
 export const FILES_BUTTON_TOOLTIP = 'Add selected file(s) to cart';
 
+// --------------- JBrowse feature flag (set to true when JBrowse is implemented) --------------
+export const showJBrowseButton = false;
+
 // --------------- Associated Biospecimens table column definitions --------------
 // Column format: MUI DataTable column objects
 export const biospecimenColumns = [
   { cellType: 'CHECKBOX', role: 'CHECKBOX', display: true },
-  { dataField: 'participant_id', header: 'Participant ID', display: true, role: 'DISPLAY' },
-  { dataField: 'age_at_enrollment', header: 'Age', display: true, role: 'DISPLAY' },
-  { dataField: 'sex', header: 'Sex', display: true, role: 'DISPLAY' },
-  { dataField: 'race', header: 'Race', display: true, role: 'DISPLAY' },
-  { dataField: 'surgical_procedure', header: 'Surgical Procedures', display: true, role: 'DISPLAY' },
+  { dataField: 'specimen_record_id', header: 'Specimen ID', display: true, role: 'DISPLAY' },
   { dataField: 'specimen_type', header: 'Specimen Type', display: true, role: 'DISPLAY' },
-  { dataField: 'ctep_disease_term', header: 'Diagnosis', display: true, role: 'DISPLAY' },
-  { dataField: 'stage_of_disease', header: 'Disease Stage', display: true, role: 'DISPLAY' },
-  { dataField: 'tumor_grade', header: 'Tumor Grade', display: true, role: 'DISPLAY' },
-  { dataField: 'targeted_therapy', header: 'Targeted Therapy', display: true, role: 'DISPLAY' },
+  // TODO: Change 'tissue_category' to 'specimen_category' once backend exposes the new field
+  { dataField: 'tissue_category', header: 'Specimen Category', display: true, role: 'DISPLAY' },
+  { dataField: 'anatomical_collection_site', header: 'Collection Site', display: true, role: 'DISPLAY' },
+  { dataField: 'assessment_timepoint', header: 'Assessment Timepoint', display: true, role: 'DISPLAY' },
 ];
 
 // --------------- Associated Files table column definitions --------------
 export const filesColumns = [
   { cellType: 'CHECKBOX', role: 'CHECKBOX', display: true },
-  { dataField: 'participant_id', header: 'Participant ID', display: true, role: 'DISPLAY' },
   { dataField: 'data_file_name', header: 'File Name', display: true, role: 'DISPLAY' },
   { dataField: 'data_file_type', header: 'File Type', display: true, role: 'DISPLAY' },
   { dataField: 'data_file_format', header: 'File Format', display: true, role: 'DISPLAY' },
