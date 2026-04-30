@@ -8,8 +8,8 @@ The CTDC UI is the front-end repository of NCI's Clinical and Translational Data
 ---
 
 **Prerequisites:**
-- Node.js 16.17.1
-- npm 8.15.0
+- Node.js 20.x (LTS) — run `nvm use` if you have [nvm](https://github.com/nvm-sh/nvm) installed (`.nvmrc` is provided)
+- npm 10.x
 
 ---
 
