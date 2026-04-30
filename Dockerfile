@@ -1,19 +1,15 @@
-FROM node:16.20.2-alpine3.18  as build
+FROM node:20-alpine3.21 AS build
 
 WORKDIR /usr/src/app
 
 COPY . .
 
-RUN apk upgrade --update && apk --no-cache add git
-
 RUN NODE_OPTIONS="--max-old-space-size=4096" npm install --legacy-peer-deps
 
-RUN NODE_OPTIONS="--max-old-space-size=4096" npm run build
+RUN NODE_OPTIONS="--max-old-space-size=4096 --openssl-legacy-provider" npm run build
 
-#FROM nginx:1.25.3-alpine3.18-slim AS fnl_base_image
-FROM nginx:1.27.2-alpine3.20-slim AS fnl_base_image
 
-RUN apk update && apk upgrade --no-cache
+FROM nginx:stable-alpine3.23-slim AS fnl_base_image
 
 COPY --from=build /usr/src/app/dist /usr/share/nginx/html
 COPY --from=build /usr/src/app/conf/inject.template.js /usr/share/nginx/html/inject.template.js
