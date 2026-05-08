@@ -12,16 +12,15 @@ const InfoRow = ({ classes, label, value }) => (
 const HeaderPanel = ({ classes, participant }) => {
   const breadCrumbJson = [
     {
-      name: 'ALL PROGRAMS',
-      to: '/programs',
+      name: 'Explore',
+      to: '/explore',
       isALink: true,
     },
     {
-      name: `${participant.program_acronym || 'Program'} DETAIL`,
-      to: participant.program_acronym ? `/program/${participant.program_acronym}` : '/programs',
-      isALink: true,
-    },
-    { name: participant.participant_id, to: '', isALink: false },
+      name: <><strong>Participant ID:</strong> {participant.participant_id}</>,
+      to: '',
+      isALink: false,
+    }
   ];
 
   return (

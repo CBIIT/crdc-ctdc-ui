@@ -17,8 +17,7 @@ export const biospecimenColumns = [
   { cellType: 'CHECKBOX', role: 'CHECKBOX', display: true },
   { dataField: 'specimen_record_id', header: 'Specimen ID', display: true, role: 'DISPLAY' },
   { dataField: 'specimen_type', header: 'Specimen Type', display: true, role: 'DISPLAY' },
-  // TODO: Change 'tissue_category' to 'specimen_category' once backend exposes the new field
-  { dataField: 'tissue_category', header: 'Specimen Category', display: true, role: 'DISPLAY' },
+  { dataField: 'specimen_category', header: 'Specimen Category', display: true, role: 'DISPLAY' },
   { dataField: 'anatomical_collection_site', header: 'Collection Site', display: true, role: 'DISPLAY' },
   { dataField: 'assessment_timepoint', header: 'Assessment Timepoint', display: true, role: 'DISPLAY' },
 ];
