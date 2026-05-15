@@ -6,8 +6,7 @@ COPY . .
 
 RUN NODE_OPTIONS="--max-old-space-size=4096" npm install --legacy-peer-deps
 
-RUN NODE_OPTIONS="--max-old-space-size=4096 --openssl-legacy-provider" npm run build
-
+RUN NODE_OPTIONS="--max-old-space-size=4096" npm run build
 
 FROM nginx:stable-alpine3.23-slim AS fnl_base_image
 
@@ -16,9 +15,9 @@ COPY --from=build /usr/src/app/conf/inject.template.js /usr/share/nginx/html/inj
 COPY --from=build /usr/src/app/conf/nginx.conf /etc/nginx/conf.d/configfile.template
 COPY --from=build /usr/src/app/conf/entrypoint.sh /
 
-ENV PORT 80
+ENV PORT=80
 
-ENV HOST 0.0.0.0
+ENV HOST=0.0.0.0
 
 RUN sh -c "envsubst '\$PORT'  < /etc/nginx/conf.d/configfile.template > /etc/nginx/conf.d/default.conf"
 
