@@ -23,7 +23,8 @@ export const externalIcon =
 
 export const tab = {
   items: [
-    { // TODO: Reorder tabs based on priority once all tabs are implemented
+    {
+      // TODO: Reorder tabs based on priority once all tabs are implemented
       index: 0,
       label: "Study Files",
       value: "study_files",
@@ -48,86 +49,103 @@ export const studyFilesTooltipContent = {
   icon: "https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg",
   alt: "tooltipIcon",
   arrow: false,
-  Files: STUDY_FILES_BUTTON_TOOLTIP,
+  "Study_Files": STUDY_FILES_BUTTON_TOOLTIP,
 };
 
-// Configuration for study files wrapper - uses same query as Dashboard Files tab
-export const studyFilesConfig = {
-  name: "Study Files",
+// Study Detail: Study Files Tab table configuration
+export const studyFilesTableConfig = {
+  name: "Study_Files",
   dataKey: "data_file_uuid",
   buttonText: "Add Selected Files",
   addFilesRequestVariableKey: "data_file_uuid",
   addFilesResponseKeys: ["fileOverview", "data_file_uuid"],
   addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_FILES,
-};
-
-export const studyFilesColumns = [
-  { 
-    cellType: cellTypes.CHECKBOX,
-    role: cellTypes.CHECKBOX,
-    display: true
+  tableMsg: {
+    noMatch: "No study-level files associated with this study.",
   },
-  {
-    dataField: "data_file_name",
-    header: "File Name",
-    display: true,
-  },
-  {
-    dataField: "data_file_type",
-    header: "File Type",
-    display: true,
-    role: cellTypes.DISPLAY,
-  },
-  {
-    dataField: "association",
-    header: "Association",
-    display: true,
-    role: cellTypes.DISPLAY,
-  },
-  {
-    dataField: "data_file_description",
-    header: "Description",
-    display: true,
-    role: cellTypes.DISPLAY,
-  },
-  {
-    dataField: "data_file_format",
-    header: "Format",
-    display: true,
-    role: cellTypes.DISPLAY,
-  },
-  {
-    dataField: "data_file_size",
-    header: "Size",
-    display: true,
-    role: cellTypes.DISPLAY,
-    dataFormatType: dataFormatTypes.FORMAT_BYTES,
-    cellType: cellTypes.FORMAT_DATA,
-  },
-  {
-    dataField: "data_file_uuid",
-    header: "Access",
-    display: true,
-    cellType: cellTypes.CUSTOM_ELEM,
-    downloadDocument: true,
-    documentDownloadProps: {
-      maxFileSize: 80000000,
-      fileSizeColumn: "data_file_size",
-      fileLocationColumn: "data_file_uuid",
-      fileFormatColumn: "data_file_format",
-      fileName: "data_file_name",
-      toolTipTextFileDownload: "Download a copy of this file",
-      iconFileDownload: downloadSuccess,
-      iconUnauthenticated: downloadLock,
-      toolTipTextUnauthenticated:
-        "You must be logged in and must have already been granted access to download a copy of this file",
-      iconFilePreview: previewLarge,
-      toolTipTextFilePreview:
-        "Because of its size and/or format, this file must be accessed via the My Files workflow",
+  selectableRows: true,
+  extendedViewConfig: {
+    pagination: true,
+    manageViewColumns: { title: "View Columns" },
+    download: {
+      downloadCsv: "Download Table Contents As CSV",
+      downloadFileName: "CTDC_Study_Files",
     },
-    role: cellTypes.DISPLAY,
   },
-];
+  columns: [
+    {
+      cellType: cellTypes.CHECKBOX,
+      role: cellTypes.CHECKBOX,
+      display: true,
+      tooltipText: "",
+    },
+    {
+      dataField: "data_file_name",
+      header: "File Name",
+      display: true,
+    },
+    {
+      dataField: "data_file_type",
+      header: "File Type",
+      display: true,
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: "association",
+      header: "Association",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "data_file_description",
+      header: "Description",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "data_file_format",
+      header: "Format",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "data_file_size",
+      header: "Size",
+      display: true,
+      role: cellTypes.DISPLAY,
+      dataFormatType: dataFormatTypes.FORMAT_BYTES,
+      cellType: cellTypes.FORMAT_DATA,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "data_file_uuid",
+      header: "Access",
+      display: true,
+      cellType: cellTypes.CUSTOM_ELEM,
+      downloadDocument: true,
+      documentDownloadProps: {
+        maxFileSize: 80000000,
+        fileSizeColumn: "data_file_size",
+        fileLocationColumn: "data_file_uuid",
+        fileFormatColumn: "data_file_format",
+        fileName: "data_file_name",
+        toolTipTextFileDownload: "Download a copy of this file",
+        iconFileDownload: downloadSuccess,
+        iconUnauthenticated: downloadLock,
+        toolTipTextUnauthenticated:
+          "You must be logged in and must have already been granted access to download a copy of this file",
+        iconFilePreview: previewLarge,
+        toolTipTextFilePreview:
+          "Because of its size and/or format, this file must be accessed via the My Files workflow",
+      },
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+  ],
+};
 
 export const biospecimenProfile = {
   tabs: [

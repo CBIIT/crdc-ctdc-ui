@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid, withStyles } from "@material-ui/core";
+import { useSelector } from "react-redux";
 import {
   TableContextProvider,
   TableView,
@@ -10,48 +11,45 @@ import { configColumn } from "../../../dashTemplate/tabs/tableConfig/Column";
 import { themeConfig } from "./StudyFilesTheme";
 import { configWrapper, wrapperConfig } from "./wrapperConfig/Wrapper";
 import { customTheme as wrapperTheme } from "./wrapperConfig/Theme";
-import {
-  studyFilesColumns,
-  studyFilesConfig,
-} from "../../../../bento/studyDetailData";
+import { studyFilesTableConfig } from "../../../../bento/studyDetailData";
 import styles from "./StudyFilesStyle";
 
 const initFilesTableState = (initialState) => ({
   ...initialState,
-  title: "Study Files",
-  dataKey: "data_file_uuid",
-  tableMsg: { noMatch: "No study-level files associated with this study." },
-  columns: configColumn(studyFilesColumns),
+  title: studyFilesTableConfig.name,
+  dataKey: studyFilesTableConfig.dataKey,
+  tableMsg: studyFilesTableConfig.tableMsg,
+  columns: configColumn(studyFilesTableConfig.columns),
   selectedRows: [],
   sortBy: "data_file_name",
   sortOrder: "asc",
   rowsPerPage: 10,
   page: 0,
-  extendedViewConfig: {
-    pagination: true,
-    manageViewColumns: { title: "View Columns" },
-    download: {
-      downloadCsv: "Download Table Contents As CSV",
-      downloadFileName: "CTDC_Study_Files",
-    },
-  },
+  extendedViewConfig: studyFilesTableConfig.extendedViewConfig,
 });
 
 const StudyFilesView = ({ classes, files = [] }) => {
+  // CRITICAL: Establish Redux context for child components (bento-core Wrapper)
+  // Without this hook, Redux connect() in @bento-core components cannot access the store
+  // eslint-disable-next-line no-unused-vars
+  const cartState = useSelector((state) => state.cartReducer);
+
+  const configuredWrapper = configWrapper(
+    studyFilesTableConfig,
+    wrapperConfig,
+    "",
+    files.length,
+  );
+
   return (
     <div className={classes.container}>
       <div className={classes.tableWrapper}>
         <TableContextProvider>
           <Wrapper
-            wrapConfig={configWrapper(
-              studyFilesConfig,
-              wrapperConfig,
-              "",
-              files.length,
-            )}
+            wrapConfig={configuredWrapper}
             customTheme={wrapperTheme}
             classes={classes}
-            section="Study Files"
+            section={studyFilesTableConfig.name}
             activeFilters={{}}
           >
             <Grid container>

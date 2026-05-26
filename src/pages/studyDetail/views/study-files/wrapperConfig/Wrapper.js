@@ -7,12 +7,6 @@ import {
 
 export const wrapperConfig = [
   {
-    container: "buttons",
-    size: "xl",
-    clsName: "container_header",
-    items: [],
-  },
-  {
     container: "paginatedTable",
     paginatedTable: true,
   },
@@ -29,6 +23,7 @@ export const wrapperConfig = [
         btnType: btnTypes.ADD_SELECTED_FILES,
         tooltipCofig: studyFilesTooltipContent,
         conditional: true,
+        applyActiveFilter: false,
         alertMessage,
         maxFileLimit: maximumNumberOfFilesAllowedInTheCart,
       },
@@ -59,6 +54,8 @@ export const configWrapper = (tab, wrapperConfig, context, totalRowCount) => {
           addFileQuery: tab.addSelectedFilesQuery,
           dataKey: tab.addFilesRequestVariableKey,
           responseKeys: tab.addFilesResponseKeys,
+          alertMessage: item.alertMessage,
+          maxFileLimit: item.maxFileLimit,
         }))
       : [],
   }));
