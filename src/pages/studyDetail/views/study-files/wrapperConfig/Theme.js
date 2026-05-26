@@ -5,6 +5,12 @@ export const customTheme = {
         paddingTop: "10px",
         textAlign: "left",
       },
+      "& img": {
+        width: "10px",
+        height: "10px",
+        verticalAlign: "top",
+        marginLeft: "4px",
+      },
     },
   },
   MuiButton: {
@@ -33,6 +39,9 @@ export const customTheme = {
         backgroundColor: "#06846A",
         textTransform: "uppercase",
       },
+    },
+    text: {
+      padding: "16px 22px",
     },
   },
   MuiTooltip: {

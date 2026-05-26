@@ -5,7 +5,10 @@ import {
 import {
   tooltipContent, tooltipContentAllFile
 } from '../../../../bento/dashboardTabData';
-import { alertMessage } from '../../../../bento/fileCentricCartWorkflowData';
+import {
+  alertMessage,
+  maximumNumberOfFilesAllowedInTheCart,
+} from '../../../../bento/fileCentricCartWorkflowData';
 import { DisplayCustomText } from '../Customize/TableView';
 import CustomGoToCartLink from '../tableConfig/CustomGoToCartLink';
 
@@ -35,6 +38,7 @@ export const wrapperConfig = [{
       tooltipCofig: tooltipContentAllFile,
       conditional: true,
       alertMessage,
+      maxFileLimit: maximumNumberOfFilesAllowedInTheCart,
     },
     {
       title: 'ADD SELECTED FILES',
@@ -45,6 +49,7 @@ export const wrapperConfig = [{
       tooltipCofig: tooltipContent,
       conditional: true,
       applyActiveFilter: true,
+      maxFileLimit: maximumNumberOfFilesAllowedInTheCart,
     }],
 },
 {
@@ -65,6 +70,7 @@ export const wrapperConfig = [{
       tooltipCofig: tooltipContentAllFile,
       conditional: false,
       alertMessage,
+      maxFileLimit: maximumNumberOfFilesAllowedInTheCart,
     },
     {
       title: 'ADD SELECTED FILES',
@@ -75,6 +81,7 @@ export const wrapperConfig = [{
       tooltipCofig: tooltipContent,
       conditional: true,
       applyActiveFilter: true,
+      maxFileLimit: maximumNumberOfFilesAllowedInTheCart,
     },
   ],
 },

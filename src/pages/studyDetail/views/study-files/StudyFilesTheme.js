@@ -61,11 +61,11 @@ const tblBody = {
 export const tblPgn = {
   MuiTablePagination: {
     root: {
-      paddingRight: "50px",
+      paddingRight: "8px",
       borderTop: "5px solid #e7e5e5",
       borderBottom: "3px solid #e7e5e5",
       "&:last-child": {
-        paddingRight: "50px",
+        paddingRight: "8px",
       },
     },
     toolbar: {
@@ -113,7 +113,7 @@ export const extendedView = {
   tblTopPgn: {
     MuiTablePagination: {
       root: {
-        paddingRight: "50px",
+        paddingRight: "8px",
         borderTop: "3px solid #42779a",
         borderBottom: "3px solid #e7e5e5",
       },
@@ -149,50 +149,29 @@ export const extendedView = {
     },
   },
 
-};
-
-export const customTheme = {
-  MuiTableContainer: {
-    root: {
-      width: "100%",
-      overflowX: "auto",
-      boxShadow: "none",
-      borderRadius: "0",
-    },
-  },
   MuiToolbar: {
-    root: {
-      minHeight: "44px !important",
-      display: "block",
-      position: "relative",
-      textAlign: "right",
-      "&.downloadAndColumnView": {
-        maxHeight: "44px",
-        minHeight: "44px",
-        "& button": {
-          marginTop: "-44px",
-          "&.download-icon": {
-            marginRight: "-10px",
-          },
-          "&.manageViewColumnBtn": {
-            marginBottom: "0px",
-            zIndex: "10",
+      root: {
+        display: 'block',
+        position: 'relative',
+        textAlign: 'right',
+        minHeight: "44px !important",
+        '&.downloadAndColumnView': {
+          padding: "0 32px 5px 0",
+
+          '& button': {
+            '&.download-icon': {
+              padding: '8px'
+            },
+            '&.manageViewColumnBtn': {
+              marginBottom: '0px',
+              zIndex: '10',
+              padding: '8px'
+
+            },
           },
         },
       },
     },
-    regular: {
-      minHeight: "44px !important",
-      "@media (min-width: 600px)": {
-        minHeight: "44px !important",
-      },
-    },
-    gutters: {
-      "@media (min-width: 600px)": {
-        paddingLeft: "20px",
-      },
-    },
-  },
 };
 
 export const themeConfig = {

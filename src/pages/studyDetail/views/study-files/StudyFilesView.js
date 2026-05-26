@@ -7,7 +7,7 @@ import {
 } from "@bento-core/paginated-table";
 
 import { configColumn } from "../../../dashTemplate/tabs/tableConfig/Column";
-import { themeConfig, customTheme } from "./StudyFilesTheme";
+import { themeConfig } from "./StudyFilesTheme";
 import { configWrapper, wrapperConfig } from "./wrapperConfig/Wrapper";
 import { customTheme as wrapperTheme } from "./wrapperConfig/Theme";
 import {
@@ -62,7 +62,7 @@ const StudyFilesView = ({ classes, files = [] }) => {
                 </span>
                 <TableView
                   initState={initFilesTableState}
-                  themeConfig={{ ...themeConfig, customTheme }}
+                  themeConfig={{ ...themeConfig }}
                   queryVariables={{}}
                   totalRowCount={files.length}
                   server={false}

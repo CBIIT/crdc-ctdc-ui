@@ -1,6 +1,9 @@
 import { btnTypes, types } from "@bento-core/paginated-table";
 import { studyFilesTooltipContent } from "../../../../../bento/studyDetailData";
-import { alertMessage } from "../../../../../bento/fileCentricCartWorkflowData";
+import {
+  alertMessage,
+  maximumNumberOfFilesAllowedInTheCart,
+} from "../../../../../bento/fileCentricCartWorkflowData";
 
 export const wrapperConfig = [
   {
@@ -27,6 +30,7 @@ export const wrapperConfig = [
         tooltipCofig: studyFilesTooltipContent,
         conditional: true,
         alertMessage,
+        maxFileLimit: maximumNumberOfFilesAllowedInTheCart,
       },
     ],
   },
