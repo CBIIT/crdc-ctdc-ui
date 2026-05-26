@@ -1,5 +1,9 @@
-import { cellTypes } from "@bento-core/table";
+import { cellTypes, dataFormatTypes } from "@bento-core/table";
 import gql from "graphql-tag";
+import { GET_FILE_IDS_FOR_SELECTED_FILES } from "./dashboardTabData";
+import downloadSuccess from "../assets/dash/downloadSuccess.svg";
+import downloadLock from "../assets/dash/downloadLock.svg";
+import previewLarge from "../assets/dash/previewLarge.svg";
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
@@ -19,18 +23,111 @@ export const externalIcon =
 
 export const tab = {
   items: [
-    {
+    { // TODO: Reorder tabs based on priority once all tabs are implemented
       index: 0,
+      label: "Study Files",
+      value: "study_files",
+    },
+    {
+      index: 1,
       label: "Overview",
       value: "overview",
     },
     {
-      index: 1,
+      index: 2,
       label: "Clinical Data",
       value: "clinical_data",
     },
   ],
 };
+
+export const STUDY_FILES_BUTTON_TOOLTIP = "Add selected file(s) to cart";
+
+// Tooltip configuration for Study Files wrapper buttons
+export const studyFilesTooltipContent = {
+  icon: "https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg",
+  alt: "tooltipIcon",
+  arrow: false,
+  Files: STUDY_FILES_BUTTON_TOOLTIP,
+};
+
+// Configuration for study files wrapper - uses same query as Dashboard Files tab
+export const studyFilesConfig = {
+  name: "Study Files",
+  dataKey: "data_file_uuid",
+  buttonText: "Add Selected Files",
+  addFilesRequestVariableKey: "data_file_uuid",
+  addFilesResponseKeys: ["fileOverview", "data_file_uuid"],
+  addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_FILES,
+};
+
+export const studyFilesColumns = [
+  { 
+    cellType: cellTypes.CHECKBOX,
+    role: cellTypes.CHECKBOX,
+    display: true
+  },
+  {
+    dataField: "data_file_name",
+    header: "File Name",
+    display: true,
+  },
+  {
+    dataField: "data_file_type",
+    header: "File Type",
+    display: true,
+    role: cellTypes.DISPLAY,
+  },
+  {
+    dataField: "association",
+    header: "Association",
+    display: true,
+    role: cellTypes.DISPLAY,
+  },
+  {
+    dataField: "data_file_description",
+    header: "Description",
+    display: true,
+    role: cellTypes.DISPLAY,
+  },
+  {
+    dataField: "data_file_format",
+    header: "Format",
+    display: true,
+    role: cellTypes.DISPLAY,
+  },
+  {
+    dataField: "data_file_size",
+    header: "Size",
+    display: true,
+    role: cellTypes.DISPLAY,
+    dataFormatType: dataFormatTypes.FORMAT_BYTES,
+    cellType: cellTypes.FORMAT_DATA,
+  },
+  {
+    dataField: "data_file_uuid",
+    header: "Access",
+    display: true,
+    cellType: cellTypes.CUSTOM_ELEM,
+    downloadDocument: true,
+    documentDownloadProps: {
+      maxFileSize: 80000000,
+      fileSizeColumn: "data_file_size",
+      fileLocationColumn: "data_file_uuid",
+      fileFormatColumn: "data_file_format",
+      fileName: "data_file_name",
+      toolTipTextFileDownload: "Download a copy of this file",
+      iconFileDownload: downloadSuccess,
+      iconUnauthenticated: downloadLock,
+      toolTipTextUnauthenticated:
+        "You must be logged in and must have already been granted access to download a copy of this file",
+      iconFilePreview: previewLarge,
+      toolTipTextFilePreview:
+        "Because of its size and/or format, this file must be accessed via the My Files workflow",
+    },
+    role: cellTypes.DISPLAY,
+  },
+];
 
 export const biospecimenProfile = {
   tabs: [
@@ -126,15 +223,15 @@ export const seriesSetting = {
 
 export const tooltipConfig = {
   enable: true,
-  family: 'Open Sans',
+  family: "Open Sans",
   size: 13,
-  color: '#929292', // border Color
+  color: "#929292", // border Color
   width: 1,
   blur: 4,
   offsetX: 0,
   offsetY: 4,
   opacity: 0.25,
-  shadowColor: '#000000',
+  shadowColor: "#000000",
   arrowLength: 10,
   paddingTopBottom: 10,
   interactive: false,
@@ -290,9 +387,14 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
     StudyDataFileByStudyShortName(study_id: $study_id) {
       list_type
       study_data_files {
+        # association
+        data_file_description
+        data_file_size
         data_file_uuid
         data_file_name
+        data_file_type
         data_file_format
+        # association
       }
     }
 

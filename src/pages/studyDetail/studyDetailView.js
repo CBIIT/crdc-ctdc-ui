@@ -17,6 +17,7 @@ import Overview from "./views/overview/overview";
 import { onClearAllFilters } from "../dashTemplate/sideBar/BentoFilterUtils";
 import useDashboardTabs from "../dashTemplate/components/dashboard-tabs-store";
 import ClinicalDataController from "./views/clinical-data/ClinicalDataController";
+import StudyFilesView from './views/study-files/StudyFilesView';
 import CustomBreadcrumb from "../../components/Breadcrumb/BreadcrumbView";
 const StudyDetailView = ({
   classes,
@@ -145,6 +146,15 @@ const StudyDetailView = ({
                   }}
                   study_id={study_id}
                   study_short_name={study_short_name}
+                />
+              </TabPanel>
+            );
+
+          case 'study_files':
+            return (
+              <TabPanel value={currentTab} index={index} maxWidth="1800px">
+                <StudyFilesView
+                  files={data?.StudyDataFileByStudyShortName?.[0]?.study_data_files || []}
                 />
               </TabPanel>
             );
