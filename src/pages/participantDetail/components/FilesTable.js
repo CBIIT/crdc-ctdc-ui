@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Tooltip, Button } from '@material-ui/core';
+import { Tooltip, Button, ClickAwayListener } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
 import jbrowseIcon from '../../../assets/participant/jbrowse_icon.png';
 import {
@@ -19,7 +19,7 @@ import {
 import SnackbarView from '@bento-core/paginated-table/dist/wrapper/components/Snackbar/Snackbar';
 import AddToCartDialogAlertView from '@bento-core/paginated-table/dist/wrapper/components/AddToCartDialog/AddToCartDialogAlertView';
 
-const initFilesTableState = (initialState) => ({
+export const initFilesTableState = (initialState) => ({
   ...initialState,
   title: 'Files',
   dataKey: 'data_file_uuid',
@@ -43,6 +43,7 @@ const initFilesTableState = (initialState) => ({
 const FileButtons = ({ classes, hasFiles }) => {
   const { context } = useContext(TableContext);
   const selectedRows = context?.selectedRows || [];
+  const showActionRow = hasFiles || showJBrowseButton;
   const dispatch = useDispatch();
   const filesId = useSelector((state) => state.cartReducer.filesId);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -72,57 +73,67 @@ const FileButtons = ({ classes, hasFiles }) => {
           onClose={() => setDisplayAlert(false)}
         />
       )}
-      <div className={classes.tableButtonRow}>
-        {hasFiles && (
-          <>
-            <span>
-              <Button
-                className={classes.cartButton}
-                disabled={selectedRows.length === 0}
-                onClick={handleAddToCart}
-                disableElevation
-              >
-                Add Selected Files
-              </Button>
-            </span>
-            <Tooltip
-              title={FILES_BUTTON_TOOLTIP}
-              placement="top-end"
-              classes={{ tooltip: classes.tooltipBody }}
-              open={tooltipOpen}
-              onClose={() => setTooltipOpen(false)}
-              disableHoverListener
-              disableFocusListener
-              disableTouchListener
-            >
-              <button
-                aria-label={`Help: ${FILES_BUTTON_TOOLTIP}`}
-                className={classes.tooltipIconButton}
-                onClick={() => setTooltipOpen(!tooltipOpen)}
-              >
-                <HelpIcon className={classes.questionMarkIcon} aria-hidden="true" />
-              </button>
-            </Tooltip>
-          </>
-        )}
-        {showJBrowseButton && (
-          <>
-            <span>
-              <Button className={classes.jbrowseButton} disabled disableElevation>
-                View in&nbsp;<img src={jbrowseIcon} alt="JBrowse" className={classes.jbrowseIcon} />JBrowse
-              </Button>
-            </span>
-            <Tooltip title="View in JBrowse (coming soon)" placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
-              <button
-                aria-label="Help: View in JBrowse (coming soon)"
-                className={classes.tooltipIconButton}
-              >
-                <HelpIcon className={classes.questionMarkIcon} aria-hidden="true" />
-              </button>
-            </Tooltip>
-          </>
-        )}
-      </div>
+      {showActionRow && (
+        <div className={classes.tableButtonRow}>
+          {hasFiles && (
+            <>
+              <span>
+                <Button
+                  className={classes.cartButton}
+                  disabled={selectedRows.length === 0}
+                  onClick={handleAddToCart}
+                  disableElevation
+                >
+                  Add Selected Files
+                </Button>
+              </span>
+              <ClickAwayListener onClickAway={() => setTooltipOpen(false)}>
+                <Tooltip
+                  title={FILES_BUTTON_TOOLTIP}
+                  placement="top-end"
+                  classes={{ tooltip: classes.tooltipBody }}
+                  open={tooltipOpen}
+                  onClose={() => setTooltipOpen(false)}
+                  disableHoverListener
+                  disableFocusListener
+                  disableTouchListener
+                >
+                  <button
+                    aria-label={`Help: ${FILES_BUTTON_TOOLTIP}`}
+                    className={classes.tooltipIconButton}
+                    onClick={() => setTooltipOpen(!tooltipOpen)}
+                    onBlur={() => setTooltipOpen(false)}
+                    onKeyDown={(event) => {
+                      if (event.key === 'Escape') {
+                        setTooltipOpen(false);
+                      }
+                    }}
+                  >
+                    <HelpIcon className={classes.questionMarkIcon} aria-hidden="true" />
+                  </button>
+                </Tooltip>
+              </ClickAwayListener>
+            </>
+          )}
+          {showJBrowseButton && (
+            <>
+              <span>
+                <Button className={classes.jbrowseButton} disabled disableElevation>
+                  View in&nbsp;<img src={jbrowseIcon} alt="JBrowse" className={classes.jbrowseIcon} />JBrowse
+                </Button>
+              </span>
+              <Tooltip title="View in JBrowse (coming soon)" placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
+                <button
+                  aria-label="Help: View in JBrowse (coming soon)"
+                  className={classes.tooltipIconButton}
+                >
+                  <HelpIcon className={classes.questionMarkIcon} aria-hidden="true" />
+                </button>
+              </Tooltip>
+            </>
+          )}
+        </div>
+      )}
     </>
   );
 };
