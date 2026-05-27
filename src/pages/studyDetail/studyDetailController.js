@@ -39,7 +39,9 @@ const StudyDetailController = ({ match }) => {
   }
 
   // Success state - render study view
-  return <StudyView data={data} study_id={study_id} />;
+  return (
+    <StudyView data={data} study_id={study_id} />
+  );
 };
 
 export default StudyDetailController;

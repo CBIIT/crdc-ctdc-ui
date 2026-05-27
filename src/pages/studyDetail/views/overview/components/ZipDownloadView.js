@@ -23,6 +23,7 @@ const DocumentDownload = ({
   fileName,
   toolTipIcon,
   disabled = false, //  allow parent to fully disable the button (e.g., when no ZIP exists)
+  buttonText = 'ZIP FILE',
 }) => {
   const { signInWithAuthURL, signOut } = useAuth();
   const { isSignedIn } = useSelector((state) => state.login);
@@ -61,7 +62,7 @@ const DocumentDownload = ({
           classes={{ root: classes.disabledDownloadAllBtn }}
           disabled
         >
-          ZIP&nbsp;FILE
+          {buttonText}
           <img src={iconUnauthenticated || iconFileDownload} alt="download icon" className={classes.downloadIcon} />
         </Button>
         <ToolTip
@@ -91,7 +92,7 @@ const DocumentDownload = ({
           }
           variant="contained"
         >
-          ZIP&nbsp;FILE
+          {buttonText}
           <img src={iconFileDownload} alt="download icon" className={classes.downloadIcon} />
         </Button>
         <ToolTip
@@ -108,7 +109,7 @@ const DocumentDownload = ({
     buttonBlock = (
       <div className={classes.downloadAllBtnContainer}>
         <Button classes={{ root: classes.disabledDownloadAllBtn }} disabled>
-          ZIP&nbsp;FILE
+          {buttonText}
           <img src={iconUnauthenticated} alt="download icon" className={classes.downloadIcon} />
         </Button>
         <ToolTip
@@ -141,7 +142,7 @@ const DocumentDownload = ({
 
 const commonStyles = {
   buttonBase: {
-    width: '126px',
+    width: '210px',
     height: '46px',
     fontSize: '14px',
     lineHeight: '14px',
@@ -153,13 +154,13 @@ const commonStyles = {
     textAlign: 'center',
     boxShadow: 'none',
     filter: 'none',
+    textTransform: 'uppercase',
   },
 };
 
 const styles = () => ({
   downloadAllBtnContainer: {
     marginTop: '16px',
-    marginLeft: '10px',
   },
   downloadAllBtn: {
     ...commonStyles.buttonBase,
@@ -181,7 +182,7 @@ const styles = () => ({
     marginLeft: '10px',
   },
   customTooltip: {
-    maxWidth: '208px',
+    maxWidth: '500px',
     borderRadius: '5px',
     border: '.2px solid #C3C3C3',
     boxShadow: '0px 4px 10px 0px #00000040',

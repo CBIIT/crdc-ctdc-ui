@@ -33,7 +33,7 @@ const documentDownloadProps = {
     toolTipIcon,
 }
 
-const Overview = ({ classes, data }) => {
+const Overview = ({ classes, data, zipFileData = [] }) => {
   // ----- Helpers -----
   const getAccessTypeString = (accessType) => {
     switch (accessType) {
@@ -73,13 +73,24 @@ const Overview = ({ classes, data }) => {
 
   const { study_name, study_description, study_type, dates_of_conduct, study_accession } = study;
 
-  // Study data files / ZIP file
-  const studyDataFiles = data?.StudyDataFileByStudyShortName?.[0]?.study_data_files || [];
-  const zipFileData = studyDataFiles.find(file => file?.data_file_format?.toLowerCase() === 'zip');
-
-  const hasZipFile = Boolean(zipFileData);
   const missingZipTooltip =
     'No ZIP file is available for download for this study.';
+
+  // Config for download buttons mapped to backend data_file_type values
+  const downloadButtons = [
+    { buttonText: 'Variant Call Files', dataFileType: 'Variant Call File', tooltip: 'Download all variant call files (VCF) for this study' },
+    { buttonText: 'Variant Reports', dataFileType: 'Variant Report', tooltip: 'Download all variant reports (pdf) for this study' },
+    { buttonText: 'Radiology Images', dataFileType: 'Radiology Imaging', tooltip: 'Download all radiology images (DICOM) for this study' },
+  ];
+
+  /**
+   * Find the first zip file for a given data_file_type from the studyZipFileQuery response
+   */
+  const getZipFileForType = (dataFileType) => {
+    const entry = zipFileData.find((item) => item.data_file_type === dataFileType);
+    if (!entry || !entry.zip_files || entry.zip_files.length === 0) return null;
+    return entry.zip_files[0];
+  };
 
   return (
     <OverviewThemeProvider>
@@ -168,34 +179,30 @@ const Overview = ({ classes, data }) => {
                         represented within the application can be downloaded in the form of a .zip file by selecting
                         the ZIP FILE download option below.
 
-                        {hasZipFile ? (
-                          /* CASE 1 — ZIP file exists: enabled button */
-                          <ZipDownloadView
-                            disabled={false}
+                        {downloadButtons.map((btn) => {
+                          const zipFile = getZipFileForType(btn.dataFileType);
+                          const hasZip = Boolean(zipFile);
 
-                            fileFormat={zipFileData[documentDownloadProps.fileFormatColumn]}
-                            fileName={zipFileData[documentDownloadProps.fileNameColumn]}
-                            fileLocation={zipFileData[documentDownloadProps.fileLocationColumn]}
+                          return (
+                            <ZipDownloadView
+                              key={btn.dataFileType}
+                              disabled={!hasZip}
 
-                            toolTipTextFileDownload={documentDownloadProps.toolTipTextFileDownload}
-                            iconFileDownload={documentDownloadProps.iconFileDownload}
+                              fileFormat={hasZip ? zipFile.data_file_format : undefined}
+                              fileName={hasZip ? zipFile.data_file_name : undefined}
+                              fileLocation={hasZip ? zipFile.data_file_uuid : undefined}
 
-                            iconUnauthenticated={documentDownloadProps.iconUnauthenticated}
-                            toolTipTextUnauthenticated={documentDownloadProps.toolTipTextUnauthenticated}
+                              toolTipTextFileDownload={hasZip ? btn.tooltip : missingZipTooltip}
+                              iconFileDownload={documentDownloadProps.iconFileDownload}
 
-                            toolTipIcon={documentDownloadProps.toolTipIcon}
-                          />
-                        ) : (
-                          /* CASE 2 — No ZIP file: always disabled with custom tooltip */
-                          <ZipDownloadView
-                            disabled={true}
+                              iconUnauthenticated={documentDownloadProps.iconUnauthenticated}
+                              toolTipTextUnauthenticated={documentDownloadProps.toolTipTextUnauthenticated}
 
-                            toolTipTextFileDownload={missingZipTooltip}
-                            iconFileDownload={documentDownloadProps.iconFileDownload}
-
-                            toolTipIcon={documentDownloadProps.toolTipIcon}
-                          />
-                        )}
+                              toolTipIcon={documentDownloadProps.toolTipIcon}
+                              buttonText={btn.buttonText}
+                            />
+                          );
+                        })}
                       </Grid>
                     </Grid>
                   </Grid>
