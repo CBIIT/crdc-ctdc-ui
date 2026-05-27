@@ -79,7 +79,7 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
   // Config for download buttons mapped to backend data_file_type values
   const downloadButtons = [
     { buttonText: 'Variant Call Files', dataFileType: 'Variant Call File', tooltip: 'Download all variant call files (VCF) for this study' },
-    { buttonText: 'Variant Reports', dataFileType: 'Variant Report', tooltip: 'Download all variant reports (PDF) for this study' },
+    { buttonText: 'Variant Reports', dataFileType: 'Variant Report', tooltip: 'Download all variant reports (pdf) for this study' },
     { buttonText: 'Radiology Images', dataFileType: 'Radiology Imaging', tooltip: 'Download all radiology images (DICOM) for this study' },
   ];
 
