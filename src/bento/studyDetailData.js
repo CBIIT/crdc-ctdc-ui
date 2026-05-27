@@ -1,5 +1,9 @@
-import { cellTypes } from "@bento-core/table";
+import { cellTypes, dataFormatTypes } from "@bento-core/table";
 import gql from "graphql-tag";
+import { GET_FILE_IDS_FOR_SELECTED_FILES } from "./dashboardTabData";
+import downloadSuccess from "../assets/dash/downloadSuccess.svg";
+import downloadLock from "../assets/dash/downloadLock.svg";
+import previewLarge from "../assets/dash/previewLarge.svg";
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
@@ -28,6 +32,117 @@ export const tab = {
       index: 1,
       label: "Clinical Data",
       value: "clinical_data",
+    },
+    {
+      index: 2,
+      label: "Study Files",
+      value: "study_files",
+    },
+  ],
+};
+
+export const STUDY_FILES_BUTTON_TOOLTIP = "Add selected file(s) to cart";
+
+// Tooltip configuration for Study Files wrapper buttons
+export const studyFilesTooltipContent = {
+  icon: "https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg",
+  alt: "tooltipIcon",
+  arrow: false,
+  classes: "customTooltip",
+  "Study_Files": STUDY_FILES_BUTTON_TOOLTIP,
+};
+
+// Study Detail: Study Files Tab table configuration
+export const studyFilesTableConfig = {
+  name: "Study_Files",
+  dataKey: "data_file_uuid",
+  buttonText: "Add Selected Files",
+  addFilesRequestVariableKey: "data_file_uuid",
+  addFilesResponseKeys: ["fileOverview", "data_file_uuid"],
+  addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_FILES,
+  tableMsg: {
+    noMatch: "No study-level files associated with this study.",
+  },
+  selectableRows: true,
+  extendedViewConfig: {
+    pagination: true,
+    manageViewColumns: { title: "View Columns" },
+    download: {
+      downloadCsv: "Download Table Contents As CSV",
+      downloadFileName: "CTDC_Study_Files",
+    },
+  },
+  columns: [
+    {
+      cellType: cellTypes.CHECKBOX,
+      role: cellTypes.CHECKBOX,
+      display: true,
+      tooltipText: "",
+    },
+    {
+      dataField: "data_file_name",
+      header: "File Name",
+      display: true,
+    },
+    {
+      dataField: "data_file_type",
+      header: "File Type",
+      display: true,
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: "association",
+      header: "Association",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "data_file_description",
+      header: "Description",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "data_file_format",
+      header: "Format",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "data_file_size",
+      header: "Size",
+      display: true,
+      role: cellTypes.DISPLAY,
+      dataFormatType: dataFormatTypes.FORMAT_BYTES,
+      cellType: cellTypes.FORMAT_DATA,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "data_file_uuid",
+      header: "Access",
+      display: true,
+      cellType: cellTypes.CUSTOM_ELEM,
+      downloadDocument: true,
+      documentDownloadProps: {
+        maxFileSize: 80000000,
+        fileSizeColumn: "data_file_size",
+        fileLocationColumn: "data_file_uuid",
+        fileFormatColumn: "data_file_format",
+        fileName: "data_file_name",
+        toolTipTextFileDownload: "Download a copy of this file",
+        iconFileDownload: downloadSuccess,
+        iconUnauthenticated: downloadLock,
+        toolTipTextUnauthenticated:
+          "You must be logged in and must have already been granted access to download a copy of this file",
+        iconFilePreview: previewLarge,
+        toolTipTextFilePreview:
+          "Because of its size and/or format, this file must be accessed via the My Files workflow",
+      },
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
     },
   ],
 };
@@ -287,12 +402,35 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
       ctep_disease_terms
     }
 
+    participantAndBiospecimenFilesByStudyId(study_id: $study_id) {
+      study_short_name
+      list_type
+      data_files {
+        data_file_uuid
+        data_file_name
+        data_file_type
+        data_file_description
+        data_file_format
+        data_file_size
+        data_file_checksum_value
+        data_file_checksum_type
+        data_file_compression_status
+        data_file_location
+        association
+      }
+    }
+
     StudyDataFileByStudyShortName(study_id: $study_id) {
       list_type
       study_data_files {
+        # association
+        data_file_description
+        data_file_size
         data_file_uuid
         data_file_name
+        data_file_type
         data_file_format
+        # association
       }
     }
 

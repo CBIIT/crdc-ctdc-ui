@@ -63,3 +63,6 @@ bower_components/
 
 # Ignore test coverage directory
 coverage/
+
+*.md
+public/injectEnv.js
