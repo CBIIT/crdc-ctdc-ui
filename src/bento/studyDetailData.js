@@ -126,15 +126,15 @@ export const seriesSetting = {
 
 export const tooltipConfig = {
   enable: true,
-  family: 'Open Sans',
+  family: "Open Sans",
   size: 13,
-  color: '#929292', // border Color
+  color: "#929292", // border Color
   width: 1,
   blur: 4,
   offsetX: 0,
   offsetY: 4,
   opacity: 0.25,
-  shadowColor: '#000000',
+  shadowColor: "#000000",
   arrowLength: 10,
   paddingTopBottom: 10,
   interactive: false,
@@ -306,6 +306,24 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
         count
       }
       specimen_count
+    }
+
+    studyZipFileQuery(study_id: $study_id) {
+      study_short_name
+      study_id
+      data_file_type
+      zip_files {
+        data_file_uuid
+        data_file_name
+        data_file_type
+        data_file_description
+        data_file_format
+        data_file_size
+        data_file_checksum_value
+        data_file_checksum_type
+        data_file_compression_status
+        data_file_location
+      }
     }
   }
 `;
