@@ -29,6 +29,7 @@ const StudyDetailView = ({
   const studyData = data;
   const processedTabs = tab.items;
   const study_short_name = studyData?.studyByStudyShortName?.at(0)?.study_short_name;
+  const studyFiles = data?.participantAndBiospecimenFilesByStudyId?.[0]?.data_files || [];
 
   const breadCrumbJson = [
     { name: "Studies", to: "/studies", isALink: true },
@@ -154,7 +155,7 @@ const StudyDetailView = ({
             return (
               <TabPanel value={currentTab} index={index} maxWidth="1800px">
                 <StudyFilesView
-                  files={data?.StudyDataFileByStudyShortName?.[0]?.study_data_files || []}
+                  files={studyFiles}
                 />
               </TabPanel>
             );
