@@ -179,7 +179,7 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
                         represented within the application can be downloaded in the form of a .zip file by selecting
                         the ZIP FILE download option below.
 
-                        {downloadButtons.map((btn, index) => {
+                        {downloadButtons.map((btn) => {
                           const zipFile = getZipFileForType(btn.dataFileType);
                           const hasZip = Boolean(zipFile);
 
