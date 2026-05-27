@@ -1,10 +1,9 @@
 export default () => ({
   container: {
-    // maxWidth: "1736px",
     width: "100%",
     margin: "22px auto 100px auto",
     padding: "0px 85px",
- 
+
   },
   tableWrapper: {
     backgroundColor: "#FFFFFF",
