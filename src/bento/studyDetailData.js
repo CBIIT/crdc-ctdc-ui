@@ -445,6 +445,24 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
       }
       specimen_count
     }
+
+    studyZipFileQuery(study_id: $study_id) {
+      study_short_name
+      study_id
+      data_file_type
+      zip_files {
+        data_file_uuid
+        data_file_name
+        data_file_type
+        data_file_description
+        data_file_format
+        data_file_size
+        data_file_checksum_value
+        data_file_checksum_type
+        data_file_compression_status
+        data_file_location
+      }
+    }
   }
 `;
 

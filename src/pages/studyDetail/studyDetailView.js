@@ -30,6 +30,7 @@ const StudyDetailView = ({
   const processedTabs = tab.items;
   const study_short_name = studyData?.studyByStudyShortName?.at(0)?.study_short_name;
   const studyFiles = data?.participantAndBiospecimenFilesByStudyId?.[0]?.data_files || [];
+  const zipFileData = data?.studyZipFileQuery || [];
 
   const breadCrumbJson = [
     { name: "Studies", to: "/studies", isALink: true },
@@ -133,7 +134,7 @@ const StudyDetailView = ({
           case "overview":
             return (
               <TabPanel value={currentTab} index={index} maxWidth="1800px">
-                <Overview data={data} />
+                <Overview data={data} zipFileData={zipFileData} />
               </TabPanel>
             );
 
