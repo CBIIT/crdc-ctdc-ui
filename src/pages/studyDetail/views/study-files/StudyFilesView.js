@@ -28,6 +28,22 @@ const initFilesTableState = (initialState) => ({
   extendedViewConfig: studyFilesTableConfig.extendedViewConfig,
 });
 
+export const formatAssociationValue = (value) => {
+  if (Array.isArray(value)) {
+    return value.filter(Boolean).join(", ");
+  }
+
+  if (typeof value !== "string" || !value.trim()) {
+    return value;
+  }
+
+  return value
+    .split(",")
+    .map((item) => item.trim())
+    .filter(Boolean)
+    .join(", ");
+};
+
 const StudyFilesView = ({ classes, files = [] }) => {
   // CRITICAL: Establish Redux context for child components (bento-core Wrapper)
   // Without this hook, Redux connect() in @bento-core components cannot access the store
@@ -40,6 +56,11 @@ const StudyFilesView = ({ classes, files = [] }) => {
     "",
     files.length,
   );
+
+  const normalizedFiles = files.map((file) => ({
+    ...file,
+    association: formatAssociationValue(file.association),
+  }));
 
   return (
     <div className={classes.container}>
@@ -62,9 +83,9 @@ const StudyFilesView = ({ classes, files = [] }) => {
                   initState={initFilesTableState}
                   themeConfig={{ ...themeConfig }}
                   queryVariables={{}}
-                  totalRowCount={files.length}
+                  totalRowCount={normalizedFiles.length}
                   server={false}
-                  tblRows={files}
+                  tblRows={normalizedFiles}
                 />
               </Grid>
             </Grid>
