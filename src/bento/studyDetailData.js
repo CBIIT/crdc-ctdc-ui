@@ -24,20 +24,19 @@ export const externalIcon =
 export const tab = {
   items: [
     {
-      // TODO: Reorder tabs based on priority once all tabs are implemented
       index: 0,
-      label: "Study Files",
-      value: "study_files",
-    },
-    {
-      index: 1,
       label: "Overview",
       value: "overview",
     },
     {
-      index: 2,
+      index: 1,
       label: "Clinical Data",
       value: "clinical_data",
+    },
+    {
+      index: 2,
+      label: "Study Files",
+      value: "study_files",
     },
   ],
 };
@@ -49,6 +48,7 @@ export const studyFilesTooltipContent = {
   icon: "https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg",
   alt: "tooltipIcon",
   arrow: false,
+  classes: "customTooltip",
   "Study_Files": STUDY_FILES_BUTTON_TOOLTIP,
 };
 

@@ -32,7 +32,6 @@ const tblBody = {
       padding: "0px 5px 0px 20px",
       color: "#13344A",
       borderBottom: "none",
-
       fontFamily: "Nunito",
       fontWeight: 400,
       fontSize: "16px",
@@ -43,17 +42,13 @@ const tblBody = {
       width: "48px",
       padding: "0 0 0 5px",
     },
-    body: {
-      color: "#13344A",
-      "&.file_name": {
-        maxWidth: "300px",
-        "& p": {
-          lineBreak: "anywhere",
-        },
-      },
-      "&.acl": {
-        textAlign: "center",
-      },
+  },
+  MuiTypography: {
+    body1: {
+      fontFamily: "Nunito",
+      fontWeight: 400,
+      fontSize: "16px",
+      lineHeight: "16px",
     },
   },
 };
@@ -125,16 +120,19 @@ export const extendedView = {
   MuiTooltip: {
     tooltip: {
       backgroundColor: "#ffffff",
-      color: "#1c2023",
       maxWidth: "220px",
-      fontSize: "0.75rem",
-      border: "2px solid #a7afb3",
+      borderRadius: "5px",
+      border: ".2px solid #C3C3C3",
+      boxShadow: "0px 4px 10px 0px #00000040",
       fontFamily: "Open Sans",
-      fontWeight: "600",
+      color: "#223D4C",
+      fontSize: "13px",
+      fontWeight: 600,
+      lineHeight: "19px",
+      letterSpacing: "0em",
       textAlign: "left",
-      lineHeight: "1.6",
-      padding: "10px 12px",
-      borderRadius: "0px",
+      padding: "10px 15px",
+      position: "relative",
     },
   },
   MuiList: {
@@ -150,28 +148,27 @@ export const extendedView = {
   },
 
   MuiToolbar: {
-      root: {
-        display: 'block',
-        position: 'relative',
-        textAlign: 'right',
-        minHeight: "44px !important",
-        '&.downloadAndColumnView': {
-          padding: "0 32px 5px 0",
+    root: {
+      display: "block",
+      position: "relative",
+      textAlign: "right",
+      minHeight: "44px !important",
+      "&.downloadAndColumnView": {
+        padding: "0 32px 5px 0",
 
-          '& button': {
-            '&.download-icon': {
-              padding: '8px'
-            },
-            '&.manageViewColumnBtn': {
-              marginBottom: '0px',
-              zIndex: '10',
-              padding: '8px'
-
-            },
+        "& button": {
+          "&.download-icon": {
+            padding: "8px",
+          },
+          "&.manageViewColumnBtn": {
+            marginBottom: "0px",
+            zIndex: "10",
+            padding: "8px",
           },
         },
       },
     },
+  },
 };
 
 export const themeConfig = {

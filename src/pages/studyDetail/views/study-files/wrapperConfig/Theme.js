@@ -2,12 +2,13 @@ export const customTheme = {
   MuiContainer: {
     root: {
       "&.container_footer": {
-        paddingTop: "10px",
+        paddingTop: "18px",
+        paddingLeft: "12px",
         textAlign: "left",
       },
       "& img": {
-        width: "10px",
-        height: "10px",
+        width: "12px",
+        height: "12px",
         verticalAlign: "top",
         marginLeft: "4px",
       },
@@ -42,11 +43,6 @@ export const customTheme = {
     },
     text: {
       padding: "16px 22px",
-    },
-  },
-  MuiTooltip: {
-    tooltip: {
-      maxWidth: "240px",
     },
   },
 };
