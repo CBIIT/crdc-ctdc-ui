@@ -106,7 +106,7 @@ export const wrapperCustomTheme = {
       padding: '40px 20px 0px 20px',
       '&.alter-content': {
         fontFamily: 'Lato',
-        size: '16px',
+        fontSize: '16px',
       },
     },
   },
