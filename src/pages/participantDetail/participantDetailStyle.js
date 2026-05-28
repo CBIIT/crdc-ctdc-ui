@@ -306,19 +306,6 @@ export default (theme) => ({
     marginRight: '10px',
   },
 
-  // Accessible wrapper button for tooltip trigger icons
-  tooltipIconButton: {
-    background: 'none',
-    border: 'none',
-    cursor: 'pointer',
-    padding: 0,
-    display: 'inline-flex',
-    alignItems: 'center',
-    '&:focus': {
-      outline: 'none',
-    },
-  },
-
   // ---- Tooltip styling ----
   tooltipBody: {
     backgroundColor: '#FFFFFF',

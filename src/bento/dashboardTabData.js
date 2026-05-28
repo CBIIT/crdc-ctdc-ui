@@ -434,6 +434,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       carcinogen_exposure,
       # targeted_therapy
       targeted_therapy_string
+      best_response_to_targeted_therapy
 
       data_file_uuid
     }
