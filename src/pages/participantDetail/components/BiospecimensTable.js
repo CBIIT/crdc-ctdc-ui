@@ -1,25 +1,13 @@
-import React, { useContext, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useApolloClient } from '@apollo/client';
-import { Tooltip, Button, ClickAwayListener } from '@material-ui/core';
-import HelpIcon from '@material-ui/icons/Help';
-import jbrowseIcon from '../../../assets/participant/jbrowse_icon.png';
+import React from 'react';
 import {
   TableContextProvider,
   TableView,
-  TableContext,
-  onRowSeclect,
+  Wrapper,
 } from '@bento-core/paginated-table';
-import { onAddCartFiles } from '@bento-core/cart';
 import { themeConfig, customTheme } from '../tableThemeConfig';
-import { biospecimenColumns, BIOSPECIMEN_BUTTON_TOOLTIP, showJBrowseButton } from '../../../bento/participantDetailData';
-import { GET_FILE_IDS_FOR_SELECTED_BIOSPECIMENS } from '../../../bento/dashboardTabData';
-import {
-  maximumNumberOfFilesAllowedInTheCart,
-  alertMessage,
-} from '../../../bento/fileCentricCartWorkflowData';
-import SnackbarView from '@bento-core/paginated-table/dist/wrapper/components/Snackbar/Snackbar';
-import AddToCartDialogAlertView from '@bento-core/paginated-table/dist/wrapper/components/AddToCartDialog/AddToCartDialogAlertView';
+import { biospecimenColumns } from '../../../bento/participantDetailData';
+import { biospecimenWrapperConfig } from '../wrapperConfig';
+import { wrapperCustomTheme } from '../wrapperTheme';
 
 export const initBiospecimenTableState = (initialState) => ({
   ...initialState,
@@ -42,140 +30,26 @@ export const initBiospecimenTableState = (initialState) => ({
   },
 });
 
-const BiospecimenButtons = ({ classes, hasFiles, biospecimens }) => {
-  const { context } = useContext(TableContext);
-  const selectedRows = context?.selectedRows || [];
-  const showActionRow = hasFiles || showJBrowseButton;
-  const dispatch = useDispatch();
-  const client = useApolloClient();
-  const filesId = useSelector((state) => state.cartReducer.filesId);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [displayAlert, setDisplayAlert] = useState(false);
-  const [addedCount, setAddedCount] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [tooltipOpen, setTooltipOpen] = useState(false);
-
-  // Check if any selected biospecimen has associated files
-  const selectedHaveFiles = selectedRows.length > 0 && biospecimens
-    .filter((b) => selectedRows.includes(b.specimen_record_id))
-    .some((b) => b.data_file_uuid && b.data_file_uuid.length > 0);
-
-  const handleAddToCart = async () => {
-    setLoading(true);
-    try {
-      const result = await client.query({
-        query: GET_FILE_IDS_FOR_SELECTED_BIOSPECIMENS,
-        variables: { specimen_record_id: selectedRows, first: 10000 },
-        fetchPolicy: 'network-only',
-      });
-      const fileIds = (result?.data?.biospecimen_data_files || []).map((f) => f.data_file_uuid);
-      const newUniqueFiles = fileIds.filter((id) => !filesId.includes(id));
-      if (filesId.length + newUniqueFiles.length > maximumNumberOfFilesAllowedInTheCart) {
-        setDisplayAlert(true);
-        return;
-      }
-      dispatch(onAddCartFiles(fileIds));
-      setAddedCount(newUniqueFiles.length);
-      setOpenSnackbar(true);
-      context.dispatch(onRowSeclect([]));
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <>
-      <SnackbarView open={openSnackbar} count={addedCount} onClose={() => setOpenSnackbar(false)} />
-      {displayAlert && (
-        <AddToCartDialogAlertView
-          open={displayAlert}
-          alertMessage={alertMessage}
-          onClose={() => setDisplayAlert(false)}
-        />
-      )}
-      {showActionRow && (
-        <div className={classes.tableButtonRow}>
-          {hasFiles && (
-            <>
-              <span>
-                <Button
-                  className={classes.biospecimenCartButton}
-                  disabled={selectedRows.length === 0 || !selectedHaveFiles || loading}
-                  onClick={handleAddToCart}
-                  disableElevation
-                >
-                  Add Files for{<br />}Selected Biospecimens
-                </Button>
-              </span>
-              <ClickAwayListener onClickAway={() => setTooltipOpen(false)}>
-                <Tooltip
-                  title={BIOSPECIMEN_BUTTON_TOOLTIP}
-                  placement="top-end"
-                  classes={{ tooltip: classes.tooltipBody }}
-                  open={tooltipOpen}
-                  onClose={() => setTooltipOpen(false)}
-                  disableHoverListener
-                  disableFocusListener
-                  disableTouchListener
-                >
-                  <button
-                    aria-label={`Help: ${BIOSPECIMEN_BUTTON_TOOLTIP}`}
-                    className={classes.tooltipIconButton}
-                    onClick={() => setTooltipOpen(!tooltipOpen)}
-                    onBlur={() => setTooltipOpen(false)}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Escape') {
-                        setTooltipOpen(false);
-                      }
-                    }}
-                  >
-                    <HelpIcon className={classes.questionMarkIcon} aria-hidden="true" />
-                  </button>
-                </Tooltip>
-              </ClickAwayListener>
-            </>
-          )}
-          {showJBrowseButton && (
-            <>
-              <span>
-                <Button className={classes.jbrowseButton} disabled disableElevation>
-                  View in&nbsp;<img src={jbrowseIcon} alt="JBrowse" className={classes.jbrowseIcon} />JBrowse
-                </Button>
-              </span>
-              <Tooltip title="View in JBrowse (coming soon)" placement="top-end" classes={{ tooltip: classes.tooltipBody }}>
-                <button
-                  aria-label="Help: View in JBrowse (coming soon)"
-                  className={classes.tooltipIconButton}
-                >
-                  <HelpIcon className={classes.questionMarkIcon} aria-hidden="true" />
-                </button>
-              </Tooltip>
-            </>
-          )}
-        </div>
-      )}
-    </>
-  );
-};
-
-const BiospecimensTable = ({ classes, biospecimens = [], files = [] }) => (
+const BiospecimensTable = ({ classes, biospecimens = [] }) => (
   <div className={classes.tableSection}>
     <div className={classes.tableSectionTitle}>Associated Biospecimens</div>
     <div className={classes.tableWrapper}>
       <TableContextProvider>
-        <TableView
-          initState={initBiospecimenTableState}
-          themeConfig={{ ...themeConfig, customTheme }}
-          queryVariables={{}}
-          totalRowCount={biospecimens.length}
-          server={false}
-          tblRows={biospecimens}
-        />
-        <BiospecimenButtons
+        <Wrapper
+          wrapConfig={biospecimenWrapperConfig}
+          customTheme={wrapperCustomTheme}
           classes={classes}
-          hasFiles={files.length > 0}
-          biospecimens={biospecimens}
-        />
+          section="Biospecimens"
+        >
+          <TableView
+            initState={initBiospecimenTableState}
+            themeConfig={{ ...themeConfig, customTheme }}
+            queryVariables={{}}
+            totalRowCount={biospecimens.length}
+            server={false}
+            tblRows={biospecimens}
+          />
+        </Wrapper>
       </TableContextProvider>
     </div>
   </div>

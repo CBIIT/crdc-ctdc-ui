@@ -333,6 +333,20 @@ export default (theme) => ({
     border: '1px solid #C3C3C3',
   },
 
+  // Wrapper tooltip override (used by bento-core ToolTipView via classes.customTooltip)
+  customTooltip: {
+    backgroundColor: '#FFFFFF',
+    color: '#004D73',
+    fontSize: '12px',
+    fontWeight: '600',
+    fontFamily: 'Lato, sans-serif',
+    padding: '8px 12px',
+    borderRadius: '4px',
+    maxWidth: '220px',
+    boxShadow: '0px 4px 10px 0px #00000040',
+    border: '1px solid #C3C3C3',
+  },
+
   // ---- Misc shared ----
   root: {
     fontFamily: '"Open Sans", sans-serif',

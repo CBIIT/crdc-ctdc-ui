@@ -12,7 +12,7 @@ const ParticipantDetailView = ({ classes, participant, biospecimens, files }) =>
     <Stats />
     <div className={classes.container}>
       <HeaderPanel classes={classes} participant={participant} />
-      <BiospecimensTable classes={classes} biospecimens={biospecimens} files={files} />
+      <BiospecimensTable classes={classes} biospecimens={biospecimens} />
       <FilesTable classes={classes} files={files} />
     </div>
   </ParticipantThemeProvider>
