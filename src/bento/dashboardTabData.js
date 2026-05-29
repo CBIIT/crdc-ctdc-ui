@@ -15,7 +15,7 @@ export const tooltipContent = {
   Participants: 'Add filtered files associated with selected participants(s) to My Files',
   Biospecimens: 'Add filtered files associated with selected biospecimen(s) to My Files',
   Files: 'Add selected files to My Files',
-  'Study Files': 'Add selected files to My Files',
+  Study_Files: 'Add selected study files to My Files',
 };
 
   export const tooltipContentAllFile = {
@@ -25,7 +25,7 @@ export const tooltipContent = {
   Participants: 'Add filtered files associated with all participants in the current results set to My Files',
   Biospecimens: 'Add filtered files associated with all biospecimens in the current results set to My Files',
   Files: 'Add all filtered files to My Files',
-  'Study Files': 'Add all filtered study files to My Files',
+  Study_Files: 'Add all study files to My Files',
 };
 
 // --------------- Dahboard Table external link configuration --------------
