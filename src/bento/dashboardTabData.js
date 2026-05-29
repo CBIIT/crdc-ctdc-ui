@@ -15,6 +15,7 @@ export const tooltipContent = {
   Participants: 'Add filtered files associated with selected participants(s) to My Files',
   Biospecimens: 'Add filtered files associated with selected biospecimen(s) to My Files',
   Files: 'Add selected files to My Files',
+  'Study Files': 'Add selected files to My Files',
 };
 
   export const tooltipContentAllFile = {
@@ -24,6 +25,7 @@ export const tooltipContent = {
   Participants: 'Add filtered files associated with all participants in the current results set to My Files',
   Biospecimens: 'Add filtered files associated with all biospecimens in the current results set to My Files',
   Files: 'Add all filtered files to My Files',
+  'Study Files': 'Add all filtered study files to My Files',
 };
 
 // --------------- Dahboard Table external link configuration --------------
@@ -54,6 +56,12 @@ export const tabs = [
     dataField: 'dataFile',
     count: 'numberOfFiles',
   },
+  {
+    id: 'study_file_tab',
+    title: 'Study Files',
+    dataField: 'dataStudyFile',
+    count: 'numberOfStudyFiles',
+  },
 ];
 
 export const multiStudyData = {
@@ -80,6 +88,12 @@ export const tabIndex = [
     primaryColor: '#F7D7F7',
     secondaryColor: '#86D6F0',
     selectedColor: '#C92EC7',
+  },
+  {
+    title: 'Study Files',
+    primaryColor: '#D4E8F2',
+    secondaryColor: '#A3C9E0',
+    selectedColor: '#39C0F0',
   },
 ];
 
@@ -200,6 +214,7 @@ query search(
     numberOfTargetedTherapies
     numberOfSpecimens
     numberOfFiles
+    numberOfStudyFiles
     
     diagnosesAndStageOfDiseases {
       program
@@ -935,6 +950,71 @@ export const GET_FILE_IDS_FROM_FILE_NAME = gql`
       }
   }`;
 
+// --------------- GraphQL Query - Retrieve Study Files tab details --------------
+// Backend query: StudyFileTabByStudyShortName (type: default in single_search_es.yml)
+// Accepts only: study_short_name, study_id, data_file_type, data_file_format
+// Does NOT support server-side pagination or standard facet filter variables.
+// The paginated table will receive all matching records; client-side pagination applies.
+export const GET_STUDY_FILES_OVERVIEW_QUERY = gql`
+  query studyFileTabOverview(
+    $study_short_name: [String],
+    $data_file_type: [String],
+    $data_file_format: [String]
+  ){
+    StudyFileTabByStudyShortName(
+      study_short_name: $study_short_name
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+    ){
+      data_file_name,
+      data_file_type,
+      data_file_format,
+      data_file_size,
+      data_file_description,
+      data_file_uuid,
+      study_accession
+    }
+  }
+`;
+
+// --------------- GraphQL Query - "ADD SELECTED FILES" under Study Files tab ---------------
+// NOTE: Backend StudyFileTabByStudyShortName does not accept data_file_uuid as a filter.
+// The bento-core framework passes selected UUIDs via addFilesRequestVariableKey, but
+// since the backend cannot filter by UUID, this query returns all study files.
+// A backend enhancement is needed to add data_file_uuid filter support.
+export const GET_FILE_IDS_FOR_SELECTED_STUDY_FILES = gql`
+query studyFileAddSelectedToCart(
+  $study_short_name: [String],
+  $data_file_type: [String],
+  $data_file_format: [String]
+){
+  StudyFileTabByStudyShortName(
+    study_short_name: $study_short_name
+    data_file_type: $data_file_type
+    data_file_format: $data_file_format
+  ){
+    data_file_uuid
+  }
+}
+`;
+
+// --------------- GraphQL Query - "ADD ALL FILES" under Study Files tab ---------------
+export const GET_ALL_FILE_IDS_FOR_STUDY_FILES = gql`
+query studyFileAddAllToCart(
+  $study_short_name: [String],
+  $data_file_type: [String],
+  $data_file_format: [String]
+){
+  StudyFileTabByStudyShortName(
+    study_short_name: $study_short_name
+    data_file_type: $data_file_type
+    data_file_format: $data_file_format
+  ){
+    data_file_uuid
+  }
+}
+`;
+
 // --------------- Tabs Table configuration --------------
 export const tabContainers = [
   {
@@ -1334,6 +1414,141 @@ export const tabContainers = [
 
     addAllFilesResponseKeys: ['fileOverview', 'data_file_uuid'],
     addAllFileQuery: GET_ALL_FILE_IDS_FOR_FILES,
+  },
+  {
+    name: 'Study Files',
+    dataField: 'dataStudyFile',
+    api: GET_STUDY_FILES_OVERVIEW_QUERY,
+    paginationAPIField: 'StudyFileTabByStudyShortName',
+    defaultSortField: 'data_file_name',
+    defaultSortDirection: 'asc',
+    count: 'numberOfStudyFiles',
+    dataKey: 'data_file_uuid',
+    tableID: 'study_file_tab_table',
+    addAllButtonText: 'ADD ALL STUDY FILES',
+    buttonText: 'ADD SELECTED STUDY FILES',
+    extendedViewConfig: {
+      pagination: true,
+      manageViewColumns: {
+        title: "View Columns"
+      },
+      download: {
+        downloadCsv: "Download Table Contents As CSV",
+        downloadFileName: "CTDC_Study_Files_download",
+      },
+    },
+    columns: [
+      {
+        cellType: cellTypes.CHECKBOX,
+        display: true,
+        role: cellTypes.CHECKBOX,
+      },
+      {
+        dataField: 'data_file_name',
+        header: 'File Name',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'data_file_type',
+        header: 'File Type',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'data_file_format',
+        header: 'Format',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'data_file_size',
+        header: 'Size',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+        dataFormatType: dataFormatTypes.FORMAT_BYTES,
+        cellType: cellTypes.FORMAT_DATA,
+      },
+      {
+        dataField: 'data_file_description',
+        header: 'Description',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'data_file_uuid', // This need to left empty if no data need to be displayed before file download icon
+        header: 'Access',
+        display: true,
+        cellType: cellTypes.CUSTOM_ELEM,
+        downloadDocument: true, // To indicate that column is document download
+        documentDownloadProps: {
+          // Max file size needs to be in Bytes to separate two support file preview and download
+          maxFileSize: 80000000, // 10MB => 80,000,000 bits
+          // datafield where file size column exists in the table
+          fileSizeColumn: 'data_file_size',
+          // datafield where file id exists in the table which is used to get file location
+          fileLocationColumn: 'data_file_uuid',
+          // datafield where file format exists in the table
+          fileFormatColumn: 'data_file_format',
+          // datafield where file case id exists in the table which is used to get file information
+          caseIdColumn: 'study_accession',
+          // datafield where file name exists
+          fileName: 'data_file_name',
+
+          // Case 1: Logged in and granted access, file size below {maxFileSize}
+          toolTipTextFileDownload: 'Click to download a copy of this file if you have been approved by dbGaP',
+          iconFileDownload: downloadSuccess,
+
+          // Case 2: Not logged in or access not granted, file size below {maxFileSize}
+          iconUnauthenticated: downloadLock,
+          toolTipTextUnauthenticated: 'You must be logged in and must already have been granted access to download a copy of this file',
+
+          // Case 3: Regardless of login status, file size larger than {maxFileSize}
+          iconFilePreview: previewLarge,
+          toolTipTextFilePreview: 'Because of its size and/or format, this file must be accessed via the My Files workflow',
+        },
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+      {
+        dataField: 'study_accession',
+        header: 'Study Accession',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+        cellType: cellTypes.LINK,
+        linkAttr: {
+          rootPath: '/study',
+          pathParams: ['study_accession'],
+        },
+      },
+      {
+        dataField: 'data_file_uuid',
+        header: 'File UUID',
+        display: false,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+      },
+    ],
+    id: 'study_file_tab',
+    tableID: 'study_file_tab_table',
+    selectableRows: true,
+    tableMsg: {
+      noMatch: 'No Matching Records Found',
+    },
+
+    addFilesRequestVariableKey: 'data_file_uuid',
+
+    addFilesResponseKeys: ['StudyFileTabByStudyShortName', 'data_file_uuid'],
+    addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_STUDY_FILES,
+
+    addAllFilesResponseKeys: ['StudyFileTabByStudyShortName', 'data_file_uuid'],
+    addAllFileQuery: GET_ALL_FILE_IDS_FOR_STUDY_FILES,
   },
 ];
 
