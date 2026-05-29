@@ -972,7 +972,8 @@ export const GET_STUDY_FILES_OVERVIEW_QUERY = gql`
       data_file_size,
       data_file_description,
       data_file_uuid,
-      study_accession
+      study_accession,
+      study_id
     }
   }
 `;
@@ -1488,7 +1489,7 @@ export const tabContainers = [
         downloadDocument: true, // To indicate that column is document download
         documentDownloadProps: {
           // Max file size needs to be in Bytes to separate two support file preview and download
-          maxFileSize: 80000000, // 10MB => 80,000,000 bits
+          maxFileSize: 80000000, // ~80 MB
           // datafield where file size column exists in the table
           fileSizeColumn: 'data_file_size',
           // datafield where file id exists in the table which is used to get file location
@@ -1524,7 +1525,7 @@ export const tabContainers = [
         cellType: cellTypes.LINK,
         linkAttr: {
           rootPath: '/study',
-          pathParams: ['study_accession'],
+          pathParams: ['study_id'],
         },
       },
       {
@@ -1537,7 +1538,6 @@ export const tabContainers = [
       },
     ],
     id: 'study_file_tab',
-    tableID: 'study_file_tab_table',
     selectableRows: true,
     tableMsg: {
       noMatch: 'No Matching Records Found',

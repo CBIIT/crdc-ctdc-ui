@@ -37,7 +37,7 @@ const getDashData = (states) => {
         setAllStudyShortNames(names);
       })
       .catch((err) => console.error('Error fetching study short names:', err));
-  }, []);
+  }, [client]);
 
   // Compute activeFilters, ensuring it updates only when dependencies change
   const activeFilters = useMemo(() => {
