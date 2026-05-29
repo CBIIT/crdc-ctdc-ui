@@ -434,6 +434,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       carcinogen_exposure,
       # targeted_therapy
       targeted_therapy_string
+      best_response_to_targeted_therapy
 
       data_file_uuid
     }
@@ -497,6 +498,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       specimen_record_id,
       anatomical_collection_site,
       tissue_category,
+      specimen_category,
       assessment_timepoint,
       surgical_procedure,
       specimen_type,
