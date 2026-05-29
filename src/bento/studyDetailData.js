@@ -1,7 +1,5 @@
-import { cellTypes, dataFormatTypes } from "@bento-core/table";
+import { cellTypes } from "@bento-core/table";
 import gql from "graphql-tag";
-import clinicalDataCsvIcon from '../assets/icons/clinical_data_csv_icon.svg';
-import previewLarge from '../assets/dash/previewLarge.svg';
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
@@ -30,11 +28,6 @@ export const tab = {
       index: 1,
       label: "Clinical Data",
       value: "clinical_data",
-    },
-    {
-      index: 2,
-      label: "Study Files",
-      value: "study_files",
     },
   ],
 };
@@ -491,104 +484,3 @@ export const tableLayOut = [
     paginatedTable: true,
   },
 ];
-
-// --------------- Study Files Tab configuration ---------------
-export const studyFilesTabConfig = {
-  name: 'Files',
-  id: 'study_file_tab',
-  tableID: 'study_file_tab_table',
-  dataKey: 'data_file_uuid',
-  defaultSortField: 'data_file_name',
-  defaultSortDirection: 'asc',
-  addAllButtonText: 'ADD ALL FILES',
-  buttonText: 'ADD SELECTED FILES',
-  addFilesRequestVariableKey: 'data_file_uuid',
-  addFilesResponseKeys: ['fileOverview', 'data_file_uuid'],
-  addAllFilesResponseKeys: ['fileOverview', 'data_file_uuid'],
-  extendedViewConfig: {
-    pagination: true,
-    manageViewColumns: {
-      title: 'View Columns',
-    },
-    download: {
-      downloadCsv: 'Download Table Contents As CSV',
-      downloadFileName: 'CTDC_Study_Files_download',
-    },
-  },
-  columns: [
-    {
-      cellType: cellTypes.CHECKBOX,
-      display: true,
-      role: cellTypes.CHECKBOX,
-    },
-    {
-      dataField: 'data_file_name',
-      header: 'File Name',
-      display: true,
-      tooltipText: 'sort',
-      role: cellTypes.DISPLAY,
-    },
-    {
-      dataField: 'data_file_type',
-      header: 'File Type',
-      display: true,
-      tooltipText: 'sort',
-      role: cellTypes.DISPLAY,
-    },
-    {
-      dataField: 'association',
-      header: 'Association',
-      display: true,
-      tooltipText: 'sort',
-      role: cellTypes.DISPLAY,
-    },
-    {
-      dataField: 'data_file_description',
-      header: 'Description',
-      display: true,
-      tooltipText: 'sort',
-      role: cellTypes.DISPLAY,
-    },
-    {
-      dataField: 'data_file_format',
-      header: 'Format',
-      display: true,
-      tooltipText: 'sort',
-      role: cellTypes.DISPLAY,
-    },
-    {
-      dataField: 'data_file_size',
-      header: 'Size',
-      display: true,
-      tooltipText: 'sort',
-      role: cellTypes.DISPLAY,
-      dataFormatType: dataFormatTypes.FORMAT_BYTES,
-      cellType: cellTypes.FORMAT_DATA,
-    },
-    {
-      dataField: 'data_file_uuid',
-      header: 'Access',
-      display: true,
-      cellType: cellTypes.CUSTOM_ELEM,
-      downloadDocument: true,
-      documentDownloadProps: {
-        maxFileSize: 80000000,
-        fileSizeColumn: 'data_file_size',
-        fileLocationColumn: 'data_file_uuid',
-        fileFormatColumn: 'data_file_format',
-        caseIdColumn: 'participant_id',
-        fileName: 'data_file_name',
-        toolTipTextFileDownload: 'Download a copy of this file',
-        iconFileDownload: clinicalDataCsvIcon,
-        iconUnauthenticated: clinicalDataCsvIcon,
-        toolTipTextUnauthenticated: 'You must be logged in and must have already been granted access to download a copy of this file',
-        iconFilePreview: previewLarge,
-        toolTipTextFilePreview: 'Because of its size and/or format, this file must be accessed via the My Files workflow',
-      },
-      role: cellTypes.DISPLAY,
-    },
-  ],
-  tableMsg: {
-    noMatch: 'No Matching Records Found',
-  },
-};
