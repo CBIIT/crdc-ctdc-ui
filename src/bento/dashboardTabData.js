@@ -1481,7 +1481,7 @@ export const tabContainers = [
         role: cellTypes.DISPLAY,
       },
       {
-        dataField: 'data_file_uuid', // This need to left empty if no data need to be displayed before file download icon
+        dataField: 'access',
         header: 'Access',
         display: true,
         cellType: cellTypes.CUSTOM_ELEM,
@@ -1531,6 +1531,7 @@ export const tabContainers = [
         dataField: 'data_file_uuid',
         header: 'File UUID',
         display: false,
+        hiddenByDefault: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
       },
