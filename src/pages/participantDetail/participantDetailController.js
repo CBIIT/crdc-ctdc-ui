@@ -65,9 +65,9 @@ const ParticipantDetailController = ({ match }) => {
   const overviewRecord = participantOverviewData.participantOverview[0];
   const biospecimenRecord = biospecimensData?.biospecimenOverview?.[0] || {};
 
-  const formattedTargetedTherapy = overviewRecord.targeted_therapy_string
-    ? overviewRecord.targeted_therapy_string.split('|').map((t) => t.trim()).join(', ')
-    : null;
+  const formatPipeList = (val) => (val && val !== '[]'
+    ? val.split('|').map((t) => t.trim()).join(', ')
+    : null);
 
   const participantData = {
     participant_id,
@@ -77,8 +77,8 @@ const ParticipantDetailController = ({ match }) => {
     ethnicity: overviewRecord.ethnicity,
     stage_of_disease: overviewRecord.stage_of_disease,
     primary_diagnosis_disease_group: overviewRecord.ctep_disease_term,
-    targeted_therapy: formattedTargetedTherapy,
-    best_response_to_targeted_therapy: overviewRecord.best_response_to_targeted_therapy,
+    targeted_therapy: formatPipeList(overviewRecord.targeted_therapy_string),
+    best_response_to_targeted_therapy: formatPipeList(overviewRecord.best_response_to_targeted_therapy),
     primary_disease_site: biospecimenRecord.primary_disease_site,
   };
 
@@ -87,7 +87,7 @@ const ParticipantDetailController = ({ match }) => {
     age_at_enrollment: overviewRecord.age_at_enrollment,
     sex: overviewRecord.sex,
     race: overviewRecord.race,
-    targeted_therapy: formattedTargetedTherapy,
+    targeted_therapy: formatPipeList(overviewRecord.targeted_therapy_string),
   }));
 
   return (
