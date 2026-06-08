@@ -25,8 +25,8 @@ const getDashData = (states) => {
   const activeFilters = useMemo(() => {
     const baseFilters = {
       ...getFilters(filterState),
-      // TODO: localFindUpload, localFindAutocomplete
-      subject_ids: [
+      // Local find: merge uploaded participant IDs and autocomplete selections
+      participant_id: [
         ...(localFindUpload || []).map((obj) => obj.subject_id),
         ...(localFindAutocomplete || []).map((obj) => obj.title),
       ],
