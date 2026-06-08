@@ -1,7 +1,7 @@
 
 import { clearAllAndSelectFacet, clearAllFilters } from '@bento-core/facet-filter';
 import {
-  GET_IDS_BY_TYPE, GET_SUBJECT_IDS,
+  GET_ALL_PARTICIPANT_IDS, GET_PARTICIPANT_IDS_BY_LIST,
 } from '../../../bento/localSearchData';
 import store from '../../../store';
 import client from '../../../utils/graphqlClient';
@@ -24,38 +24,43 @@ export const onClearAllFilters = (facet, facetValue) => {
 }
 
 /**
- * Get list of all available ids for a search field
+ * Get list of all available participant IDs for autocomplete
  *
  * @async
- * @param {string} type search field
- * @returns {Promise<string[]>} all ids for the search field
+ * @returns {Promise<object>} object with participantIds array
  */
-export async function getAllIds(type) {
-  const allids = await client
+export async function getAllIds() {
+  const result = await client
     .query({
-      query: GET_IDS_BY_TYPE(type),
-      variables: {},
+      query: GET_ALL_PARTICIPANT_IDS,
+      variables: { first: 10000, offset: 0 },
     })
-    .then((result) => result.data.idsLists)
-    .catch(() => []);
-  return allids;
+    .then((res) => ({
+      participantIds: (res.data.participantOverview || []).map((p) => p.participant_id),
+    }))
+    .catch(() => ({ participantIds: [] }));
+  return result;
 }
 
 /**
- * Get list of matching ids for a list of ids
+ * Get list of matching participants for a list of IDs
  *
- * @param {string[]} subjectIdsArray
- * @returns {Promise<string[]>}
+ * @param {string[]} participantIdsArray
+ * @returns {Promise<object[]>} matched participants with subject_id and program_id fields
  */
-export async function getAllSubjectIds(subjectIdsArray) {
+export async function getAllSubjectIds(participantIdsArray) {
   const allids = await client
     .query({
-      query: GET_SUBJECT_IDS,
+      query: GET_PARTICIPANT_IDS_BY_LIST,
       variables: {
-        subject_ids: subjectIdsArray,
+        participant_id: participantIdsArray,
+        
       },
     })
-    .then((result) => result.data.findSubjectIdsInList)
+    .then((result) => (result.data.participantOverview || []).map((p) => ({
+      subject_id: p.participant_id,
+      program_id: p.study_short_name,
+    })))
     .catch(() => []);
   return allids;
 }
