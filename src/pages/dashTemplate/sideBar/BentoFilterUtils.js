@@ -54,7 +54,7 @@ export async function getAllSubjectIds(participantIdsArray) {
       query: GET_PARTICIPANT_IDS_BY_LIST,
       variables: {
         participant_id: participantIdsArray,
-        
+        first: 10000, offset: 0
       },
     })
     .then((result) => (result.data.participantOverview || []).map((p) => ({
