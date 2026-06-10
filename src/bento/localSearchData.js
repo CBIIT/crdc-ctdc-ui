@@ -11,8 +11,8 @@ export const GET_ALL_PARTICIPANT_IDS = gql`
 
 // --------------- GraphQL query - Match participant IDs from uploaded list --------------
 export const GET_PARTICIPANT_IDS_BY_LIST = gql`
-  query participantOverview($participant_id: [String]) {
-    participantOverview(participant_id: $participant_id) {
+  query participantOverview($participant_id: [String], $first: Int, $offset: Int) {
+    participantOverview(participant_id: $participant_id, first: $first, offset: $offset) {
       participant_id
       study_short_name
     }
