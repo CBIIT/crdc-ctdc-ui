@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Button } from "@material-ui/core";
 import { SearchList, resetUploadData } from "@bento-core/local-find";
+import uploadIcon from '../../../assets/dash/uploadIcon.svg';
 
 /**
  * Custom Local Find Search View for CTDC.
@@ -50,7 +51,7 @@ const LocalFindSearchView = (props) => {
         <span className={classes.iconSpan}>
           <img
             className={classes.uploadIcon}
-            src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/localfindUplwardArrow.svg"
+            src={uploadIcon} 
             alt="upload icon"
           />
         </span>
