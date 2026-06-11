@@ -84,6 +84,7 @@ export default () => ({
     fontWeight: 300,
     marginLeft: 3,
     color: '#000000',
+
   },
   CasesCheckbox: {
     color: '#10A075',
@@ -123,17 +124,20 @@ export default () => ({
   },
   findCaseButton: {
     marginLeft: '0px', // 105px
-    backgroundColor: '#10A075',
+    backgroundColor: '#08A383',
     boxSizing: 'border-box',
     height: 30,
     width: 40,
-    border: '1.25px solid #0D8461',
+    border: '1.25px solid #11A075',
     cursor: 'pointer',
     borderRadius: 11,
     display: 'flex',
     marginRight: 6,
     justifyContent: 'center',
     alignItems: 'center',
+    '&:hover': {
+      backgroundColor: '#026551',
+    },
   },
   findCaseIcon: {
     width: 17,
@@ -141,30 +145,29 @@ export default () => ({
   },
   uploadButton: {
     boxSizing: 'border-box',
-    fontWeight: '400',
+    fontWeight: 400,
     height: 32,
     width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
-    backgroundColor: '#10A075',
+    backgroundColor: '#06846A',
     color: '#fff',
-    border: '1px solid #0D8461',
-    borderRadius: 10,
-    fontFamily: 'Lato',
-    fontSize: 11,
+    border: '1px solid #06846A',
+    borderRadius: 7,
+    fontFamily: 'Roboto',
+    fontSize: 12,
     boxShadow: 'none',
-    paddingLeft: 16,
-    paddingRight: 12,
+    padding: '0px 10px',
     '&:hover': {
-      backgroundColor: '#10A075',
+      backgroundColor: '#026551',
     },
   },
   iconSpan: {
     marginTop: '5.2px',
   },
   uploadIcon: {
-    height: 19,
-    width: 19,
+    height: 16,
+    width: 16,
   },
   customListPadding: {
     paddingTop: 8,
