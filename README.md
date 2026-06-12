@@ -8,7 +8,7 @@ The CTDC UI is the front-end repository of NCI's Clinical and Translational Data
 ---
 
 **Prerequisites:**
-- Node.js 20.x (LTS) — run `nvm use` if you have [nvm](https://github.com/nvm-sh/nvm) installed (`.nvmrc` is provided)
+- Node.js 20.x (LTS) — run `nvm use` to switch to the version in `.nvmrc`, or `nvm use 20` if you need to set it manually
 - npm 10.x
 
 ---
@@ -24,8 +24,10 @@ To run the CTDC UI project locally, follow these steps:
     ```
 2. **Install dependencies:**
     ```bash
+    nvm use
     npm install --legacy-peer-deps
     ```
+   If `nvm use` does not select Node 20.x, run `nvm use 20` first.
 3. **Start the development server:**
     ```bash
     npm start
