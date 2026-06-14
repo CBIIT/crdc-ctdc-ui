@@ -29,8 +29,8 @@ const tabLabels = ["Timepoint", "Biospecimens"];
 const BiospecimenProfileModal = ({
   biospecimenProfile,
   data,
-  studyName,
-  studyCode,
+  studyShortName,
+  studyId,
   handleTabChange,
   currentTab,
 }) => {
@@ -94,7 +94,7 @@ const BiospecimenProfileModal = ({
         >
           <Box sx={{ marginRight: "8px" }}>{"Biospecimen Profile: "}</Box>
           <Box sx={{ fontWeight: "500" }}>
-            {studyName} {studyCode}
+            {studyShortName} {studyId}
           </Box>
         </StyledDialogTitle>
         <Box sx={{ position: "absolute", top: "10px", right: "12px" }}>
