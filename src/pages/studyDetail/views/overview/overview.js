@@ -129,7 +129,10 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
                   </Grid>
                   
                   {/* AVAILABLE DOWNLOADS / ZIP FILE */}
-                  <AvailableDownloads zipFileData={zipFileData} />
+                  <AvailableDownloads 
+                    zipFileData={zipFileData} 
+                    participantFileTypes={participantFileTypes} 
+                  />
 
                 </Grid>
               </Grid>
