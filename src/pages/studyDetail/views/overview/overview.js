@@ -70,8 +70,9 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
   const imageCollection = [...(study.image_collection || [])];
   const diagnoses = [...(data?.studyDiagnosisByStudyShortName?.[0]?.ctep_disease_terms || [])];
   const participantFileTypes = [...(data?.StudyDataFileByStudyShortName?.[0]?.list_type || [])];
+  const studySpecimen = data?.StudySpecimenByStudyShortName?.[0] || {};
 
-  const { study_name, study_description, study_type, dates_of_conduct, study_accession } = study;
+  const { study_name, study_description, study_type, dates_of_conduct, study_accession, study_short_name, study_id } = study;
 
   const missingZipTooltip =
     'No ZIP file is available for download for this study.';
@@ -238,6 +239,13 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
                         </span>
                       </Grid>
                     ))}
+                    {diagnoses.length === 0 && (
+                      <Grid item xs={12}>
+                        <span className={classes.content}>
+                          This study does not have any diagnoses
+                        </span>
+                      </Grid>
+                    )}
                   </Grid>
                 </Grid>
                 <Grid
@@ -258,12 +266,18 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
                       <Grid item xs={12} key={index}>
                         <span className={classes.content}>{fileType}</span>
                       </Grid>
-                    )): null}
+                    )) : (
+                      <Grid item xs={12}>
+                        <span className={classes.content}>
+                          This study does not have any participant files
+                        </span>
+                      </Grid>
+                    )}
                   </Grid>
                 </Grid>
               </Grid>
               <Grid container direction="row" className={classes.detailContainerRight}>
-                <BiospecimenProfile d={data} />
+                <BiospecimenProfile data={studySpecimen} studyShortName={study_short_name} studyId={study_id} />
 
                 {/* START: Image Collection */}
                 <Grid item lg={6} md={6} sm={12} xs={12} className={classes.imageCollection}>
