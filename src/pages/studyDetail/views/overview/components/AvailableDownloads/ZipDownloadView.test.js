@@ -4,7 +4,7 @@ import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import ZipDownloadView from "./ZipDownloadView";
-import { fetchFileToDownload } from "../../../../../components/DocumentDownload/DocumentDownloadView";
+import { fetchFileToDownload } from "../../../../../../components/DocumentDownload/DocumentDownloadView";
 
 /**
  * Mock graphqlClient to prevent Apollo Client initialization errors.
