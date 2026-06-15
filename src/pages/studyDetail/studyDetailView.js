@@ -29,7 +29,7 @@ const StudyDetailView = ({
   const studyData = data;
   const processedTabs = tab.items;
   const study_short_name = studyData?.studyByStudyShortName?.at(0)?.study_short_name;
-  const studyFiles = data?.participantAndBiospecimenFilesByStudyId?.[0]?.data_files || [];
+  const studyFiles = data?.StudyFileTabByStudyShortName || [];
   const zipFileData = data?.studyZipFileQuery || [];
 
   const breadCrumbJson = [

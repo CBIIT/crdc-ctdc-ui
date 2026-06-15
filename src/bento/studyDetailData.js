@@ -49,7 +49,7 @@ export const studyFilesTooltipContent = {
   alt: "tooltipIcon",
   arrow: false,
   classes: "customTooltip",
-  "Study_Files": STUDY_FILES_BUTTON_TOOLTIP,
+  Study_Files: STUDY_FILES_BUTTON_TOOLTIP,
 };
 
 // Study Detail: Study Files Tab table configuration
@@ -89,13 +89,6 @@ export const studyFilesTableConfig = {
       header: "File Type",
       display: true,
       role: cellTypes.DISPLAY,
-    },
-    {
-      dataField: "association",
-      header: "Association",
-      display: true,
-      role: cellTypes.DISPLAY,
-      tooltipText: "Sort",
     },
     {
       dataField: "data_file_description",
@@ -348,9 +341,20 @@ export const studyClinicalDataQuery = gql`
   }
 `;
 
-// --------------- GraphQL query configuration --------------
 export const GET_STUDY_DETAIL_DATA_QUERY = gql`
-  query studyByStudyShortNameQueries($study_id: [String]) {
+  query studyDetailPageQueries($study_id: [String]) {
+    # Study Files Tab: StudyFileTabByStudyShortName
+    StudyFileTabByStudyShortName(study_id: $study_id) {
+      data_file_name
+      data_file_type
+      data_file_format
+      data_file_size
+      data_file_description
+      data_file_uuid
+      study_accession
+      study_id
+    }
+
     # Clinical Data Tab: Node Counts
     clinicalDataNodeCounts: clinicalData(study_id: $study_id) {
       diagnosis: diagnosisNodeCount
@@ -402,27 +406,10 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
       ctep_disease_terms
     }
 
-    participantAndBiospecimenFilesByStudyId(study_id: $study_id) {
-      study_short_name
-      list_type
-      data_files {
-        data_file_uuid
-        data_file_name
-        data_file_type
-        data_file_description
-        data_file_format
-        data_file_size
-        data_file_checksum_value
-        data_file_checksum_type
-        data_file_compression_status
-        data_file_location
-        association
-      }
-    }
-
     StudyDataFileByStudyShortName(study_id: $study_id) {
       list_type
-      study_data_files {
+      # TODO: Remove the following fields if they are not needed 
+      study_data_files {      
         # association
         data_file_description
         data_file_size
