@@ -10,7 +10,9 @@ import AvailableDownloads from "./AvailableDownloads";
 
 // Mock Material-UI withStyles
 jest.mock("@material-ui/core", () => ({
-  Grid: ({ children, ...props }) => <div {...props}>{children}</div>,
+  Grid: ({ children, item, container, ...props }) => (
+    <div {...props}>{children}</div>
+  ),
   withStyles: () => (Component) => (props) => (
     <Component {...props} classes={{}} />
   ),
@@ -175,14 +177,18 @@ describe("AvailableDownloads Component", () => {
     it("should hide section when data_file_uuid is undefined", () => {
       renderComponent(
         ["Variant Report"],
-        [{
-          data_file_type: "Variant Report",
-          zip_files: [{
-            // data_file_uuid is undefined (not present)
-            data_file_name: "reports.zip",
-            data_file_format: "zip",
-          }],
-        }]
+        [
+          {
+            data_file_type: "Variant Report",
+            zip_files: [
+              {
+                // data_file_uuid is undefined (not present)
+                data_file_name: "reports.zip",
+                data_file_format: "zip",
+              },
+            ],
+          },
+        ],
       );
       expect(container.textContent).toBe("");
     });
