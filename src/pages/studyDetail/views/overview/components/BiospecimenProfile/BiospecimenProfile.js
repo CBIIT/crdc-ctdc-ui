@@ -162,7 +162,7 @@ const BiospecimenProfile = ({ classes, data, studyShortName, studyId }) => {
           </Grid>
           <Grid container className={classes.detailContainerItems}>
             {biospecimenProfile.tabs.map((item, index) =>
-              renderTabContent(item, index),
+              renderTabContent(item, index)
             )}
           </Grid>
         </>

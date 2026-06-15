@@ -117,8 +117,8 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
                       </Grid>
                       {associatedLinks.length > 0 ? (
                         associatedLinks.sort((a, b) => customSorting(a.associated_link_record_id, b.associated_link_record_id))
-                          .map((link, index) => (
-                            <Grid item xs={12} className={classes.content} key={index}>
+                          .map((link) => (
+                            <Grid item xs={12} className={classes.content} key={link.associated_link_record_id || link.associated_link_url}>
                               <a
                                 href={link.associated_link_url}
                                 className={classes.link}
@@ -197,8 +197,8 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
                     </Grid>
                   </Grid>
                   <Grid container className={classes.participantFileC}>
-                    {(participantFileTypes.length > 0) ? participantFileTypes.sort((a, b) => customSorting(a, b)).map((fileType, index) => (
-                      <Grid item xs={12} key={index}>
+                    {(participantFileTypes.length > 0) ? participantFileTypes.sort((a, b) => customSorting(a, b)).map((fileType) => (
+                      <Grid item xs={12} key={fileType}>
                         <span className={classes.content}>{fileType}</span>
                       </Grid>
                     )) : (
@@ -226,8 +226,8 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
                   <Grid container>
                     <Grid item xs={12}>
                       <div className={classes.collection}>
-                      {imageCollection.sort((a, b) => customSorting(a.image_collection_name, b.image_collection_name)).map((image, index)=> (
-                        <div className={classes.collectionWrapper} key={index}>
+                      {imageCollection.sort((a, b) => customSorting(a.image_collection_name, b.image_collection_name)).map((image)=> (
+                        <div className={classes.collectionWrapper} key={image.image_collection_name || image.image_collection_url}>
                           <span className={classes.imageKey}>
                             COLLECTION:
                           </span>
