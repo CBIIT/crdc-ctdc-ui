@@ -14,7 +14,7 @@ const DataAvailabilityHeader = ({
 
 const styles = () => ({
   icon: {
-    width: '25px',
+    width: '35px',
     textAlign: 'center',
   },
 });
