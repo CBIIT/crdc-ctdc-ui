@@ -45,7 +45,9 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
 
   // ----- Data extraction -----
   const study = data?.studyByStudyShortName?.[0] || {};
-  const associatedLinks = [...(study.associated_links || [])];
+  const associatedLinks = [...(study.associated_links || [])].filter(
+    (link) => link.associated_link_name && link.associated_link_url
+  );
   const imageCollection = [...(study.image_collection || [])];
   const diagnoses = [...(data?.studyDiagnosisByStudyShortName?.[0]?.ctep_disease_terms || [])];
   const participantFileTypes = [...(data?.StudyDataFileByStudyShortName?.[0]?.list_type || [])];
@@ -113,18 +115,24 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
                       <Grid item xs={12} className={classes.title}>
                         ASSOCIATED LINKS
                       </Grid>
-                      {associatedLinks.sort((a, b) => customSorting(a.associated_link_record_id, b.associated_link_record_id))
-                        .map((link, index) => (
-                          <Grid item xs={12} className={classes.content} key={index}>
-                            <a
-                              href={link.associated_link_url}
-                              className={classes.link}
-                              rel="noopener noreferrer"
-                              target="_blank">
-                              {link.associated_link_name}
-                            </a>&nbsp;<ExternalLinkIcon/> <br/>
-                          </Grid>
-                      ))}
+                      {associatedLinks.length > 0 ? (
+                        associatedLinks.sort((a, b) => customSorting(a.associated_link_record_id, b.associated_link_record_id))
+                          .map((link, index) => (
+                            <Grid item xs={12} className={classes.content} key={index}>
+                              <a
+                                href={link.associated_link_url}
+                                className={classes.link}
+                                rel="noopener noreferrer"
+                                target="_blank">
+                                {link.associated_link_name}
+                              </a>&nbsp;<ExternalLinkIcon/> <br/>
+                            </Grid>
+                        ))
+                      ) : (
+                        <Grid item xs={12} className={classes.content}>
+                          This study does not have any Associated Links
+                        </Grid>
+                      )}
                     </Grid>
                   </Grid>
                   
@@ -219,7 +227,7 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
                     <Grid item xs={12}>
                       <div className={classes.collection}>
                       {imageCollection.sort((a, b) => customSorting(a.image_collection_name, b.image_collection_name)).map((image, index)=> (
-                        <div className={classes.collectionWrapper}>
+                        <div className={classes.collectionWrapper} key={index}>
                           <span className={classes.imageKey}>
                             COLLECTION:
                           </span>
@@ -249,7 +257,9 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
                         </div>
                       ))}
                       </div>
-                      <p className={classes.helpfulDirectionText}>Scroll down to see more available</p>
+                      {imageCollection.length > 3 && (
+                        <p className={classes.helpfulDirectionText}>Scroll down to see more available</p>
+                      )}
                     </Grid>
                   </Grid>
                 </Grid>
