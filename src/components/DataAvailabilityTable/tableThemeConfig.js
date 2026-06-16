@@ -71,6 +71,41 @@ export const tblBody = (table) => {
             fontWeight: '400',
             letterSpacing: '0.025em',
           },
+          '&.study_id': {
+            width: '10%',
+          },
+          '&.study_name': {
+            width: '30%',
+          },
+          '&.participant_file_count': {
+            textAlign: 'center',
+            width: '3%',
+            padding: '15px 5px',
+          },
+          '&.study_file_count': {
+            textAlign: 'center',
+            width: '3%',
+            padding: '15px 5px',
+          },
+          '&.image_collection_count': {
+            textAlign: 'center',
+            width: '3%',
+            padding: '15px 5px',
+          },
+          '&.numberOfPublications': {
+            textAlign: 'center',
+            width: '3%',
+            padding: '15px 5px',
+          },
+          '&.unique_repository': {
+            textAlign: 'center',
+            width: '3%',
+            padding: '15px 5px',
+          },
+          '&.study_type': {
+            width: '40%',
+            paddingLeft: '100px',
+          },
         },
         paddingCheckbox: {
           width: '48px',
@@ -163,23 +198,26 @@ export const headerTheme = (table) => {
           },
           '&.participant_file_count': {
             textAlign: 'center',
-            padding: '15px',
+            padding: '15px 5px',
           },
           '&.study_file_count': {
             textAlign: 'center',
-            padding: '15px',
+            padding: '15px 5px',
           },
           '&.image_collection_count': {
             textAlign: 'center',
-            padding: '15px',
+            padding: '15px 5px',
           },
           '&.numberOfPublications': {
             textAlign: 'center',
-            padding: '15px',
+            padding: '15px 5px',
           },
           '&.unique_repository': {
             textAlign: 'center',
-            padding: '15px',
+            padding: '15px 5px',
+          },
+          '&.study_type': {
+            paddingLeft: '100px',
           },
           // ...customDataAvailColStyles,
         },
