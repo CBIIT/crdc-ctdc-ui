@@ -25,25 +25,6 @@ const documentDownloadProps = {
   toolTipIcon,
 };
 
-// Config for download buttons mapped to backend data_file_type values
-const downloadButtons = [
-  {
-    buttonText: "Variant Call Files",
-    dataFileType: "Variant Call File",
-    tooltip: "Download all variant call files (VCF) for this study",
-  },
-  {
-    buttonText: "Variant Reports",
-    dataFileType: "Variant Report",
-    tooltip: "Download all variant reports (pdf) for this study",
-  },
-  {
-    buttonText: "Radiology Images",
-    dataFileType: "Radiology Imaging",
-    tooltip: "Download all radiology images (DICOM) for this study",
-  },
-];
-
 const missingZipTooltip =
   "No ZIP file is available for download for this study.";
 
@@ -52,6 +33,89 @@ const AvailableDownloads = ({
   zipFileData = [],
   participantFileTypes = [],
 }) => {
+  /**
+   * Pluralize a file type string for use in tooltips and button text.
+   * Handles common English pluralization rules and special cases.
+   *
+   * @param {string} fileType - The data_file_type value
+   * @returns {string} - Pluralized version
+   */
+  const pluralizeFileType = (fileType) => {
+    // Get the last word to apply pluralization rules
+    const words = fileType.trim().split(/\s+/);
+    const lastWord = words[words.length - 1];
+    const lowerLastWord = lastWord.toLowerCase();
+    const prefix = words.slice(0, -1).join(" ");
+
+    // Check if already plural (simple heuristic)
+    // Exclude words ending in 'sis', 'us', 'ss' which are often singular
+    if (
+      (lowerLastWord.endsWith("s") &&
+        !lowerLastWord.endsWith("sis") &&
+        !lowerLastWord.endsWith("us") &&
+        !lowerLastWord.endsWith("ss")) ||
+      lowerLastWord.endsWith("ies")
+    ) {
+      return fileType; // Return as-is
+    }
+
+    let pluralizedLastWord;
+
+    // Rule 0: Words ending in "ing" where plural is based on root noun
+    // e.g., "Imaging" → "Images" (not "Imagings")
+    // Preserve case: "IMAGING" → "IMAGES", "imaging" → "images", "Imaging" → "Images"
+    if (lowerLastWord === "imaging") {
+      // Check if original is all uppercase
+      if (lastWord === lastWord.toUpperCase()) {
+        pluralizedLastWord = "IMAGES";
+      } else if (lastWord === lastWord.toLowerCase()) {
+        pluralizedLastWord = "images";
+      } else {
+        // Title case or mixed case
+        pluralizedLastWord = "Images";
+      }
+    }
+    // Rule 1: Words ending in consonant + "y" → "ies"
+    // e.g., "Summary" → "Summaries", "Category" → "Categories"
+    else if (
+      lastWord.length >= 2 &&
+      lowerLastWord.endsWith("y") &&
+      !/[aeiou]y$/i.test(lowerLastWord)
+    ) {
+      pluralizedLastWord = lastWord.slice(0, -1) + "ies";
+    }
+    // Rule 2: Words ending in "s", "ss", "x", "z", "ch", "sh" → add "es"
+    // e.g., "Analysis" → "Analyses", "Box" → "Boxes"
+    else if (/(?:s|ss|x|z|ch|sh)$/i.test(lowerLastWord)) {
+      pluralizedLastWord = lastWord + "es";
+    }
+    // Rule 3: Words ending in "f" or "fe" → "ves"
+    // e.g., "Life" → "Lives", "Knife" → "Knives"
+    else if (/f$/i.test(lowerLastWord)) {
+      pluralizedLastWord = lastWord.slice(0, -1) + "ves";
+    } else if (/fe$/i.test(lowerLastWord)) {
+      pluralizedLastWord = lastWord.slice(0, -2) + "ves";
+    }
+    // Rule 4: Words ending in consonant + "o" → add "es"
+    // e.g., "Tomato" → "Tomatoes", "Hero" → "Heroes"
+    // BUT: "Photo" → "Photos", "Piano" → "Pianos" (exceptions)
+    else if (
+      lastWord.length >= 2 &&
+      lowerLastWord.endsWith("o") &&
+      !/[aeiou]o$/i.test(lowerLastWord) &&
+      !/(photo|piano|halo|logo)$/i.test(lowerLastWord)
+    ) {
+      pluralizedLastWord = lastWord + "es";
+    }
+    // Rule 5: Default - add "s"
+    // e.g., "File" → "Files", "Report" → "Reports"
+    else {
+      pluralizedLastWord = lastWord + "s";
+    }
+
+    return prefix ? `${prefix} ${pluralizedLastWord}` : pluralizedLastWord;
+  };
+
   /**
    * Check if a file type should have a download button:
    * 1. The study must have this file type (in participantFileTypes)
@@ -88,28 +152,24 @@ const AvailableDownloads = ({
     return zipFile;
   };
 
-  // Filter buttons to only show those with valid downloads
-  const filteredButtons = downloadButtons.filter((btn) =>
-    hasValidDownloadForType(btn.dataFileType),
-  );
+  // Generate buttons dynamically for all valid file types
+  const allButtons = participantFileTypes
+    .filter((fileType) => hasValidDownloadForType(fileType))
+    .map((fileType) => {
+      const zipFile = getZipFileForType(fileType);
+      const pluralizedType = pluralizeFileType(fileType);
+      const fileFormat = zipFile?.data_file_format
+        ? `(${zipFile.data_file_format.toUpperCase()})`
+        : "";
 
-  // Find file types that exist in data but NOT in the configured buttons
-  const configuredTypes = downloadButtons.map((btn) => btn.dataFileType);
-  const unconfiguredTypes = participantFileTypes.filter(
-    (fileType) =>
-      !configuredTypes.includes(fileType) &&
-      hasValidDownloadForType(fileType),
-  );
-
-  // Create dynamic button configs for unconfigured types
-  const dynamicButtons = unconfiguredTypes.map((fileType) => ({
-    buttonText: fileType,
-    dataFileType: fileType,
-    tooltip: `Download all ${fileType} for this study`,
-  }));
-
-  // Combine: configured buttons first, then dynamic buttons
-  const allButtons = [...filteredButtons, ...dynamicButtons];
+      return {
+        buttonText: pluralizedType,
+        dataFileType: fileType,
+        tooltip:
+          `Download all ${pluralizedType} ${fileFormat} for this study`.trim(),
+      };
+    })
+    .sort((a, b) => a.dataFileType.localeCompare(b.dataFileType));
 
   // Hide entire section if no valid downloads
   if (allButtons.length === 0) {
