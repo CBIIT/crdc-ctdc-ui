@@ -12,7 +12,7 @@ const DataAvailabilityHeader = ({
       src={icon}
       alt={iconAlt}
       className={classes.icon}
-      style={dataField === 'numberOfPublications' ? { width: '38px' } : undefined}
+      style={dataField === 'numberOfPublications' ? { width: '38px', paddingTop: '4px' } : undefined}
     />
   </>
 );
