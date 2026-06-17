@@ -8,7 +8,12 @@ const DataAvailabilityHeader = ({
   iconAlt,
 }) => (
   <>
-    <img src={icon} alt={iconAlt} className={classes.icon} />
+    <img
+      src={icon}
+      alt={iconAlt}
+      className={classes.icon}
+      style={dataField === 'numberOfPublications' ? { width: '38px' } : undefined}
+    />
   </>
 );
 
