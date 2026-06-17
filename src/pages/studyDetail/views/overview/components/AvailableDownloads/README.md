@@ -2,7 +2,27 @@
 
 ## Overview
 
-Displays download buttons for study data files. Supports both **configured types** (Variant Call Files, Variant Reports, Radiology Images with custom labels/tooltips) and **any custom file types** (auto-generated dynamically). Only shows buttons when both the study has the file type AND a valid megazip file exists.
+Displays download buttons for study data files with **fully dynamic generation**. All file types are automatically pluralized and sorted alphabetically. Only shows buttons when both the study has the file type AND a valid megazip file exists.
+
+## Pluralization
+
+Uses the [`pluralize`](https://www.npmjs.com/package/pluralize) npm library (v8.0.0) for intelligent English pluralization:
+
+**Examples:**
+- `File` → `Files`
+- `Summary` → `Summaries`
+- `Analysis` → `Analyses` (correct Latin plural)
+- `Index` → `Indices` (correct Latin plural)
+- `Data` → `Data` (already plural)
+- `Imaging` → `Images` (custom rule)
+- `Radiology Imaging` → `Radiology Images` (multi-word support)
+
+**Case Preservation:**
+- `IMAGING` → `IMAGES`
+- `imaging` → `images`
+- `Imaging` → `Images`
+
+The library handles 100+ edge cases including irregular plurals, already-plural detection, and special endings.
 
 ## Validation Logic
 
@@ -13,21 +33,14 @@ Shows button when **ALL** conditions are met:
 
 Hides entire section when no buttons pass validation.
 
-**Hybrid Implementation:** Supports both configured and dynamic file types:
+**Fully Dynamic Implementation:**
+- All file types in both `participantFileTypes` and `zipFileData` automatically render
+- Button text: Pluralized version of `data_file_type` (e.g., "Genomic Data" → "Genomic Data")
+- Tooltip: "Download all [pluralized_type] [(FORMAT)] for this study"
+- Sorted alphabetically by original `data_file_type`
+- Icon: Standard download icon
 
-**Configured Types (with custom labels/tooltips):**
-- `Variant Call File` → "Variant Call Files"
-- `Variant Report` → "Variant Reports"
-- `Radiology Imaging` → "Radiology Images"
-
-**Dynamic Types (auto-generated):**
-- Any other file type in both `participantFileTypes` and `zipFileData` will automatically render
-- Button text: Uses `data_file_type` as-is (e.g., "Genomic Data")
-- Tooltip: "Download all [file_type] for this study"
-- Icon: Generic download icon
-- Appears after configured types
-
-✅ **No code changes needed for new file types** - they will automatically appear!
+✅ **No code changes needed for new file types** - they will automatically appear with correct pluralization!
 
 ### What This Does NOT Validate
 
@@ -65,24 +78,32 @@ Hides entire section when no buttons pass validation.
 ## Example
 
 ```javascript
-// Study has variant reports AND a new "Genomic Data" type
-const participantFileTypes = ['Variant Report', 'Genomic Data'];
+// Study has variant reports AND a new "Clinical Trial" type
+const participantFileTypes = ['Variant Report', 'Clinical Trial', 'Analysis'];
 
-// API returns valid megazips for both
+// API returns valid megazips for all types
 const zipFileData = [
   {
     data_file_type: 'Variant Report',
-    zip_files: [{ data_file_uuid: 'uuid-2', data_file_name: 'reports.zip' }]
+    zip_files: [{ data_file_uuid: 'uuid-2', data_file_name: 'reports.zip', data_file_format: 'pdf' }]
   },
   {
-    data_file_type: 'Genomic Data',
-    zip_files: [{ data_file_uuid: 'uuid-4', data_file_name: 'genomic.zip' }]
+    data_file_type: 'Clinical Trial',
+    zip_files: [{ data_file_uuid: 'uuid-4', data_file_name: 'trials.zip', data_file_format: 'csv' }]
+  },
+  {
+    data_file_type: 'Analysis',
+    zip_files: [{ data_file_uuid: 'uuid-5', data_file_name: 'analysis.zip', data_file_format: 'json' }]
   }
 ];
 
-// Result: Shows TWO buttons
-// 1. "Variant Reports" (custom config with custom tooltip)
-// 2. "Genomic Data" (dynamic, auto-generated with generic tooltip)
+// Result: Shows THREE buttons (alphabetically sorted by data_file_type)
+// 1. "Analyses" (correctly pluralized using Latin plural)
+//    Tooltip: "Download all Analyses (JSON) for this study"
+// 2. "Clinical Trials" (auto-pluralized)
+//    Tooltip: "Download all Clinical Trials (CSV) for this study"
+// 3. "Variant Reports" (auto-pluralized)
+//    Tooltip: "Download all Variant Reports (PDF) for this study"
 
 // If data_file_uuid is null/undefined/empty → section hidden
 // If participantFileTypes doesn't include the type → section hidden
@@ -96,8 +117,21 @@ const zipFileData = [
 - Verify `data_file_uuid` is not null/undefined/empty
 - File type matching is case-sensitive
 
-**Want to customize a dynamic file type?**
-- Add it to the `downloadButtons` array in `AvailableDownloads.js` with custom button text, tooltip, and icon
+**Need a different plural form?**
+- The `pluralize` library handles 100+ irregular cases automatically
+- For domain-specific terms, add custom rules in the component using `pluralize.addIrregularRule()`
+- Example: `pluralize.addIrregularRule("imaging", "images")` is already configured
+
+## Technical Details
+
+**Dependencies:**
+- `pluralize@8.0.0` - Industry-standard pluralization library
+- Custom rule: `imaging` → `images`
+
+**Test Coverage:**
+- 56 component-specific tests
+- 158 total project tests passing
+- Coverage: 93% statements, 73% branches, 82% functions, 95% lines
 - It will automatically use the custom config instead of the generic fallback
 
 ## Testing

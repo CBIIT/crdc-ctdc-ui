@@ -396,7 +396,8 @@ describe("AvailableDownloads Component", () => {
 
       renderComponent(["Clinical Analysis"], zipData);
 
-      expect(container.textContent).toContain("Clinical Analysises");
+      // pluralize library correctly handles irregular plural: Analysis → Analyses
+      expect(container.textContent).toContain("Clinical Analyses");
     });
 
     it("should add 's' for regular pluralization", () => {
@@ -522,8 +523,8 @@ describe("AvailableDownloads Component", () => {
 
       renderComponent(["Genomic Data"], zipData);
 
-      // Component should render with the dynamic type
-      expect(container.textContent).toContain("Genomic Datas");
+      // pluralize library correctly recognizes "Data" is already plural
+      expect(container.textContent).toContain("Genomic Data");
     });
 
     it("should handle multiple file types with pluralization", () => {
@@ -623,7 +624,7 @@ describe("AvailableDownloads Component", () => {
         expect(container.textContent).not.toContain("Genomic Assaies");
       });
 
-      it("should handle words ending in 'x' → 'es' (Index → Indexes)", () => {
+      it("should handle words ending in 'x' → 'es' (Index → Indices)", () => {
         const zipData = [
           {
             data_file_type: "Sample Index",
@@ -637,7 +638,8 @@ describe("AvailableDownloads Component", () => {
           },
         ];
         renderComponent(["Sample Index"], zipData);
-        expect(container.textContent).toContain("Sample Indexes");
+        // pluralize library uses correct Latin plural: Index → Indices
+        expect(container.textContent).toContain("Sample Indices");
       });
 
       it("should handle words ending in 'ch' → 'es' (Search → Searches)", () => {
@@ -744,7 +746,7 @@ describe("AvailableDownloads Component", () => {
     });
 
     describe("Edge cases for pluralization", () => {
-      it("should handle words ending in 'sis' → add 'es' (Analysis → Analysises)", () => {
+      it("should handle words ending in 'sis' → 'ses' (Analysis → Analyses)", () => {
         const zipData = [
           {
             data_file_type: "Analysis",
@@ -758,7 +760,8 @@ describe("AvailableDownloads Component", () => {
           },
         ];
         renderComponent(["Analysis"], zipData);
-        expect(container.textContent).toContain("Analysises");
+        // pluralize library correctly handles Greek/Latin plural: Analysis → Analyses
+        expect(container.textContent).toContain("Analyses");
       });
 
       it("should handle words ending in 'us' → add 'es' (Status → Statuses)", () => {

@@ -1,8 +1,12 @@
 import React from "react";
 import { Grid, withStyles } from "@material-ui/core";
+import pluralize from "pluralize";
 import ZipDownloadView from "./ZipDownloadView";
 import downloadSuccess from "../../../../../../assets/study/zipDownloadIcon.svg";
 import toolTipIcon from "../../../../../../assets/study/questionMarkTooltip.svg";
+
+// Add custom pluralization rule for "imaging" → "images"
+pluralize.addIrregularRule("imaging", "images");
 
 const documentDownloadProps = {
   // datafield where file file id exists in the table which is used to get file location
@@ -35,85 +39,41 @@ const AvailableDownloads = ({
 }) => {
   /**
    * Pluralize a file type string for use in tooltips and button text.
-   * Handles common English pluralization rules and special cases.
+   * Uses the pluralize library for comprehensive pluralization rules,
+   * including irregular plurals and already-plural detection.
    *
    * @param {string} fileType - The data_file_type value
    * @returns {string} - Pluralized version
    */
   const pluralizeFileType = (fileType) => {
-    // Get the last word to apply pluralization rules
-    const words = fileType.trim().split(/\s+/);
+    const trimmed = fileType.trim();
+    if (!trimmed) return fileType;
+
+    // Split into words and process the last word
+    const words = trimmed.split(/\s+/);
     const lastWord = words[words.length - 1];
-    const lowerLastWord = lastWord.toLowerCase();
     const prefix = words.slice(0, -1).join(" ");
 
-    // Check if already plural (simple heuristic)
-    // Exclude words ending in 'sis', 'us', 'ss' which are often singular
-    if (
-      (lowerLastWord.endsWith("s") &&
-        !lowerLastWord.endsWith("sis") &&
-        !lowerLastWord.endsWith("us") &&
-        !lowerLastWord.endsWith("ss")) ||
-      lowerLastWord.endsWith("ies")
-    ) {
-      return fileType; // Return as-is
+    // Preserve case: detect if all uppercase, all lowercase, or mixed
+    const isAllUpperCase =
+      lastWord === lastWord.toUpperCase() && /[A-Z]/.test(lastWord);
+    const isAllLowerCase = lastWord === lastWord.toLowerCase();
+
+    // Use pluralize library to get the plural form
+    const pluralizedLastWord = pluralize(lastWord);
+
+    // Restore case if needed
+    let finalWord = pluralizedLastWord;
+    if (isAllUpperCase) {
+      finalWord = pluralizedLastWord.toUpperCase();
+    } else if (!isAllLowerCase && lastWord[0] === lastWord[0].toUpperCase()) {
+      // Preserve title case (first letter uppercase)
+      finalWord =
+        pluralizedLastWord.charAt(0).toUpperCase() +
+        pluralizedLastWord.slice(1);
     }
 
-    let pluralizedLastWord;
-
-    // Rule 0: Words ending in "ing" where plural is based on root noun
-    // e.g., "Imaging" → "Images" (not "Imagings")
-    // Preserve case: "IMAGING" → "IMAGES", "imaging" → "images", "Imaging" → "Images"
-    if (lowerLastWord === "imaging") {
-      // Check if original is all uppercase
-      if (lastWord === lastWord.toUpperCase()) {
-        pluralizedLastWord = "IMAGES";
-      } else if (lastWord === lastWord.toLowerCase()) {
-        pluralizedLastWord = "images";
-      } else {
-        // Title case or mixed case
-        pluralizedLastWord = "Images";
-      }
-    }
-    // Rule 1: Words ending in consonant + "y" → "ies"
-    // e.g., "Summary" → "Summaries", "Category" → "Categories"
-    else if (
-      lastWord.length >= 2 &&
-      lowerLastWord.endsWith("y") &&
-      !/[aeiou]y$/i.test(lowerLastWord)
-    ) {
-      pluralizedLastWord = lastWord.slice(0, -1) + "ies";
-    }
-    // Rule 2: Words ending in "s", "ss", "x", "z", "ch", "sh" → add "es"
-    // e.g., "Analysis" → "Analyses", "Box" → "Boxes"
-    else if (/(?:s|ss|x|z|ch|sh)$/i.test(lowerLastWord)) {
-      pluralizedLastWord = lastWord + "es";
-    }
-    // Rule 3: Words ending in "f" or "fe" → "ves"
-    // e.g., "Life" → "Lives", "Knife" → "Knives"
-    else if (/f$/i.test(lowerLastWord)) {
-      pluralizedLastWord = lastWord.slice(0, -1) + "ves";
-    } else if (/fe$/i.test(lowerLastWord)) {
-      pluralizedLastWord = lastWord.slice(0, -2) + "ves";
-    }
-    // Rule 4: Words ending in consonant + "o" → add "es"
-    // e.g., "Tomato" → "Tomatoes", "Hero" → "Heroes"
-    // BUT: "Photo" → "Photos", "Piano" → "Pianos" (exceptions)
-    else if (
-      lastWord.length >= 2 &&
-      lowerLastWord.endsWith("o") &&
-      !/[aeiou]o$/i.test(lowerLastWord) &&
-      !/(photo|piano|halo|logo)$/i.test(lowerLastWord)
-    ) {
-      pluralizedLastWord = lastWord + "es";
-    }
-    // Rule 5: Default - add "s"
-    // e.g., "File" → "Files", "Report" → "Reports"
-    else {
-      pluralizedLastWord = lastWord + "s";
-    }
-
-    return prefix ? `${prefix} ${pluralizedLastWord}` : pluralizedLastWord;
+    return prefix ? `${prefix} ${finalWord}` : finalWord;
   };
 
   /**
@@ -165,8 +125,9 @@ const AvailableDownloads = ({
       return {
         buttonText: pluralizedType,
         dataFileType: fileType,
-        tooltip:
-          `Download all ${pluralizedType} ${fileFormat} for this study`.trim(),
+        tooltip: `Download all ${pluralizedType} ${fileFormat} for this study`
+          .replace(/\s+/g, " ")
+          .trim(),
       };
     })
     .sort((a, b) => a.dataFileType.localeCompare(b.dataFileType));
