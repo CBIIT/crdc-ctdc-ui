@@ -45,7 +45,7 @@ const StudyDetailView = ({
   };
 
   const getHeaderIcon = () => (
-    <img src={headerIcon} alt="CTDC trail detail header logo" />
+    <img src={headerIcon} alt="CTDC Study detail header logo" />
   );
 
   if (isLoading) {

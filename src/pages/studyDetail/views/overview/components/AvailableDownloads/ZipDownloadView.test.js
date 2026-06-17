@@ -4,23 +4,23 @@ import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import ZipDownloadView from "./ZipDownloadView";
-import { fetchFileToDownload } from "../../../../../components/DocumentDownload/DocumentDownloadView";
+import { fetchFileToDownload } from "../../../../../../components/DocumentDownload/DocumentDownloadView";
 
 /**
  * Mock graphqlClient to prevent Apollo Client initialization errors.
  */
-jest.mock("../../../../../utils/graphqlClient", () => ({
+jest.mock("../../../../../../utils/graphqlClient", () => ({
   client: {
     query: jest.fn(),
     mutate: jest.fn(),
   },
 }));
 
-jest.mock("../../../../../bento/siteWideConfig", () => ({
+jest.mock("../../../../../../bento/siteWideConfig", () => ({
   enableAuthentication: true,
 }));
 
-jest.mock("../../../../../components/Authentication", () => ({
+jest.mock("../../../../../../components/Authentication", () => ({
   useAuth: () => ({
     signInWithAuthURL: jest.fn(),
     signOut: jest.fn(),
@@ -28,13 +28,13 @@ jest.mock("../../../../../components/Authentication", () => ({
 }));
 
 jest.mock(
-  "../../../../../components/DocumentDownload/DocumentDownloadView",
+  "../../../../../../components/DocumentDownload/DocumentDownloadView",
   () => ({
     fetchFileToDownload: jest.fn(),
   }),
 );
 
-jest.mock("../../../../../components/Global/GlobalProvider", () => ({
+jest.mock("../../../../../../components/Global/GlobalProvider", () => ({
   useGlobal: () => ({
     Notification: { show: jest.fn() },
   }),
