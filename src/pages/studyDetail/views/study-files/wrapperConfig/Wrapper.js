@@ -48,15 +48,26 @@ export const configWrapper = (tab, wrapperConfig, context, totalRowCount) => {
   const wrpConfig = wrapperConfig.map((container) => ({
     ...container,
     items: !container.paginatedTable
-      ? container.items.map((item) => ({
-          ...item,
-          title: getButtonTitle(tab, item),
-          addFileQuery: tab.addSelectedFilesQuery,
-          dataKey: tab.addFilesRequestVariableKey,
-          responseKeys: tab.addFilesResponseKeys,
-          alertMessage: item.alertMessage,
-          maxFileLimit: item.maxFileLimit,
-        }))
+      ? container.items
+          .filter((item) => {
+            // Hide ADD_SELECTED_FILES button when there are no files
+            if (
+              item.role === btnTypes.ADD_SELECTED_FILES &&
+              totalRowCount === 0
+            ) {
+              return false;
+            }
+            return true;
+          })
+          .map((item) => ({
+            ...item,
+            title: getButtonTitle(tab, item),
+            addFileQuery: tab.addSelectedFilesQuery,
+            dataKey: tab.addFilesRequestVariableKey,
+            responseKeys: tab.addFilesResponseKeys,
+            alertMessage: item.alertMessage,
+            maxFileLimit: item.maxFileLimit,
+          }))
       : [],
   }));
   return wrpConfig;
