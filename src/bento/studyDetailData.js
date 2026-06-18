@@ -467,17 +467,6 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
 
     StudyDataFileByStudyShortName(study_id: $study_id) {
       list_type
-      # TODO: Remove the following fields if they are not needed
-      study_data_files {
-        # association
-        data_file_description
-        data_file_size
-        data_file_uuid
-        data_file_name
-        data_file_type
-        data_file_format
-        # association
-      }
     }
 
     StudySpecimenByStudyShortName(study_id: $study_id) {
