@@ -40,7 +40,13 @@ const StudyFilesView = ({ classes, study_id }) => {
 
   // Fetch all study files once (client-side pagination)
   const { loading, error, data } = useQuery(GET_STUDY_FILES_QUERY, {
-    variables: { study_id: [study_id], first: 10000 },
+    skip: !study_id,
+    variables: {
+      study_id: [study_id],
+      first: 10000,
+      order_by: studyFilesTableConfig.defaultSortField,
+      sort_direction: studyFilesTableConfig.defaultSortDirection,
+    },
     fetchPolicy: "cache-first", // Cache the results
   });
 

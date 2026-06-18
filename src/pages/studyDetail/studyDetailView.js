@@ -133,7 +133,7 @@ const StudyDetailView = ({
         switch (processedTab.value) {
           case "overview":
             return (
-              <div key={index} hidden={currentTab !== index}>
+              <div key={processedTab.value} hidden={currentTab !== index}>
                 <TabPanel value={currentTab} index={index} maxWidth="1800px">
                   <Overview data={data} zipFileData={zipFileData} />
                 </TabPanel>
@@ -142,7 +142,7 @@ const StudyDetailView = ({
 
           case "clinical_data":
             return (
-              <div key={index} hidden={currentTab !== index}>
+              <div key={processedTab.value} hidden={currentTab !== index}>
                 <TabPanel value={currentTab} index={index} maxWidth="1800px">
                   <ClinicalDataController
                     dataCount={{
@@ -158,7 +158,7 @@ const StudyDetailView = ({
 
           case "study_files":
             return (
-              <div key={index} hidden={currentTab !== index}>
+              <div key={processedTab.value} hidden={currentTab !== index}>
                 <TabPanel value={currentTab} index={index} maxWidth="1800px">
                   <StudyFilesView study_id={study_id} />
                 </TabPanel>
