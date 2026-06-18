@@ -46,6 +46,11 @@ const StudyFilesView = ({ classes, study_id }) => {
     0, // Will be updated by server response
   );
 
+  // Active filters for add to cart functionality
+  const activeFilters = {
+    study_id: [study_id],
+  };
+
   return (
     <div className={classes.container}>
       <div className={classes.tableWrapper}>
@@ -55,7 +60,7 @@ const StudyFilesView = ({ classes, study_id }) => {
             customTheme={wrapperTheme}
             classes={classes}
             section={studyFilesTableConfig.name}
-            activeFilters={{}}
+            activeFilters={activeFilters}
           >
             <Grid container>
               <Grid item xs={12}>

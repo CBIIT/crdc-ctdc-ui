@@ -1,6 +1,5 @@
 import { cellTypes, dataFormatTypes } from "@bento-core/table";
 import gql from "graphql-tag";
-import { GET_FILE_IDS_FOR_SELECTED_FILES } from "./dashboardTabData";
 import downloadSuccess from "../assets/dash/downloadSuccess.svg";
 import downloadLock from "../assets/dash/downloadLock.svg";
 import previewLarge from "../assets/dash/previewLarge.svg";
@@ -52,14 +51,84 @@ export const studyFilesTooltipContent = {
   Study_Files: STUDY_FILES_BUTTON_TOOLTIP,
 };
 
+// --------------- GraphQL Queries for Study Files Tab ---------------
+
+// Separate query for Study Files Tab with pagination support
+export const GET_STUDY_FILES_QUERY = gql`
+  query studyFileOverview(
+    $study_id: [String]
+    $study_short_name: [String]
+    $data_file_type: [String]
+    $data_file_format: [String]
+    $data_file_uuid: [String]
+    $study_accession: [String]
+    $first: Int
+    $offset: Int = 0
+    $order_by: String = "data_file_uuid"
+    $sort_direction: String = "asc"
+  ) {
+    studyFileOverview(
+      study_short_name: $study_short_name
+      study_id: $study_id
+      study_accession: $study_accession
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+      data_file_uuid: $data_file_uuid
+      first: $first
+      offset: $offset
+      order_by: $order_by
+      sort_direction: $sort_direction
+    ) {
+      data_file_name
+      data_file_type
+      data_file_description
+      data_file_format
+      data_file_size
+      data_file_uuid
+      association
+    }
+  }
+`;
+
+// Query for adding selected study files to cart
+export const GET_FILE_IDS_FOR_SELECTED_STUDY_FILES = gql`
+  query studyFileAddSelectedToCart(
+    $data_file_uuid: [String]
+    $study_id: [String]
+    $study_short_name: [String]
+    $data_file_type: [String]
+    $data_file_format: [String]
+    $study_accession: [String]
+    $first: Int
+    $offset: Int = 0
+    $order_by: String = "data_file_uuid"
+    $sort_direction: String = "asc"
+  ) {
+    studyFileOverview(
+      data_file_uuid: $data_file_uuid
+      study_id: $study_id
+      study_short_name: $study_short_name
+      study_accession: $study_accession
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+      first: $first
+      offset: $offset
+      order_by: $order_by
+      sort_direction: $sort_direction
+    ) {
+      data_file_uuid
+    }
+  }
+`;
+
 // Study Detail: Study Files Tab table configuration
 export const studyFilesTableConfig = {
   name: "Study_Files",
   dataKey: "data_file_uuid",
   buttonText: "Add Selected Files",
   addFilesRequestVariableKey: "data_file_uuid",
-  addFilesResponseKeys: ["fileOverview", "data_file_uuid"],
-  addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_FILES,
+  addFilesResponseKeys: ["studyFileOverview", "data_file_uuid"],
+  addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_STUDY_FILES,
   tableMsg: {
     noMatch: "No study-level files associated with this study.",
   },
@@ -249,43 +318,6 @@ export const tooltipConfig = {
   paddingTopBottom: 10,
   interactive: false,
 };
-
-// Separate query for Study Files Tab with pagination support
-export const GET_STUDY_FILES_QUERY = gql`
-  query studyFileOverview(
-    $study_id: [String]
-    $study_short_name: [String]
-    $data_file_type: [String]
-    $data_file_format: [String]
-    $data_file_uuid: [String]
-    $study_accession: [String]
-    $first: Int
-    $offset: Int = 0
-    $order_by: String = "data_file_uuid"
-    $sort_direction: String = "asc"
-  ) {
-    studyFileOverview(
-      study_short_name: $study_short_name
-      study_id: $study_id
-      study_accession: $study_accession
-      data_file_type: $data_file_type
-      data_file_format: $data_file_format
-      data_file_uuid: $data_file_uuid
-      first: $first
-      offset: $offset
-      order_by: $order_by
-      sort_direction: $sort_direction
-    ) {
-      data_file_name
-      data_file_type
-      data_file_description
-      data_file_format
-      data_file_size
-      data_file_uuid
-      association
-    }
-  }
-`;
 
 export const studyClinicalDataQuery = gql`
   query clinicalDataTab($study_id: [String]) {

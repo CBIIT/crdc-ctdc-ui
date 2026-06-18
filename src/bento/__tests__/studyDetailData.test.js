@@ -45,7 +45,7 @@ describe("studyFilesTableConfig", () => {
       true,
     );
     expect(studyFilesTableConfig.addFilesResponseKeys).toEqual([
-      "fileOverview",
+      "studyFileOverview",
       "data_file_uuid",
     ]);
   });
