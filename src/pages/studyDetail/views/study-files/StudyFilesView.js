@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid, withStyles } from "@material-ui/core";
+import { useQuery } from "@apollo/client";
 import { useSelector } from "react-redux";
 import {
   TableContextProvider,
@@ -20,8 +21,6 @@ import styles from "./StudyFilesStyle";
 const initFilesTableState = (initialState) => ({
   ...initialState,
   title: studyFilesTableConfig.name,
-  query: GET_STUDY_FILES_QUERY,
-  paginationAPIField: "studyFileOverview",
   dataKey: studyFilesTableConfig.dataKey,
   tableMsg: studyFilesTableConfig.tableMsg,
   columns: configColumn(studyFilesTableConfig.columns),
@@ -39,11 +38,19 @@ const StudyFilesView = ({ classes, study_id }) => {
   // eslint-disable-next-line no-unused-vars
   const cartState = useSelector((state) => state.cartReducer);
 
+  // Fetch all study files once (client-side pagination)
+  const { loading, error, data } = useQuery(GET_STUDY_FILES_QUERY, {
+    variables: { study_id: [study_id], first: 10000 },
+    fetchPolicy: "cache-first", // Cache the results
+  });
+
+  const studyFiles = data?.studyFileOverview || [];
+
   const configuredWrapper = configWrapper(
     studyFilesTableConfig,
     wrapperConfig,
     "",
-    0, // Will be updated by server response
+    studyFiles.length,
   );
 
   // Active filters for add to cart functionality
@@ -68,11 +75,17 @@ const StudyFilesView = ({ classes, study_id }) => {
                   This study currently has the following Study Files directly
                   associated with it:
                 </span>
-                <TableView
-                  initState={initFilesTableState}
-                  themeConfig={{ ...themeConfig }}
-                  queryVariables={{ study_id: [study_id] }}
-                />
+                {loading && <div>Loading study files...</div>}
+                {error && <div>Error loading study files: {error.message}</div>}
+                {!loading && !error && (
+                  <TableView
+                    initState={initFilesTableState}
+                    themeConfig={{ ...themeConfig }}
+                    tblRows={studyFiles}
+                    totalRowCount={studyFiles.length}
+                    server={false}
+                  />
+                )}
               </Grid>
             </Grid>
           </Wrapper>

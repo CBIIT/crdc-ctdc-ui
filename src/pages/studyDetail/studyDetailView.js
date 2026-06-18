@@ -17,7 +17,7 @@ import Overview from "./views/overview/overview";
 import { onClearAllFilters } from "../dashTemplate/sideBar/BentoFilterUtils";
 import useDashboardTabs from "../dashTemplate/components/dashboard-tabs-store";
 import ClinicalDataController from "./views/clinical-data/ClinicalDataController";
-import StudyFilesView from './views/study-files/StudyFilesView';
+import StudyFilesView from "./views/study-files/StudyFilesView";
 import CustomBreadcrumb from "../../components/Breadcrumb/BreadcrumbView";
 const StudyDetailView = ({
   classes,
@@ -28,7 +28,8 @@ const StudyDetailView = ({
 }) => {
   const studyData = data;
   const processedTabs = tab.items;
-  const study_short_name = studyData?.studyByStudyShortName?.at(0)?.study_short_name;
+  const study_short_name =
+    studyData?.studyByStudyShortName?.at(0)?.study_short_name;
   const zipFileData = data?.studyZipFileQuery || [];
 
   const breadCrumbJson = [
@@ -132,32 +133,36 @@ const StudyDetailView = ({
         switch (processedTab.value) {
           case "overview":
             return (
-              <TabPanel value={currentTab} index={index} maxWidth="1800px">
-                <Overview data={data} zipFileData={zipFileData} />
-              </TabPanel>
+              <div key={index} hidden={currentTab !== index}>
+                <TabPanel value={currentTab} index={index} maxWidth="1800px">
+                  <Overview data={data} zipFileData={zipFileData} />
+                </TabPanel>
+              </div>
             );
 
           case "clinical_data":
             return (
-              <TabPanel value={currentTab} index={index} maxWidth="1800px">
-                <ClinicalDataController
-                  dataCount={{
-                    caseCount: clinicalDataNodeParticipantCounts,
-                    nodeCount: clinicalDataNodeCounts,
-                  }}
-                  study_id={study_id}
-                  study_short_name={study_short_name}
-                />
-              </TabPanel>
+              <div key={index} hidden={currentTab !== index}>
+                <TabPanel value={currentTab} index={index} maxWidth="1800px">
+                  <ClinicalDataController
+                    dataCount={{
+                      caseCount: clinicalDataNodeParticipantCounts,
+                      nodeCount: clinicalDataNodeCounts,
+                    }}
+                    study_id={study_id}
+                    study_short_name={study_short_name}
+                  />
+                </TabPanel>
+              </div>
             );
 
-          case 'study_files':
+          case "study_files":
             return (
-              <TabPanel value={currentTab} index={index} maxWidth="1800px">
-                <StudyFilesView
-                  study_id={study_id}
-                />
-              </TabPanel>
+              <div key={index} hidden={currentTab !== index}>
+                <TabPanel value={currentTab} index={index} maxWidth="1800px">
+                  <StudyFilesView study_id={study_id} />
+                </TabPanel>
+              </div>
             );
 
           default:
