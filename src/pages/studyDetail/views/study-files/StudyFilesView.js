@@ -11,40 +11,29 @@ import { configColumn } from "../../../dashTemplate/tabs/tableConfig/Column";
 import { themeConfig } from "./StudyFilesTheme";
 import { configWrapper, wrapperConfig } from "./wrapperConfig/Wrapper";
 import { customTheme as wrapperTheme } from "./wrapperConfig/Theme";
-import { studyFilesTableConfig } from "../../../../bento/studyDetailData";
+import {
+  studyFilesTableConfig,
+  GET_STUDY_FILES_QUERY,
+} from "../../../../bento/studyDetailData";
 import styles from "./StudyFilesStyle";
 
 const initFilesTableState = (initialState) => ({
   ...initialState,
   title: studyFilesTableConfig.name,
+  query: GET_STUDY_FILES_QUERY,
+  paginationAPIField: "studyFileOverview",
   dataKey: studyFilesTableConfig.dataKey,
   tableMsg: studyFilesTableConfig.tableMsg,
   columns: configColumn(studyFilesTableConfig.columns),
   selectedRows: [],
-  sortBy: "data_file_name",
-  sortOrder: "asc",
+  sortBy: studyFilesTableConfig.defaultSortField || "data_file_name",
+  sortOrder: studyFilesTableConfig.defaultSortDirection || "asc",
   rowsPerPage: 10,
   page: 0,
   extendedViewConfig: studyFilesTableConfig.extendedViewConfig,
 });
 
-export const formatAssociationValue = (value) => {
-  if (Array.isArray(value)) {
-    return value.filter(Boolean).join(", ");
-  }
-
-  if (typeof value !== "string" || !value.trim()) {
-    return value;
-  }
-
-  return value
-    .split(",")
-    .map((item) => item.trim())
-    .filter(Boolean)
-    .join(", ");
-};
-
-const StudyFilesView = ({ classes, files = [] }) => {
+const StudyFilesView = ({ classes, study_id }) => {
   // CRITICAL: Establish Redux context for child components (bento-core Wrapper)
   // Without this hook, Redux connect() in @bento-core components cannot access the store
   // eslint-disable-next-line no-unused-vars
@@ -54,13 +43,8 @@ const StudyFilesView = ({ classes, files = [] }) => {
     studyFilesTableConfig,
     wrapperConfig,
     "",
-    files.length,
+    0, // Will be updated by server response
   );
-
-  const normalizedFiles = files.map((file) => ({
-    ...file,
-    association: formatAssociationValue(file.association),
-  }));
 
   return (
     <div className={classes.container}>
@@ -82,10 +66,7 @@ const StudyFilesView = ({ classes, files = [] }) => {
                 <TableView
                   initState={initFilesTableState}
                   themeConfig={{ ...themeConfig }}
-                  queryVariables={{}}
-                  totalRowCount={normalizedFiles.length}
-                  server={false}
-                  tblRows={normalizedFiles}
+                  queryVariables={{ study_id: [study_id] }}
                 />
               </Grid>
             </Grid>

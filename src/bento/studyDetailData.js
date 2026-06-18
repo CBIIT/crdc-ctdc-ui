@@ -64,6 +64,8 @@ export const studyFilesTableConfig = {
     noMatch: "No study-level files associated with this study.",
   },
   selectableRows: true,
+  defaultSortField: "data_file_name",
+  defaultSortDirection: "asc",
   extendedViewConfig: {
     pagination: true,
     manageViewColumns: { title: "View Columns" },
@@ -248,6 +250,43 @@ export const tooltipConfig = {
   interactive: false,
 };
 
+// Separate query for Study Files Tab with pagination support
+export const GET_STUDY_FILES_QUERY = gql`
+  query studyFileOverview(
+    $study_id: [String]
+    $study_short_name: [String]
+    $data_file_type: [String]
+    $data_file_format: [String]
+    $data_file_uuid: [String]
+    $study_accession: [String]
+    $first: Int
+    $offset: Int = 0
+    $order_by: String = "data_file_uuid"
+    $sort_direction: String = "asc"
+  ) {
+    studyFileOverview(
+      study_short_name: $study_short_name
+      study_id: $study_id
+      study_accession: $study_accession
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+      data_file_uuid: $data_file_uuid
+      first: $first
+      offset: $offset
+      order_by: $order_by
+      sort_direction: $sort_direction
+    ) {
+      data_file_name
+      data_file_type
+      data_file_description
+      data_file_format
+      data_file_size
+      data_file_uuid
+      association
+    }
+  }
+`;
+
 export const studyClinicalDataQuery = gql`
   query clinicalDataTab($study_id: [String]) {
     clinicalData(study_id: $study_id) {
@@ -343,18 +382,6 @@ export const studyClinicalDataQuery = gql`
 
 export const GET_STUDY_DETAIL_DATA_QUERY = gql`
   query studyDetailPageQueries($study_id: [String]) {
-    # Study Files Tab: StudyFileTabByStudyShortName
-    StudyFileTabByStudyShortName(study_id: $study_id) {
-      data_file_name
-      data_file_type
-      data_file_format
-      data_file_size
-      data_file_description
-      data_file_uuid
-      study_accession
-      study_id
-    }
-
     # Clinical Data Tab: Node Counts
     clinicalDataNodeCounts: clinicalData(study_id: $study_id) {
       diagnosis: diagnosisNodeCount
@@ -408,8 +435,8 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
 
     StudyDataFileByStudyShortName(study_id: $study_id) {
       list_type
-      # TODO: Remove the following fields if they are not needed 
-      study_data_files {      
+      # TODO: Remove the following fields if they are not needed
+      study_data_files {
         # association
         data_file_description
         data_file_size

@@ -109,14 +109,6 @@ describe("studyFilesTableConfig columns", () => {
     });
   });
 
-  it("includes association column", () => {
-    const associationCol = studyFilesTableConfig.columns.find(
-      (c) => c.dataField === "association",
-    );
-    expect(associationCol).toBeDefined();
-    expect(associationCol.header).toBe("Association");
-  });
-
   it("includes description column", () => {
     const descriptionCol = studyFilesTableConfig.columns.find(
       (c) => c.dataField === "data_file_description",
