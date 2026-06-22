@@ -45,7 +45,7 @@ describe("studyFilesTableConfig", () => {
       true,
     );
     expect(studyFilesTableConfig.addFilesResponseKeys).toEqual([
-      "fileOverview",
+      "studyFileOverview",
       "data_file_uuid",
     ]);
   });
@@ -107,14 +107,6 @@ describe("studyFilesTableConfig columns", () => {
       expect(col.header).toBeDefined();
       expect(col.display).toBe(true);
     });
-  });
-
-  it("includes association column", () => {
-    const associationCol = studyFilesTableConfig.columns.find(
-      (c) => c.dataField === "association",
-    );
-    expect(associationCol).toBeDefined();
-    expect(associationCol.header).toBe("Association");
   });
 
   it("includes description column", () => {

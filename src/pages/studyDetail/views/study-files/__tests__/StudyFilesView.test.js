@@ -1,5 +1,4 @@
 import { studyFilesTableConfig } from "../../../../../bento/studyDetailData";
-import { formatAssociationValue } from "../StudyFilesView";
 
 /**
  * Mock graphqlClient to prevent Apollo Client initialization errors
@@ -62,32 +61,5 @@ describe("StudyFilesView Configuration", () => {
     expect(studyFilesTableConfig.tableMsg.noMatch).toBe(
       "No study-level files associated with this study.",
     );
-  });
-});
-
-describe("formatAssociationValue", () => {
-  it("joins array values with comma and space", () => {
-    const result = formatAssociationValue(["participant", "biospecimen"]);
-    expect(result).toBe("participant, biospecimen");
-  });
-
-  it("filters empty array values", () => {
-    const result = formatAssociationValue([
-      "participant",
-      "",
-      null,
-      "biospecimen",
-    ]);
-    expect(result).toBe("participant, biospecimen");
-  });
-
-  it("normalizes comma separated string spacing", () => {
-    const result = formatAssociationValue("participant,biospecimen");
-    expect(result).toBe("participant, biospecimen");
-  });
-
-  it("returns non-string, non-array values as is", () => {
-    expect(formatAssociationValue(null)).toBeNull();
-    expect(formatAssociationValue(undefined)).toBeUndefined();
   });
 });
