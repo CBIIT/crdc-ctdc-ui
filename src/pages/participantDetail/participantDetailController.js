@@ -80,6 +80,8 @@ const ParticipantDetailController = ({ match }) => {
     targeted_therapy: formatPipeList(overviewRecord.targeted_therapy_string),
     best_response_to_targeted_therapy: formatPipeList(overviewRecord.best_response_to_targeted_therapy),
     primary_disease_site: biospecimenRecord.primary_disease_site,
+    study_short_name: overviewRecord.study_short_name,
+    study_id: overviewRecord.study_id,
   };
 
   const biospecimens = (biospecimensData?.biospecimenOverview || []).map((b) => ({
