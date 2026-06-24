@@ -951,20 +951,26 @@ export const GET_FILE_IDS_FROM_FILE_NAME = gql`
   }`;
 
 // --------------- GraphQL Query - Retrieve Study Files tab details --------------
-// Backend query: StudyFileTabByStudyShortName (type: default in single_search_es.yml)
-// Accepts only: study_short_name, study_id, data_file_type, data_file_format
-// Does NOT support server-side pagination or standard facet filter variables.
-// The paginated table will receive all matching records; client-side pagination applies.
 export const GET_STUDY_FILES_OVERVIEW_QUERY = gql`
-  query studyFileTabOverview(
+  query studyFileOverviewQuery(
     $study_short_name: [String],
+    $study_id: [String],
     $data_file_type: [String],
-    $data_file_format: [String]
+    $data_file_format: [String],
+    $first: Int,
+    $offset: Int,
+    $order_by: String,
+    $sort_direction: String
   ){
-    StudyFileTabByStudyShortName(
+    studyFileOverview(
       study_short_name: $study_short_name
+      study_id: $study_id
       data_file_type: $data_file_type
       data_file_format: $data_file_format
+      first: $first
+      offset: $offset
+      order_by: $order_by
+      sort_direction: $sort_direction
     ){
       data_file_name,
       data_file_type,
@@ -979,18 +985,18 @@ export const GET_STUDY_FILES_OVERVIEW_QUERY = gql`
 `;
 
 // --------------- GraphQL Query - "ADD SELECTED FILES" under Study Files tab ---------------
-// NOTE: Backend StudyFileTabByStudyShortName does not accept data_file_uuid as a filter.
-// The bento-core framework passes selected UUIDs via addFilesRequestVariableKey, but
-// since the backend cannot filter by UUID, this query returns all study files.
-// A backend enhancement is needed to add data_file_uuid filter support.
 export const GET_FILE_IDS_FOR_SELECTED_STUDY_FILES = gql`
 query studyFileAddSelectedToCart(
+  $data_file_uuid: [String],
   $study_short_name: [String],
+  $study_id: [String],
   $data_file_type: [String],
   $data_file_format: [String]
 ){
-  StudyFileTabByStudyShortName(
+  studyFileOverview(
+    data_file_uuid: $data_file_uuid
     study_short_name: $study_short_name
+    study_id: $study_id
     data_file_type: $data_file_type
     data_file_format: $data_file_format
   ){
@@ -1003,11 +1009,13 @@ query studyFileAddSelectedToCart(
 export const GET_ALL_FILE_IDS_FOR_STUDY_FILES = gql`
 query studyFileAddAllToCart(
   $study_short_name: [String],
+  $study_id: [String],
   $data_file_type: [String],
   $data_file_format: [String]
 ){
-  StudyFileTabByStudyShortName(
+  studyFileOverview(
     study_short_name: $study_short_name
+    study_id: $study_id
     data_file_type: $data_file_type
     data_file_format: $data_file_format
   ){
@@ -1420,7 +1428,7 @@ export const tabContainers = [
     name: 'Study Files',
     dataField: 'dataStudyFile',
     api: GET_STUDY_FILES_OVERVIEW_QUERY,
-    paginationAPIField: 'StudyFileTabByStudyShortName',
+    paginationAPIField: 'studyFileOverview',
     defaultSortField: 'data_file_name',
     defaultSortDirection: 'asc',
     count: 'numberOfStudyFiles',
@@ -1545,10 +1553,10 @@ export const tabContainers = [
 
     addFilesRequestVariableKey: 'data_file_uuid',
 
-    addFilesResponseKeys: ['StudyFileTabByStudyShortName', 'data_file_uuid'],
+    addFilesResponseKeys: ['studyFileOverview', 'data_file_uuid'],
     addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_STUDY_FILES,
 
-    addAllFilesResponseKeys: ['StudyFileTabByStudyShortName', 'data_file_uuid'],
+    addAllFilesResponseKeys: ['studyFileOverview', 'data_file_uuid'],
     addAllFileQuery: GET_ALL_FILE_IDS_FOR_STUDY_FILES,
   },
 ];

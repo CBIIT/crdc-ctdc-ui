@@ -27,8 +27,8 @@ describe('Study Files tab configuration', () => {
       expect(studyFilesContainer).toBeDefined();
     });
 
-    it('should use StudyFileTabByStudyShortName as paginationAPIField', () => {
-      expect(studyFilesContainer.paginationAPIField).toBe('StudyFileTabByStudyShortName');
+    it('should use studyFileOverview as paginationAPIField', () => {
+      expect(studyFilesContainer.paginationAPIField).toBe('studyFileOverview');
     });
 
     it('should use data_file_uuid as dataKey', () => {
@@ -106,11 +106,11 @@ describe('Study Files tab configuration', () => {
     });
 
     it('should have correct addFilesResponseKeys', () => {
-      expect(studyFilesContainer.addFilesResponseKeys).toEqual(['StudyFileTabByStudyShortName', 'data_file_uuid']);
+      expect(studyFilesContainer.addFilesResponseKeys).toEqual(['studyFileOverview', 'data_file_uuid']);
     });
 
     it('should have correct addAllFilesResponseKeys', () => {
-      expect(studyFilesContainer.addAllFilesResponseKeys).toEqual(['StudyFileTabByStudyShortName', 'data_file_uuid']);
+      expect(studyFilesContainer.addAllFilesResponseKeys).toEqual(['studyFileOverview', 'data_file_uuid']);
     });
   });
 });

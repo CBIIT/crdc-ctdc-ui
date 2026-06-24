@@ -3,16 +3,9 @@ import { useApolloClient } from '@apollo/client';
 import { connect } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
 import { getFilters } from '@bento-core/facet-filter';
-import gql from 'graphql-tag';
 import DashTemplateView from './DashTemplateView';
 import { DASHBOARD_QUERY_NEW, TARGETED_THERAPY_QUERY } from '../../bento/dashboardTabData';
 import { generateValidTherapyCombinations, updateTargetedTherapyFacetData } from './utils';
-
-const GET_ALL_STUDY_SHORT_NAMES = gql`{
-  getAllStudies {
-    study_short_name
-  }
-}`;
 
 const getDashData = (states) => {
   const {
@@ -25,19 +18,8 @@ const getDashData = (states) => {
   const [dashData, setDashData] = useState(null)
   const [initialDashData, setInitialDashData] = useState(null);
   const [hasLoadedInitialData, setHasLoadedInitialData] = useState(false);
-  const [allStudyShortNames, setAllStudyShortNames] = useState([]);
 
   const targeted_therapy_datafield = "targeted_therapy_string";
-
-  // Fetch all study short names once (needed for Study Files tab query)
-  useEffect(() => {
-    client.query({ query: GET_ALL_STUDY_SHORT_NAMES })
-      .then((result) => {
-        const names = (result.data.getAllStudies || []).map((s) => s.study_short_name);
-        setAllStudyShortNames(names);
-      })
-      .catch((err) => console.error('Error fetching study short names:', err));
-  }, [client]);
 
   // Compute activeFilters, ensuring it updates only when dependencies change
   const activeFilters = useMemo(() => {
@@ -48,8 +30,6 @@ const getDashData = (states) => {
         ...(localFindUpload || []).map((obj) => obj.subject_id),
         ...(localFindAutocomplete || []).map((obj) => obj.title),
       ],
-      // Pass all study short names so StudyFileTabByStudyShortName returns data
-      study_short_name: allStudyShortNames,
     };
 
     const sourceData = dashData
@@ -65,7 +45,7 @@ const getDashData = (states) => {
     }
 
     return baseFilters;
-  }, [filterState, localFindUpload, localFindAutocomplete, initialDashData, dashData, allStudyShortNames]);
+  }, [filterState, localFindUpload, localFindAutocomplete, initialDashData, dashData]);
 
   // Fetch initial targeted therapy data only once
   useEffect(() => {
