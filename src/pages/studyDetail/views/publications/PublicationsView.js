@@ -115,7 +115,7 @@ const PublicationsView = ({ classes, study_id }) => {
             {displayPublications
               .filter((_, index) => index % 2 === 0)
               .map((publication, index) => (
-                <PublicationCard key={index} publication={publication} classes={classes} />
+                <PublicationCard key={publication.pubmed_id || publication.digital_object_id || index} publication={publication} classes={classes} />
               ))}
           </div>
           <div className={classes.divider} />
@@ -123,7 +123,7 @@ const PublicationsView = ({ classes, study_id }) => {
             {displayPublications
               .filter((_, index) => index % 2 === 1)
               .map((publication, index) => (
-                <PublicationCard key={index} publication={publication} classes={classes} />
+                <PublicationCard key={publication.pubmed_id || publication.digital_object_id || index} publication={publication} classes={classes} />
               ))}
           </div>
         </div>

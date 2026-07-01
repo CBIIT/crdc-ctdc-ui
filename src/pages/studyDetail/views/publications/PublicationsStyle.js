@@ -21,13 +21,11 @@ export default () => ({
     width: "1px",
     backgroundColor: "#000000",
     alignSelf: "stretch",
-    minHeight: "1154px",
   },
   card: {
     width: "100%",
     maxWidth: "780px",
     minHeight: "299px",
-    gap: "24px",
     borderBottom: "1px solid #C9C9C9",
     boxSizing: "border-box",
     marginBottom: "45px",
