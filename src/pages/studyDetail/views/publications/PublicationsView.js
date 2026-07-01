@@ -70,51 +70,28 @@ const PublicationCard = ({ publication, classes }) => {
 };
 
 const PublicationsView = ({ classes, study_id }) => {
-  // Fetch publications (client-side)
+  // Fetch publications via dedicated publicationInfo query (backend 1.4.0+)
   const { loading, error, data } = useQuery(GET_STUDY_PUBLICATIONS_QUERY, {
     skip: !study_id,
     variables: {
-      study_id: [study_id],
+      study_id: study_id,
     },
     fetchPolicy: "cache-first",
   });
 
-  const rawPublications = data?.studyByStudyShortName?.[0]?.publications || [];
+  const rawPublications = data?.publicationInfo || [];
 
   // Filter out entries where all fields are null
-  const publications = rawPublications.filter((pub) =>
+  const displayPublications = rawPublications.filter((pub) =>
     pub.publication_title || pub.authorship || pub.year_of_publication
     || pub.journal_citation || pub.digital_object_id || pub.pubmed_id
   );
-
-  // TODO: Remove mock data once backend has real publications
-  // Change MOCK count to test: 1 card = single column, 2+ = two columns
-  const MOCK_PUBLICATIONS = [
-    {
-      publication_title: "Adjuvant Sirolimus Does Not Improve Outcome in Pet Dogs Receiving Standard-of-Care Therapy for Appendicular Osteosarcoma: A Prospective, Randomized Trial of 324 Dogs",
-      authorship: "Amy K LeBlanc et al",
-      year_of_publication: "2021",
-      journal_citation: "Clinical Cancer Research 27(11):3005-3016",
-      digital_object_id: "10.1158/1078-0432.CCR-21-0315",
-      pubmed_id: "33753454",
-    },
-  ];
-
-  const displayPublications = publications.length > 0 ? publications : MOCK_PUBLICATIONS;
 
   if (loading) {
     return <div className={classes.container}>Loading publications...</div>;
   }
 
-  if (error) {
-    return (
-      <div className={classes.container}>
-        Error loading publications: {error.message}
-      </div>
-    );
-  }
-
-  if (displayPublications.length === 0) {
+  if (error || displayPublications.length === 0) {
     return (
       <div className={classes.container}>
         <div className={classes.noDataMessage}>
