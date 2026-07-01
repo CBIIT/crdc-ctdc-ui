@@ -88,6 +88,8 @@ describe('HeaderPanel', () => {
       // Arrange
       const participant = {
         participant_id: 'CTDC-001',
+        study_short_name: 'NCT001',
+        study_id: 'ST-001',
         age_at_enrollment: 30,
         race: 'White',
         ethnicity: 'Not Hispanic',
@@ -106,8 +108,64 @@ describe('HeaderPanel', () => {
       const breadcrumb = container.querySelector('[data-testid="breadcrumb"]');
       expect(breadcrumb).not.toBeNull();
       expect(breadcrumb.getAttribute('data-separator')).toBe('>');
-      // The breadcrumb data includes "Explore" as the first entry
-      expect(breadcrumb.textContent).toContain('Explore');
+      // First crumb is now "ALL STUDIES" (not "Explore")
+      expect(breadcrumb.textContent).toContain('ALL STUDIES');
+      // Middle crumb shows the study short name
+      expect(breadcrumb.textContent).toContain('NCT001 DETAIL');
+      // Final crumb is the participant id
+      expect(breadcrumb.textContent).toContain('CTDC-001');
+    });
+
+    it('should fall back to "STUDY DETAIL" when study_short_name is missing', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'CTDC-002',
+        study_short_name: null,
+        study_id: 'ST-002',
+        age_at_enrollment: 25,
+        race: 'Asian',
+        ethnicity: 'Hispanic',
+        sex: 'Female',
+        primary_diagnosis_disease_group: 'Sarcoma',
+        primary_disease_site: 'Bone',
+        stage_of_disease: 'Stage I',
+        targeted_therapy: null,
+        best_response_to_targeted_therapy: null,
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert – no leading space; clean fallback label
+      const breadcrumb = container.querySelector('[data-testid="breadcrumb"]');
+      expect(breadcrumb.textContent).not.toContain(' DETAIL');
+      expect(breadcrumb.textContent).toContain('STUDY DETAIL');
+    });
+
+    it('should not build a study link when study_id is missing', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'CTDC-003',
+        study_short_name: null,
+        study_id: null,
+        age_at_enrollment: 40,
+        race: 'White',
+        ethnicity: 'Not Hispanic',
+        sex: 'Male',
+        primary_diagnosis_disease_group: 'CML',
+        primary_disease_site: 'Blood',
+        stage_of_disease: 'Stage II',
+        targeted_therapy: null,
+        best_response_to_targeted_therapy: null,
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert – middle crumb is not a link (isALink false → to is '')
+      const breadcrumb = container.querySelector('[data-testid="breadcrumb"]');
+      expect(breadcrumb).not.toBeNull();
+      expect(breadcrumb.textContent).toContain('ALL STUDIES');
     });
   });
 
