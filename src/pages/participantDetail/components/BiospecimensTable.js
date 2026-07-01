@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   TableContextProvider,
   TableView,
@@ -6,7 +6,7 @@ import {
 } from '@bento-core/paginated-table';
 import { themeConfig, customTheme } from '../tableThemeConfig';
 import { biospecimenColumns } from '../../../bento/participantDetailData';
-import { biospecimenWrapperConfig } from '../wrapperConfig';
+import { getBiospecimenWrapperConfig } from '../wrapperConfig';
 import { wrapperCustomTheme } from '../wrapperTheme';
 
 export const initBiospecimenTableState = (initialState) => ({
@@ -30,29 +30,33 @@ export const initBiospecimenTableState = (initialState) => ({
   },
 });
 
-const BiospecimensTable = ({ classes, biospecimens = [] }) => (
-  <div className={classes.tableSection}>
-    <div className={classes.tableSectionTitle}>Associated Biospecimens</div>
-    <div className={classes.tableWrapper}>
-      <TableContextProvider>
-        <Wrapper
-          wrapConfig={biospecimenWrapperConfig}
-          customTheme={wrapperCustomTheme}
-          classes={classes}
-          section="Biospecimens"
-        >
-          <TableView
-            initState={initBiospecimenTableState}
-            themeConfig={{ ...themeConfig, customTheme }}
-            queryVariables={{}}
-            totalRowCount={biospecimens.length}
-            server={false}
-            tblRows={biospecimens}
-          />
-        </Wrapper>
-      </TableContextProvider>
+const BiospecimensTable = ({ classes, biospecimens = [], files = [] }) => {
+  const wrapperConfig = useMemo(() => getBiospecimenWrapperConfig(files), [files]);
+
+  return (
+    <div className={classes.tableSection}>
+      <div className={classes.tableSectionTitle}>Associated Biospecimens</div>
+      <div className={classes.tableWrapper}>
+        <TableContextProvider>
+          <Wrapper
+            wrapConfig={wrapperConfig}
+            customTheme={wrapperCustomTheme}
+            classes={classes}
+            section="Biospecimens"
+          >
+            <TableView
+              initState={initBiospecimenTableState}
+              themeConfig={{ ...themeConfig, customTheme }}
+              queryVariables={{}}
+              totalRowCount={biospecimens.length}
+              server={false}
+              tblRows={biospecimens}
+            />
+          </Wrapper>
+        </TableContextProvider>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default BiospecimensTable;
