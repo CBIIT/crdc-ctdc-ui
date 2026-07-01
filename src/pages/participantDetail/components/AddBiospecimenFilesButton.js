@@ -26,6 +26,7 @@ const AddBiospecimenFilesButton = ({ specimenIdsWithFiles }) => {
   const reduxDispatch = useDispatch();
   const client = useApolloClient();
   const cartCount = useSelector((state) => state.cartReducer?.count || 0);
+  const cartFiles = useSelector((state) => state.cartReducer?.filesId || []);
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [displayAlert, setDisplayAlert] = useState(false);
@@ -49,10 +50,14 @@ const AddBiospecimenFilesButton = ({ specimenIdsWithFiles }) => {
         .map((f) => f.data_file_uuid)
         .filter(Boolean);
 
-      if (ids.length >= maximumNumberOfFilesAllowedInTheCart) {
+      const existingCartIds = new Set(cartFiles);
+      const idsToAdd = ids.filter((id) => !existingCartIds.has(id));
+      const projectedTotal = existingCartIds.size + idsToAdd.length;
+
+      if (projectedTotal > maximumNumberOfFilesAllowedInTheCart) {
         setDisplayAlert(true);
       } else {
-        reduxDispatch(onAddCartFiles(ids));
+        reduxDispatch(onAddCartFiles(idsToAdd));
         setOpenSnackbar(true);
         tableDispatch(onRowSeclect([]));
       }
