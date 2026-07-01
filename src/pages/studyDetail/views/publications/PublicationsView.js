@@ -79,9 +79,16 @@ const PublicationsView = ({ classes, study_id }) => {
     fetchPolicy: "cache-first",
   });
 
-  const publications = data?.studyByStudyShortName?.[0]?.publications || [];
+  const rawPublications = data?.studyByStudyShortName?.[0]?.publications || [];
+
+  // Filter out entries where all fields are null
+  const publications = rawPublications.filter((pub) =>
+    pub.publication_title || pub.authorship || pub.year_of_publication
+    || pub.journal_citation || pub.digital_object_id || pub.pubmed_id
+  );
 
   // TODO: Remove mock data once backend has real publications
+  // Change MOCK count to test: 1 card = single column, 2+ = two columns
   const MOCK_PUBLICATIONS = [
     {
       publication_title: "Adjuvant Sirolimus Does Not Improve Outcome in Pet Dogs Receiving Standard-of-Care Therapy for Appendicular Osteosarcoma: A Prospective, Randomized Trial of 324 Dogs",
@@ -90,30 +97,6 @@ const PublicationsView = ({ classes, study_id }) => {
       journal_citation: "Clinical Cancer Research 27(11):3005-3016",
       digital_object_id: "10.1158/1078-0432.CCR-21-0315",
       pubmed_id: "33753454",
-    },
-    {
-      publication_title: "Adjuvant Sirolimus Does Not Improve Outcome in Pet Dogs Receiving Standard-of-Care Therapy for Appendicular Osteosarcoma: A Prospective, Randomized Trial of 324 Dogs",
-      authorship: "Amy K LeBlanc et al",
-      year_of_publication: "2021",
-      journal_citation: "Clinical Cancer Research 27(11):3005-3016",
-      digital_object_id: "10.1158/1078-0432.CCR-21-0315",
-      pubmed_id: "33753455",
-    },
-    {
-      publication_title: "Adjuvant Sirolimus Does Not Improve Outcome in Pet Dogs Receiving Standard-of-Care Therapy for Appendicular Osteosarcoma: A Prospective, Randomized Trial of 324 Dogs",
-      authorship: "Amy K LeBlanc et al",
-      year_of_publication: "2021",
-      journal_citation: "Clinical Cancer Research 27(11):3005-3016",
-      digital_object_id: "10.1158/1078-0432.CCR-21-0315",
-      pubmed_id: "33753456",
-    },
-    {
-      publication_title: "Adjuvant Sirolimus Does Not Improve Outcome in Pet Dogs Receiving Standard-of-Care Therapy for Appendicular Osteosarcoma: A Prospective, Randomized Trial of 324 Dogs",
-      authorship: "Amy K LeBlanc et al",
-      year_of_publication: "2021",
-      journal_citation: "Clinical Cancer Research 27(11):3005-3016",
-      digital_object_id: "10.1158/1078-0432.CCR-21-0315",
-      pubmed_id: "33753457",
     },
   ];
 
@@ -143,23 +126,31 @@ const PublicationsView = ({ classes, study_id }) => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.gridContainer}>
-        <div className={classes.column}>
-          {displayPublications
-            .filter((_, index) => index % 2 === 0)
-            .map((publication, index) => (
-              <PublicationCard key={index} publication={publication} classes={classes} />
-            ))}
+      {displayPublications.length === 1 ? (
+        <div className={classes.gridContainer}>
+          <div className={classes.column}>
+            <PublicationCard publication={displayPublications[0]} classes={classes} />
+          </div>
         </div>
-        <div className={classes.divider} />
-        <div className={classes.columnRight}>
-          {displayPublications
-            .filter((_, index) => index % 2 === 1)
-            .map((publication, index) => (
-              <PublicationCard key={index} publication={publication} classes={classes} />
-            ))}
+      ) : (
+        <div className={classes.gridContainer}>
+          <div className={classes.column}>
+            {displayPublications
+              .filter((_, index) => index % 2 === 0)
+              .map((publication, index) => (
+                <PublicationCard key={index} publication={publication} classes={classes} />
+              ))}
+          </div>
+          <div className={classes.divider} />
+          <div className={classes.columnRight}>
+            {displayPublications
+              .filter((_, index) => index % 2 === 1)
+              .map((publication, index) => (
+                <PublicationCard key={index} publication={publication} classes={classes} />
+              ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
