@@ -14,21 +14,23 @@ import HeaderPanel from './HeaderPanel';
 jest.mock('../../../components/Breadcrumb/BreadcrumbView', () => {
   const React = require('react');
   return function MockBreadcrumb(props) {
-    // Safely serialize data — props.data may contain JSX elements
-    let textContent = '';
-    try {
-      textContent = (props.data || []).map((item) => {
-        if (typeof item.name === 'string') return item.name;
-        // For JSX name values, extract the participant_id from the breadcrumb entry
-        return item.to || 'breadcrumb-item';
-      }).join(' > ');
-    } catch (e) {
-      textContent = 'breadcrumb';
-    }
+    const items = (props.data || []).map((item, i) => {
+      const name = typeof item.name === 'string' ? item.name : (item.to || 'breadcrumb-item');
+      return React.createElement(
+        'span',
+        {
+          key: i,
+          'data-crumb-index': i,
+          'data-to': item.to || '',
+          'data-is-link': String(!!item.isALink),
+        },
+        name,
+      );
+    });
     return React.createElement(
       'div',
       { 'data-testid': 'breadcrumb', 'data-separator': props.separator },
-      textContent,
+      ...items,
     );
   };
 });
@@ -88,6 +90,8 @@ describe('HeaderPanel', () => {
       // Arrange
       const participant = {
         participant_id: 'CTDC-001',
+        study_short_name: 'NCT001',
+        study_id: 'ST-001',
         age_at_enrollment: 30,
         race: 'White',
         ethnicity: 'Not Hispanic',
@@ -102,12 +106,85 @@ describe('HeaderPanel', () => {
       // Act
       renderComponent(participant);
 
-      // Assert
+      // Assert – separator prop forwarded
       const breadcrumb = container.querySelector('[data-testid="breadcrumb"]');
       expect(breadcrumb).not.toBeNull();
       expect(breadcrumb.getAttribute('data-separator')).toBe('>');
-      // The breadcrumb data includes "Explore" as the first entry
-      expect(breadcrumb.textContent).toContain('Explore');
+
+      // Crumb 0 – "ALL STUDIES" links to /studies
+      const allStudiesCrumb = container.querySelector('[data-crumb-index="0"]');
+      expect(allStudiesCrumb.textContent).toBe('ALL STUDIES');
+      expect(allStudiesCrumb.getAttribute('data-to')).toBe('/studies');
+      expect(allStudiesCrumb.getAttribute('data-is-link')).toBe('true');
+
+      // Crumb 1 – study short name links to the study detail page
+      const studyCrumb = container.querySelector('[data-crumb-index="1"]');
+      expect(studyCrumb.textContent).toBe('NCT001 DETAIL');
+      expect(studyCrumb.getAttribute('data-to')).toBe('/study/ST-001');
+      expect(studyCrumb.getAttribute('data-is-link')).toBe('true');
+
+      // Crumb 2 – participant id is not a link
+      const participantCrumb = container.querySelector('[data-crumb-index="2"]');
+      expect(participantCrumb.textContent).toBe('CTDC-001');
+      expect(participantCrumb.getAttribute('data-to')).toBe('');
+      expect(participantCrumb.getAttribute('data-is-link')).toBe('false');
+    });
+
+    it('should fall back to "STUDY DETAIL" when study_short_name is missing', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'CTDC-002',
+        study_short_name: null,
+        study_id: 'ST-002',
+        age_at_enrollment: 25,
+        race: 'Asian',
+        ethnicity: 'Hispanic',
+        sex: 'Female',
+        primary_diagnosis_disease_group: 'Sarcoma',
+        primary_disease_site: 'Bone',
+        stage_of_disease: 'Stage I',
+        targeted_therapy: null,
+        best_response_to_targeted_therapy: null,
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert – fallback label, no null/undefined prefix, link still built from study_id
+      const studyCrumb = container.querySelector('[data-crumb-index="1"]');
+      expect(studyCrumb).not.toBeNull();
+      expect(studyCrumb.textContent).toBe('STUDY DETAIL');
+      expect(studyCrumb.textContent).not.toMatch(/^null |^undefined /);
+      expect(studyCrumb.getAttribute('data-to')).toBe('/study/ST-002');
+      expect(studyCrumb.getAttribute('data-is-link')).toBe('true');
+    });
+
+    it('should set the study crumb as a non-link when study_id is missing', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'CTDC-003',
+        study_short_name: null,
+        study_id: null,
+        age_at_enrollment: 40,
+        race: 'White',
+        ethnicity: 'Not Hispanic',
+        sex: 'Male',
+        primary_diagnosis_disease_group: 'CML',
+        primary_disease_site: 'Blood',
+        stage_of_disease: 'Stage II',
+        targeted_therapy: null,
+        best_response_to_targeted_therapy: null,
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert – middle crumb (index 1) shows fallback label, has no path, and isALink is false
+      const studyCrumb = container.querySelector('[data-crumb-index="1"]');
+      expect(studyCrumb).not.toBeNull();
+      expect(studyCrumb.textContent).toBe('STUDY DETAIL');
+      expect(studyCrumb.getAttribute('data-to')).toBe('');
+      expect(studyCrumb.getAttribute('data-is-link')).toBe('false');
     });
   });
 
