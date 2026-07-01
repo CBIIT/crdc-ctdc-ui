@@ -18,6 +18,7 @@ import { onClearAllFilters } from "../dashTemplate/sideBar/BentoFilterUtils";
 import useDashboardTabs from "../dashTemplate/components/dashboard-tabs-store";
 import ClinicalDataController from "./views/clinical-data/ClinicalDataController";
 import StudyFilesView from "./views/study-files/StudyFilesView";
+import PublicationsView from "./views/publications/PublicationsView";
 import CustomBreadcrumb from "../../components/Breadcrumb/BreadcrumbView";
 const StudyDetailView = ({
   classes,
@@ -161,6 +162,15 @@ const StudyDetailView = ({
               <div key={processedTab.value} hidden={currentTab !== index}>
                 <TabPanel value={currentTab} index={index} maxWidth="1800px">
                   <StudyFilesView study_id={study_id} />
+                </TabPanel>
+              </div>
+            );
+
+          case "publications":
+            return (
+              <div key={processedTab.value} hidden={currentTab !== index}>
+                <TabPanel value={currentTab} index={index} maxWidth="1800px">
+                  <PublicationsView study_id={study_id} />
                 </TabPanel>
               </div>
             );

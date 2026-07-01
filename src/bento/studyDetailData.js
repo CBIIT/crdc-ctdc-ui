@@ -37,6 +37,11 @@ export const tab = {
       label: "Study Files",
       value: "study_files",
     },
+    {
+      index: 3,
+      label: "Publications",
+      value: "publications",
+    },
   ],
 };
 
@@ -674,3 +679,27 @@ export const tableLayOut = [
     paginatedTable: true,
   },
 ];
+
+// --------------- Publications Tab Configuration ---------------
+
+// Uses the dedicated publicationInfo query from backend 1.4.0 (PR #164/#187)
+// Accepts study_id as a plain String (not array)
+export const GET_STUDY_PUBLICATIONS_QUERY = gql`
+  query studyPublications($study_id: String) {
+    publicationInfo(study_id: $study_id) {
+      publication_title
+      authorship
+      year_of_publication
+      journal_citation
+      digital_object_id
+      pubmed_id
+    }
+  }
+`;
+
+export const publicationsTableConfig = {
+  name: "Publications",
+  tableMsg: {
+    noMatch: "There are no publications available for this study.",
+  },
+};
