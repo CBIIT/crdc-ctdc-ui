@@ -13,7 +13,7 @@ export const initBiospecimenTableState = (initialState) => ({
   ...initialState,
   title: 'Biospecimens',
   dataKey: 'specimen_record_id',
-  tableMsg: { noMatch: 'No biospecimens associated with this participant.' },
+  tableMsg: { noMatch: 'There are no biospecimens available for this participant.' },
   columns: biospecimenColumns,
   selectedRows: [],
   sortBy: 'specimen_record_id',

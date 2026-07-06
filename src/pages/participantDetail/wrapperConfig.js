@@ -76,18 +76,23 @@ export const getBiospecimenWrapperConfig = (files = []) => {
     });
   }
 
-  return [
+  const config = [
     {
       container: 'paginatedTable',
       paginatedTable: true,
     },
-    {
+  ];
+
+  if (specimenIdsWithFiles.size > 0) {
+    config.push({
       container: 'buttons',
       size: 'xl',
       clsName: 'container_footer',
       items: biospecimenItems,
-    },
-  ];
+    });
+  }
+
+  return config;
 };
 
 // --------------- Files table wrapper config ---------------
