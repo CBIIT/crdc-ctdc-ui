@@ -991,7 +991,11 @@ query studyFileAddSelectedToCart(
   $study_short_name: [String],
   $study_id: [String],
   $data_file_type: [String],
-  $data_file_format: [String]
+  $data_file_format: [String],
+  $first: Int,
+  $offset: Int = 0,
+  $order_by: String = "data_file_uuid",
+  $sort_direction: String = "asc"
 ){
   studyFileOverview(
     data_file_uuid: $data_file_uuid
@@ -999,6 +1003,10 @@ query studyFileAddSelectedToCart(
     study_id: $study_id
     data_file_type: $data_file_type
     data_file_format: $data_file_format
+    first: $first
+    offset: $offset
+    order_by: $order_by
+    sort_direction: $sort_direction
   ){
     data_file_uuid
   }
@@ -1011,13 +1019,21 @@ query studyFileAddAllToCart(
   $study_short_name: [String],
   $study_id: [String],
   $data_file_type: [String],
-  $data_file_format: [String]
+  $data_file_format: [String],
+  $first: Int,
+  $offset: Int = 0,
+  $order_by: String = "data_file_uuid",
+  $sort_direction: String = "asc"
 ){
   studyFileOverview(
     study_short_name: $study_short_name
     study_id: $study_id
     data_file_type: $data_file_type
     data_file_format: $data_file_format
+    first: $first
+    offset: $offset
+    order_by: $order_by
+    sort_direction: $sort_direction
   ){
     data_file_uuid
   }
