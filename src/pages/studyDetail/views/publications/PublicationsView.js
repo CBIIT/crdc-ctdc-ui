@@ -103,31 +103,23 @@ const PublicationsView = ({ classes, study_id }) => {
 
   return (
     <div className={classes.container}>
-      {displayPublications.length === 1 ? (
-        <div className={classes.gridContainer}>
-          <div className={classes.column}>
-            <PublicationCard publication={displayPublications[0]} classes={classes} />
-          </div>
+      <div className={classes.gridContainer}>
+        <div className={classes.column}>
+          {displayPublications
+            .filter((_, index) => index % 2 === 0)
+            .map((publication, index) => (
+              <PublicationCard key={publication.pubmed_id || publication.digital_object_id || index} publication={publication} classes={classes} />
+            ))}
         </div>
-      ) : (
-        <div className={classes.gridContainer}>
-          <div className={classes.column}>
-            {displayPublications
-              .filter((_, index) => index % 2 === 0)
-              .map((publication, index) => (
-                <PublicationCard key={publication.pubmed_id || publication.digital_object_id || index} publication={publication} classes={classes} />
-              ))}
-          </div>
-          <div className={classes.divider} />
-          <div className={classes.columnRight}>
-            {displayPublications
-              .filter((_, index) => index % 2 === 1)
-              .map((publication, index) => (
-                <PublicationCard key={publication.pubmed_id || publication.digital_object_id || index} publication={publication} classes={classes} />
-              ))}
-          </div>
+        {displayPublications.length > 1 && <div className={classes.divider} />}
+        <div className={classes.columnRight}>
+          {displayPublications
+            .filter((_, index) => index % 2 === 1)
+            .map((publication, index) => (
+              <PublicationCard key={publication.pubmed_id || publication.digital_object_id || index} publication={publication} classes={classes} />
+            ))}
         </div>
-      )}
+      </div>
     </div>
   );
 };
