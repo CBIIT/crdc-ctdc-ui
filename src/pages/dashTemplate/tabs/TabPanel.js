@@ -71,7 +71,7 @@ const TabView = (props) => {
         wrapConfig={configWrapper(config, wrapperConfig, "", dashboardStats[config.count])}
         customTheme={customTheme}
         classes={classes}
-        section={config.name}
+        section={config.name.replace(/ /g, '_')}
         activeFilters={activeFilters}
       >
         <Grid container>

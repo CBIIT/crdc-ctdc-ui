@@ -32,6 +32,9 @@ export const customTheme = {
       '&.files': {
         color: '#000000',
       },
+      '&.study_files': {
+        color: '#000000',
+      },
       
       '&.Mui-selected': {
         fontWeight: '500',
@@ -50,6 +53,11 @@ export const customTheme = {
           color: '#035877',
           borderTop: '5px solid #0696C9',
         },
+        '&.study_files': {
+          background: '#E8F4FA',
+          color: '#0B6E9B',
+          borderTop: '5px solid #39C0F0',
+        },
       },
       '& span.participants_count': {
         fontFamily: 'Roboto',
@@ -64,6 +72,12 @@ export const customTheme = {
         fontSize: '16px',
       },
       '& span.files_count': {
+        fontFamily: 'Roboto',
+        fontWeight: '400',
+        marginLeft: '5px',
+        fontSize: '16px',
+      },
+      '& span.study_files_count': {
         fontFamily: 'Roboto',
         fontWeight: '400',
         marginLeft: '5px',
