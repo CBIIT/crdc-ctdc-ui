@@ -11,6 +11,8 @@ const ClinicalDataView = ({ tblRows, classes, study_short_name }) => {
   const downloadAndZipCvsFiles = () => {
     downloadAndZipJson(tblRows, null, study_short_name);
   };
+  // Check if any row has data in its node property
+  const hasData = tblRows?.some(row => row.node && row.node.length > 0) || false;
 
   return (
     <div className={classes.container}>
@@ -26,7 +28,7 @@ const ClinicalDataView = ({ tblRows, classes, study_short_name }) => {
         </p>
       </div>
       <div className={classes.topDownloadBtn}>
-        <DownloadBtn handleCSVDownload={downloadAndZipCvsFiles} />
+        <DownloadBtn handleCSVDownload={downloadAndZipCvsFiles} disabled={!hasData} />
       </div>
       <div className={classes.paginatedTableWrapper}>
         <PaginatedTableView
