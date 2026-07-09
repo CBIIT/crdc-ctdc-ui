@@ -55,7 +55,7 @@ const filesTooltip = {
 };
 
 // --------------- Biospecimens table wrapper config ---------------
-export const getBiospecimenWrapperConfig = (files = []) => {
+export const getBiospecimenWrapperConfig = (files = [], biospecimenCount = 0) => {
   const specimenIdsWithFiles = new Set(
     files.map((f) => f.specimen_record_id).filter(Boolean),
   );
@@ -83,7 +83,7 @@ export const getBiospecimenWrapperConfig = (files = []) => {
     },
   ];
 
-  if (specimenIdsWithFiles.size > 0) {
+  if (biospecimenCount > 0 && specimenIdsWithFiles.size > 0) {
     config.push({
       container: 'buttons',
       size: 'xl',

@@ -227,7 +227,7 @@ describe('getBiospecimenWrapperConfig', () => {
 
   it('should include a buttons container when at least one file has a valid specimen_record_id', () => {
     const files = [{ specimen_record_id: 'sp-1', data_file_uuid: 'f-1' }];
-    const config = getBiospecimenWrapperConfig(files);
+    const config = getBiospecimenWrapperConfig(files, 1);
     expect(config).toHaveLength(2);
     const buttons = config.find((c) => c.container === 'buttons');
     expect(buttons).toBeDefined();
@@ -239,7 +239,15 @@ describe('getBiospecimenWrapperConfig', () => {
       { specimen_record_id: null, data_file_uuid: 'f-1' },
       { specimen_record_id: 'sp-2', data_file_uuid: 'f-2' },
     ];
-    const config = getBiospecimenWrapperConfig(files);
+    const config = getBiospecimenWrapperConfig(files, 2);
     expect(config).toHaveLength(2);
+  });
+
+  it('should not include a buttons container when biospecimenCount is 0 even if files have valid specimen_record_ids', () => {
+    // Arrange — files exist with specimen links but the biospecimen table is empty
+    const files = [{ specimen_record_id: 'sp-1', data_file_uuid: 'f-1' }];
+    const config = getBiospecimenWrapperConfig(files, 0);
+    expect(config).toHaveLength(1);
+    expect(config.find((c) => c.container === 'buttons')).toBeUndefined();
   });
 });
