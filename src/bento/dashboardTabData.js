@@ -186,6 +186,8 @@ query search(
   $tissue_category: [String],
   $assessment_timepoint: [String],
 
+  $files_association: [String],
+  $study_association: [String],
   $data_file_type: [String],
   $data_file_format: [String]
 ) {
@@ -386,6 +388,48 @@ query search(
       subjects
     }
   }
+  filesTabCount: searchParticipants(
+    participant_id: $participant_id
+    ctep_disease_term: $ctep_disease_term
+    stage_of_disease: $stage_of_disease
+    tumor_grade: $tumor_grade
+    sex: $sex
+    race: $race
+    ethnicity: $ethnicity
+    carcinogen_exposure: $carcinogen_exposure
+    targeted_therapy_string: $targeted_therapy_string
+
+    anatomical_collection_site: $anatomical_collection_site
+    tissue_category: $tissue_category
+    assessment_timepoint: $assessment_timepoint
+
+    association: $files_association
+    data_file_type: $data_file_type
+    data_file_format: $data_file_format
+  ) {
+    numberOfFiles
+  }
+  studyFilesTabCount: searchParticipants(
+    participant_id: $participant_id
+    ctep_disease_term: $ctep_disease_term
+    stage_of_disease: $stage_of_disease
+    tumor_grade: $tumor_grade
+    sex: $sex
+    race: $race
+    ethnicity: $ethnicity
+    carcinogen_exposure: $carcinogen_exposure
+    targeted_therapy_string: $targeted_therapy_string
+
+    anatomical_collection_site: $anatomical_collection_site
+    tissue_category: $tissue_category
+    assessment_timepoint: $assessment_timepoint
+
+    association: $study_association
+    data_file_type: $data_file_type
+    data_file_format: $data_file_format
+  ) {
+    numberOfStudyFiles
+  }
 }
 `;
 
@@ -543,6 +587,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     $tissue_category: [String],
     $assessment_timepoint: [String],
 
+    $association: [String],
     $data_file_type: [String],
     $data_file_format: [String],
 
@@ -567,6 +612,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
 
+      association: $association
       data_file_type: $data_file_type
       data_file_format: $data_file_format
 
@@ -725,6 +771,7 @@ query fileAddSelectedToCart(
   $tissue_category: [String],
   $assessment_timepoint: [String],
 
+  $association: [String],
   $data_file_type: [String],
   $data_file_format: [String],
 
@@ -751,6 +798,7 @@ query fileAddSelectedToCart(
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
 
+    association: $association
     data_file_type: $data_file_type
     data_file_format: $data_file_format
 
@@ -892,6 +940,7 @@ query fileAddAllToCart(
   $tissue_category: [String],
   $assessment_timepoint: [String],
 
+  $association: [String],
   $data_file_type: [String],
   $data_file_format: [String],
   
@@ -916,6 +965,7 @@ query fileAddAllToCart(
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
 
+    association: $association
     data_file_type: $data_file_type
     data_file_format: $data_file_format
 
@@ -962,8 +1012,10 @@ export const GET_STUDY_FILES_OVERVIEW_QUERY = gql`
   query studyFileOverviewQuery(
     $study_short_name: [String],
     $study_id: [String],
+    $association: [String],
     $data_file_type: [String],
     $data_file_format: [String],
+    $ctep_disease_term: [String],
     $first: Int,
     $offset: Int,
     $order_by: String,
@@ -972,6 +1024,8 @@ export const GET_STUDY_FILES_OVERVIEW_QUERY = gql`
     studyFileOverview(
       study_short_name: $study_short_name
       study_id: $study_id
+      association: $association
+      ctep_disease_term: $ctep_disease_term
       data_file_type: $data_file_type
       data_file_format: $data_file_format
       first: $first
@@ -997,8 +1051,10 @@ query studyFileAddSelectedToCart(
   $data_file_uuid: [String],
   $study_short_name: [String],
   $study_id: [String],
+  $association: [String],
   $data_file_type: [String],
   $data_file_format: [String],
+  
   $first: Int,
   $offset: Int = 0,
   $order_by: String = "data_file_uuid",
@@ -1008,6 +1064,7 @@ query studyFileAddSelectedToCart(
     data_file_uuid: $data_file_uuid
     study_short_name: $study_short_name
     study_id: $study_id
+    association: $association
     data_file_type: $data_file_type
     data_file_format: $data_file_format
     first: $first
@@ -1025,6 +1082,7 @@ export const GET_ALL_FILE_IDS_FOR_STUDY_FILES = gql`
 query studyFileAddAllToCart(
   $study_short_name: [String],
   $study_id: [String],
+  $association: [String],
   $data_file_type: [String],
   $data_file_format: [String],
   $first: Int,
@@ -1035,6 +1093,7 @@ query studyFileAddAllToCart(
   studyFileOverview(
     study_short_name: $study_short_name
     study_id: $study_id
+    association: $association
     data_file_type: $data_file_type
     data_file_format: $data_file_format
     first: $first
@@ -1301,6 +1360,9 @@ export const tabContainers = [
     name: 'Files',
     dataField: 'dataFile',
     api: GET_FILES_OVERVIEW_QUERY,
+    defaultFilters: {
+      association: ['biospecimen', 'participant'],
+    },
     paginationAPIField: 'fileOverview',
     defaultSortField: 'data_file_name',
     defaultSortDirection: 'asc',
@@ -1455,6 +1517,9 @@ export const tabContainers = [
     name: 'Study Files',
     dataField: 'dataStudyFile',
     api: GET_STUDY_FILES_OVERVIEW_QUERY,
+    defaultFilters: {
+      association: ['study'],
+    },
     paginationAPIField: 'studyFileOverview',
     defaultSortField: 'data_file_name',
     defaultSortDirection: 'asc',
