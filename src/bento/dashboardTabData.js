@@ -577,6 +577,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     ){
       participant_id,
       study_accession
+      study_id
       data_file_name,
       data_file_format,
       data_file_type,
@@ -1331,6 +1332,11 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        cellType: cellTypes.LINK,
+        linkAttr: {
+          rootPath: '/study',
+          pathParams: ['study_id'],
+        },
       },
       {
         dataField: 'data_file_name',
