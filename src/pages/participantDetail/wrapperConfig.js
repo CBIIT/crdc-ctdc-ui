@@ -6,18 +6,17 @@ import {
   types,
 } from '@bento-core/paginated-table';
 import {
-  GET_FILE_IDS_FOR_SELECTED_BIOSPECIMENS,
   GET_FILE_IDS_FOR_SELECTED_FILES,
 } from '../../bento/dashboardTabData';
 import {
   alertMessage,
 } from '../../bento/fileCentricCartWorkflowData';
 import {
-  BIOSPECIMEN_BUTTON_TOOLTIP,
   FILES_BUTTON_TOOLTIP,
   showJBrowseButton,
 } from '../../bento/participantDetailData';
 import jbrowseIcon from '../../assets/participant/jbrowse_icon.png';
+import AddBiospecimenFilesButton from './components/AddBiospecimenFilesButton';
 
 // --------------- JBrowse custom element ---------------
 const JBrowseButton = () => (
@@ -48,13 +47,6 @@ const JBrowseButton = () => (
 // --------------- Tooltip configs ---------------
 const HELP_ICON_URL = 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg';
 
-const biospecimenTooltip = {
-  icon: HELP_ICON_URL,
-  alt: 'tooltipIcon',
-  arrow: false,
-  tooltipText: BIOSPECIMEN_BUTTON_TOOLTIP,
-};
-
 const filesTooltip = {
   icon: HELP_ICON_URL,
   alt: 'tooltipIcon',
@@ -63,40 +55,40 @@ const filesTooltip = {
 };
 
 // --------------- Biospecimens table wrapper config ---------------
-const biospecimenItems = [
-  {
-    title: 'ADD FILES FOR SELECTED BIOSPECIMENS',
-    clsName: 'add_selected_button',
-    type: types.BUTTON,
-    role: btnTypes.ADD_SELECTED_FILES,
-    btnType: btnTypes.ADD_SELECTED_FILES,
-    tooltipCofig: biospecimenTooltip,
-    addFileQuery: GET_FILE_IDS_FOR_SELECTED_BIOSPECIMENS,
-    dataKey: 'specimen_record_id',
-    responseKeys: ['biospecimen_data_files', 'data_file_uuid'],
-    alertMessage,
-  },
-];
+export const getBiospecimenWrapperConfig = (files = []) => {
+  const specimenIdsWithFiles = new Set(
+    files.map((f) => f.specimen_record_id).filter(Boolean),
+  );
 
-if (showJBrowseButton) {
-  biospecimenItems.push({
-    type: types.CUSTOM_ELEM,
-    customViewElem: JBrowseButton,
-  });
-}
+  const biospecimenItems = [
+    {
+      type: types.CUSTOM_ELEM,
+      customViewElem: () => (
+        <AddBiospecimenFilesButton specimenIdsWithFiles={specimenIdsWithFiles} />
+      ),
+    },
+  ];
 
-export const biospecimenWrapperConfig = [
-  {
-    container: 'paginatedTable',
-    paginatedTable: true,
-  },
-  {
-    container: 'buttons',
-    size: 'xl',
-    clsName: 'container_footer',
-    items: biospecimenItems,
-  },
-];
+  if (showJBrowseButton) {
+    biospecimenItems.push({
+      type: types.CUSTOM_ELEM,
+      customViewElem: JBrowseButton,
+    });
+  }
+
+  return [
+    {
+      container: 'paginatedTable',
+      paginatedTable: true,
+    },
+    {
+      container: 'buttons',
+      size: 'xl',
+      clsName: 'container_footer',
+      items: biospecimenItems,
+    },
+  ];
+};
 
 // --------------- Files table wrapper config ---------------
 const filesItems = [
