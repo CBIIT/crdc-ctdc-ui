@@ -1222,7 +1222,11 @@ export const tabContainers = [
         header: 'Participant ID',
         display: true,
         tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
+        cellType: cellTypes.LINK,
+        linkAttr: {
+          rootPath: '/participant',
+          pathParams: ['participant_id'],
+        },
       },
       {
         dataField: 'ctep_disease_term',
@@ -1430,7 +1434,11 @@ export const tabContainers = [
         header: 'Participant ID',
         display: true,
         tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
+        cellType: cellTypes.LINK,
+        linkAttr: {
+          rootPath: '/participant',
+          pathParams: ['participant_id'],
+        },
       },
       {
         dataField: 'ctep_disease_term',
