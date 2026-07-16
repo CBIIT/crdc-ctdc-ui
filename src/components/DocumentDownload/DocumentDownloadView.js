@@ -95,7 +95,6 @@ const downloadFile = async (signedUrl, fileName, fileFormat) => {
 // NOTE: This component is getting more complex, will need to refactor at some point.
 const DocumentDownload = ({
   classes,
-  fileSize = 0,
   fileFormat = '',
   toolTipTextUnauthenticated = 'Login to access this file',
   toolTipTextFileDownload = 'Click to download a copy of this file if you have been approved by dbGaP',
@@ -161,7 +160,7 @@ const DocumentDownload = ({
     <>
       <div>
             {(enableAuthentication && isSignedIn && hasAccess) ? (
-              /* ** Case 1: Logged in and granted access, file size below 10MB ** */
+              /* ** Case 1: Logged in and granted access ** */
               <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} placement="bottom">
                 <div
                   onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification)}
@@ -170,7 +169,7 @@ const DocumentDownload = ({
                   <CustomIcon imgSrc={iconFileDownload} />
                 </div>
               </ToolTip>
-            /* ** Case 2: Not logged in or access not granted, file size below 10MB ** */
+            /* ** Case 2: Not logged in or access not granted ** */
             ) : (!isSignedIn) ? (
               // Case 2.1 Not logged in
               <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextUnauthenticated} placement="bottom">
