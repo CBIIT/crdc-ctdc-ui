@@ -256,14 +256,14 @@ query search(
     
     ## Study Facet
     ## TODO: Uncomment the study facet queries when ready
-    # participantCountByStudyShortName {
-    #   group
-    #   subjects
-    # }
-    # filterParticipantCountByStudyShortName {
-    #   group
-    #   subjects
-    # }
+     participantCountByStudyShortName {
+      group
+       subjects
+     }
+     filterParticipantCountByStudyShortName {
+       group
+       subjects
+     }
 
     participantCountByStageOfDisease {
       group
