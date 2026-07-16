@@ -20,20 +20,39 @@ import AddToCartDialogAlertView from '../../../components/AddToCartDialog/AddToC
 
 const HELP_ICON_URL = 'https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg';
 
+// --------------- Pure helpers (exported for unit testing) ---------------
+
+export const isAddButtonDisabled = (selectedRows, specimenIdsWithFiles) => {
+  if (selectedRows.length === 0) return true;
+  return !selectedRows.some((id) => specimenIdsWithFiles.has(id));
+};
+
+export const computeIdsToAdd = (fetchedIds, cartFiles) => {
+  const existingCartIds = new Set(cartFiles);
+  return [...new Set(fetchedIds)].filter((id) => !existingCartIds.has(id));
+};
+
+export const exceedsCartLimit = (idsToAdd, cartFiles, max) => {
+  const existingCartIds = new Set(cartFiles);
+  return existingCartIds.size + idsToAdd.length > max;
+};
+
 const AddBiospecimenFilesButton = ({ specimenIdsWithFiles }) => {
   const { context } = useContext(TableContext);
   const { selectedRows = [], dispatch: tableDispatch } = context;
   const reduxDispatch = useDispatch();
   const client = useApolloClient();
   const cartCount = useSelector((state) => state.cartReducer?.count || 0);
+  const cartFiles = useSelector((state) => state.cartReducer?.filesId || []);
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [displayAlert, setDisplayAlert] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const hasFilesForSelection = selectedRows.some((id) => specimenIdsWithFiles.has(id));
-  const isDisabled = selectedRows.length === 0 || !hasFilesForSelection;
+  const isDisabled = loading || isAddButtonDisabled(selectedRows, specimenIdsWithFiles);
 
   const handleAddFiles = async () => {
+    setLoading(true);
     const variables = {
       first: 10000,
       specimen_record_id: selectedRows,
@@ -49,16 +68,22 @@ const AddBiospecimenFilesButton = ({ specimenIdsWithFiles }) => {
         .map((f) => f.data_file_uuid)
         .filter(Boolean);
 
-      if (cartCount + ids.length > maximumNumberOfFilesAllowedInTheCart) {
+      const idsToAdd = computeIdsToAdd(ids, cartFiles);
+
+      if (idsToAdd.length === 0) {
+        // All files are already in the cart — nothing to add
+      } else if (exceedsCartLimit(idsToAdd, cartFiles, maximumNumberOfFilesAllowedInTheCart)) {
         setDisplayAlert(true);
       } else {
-        reduxDispatch(onAddCartFiles(ids));
+        reduxDispatch(onAddCartFiles(idsToAdd));
         setOpenSnackbar(true);
         tableDispatch(onRowSeclect([]));
       }
     } catch (err) {
       // eslint-disable-next-line no-console
       console.error('Error adding biospecimen files:', err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -73,11 +98,15 @@ const AddBiospecimenFilesButton = ({ specimenIdsWithFiles }) => {
         ADD FILES FOR SELECTED BIOSPECIMENS
       </Button>
       <ToolTip title={BIOSPECIMEN_BUTTON_TOOLTIP} arrow={false}>
-        <img
-          className="add_selected_file_tooltip_icon"
-          src={HELP_ICON_URL}
-          alt="tooltipIcon"
-        />
+        <button
+          type="button"
+          aria-label={BIOSPECIMEN_BUTTON_TOOLTIP}
+          style={{
+            background: 'none', border: 'none', padding: 0, cursor: 'pointer', display: 'inline-flex',
+          }}
+        >
+          <img className="add_selected_file_tooltip_icon" src={HELP_ICON_URL} alt="" />
+        </button>
       </ToolTip>
       <Snackbar
         className="snackBar"
