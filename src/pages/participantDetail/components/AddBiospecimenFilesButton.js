@@ -49,7 +49,7 @@ const AddBiospecimenFilesButton = ({ specimenIdsWithFiles }) => {
         .map((f) => f.data_file_uuid)
         .filter(Boolean);
 
-      if (ids.length >= maximumNumberOfFilesAllowedInTheCart) {
+      if (cartCount + ids.length > maximumNumberOfFilesAllowedInTheCart) {
         setDisplayAlert(true);
       } else {
         reduxDispatch(onAddCartFiles(ids));
