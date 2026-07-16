@@ -7,6 +7,7 @@ import {
   GET_BIOSPECIMENS_OVERVIEW_QUERY,
   GET_FILES_OVERVIEW_QUERY,
   GET_PARTICIPANTS_OVERVIEW_QUERY,
+  defaultFilters,
 } from '../../bento/dashboardTabData';
 
 const ParticipantDetailController = ({ match }) => {
@@ -39,7 +40,7 @@ const ParticipantDetailController = ({ match }) => {
     error: filesError,
     data: filesData,
   } = useQuery(GET_FILES_OVERVIEW_QUERY, {
-    variables: { participant_id: [participant_id] },
+    variables: { participant_id: [participant_id], ...defaultFilters.files },
   });
 
   if (participantLoading || biospecimensLoading || filesLoading) {

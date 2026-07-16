@@ -34,7 +34,11 @@ export const externalLinkIcon = {
   src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/externalLinkIcon.svg',
   alt: 'External link icon',
 };
-
+// --------------- Dahboard File and Study File default filters --------------
+export const defaultFilters = {
+  files: { association: ['biospecimen', 'participant'] },
+  studyFiles: { association: ['study'] },
+};
 
 // --------------- Tabs Header Data configuration --------------
 export const tabs = [
@@ -257,15 +261,14 @@ query search(
     }
     
     ## Study Facet
-    ## TODO: Uncomment the study facet queries when ready
-     participantCountByStudyShortName {
+    participantCountByStudyShortName {
       group
-       subjects
-     }
-     filterParticipantCountByStudyShortName {
-       group
-       subjects
-     }
+      subjects
+    }
+    filterParticipantCountByStudyShortName {
+      group
+      subjects
+    }
 
     participantCountByStageOfDisease {
       group
@@ -1048,6 +1051,24 @@ export const GET_STUDY_FILES_OVERVIEW_QUERY = gql`
   query studyFileOverviewQuery(
     $study_id: [String],
 
+    # $participant_id: [String],
+
+    $study_short_name: [String],
+    # $ctep_disease_term: [String],
+    # $stage_of_disease: [String],
+    # $tumor_grade: [String],
+    # $sex: [String],
+    # $race: [String],
+    # $ethnicity: [String],
+    # $carcinogen_exposure: [String],
+    # $targeted_therapy_string: [String], ## Replace: $targeted_therapy: [String],
+
+    # $anatomical_collection_site: [String],
+    # $tissue_category: [String],
+    # $assessment_timepoint: [String],
+    $association: [String],
+    $data_file_type: [String],
+    $data_file_format: [String],
 
     $study_short_name: [String],
     $association: [String],
@@ -1061,11 +1082,21 @@ export const GET_STUDY_FILES_OVERVIEW_QUERY = gql`
   ){
     studyFileOverview(
       study_id: $study_id
+      # participant_id: $participant_id
+
       study_short_name: $study_short_name
-      association: $association
-      ctep_disease_term: $ctep_disease_term
-      data_file_type: $data_file_type
-      data_file_format: $data_file_format
+      # ctep_disease_term: $ctep_disease_term
+      # stage_of_disease: $stage_of_disease
+      # tumor_grade: $tumor_grade
+      # sex: $sex
+      # race: $race
+      # ethnicity: $ethnicity
+      # carcinogen_exposure: $carcinogen_exposure
+      # targeted_therapy_string: $targeted_therapy_string ## Replace: targeted_therapy: $targeted_therapy
+
+      # anatomical_collection_site: $anatomical_collection_site
+      # tissue_category: $tissue_category
+      # assessment_timepoint: $assessment_timepoint
 
       first: $first
       offset: $offset
@@ -1090,7 +1121,21 @@ export const GET_FILE_IDS_FOR_SELECTED_STUDY_FILES = gql`
 query studyFileAddSelectedToCart(
   $data_file_uuid: [String],
   $study_id: [String],
+  # $participant_id: [String],
+
   $study_short_name: [String],
+  # $ctep_disease_term: [String],
+  # $stage_of_disease: [String],
+  # $tumor_grade: [String],
+  # $sex: [String],
+  # $race: [String],
+  # $ethnicity: [String],
+  # $carcinogen_exposure: [String],
+  # $targeted_therapy_string: [String], ## Replace: $targeted_therapy: [String],
+
+  # $anatomical_collection_site: [String],
+  # $tissue_category: [String],
+  # $assessment_timepoint: [String],
   $association: [String],
   $data_file_type: [String],
   $data_file_format: [String],
@@ -1447,7 +1492,7 @@ export const tabContainers = [
     dataField: 'dataFile',
     api: GET_FILES_OVERVIEW_QUERY,
     defaultFilters: {
-      association: ['biospecimen', 'participant'],
+      ...defaultFilters.files,
     },
     paginationAPIField: 'fileOverview',
     defaultSortField: 'data_file_name',
@@ -1602,11 +1647,11 @@ export const tabContainers = [
   {
     name: 'Study Files',
     dataField: 'dataStudyFile',
-    api: GET_STUDY_FILES_OVERVIEW_QUERY,
+    api: GET_FILES_OVERVIEW_QUERY, //GET_STUDY_FILES_OVERVIEW_QUERY,
     defaultFilters: {
-      association: ['study'],
+      ...defaultFilters.studyFiles
     },
-    paginationAPIField: 'studyFileOverview',
+    paginationAPIField: 'fileOverview', //'studyFileOverview',
     defaultSortField: 'data_file_name',
     defaultSortDirection: 'asc',
     count: 'numberOfStudyFiles',
@@ -1731,11 +1776,11 @@ export const tabContainers = [
 
     addFilesRequestVariableKey: 'data_file_uuid',
 
-    addFilesResponseKeys: ['studyFileOverview', 'data_file_uuid'],
-    addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_STUDY_FILES,
+    addFilesResponseKeys: ['fileOverview','data_file_uuid'], // ['studyFileOverview', 'data_file_uuid'],
+    addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_FILES, // GET_FILE_IDS_FOR_SELECTED_STUDY_FILES,
 
-    addAllFilesResponseKeys: ['studyFileOverview', 'data_file_uuid'],
-    addAllFileQuery: GET_ALL_FILE_IDS_FOR_STUDY_FILES,
+    addAllFilesResponseKeys: ['fileOverview', 'data_file_uuid'], // ['studyFileOverview', 'data_file_uuid'],
+    addAllFileQuery: GET_ALL_FILE_IDS_FOR_FILES, // GET_ALL_FILE_IDS_FOR_STUDY_FILES,
   },
 ];
 
