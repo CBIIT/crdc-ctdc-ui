@@ -26,7 +26,7 @@ describe('initBiospecimenTableState', () => {
     expect(state.page).toBe(0);
     expect(state.selectedRows).toEqual([]);
     expect(state.tableMsg).toEqual({
-      noMatch: 'No biospecimens associated with this participant.',
+      noMatch: 'There are no biospecimens available for this participant.',
     });
     expect(state.extendedViewConfig).toEqual({
       pagination: false,

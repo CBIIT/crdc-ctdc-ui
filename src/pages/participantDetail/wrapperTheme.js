@@ -13,11 +13,9 @@ export const wrapperCustomTheme = {
         backgroundColor: '#E1EEEC',
       },
       '& img.add_selected_file_tooltip_icon': {
-        width: '18px',
-        height: '18px',
+        width: '17px',
         cursor: 'pointer',
         verticalAlign: 'top',
-        marginRight: '10px',
       },
     },
   },
