@@ -35,6 +35,10 @@ describe('Study Files tab configuration', () => {
       expect(studyFilesContainer.dataKey).toBe('data_file_uuid');
     });
 
+    it('should always apply association filter as study', () => {
+      expect(studyFilesContainer.defaultFilters).toEqual({ association: ['study'] });
+    });
+
     it('should have selectableRows enabled', () => {
       expect(studyFilesContainer.selectableRows).toBe(true);
     });
@@ -112,5 +116,22 @@ describe('Study Files tab configuration', () => {
     it('should have correct addAllFilesResponseKeys', () => {
       expect(studyFilesContainer.addAllFilesResponseKeys).toEqual(['studyFileOverview', 'data_file_uuid']);
     });
+  });
+});
+
+describe('Files tab configuration', () => {
+  const filesTab = tabs.find((t) => t.id === 'file_tab');
+  const filesContainer = tabContainers.find((t) => t.id === 'file_tab');
+
+  it('should exist in the tabs array', () => {
+    expect(filesTab).toBeDefined();
+  });
+
+  it('should reference numberOfFiles for count', () => {
+    expect(filesTab.count).toBe('numberOfFiles');
+  });
+
+  it('should always apply association filter as biospecimen and participant', () => {
+    expect(filesContainer.defaultFilters).toEqual({ association: ['biospecimen', 'participant'] });
   });
 });
