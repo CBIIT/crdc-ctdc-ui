@@ -95,14 +95,10 @@ const downloadFile = async (signedUrl, fileName, fileFormat) => {
 // NOTE: This component is getting more complex, will need to refactor at some point.
 const DocumentDownload = ({
   classes,
-  fileSize = 0,
   fileFormat = '',
-  maxFileSize = 200000,
   toolTipTextUnauthenticated = 'Login to access this file',
   toolTipTextFileDownload = 'Click to download a copy of this file if you have been approved by dbGaP',
-  toolTipTextFilePreview = 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
   iconFileDownload = '',
-  iconFilePreview = '',
   iconUnauthenticated = '',
   fileLocation = '',
   requiredACLs = [],
@@ -163,10 +159,8 @@ const DocumentDownload = ({
   return (
     <>
       <div>
-        {fileSize < maxFileSize && (
-          <>
             {(enableAuthentication && isSignedIn && hasAccess) ? (
-              /* ** Case 1: Logged in and granted access, file size below 10MB ** */
+              /* ** Case 1: Logged in and granted access ** */
               <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} placement="bottom">
                 <div
                   onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification)}
@@ -175,7 +169,7 @@ const DocumentDownload = ({
                   <CustomIcon imgSrc={iconFileDownload} />
                 </div>
               </ToolTip>
-            /* ** Case 2: Not logged in or access not granted, file size below 10MB ** */
+            /* ** Case 2: Not logged in or access not granted ** */
             ) : (!isSignedIn) ? (
               // Case 2.1 Not logged in
               <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextUnauthenticated} placement="bottom">
@@ -196,18 +190,7 @@ const DocumentDownload = ({
                 </div>
               </ToolTip>
             )}
-          </>
-        )}
-        { fileSize >= maxFileSize && (
-          /* ** Case 3: Regardless of login status, file size larger than 10MB ** */
-          <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFilePreview} placement="bottom">
-            <div
-              style={{ textAlign: 'center' }}
-            >
-              <CustomIcon imgSrc={iconFilePreview} />
-            </div>
-          </ToolTip>
-        )}
+   
         <SessionTimeOutModal
           open={showModal}
           closeModal={closeModal}

@@ -59,6 +59,9 @@ export const customTheme = {
       '&.add_selected_button_Files': {
         backgroundColor: '#06846A',
       },
+      '&.add_selected_button_Study_Files': {
+        backgroundColor: '#06846A',
+      },
       '&.Mui-disabled': {
         color: '#fff',
         '&.add_selected_button_Participants': {
@@ -69,6 +72,9 @@ export const customTheme = {
         },
         '&.add_selected_button_Files': {
           backgroundColor: '#08a3834f',
+        },
+        '&.add_selected_button_Study_Files': {
+          backgroundColor: '#06846A4f',
         },
       },
       '&.yesBtn': {

@@ -20,7 +20,7 @@ const StudyLink = (props) => {
   const StudyIcon = getStudyIcon(classes, studyDisposition(study_id));
   return (
     <>
-      <Link href={url} className={cellTypes.LINK}>
+      <Link href={url} className={`${cellTypes.LINK} ${classes.studyCodeLink}`}>
         <Typography className={classes.studyLink}>
           {study_id}
         </Typography>
@@ -37,9 +37,16 @@ const StudyLink = (props) => {
 };
 
 const styles = () => ({
+  studyCodeLink: {
+    color: '#990099',
+    '&:hover': {
+      color: '#990099',
+    },
+  },
   studyLink: {
     float: 'left',
     marginRight: '5px',
+    color: '#990099',
   },
   embargoFileIcon: {
     width: '20px',
