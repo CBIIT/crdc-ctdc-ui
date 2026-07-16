@@ -97,12 +97,9 @@ const DocumentDownload = ({
   classes,
   fileSize = 0,
   fileFormat = '',
-  maxFileSize = 200000,
   toolTipTextUnauthenticated = 'Login to access this file',
   toolTipTextFileDownload = 'Click to download a copy of this file if you have been approved by dbGaP',
-  toolTipTextFilePreview = 'Because of its size and/or format, this file is unavailable for download and must be accessed via the My Files workflow',
   iconFileDownload = '',
-  iconFilePreview = '',
   iconUnauthenticated = '',
   fileLocation = '',
   requiredACLs = [],
@@ -163,8 +160,6 @@ const DocumentDownload = ({
   return (
     <>
       <div>
-        {fileSize < maxFileSize && (
-          <>
             {(enableAuthentication && isSignedIn && hasAccess) ? (
               /* ** Case 1: Logged in and granted access, file size below 10MB ** */
               <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} placement="bottom">
@@ -196,18 +191,7 @@ const DocumentDownload = ({
                 </div>
               </ToolTip>
             )}
-          </>
-        )}
-        { fileSize >= maxFileSize && (
-          /* ** Case 3: Regardless of login status, file size larger than 10MB ** */
-          <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFilePreview} placement="bottom">
-            <div
-              style={{ textAlign: 'center' }}
-            >
-              <CustomIcon imgSrc={iconFilePreview} />
-            </div>
-          </ToolTip>
-        )}
+   
         <SessionTimeOutModal
           open={showModal}
           closeModal={closeModal}

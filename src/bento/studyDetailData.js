@@ -2,7 +2,6 @@ import { cellTypes, dataFormatTypes } from "@bento-core/table";
 import gql from "graphql-tag";
 import downloadSuccess from "../assets/dash/downloadSuccess.svg";
 import downloadLock from "../assets/dash/downloadLock.svg";
-import previewLarge from "../assets/dash/previewLarge.svg";
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
@@ -195,7 +194,6 @@ export const studyFilesTableConfig = {
       cellType: cellTypes.CUSTOM_ELEM,
       downloadDocument: true,
       documentDownloadProps: {
-        maxFileSize: 80000000,
         fileSizeColumn: "data_file_size",
         fileLocationColumn: "data_file_uuid",
         fileFormatColumn: "data_file_format",
@@ -205,9 +203,6 @@ export const studyFilesTableConfig = {
         iconUnauthenticated: downloadLock,
         toolTipTextUnauthenticated:
           "You must be logged in and must have already been granted access to download a copy of this file",
-        iconFilePreview: previewLarge,
-        toolTipTextFilePreview:
-          "Because of its size and/or format, this file must be accessed via the My Files workflow",
       },
       role: cellTypes.DISPLAY,
       tooltipText: "Sort",
