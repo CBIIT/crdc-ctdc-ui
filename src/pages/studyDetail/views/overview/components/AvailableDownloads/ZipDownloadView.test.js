@@ -3,8 +3,15 @@ import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
+import { MemoryRouter } from "react-router-dom";
 import ZipDownloadView from "./ZipDownloadView";
 import { fetchFileToDownload } from "../../../../../../components/DocumentDownload/DocumentDownloadView";
+
+const mockHistoryPush = jest.fn();
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useHistory: () => ({ push: mockHistoryPush }),
+}));
 
 /**
  * Mock graphqlClient to prevent Apollo Client initialization errors.
@@ -63,6 +70,7 @@ let container;
 beforeEach(() => {
   container = document.createElement("div");
   document.body.appendChild(container);
+  mockHistoryPush.mockClear();
   jest.clearAllMocks();
 });
 
@@ -77,7 +85,9 @@ const renderComponent = (props = {}, isSignedIn = false) => {
   act(() => {
     ReactDOM.render(
       <Provider store={store}>
-        <ZipDownloadView {...defaultProps} {...props} />
+        <MemoryRouter>
+          <ZipDownloadView {...defaultProps} {...props} />
+        </MemoryRouter>
       </Provider>,
       container,
     );
@@ -108,10 +118,19 @@ describe("ZipDownloadView", () => {
   });
 
   describe("when user is not signed in", () => {
-    it("renders the button as disabled", () => {
+    it("renders the button as clickable (not disabled)", () => {
       renderComponent({ disabled: false }, false);
       const button = container.querySelector("button");
-      expect(button.disabled).toBe(true);
+      expect(button.disabled).toBe(false);
+    });
+
+    it("redirects to login page on click", () => {
+      renderComponent({ disabled: false }, false);
+      const button = container.querySelector("button");
+      act(() => {
+        button.click();
+      });
+      expect(mockHistoryPush).toHaveBeenCalledWith("/user/login");
     });
 
     it("displays the custom buttonText", () => {
@@ -162,7 +181,9 @@ describe("ZipDownloadView", () => {
       act(() => {
         ReactDOM.render(
           <Provider store={store}>
-            <ZipDownloadView {...propsWithoutButtonText} />
+            <MemoryRouter>
+              <ZipDownloadView {...propsWithoutButtonText} />
+            </MemoryRouter>
           </Provider>,
           container,
         );
@@ -177,21 +198,23 @@ describe("ZipDownloadView", () => {
       act(() => {
         ReactDOM.render(
           <Provider store={store}>
-            <ZipDownloadView
-              {...defaultProps}
-              buttonText="Variant Call Files"
-              disabled={false}
-            />
-            <ZipDownloadView
-              {...defaultProps}
-              buttonText="Variant Reports"
-              disabled={true}
-            />
-            <ZipDownloadView
-              {...defaultProps}
-              buttonText="Radiology Images"
-              disabled={true}
-            />
+            <MemoryRouter>
+              <ZipDownloadView
+                {...defaultProps}
+                buttonText="Variant Call Files"
+                disabled={false}
+              />
+              <ZipDownloadView
+                {...defaultProps}
+                buttonText="Variant Reports"
+                disabled={true}
+              />
+              <ZipDownloadView
+                {...defaultProps}
+                buttonText="Radiology Images"
+                disabled={true}
+              />
+            </MemoryRouter>
           </Provider>,
           container,
         );

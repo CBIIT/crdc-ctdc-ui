@@ -125,7 +125,7 @@ const DocumentDownload = ({
       <div className={classes.downloadAllBtnContainer}>
         <Button
           classes={{ root: classes.disabledDownloadAllBtn }}
-          onClick={() => history.push('/user/login')}
+          onClick={() => history.push("/user/login")}
         >
           {buttonText}
           <img
