@@ -409,6 +409,8 @@ query search(
   }
   filesTabCount: searchParticipants(
     participant_id: $participant_id
+    study_short_name: $study_short_name
+
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -430,6 +432,8 @@ query search(
   }
   studyFilesTabCount: searchParticipants(
     participant_id: $participant_id
+    study_short_name: $study_short_name
+    
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
