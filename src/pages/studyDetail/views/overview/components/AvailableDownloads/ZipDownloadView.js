@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { Button, withStyles } from "@material-ui/core";
 import ToolTip from "@bento-core/tool-tip";
 
@@ -25,6 +26,7 @@ const DocumentDownload = ({
   const { signInWithAuthURL, signOut } = useAuth();
   const { isSignedIn } = useSelector((state) => state.login);
   const [showModal, setShowModal] = React.useState(false);
+  const history = useHistory();
 
   const closeModal = () => {
     setShowModal(false);
@@ -121,7 +123,10 @@ const DocumentDownload = ({
     // Case 2: Not logged in or access not granted
     buttonBlock = (
       <div className={classes.downloadAllBtnContainer}>
-        <Button classes={{ root: classes.disabledDownloadAllBtn }} disabled>
+        <Button
+          classes={{ root: classes.disabledDownloadAllBtn }}
+          onClick={() => history.push("/user/login")}
+        >
           {buttonText}
           <img
             src={iconUnauthenticated}
