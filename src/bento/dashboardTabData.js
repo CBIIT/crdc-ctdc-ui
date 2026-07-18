@@ -653,6 +653,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     ){
       participant_id,
       study_accession
+      study_id
       data_file_name,
       data_file_format,
       data_file_type,
