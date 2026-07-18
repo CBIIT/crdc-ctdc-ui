@@ -433,7 +433,7 @@ query search(
   studyFilesTabCount: searchParticipants(
     participant_id: $participant_id
     study_short_name: $study_short_name
-    
+
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -1074,11 +1074,6 @@ export const GET_STUDY_FILES_OVERVIEW_QUERY = gql`
     $data_file_type: [String],
     $data_file_format: [String],
 
-    $study_short_name: [String],
-    $association: [String],
-    $data_file_type: [String],
-    $data_file_format: [String],
-    $ctep_disease_term: [String],
     $first: Int,
     $offset: Int = 0, 
     $order_by: String = "data_file_name",
