@@ -603,9 +603,6 @@ export const table = {
       display: true,
       tooltipText:
         "For each of the nodes listed below, the number of participants represented by one or more records within that node",
-      columnDefaultValues: {
-        0: " ",
-      },
     },
     {
       dataField: "recordCount",
@@ -614,9 +611,6 @@ export const table = {
       display: true,
       tooltipText:
         "For each of the nodes listed below, the total number of records within each node. Participants may have multiple/numerous records within certain nodes",
-      columnDefaultValues: {
-        0: " ",
-      },
     },
     {
       dataField: "csvDataRow",

@@ -27,6 +27,7 @@ export const generateFileName = (studyShortName, title) => {
  * @param {Object} params.caseCount - Participant counts by node type
  * @param {Object} params.nodeCount - Record counts by node type
  * @param {string} params.studyShortName - Study identifier for filename generation
+ * @param {boolean} params.noClinicalMetadata - True when all clinical and clinical trial metadata is absent
  * @returns {Array} Array of enriched row objects ready for display
  *
  * @example
@@ -46,16 +47,22 @@ export const prepareTableRows = ({
   caseCount,
   nodeCount,
   studyShortName,
+  noClinicalMetadata = false,
 }) => {
-  return tableRows.map((row) => ({
-    ...row,
-    clinicalDataNode: row.title,
-    clinicalDataDescription: descriptions[row.countKey] || "",
-    recordCount: nodeCount[row.countKey] || 0,
-    caseCount: caseCount[row.countKey] || 0,
-    csvDataRow: nodeData?.[row.csvDownload] || [],
-    fileName: generateFileName(studyShortName, row.title),
-    node: nodeData?.[row.csvDownload] || [],
-    metadata: row.manifest,
-  }));
+  return tableRows.map((row) => {
+    const rowNodeData = nodeData?.[row.csvDownload] || [];
+
+    return {
+      ...row,
+      clinicalDataNode: row.title,
+      clinicalDataDescription: descriptions[row.countKey] || "",
+      recordCount: noClinicalMetadata ? 0 : nodeCount[row.countKey] || 0,
+      caseCount: noClinicalMetadata ? 0 : caseCount[row.countKey] || 0,
+      csvDataRow: noClinicalMetadata ? [] : rowNodeData,
+      fileName: generateFileName(studyShortName, row.title),
+      node: noClinicalMetadata ? [] : rowNodeData,
+      isCsvDisabled: noClinicalMetadata,
+      metadata: row.manifest,
+    };
+  });
 };
