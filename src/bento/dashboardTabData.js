@@ -34,7 +34,7 @@ export const externalLinkIcon = {
   src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/externalLinkIcon.svg',
   alt: 'External link icon',
 };
-// --------------- Dahboard File and Study File default filters --------------
+// --------------- Dashboard File and Study File default filters --------------
 export const defaultFilters = {
   files: { association: ['biospecimen', 'participant'] },
   studyFiles: { association: ['study'] },
