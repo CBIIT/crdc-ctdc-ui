@@ -63,7 +63,7 @@ const DocumentDownload = ({
         <ToolTip
           classes={{ tooltip: classes.customTooltip }}
           title={toolTipTextFileDownload}
-          placement="right"
+          placement="top"
         >
           <Button classes={{ root: classes.disabledDownloadAllBtn }} disabled>
             {buttonText}
@@ -94,7 +94,7 @@ const DocumentDownload = ({
         <ToolTip
           classes={{ tooltip: classes.customTooltip }}
           title={toolTipTextFileDownload}
-          placement="left"
+          placement="top"
         >
           <Button
             classes={{ root: classes.downloadAllBtn }}
@@ -239,7 +239,6 @@ const styles = () => ({
     textAlign: "left",
     padding: "10px 15px",
     position: "relative",
-    top: "30px",
   },
   tooltipIcon: {
     position: "relative",

@@ -112,15 +112,53 @@ const AvailableDownloads = ({
     return zipFile;
   };
 
+  /**
+   * Get the file format for tooltip based on file type.
+   * Maps file types to their content format (not the zip container format).
+   * Case-insensitive matching to handle variations in file type casing.
+   * Tries both singular and plural forms when matching.
+   * Falls back to actual file format if mapping not found.
+   */
+  const getFileFormatForType = (dataFileType, zipFile = null) => {
+    const formatMap = {
+      "radiology imaging": "DICOM",
+      "variant call file": "VCF",
+      "variant report": "PDF",
+    };
+
+    // Normalize to lowercase for case-insensitive matching
+    const normalizedType = dataFileType?.toLowerCase().trim() || "";
+    
+    // First try direct match
+    let mappedFormat = formatMap[normalizedType];
+    
+    // If no match, try alternate form (singular ↔ plural)
+    if (!mappedFormat && normalizedType) {
+      const words = normalizedType.split(/\s+/);
+      const lastWord = words[words.length - 1];
+      const prefix = words.slice(0, -1).join(" ");
+      
+      // Convert last word to alternate form (plural ↔ singular)
+      const alternateLastWord = pluralize.isPlural(lastWord)
+        ? pluralize.singular(lastWord)
+        : pluralize(lastWord);
+      
+      const alternateType = prefix ? `${prefix} ${alternateLastWord}` : alternateLastWord;
+      mappedFormat = formatMap[alternateType];
+    }
+    
+    // Return mapped format if found, otherwise fallback to actual file format, or ""
+    return mappedFormat || zipFile?.data_file_format?.toUpperCase() || "";
+  };
+
   // Generate buttons dynamically for all valid file types
   const allButtons = participantFileTypes
     .filter((fileType) => hasValidDownloadForType(fileType))
     .map((fileType) => {
       const zipFile = getZipFileForType(fileType);
       const pluralizedType = pluralizeFileType(fileType);
-      const fileFormat = zipFile?.data_file_format
-        ? `(${zipFile.data_file_format.toUpperCase()})`
-        : "";
+      const contentFormat = getFileFormatForType(fileType, zipFile);
+      const fileFormat = contentFormat ? `(${contentFormat})` : "";
 
       return {
         buttonText: pluralizedType,

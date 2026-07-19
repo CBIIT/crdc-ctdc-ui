@@ -20,13 +20,15 @@ jest.mock("@material-ui/core", () => ({
 
 // Mock ZipDownloadView component
 jest.mock("./ZipDownloadView", () => {
-  return ({ buttonText, disabled }) => (
+  return ({ buttonText, disabled, toolTipTextFileDownload }) => (
     <div
       data-testid="zip-download-view"
       data-button-text={buttonText}
       data-disabled={disabled}
+      data-tooltip={toolTipTextFileDownload}
     >
-      {buttonText} {disabled ? "(disabled)" : "(enabled)"}
+      {buttonText} {disabled ? "(disabled)" : "(enabled)"}{" "}
+      {toolTipTextFileDownload}
     </div>
   );
 });
@@ -944,6 +946,78 @@ describe("AvailableDownloads Component", () => {
         // This is acceptable behavior - real data won't have whitespace-only strings
         expect(getButtons().length).toBe(1);
       });
+    });
+  });
+
+  // ========================================
+  // File Format Mapping Tests (CTDC-2133)
+  // ========================================
+  describe("File format mapping and tooltips", () => {
+    const createZipWithFormat = (type, format) => ({
+      data_file_type: type,
+      zip_files: [
+        {
+          data_file_uuid: "uuid-1",
+          data_file_name: "file.zip",
+          data_file_format: format,
+        },
+      ],
+    });
+
+    test.each([
+      ["Variant Call File", "VCF"],
+      ["variant call file", "VCF"], // lowercase
+      ["VARIANT CALL FILE", "VCF"], // uppercase
+      ["Variant Call Files", "VCF"], // already plural
+      ["variant call files", "VCF"], // plural + lowercase
+    ])("should map '%s' to VCF format", (fileType, expected) => {
+      const zipData = [createZipWithFormat(fileType, "zip")];
+      renderComponent([fileType], zipData);
+      expect(container.textContent).toContain(`(${expected})`);
+    });
+
+    test.each([
+      ["Variant Report", "PDF"],
+      ["variant report", "PDF"],
+      ["Variant Reports", "PDF"], // plural
+    ])("should map '%s' to PDF format", (fileType, expected) => {
+      const zipData = [createZipWithFormat(fileType, "zip")];
+      renderComponent([fileType], zipData);
+      expect(container.textContent).toContain(`(${expected})`);
+    });
+
+    test.each([
+      ["Radiology Imaging", "DICOM"],
+      ["radiology imaging", "DICOM"],
+      ["RADIOLOGY IMAGING", "DICOM"],
+    ])("should map '%s' to DICOM format", (fileType, expected) => {
+      const zipData = [createZipWithFormat(fileType, "zip")];
+      renderComponent([fileType], zipData);
+      expect(container.textContent).toContain(`(${expected})`);
+    });
+
+    it("should fallback to actual file format when no mapping exists", () => {
+      const zipData = [createZipWithFormat("Genomic Data", "BAM")];
+      renderComponent(["Genomic Data"], zipData);
+      expect(container.textContent).toContain("(BAM)");
+    });
+
+    it("should return empty when no mapping and no file format", () => {
+      const zipData = [
+        {
+          data_file_type: "Unknown Type",
+          zip_files: [
+            {
+              data_file_uuid: "uuid-1",
+              data_file_name: "file.zip",
+              data_file_format: null,
+            },
+          ],
+        },
+      ];
+      renderComponent(["Unknown Type"], zipData);
+      expect(container.textContent).not.toContain("(null)");
+      expect(container.textContent).not.toContain("(undefined)");
     });
   });
 });
