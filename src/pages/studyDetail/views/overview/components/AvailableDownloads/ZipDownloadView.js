@@ -32,10 +32,10 @@ const DocumentDownload = ({
     setShowModal(false);
   };
 
-  // Can be more than isSignedIn by checking if current user has the required ACLs
-  const hasAccess = () => {
-    return isSignedIn;
-  };
+  // NOTE: Access control is currently enforced server-side by DCF (Data Commons Framework) at download time.
+  // Future enhancement: Implement client-side ACL checking to proactively show button states based on user
+  // permissions before the download attempt, providing better UX by preventing unauthorized click attempts.
+  // const hasAccess = () => { return isSignedIn && userHasRequiredACLs; };
 
   const { Notification } = useGlobal();
   const showUnauthorizedNotification = () => {
@@ -60,17 +60,23 @@ const DocumentDownload = ({
     // Case 0: No file available (e.g., no ZIP) – always disabled,
     buttonBlock = (
       <div className={classes.downloadAllBtnContainer}>
-        <Button classes={{ root: classes.disabledDownloadAllBtn }} disabled>
-          {buttonText}
-          <img
-            src={iconUnauthenticated || iconFileDownload}
-            alt="download icon"
-            className={classes.downloadIcon}
-          />
-        </Button>
         <ToolTip
           classes={{ tooltip: classes.customTooltip }}
           title={toolTipTextFileDownload}
+          placement="right"
+        >
+          <Button classes={{ root: classes.disabledDownloadAllBtn }} disabled>
+            {buttonText}
+            <img
+              src={iconUnauthenticated || iconFileDownload}
+              alt="download icon"
+              className={classes.downloadIcon}
+            />
+          </Button>
+        </ToolTip>
+        <ToolTip
+          classes={{ tooltip: classes.customTooltip }}
+          title={toolTipTextUnauthenticated}
           placement="right"
         >
           <img
@@ -81,34 +87,40 @@ const DocumentDownload = ({
         </ToolTip>
       </div>
     );
-  } else if (enableAuthentication && isSignedIn && hasAccess()) {
-    // Case 1: Logged in and granted access
+  } else if (enableAuthentication && isSignedIn) {
+    // Case 1: Logged in
     buttonBlock = (
       <div className={classes.downloadAllBtnContainer}>
-        <Button
-          classes={{ root: classes.downloadAllBtn }}
-          onClick={() =>
-            fetchFileToDownload(
-              fileLocation,
-              signOut,
-              setShowModal,
-              fileName,
-              fileFormat,
-              showUnauthorizedNotification,
-            )
-          }
-          variant="contained"
-        >
-          {buttonText}
-          <img
-            src={iconFileDownload}
-            alt="download icon"
-            className={classes.downloadIcon}
-          />
-        </Button>
         <ToolTip
           classes={{ tooltip: classes.customTooltip }}
           title={toolTipTextFileDownload}
+          placement="left"
+        >
+          <Button
+            classes={{ root: classes.downloadAllBtn }}
+            onClick={() =>
+              fetchFileToDownload(
+                fileLocation,
+                signOut,
+                setShowModal,
+                fileName,
+                fileFormat,
+                showUnauthorizedNotification,
+              )
+            }
+            variant="contained"
+          >
+            {buttonText}
+            <img
+              src={iconFileDownload}
+              alt="download icon"
+              className={classes.downloadIcon}
+            />
+          </Button>
+        </ToolTip>
+        <ToolTip
+          classes={{ tooltip: classes.customTooltip }}
+          title={toolTipTextUnauthenticated}
           placement="right"
         >
           <img
@@ -120,20 +132,26 @@ const DocumentDownload = ({
       </div>
     );
   } else {
-    // Case 2: Not logged in or access not granted
+    // Case 2: Not logged in
     buttonBlock = (
       <div className={classes.downloadAllBtnContainer}>
-        <Button
-          classes={{ root: classes.disabledDownloadAllBtn }}
-          onClick={() => history.push("/user/login")}
+        <ToolTip
+          classes={{ tooltip: classes.customTooltip }}
+          title={toolTipTextFileDownload}
+          placement="top"
         >
-          {buttonText}
-          <img
-            src={iconUnauthenticated}
-            alt="download icon"
-            className={classes.downloadIcon}
-          />
-        </Button>
+          <Button
+            classes={{ root: classes.disabledDownloadAllBtn }}
+            onClick={() => history.push("/user/login")}
+          >
+            {buttonText}
+            <img
+              src={iconUnauthenticated}
+              alt="download icon"
+              className={classes.downloadIcon}
+            />
+          </Button>
+        </ToolTip>
         <ToolTip
           classes={{ tooltip: classes.customTooltip }}
           title={toolTipTextUnauthenticated}
