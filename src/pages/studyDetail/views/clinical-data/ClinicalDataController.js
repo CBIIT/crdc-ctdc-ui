@@ -33,7 +33,6 @@ const ClinicalDataController = ({
   classes,
   dataCount,
 }) => {
-
   const [description, setDescription] = useState(null);
   const [descriptionError, setDescriptionError] = useState(null);
 
@@ -88,14 +87,14 @@ const ClinicalDataController = ({
     return Array.isArray(nodeRows) && nodeRows.length > 0;
   });
 
-  const { caseCount, nodeCount } = dataCount;
+  const { participantCount, nodeCount } = dataCount;
 
   // Prepare table rows using pure function (easy to test)
   const rows = prepareTableRows({
     tableRows: table.rows,
     descriptions: description,
     nodeData,
-    caseCount,
+    participantCount,
     nodeCount,
     studyShortName: study_short_name,
     noClinicalMetadata: !hasClinicalMetadata,

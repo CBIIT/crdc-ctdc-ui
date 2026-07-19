@@ -597,7 +597,7 @@ export const table = {
       tooltipText: "sort",
     },
     {
-      dataField: "caseCount",
+      dataField: "participantCount",
       header: "Participants",
       sort: "asc",
       display: true,
