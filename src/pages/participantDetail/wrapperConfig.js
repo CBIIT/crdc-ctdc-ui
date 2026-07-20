@@ -113,22 +113,15 @@ if (showJBrowseButton) {
   });
 }
 
-export const getFilesWrapperConfig = (fileCount) => {
-  const config = [
-    {
-      container: 'paginatedTable',
-      paginatedTable: true,
-    },
-  ];
-
-  if (fileCount > 0) {
-    config.push({
-      container: 'buttons',
-      size: 'xl',
-      clsName: 'container_footer',
-      items: filesItems,
-    });
-  }
-
-  return config;
-};
+export const getFilesWrapperConfig = () => [
+  {
+    container: 'paginatedTable',
+    paginatedTable: true,
+  },
+  {
+    container: 'buttons',
+    size: 'xl',
+    clsName: 'container_footer',
+    items: filesItems,
+  },
+];
