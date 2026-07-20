@@ -4,7 +4,7 @@ import downloadIcon from "../../../../assets/icons/clinical_data_csv_icon.svg";
 import { downloadJson } from "../../../../pages/fileCentricCart/utils";
 import { ToolTip } from "../../../../bento-core";
 
-const CsvDownlaod = ({
+const CsvDownload = ({
   classes,
   csvDataRow = [],
   isCsvDisabled = false,
@@ -13,6 +13,17 @@ const CsvDownlaod = ({
 }) => {
   const handleCSVDownload = () => {
     downloadJson(csvDataRow, "", fileName, manifest);
+  };
+
+  const handleKeyDown = (event) => {
+    if (
+      event.key === "Enter" ||
+      event.key === " " ||
+      event.key === "Spacebar"
+    ) {
+      event.preventDefault();
+      handleCSVDownload();
+    }
   };
 
   if (isCsvDisabled) {
@@ -36,7 +47,11 @@ const CsvDownlaod = ({
         >
           <div
             className={classes.tooltipImageWrapper}
-            onClick={() => handleCSVDownload()}
+            role="button"
+            tabIndex={0}
+            aria-label="Download CSV for this clinical data node"
+            onClick={handleCSVDownload}
+            onKeyDown={handleKeyDown}
           >
             <img
               src={downloadIcon}
@@ -83,4 +98,4 @@ const styles = {
   },
 };
 
-export default withStyles(styles)(CsvDownlaod);
+export default withStyles(styles)(CsvDownload);
