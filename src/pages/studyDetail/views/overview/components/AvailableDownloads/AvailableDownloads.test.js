@@ -950,7 +950,7 @@ describe("AvailableDownloads Component", () => {
   });
 
   // ========================================
-  // File Format Mapping Tests (CTDC-2133)
+  // File Format Mapping Tests (CTDC-1909)
   // ========================================
   describe("File format mapping and tooltips", () => {
     const createZipWithFormat = (type, format) => ({
