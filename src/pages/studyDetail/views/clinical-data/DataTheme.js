@@ -37,7 +37,7 @@ export const tblHeader = {
       },
       '&.clinicalDataDescription': {
       },
-      '&.caseCount': {
+      '&.participantCount': {
       },
       '&.recordCount': {
       },
@@ -215,7 +215,7 @@ const tblBody = {
       '&.clinicalDataDescription': {
         width: '68%',
       },
-      '&.caseCount': {
+      '&.participantCount': {
         '& p': {
           color: '#13344A',
           fontFamily: 'Nunito',

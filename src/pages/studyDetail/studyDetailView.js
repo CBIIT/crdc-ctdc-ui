@@ -147,7 +147,7 @@ const StudyDetailView = ({
                 <TabPanel value={currentTab} index={index} maxWidth="1800px">
                   <ClinicalDataController
                     dataCount={{
-                      caseCount: clinicalDataNodeParticipantCounts,
+                      participantCount: clinicalDataNodeParticipantCounts,
                       nodeCount: clinicalDataNodeCounts,
                     }}
                     study_id={study_id}

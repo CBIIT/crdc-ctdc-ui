@@ -27,7 +27,12 @@ import {
  * @param {Object} props.classes - Material-UI styles
  * @param {Object} props.dataCount - Counts for participants and records
  */
-const ClinicalDataController = ({ study_id, study_short_name, classes, dataCount }) => {
+const ClinicalDataController = ({
+  study_id,
+  study_short_name,
+  classes,
+  dataCount,
+}) => {
   const [description, setDescription] = useState(null);
   const [descriptionError, setDescriptionError] = useState(null);
 
@@ -44,7 +49,7 @@ const ClinicalDataController = ({ study_id, study_short_name, classes, dataCount
 
   // Fetch clinical data via GraphQL
   const { data, loading, error } = useQuery(studyClinicalDataQuery, {
-    variables: { study_id: [study_id]},
+    variables: { study_id: [study_id] },
   });
 
   // Loading state - wait for both data sources
@@ -77,16 +82,22 @@ const ClinicalDataController = ({ study_id, study_short_name, classes, dataCount
   const clinicalTrialData = data?.clinicalTrialData?.at(0);
   const nodeData = { ...clinicalData, ...clinicalTrialData };
 
-  const { caseCount, nodeCount } = dataCount;
+  const hasClinicalMetadata = table.rows.some(({ csvDownload }) => {
+    const nodeRows = nodeData?.[csvDownload];
+    return Array.isArray(nodeRows) && nodeRows.length > 0;
+  });
+
+  const { participantCount, nodeCount } = dataCount;
 
   // Prepare table rows using pure function (easy to test)
   const rows = prepareTableRows({
     tableRows: table.rows,
     descriptions: description,
     nodeData,
-    caseCount,
+    participantCount,
     nodeCount,
     studyShortName: study_short_name,
+    noClinicalMetadata: !hasClinicalMetadata,
   });
 
   return (
