@@ -31,7 +31,7 @@ export const initFilesTableState = (initialState) => ({
 });
 
 const FilesTable = ({ classes, files = [] }) => {
-  const wrapperConfig = useMemo(() => getFilesWrapperConfig(files.length), [files.length]);
+  const wrapperConfig = useMemo(() => getFilesWrapperConfig(), []);
 
   return (
     <div className={classes.tableSection}>

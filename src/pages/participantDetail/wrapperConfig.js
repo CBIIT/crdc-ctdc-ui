@@ -55,7 +55,7 @@ const filesTooltip = {
 };
 
 // --------------- Biospecimens table wrapper config ---------------
-export const getBiospecimenWrapperConfig = (files = [], biospecimenCount = 0) => {
+export const getBiospecimenWrapperConfig = (files = []) => {
   const specimenIdsWithFiles = new Set(
     files.map((f) => f.specimen_record_id).filter(Boolean),
   );
@@ -76,23 +76,18 @@ export const getBiospecimenWrapperConfig = (files = [], biospecimenCount = 0) =>
     });
   }
 
-  const config = [
+  return [
     {
       container: 'paginatedTable',
       paginatedTable: true,
     },
-  ];
-
-  if (biospecimenCount > 0 && specimenIdsWithFiles.size > 0) {
-    config.push({
+    {
       container: 'buttons',
       size: 'xl',
       clsName: 'container_footer',
       items: biospecimenItems,
-    });
-  }
-
-  return config;
+    },
+  ];
 };
 
 // --------------- Files table wrapper config ---------------
@@ -118,22 +113,15 @@ if (showJBrowseButton) {
   });
 }
 
-export const getFilesWrapperConfig = (fileCount) => {
-  const config = [
-    {
-      container: 'paginatedTable',
-      paginatedTable: true,
-    },
-  ];
-
-  if (fileCount > 0) {
-    config.push({
-      container: 'buttons',
-      size: 'xl',
-      clsName: 'container_footer',
-      items: filesItems,
-    });
-  }
-
-  return config;
-};
+export const getFilesWrapperConfig = () => [
+  {
+    container: 'paginatedTable',
+    paginatedTable: true,
+  },
+  {
+    container: 'buttons',
+    size: 'xl',
+    clsName: 'container_footer',
+    items: filesItems,
+  },
+];
