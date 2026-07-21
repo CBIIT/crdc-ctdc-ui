@@ -186,7 +186,7 @@ const DocumentDownload = ({
 
 const commonStyles = {
   buttonBase: {
-    width: "210px",
+    width: "305px",
     height: "46px",
     fontSize: "14px",
     lineHeight: "14px",
