@@ -4,12 +4,13 @@ import { ToolTip as Tooltip } from "../../../../../bento-core";
 import toolTipIcon from "../../../../../assets/study/questionMarkTooltip.svg";
 
 
-const DownloadBtn = ({ classes, handleCSVDownload }) => (
+const DownloadBtn = ({ classes, handleCSVDownload, disabled = false }) => (
   <div className={classes.downloadAllBtnContainer}>
     <Button
       variant="contained"
       classes={{ root: classes.downloadAllBtn }}
       onClick={handleCSVDownload}
+      disabled={disabled}
     >
       {"Download All"}
     </Button>

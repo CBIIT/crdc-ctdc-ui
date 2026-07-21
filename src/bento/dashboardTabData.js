@@ -4,7 +4,6 @@ import { cellTypes, dataFormatTypes, headerTypes } from '@bento-core/table';
 // import { customCasesTabDownloadCSV, customFilesTabDownloadCSV, customSamplesTabDownloadCSV } from './tableDownloadCSV';
 import downloadSuccess from '../assets/dash/downloadSuccess.svg'
 import downloadLock from '../assets/dash/downloadLock.svg'
-import previewLarge from '../assets/dash/previewLarge.svg'
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
@@ -1411,7 +1410,11 @@ export const tabContainers = [
         header: 'Participant ID',
         display: true,
         tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
+        cellType: cellTypes.LINK,
+        linkAttr: {
+          rootPath: '/participant',
+          pathParams: ['participant_id'],
+        },
       },
       {
         dataField: 'ctep_disease_term',
@@ -1524,6 +1527,11 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        cellType: cellTypes.LINK,
+        linkAttr: {
+          rootPath: '/study',
+          pathParams: ['study_id'],
+        },
       },
       {
         dataField: 'data_file_name',
@@ -1569,8 +1577,6 @@ export const tabContainers = [
         cellType: cellTypes.CUSTOM_ELEM,
         downloadDocument: true, // To indicate that column is document donwload
         documentDownloadProps: {
-          // Max file size needs to bin Bytes to seperate two support file preview and download
-          maxFileSize: 80000000, // 10MB => 80,000,000 bits
           // datafield where file file column exists in the table
           fileSizeColumn: 'data_file_size',
           // datafield where file file id exists in the table which is used to get file location
@@ -1582,17 +1588,13 @@ export const tabContainers = [
           // datafield where file name exists
           fileName: 'data_file_name',
 
-          // Case 1: Logged in and granted access, file size below {maxFileSize}
+          // Case 1: Logged in (authorization is enforced server-side at download time)
           toolTipTextFileDownload: 'Click to download a copy of this file if you have been approved by dbGaP',
           iconFileDownload: downloadSuccess,
           
-          // Case 2: Not logged in or access not granted, file size below {maxFileSize}
+          // Case 2: Not logged in or access not granted
           iconUnauthenticated: downloadLock,
           toolTipTextUnauthenticated: 'You must be logged in and must already have been granted access to download a copy of this file',
-
-          // Case 3: Regardless of login status, file size larger than {maxFileSize}
-          iconFilePreview: previewLarge,
-          toolTipTextFilePreview: 'Because of its size and/or format, this file must be accessed via the My Files workflow',
         },
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
@@ -1617,7 +1619,11 @@ export const tabContainers = [
         header: 'Participant ID',
         display: true,
         tooltipText: 'sort',
-        role: cellTypes.DISPLAY,
+        cellType: cellTypes.LINK,
+        linkAttr: {
+          rootPath: '/participant',
+          pathParams: ['participant_id'],
+        },
       },
       {
         dataField: 'ctep_disease_term',
@@ -1719,8 +1725,6 @@ export const tabContainers = [
         cellType: cellTypes.CUSTOM_ELEM,
         downloadDocument: true, // To indicate that column is document download
         documentDownloadProps: {
-          // Max file size needs to be in Bytes to separate two support file preview and download
-          maxFileSize: 80000000, // ~80 MB
           // datafield where file size column exists in the table
           fileSizeColumn: 'data_file_size',
           // datafield where file id exists in the table which is used to get file location
@@ -1732,17 +1736,13 @@ export const tabContainers = [
           // datafield where file name exists
           fileName: 'data_file_name',
 
-          // Case 1: Logged in and granted access, file size below {maxFileSize}
+          // Case 1: Logged in and granted access
           toolTipTextFileDownload: 'Click to download a copy of this file if you have been approved by dbGaP',
           iconFileDownload: downloadSuccess,
 
-          // Case 2: Not logged in or access not granted, file size below {maxFileSize}
+          // Case 2: Not logged in or access not granted
           iconUnauthenticated: downloadLock,
           toolTipTextUnauthenticated: 'You must be logged in and must already have been granted access to download a copy of this file',
-
-          // Case 3: Regardless of login status, file size larger than {maxFileSize}
-          iconFilePreview: previewLarge,
-          toolTipTextFilePreview: 'Because of its size and/or format, this file must be accessed via the My Files workflow',
         },
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,

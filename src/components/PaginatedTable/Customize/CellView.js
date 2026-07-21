@@ -121,8 +121,8 @@ const DocumentDownloadView = ({
 
 // Custom Cell View
 export const CustomCellView = (props) => {
-  const { dataField, clinicalDataDescription, clinicalDataNode, caseCount, csvDataRow } = props;
-  const hasNoValues = caseCount === " " && defaultTo(csvDataRow, []).length === 0;
+  const { dataField, clinicalDataDescription, clinicalDataNode, participantCount, csvDataRow } = props;
+  const hasNoValues = participantCount === 0 && defaultTo(csvDataRow, []).length === 0;
 
   switch (dataField) {
     case customizeColumn.DOCUMENT_DOWNLOAD:

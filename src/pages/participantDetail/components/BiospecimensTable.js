@@ -31,10 +31,7 @@ export const initBiospecimenTableState = (initialState) => ({
 });
 
 const BiospecimensTable = ({ classes, biospecimens = [], files = [] }) => {
-  const wrapperConfig = useMemo(
-    () => getBiospecimenWrapperConfig(files, biospecimens.length),
-    [files, biospecimens.length],
-  );
+  const wrapperConfig = useMemo(() => getBiospecimenWrapperConfig(files), [files]);
 
   return (
     <div className={classes.tableSection}>

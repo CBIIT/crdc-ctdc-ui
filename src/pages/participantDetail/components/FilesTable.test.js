@@ -110,34 +110,21 @@ describe('initFilesTableState', () => {
 // ─────────────────────────────────────────────────────────────────────────────
 describe('getFilesWrapperConfig', () => {
   it('should always include the paginatedTable container first', () => {
-    const config = getFilesWrapperConfig(0);
+    const config = getFilesWrapperConfig();
     expect(config[0]).toEqual({ container: 'paginatedTable', paginatedTable: true });
   });
 
-  it('should not include a buttons container when fileCount is 0', () => {
-    const config = getFilesWrapperConfig(0);
-    expect(config).toHaveLength(1);
-    expect(config.find((c) => c.container === 'buttons')).toBeUndefined();
-  });
-
-  it('should include a buttons container when fileCount is 1', () => {
-    const config = getFilesWrapperConfig(1);
+  it('should always include a buttons container', () => {
+    const config = getFilesWrapperConfig();
     expect(config).toHaveLength(2);
     const buttons = config.find((c) => c.container === 'buttons');
     expect(buttons).toBeDefined();
     expect(buttons.clsName).toBe('container_footer');
   });
 
-  it('should include a buttons container when fileCount is greater than 1', () => {
-    const config = getFilesWrapperConfig(10);
-    expect(config).toHaveLength(2);
-    expect(config.find((c) => c.container === 'buttons')).toBeDefined();
-  });
-
-  it('should not include a buttons container for negative fileCount', () => {
-    // fileCount should never be negative in practice, but the function should not blow up
-    const config = getFilesWrapperConfig(-1);
-    expect(config).toHaveLength(1);
-    expect(config.find((c) => c.container === 'buttons')).toBeUndefined();
+  it('should have buttons container with size xl', () => {
+    const config = getFilesWrapperConfig();
+    const buttons = config.find((c) => c.container === 'buttons');
+    expect(buttons.size).toBe('xl');
   });
 });

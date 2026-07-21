@@ -20,13 +20,15 @@ jest.mock("@material-ui/core", () => ({
 
 // Mock ZipDownloadView component
 jest.mock("./ZipDownloadView", () => {
-  return ({ buttonText, disabled }) => (
+  return ({ buttonText, disabled, toolTipTextFileDownload }) => (
     <div
       data-testid="zip-download-view"
       data-button-text={buttonText}
       data-disabled={disabled}
+      data-tooltip={toolTipTextFileDownload}
     >
-      {buttonText} {disabled ? "(disabled)" : "(enabled)"}
+      {buttonText} {disabled ? "(disabled)" : "(enabled)"}{" "}
+      {toolTipTextFileDownload}
     </div>
   );
 });
@@ -84,7 +86,7 @@ describe("AvailableDownloads Component", () => {
   // Basic Rendering Tests
   // ========================================
   describe("Basic rendering", () => {
-    it("should render all three buttons when all types match", () => {
+    it("should render all three buttons with Collection suffix", () => {
       const types = [
         "Variant Call File",
         "Variant Report",
@@ -95,18 +97,20 @@ describe("AvailableDownloads Component", () => {
       renderComponent(types, zipData);
 
       expect(getButtons().length).toBe(3);
-      expect(container.textContent).toContain("Variant Call Files");
-      expect(container.textContent).toContain("Variant Reports");
-      expect(container.textContent).toContain("Radiology Images");
+      expect(container.textContent).toContain("Variant Call File Collection");
+      expect(container.textContent).toContain("Variant Report Collection");
+      expect(container.textContent).toContain("Radiology Imaging Collection");
       expect(container.textContent).toContain("AVAILABLE DOWNLOADS");
     });
 
-    it("should render only matching buttons", () => {
+    it("should render only matching buttons with Collection suffix", () => {
       renderComponent(["Variant Report"], [createZipData("Variant Report")]);
 
       expect(getButtons().length).toBe(1);
-      expect(container.textContent).toContain("Variant Reports");
-      expect(container.textContent).not.toContain("Variant Call Files");
+      expect(container.textContent).toContain("Variant Report Collection");
+      expect(container.textContent).not.toContain(
+        "Variant Call File Collection",
+      );
     });
 
     it("should sort buttons alphabetically by data file type", () => {
@@ -123,9 +127,9 @@ describe("AvailableDownloads Component", () => {
         btn.getAttribute("data-button-text"),
       );
       // Alphabetical by dataFileType: Radiology Imaging, Variant Call File, Variant Report
-      expect(buttons[0]).toBe("Radiology Images");
-      expect(buttons[1]).toBe("Variant Call Files");
-      expect(buttons[2]).toBe("Variant Reports");
+      expect(buttons[0]).toBe("Radiology Imaging Collection");
+      expect(buttons[1]).toBe("Variant Call File Collection");
+      expect(buttons[2]).toBe("Variant Report Collection");
     });
   });
 
@@ -201,7 +205,7 @@ describe("AvailableDownloads Component", () => {
       );
 
       expect(getButtons().length).toBe(1);
-      expect(container.textContent).toContain("Variant Reports");
+      expect(container.textContent).toContain("Variant Report Collection");
     });
 
     it("should filter out invalid entries and show only valid ones", () => {
@@ -217,9 +221,11 @@ describe("AvailableDownloads Component", () => {
       );
 
       expect(getButtons().length).toBe(1);
-      expect(container.textContent).toContain("Variant Call Files");
-      expect(container.textContent).not.toContain("Variant Reports");
-      expect(container.textContent).not.toContain("Radiology Images");
+      expect(container.textContent).toContain("Variant Call File Collection");
+      expect(container.textContent).not.toContain("Variant Report Collection");
+      expect(container.textContent).not.toContain(
+        "Radiology Imaging Collection",
+      );
     });
   });
 
@@ -227,14 +233,14 @@ describe("AvailableDownloads Component", () => {
   // Dynamic Button Generation
   // ========================================
   describe("Dynamic file types", () => {
-    it("should render button for any file type", () => {
+    it("should render button for any file type with Collection suffix", () => {
       renderComponent(["Genomic Data"], [createZipData("Genomic Data")]);
 
       expect(getButtons().length).toBe(1);
-      expect(container.textContent).toContain("Genomic Data");
+      expect(container.textContent).toContain("Genomic Data Collection");
     });
 
-    it("should render multiple file types", () => {
+    it("should render multiple file types with Collection suffix", () => {
       const zipData = [
         createZipData("Variant Report", "uuid-1"),
         createZipData("Genomic Data", "uuid-2"),
@@ -247,9 +253,9 @@ describe("AvailableDownloads Component", () => {
       );
 
       expect(getButtons().length).toBe(3);
-      expect(container.textContent).toContain("Variant Reports");
-      expect(container.textContent).toContain("Genomic Data");
-      expect(container.textContent).toContain("Clinical Data");
+      expect(container.textContent).toContain("Variant Report Collection");
+      expect(container.textContent).toContain("Genomic Data Collection");
+      expect(container.textContent).toContain("Clinical Data Collection");
     });
 
     it("should not render type if UUID is invalid", () => {
@@ -271,9 +277,15 @@ describe("AvailableDownloads Component", () => {
       );
 
       const texts = getButtonTexts();
-      const clinicalIdx = texts.findIndex((t) => t.includes("Clinical Data"));
-      const genomicIdx = texts.findIndex((t) => t.includes("Genomic Data"));
-      const variantIdx = texts.findIndex((t) => t.includes("Variant Reports"));
+      const clinicalIdx = texts.findIndex((t) =>
+        t.includes("Clinical Data Collection"),
+      );
+      const genomicIdx = texts.findIndex((t) =>
+        t.includes("Genomic Data Collection"),
+      );
+      const variantIdx = texts.findIndex((t) =>
+        t.includes("Variant Report Collection"),
+      );
 
       // Alphabetical order: Clinical Data, Genomic Data, Variant Report
       expect(clinicalIdx).toBeLessThan(genomicIdx);
@@ -300,7 +312,7 @@ describe("AvailableDownloads Component", () => {
       );
 
       expect(getButtons().length).toBe(1);
-      expect(container.textContent).toContain("Variant Reports");
+      expect(container.textContent).toContain("Variant Report Collection");
     });
 
     it("should be case-sensitive for file type matching", () => {
@@ -330,620 +342,66 @@ describe("AvailableDownloads Component", () => {
       );
 
       expect(getButtons().length).toBe(1);
-      expect(container.textContent).toContain("Variant Call Files");
+      expect(container.textContent).toContain("Variant Call File Collection");
     });
   });
 
   // ========================================
-  // Pluralization Tests
+  // Collection Suffix Tests
   // ========================================
-  describe("Pluralization functionality", () => {
-    it("should pluralize file types in button text", () => {
-      const zipData = [
-        {
-          data_file_type: "Sequencing Report",
-          zip_files: [
-            {
-              data_file_uuid: "uuid-1",
-              data_file_name: "seq.zip",
-              data_file_format: "bam",
-            },
-          ],
-        },
-      ];
+  describe("Collection suffix functionality", () => {
+    it("should add Collection suffix to button text", () => {
+      const types = ["Variant Call File", "Variant Report"];
+      const zipData = types.map((type) => createZipData(type));
 
-      renderComponent(["Sequencing Report"], zipData);
+      renderComponent(types, zipData);
 
-      expect(getButtons().length).toBe(1);
-      expect(container.textContent).toContain("Sequencing Reports");
-      expect(container.textContent).not.toContain(
-        "Sequencing Report (enabled)",
-      );
+      expect(container.textContent).toContain("Variant Call File Collection");
+      expect(container.textContent).toContain("Variant Report Collection");
     });
 
-    it("should handle words ending in 'y' (convert to 'ies')", () => {
-      const zipData = [
-        {
-          data_file_type: "Clinical Summary",
-          zip_files: [
-            {
-              data_file_uuid: "uuid-1",
-              data_file_name: "summary.zip",
-              data_file_format: "pdf",
-            },
-          ],
-        },
-      ];
-
-      renderComponent(["Clinical Summary"], zipData);
-
-      expect(container.textContent).toContain("Clinical Summaries");
-    });
-
-    it("should handle words ending in 's' (add 'es')", () => {
-      const zipData = [
-        {
-          data_file_type: "Clinical Analysis",
-          zip_files: [
-            {
-              data_file_uuid: "uuid-1",
-              data_file_name: "analysis.zip",
-              data_file_format: "xlsx",
-            },
-          ],
-        },
-      ];
-
-      renderComponent(["Clinical Analysis"], zipData);
-
-      // pluralize library correctly handles irregular plural: Analysis → Analyses
-      expect(container.textContent).toContain("Clinical Analyses");
-    });
-
-    it("should add 's' for regular pluralization", () => {
-      const zipData = [
-        {
-          data_file_type: "Pathology Slide",
-          zip_files: [
-            {
-              data_file_uuid: "uuid-1",
-              data_file_name: "slides.zip",
-              data_file_format: "svs",
-            },
-          ],
-        },
-      ];
-
-      renderComponent(["Pathology Slide"], zipData);
-
-      expect(container.textContent).toContain("Pathology Slides");
-    });
-
-    it("should pluralize 'Radiology Imaging' to 'Radiology Images'", () => {
-      const zipData = [
-        {
-          data_file_type: "Radiology Imaging",
-          zip_files: [
-            {
-              data_file_uuid: "uuid-1",
-              data_file_name: "radiology.zip",
-              data_file_format: "dicom",
-            },
-          ],
-        },
-      ];
-
-      renderComponent(["Radiology Imaging"], zipData);
-
-      expect(container.textContent).toContain("Radiology Images");
-      expect(container.textContent).not.toContain("Radiology Imagings");
-    });
-
-    it("should pluralize multiple types correctly", () => {
-      const zipData = [
-        {
-          data_file_type: "Genomic Report",
-          zip_files: [
-            {
-              data_file_uuid: "uuid-1",
-              data_file_name: "genomic.zip",
-              data_file_format: "vcf",
-            },
-          ],
-        },
-        {
-          data_file_type: "Clinical Summary",
-          zip_files: [
-            {
-              data_file_uuid: "uuid-2",
-              data_file_name: "clinical.zip",
-              data_file_format: "pdf",
-            },
-          ],
-        },
-        {
-          data_file_type: "Lab Result",
-          zip_files: [
-            {
-              data_file_uuid: "uuid-3",
-              data_file_name: "lab.zip",
-              data_file_format: "csv",
-            },
-          ],
-        },
-      ];
-
+    it("should not duplicate Collection if already present", () => {
       renderComponent(
-        ["Genomic Report", "Clinical Summary", "Lab Result"],
-        zipData,
+        ["Variant Call File Collection"],
+        [createZipData("Variant Call File Collection")],
       );
 
-      expect(getButtons().length).toBe(3);
-      expect(container.textContent).toContain("Genomic Reports");
-      expect(container.textContent).toContain("Clinical Summaries");
-      expect(container.textContent).toContain("Lab Results");
+      expect(container.textContent).toContain("Variant Call File Collection");
+      // Should NOT contain double "Collection Collection"
+      expect(container.textContent).not.toContain("Collection Collection");
     });
 
-    it("should pluralize button text with dynamic tooltips", () => {
-      // All types now have dynamic tooltips with file format
-      const zipData = [
-        {
-          data_file_type: "Variant Call File",
-          zip_files: [
-            {
-              data_file_uuid: "uuid-1",
-              data_file_name: "vcf.zip",
-              data_file_format: "vcf",
-            },
-          ],
-        },
-      ];
+    it("should generate tooltips with lowercase collection", () => {
+      renderComponent(
+        ["Variant Call File"],
+        [createZipData("Variant Call File")],
+      );
 
-      renderComponent(["Variant Call File"], zipData);
-
-      // Button text should be pluralized
-      expect(container.textContent).toContain("Variant Call Files");
+      expect(container.textContent).toContain(
+        "Download the Variant Call File collection for this study",
+      );
     });
 
-    it("should include file format in dynamic tooltips when available", () => {
-      // Note: We can't directly test tooltip text from the mock, but we verify
-      // that dynamic buttons are created with file format data
-      const zipData = [
-        {
-          data_file_type: "Genomic Data",
-          zip_files: [
-            {
-              data_file_uuid: "uuid-1",
-              data_file_name: "genomic.zip",
-              data_file_format: "bam",
-            },
-          ],
-        },
-      ];
+    it("should not duplicate collection in tooltip if already present", () => {
+      renderComponent(
+        ["Variant Report Collection"],
+        [createZipData("Variant Report Collection")],
+      );
 
-      renderComponent(["Genomic Data"], zipData);
-
-      // pluralize library correctly recognizes "Data" is already plural
-      expect(container.textContent).toContain("Genomic Data");
+      expect(container.textContent).toContain(
+        "Download the Variant Report Collection for this study",
+      );
+      // Should NOT contain "collection collection"
+      expect(container.textContent).not.toContain("collection collection");
     });
 
-    it("should handle multiple file types with pluralization", () => {
-      const zipData = [
-        createZipData("Variant Report", "uuid-1"),
-        {
-          data_file_type: "Lab Result",
-          zip_files: [
-            {
-              data_file_uuid: "uuid-2",
-              data_file_name: "lab.zip",
-              data_file_format: "csv",
-            },
-          ],
-        },
-      ];
+    it("should handle whitespace in file type names", () => {
+      renderComponent(
+        ["  Clinical  Report  "],
+        [createZipData("  Clinical  Report  ")],
+      );
 
-      renderComponent(["Variant Report", "Lab Result"], zipData);
-
-      expect(getButtons().length).toBe(2);
-      // Both types should be pluralized
-      expect(container.textContent).toContain("Variant Reports");
-      expect(container.textContent).toContain("Lab Results");
-    });
-
-    // Test actual CTDC data_file_type enum values
-    describe("CTDC model data_file_type values", () => {
-      it("should pluralize 'Clinical Report' to 'Clinical Reports'", () => {
-        const zipData = [
-          {
-            data_file_type: "Clinical Report",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "report.zip",
-                data_file_format: "pdf",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Clinical Report"], zipData);
-        expect(container.textContent).toContain("Clinical Reports");
-      });
-
-      it("should pluralize 'File Collection' to 'File Collections'", () => {
-        const zipData = [
-          {
-            data_file_type: "File Collection",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "collection.zip",
-                data_file_format: "zip",
-              },
-            ],
-          },
-        ];
-        renderComponent(["File Collection"], zipData);
-        expect(container.textContent).toContain("File Collections");
-      });
-
-      it("should pluralize 'Investigator Report' to 'Investigator Reports'", () => {
-        const zipData = [
-          {
-            data_file_type: "Investigator Report",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "inv.zip",
-                data_file_format: "pdf",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Investigator Report"], zipData);
-        expect(container.textContent).toContain("Investigator Reports");
-      });
-    });
-
-    // Test additional pluralization rules
-    describe("Additional pluralization rules", () => {
-      it("should handle vowel + 'y' → 'ys' (Assay → Assays)", () => {
-        const zipData = [
-          {
-            data_file_type: "Genomic Assay",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "assay.zip",
-                data_file_format: "csv",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Genomic Assay"], zipData);
-        expect(container.textContent).toContain("Genomic Assays");
-        expect(container.textContent).not.toContain("Genomic Assaies");
-      });
-
-      it("should handle words ending in 'x' → 'es' (Index → Indices)", () => {
-        const zipData = [
-          {
-            data_file_type: "Sample Index",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "index.zip",
-                data_file_format: "txt",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Sample Index"], zipData);
-        // pluralize library uses correct Latin plural: Index → Indices
-        expect(container.textContent).toContain("Sample Indices");
-      });
-
-      it("should handle words ending in 'ch' → 'es' (Search → Searches)", () => {
-        const zipData = [
-          {
-            data_file_type: "Database Search",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "search.zip",
-                data_file_format: "json",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Database Search"], zipData);
-        expect(container.textContent).toContain("Database Searches");
-      });
-
-      it("should handle words ending in 'sh' → 'es' (Dish → Dishes)", () => {
-        const zipData = [
-          {
-            data_file_type: "Petri Dish",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "dish.zip",
-                data_file_format: "csv",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Petri Dish"], zipData);
-        expect(container.textContent).toContain("Petri Dishes");
-      });
-
-      it("should handle words ending in 'f' → 'ves' (Life → Lives)", () => {
-        const zipData = [
-          {
-            data_file_type: "Patient Life",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "life.zip",
-                data_file_format: "pdf",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Patient Life"], zipData);
-        expect(container.textContent).toContain("Patient Lives");
-      });
-
-      it("should handle words ending in 'fe' → 'ves' (Knife → Knives)", () => {
-        const zipData = [
-          {
-            data_file_type: "Surgical Knife",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "knife.zip",
-                data_file_format: "img",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Surgical Knife"], zipData);
-        expect(container.textContent).toContain("Surgical Knives");
-      });
-
-      it("should handle multi-word file types correctly", () => {
-        const zipData = [
-          {
-            data_file_type: "Genomic Sequencing Report",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "seq.zip",
-                data_file_format: "pdf",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Genomic Sequencing Report"], zipData);
-        expect(container.textContent).toContain("Genomic Sequencing Reports");
-      });
-
-      it("should handle whitespace in file type names", () => {
-        const zipData = [
-          {
-            data_file_type: "  Clinical  Report  ",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "report.zip",
-                data_file_format: "pdf",
-              },
-            ],
-          },
-        ];
-        renderComponent(["  Clinical  Report  "], zipData);
-        expect(container.textContent).toContain("Clinical Reports");
-      });
-    });
-
-    describe("Edge cases for pluralization", () => {
-      it("should handle words ending in 'sis' → 'ses' (Analysis → Analyses)", () => {
-        const zipData = [
-          {
-            data_file_type: "Analysis",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "analysis.zip",
-                data_file_format: "pdf",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Analysis"], zipData);
-        // pluralize library correctly handles Greek/Latin plural: Analysis → Analyses
-        expect(container.textContent).toContain("Analyses");
-      });
-
-      it("should handle words ending in 'us' → add 'es' (Status → Statuses)", () => {
-        const zipData = [
-          {
-            data_file_type: "Status",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "status.zip",
-                data_file_format: "txt",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Status"], zipData);
-        // Rule 2 catches this: ends in 's' → add 'es', producing correct English plural
-        expect(container.textContent).toContain("Statuses");
-      });
-
-      it("should handle words ending in 'ss' → add 'es' (Class → Classes)", () => {
-        const zipData = [
-          {
-            data_file_type: "Class",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "class.zip",
-                data_file_format: "csv",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Class"], zipData);
-        expect(container.textContent).toContain("Classes");
-      });
-
-      it("should keep already-plural uppercase words unchanged (FILES → FILES)", () => {
-        const zipData = [
-          {
-            data_file_type: "FILES",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "files.zip",
-                data_file_format: "zip",
-              },
-            ],
-          },
-        ];
-        renderComponent(["FILES"], zipData);
-        expect(container.textContent).toContain("FILES");
-      });
-
-      it("should keep already-plural lowercase words unchanged (files → files)", () => {
-        const zipData = [
-          {
-            data_file_type: "files",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "files.zip",
-                data_file_format: "zip",
-              },
-            ],
-          },
-        ];
-        renderComponent(["files"], zipData);
-        expect(container.textContent).toContain("files");
-      });
-
-      it("should handle uppercase IMAGING → IMAGES (not IMAGINGS)", () => {
-        const zipData = [
-          {
-            data_file_type: "IMAGING",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "imaging.zip",
-                data_file_format: "dcm",
-              },
-            ],
-          },
-        ];
-        renderComponent(["IMAGING"], zipData);
-        expect(container.textContent).toContain("IMAGES");
-      });
-
-      it("should handle mixed case multi-word types (Radiology IMAGING → Radiology IMAGES)", () => {
-        const zipData = [
-          {
-            data_file_type: "Radiology IMAGING",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "rad.zip",
-                data_file_format: "dcm",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Radiology IMAGING"], zipData);
-        expect(container.textContent).toContain("Radiology IMAGES");
-      });
-
-      it("should handle very long file type names", () => {
-        const longTypeName =
-          "Comprehensive Genomic Clinical Trial Data Analysis Report Summary Document";
-        const zipData = [
-          {
-            data_file_type: longTypeName,
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "long.zip",
-                data_file_format: "pdf",
-              },
-            ],
-          },
-        ];
-        renderComponent([longTypeName], zipData);
-        expect(container.textContent).toContain(
-          "Comprehensive Genomic Clinical Trial Data Analysis Report Summary Documents",
-        );
-      });
-
-      it("should handle file types with special characters (Data-File)", () => {
-        const zipData = [
-          {
-            data_file_type: "Data-File",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "data.zip",
-                data_file_format: "csv",
-              },
-            ],
-          },
-        ];
-        renderComponent(["Data-File"], zipData);
-        expect(container.textContent).toContain("Data-Files");
-      });
-
-      it("should handle empty string gracefully (no crash)", () => {
-        const zipData = [
-          {
-            data_file_type: "",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "empty.zip",
-                data_file_format: "zip",
-              },
-            ],
-          },
-        ];
-        // Empty string matches empty string in participantFileTypes,
-        // but pluralizeFileType returns it as-is and should be filtered
-        renderComponent([""], zipData);
-        // Actually, empty string will match and create a button with empty text
-        // This is acceptable behavior - real data won't have empty strings
-        expect(getButtons().length).toBe(1);
-      });
-
-      it("should handle whitespace-only file types gracefully", () => {
-        const zipData = [
-          {
-            data_file_type: "   ",
-            zip_files: [
-              {
-                data_file_uuid: "uuid-1",
-                data_file_name: "space.zip",
-                data_file_format: "zip",
-              },
-            ],
-          },
-        ];
-        renderComponent(["   "], zipData);
-        // Whitespace string will match and create a button
-        // This is acceptable behavior - real data won't have whitespace-only strings
-        expect(getButtons().length).toBe(1);
-      });
+      expect(container.textContent).toContain("Clinical  Report Collection");
     });
   });
 });

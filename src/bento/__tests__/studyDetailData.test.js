@@ -133,7 +133,6 @@ describe("studyFilesTableConfig columns", () => {
     expect(accessCol).toBeDefined();
     expect(accessCol.downloadDocument).toBe(true);
     expect(accessCol.documentDownloadProps).toBeDefined();
-    expect(accessCol.documentDownloadProps.maxFileSize).toBe(80000000);
   });
 
   it("has correct document download configuration", () => {

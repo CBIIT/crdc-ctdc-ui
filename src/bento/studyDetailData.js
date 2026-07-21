@@ -2,7 +2,6 @@ import { cellTypes, dataFormatTypes } from "@bento-core/table";
 import gql from "graphql-tag";
 import downloadSuccess from "../assets/dash/downloadSuccess.svg";
 import downloadLock from "../assets/dash/downloadLock.svg";
-import previewLarge from "../assets/dash/previewLarge.svg";
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
@@ -201,7 +200,6 @@ export const studyFilesTableConfig = {
       cellType: cellTypes.CUSTOM_ELEM,
       downloadDocument: true,
       documentDownloadProps: {
-        maxFileSize: 80000000,
         fileSizeColumn: "data_file_size",
         fileLocationColumn: "data_file_uuid",
         fileFormatColumn: "data_file_format",
@@ -211,9 +209,6 @@ export const studyFilesTableConfig = {
         iconUnauthenticated: downloadLock,
         toolTipTextUnauthenticated:
           "You must be logged in and must have already been granted access to download a copy of this file",
-        iconFilePreview: previewLarge,
-        toolTipTextFilePreview:
-          "Because of its size and/or format, this file must be accessed via the My Files workflow",
       },
       role: cellTypes.DISPLAY,
       tooltipText: "Sort",
@@ -608,15 +603,12 @@ export const table = {
       tooltipText: "sort",
     },
     {
-      dataField: "caseCount",
+      dataField: "participantCount",
       header: "Participants",
       sort: "asc",
       display: true,
       tooltipText:
         "For each of the nodes listed below, the number of participants represented by one or more records within that node",
-      columnDefaultValues: {
-        0: " ",
-      },
     },
     {
       dataField: "recordCount",
@@ -625,9 +617,6 @@ export const table = {
       display: true,
       tooltipText:
         "For each of the nodes listed below, the total number of records within each node. Participants may have multiple/numerous records within certain nodes",
-      columnDefaultValues: {
-        0: " ",
-      },
     },
     {
       dataField: "csvDataRow",
