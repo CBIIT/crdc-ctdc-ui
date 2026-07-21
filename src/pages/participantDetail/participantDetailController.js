@@ -9,42 +9,8 @@ import {
   GET_PARTICIPANTS_OVERVIEW_QUERY,
 } from '../../bento/dashboardTabData';
 
-// ─── MOCK: navigate to #/participant/MOCK-NO-FILES to test empty-files UI ───
-const MOCK_PARTICIPANT_ID = 'MOCK-NO-FILES';
-const mockParticipantData = {
-  participant_id: MOCK_PARTICIPANT_ID,
-  age_at_enrollment: '55',
-  sex: 'Female',
-  race: 'White',
-  ethnicity: 'Not Hispanic or Latino',
-  stage_of_disease: 'Stage II',
-  primary_diagnosis_disease_group: 'Mock Disease Term',
-  targeted_therapy: 'Mock Therapy A, Mock Therapy B',
-  best_response_to_targeted_therapy: 'Partial Response',
-  primary_disease_site: 'Lung',
-  study_short_name: 'MOCK-STUDY',
-  study_id: 'MOCK-001',
-};
-const mockBiospecimens = [
-  { specimen_record_id: 'MOCK-00001-01', specimen_type: 'Tumor', anatomical_collection_site: 'Lung', tissue_category: 'Tumor', assessment_timepoint: 'Baseline', age_at_enrollment: '55', sex: 'Female', race: 'White', targeted_therapy: 'Mock Therapy A, Mock Therapy B' },
-  { specimen_record_id: 'MOCK-00001-02', specimen_type: 'Normal', anatomical_collection_site: 'Blood', tissue_category: 'Normal', assessment_timepoint: 'Baseline', age_at_enrollment: '55', sex: 'Female', race: 'White', targeted_therapy: 'Mock Therapy A, Mock Therapy B' },
-  { specimen_record_id: 'MOCK-00001-03', specimen_type: 'Tumor', anatomical_collection_site: 'Liver', tissue_category: 'Metastatic', assessment_timepoint: 'Follow-up', age_at_enrollment: '55', sex: 'Female', race: 'White', targeted_therapy: 'Mock Therapy A, Mock Therapy B' },
-];
-// ─── END MOCK ───
-
 const ParticipantDetailController = ({ match }) => {
   const participant_id = match.params.id;
-
-  // Return mock data immediately for the test participant
-  if (participant_id === MOCK_PARTICIPANT_ID) {
-    return (
-      <ParticipantDetailView
-        participant={mockParticipantData}
-        biospecimens={mockBiospecimens}
-        files={[]}
-      />
-    );
-  }
 
   const {
     loading: participantLoading,
