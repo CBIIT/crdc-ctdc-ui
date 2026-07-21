@@ -65,14 +65,16 @@ const DocumentDownload = ({
           title={toolTipTextFileDownload}
           placement="top"
         >
-          <Button classes={{ root: classes.disabledDownloadAllBtn }} disabled>
-            {buttonText}
-            <img
-              src={iconUnauthenticated || iconFileDownload}
-              alt="download icon"
-              className={classes.downloadIcon}
-            />
-          </Button>
+          <span>
+            <Button classes={{ root: classes.disabledDownloadAllBtn }} disabled>
+              {buttonText}
+              <img
+                src={iconUnauthenticated || iconFileDownload}
+                alt="download icon"
+                className={classes.downloadIcon}
+              />
+            </Button>
+          </span>
         </ToolTip>
         <ToolTip
           classes={{ tooltip: classes.customTooltip }}
