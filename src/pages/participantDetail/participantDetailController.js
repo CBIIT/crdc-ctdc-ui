@@ -74,6 +74,7 @@ const ParticipantDetailController = ({ match }) => {
     participant_id,
     age_at_enrollment: overviewRecord.age_at_enrollment,
     sex: overviewRecord.sex,
+    survival_status: overviewRecord.survival_status,
     race: overviewRecord.race,
     ethnicity: overviewRecord.ethnicity,
     stage_of_disease: overviewRecord.stage_of_disease,

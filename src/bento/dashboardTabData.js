@@ -513,6 +513,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       tumor_grade,
       age_at_enrollment,
       sex,
+      survival_status,
       race,
       ethnicity,
       carcinogen_exposure,
