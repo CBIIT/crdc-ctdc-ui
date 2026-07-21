@@ -1396,7 +1396,7 @@ export const tabContainers = [
           // datafield where file name exists
           fileName: 'data_file_name',
 
-          // Case 1: Logged in and granted access
+          // Case 1: Logged in (authorization is enforced server-side at download time)
           toolTipTextFileDownload: 'Click to download a copy of this file if you have been approved by dbGaP',
           iconFileDownload: downloadSuccess,
           

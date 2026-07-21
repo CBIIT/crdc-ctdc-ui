@@ -1,12 +1,8 @@
 import React from "react";
 import { Grid, withStyles } from "@material-ui/core";
-import pluralize from "pluralize";
 import ZipDownloadView from "./ZipDownloadView";
 import downloadSuccess from "../../../../../../assets/study/zipDownloadIcon.svg";
 import toolTipIcon from "../../../../../../assets/study/questionMarkTooltip.svg";
-
-// Add custom pluralization rule for "imaging" → "images"
-pluralize.addIrregularRule("imaging", "images");
 
 const documentDownloadProps = {
   // datafield where file file id exists in the table which is used to get file location
@@ -38,42 +34,26 @@ const AvailableDownloads = ({
   participantFileTypes = [],
 }) => {
   /**
-   * Pluralize a file type string for use in tooltips and button text.
-   * Uses the pluralize library for comprehensive pluralization rules,
-   * including irregular plurals and already-plural detection.
+   * Add "Collection" suffix to file type if not already present.
+   * Prevents duplication if the file type already ends with "Collection".
    *
    * @param {string} fileType - The data_file_type value
-   * @returns {string} - Pluralized version
+   * @param {boolean} isLowercase - Whether to add lowercase "collection"
+   * @returns {string} - File type with Collection suffix
    */
-  const pluralizeFileType = (fileType) => {
+  const addCollectionSuffix = (fileType, isLowercase = false) => {
     const trimmed = fileType.trim();
-    if (!trimmed) return fileType;
-
-    // Split into words and process the last word
     const words = trimmed.split(/\s+/);
     const lastWord = words[words.length - 1];
-    const prefix = words.slice(0, -1).join(" ");
 
-    // Preserve case: detect if all uppercase, all lowercase, or mixed
-    const isAllUpperCase =
-      lastWord === lastWord.toUpperCase() && /[A-Z]/.test(lastWord);
-    const isAllLowerCase = lastWord === lastWord.toLowerCase();
-
-    // Use pluralize library to get the plural form
-    const pluralizedLastWord = pluralize(lastWord);
-
-    // Restore case if needed
-    let finalWord = pluralizedLastWord;
-    if (isAllUpperCase) {
-      finalWord = pluralizedLastWord.toUpperCase();
-    } else if (!isAllLowerCase && lastWord[0] === lastWord[0].toUpperCase()) {
-      // Preserve title case (first letter uppercase)
-      finalWord =
-        pluralizedLastWord.charAt(0).toUpperCase() +
-        pluralizedLastWord.slice(1);
+    // Check if last word is already "Collection" (case-insensitive)
+    if (lastWord.toLowerCase() === "collection") {
+      return trimmed;
     }
 
-    return prefix ? `${prefix} ${finalWord}` : finalWord;
+    // Add Collection or collection suffix
+    const suffix = isLowercase ? "collection" : "Collection";
+    return `${trimmed} ${suffix}`;
   };
 
   /**
@@ -116,18 +96,13 @@ const AvailableDownloads = ({
   const allButtons = participantFileTypes
     .filter((fileType) => hasValidDownloadForType(fileType))
     .map((fileType) => {
-      const zipFile = getZipFileForType(fileType);
-      const pluralizedType = pluralizeFileType(fileType);
-      const fileFormat = zipFile?.data_file_format
-        ? `(${zipFile.data_file_format.toUpperCase()})`
-        : "";
+      const buttonLabel = addCollectionSuffix(fileType, false);
+      const tooltipLabel = addCollectionSuffix(fileType, true);
 
       return {
-        buttonText: pluralizedType,
+        buttonText: buttonLabel,
         dataFileType: fileType,
-        tooltip: `Download all ${pluralizedType} ${fileFormat} for this study`
-          .replace(/\s+/g, " ")
-          .trim(),
+        tooltip: `Download the ${tooltipLabel} for this study`,
       };
     })
     .sort((a, b) => a.dataFileType.localeCompare(b.dataFileType));
