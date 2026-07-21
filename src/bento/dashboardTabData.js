@@ -33,7 +33,11 @@ export const externalLinkIcon = {
   src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/externalLinkIcon.svg',
   alt: 'External link icon',
 };
-
+// --------------- Dashboard File and Study File default filters --------------
+export const defaultFilters = {
+  files: { association: ['biospecimen', 'participant'] },
+  studyFiles: { association: ['study'] },
+};
 
 // --------------- Tabs Header Data configuration --------------
 export const tabs = [
@@ -100,6 +104,7 @@ export const tabIndex = [
 export const TARGETED_THERAPY_QUERY = gql`
 query search_for_targeted_therapy (
   $participant_id: [String],
+  $study_short_name: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String], 
@@ -119,6 +124,7 @@ query search_for_targeted_therapy (
 ) {
   searchParticipants(
     participant_id: $participant_id
+    study_short_name: $study_short_name
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -171,6 +177,7 @@ query search_for_targeted_therapy (
 export const DASHBOARD_QUERY_NEW = gql`
 query search(
   $participant_id: [String],
+  $study_short_name: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -185,11 +192,14 @@ query search(
   $tissue_category: [String],
   $assessment_timepoint: [String],
 
+  $files_association: [String],
+  $study_association: [String],
   $data_file_type: [String],
   $data_file_format: [String]
 ) {
   searchParticipants(
     participant_id: $participant_id
+    study_short_name: $study_short_name
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -248,6 +258,17 @@ query search(
       }
       __typename
     }
+    
+    ## Study Facet
+    participantCountByStudyShortName {
+      group
+      subjects
+    }
+    filterParticipantCountByStudyShortName {
+      group
+      subjects
+    }
+
     participantCountByStageOfDisease {
       group
       subjects
@@ -385,12 +406,60 @@ query search(
       subjects
     }
   }
+  filesTabCount: searchParticipants(
+    participant_id: $participant_id
+    study_short_name: $study_short_name
+
+    ctep_disease_term: $ctep_disease_term
+    stage_of_disease: $stage_of_disease
+    tumor_grade: $tumor_grade
+    sex: $sex
+    race: $race
+    ethnicity: $ethnicity
+    carcinogen_exposure: $carcinogen_exposure
+    targeted_therapy_string: $targeted_therapy_string
+
+    anatomical_collection_site: $anatomical_collection_site
+    tissue_category: $tissue_category
+    assessment_timepoint: $assessment_timepoint
+
+    association: $files_association
+    data_file_type: $data_file_type
+    data_file_format: $data_file_format
+  ) {
+    numberOfFiles
+  }
+  studyFilesTabCount: searchParticipants(
+    participant_id: $participant_id
+    study_short_name: $study_short_name
+
+    ctep_disease_term: $ctep_disease_term
+    stage_of_disease: $stage_of_disease
+    tumor_grade: $tumor_grade
+    sex: $sex
+    race: $race
+    ethnicity: $ethnicity
+    carcinogen_exposure: $carcinogen_exposure
+    targeted_therapy_string: $targeted_therapy_string
+
+    anatomical_collection_site: $anatomical_collection_site
+    tissue_category: $tissue_category
+    assessment_timepoint: $assessment_timepoint
+
+    association: $study_association
+    data_file_type: $data_file_type
+    data_file_format: $data_file_format
+  ) {
+    numberOfStudyFiles
+  }
 }
 `;
 
+// --------------- GraphQL Query - Retrieve Participants tab details --------------
 export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
   query participantOverview(
     $participant_id: [String],
+    $study_short_name: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
@@ -415,6 +484,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
   ){
     participantOverview(
       participant_id: $participant_id
+      study_short_name: $study_short_name
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -443,6 +513,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       tumor_grade,
       age_at_enrollment,
       sex,
+      survival_status,
       race,
       ethnicity,
       carcinogen_exposure,
@@ -456,10 +527,11 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     }
   }
 `;
-
+// --------------- GraphQL Query - Retrieve Biospecimens tab details --------------
 export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
   query biospecimenOverview(
     $participant_id: [String],
+    $study_short_name: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
@@ -484,6 +556,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
   ){
     biospecimenOverview(
       participant_id: $participant_id
+      study_short_name: $study_short_name
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -524,10 +597,11 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     }
   }
 `;
-
+// --------------- GraphQL Query - Retrieve Files tab details --------------
 export const GET_FILES_OVERVIEW_QUERY = gql`
   query fileOverview(
     $participant_id: [String],
+    $study_short_name: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
@@ -542,6 +616,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     $tissue_category: [String],
     $assessment_timepoint: [String],
 
+    $association: [String],
     $data_file_type: [String],
     $data_file_format: [String],
 
@@ -552,6 +627,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
   ){
     fileOverview(
       participant_id: $participant_id
+      study_short_name: $study_short_name
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -566,6 +642,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       tissue_category: $tissue_category
       assessment_timepoint: $assessment_timepoint
 
+      association: $association
       data_file_type: $data_file_type
       data_file_format: $data_file_format
 
@@ -594,6 +671,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
 export const GET_FILE_IDS_FOR_SELECTED_PARTICIPANTS = gql`
 query participant_data_files(
   $participant_id: [String],
+  $study_short_name: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -618,6 +696,7 @@ query participant_data_files(
 ) {
   participant_data_files(
       participant_id: $participant_id
+      study_short_name: $study_short_name
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -652,6 +731,7 @@ query biospecimenAddAllToCart(
   $specimen_record_id: [String], # Helps in adding the selected Biospecimen(s)-files to the cart
 
   $participant_id: [String],
+  $study_short_name: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -678,6 +758,7 @@ query biospecimenAddAllToCart(
     specimen_record_id: $specimen_record_id
 
     participant_id: $participant_id
+    study_short_name: $study_short_name
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -711,6 +792,7 @@ query fileAddSelectedToCart(
   $data_file_uuid: [String], # Helps in adding the selected files to the cart
 
   $participant_id: [String],
+  $study_short_name: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -725,6 +807,7 @@ query fileAddSelectedToCart(
   $tissue_category: [String],
   $assessment_timepoint: [String],
 
+  $association: [String],
   $data_file_type: [String],
   $data_file_format: [String],
 
@@ -734,9 +817,10 @@ query fileAddSelectedToCart(
   $sort_direction: String = "asc"
  ){
   fileOverview(
-    data_file_uuid: $data_file_uuid,
+    data_file_uuid: $data_file_uuid
     
     participant_id: $participant_id
+    study_short_name: $study_short_name
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -751,6 +835,7 @@ query fileAddSelectedToCart(
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
 
+    association: $association
     data_file_type: $data_file_type
     data_file_format: $data_file_format
 
@@ -768,6 +853,7 @@ query fileAddSelectedToCart(
 export const GET_ALL_FILE_IDS_FOR_PARTICIPANTS = gql`
 query participant_data_files(
   $participant_id: [String],
+  $study_short_name: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -792,6 +878,7 @@ query participant_data_files(
 ) {
   participant_data_files(
       participant_id: $participant_id
+      study_short_name: $study_short_name
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -823,6 +910,7 @@ query participant_data_files(
 export const GET_ALL_FILE_IDS_FOR_BIOSPECIMENS = gql`
   query biospecimenAddAllToCart(
     $participant_id: [String],
+    $study_short_name: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
@@ -847,6 +935,7 @@ export const GET_ALL_FILE_IDS_FOR_BIOSPECIMENS = gql`
   ){
     biospecimen_data_files(
       participant_id: $participant_id
+      study_short_name: $study_short_name
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -878,6 +967,7 @@ export const GET_ALL_FILE_IDS_FOR_BIOSPECIMENS = gql`
 export const GET_ALL_FILE_IDS_FOR_FILES = gql`
 query fileAddAllToCart(
   $participant_id: [String],
+  $study_short_name: [String],
   $ctep_disease_term: [String],
   $stage_of_disease: [String],
   $tumor_grade: [String],
@@ -892,6 +982,7 @@ query fileAddAllToCart(
   $tissue_category: [String],
   $assessment_timepoint: [String],
 
+  $association: [String],
   $data_file_type: [String],
   $data_file_format: [String],
   
@@ -902,6 +993,7 @@ query fileAddAllToCart(
  ){
   fileOverview(
     participant_id: $participant_id
+    study_short_name: $study_short_name
     ctep_disease_term: $ctep_disease_term
     stage_of_disease: $stage_of_disease
     tumor_grade: $tumor_grade
@@ -916,6 +1008,7 @@ query fileAddAllToCart(
     tissue_category: $tissue_category
     assessment_timepoint: $assessment_timepoint
 
+    association: $association
     data_file_type: $data_file_type
     data_file_format: $data_file_format
 
@@ -958,22 +1051,53 @@ export const GET_FILE_IDS_FROM_FILE_NAME = gql`
   }`;
 
 // --------------- GraphQL Query - Retrieve Study Files tab details --------------
+// TODO: Add the rest of the filters to the Study Files tab query when ready
 export const GET_STUDY_FILES_OVERVIEW_QUERY = gql`
   query studyFileOverviewQuery(
-    $study_short_name: [String],
     $study_id: [String],
+
+    # $participant_id: [String],
+
+    $study_short_name: [String],
+    # $ctep_disease_term: [String],
+    # $stage_of_disease: [String],
+    # $tumor_grade: [String],
+    # $sex: [String],
+    # $race: [String],
+    # $ethnicity: [String],
+    # $carcinogen_exposure: [String],
+    # $targeted_therapy_string: [String], ## Replace: $targeted_therapy: [String],
+
+    # $anatomical_collection_site: [String],
+    # $tissue_category: [String],
+    # $assessment_timepoint: [String],
+    $association: [String],
     $data_file_type: [String],
     $data_file_format: [String],
+
     $first: Int,
-    $offset: Int,
-    $order_by: String,
-    $sort_direction: String
+    $offset: Int = 0, 
+    $order_by: String = "data_file_name",
+    $sort_direction: String = "asc"
   ){
     studyFileOverview(
-      study_short_name: $study_short_name
       study_id: $study_id
-      data_file_type: $data_file_type
-      data_file_format: $data_file_format
+      # participant_id: $participant_id
+
+      study_short_name: $study_short_name
+      # ctep_disease_term: $ctep_disease_term
+      # stage_of_disease: $stage_of_disease
+      # tumor_grade: $tumor_grade
+      # sex: $sex
+      # race: $race
+      # ethnicity: $ethnicity
+      # carcinogen_exposure: $carcinogen_exposure
+      # targeted_therapy_string: $targeted_therapy_string ## Replace: targeted_therapy: $targeted_therapy
+
+      # anatomical_collection_site: $anatomical_collection_site
+      # tissue_category: $tissue_category
+      # assessment_timepoint: $assessment_timepoint
+
       first: $first
       offset: $offset
       order_by: $order_by
@@ -992,13 +1116,30 @@ export const GET_STUDY_FILES_OVERVIEW_QUERY = gql`
 `;
 
 // --------------- GraphQL Query - "ADD SELECTED FILES" under Study Files tab ---------------
+// TODO: Add the rest of the filters to the Study Files tab query when ready
 export const GET_FILE_IDS_FOR_SELECTED_STUDY_FILES = gql`
 query studyFileAddSelectedToCart(
   $data_file_uuid: [String],
-  $study_short_name: [String],
   $study_id: [String],
+  # $participant_id: [String],
+
+  $study_short_name: [String],
+  # $ctep_disease_term: [String],
+  # $stage_of_disease: [String],
+  # $tumor_grade: [String],
+  # $sex: [String],
+  # $race: [String],
+  # $ethnicity: [String],
+  # $carcinogen_exposure: [String],
+  # $targeted_therapy_string: [String], ## Replace: $targeted_therapy: [String],
+
+  # $anatomical_collection_site: [String],
+  # $tissue_category: [String],
+  # $assessment_timepoint: [String],
+  $association: [String],
   $data_file_type: [String],
   $data_file_format: [String],
+  
   $first: Int,
   $offset: Int = 0,
   $order_by: String = "data_file_uuid",
@@ -1006,10 +1147,26 @@ query studyFileAddSelectedToCart(
 ){
   studyFileOverview(
     data_file_uuid: $data_file_uuid
-    study_short_name: $study_short_name
     study_id: $study_id
+    # participant_id: $participant_id
+
+    study_short_name: $study_short_name
+    # ctep_disease_term: $ctep_disease_term
+    # stage_of_disease: $stage_of_disease
+    # tumor_grade: $tumor_grade
+    # sex: $sex
+    # race: $race
+    # ethnicity: $ethnicity
+    # carcinogen_exposure: $carcinogen_exposure
+    # targeted_therapy_string: $targeted_therapy_string ## Replace: targeted_therapy: $targeted_therapy
+
+    # anatomical_collection_site: $anatomical_collection_site
+    # tissue_category: $tissue_category
+    # assessment_timepoint: $assessment_timepoint
+    association: $association
     data_file_type: $data_file_type
     data_file_format: $data_file_format
+
     first: $first
     offset: $offset
     order_by: $order_by
@@ -1021,22 +1178,55 @@ query studyFileAddSelectedToCart(
 `;
 
 // --------------- GraphQL Query - "ADD ALL FILES" under Study Files tab ---------------
+// TODO: Add the rest of the filters to the Study Files tab query when ready
 export const GET_ALL_FILE_IDS_FOR_STUDY_FILES = gql`
 query studyFileAddAllToCart(
-  $study_short_name: [String],
   $study_id: [String],
+  # $participant_id: [String],
+
+  $study_short_name: [String],
+  # $ctep_disease_term: [String],
+  # $stage_of_disease: [String],
+  # $tumor_grade: [String],
+  # $sex: [String],
+  # $race: [String],
+  # $ethnicity: [String],
+  # $carcinogen_exposure: [String],
+  # $targeted_therapy_string: [String], ## Replace: $targeted_therapy: [String],
+
+  # $anatomical_collection_site: [String],
+  # $tissue_category: [String],
+  # $assessment_timepoint: [String],
+  $association: [String],
   $data_file_type: [String],
   $data_file_format: [String],
+  
   $first: Int,
   $offset: Int = 0,
   $order_by: String = "data_file_uuid",
   $sort_direction: String = "asc"
 ){
   studyFileOverview(
-    study_short_name: $study_short_name
     study_id: $study_id
+    # participant_id: $participant_id
+
+    study_short_name: $study_short_name
+    # ctep_disease_term: $ctep_disease_term
+    # stage_of_disease: $stage_of_disease
+    # tumor_grade: $tumor_grade
+    # sex: $sex
+    # race: $race
+    # ethnicity: $ethnicity
+    # carcinogen_exposure: $carcinogen_exposure
+    # targeted_therapy_string: $targeted_therapy_string ## Replace: targeted_therapy: $targeted_therapy
+
+    # anatomical_collection_site: $anatomical_collection_site
+    # tissue_category: $tissue_category
+    # assessment_timepoint: $assessment_timepoint
+    association: $association
     data_file_type: $data_file_type
     data_file_format: $data_file_format
+
     first: $first
     offset: $offset
     order_by: $order_by
@@ -1305,6 +1495,9 @@ export const tabContainers = [
     name: 'Files',
     dataField: 'dataFile',
     api: GET_FILES_OVERVIEW_QUERY,
+    defaultFilters: {
+      ...defaultFilters.files,
+    },
     paginationAPIField: 'fileOverview',
     defaultSortField: 'data_file_name',
     defaultSortDirection: 'asc',
@@ -1461,8 +1654,11 @@ export const tabContainers = [
   {
     name: 'Study Files',
     dataField: 'dataStudyFile',
-    api: GET_STUDY_FILES_OVERVIEW_QUERY,
-    paginationAPIField: 'studyFileOverview',
+    api: GET_FILES_OVERVIEW_QUERY, //GET_STUDY_FILES_OVERVIEW_QUERY,
+    defaultFilters: {
+      ...defaultFilters.studyFiles
+    },
+    paginationAPIField: 'fileOverview', //'studyFileOverview',
     defaultSortField: 'data_file_name',
     defaultSortDirection: 'asc',
     count: 'numberOfStudyFiles',
@@ -1581,11 +1777,11 @@ export const tabContainers = [
 
     addFilesRequestVariableKey: 'data_file_uuid',
 
-    addFilesResponseKeys: ['studyFileOverview', 'data_file_uuid'],
-    addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_STUDY_FILES,
+    addFilesResponseKeys: ['fileOverview','data_file_uuid'], // ['studyFileOverview', 'data_file_uuid'],
+    addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_FILES, // GET_FILE_IDS_FOR_SELECTED_STUDY_FILES,
 
-    addAllFilesResponseKeys: ['studyFileOverview', 'data_file_uuid'],
-    addAllFileQuery: GET_ALL_FILE_IDS_FOR_STUDY_FILES,
+    addAllFilesResponseKeys: ['fileOverview', 'data_file_uuid'], // ['studyFileOverview', 'data_file_uuid'],
+    addAllFileQuery: GET_ALL_FILE_IDS_FOR_FILES, // GET_ALL_FILE_IDS_FOR_STUDY_FILES,
   },
 ];
 

@@ -31,6 +31,19 @@ export const facetSectionVariables = {
 };
 
 export const facetsConfig = [
+    {
+    section: CASES,
+    label: 'Study',
+    apiPath: 'participantCountByStudyShortName',
+    apiForFiltering: 'filterParticipantCountByStudyShortName',
+    datafield: 'study_short_name',
+    field: GROUP,
+    count: COUNT,
+    type: InputTypes.CHECKBOX,
+    sort_type: sortType.ALPHABET,
+    show: true,
+    defaultValue: DEFAULT_VALUE,
+  },
   {
     section: CASES,
     label: 'Diagnosis',

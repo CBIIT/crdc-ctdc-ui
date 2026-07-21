@@ -16,6 +16,7 @@ import {
   studyFilesTableConfig,
   GET_STUDY_FILES_QUERY,
 } from "../../../../bento/studyDetailData";
+import { defaultFilters } from "../../../../bento/dashboardTabData";
 import styles from "./StudyFilesStyle";
 
 const initFilesTableState = (initialState) => ({
@@ -39,10 +40,12 @@ const StudyFilesView = ({ classes, study_id }) => {
   const cartState = useSelector((state) => state.cartReducer);
 
   // Fetch all study files once (client-side pagination)
+  // Using fileOverview with association filter from defaultFilters
   const { loading, error, data } = useQuery(GET_STUDY_FILES_QUERY, {
     skip: !study_id,
     variables: {
       study_id: [study_id],
+      association: defaultFilters.studyFiles.association, // Filter to only study-associated files
       first: 10000,
       order_by: studyFilesTableConfig.defaultSortField,
       sort_direction: studyFilesTableConfig.defaultSortDirection,
@@ -50,7 +53,7 @@ const StudyFilesView = ({ classes, study_id }) => {
     fetchPolicy: "cache-first", // Cache the results
   });
 
-  const studyFiles = data?.studyFileOverview || [];
+  const studyFiles = data?.fileOverview || [];
 
   const configuredWrapper = configWrapper(
     studyFilesTableConfig,
@@ -62,6 +65,7 @@ const StudyFilesView = ({ classes, study_id }) => {
   // Active filters for add to cart functionality
   const activeFilters = {
     study_id: [study_id],
+    association: defaultFilters.studyFiles.association, // Include association filter for cart operations
   };
 
   return (

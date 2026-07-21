@@ -58,10 +58,12 @@ export const studyFilesTooltipContent = {
 // --------------- GraphQL Queries for Study Files Tab ---------------
 
 // Separate query for Study Files Tab with pagination support
+// Uses fileOverview with association filter set to 'study'
 export const GET_STUDY_FILES_QUERY = gql`
-  query studyFileOverview(
+  query fileOverview(
     $study_id: [String]
     $study_short_name: [String]
+    $association: [String]
     $data_file_type: [String]
     $data_file_format: [String]
     $data_file_uuid: [String]
@@ -71,10 +73,11 @@ export const GET_STUDY_FILES_QUERY = gql`
     $order_by: String = "data_file_uuid"
     $sort_direction: String = "asc"
   ) {
-    studyFileOverview(
+    fileOverview(
       study_short_name: $study_short_name
       study_id: $study_id
       study_accession: $study_accession
+      association: $association
       data_file_type: $data_file_type
       data_file_format: $data_file_format
       data_file_uuid: $data_file_uuid
@@ -94,11 +97,13 @@ export const GET_STUDY_FILES_QUERY = gql`
 `;
 
 // Query for adding selected study files to cart
+// Uses fileOverview with association filter set to 'study'
 export const GET_FILE_IDS_FOR_SELECTED_STUDY_FILES = gql`
-  query studyFileAddSelectedToCart(
+  query fileAddSelectedToCart(
     $data_file_uuid: [String]
     $study_id: [String]
     $study_short_name: [String]
+    $association: [String]
     $data_file_type: [String]
     $data_file_format: [String]
     $study_accession: [String]
@@ -107,11 +112,12 @@ export const GET_FILE_IDS_FOR_SELECTED_STUDY_FILES = gql`
     $order_by: String = "data_file_uuid"
     $sort_direction: String = "asc"
   ) {
-    studyFileOverview(
+    fileOverview(
       data_file_uuid: $data_file_uuid
       study_id: $study_id
       study_short_name: $study_short_name
       study_accession: $study_accession
+      association: $association
       data_file_type: $data_file_type
       data_file_format: $data_file_format
       first: $first
@@ -130,7 +136,7 @@ export const studyFilesTableConfig = {
   dataKey: "data_file_uuid",
   buttonText: "Add Selected Files",
   addFilesRequestVariableKey: "data_file_uuid",
-  addFilesResponseKeys: ["studyFileOverview", "data_file_uuid"],
+  addFilesResponseKeys: ["fileOverview", "data_file_uuid"],
   addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_STUDY_FILES,
   tableMsg: {
     noMatch: "No study-level files associated with this study.",
@@ -601,6 +607,7 @@ export const table = {
       header: "Participants",
       sort: "asc",
       display: true,
+      cellType: cellTypes.CUSTOM_ELEM,
       tooltipText:
         "For each of the nodes listed below, the number of participants represented by one or more records within that node",
     },
@@ -609,6 +616,7 @@ export const table = {
       header: "Records",
       sort: "asc",
       display: true,
+      cellType: cellTypes.CUSTOM_ELEM,
       tooltipText:
         "For each of the nodes listed below, the total number of records within each node. Participants may have multiple/numerous records within certain nodes",
     },

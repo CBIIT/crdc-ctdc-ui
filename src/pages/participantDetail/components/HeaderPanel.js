@@ -61,6 +61,7 @@ const HeaderPanel = ({ classes, participant }) => {
           <InfoRow classes={classes} label="Race" value={participant.race} />
           <InfoRow classes={classes} label="Ethnicity" value={participant.ethnicity} />
           <InfoRow classes={classes} label="Sex" value={participant.sex} />
+          <InfoRow classes={classes} label="Survival Status" value={participant.survival_status} />
         </div>
 
         {/* Diagnosis */}
