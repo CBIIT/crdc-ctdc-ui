@@ -11,6 +11,8 @@ export const customizeColumn = {
   csvDataRow: 'csvDataRow',
   clinicalDataNode: 'clinicalDataNode',
   clinicalDataDescription: 'clinicalDataDescription',
+  participantCount: 'participantCount',
+  recordCount: 'recordCount',
 
   STUDY_CODE: 'study_id',
   ADDITIONAL_CRDC_NODES: 'unique_repository'
