@@ -204,7 +204,7 @@ export const studyFilesTableConfig = {
         fileLocationColumn: "data_file_uuid",
         fileFormatColumn: "data_file_format",
         fileName: "data_file_name",
-        toolTipTextFileDownload: "Download a copy of this file",
+        toolTipTextFileDownload: "Click to download a copy of this file if you have been approved by dbGaP",
         iconFileDownload: downloadSuccess,
         iconUnauthenticated: downloadLock,
         toolTipTextUnauthenticated:
