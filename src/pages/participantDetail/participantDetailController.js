@@ -9,6 +9,7 @@ import {
   GET_PARTICIPANTS_OVERVIEW_QUERY,
   defaultFilters,
 } from '../../bento/dashboardTabData';
+import { toTitleCase } from '../../utils/utils';
 
 const ParticipantDetailController = ({ match }) => {
   const participant_id = match.params.id;
@@ -74,7 +75,7 @@ const ParticipantDetailController = ({ match }) => {
     participant_id,
     age_at_enrollment: overviewRecord.age_at_enrollment,
     sex: overviewRecord.sex,
-    survival_status: overviewRecord.survival_status,
+    survival_status: toTitleCase(overviewRecord.survival_status),
     race: overviewRecord.race,
     ethnicity: overviewRecord.ethnicity,
     stage_of_disease: overviewRecord.stage_of_disease,
