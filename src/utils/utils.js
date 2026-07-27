@@ -36,3 +36,69 @@ export const convertCRDCLinksToValue = (data, key) => {
 export const removeSquareBracketsFromString = (text) => {
   return text.replace(/\[|\]/g, '');
 };
+
+/**
+ * Convert string to proper title case following grammar rules
+ * - Capitalizes first and last words
+ * - Capitalizes all major words
+ * - Keeps articles, prepositions, and conjunctions lowercase (unless first/last)
+ * @param {string} str - The string to convert to title case
+ * @returns {string} - String in proper title case
+ */
+export const toTitleCase = (str) => {
+  if (!str || typeof str !== "string") {
+    return str;
+  }
+
+  // Words that should stay lowercase (unless first or last word)
+  const smallWords = new Set([
+    "a",
+    "an",
+    "and",
+    "as",
+    "at",
+    "but",
+    "by",
+    "for",
+    "from",
+    "in",
+    "into",
+    "nor",
+    "of",
+    "off",
+    "on",
+    "or",
+    "out",
+    "over",
+    "per",
+    "so",
+    "the",
+    "to",
+    "up",
+    "via",
+    "with",
+    "yet",
+  ]);
+
+  const words = str.toLowerCase().split(" ");
+
+  return words
+    .map((word, index) => {
+      const isFirstWord = index === 0;
+      const isLastWord = index === words.length - 1;
+
+      // Always capitalize first and last words
+      if (isFirstWord || isLastWord) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      }
+
+      // Check if it's a small word
+      if (smallWords.has(word)) {
+        return word; // Keep lowercase
+      }
+
+      // Capitalize all other words
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(" ");
+};

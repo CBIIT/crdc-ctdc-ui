@@ -426,4 +426,64 @@ describe('HeaderPanel', () => {
       expect(renderedLabels).toEqual(expectedLabels);
     });
   });
+
+  // ────────────────────────────────────────────────────
+  // Survival Status display (CTDC-2158)
+  // Values are pre-formatted by the controller using toTitleCase
+  // HeaderPanel component just displays the formatted values
+  // Formatting logic is tested comprehensively in utils.test.js
+  // ────────────────────────────────────────────────────
+  describe('Survival Status display (pre-formatted by controller)', () => {
+    it('should display survival status value received from controller', () => {
+      // Arrange - controller pre-formats using toTitleCase (tested in utils.test.js)
+      const participant = {
+        participant_id: 'P-SURVIVAL',
+        age_at_enrollment: 50,
+        race: 'White',
+        ethnicity: 'Not Hispanic',
+        sex: 'Male',
+        survival_status: 'Dead', // Already formatted by controller
+        primary_diagnosis_disease_group: 'Cancer',
+        primary_disease_site: 'Lung',
+        stage_of_disease: 'Stage IV',
+        targeted_therapy: 'Drug A',
+        best_response_to_targeted_therapy: 'Progressive Disease',
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert
+      const survivalStatusValue = Array.from(
+        container.querySelectorAll('.infoPanelValue'),
+      )[4]; // 5th value (index 4) is Survival Status
+      expect(survivalStatusValue.textContent).toBe('Dead');
+    });
+
+    it('should display complex survival status values with multiple words', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'P-COMPLEX-STATUS',
+        age_at_enrollment: 40,
+        race: 'Asian',
+        ethnicity: 'Not Hispanic',
+        sex: 'Female',
+        survival_status: 'Alive with No Evidence of Disease', // Already formatted by controller
+        primary_diagnosis_disease_group: 'Lymphoma',
+        primary_disease_site: 'Lymph Node',
+        stage_of_disease: 'Stage III',
+        targeted_therapy: 'Drug D',
+        best_response_to_targeted_therapy: 'Complete Response',
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert
+      const survivalStatusValue = Array.from(
+        container.querySelectorAll('.infoPanelValue'),
+      )[4];
+      expect(survivalStatusValue.textContent).toBe('Alive with No Evidence of Disease');
+    });
+  });
 });
