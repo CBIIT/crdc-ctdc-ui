@@ -453,10 +453,15 @@ describe('HeaderPanel', () => {
       // Act
       renderComponent(participant);
 
-      // Assert
+      // Assert - Find survival status by label index for resilience to field reordering
+      const labels = Array.from(
+        container.querySelectorAll('.infoPanelLabel'),
+      ).map((el) => el.textContent);
+      const survivalIdx = labels.indexOf('Survival Status:');
+      expect(survivalIdx).toBeGreaterThanOrEqual(0);
       const survivalStatusValue = Array.from(
         container.querySelectorAll('.infoPanelValue'),
-      )[4]; // 5th value (index 4) is Survival Status
+      )[survivalIdx];
       expect(survivalStatusValue.textContent).toBe('Dead');
     });
 
@@ -479,10 +484,15 @@ describe('HeaderPanel', () => {
       // Act
       renderComponent(participant);
 
-      // Assert
+      // Assert - Find survival status by label index for resilience to field reordering
+      const labels = Array.from(
+        container.querySelectorAll('.infoPanelLabel'),
+      ).map((el) => el.textContent);
+      const survivalIdx = labels.indexOf('Survival Status:');
+      expect(survivalIdx).toBeGreaterThanOrEqual(0);
       const survivalStatusValue = Array.from(
         container.querySelectorAll('.infoPanelValue'),
-      )[4];
+      )[survivalIdx];
       expect(survivalStatusValue.textContent).toBe('Alive with No Evidence of Disease');
     });
   });

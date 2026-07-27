@@ -80,7 +80,7 @@ export const toTitleCase = (str) => {
     "yet",
   ]);
 
-  const words = str.toLowerCase().split(" ");
+  const words = str.trim().toLowerCase().split(/\s+/);
 
   return words
     .map((word, index) => {

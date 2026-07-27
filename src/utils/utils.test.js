@@ -145,4 +145,36 @@ describe("toTitleCase", () => {
       expect(toTitleCase(input)).toBe(123);
     });
   });
+
+  describe("Whitespace handling", () => {
+    it("should handle leading whitespace", () => {
+      const input = "  alive with disease";
+      const expected = "Alive with Disease";
+      expect(toTitleCase(input)).toBe(expected);
+    });
+
+    it("should handle trailing whitespace", () => {
+      const input = "alive with disease  ";
+      const expected = "Alive with Disease";
+      expect(toTitleCase(input)).toBe(expected);
+    });
+
+    it("should handle multiple spaces between words", () => {
+      const input = "alive  with   disease";
+      const expected = "Alive with Disease";
+      expect(toTitleCase(input)).toBe(expected);
+    });
+
+    it("should handle tabs between words", () => {
+      const input = "alive\twith\tdisease";
+      const expected = "Alive with Disease";
+      expect(toTitleCase(input)).toBe(expected);
+    });
+
+    it("should handle mixed whitespace (spaces, tabs, multiple spaces)", () => {
+      const input = "  alive  \t with   disease  ";
+      const expected = "Alive with Disease";
+      expect(toTitleCase(input)).toBe(expected);
+    });
+  });
 });
