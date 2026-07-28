@@ -14,7 +14,7 @@ export const tooltipContent = {
   Participants: 'Add filtered files associated with selected participants(s) to My Files',
   Biospecimens: 'Add filtered files associated with selected biospecimen(s) to My Files',
   Files: 'Add selected files to My Files',
-  Study_Files: 'Add selected study files to My Files',
+  Study_Files: 'Add selected files to My Files',
 };
 
   export const tooltipContentAllFile = {
@@ -24,7 +24,7 @@ export const tooltipContent = {
   Participants: 'Add filtered files associated with all participants in the current results set to My Files',
   Biospecimens: 'Add filtered files associated with all biospecimens in the current results set to My Files',
   Files: 'Add all filtered files to My Files',
-  Study_Files: 'Add all study files to My Files',
+  Study_Files: 'Add all filtered files to My Files',
 };
 
 // --------------- Dahboard Table external link configuration --------------
@@ -1664,8 +1664,8 @@ export const tabContainers = [
     count: 'numberOfStudyFiles',
     dataKey: 'data_file_uuid',
     tableID: 'study_file_tab_table',
-    addAllButtonText: 'ADD ALL STUDY FILES',
-    buttonText: 'ADD SELECTED STUDY FILES',
+    addAllButtonText: 'ADD ALL FILES',
+    buttonText: 'ADD SELECTED FILES',
     extendedViewConfig: {
       pagination: true,
       manageViewColumns: {
