@@ -1,3 +1,15 @@
+/**
+ * BarChartV2 - Recharts-based bar chart component
+ * 
+ * Used in: Biospecimen Profile modal (expanded view)
+ * Library: Recharts
+ * 
+ * Key features:
+ * - Interactive legend on the right side (highlights on hover)
+ * - Custom tooltip without arrow (matches production behavior)
+ * - Alternating row colors in legend
+ * - Synchronized hover state between bars and legend items
+ */
 import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core';
 import {

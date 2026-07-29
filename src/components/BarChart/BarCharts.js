@@ -1,3 +1,16 @@
+/**
+ * BarChart - DevExtreme-based bar chart component
+ * 
+ * Used in: Biospecimen Profile main view (Study Detail page)
+ * Library: DevExtreme React Chart
+ * 
+ * Key features:
+ * - Built-in tooltip with automatic arrow centering
+ * - Highly configurable through defaultProps
+ * - Gray hover highlight on bars
+ * - Class-based component with extensive configuration options
+ * - Supports palette extension and custom series settings
+ */
 import React, { PureComponent } from 'react';
 import Chart, {
   Series,
