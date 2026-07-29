@@ -10,7 +10,7 @@
  * - Alternating row colors in legend
  * - Synchronized hover state between bars and legend items
  */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core';
 import {
   BarChart,
@@ -101,9 +101,16 @@ const BarChartV2 = ({
 
 
   const CustomTooltip = ({ active, payload }) => {
+    const currentGroup = active && payload && payload.length 
+      ? payload[0].payload.group 
+      : null;
+
+    useEffect(() => {
+      setHoveredGroup(currentGroup);
+    }, [currentGroup]);
+
     if (active && payload && payload.length) {
       const data = payload[0].payload;
-      setHoveredGroup(data.group);
 
       return (
         <div className={classes.tooltipWrapper}>
@@ -113,7 +120,6 @@ const BarChartV2 = ({
       );
     }
 
-    setHoveredGroup(null);
     return null;
   };
 
@@ -183,7 +189,7 @@ const BarChartV2 = ({
           content={<CustomTooltip />}
           cursor={tooltipCursor}
           isAnimationActive={false}
-          allowEscapeViewBox={{ x: true, y: true }}
+          allowEscapeViewBox={{ x: false, y: false }}
           wrapperStyle={{
             transform: 'translateX(-50%)',
             pointerEvents: 'none',
