@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
-import Stats from "../../components/Stats/AllStatsController";
+import Stats from "../../components/Stats/pageSpecificStatsController";
 import { headerIcon, tab } from "../../bento/studyDetailData";
 import Tab from "../../components/Tab/Tab";
 import TabPanel from "../../components/Tab/TabPanel";
@@ -78,7 +78,7 @@ const StudyDetailView = ({
 
   return (
     <StudyThemeProvider>
-      <Stats />
+      <Stats studyShortName={study_short_name} />
 
       <div className={classes.container}>
         <div className={classes.breadCrumb}>

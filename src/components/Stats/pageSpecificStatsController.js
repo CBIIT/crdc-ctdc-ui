@@ -1,33 +1,30 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useQuery } from '@apollo/client';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { filterData } from 'bento-components';
-import { getFilteredStat, fetchDataForDashboardDataTable } from '../../pages/dashboard/dashboardState';
-
 import StatsView from './StatsView';
+import { GET_GLOBAL_STATS_DATA_QUERY as STATS_QUERY } from '../../bento/globalStatsData';
 
-const Stats = ({ filter }) => {
-  const dispatch = useDispatch();
-  const initDashboardStatus = () => () => Promise.resolve(
-    dispatch(fetchDataForDashboardDataTable()),
+const PageSpecificStatsController = ({ studyShortName }) => {
+  const variables = React.useMemo(
+    () => (studyShortName ? { study_short_name: [studyShortName] } : {}),
+    [studyShortName],
   );
-
-  const data = useSelector((state) => {
-    if (!state.dashboard.isFetched) {
-      initDashboardStatus();
-    }
-    return state.dashboard
-      && state.dashboard.subjectOverView
-       && state.dashboard.subjectOverView.data
-      ? (
-        function extraData(d) {
-          return getFilteredStat(d);
-        }(state.dashboard.subjectOverView.data.filter(
-          (d) => (filterData(d, filter)),
-        ))
-      ) : [];
+  const { loading, error, data } = useQuery(STATS_QUERY, {
+    variables,
   });
-  return (!data || data.length === 0 ? (<CircularProgress />) : <StatsView data={data} />);
+
+  if (loading) {
+    return <CircularProgress />;
+  }
+
+  if (error) {
+    console.error('Failed to load study-scoped stats.', error);
+    return <CircularProgress />;
+  }
+
+  const statsData = data?.searchParticipants || {};
+
+  return <StatsView data={statsData} />;
 };
 
-export default (Stats);
+export default PageSpecificStatsController;
