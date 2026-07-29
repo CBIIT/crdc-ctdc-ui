@@ -43,17 +43,22 @@ function errorhandler(error, type) {
 }
 
 function fetchStats(statQuery) {
-  return (dispatch) => client
+  return (dispatch) => {
+    dispatch({ type: REQUEST_STATS });
+    return client
     .query({
       query: statQuery,
     })
     .then((result) => dispatch(receiveStats(result)))
     .catch((error) => dispatch(errorhandler(error, STATS_QUERY_ERR)));
+  };
 }
 
-export function fetchDataForStats() {
+export function fetchDataForStats(options = {}) {
+  const { force = false } = options;
+
   return (dispatch, getState) => {
-    if (shouldFetchDataForAllStats(getState())) {
+    if (force || shouldFetchDataForAllStats(getState())) {
       return dispatch(fetchStats(STATS_QUERY));
     }
     return dispatch(readyStats());
@@ -85,7 +90,11 @@ export default function dashboardReducer(state = initialState, action) {
         isFetched: true,
       };
     case REQUEST_STATS:
-      return { ...state, isLoading: true };
+      return {
+        ...state,
+        isLoading: true,
+        data: [],
+      };
     default:
       return state;
   }

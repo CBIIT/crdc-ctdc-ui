@@ -163,7 +163,6 @@ export const globalStatsData = [
 // --------------- GraphQL query - Retrieve stats details --------------
 export const GET_GLOBAL_STATS_DATA_QUERY = gql`
   query search(
-    $study_short_name: [String],
     $participant_id: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
@@ -183,7 +182,6 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
     $data_file_format: [String]
   ) {
     searchParticipants(
-      study_short_name: $study_short_name
       participant_id: $participant_id
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease

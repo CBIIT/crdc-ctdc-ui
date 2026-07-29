@@ -5,13 +5,14 @@ import StatsView from './StatsView';
 import { fetchDataForStats } from './StatsState';
 
 const Stats = () => {
-  const data = useSelector((state) => {
-    if (!state.stats.isFetched) {
-      const dispatch = useDispatch();
-      dispatch(fetchDataForStats());
-    }
-    return state.stats.data;
-  });
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.stats.data);
+
+  React.useEffect(() => {
+    // Always refresh global stats for pages using the shared controller
+    // so persisted/stale scoped values cannot leak between routes.
+    dispatch(fetchDataForStats({ force: true }));
+  }, [dispatch]);
 
   return (!data || data.length === 0 ? (<CircularProgress />) : <StatsView data={data} />);
 };
