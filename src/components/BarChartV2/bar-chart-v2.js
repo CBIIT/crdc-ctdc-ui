@@ -97,7 +97,6 @@ const BarChartV2 = ({
         <div className={classes.tooltipWrapper}>
           <p className={classes.groupTooltipText}>{`${data.group},`}</p>
           <p className={classes.countTooltipText}>{`${data.count}`}</p>
-          <span className={classes.tooltipArrow} />
         </div>
       );
     }
@@ -168,7 +167,17 @@ const BarChartV2 = ({
             style: { fontFamily: 'Inter', fontWeight: '400', color: '#444444' },
           }}
         />
-        <Tooltip content={<CustomTooltip />} cursor={tooltipCursor}/>
+        <Tooltip
+          content={<CustomTooltip />}
+          cursor={tooltipCursor}
+          isAnimationActive={false}
+          allowEscapeViewBox={{ x: true, y: true }}
+          wrapperStyle={{
+            transform: 'translateX(-50%)',
+            pointerEvents: 'none',
+          }}
+          offset={-80}
+        />
         <Bar dataKey="count">
           {chartData.map((_entry, index) => (
             <Cell
