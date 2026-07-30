@@ -40,8 +40,6 @@ const studiesContainer = () => {
     if (s?.study_id) acc[s.study_id] = s;
     return acc;
   }, {});
-  console.log('|| interOpStudiesMap', interOpStudiesMap);
-  console.log('|| data', data);
   const updatedData = {
     ...data,
     getAllStudies: data?.getAllStudies?.map((study) => {
