@@ -30,7 +30,7 @@ import {
   // StyledTabs,
 } from "./biospecimen-profile-styled.js";
 import useDashboardTabs from "../../../../../dashTemplate/components/dashboard-tabs-store.js";
-import { onClearAllFilters } from "../../../../../dashTemplate/sideBar/BentoFilterUtils.js";
+import { onClearAllAndSelectFacetValue } from "../../../../../dashTemplate/sideBar/BentoFilterUtils.js";
 
 const tooltipContent = ({ argument, originalValue }) => (
   <div>
@@ -61,7 +61,7 @@ const BiospecimenProfile = ({ classes, data, studyShortName, studyId }) => {
 
   const linkToDashboard = () => {
     // TODO: Once local-find is enabled; dispatch(resetAllData()) from bento-core/local-find to RESET_LOCALFIND_ALL_DATA
-    onClearAllFilters();
+    onClearAllAndSelectFacetValue('study_short_name', studyShortName);
     actions.changeCurrentTab(1);
   };
 
