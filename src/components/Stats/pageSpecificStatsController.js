@@ -32,7 +32,7 @@ const PageSpecificStatsController = ({ studyShortName }) => {
 
   if (error) {
     console.error('Failed to load study-scoped stats.', error);
-    return <CircularProgress />;
+    return <div role="alert">Failed to load stats for this study.</div>;
   }
 
   const statsData = data?.searchParticipants || {};

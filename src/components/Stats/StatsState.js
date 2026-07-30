@@ -12,7 +12,7 @@ export const initialState = {
   isLoading: false,
   error: '',
   hasError: false,
-  data: [],
+  data: {},
 };
 
 function shouldFetchDataForAllStats(state) {
@@ -93,7 +93,7 @@ export default function dashboardReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: true,
-        data: [],
+        data: {},
       };
     default:
       return state;
