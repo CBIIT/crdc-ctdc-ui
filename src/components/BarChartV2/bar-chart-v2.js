@@ -101,9 +101,7 @@ const BarChartV2 = ({
 
 
   const CustomTooltip = ({ active, payload }) => {
-    const currentGroup = active && payload && payload.length 
-      ? payload[0].payload.group 
-      : null;
+    const currentGroup = active ? (payload?.[0]?.payload?.group || null) : null;
 
     useEffect(() => {
       setHoveredGroup(currentGroup);
