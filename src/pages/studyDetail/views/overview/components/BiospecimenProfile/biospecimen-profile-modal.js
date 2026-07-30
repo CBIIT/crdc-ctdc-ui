@@ -22,7 +22,7 @@ import {
   StyledLink,
 } from "./biospecimen-profile-modal-styled.js";
 import useDashboardTabs from "../../../../../dashTemplate/components/dashboard-tabs-store.js";
-import { onClearAllFilters } from "../../../../../dashTemplate/sideBar/BentoFilterUtils.js";
+import { onClearAllAndSelectFacetValue } from "../../../../../dashTemplate/sideBar/BentoFilterUtils.js";
 
 const tabLabels = ["Timepoint", "Biospecimens"];
 
@@ -49,11 +49,10 @@ const BiospecimenProfileModal = ({
   const linkToDashboard = async () => {
     setIsModalOpen(false);
     /*
-      onClearAllFilters() - Clears all selected filters on the Dashboard page.
-      navigatedToDashboard(filterStudy) - Clears all selected filters and selects a study.
-        This will take effect once CTDC supports multiple studies.
+      onClearAllAndSelectFacetValue() - Clears all selected filters and selects a study filter.
+        This applies the study filter when navigating to the Explore page.
     */
-    onClearAllFilters();
+    onClearAllAndSelectFacetValue('study_short_name', studyShortName);
     actions.changeCurrentTab(1);
   };
 

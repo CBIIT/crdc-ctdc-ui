@@ -14,7 +14,7 @@ import TabPanel from "../../components/Tab/TabPanel";
 import Styles from "./studyDetailsStyle";
 import StudyThemeProvider from "./studyDetailsThemeConfig";
 import Overview from "./views/overview/overview";
-import { onClearAllFilters } from "../dashTemplate/sideBar/BentoFilterUtils";
+import { onClearAllAndSelectFacetValue } from "../dashTemplate/sideBar/BentoFilterUtils";
 import useDashboardTabs from "../dashTemplate/components/dashboard-tabs-store";
 import ClinicalDataController from "./views/clinical-data/ClinicalDataController";
 import StudyFilesView from "./views/study-files/StudyFilesView";
@@ -63,7 +63,7 @@ const StudyDetailView = ({
 
   const linkToDashboard = () => {
     // TODO: Once local-find is enabled; dispatch(resetAllData()) from bento-core/local-find to RESET_LOCALFIND_ALL_DATA
-    onClearAllFilters();
+    onClearAllAndSelectFacetValue("study_short_name", study_short_name);
     actions.changeCurrentTab(0);
   };
 
