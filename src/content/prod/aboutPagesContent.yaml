@@ -3,7 +3,7 @@
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
   content:
     - paragraph: "The Clinical and Translational Data Commons (CTDC) is designed to facilitate the integration and analysis of a wide array of clinical and translational research data. To support this initiative, the CTDC will accept a variety of data types, each crucial for the comprehensive understanding of clinical outcomes and the translational pathway from laboratory and clinical research to clinical applications."
-    - paragraph: "Those interested in submitting data to the CTDC must first fill out a data submission request through $$[the CRDC Submission Portal](https://hub.datacommons.cancer.gov/)$$. Requests will be reviewed to assess alignment with CTDC and CRDC’s mission and overall data requirements. Review times can be expected to be four to six weeks. For more information regarding submission requests and data submission, see $$[CRDC’s Submit Data page](https://datacommons.cancer.gov/submit)$$ or contact $$[NCICRDC@mail.nih.gov✉️](type: email NCICRDC@mail.nih.gov)$$."
+    - paragraph: "Those interested in submitting data to the CTDC must first fill out a data submission request through $$[the CRDC Submission Portal](https://hub.datacommons.cancer.gov/)$$. Requests will be reviewed to assess alignment with CTDC and CRDC's mission and overall data requirements. Review times can be expected to be four to six weeks. For more information regarding submission requests and data submission, see $$[CRDC's Submit Data page](https://datacommons.cancer.gov/submit)$$ or contact $$[NCICRDC@mail.nih.gov✉️](NCICRDC@mail.nih.gov)$$."
     - paragraph: "Below are the primary categories of data the CTDC currently accepts:"
     - paragraph: "$$*De-identified Clinical Data:*$$"
     - listWithDots:
@@ -95,7 +95,7 @@
   title: "Support"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_Support.png
   content:
-    - paragraph: "If you have any questions, please contact us at $$[NCICRDC@mail.nih.gov✉️](type: email NCICRDC@mail.nih.gov)$$."
+    - paragraph: "If you have any questions, please contact us at $$[NCICRDC@mail.nih.gov✉️](NCICRDC@mail.nih.gov)$$."
 - page: '/cloud-computing'
   title: "Cloud computing"
   primaryContentImage: https://raw.githubusercontent.com/CBIIT/datacommons-assets/ctdc_Assets/ctdc/images/aboutPages/About_CRDC.png
