@@ -211,6 +211,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
         numberOfTargetedTherapies
         numberOfSpecimens
         numberOfFiles
+        numberOfStudyFiles
       }
     filesTabCount: searchParticipants(
       participant_id: $participant_id

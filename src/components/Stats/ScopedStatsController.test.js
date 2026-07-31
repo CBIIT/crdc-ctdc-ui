@@ -94,6 +94,32 @@ describe("ScopedStatsController", () => {
       );
       consoleError.mockRestore();
     });
+
+    it("handles null searchParticipants gracefully", () => {
+      useQuery.mockReturnValue({
+        loading: false,
+        error: null,
+        data: {
+          searchParticipants: null,
+          filesTabCount: { numberOfFiles: 80 },
+          studyFilesTabCount: { numberOfStudyFiles: 20 },
+        },
+      });
+      act(() => {
+        ReactDOM.render(
+          React.createElement(ScopedStatsController, {
+            variables: { study_short_name: ["COTC007B"] },
+          }),
+          container,
+        );
+      });
+      const statsView = container.querySelector('[data-testid="stats-view"]');
+      expect(statsView).toBeTruthy();
+      const renderedData = JSON.parse(statsView.textContent);
+      // Should use values from association-filtered queries since main is null
+      expect(renderedData.numberOfFiles).toBe(80);
+      expect(renderedData.numberOfStudyFiles).toBe(20);
+    });
   });
 
   describe("Variable Validation - Filters Invalid Values", () => {

@@ -5,7 +5,8 @@
  * or global stats when no filters provided. Automatically includes association
  * filters to get accurate file counts (Data Files vs Study Files).
  *
- * Note: Unsupported variables are filtered out by Apollo Client before the HTTP request.
+ * Note: Variables not declared in the query are filtered out by Apollo Client
+ * before sending the HTTP request (compared against the query's variable declarations).
  *
  * @param {Object} variables - searchParticipants filter variables or empty for global stats
  *
@@ -87,14 +88,13 @@ const ScopedStatsController = ({ variables }) => {
   //   2. filesTabCount - files with biospecimen/participant association (Data Files)
   //   3. studyFilesTabCount - files with study association (Study Files)
   // We use ?? (nullish coalescing) to fall back to main query if sub-queries fail.
+  const mainStats = data?.searchParticipants ?? {};
   const statsData = {
-    ...data?.searchParticipants,
+    ...mainStats,
     numberOfFiles:
-      data?.filesTabCount?.numberOfFiles ??
-      data?.searchParticipants?.numberOfFiles,
+      data?.filesTabCount?.numberOfFiles ?? mainStats?.numberOfFiles,
     numberOfStudyFiles:
-      data?.studyFilesTabCount?.numberOfStudyFiles ??
-      data?.searchParticipants?.numberOfStudyFiles,
+      data?.studyFilesTabCount?.numberOfStudyFiles ?? mainStats?.numberOfStudyFiles,
   };
 
   return <StatsView data={statsData} />;
