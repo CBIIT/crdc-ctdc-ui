@@ -14,10 +14,11 @@ const Stats = () => {
     dispatch(fetchDataForStats({ force: true }));
   }, [dispatch]);
 
-  const isEmpty = !data
-    || (Array.isArray(data) ? data.length === 0 : Object.keys(data).length === 0);
+  const isEmpty =
+    !data ||
+    (Array.isArray(data) ? data.length === 0 : Object.keys(data).length === 0);
 
-  return isEmpty ? (<CircularProgress />) : <StatsView data={data} />;
+  return isEmpty ? <CircularProgress /> : <StatsView data={data} />;
 };
 
-export default (Stats);
+export default Stats;

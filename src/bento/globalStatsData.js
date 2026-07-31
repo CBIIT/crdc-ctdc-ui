@@ -209,3 +209,39 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       }
     }
 `;
+
+// --------------- GraphQL query - Retrieve scoped stats for detail pages --------------
+export const SCOPED_STATS_QUERY = gql`
+  query ScopedStats(
+    $study_short_name: [String]
+    $participant_id: [String]
+    $files_association: [String]
+    $study_association: [String]
+  ) {
+    searchParticipants(
+      study_short_name: $study_short_name
+      participant_id: $participant_id
+    ) {
+      numberOfStudies
+      numberOfParticipants
+      numberOfDiagnoses
+      numberOfTargetedTherapies
+      numberOfSpecimens
+      numberOfFiles
+    }
+    filesTabCount: searchParticipants(
+      study_short_name: $study_short_name
+      participant_id: $participant_id
+      association: $files_association
+    ) {
+      numberOfFiles
+    }
+    studyFilesTabCount: searchParticipants(
+      study_short_name: $study_short_name
+      participant_id: $participant_id
+      association: $study_association
+    ) {
+      numberOfStudyFiles
+    }
+  }
+`;

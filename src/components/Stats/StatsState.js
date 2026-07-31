@@ -1,4 +1,3 @@
-import { ORIGINAL_DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
 import { GET_GLOBAL_STATS_DATA_QUERY as STATS_QUERY } from '../../bento/globalStatsData';
 import client from '../../utils/graphqlClient';
 
