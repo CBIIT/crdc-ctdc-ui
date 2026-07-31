@@ -1,15 +1,16 @@
-import { GET_GLOBAL_STATS_DATA_QUERY as STATS_QUERY } from '../../bento/globalStatsData';
-import client from '../../utils/graphqlClient';
+import { GET_GLOBAL_STATS_DATA_QUERY as STATS_QUERY } from "../../bento/globalStatsData";
+import { defaultFilters } from "../../bento/dashboardTabData";
+import client from "../../utils/graphqlClient";
 
-export const RECIEVE_STATS = 'RECIEVE_STATS';
-export const STATS_QUERY_ERR = 'STATS_QUERY_ERR';
-export const READY_STATS = 'READY_STATS';
-export const REQUEST_STATS = 'REQUEST_STATS';
+export const RECIEVE_STATS = "RECIEVE_STATS";
+export const STATS_QUERY_ERR = "STATS_QUERY_ERR";
+export const READY_STATS = "READY_STATS";
+export const REQUEST_STATS = "REQUEST_STATS";
 
 export const initialState = {
   isFetched: false,
   isLoading: false,
-  error: '',
+  error: "",
   hasError: false,
   data: {},
 };
@@ -25,11 +26,23 @@ function readyStats() {
 }
 
 function receiveStats(json) {
+  const mainData = json.data.searchParticipants || {};
+
+  // Override file counts with association-filtered queries for accurate counts
+  // This ensures Files tab shows biospecimen/participant files and Study Files tab shows study files
+  const statsData = {
+    ...mainData,
+    numberOfFiles:
+      json.data?.filesTabCount?.numberOfFiles ?? mainData.numberOfFiles,
+    numberOfStudyFiles:
+      json.data?.studyFilesTabCount?.numberOfStudyFiles ??
+      mainData.numberOfStudyFiles,
+  };
+
   return {
     type: RECIEVE_STATS,
-    payload:
-    {
-      data: json.data.searchParticipants ? json.data.searchParticipants : {},
+    payload: {
+      data: statsData,
     },
   };
 }
@@ -45,11 +58,17 @@ function fetchStats(statQuery) {
   return (dispatch) => {
     dispatch({ type: REQUEST_STATS });
     return client
-    .query({
-      query: statQuery,
-    })
-    .then((result) => dispatch(receiveStats(result)))
-    .catch((error) => dispatch(errorhandler(error, STATS_QUERY_ERR)));
+      .query({
+        query: statQuery,
+        fetchPolicy: "network-only",
+        variables: {
+          // Include association filters for accurate file counts
+          files_association: defaultFilters.files.association,
+          study_association: defaultFilters.studyFiles.association,
+        },
+      })
+      .then((result) => dispatch(receiveStats(result)))
+      .catch((error) => dispatch(errorhandler(error, STATS_QUERY_ERR)));
   };
 }
 

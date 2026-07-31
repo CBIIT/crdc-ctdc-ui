@@ -162,7 +162,7 @@ export const globalStatsData = [
 
 // --------------- GraphQL query - Retrieve stats details --------------
 export const GET_GLOBAL_STATS_DATA_QUERY = gql`
-  query search(
+  query globalStatsQuery(
     $participant_id: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
@@ -179,7 +179,9 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
     $assessment_timepoint: [String],
 
     $data_file_type: [String],
-    $data_file_format: [String]
+    $data_file_format: [String],
+    $files_association: [String],
+    $study_association: [String]
   ) {
     searchParticipants(
       participant_id: $participant_id
@@ -207,7 +209,49 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
         numberOfSpecimens
         numberOfFiles
       }
+    filesTabCount: searchParticipants(
+      participant_id: $participant_id
+      ctep_disease_term: $ctep_disease_term
+      stage_of_disease: $stage_of_disease
+      tumor_grade: $tumor_grade
+      sex: $sex
+      race: $race
+      ethnicity: $ethnicity
+      carcinogen_exposure: $carcinogen_exposure
+      targeted_therapy_string: $targeted_therapy_string
+
+      anatomical_collection_site: $anatomical_collection_site
+      tissue_category: $tissue_category
+      assessment_timepoint: $assessment_timepoint
+
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+      association: $files_association
+    ) {
+      numberOfFiles
     }
+    studyFilesTabCount: searchParticipants(
+      participant_id: $participant_id
+      ctep_disease_term: $ctep_disease_term
+      stage_of_disease: $stage_of_disease
+      tumor_grade: $tumor_grade
+      sex: $sex
+      race: $race
+      ethnicity: $ethnicity
+      carcinogen_exposure: $carcinogen_exposure
+      targeted_therapy_string: $targeted_therapy_string
+
+      anatomical_collection_site: $anatomical_collection_site
+      tissue_category: $tissue_category
+      assessment_timepoint: $assessment_timepoint
+
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+      association: $study_association
+    ) {
+      numberOfStudyFiles
+    }
+  }
 `;
 
 // --------------- GraphQL query - Retrieve scoped stats for detail pages --------------
