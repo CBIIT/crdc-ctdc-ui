@@ -285,6 +285,32 @@ describe("ScopedStatsController", () => {
       expect(renderedData.numberOfFiles).toBe(100); // fallback to main query
     });
 
+    it("falls back to main query when studyFilesTabCount is missing", () => {
+      const dataWithoutStudyFilesTabCount = {
+        searchParticipants: {
+          ...mockData.searchParticipants,
+          numberOfStudyFiles: 15, // Include value for fallback test
+        },
+        filesTabCount: { numberOfFiles: 80 },
+      };
+      useQuery.mockReturnValue({
+        loading: false,
+        error: null,
+        data: dataWithoutStudyFilesTabCount,
+      });
+      act(() => {
+        ReactDOM.render(
+          React.createElement(ScopedStatsController, {
+            variables: { study_short_name: ["COTC007B"] },
+          }),
+          container,
+        );
+      });
+      const statsView = container.querySelector('[data-testid="stats-view"]');
+      const renderedData = JSON.parse(statsView.textContent);
+      expect(renderedData.numberOfStudyFiles).toBe(15); // fallback to main query
+    });
+
     it("preserves all other stats from main query", () => {
       useQuery.mockReturnValue({ loading: false, error: null, data: mockData });
       act(() => {
