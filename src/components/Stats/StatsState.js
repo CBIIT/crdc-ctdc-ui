@@ -60,7 +60,7 @@ function fetchStats(statQuery) {
     return client
       .query({
         query: statQuery,
-        fetchPolicy: "network-only",
+        // Using default cache-first policy for efficient caching
         variables: {
           // Include association filters for accurate file counts
           files_association: defaultFilters.files.association,

@@ -7,6 +7,9 @@ import { fetchDataForStats } from './StatsState';
 const Stats = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.stats.data);
+  const isLoading = useSelector((state) => state.stats.isLoading);
+  const hasError = useSelector((state) => state.stats.hasError);
+  const error = useSelector((state) => state.stats.error);
 
   React.useEffect(() => {
     // Always refresh global stats for pages using the shared controller
@@ -14,11 +17,17 @@ const Stats = () => {
     dispatch(fetchDataForStats({ force: true }));
   }, [dispatch]);
 
-  const isEmpty =
-    !data ||
-    (Array.isArray(data) ? data.length === 0 : Object.keys(data).length === 0);
+  if (isLoading) {
+    return <CircularProgress />;
+  }
 
-  return isEmpty ? <CircularProgress /> : <StatsView data={data} />;
+  if (hasError) {
+    console.error('Failed to load global stats:', error);
+    // Return empty stats bar to prevent page break
+    return <StatsView data={{}} />;
+  }
+
+  return <StatsView data={data} />;
 };
 
 export default Stats;

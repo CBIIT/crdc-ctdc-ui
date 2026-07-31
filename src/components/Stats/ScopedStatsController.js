@@ -146,8 +146,9 @@ const ScopedStatsController = ({ variables }) => {
   }
 
   if (error) {
-    console.error("Failed to load scoped stats.", error);
-    return <CircularProgress />;
+    console.error("Failed to load scoped stats:", error);
+    // Return empty stats bar to prevent page break
+    return <StatsView data={{}} />;
   }
 
   /**

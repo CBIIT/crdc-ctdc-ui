@@ -67,7 +67,7 @@ describe("ScopedStatsController", () => {
       expect(container.querySelector('[role="progressbar"]')).toBeTruthy();
     });
 
-    it("shows loading spinner on error", () => {
+    it("shows empty stats bar on error", () => {
       const consoleError = jest.spyOn(console, "error").mockImplementation();
       useQuery.mockReturnValue({
         loading: false,
@@ -82,9 +82,12 @@ describe("ScopedStatsController", () => {
           container,
         );
       });
-      expect(container.querySelector('[role="progressbar"]')).toBeTruthy();
+      // Should NOT show loading spinner on error
+      expect(container.querySelector('[role="progressbar"]')).toBeFalsy();
+      // Should render StatsView with empty data (not a loading spinner)
+      expect(container.querySelector('[data-testid="stats-view"]')).toBeTruthy();
       expect(consoleError).toHaveBeenCalledWith(
-        "Failed to load scoped stats.",
+        "Failed to load scoped stats:",
         expect.any(Error),
       );
       consoleError.mockRestore();
