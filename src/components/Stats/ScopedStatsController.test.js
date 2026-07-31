@@ -85,7 +85,9 @@ describe("ScopedStatsController", () => {
       // Should NOT show loading spinner on error
       expect(container.querySelector('[role="progressbar"]')).toBeFalsy();
       // Should render StatsView with empty data (not a loading spinner)
-      expect(container.querySelector('[data-testid="stats-view"]')).toBeTruthy();
+      expect(
+        container.querySelector('[data-testid="stats-view"]'),
+      ).toBeTruthy();
       expect(consoleError).toHaveBeenCalledWith(
         "Failed to load scoped stats:",
         expect.any(Error),
@@ -105,17 +107,30 @@ describe("ScopedStatsController", () => {
       ["null object", null],
       ["undefined object", undefined],
       ["empty object", {}],
-    ])("skips query when variables contain %s", (_, variables) => {
-      useQuery.mockReturnValue({ loading: false, error: null, data: null });
-      act(() => {
-        ReactDOM.render(
-          React.createElement(ScopedStatsController, { variables }),
-          container,
-        );
-      });
-      const lastCall = useQuery.mock.calls[useQuery.mock.calls.length - 1];
-      expect(lastCall[1].skip).toBe(true);
-    });
+    ])(
+      "runs query with only association filters when variables contain %s",
+      (_, variables) => {
+        useQuery.mockReturnValue({
+          loading: false,
+          error: null,
+          data: mockData,
+        });
+        act(() => {
+          ReactDOM.render(
+            React.createElement(ScopedStatsController, { variables }),
+            container,
+          );
+        });
+        const lastCall = useQuery.mock.calls[useQuery.mock.calls.length - 1];
+        // Should not skip - query runs with just association filters for global stats
+        expect(lastCall[1].skip).toBeUndefined();
+        // Should only have association filters in variables
+        expect(lastCall[1].variables).toEqual({
+          files_association: ["biospecimen", "participant"],
+          study_association: ["study"],
+        });
+      },
+    );
 
     it.each([
       [
@@ -152,8 +167,40 @@ describe("ScopedStatsController", () => {
         );
       });
       const lastCall = useQuery.mock.calls[useQuery.mock.calls.length - 1];
-      expect(lastCall[1].skip).toBe(false);
       expect(lastCall[1].variables).toMatchObject(expectedFilters);
+    });
+
+    it("accepts unsupported variables without errors (GraphQL ignores them)", () => {
+      useQuery.mockReturnValue({ loading: false, error: null, data: mockData });
+      act(() => {
+        ReactDOM.render(
+          React.createElement(ScopedStatsController, {
+            variables: {
+              study_short_name: ["COTC007B"], // valid
+              unsupported_field: "test", // unsupported
+              another_invalid: ["value1", "value2"], // unsupported
+              typo_participant_id: ["P001"], // typo - unsupported
+            },
+          }),
+          container,
+        );
+      });
+      // Should not throw error
+      const lastCall = useQuery.mock.calls[useQuery.mock.calls.length - 1];
+      // All variables are passed to query (GraphQL will ignore unsupported ones)
+      expect(lastCall[1].variables).toMatchObject({
+        files_association: ["biospecimen", "participant"],
+        study_association: ["study"],
+        study_short_name: ["COTC007B"],
+        unsupported_field: "test",
+        another_invalid: ["value1", "value2"],
+        typo_participant_id: ["P001"],
+      });
+      // Component should render successfully
+      const statsView = container.querySelector('[data-testid="stats-view"]');
+      expect(statsView).toBeTruthy();
+      const renderedData = JSON.parse(statsView.textContent);
+      expect(renderedData.numberOfFiles).toBe(80);
     });
   });
 
@@ -260,8 +307,8 @@ describe("ScopedStatsController", () => {
     });
   });
 
-  describe("Query Skip Logic", () => {
-    it("does not skip when valid filters are provided", () => {
+  describe("Query Execution", () => {
+    it("always runs query regardless of filters", () => {
       useQuery.mockReturnValue({ loading: false, error: null, data: mockData });
       act(() => {
         ReactDOM.render(
@@ -272,11 +319,11 @@ describe("ScopedStatsController", () => {
         );
       });
       const lastCall = useQuery.mock.calls[useQuery.mock.calls.length - 1];
-      expect(lastCall[1].skip).toBe(false);
+      expect(lastCall[1].skip).toBeUndefined();
     });
 
-    it("skips query when only association filters would be present", () => {
-      useQuery.mockReturnValue({ loading: false, error: null, data: null });
+    it("runs query with association filters for global stats when no filters provided", () => {
+      useQuery.mockReturnValue({ loading: false, error: null, data: mockData });
       act(() => {
         ReactDOM.render(
           React.createElement(ScopedStatsController, { variables: {} }),
@@ -284,7 +331,11 @@ describe("ScopedStatsController", () => {
         );
       });
       const lastCall = useQuery.mock.calls[useQuery.mock.calls.length - 1];
-      expect(lastCall[1].skip).toBe(true);
+      expect(lastCall[1].skip).toBeUndefined();
+      expect(lastCall[1].variables).toEqual({
+        files_association: ["biospecimen", "participant"],
+        study_association: ["study"],
+      });
     });
   });
 

@@ -164,6 +164,8 @@ export const globalStatsData = [
 export const GET_GLOBAL_STATS_DATA_QUERY = gql`
   query globalStatsQuery(
     $participant_id: [String],
+
+    $study_short_name: [String],
     $ctep_disease_term: [String],
     $stage_of_disease: [String],
     $tumor_grade: [String],
@@ -171,20 +173,22 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
-    # $targeted_therapy: [String],
-    $targeted_therapy_string: [String],
+    $targeted_therapy_string: [String], # $targeted_therapy: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
     $assessment_timepoint: [String],
 
     $data_file_type: [String],
-    $data_file_format: [String],
+    $data_file_format: [String]
+
     $files_association: [String],
-    $study_association: [String]
+    $study_association: [String],
   ) {
     searchParticipants(
       participant_id: $participant_id
+
+      study_short_name: $study_short_name
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -192,8 +196,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      # targeted_therapy: $targeted_therapy
-      targeted_therapy_string: $targeted_therapy_string
+      targeted_therapy_string: $targeted_therapy_string # targeted_therapy: $targeted_therapy
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -211,6 +214,8 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       }
     filesTabCount: searchParticipants(
       participant_id: $participant_id
+
+      study_short_name: $study_short_name
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -232,6 +237,8 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
     }
     studyFilesTabCount: searchParticipants(
       participant_id: $participant_id
+
+      study_short_name: $study_short_name
       ctep_disease_term: $ctep_disease_term
       stage_of_disease: $stage_of_disease
       tumor_grade: $tumor_grade
@@ -247,42 +254,6 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
 
       data_file_type: $data_file_type
       data_file_format: $data_file_format
-      association: $study_association
-    ) {
-      numberOfStudyFiles
-    }
-  }
-`;
-
-// --------------- GraphQL query - Retrieve scoped stats for detail pages --------------
-export const SCOPED_STATS_QUERY = gql`
-  query ScopedStats(
-    $study_short_name: [String]
-    $participant_id: [String]
-    $files_association: [String]
-    $study_association: [String]
-  ) {
-    searchParticipants(
-      study_short_name: $study_short_name
-      participant_id: $participant_id
-    ) {
-      numberOfStudies
-      numberOfParticipants
-      numberOfDiagnoses
-      numberOfTargetedTherapies
-      numberOfSpecimens
-      numberOfFiles
-    }
-    filesTabCount: searchParticipants(
-      study_short_name: $study_short_name
-      participant_id: $participant_id
-      association: $files_association
-    ) {
-      numberOfFiles
-    }
-    studyFilesTabCount: searchParticipants(
-      study_short_name: $study_short_name
-      participant_id: $participant_id
       association: $study_association
     ) {
       numberOfStudyFiles
