@@ -29,7 +29,7 @@ const ParticipantDetailController = ({ match }) => {
   } = useQuery(GET_BIOSPECIMENS_OVERVIEW_QUERY, {
     variables: {
       participant_id: [participant_id],
-      first: 100,
+      first: 10000,
       offset: 0,
       order_by: 'specimen_record_id',
       sort_direction: 'asc',
@@ -41,7 +41,14 @@ const ParticipantDetailController = ({ match }) => {
     error: filesError,
     data: filesData,
   } = useQuery(GET_FILES_OVERVIEW_QUERY, {
-    variables: { participant_id: [participant_id], ...defaultFilters.files },
+    variables: {
+      participant_id: [participant_id],
+      ...defaultFilters.files,
+      first: 10000,
+      offset: 0,
+      order_by: 'data_file_name',
+      sort_direction: 'asc',
+    },
   });
 
   if (participantLoading || biospecimensLoading || filesLoading) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core';
-import Stats from '../../components/Stats/AllStatsController';
+import Stats from '../../components/Stats/ParticipantStatsController';
 import ParticipantThemeProvider from './participantDetailThemeConfig';
 import Styles from './participantDetailStyle';
 import HeaderPanel from './components/HeaderPanel';
@@ -9,7 +9,7 @@ import FilesTable from './components/FilesTable';
 
 const ParticipantDetailView = ({ classes, participant, biospecimens, files }) => (
   <ParticipantThemeProvider>
-    <Stats />
+    <Stats participantId={participant.participant_id} />
     <div className={classes.container}>
       <HeaderPanel classes={classes} participant={participant} />
       <BiospecimensTable classes={classes} biospecimens={biospecimens} files={files} />

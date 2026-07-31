@@ -5,7 +5,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import StatsView from './StatsView';
 
 const STUDY_DETAIL_STATS_QUERY = gql`
-  query search($study_short_name: [String]) {
+  query search(
+    $study_short_name: [String],
+    $files_association: [String],
+    $study_association: [String]
+  ) {
     searchParticipants(study_short_name: $study_short_name) {
       numberOfStudies
       numberOfParticipants
@@ -14,12 +18,28 @@ const STUDY_DETAIL_STATS_QUERY = gql`
       numberOfSpecimens
       numberOfFiles
     }
+    filesTabCount: searchParticipants(
+      study_short_name: $study_short_name
+      association: $files_association
+    ) {
+      numberOfFiles
+    }
+    studyFilesTabCount: searchParticipants(
+      study_short_name: $study_short_name
+      association: $study_association
+    ) {
+      numberOfStudyFiles
+    }
   }
 `;
 
 const PageSpecificStatsController = ({ studyShortName }) => {
   const variables = React.useMemo(
-    () => (studyShortName ? { study_short_name: [studyShortName] } : {}),
+    () => (studyShortName ? {
+      study_short_name: [studyShortName],
+      files_association: ['biospecimen', 'participant'],
+      study_association: ['study'],
+    } : {}),
     [studyShortName],
   );
   const { loading, error, data } = useQuery(STUDY_DETAIL_STATS_QUERY, {
@@ -35,7 +55,11 @@ const PageSpecificStatsController = ({ studyShortName }) => {
     return <div role="alert">Failed to load stats for this study.</div>;
   }
 
-  const statsData = data?.searchParticipants || {};
+  const statsData = {
+    ...data?.searchParticipants,
+    numberOfFiles: data?.filesTabCount?.numberOfFiles ?? data?.searchParticipants?.numberOfFiles,
+    numberOfStudyFiles: data?.studyFilesTabCount?.numberOfStudyFiles ?? data?.searchParticipants?.numberOfStudyFiles,
+  };
 
   return <StatsView data={statsData} />;
 };
