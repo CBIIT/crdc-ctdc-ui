@@ -35,16 +35,22 @@ const studiesContainer = () => {
   }
 
   // Transform and combine data
+  const interOpStudiesMap = (interOpData?.getInteropData || []).reduce((acc, entry) => {
+    const s = entry?.data?.getAllStudies;
+    if (s?.study_id) acc[s.study_id] = s;
+    return acc;
+  }, {});
   const updatedData = {
     ...data,
-    getAllStudies: data?.getAllStudies?.map((study) => ({
-      ...study,
-      numberOfPublications: 0, // TODO: Fetch this value from the backend API when it's implemented
-      image_collection:
-        interOpData?.getInteropData?.[0]?.data?.getAllStudies?.image_collection || [],
-      unique_repository:
-        interOpData?.getInteropData?.[0]?.data?.getAllStudies?.unique_repository || [],
-    })),
+    getAllStudies: data?.getAllStudies?.map((study) => {
+      const interOpStudy = interOpStudiesMap[study.study_id];
+      return {
+        ...study,
+        numberOfPublications: 0, // TODO: Fetch this value from the backend API when it's implemented
+        image_collection: interOpStudy?.image_collection || [],
+        unique_repository: interOpStudy?.unique_repository || [],
+      };
+    }),
   };
   
   // Render the Studies component
