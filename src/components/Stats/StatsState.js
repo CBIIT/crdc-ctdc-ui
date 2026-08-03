@@ -2,7 +2,7 @@ import { GET_GLOBAL_STATS_DATA_QUERY as STATS_QUERY } from "../../bento/globalSt
 import { defaultFilters } from "../../bento/dashboardTabData";
 import client from "../../utils/graphqlClient";
 
-export const RECIEVE_STATS = "RECIEVE_STATS";
+export const RECEIVE_STATS = "RECEIVE_STATS";
 export const STATS_QUERY_ERR = "STATS_QUERY_ERR";
 export const READY_STATS = "READY_STATS";
 export const REQUEST_STATS = "REQUEST_STATS";
@@ -26,21 +26,21 @@ function readyStats() {
 }
 
 function receiveStats(json) {
-  const mainData = json.data.searchParticipants || {};
+  const mainData = json?.data?.searchParticipants || {};
 
   // Override file counts with association-filtered queries for accurate counts
   // This ensures Files tab shows biospecimen/participant files and Study Files tab shows study files
   const statsData = {
     ...mainData,
     numberOfFiles:
-      json.data?.filesTabCount?.numberOfFiles ?? mainData.numberOfFiles,
+      json?.data?.filesTabCount?.numberOfFiles ?? mainData.numberOfFiles,
     numberOfStudyFiles:
-      json.data?.studyFilesTabCount?.numberOfStudyFiles ??
+      json?.data?.studyFilesTabCount?.numberOfStudyFiles ??
       mainData.numberOfStudyFiles,
   };
 
   return {
-    type: RECIEVE_STATS,
+    type: RECEIVE_STATS,
     payload: {
       data: statsData,
     },
@@ -85,7 +85,7 @@ export function fetchDataForStats(options = {}) {
 
 export default function dashboardReducer(state = initialState, action) {
   switch (action.type) {
-    case RECIEVE_STATS:
+    case RECEIVE_STATS:
       return {
         ...state,
         hasError: false,

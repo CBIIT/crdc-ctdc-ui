@@ -8,6 +8,7 @@ const Stats = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.stats.data);
   const isLoading = useSelector((state) => state.stats.isLoading);
+  const isFetched = useSelector((state) => state.stats.isFetched);
   const hasError = useSelector((state) => state.stats.hasError);
   const error = useSelector((state) => state.stats.error);
 
@@ -17,7 +18,7 @@ const Stats = () => {
     dispatch(fetchDataForStats({ force: true }));
   }, [dispatch]);
 
-  if (isLoading) {
+  if (isLoading || !isFetched) {
     return <CircularProgress />;
   }
 
