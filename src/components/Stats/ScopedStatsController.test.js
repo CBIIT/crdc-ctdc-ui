@@ -248,6 +248,29 @@ describe("ScopedStatsController", () => {
       });
     });
 
+    it("prevents overriding reserved association filter keys", () => {
+      useQuery.mockReturnValue({ loading: false, error: null, data: mockData });
+      act(() => {
+        ReactDOM.render(
+          React.createElement(ScopedStatsController, {
+            variables: {
+              study_short_name: ["COTC007B"],
+              files_association: ["malicious_override"],
+              study_association: ["malicious_override"],
+            },
+          }),
+          container,
+        );
+      });
+      const lastCall = useQuery.mock.calls[useQuery.mock.calls.length - 1];
+      // Association filters should NOT be overridden - they remain at default values
+      expect(lastCall[1].variables).toEqual({
+        files_association: ["biospecimen", "participant"], // default protected
+        study_association: ["study"], // default protected
+        study_short_name: ["COTC007B"],
+      });
+    });
+
     it("merges custom variables with association filters", () => {
       useQuery.mockReturnValue({ loading: false, error: null, data: mockData });
       act(() => {

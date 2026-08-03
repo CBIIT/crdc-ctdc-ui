@@ -5,8 +5,10 @@
  * or global stats when no filters provided. Automatically includes association
  * filters to get accurate file counts (Data Files vs Study Files).
  *
- * Note: Variables not declared in the query are filtered out by Apollo Client
- * before sending the HTTP request (compared against the query's variable declarations).
+ * Note: This component forwards all provided variables to the GraphQL query.
+ * Apollo Client then filters out any variables not declared in the query definition
+ * before making the HTTP request. Reserved keys (files_association, study_association)
+ * cannot be overridden and are always set to default values.
  *
  * @param {Object} variables - searchParticipants filter variables or empty for global stats
  *
@@ -42,6 +44,11 @@ const ScopedStatsController = ({ variables }) => {
       Object.keys(variables).length > 0
     ) {
       Object.entries(variables).forEach(([key, value]) => {
+        // Skip reserved association filter keys - these cannot be overridden
+        if (key === "files_association" || key === "study_association") {
+          return;
+        }
+
         // Skip null/undefined to avoid sending invalid filter values to GraphQL
         if (value === null || value === undefined) {
           return;
@@ -92,9 +99,10 @@ const ScopedStatsController = ({ variables }) => {
   const statsData = {
     ...mainStats,
     numberOfFiles:
-      data?.filesTabCount?.numberOfFiles ?? mainStats?.numberOfFiles,
+      data?.filesTabCount?.numberOfFiles ?? mainStats.numberOfFiles,
     numberOfStudyFiles:
-      data?.studyFilesTabCount?.numberOfStudyFiles ?? mainStats?.numberOfStudyFiles,
+      data?.studyFilesTabCount?.numberOfStudyFiles ??
+      mainStats.numberOfStudyFiles,
   };
 
   return <StatsView data={statsData} />;
