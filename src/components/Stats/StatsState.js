@@ -1,18 +1,18 @@
-import { ORIGINAL_DASHBOARD_QUERY_NEW } from '../../bento/dashboardTabData';
-import { GET_GLOBAL_STATS_DATA_QUERY as STATS_QUERY } from '../../bento/globalStatsData';
-import client from '../../utils/graphqlClient';
+import { GET_GLOBAL_STATS_DATA_QUERY as STATS_QUERY } from "../../bento/globalStatsData";
+import { defaultFilters } from "../../bento/dashboardTabData";
+import client from "../../utils/graphqlClient";
 
-export const RECIEVE_STATS = 'RECIEVE_STATS';
-export const STATS_QUERY_ERR = 'STATS_QUERY_ERR';
-export const READY_STATS = 'READY_STATS';
-export const REQUEST_STATS = 'REQUEST_STATS';
+export const RECEIVE_STATS = "RECEIVE_STATS";
+export const STATS_QUERY_ERR = "STATS_QUERY_ERR";
+export const READY_STATS = "READY_STATS";
+export const REQUEST_STATS = "REQUEST_STATS";
 
 export const initialState = {
   isFetched: false,
   isLoading: false,
-  error: '',
+  error: "",
   hasError: false,
-  data: [],
+  data: {},
 };
 
 function shouldFetchDataForAllStats(state) {
@@ -26,11 +26,23 @@ function readyStats() {
 }
 
 function receiveStats(json) {
+  const mainData = json?.data?.searchParticipants || {};
+
+  // Override file counts with association-filtered queries for accurate counts
+  // This ensures Files tab shows biospecimen/participant files and Study Files tab shows study files
+  const statsData = {
+    ...mainData,
+    numberOfFiles:
+      json?.data?.filesTabCount?.numberOfFiles ?? mainData.numberOfFiles,
+    numberOfStudyFiles:
+      json?.data?.studyFilesTabCount?.numberOfStudyFiles ??
+      mainData.numberOfStudyFiles,
+  };
+
   return {
-    type: RECIEVE_STATS,
-    payload:
-    {
-      data: json.data.searchParticipants ? json.data.searchParticipants : {},
+    type: RECEIVE_STATS,
+    payload: {
+      data: statsData,
     },
   };
 }
@@ -43,17 +55,28 @@ function errorhandler(error, type) {
 }
 
 function fetchStats(statQuery) {
-  return (dispatch) => client
-    .query({
-      query: statQuery,
-    })
-    .then((result) => dispatch(receiveStats(result)))
-    .catch((error) => dispatch(errorhandler(error, STATS_QUERY_ERR)));
+  return (dispatch) => {
+    dispatch({ type: REQUEST_STATS });
+    return client
+      .query({
+        query: statQuery,
+        // Using default cache-first policy for efficient caching
+        variables: {
+          // Include association filters for accurate file counts
+          files_association: defaultFilters.files.association,
+          study_association: defaultFilters.studyFiles.association,
+        },
+      })
+      .then((result) => dispatch(receiveStats(result)))
+      .catch((error) => dispatch(errorhandler(error, STATS_QUERY_ERR)));
+  };
 }
 
-export function fetchDataForStats() {
+export function fetchDataForStats(options = {}) {
+  const { force = false } = options;
+
   return (dispatch, getState) => {
-    if (shouldFetchDataForAllStats(getState())) {
+    if (force || shouldFetchDataForAllStats(getState())) {
       return dispatch(fetchStats(STATS_QUERY));
     }
     return dispatch(readyStats());
@@ -62,7 +85,7 @@ export function fetchDataForStats() {
 
 export default function dashboardReducer(state = initialState, action) {
   switch (action.type) {
-    case RECIEVE_STATS:
+    case RECEIVE_STATS:
       return {
         ...state,
         hasError: false,
@@ -85,7 +108,11 @@ export default function dashboardReducer(state = initialState, action) {
         isFetched: true,
       };
     case REQUEST_STATS:
-      return { ...state, isLoading: true };
+      return {
+        ...state,
+        isLoading: true,
+        data: {},
+      };
     default:
       return state;
   }
