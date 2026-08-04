@@ -678,11 +678,8 @@ export const tableLayOut = [
 ];
 
 // --------------- Publications Tab Configuration ---------------
-
-// Uses the dedicated publicationInfo query from backend 1.4.0 (PR #164/#187)
-// Accepts study_id as a plain String (not array)
 export const GET_STUDY_PUBLICATIONS_QUERY = gql`
-  query studyPublications($study_id: String) {
+  query studyPublications($study_id: [String]) {
     publicationInfo(study_id: $study_id) {
       publication_title
       authorship

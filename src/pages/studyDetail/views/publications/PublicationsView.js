@@ -70,11 +70,10 @@ const PublicationCard = ({ publication, classes }) => {
 };
 
 const PublicationsView = ({ classes, study_id }) => {
-  // Fetch publications via dedicated publicationInfo query (backend 1.4.0+)
   const { loading, error, data } = useQuery(GET_STUDY_PUBLICATIONS_QUERY, {
     skip: !study_id,
     variables: {
-      study_id: study_id,
+      study_id: [study_id],
     },
     fetchPolicy: "cache-first",
   });
