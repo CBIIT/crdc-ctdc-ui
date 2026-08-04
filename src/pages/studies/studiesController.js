@@ -5,7 +5,7 @@ import Studies from './studiesView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { GET_STUDY_DATA_INTEROPS_QUERY, GET_STUDY_DATA_QUERY } from '../../bento/studiesData';
 
-// Fallback interop data for studies not yet loaded into OpenSearch
+// TODO(CTDC-2175): Temporary fallback interop data for studies not yet loaded into OpenSearch. Remove once the missing studies are indexed.
 const INTEROP_FALLBACK = {
   NCT00980460: {
     unique_repository: ['TCIA']
