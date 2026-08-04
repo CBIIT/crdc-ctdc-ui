@@ -5,6 +5,13 @@ import Studies from './studiesView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { GET_STUDY_DATA_INTEROPS_QUERY, GET_STUDY_DATA_QUERY } from '../../bento/studiesData';
 
+// Fallback interop data for studies not yet loaded into OpenSearch
+const INTEROP_FALLBACK = {
+  NCT00980460: {
+    unique_repository: ['TCIA']
+  },
+};
+
 const studiesContainer = () => {
   // Fetch study data
   const { loading: isDataLoading, error: dataError, data } = useQuery(GET_STUDY_DATA_QUERY);
@@ -43,11 +50,10 @@ const studiesContainer = () => {
   const updatedData = {
     ...data,
     getAllStudies: data?.getAllStudies?.map((study) => {
-      const interOpStudy = interOpStudiesMap[study.study_id];
+      const interOpStudy = interOpStudiesMap[study.study_id] || INTEROP_FALLBACK[study.study_id];
       return {
         ...study,
         numberOfPublications: 0, // TODO: Fetch this value from the backend API when it's implemented
-        image_collection: interOpStudy?.image_collection || [],
         unique_repository: interOpStudy?.unique_repository || [],
       };
     }),
