@@ -12,9 +12,6 @@ function RASLoginPage(props) {
 
   return (
     <div className={classes.Container}>
-      {/* Stats Bar */}
-      <Stats />
-
       {/* Hero Section */}
       <Box className={classes.HeroSection}>
         <div className={classes.HeroIconWrapper}>
@@ -30,9 +27,9 @@ function RASLoginPage(props) {
 
       {/* Main Content - Two Column Layout */}
       <Grid container className={classes.ContentWrapper}>
-        <Grid container spacing={3}>
+        <Grid container spacing={4}>
           {/* Left Column - Combined Login Box */}
-          <Grid item xs={12} md={7}>
+          <Grid item xs={12} md={8}>
             <Box className={classes.CombinedLoginBox}>
               {/* eRA Commons Section */}
               <Box className={classes.LoginSection}>
@@ -59,7 +56,10 @@ function RASLoginPage(props) {
                     </Typography>
                   </Box>
                   <Box className={classes.LoginButtonContainer}>
-                    <Button variant="outlined" className={classes.LoginButton}>
+                    <Button
+                      variant="outlined"
+                      className={classes.LoginButtonEra}
+                    >
                       Login with eRA Commons
                     </Button>
                   </Box>
@@ -157,17 +157,151 @@ function RASLoginPage(props) {
                     </Typography>
                   </Box>
                   <Box className={classes.LoginButtonContainer}>
-                    <Button variant="outlined" className={classes.LoginButton}>
+                    <Button
+                      variant="outlined"
+                      className={classes.LoginButtonRas}
+                    >
                       Login with RAS
                     </Button>
                   </Box>
                 </Box>
               </Box>
             </Box>
+
+            {/* Request Access Section */}
+            <Box className={classes.RequestSection}>
+              <Typography className={classes.SectionTitle}>
+                Request Access
+              </Typography>
+
+              <Typography className={classes.SubsectionTitle}>
+                Access Requirements
+              </Typography>
+
+              <Typography className={classes.BodyText}>
+                CTDC contains controlled-access research data. To comply with
+                federal security requirements, users must verify their identity
+                and affiliation before they can access the platform.
+              </Typography>
+
+              <Typography className={classes.BodyText}>
+                To request CTDC access, you must have:
+              </Typography>
+
+              <ul className={classes.BodyText} style={{ marginTop: "8px" }}>
+                <li>
+                  An <strong>NIH account</strong>, or an{" "}
+                  <strong>eRA Commons account</strong> linked to a{" "}
+                  <strong>Login.gov account</strong> with{" "}
+                  <strong>NIH Researcher Auth Service (RAS)</strong> identity
+                  verification
+                </li>
+                <li>
+                  An <strong>ORCID iD</strong>
+                </li>
+              </ul>
+
+              <Typography className={classes.SubsectionTitle}>
+                Request Access
+              </Typography>
+
+              <ol className={classes.InstructionList}>
+                <li>Create a Login.gov or ID.me account.</li>
+                <li>
+                  If you do not have an NIH account, also create an eRA Commons
+                  account.
+                </li>
+                <li>
+                  Complete NIH RAS identity verification. Verify your identity
+                  through Login.gov using NIH RAS.
+                  <Typography
+                    className={classes.BodyText}
+                    style={{ marginTop: "8px", marginLeft: "20px" }}
+                  >
+                    Link your Login.gov account to your eRA Commons account. If
+                    you are not an NIH user, create an ORCID iD for your eRA
+                    Commons account, and allow up to two business days for
+                    processing.
+                  </Typography>
+                </li>
+                <li>
+                  Request CTDC access. On the Request SEER Incidence Data page,
+                  sign in with your NIH or Login.gov account and complete the
+                  Research Plus request application. Review and accept the
+                  required data use agreement, then submit your request.
+                </li>
+              </ol>
+
+              <Typography
+                className={classes.BodyText}
+                style={{ marginTop: "16px" }}
+              >
+                Access requests are typically processed within two business
+                days. Once approved, you can sign in to CTDC using your NIH or
+                Login.gov account.
+              </Typography>
+
+              <Typography className={classes.SubsectionTitle}>
+                Documentation
+              </Typography>
+
+              <ul className={classes.DocumentationList}>
+                <li>
+                  <span className={classes.Link} role="button" tabIndex={0}>
+                    eRA Commons Account Creation
+                  </span>
+                </li>
+                <li>
+                  <span className={classes.Link} role="button" tabIndex={0}>
+                    Request SEER Incidence Data
+                  </span>
+                </li>
+                <li>
+                  <span className={classes.Link} role="button" tabIndex={0}>
+                    SEER Research Data Use Agreement
+                  </span>
+                </li>
+                <li>
+                  <span className={classes.Link} role="button" tabIndex={0}>
+                    SEER Treatment Data Limitations
+                  </span>
+                </li>
+                <li>
+                  <span className={classes.Link} role="button" tabIndex={0}>
+                    CTDC Use Agreement
+                  </span>
+                </li>
+              </ul>
+            </Box>
+
+            {/* Warning Notice Section */}
+            <Box className={classes.WarningSection}>
+              <Typography className={classes.WarningTitle}>
+                Warning Notice
+              </Typography>
+              <Typography className={classes.WarningText}>
+                This warning banner provides privacy and security notices
+                consistent with applicable federal laws, directives, and other
+                federal guidance for accessing this Government system, which
+                includes (1) this computer network, (2) all computers connected
+                to this network, and (3) all devices and storage media attached
+                to this network or to a computer on this network. This system is
+                provided for Government-authorized use only. Unauthorized or
+                improper use of this system is prohibited and may result in
+                disciplinary action and/or civil and criminal penalties. At any
+                time, and for any lawful Government purpose, the government may
+                monitor, record, and audit your system usage and/or intercept,
+                search and seize any communication or data transiting or stored
+                on this system. Therefore, you have no reasonable expectation of
+                privacy. Any communication or data transiting or stored on this
+                system may be disclosed or used for any lawful Government
+                purpose.
+              </Typography>
+            </Box>
           </Grid>
 
           {/* Right Column - Help Sidebar */}
-          <Grid item xs={12} md={5}>
+          <Grid item xs={12} md={4}>
             <Box className={classes.HelpSidebar}>
               {/* Need Help Section */}
               <Box className={classes.HelpHeader}>
@@ -220,126 +354,6 @@ function RASLoginPage(props) {
           </Grid>
         </Grid>
       </Grid>
-
-      {/* Request Access Section */}
-      <Box className={classes.RequestSection}>
-        <Typography className={classes.SectionTitle}>Request Access</Typography>
-
-        <Typography className={classes.SubsectionTitle}>
-          Access Requirements
-        </Typography>
-
-        <Typography className={classes.BodyText}>
-          CTDC contains controlled-access research data. To comply with federal
-          security requirements, users must verify their identity and
-          affiliation before they can access the platform.
-        </Typography>
-
-        <Typography className={classes.BodyText}>
-          To request CTDC access, you must have:
-        </Typography>
-
-        <ul className={classes.BodyText} style={{ marginTop: "8px" }}>
-          <li>
-            An <strong>NIH account</strong>, or an{" "}
-            <strong>eRA Commons account</strong> linked to a{" "}
-            <strong>Login.gov account</strong> with{" "}
-            <strong>NIH Researcher Auth Service (RAS)</strong> identity
-            verification
-          </li>
-          <li>
-            An <strong>ORCID iD</strong>
-          </li>
-        </ul>
-
-        <Typography className={classes.SubsectionTitle}>
-          Request Access
-        </Typography>
-
-        <ol className={classes.InstructionList}>
-          <li>Create a Login.gov or ID.me account.</li>
-          <li>
-            If you do not have an NIH account, also create an eRA Commons
-            account.
-          </li>
-          <li>
-            Complete NIH RAS identity verification. Verify your identity through
-            Login.gov using NIH RAS.
-            <Typography
-              className={classes.BodyText}
-              style={{ marginTop: "8px", marginLeft: "20px" }}
-            >
-              Link your Login.gov account to your eRA Commons account. If you
-              are not an NIH user, create an ORCID iD for your eRA Commons
-              account, and allow up to two business days for processing.
-            </Typography>
-          </li>
-          <li>
-            Request CTDC access. On the Request SEER Incidence Data page, sign
-            in with your NIH or Login.gov account and complete the Research Plus
-            request application. Review and accept the required data use
-            agreement, then submit your request.
-          </li>
-        </ol>
-
-        <Typography className={classes.BodyText} style={{ marginTop: "16px" }}>
-          Access requests are typically processed within two business days. Once
-          approved, you can sign in to CTDC using your NIH or Login.gov account.
-        </Typography>
-
-        <Typography className={classes.SubsectionTitle}>
-          Documentation
-        </Typography>
-
-        <ul className={classes.DocumentationList}>
-          <li>
-            <span className={classes.Link} role="button" tabIndex={0}>
-              eRA Commons Account Creation
-            </span>
-          </li>
-          <li>
-            <span className={classes.Link} role="button" tabIndex={0}>
-              Request SEER Incidence Data
-            </span>
-          </li>
-          <li>
-            <span className={classes.Link} role="button" tabIndex={0}>
-              SEER Research Data Use Agreement
-            </span>
-          </li>
-          <li>
-            <span className={classes.Link} role="button" tabIndex={0}>
-              SEER Treatment Data Limitations
-            </span>
-          </li>
-          <li>
-            <span className={classes.Link} role="button" tabIndex={0}>
-              CTDC Use Agreement
-            </span>
-          </li>
-        </ul>
-      </Box>
-
-      {/* Warning Notice Section */}
-      <Box className={classes.WarningSection}>
-        <Typography className={classes.WarningTitle}>Warning Notice</Typography>
-        <Typography className={classes.WarningText}>
-          This warning banner provides privacy and security notices consistent
-          with applicable federal laws, directives, and other federal guidance
-          for accessing this Government system, which includes (1) this computer
-          network, (2) all computers connected to this network, and (3) all
-          devices and storage media attached to this network or to a computer on
-          this network. This system is provided for Government-authorized use
-          only. Unauthorized or improper use of this system is prohibited and
-          may result in disciplinary action and/or civil and criminal penalties.
-          At any time, and for any lawful Government purpose, the government may
-          monitor, record, and audit your system usage and/or intercept, search
-          and seize any communication or data transiting or stored on this
-          system. Therefore, you have no reasonable expectation of privacy. Any
-          communication or data transiting or stored on this system may be
-          disclosed or used for any lawful Government purpose.
-        </Typography>
-      </Box>
     </div>
   );
 }
@@ -350,6 +364,9 @@ const styles = (theme) => ({
       "linear-gradient(148.75deg, #E6E6E6, #A1D2D5 32.21%, #0E8EB1), linear-gradient(#088CBA, #088CBA)",
     fontFamily: 'Lato, "Open Sans", sans-serif',
     minHeight: "100vh",
+    paddingBottom: "60px",
+    boxShadow: "0px 4px 20px 0px #00000040 inset",
+
   },
 
   // Hero Section Styles
@@ -405,87 +422,127 @@ const styles = (theme) => ({
   CombinedLoginBox: {
     backgroundColor: "#F0F8FA",
     borderRadius: "35px",
-    padding: "30px 40px 50px 40px",
+    padding: "30px 40px 50px",
     marginBottom: "40px",
     boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.25)",
-    outline: "3px #DAF1FB solid",
-    outlineOffset: "-3px",
+    border: "3px solid transparent",
+    backgroundImage:
+      "linear-gradient(#F0F8FA, #F0F8FA), linear-gradient(180deg, #DAF1FB, #F4FBFE 31.48%, #FFF)",
+    backgroundOrigin: "border-box",
+    backgroundClip: "padding-box, border-box",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "40px",
   },
   LoginSection: {
-    marginBottom: "0px",
+    alignSelf: "stretch",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: "25px",
   },
   Divider: {
-    height: "0px",
-    outline: "1px #D8D8D8 solid",
-    outlineOffset: "-0.5px",
-    margin: "40px 0",
+    width: "797px",
+    height: "1px",
+    position: "relative",
+    borderTop: "1px solid #D8D8D8",
+    boxSizing: "border-box",
+    alignSelf: "center",
   },
   LoginContentRow: {
+    alignSelf: "stretch",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    gap: "30px",
-    flexWrap: "wrap",
+    gap: "20px",
   },
   LoginTextContent: {
-    flex: "1 1 auto",
-    minWidth: "300px",
-    maxWidth: "562px",
+    width: "537px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: "17px",
   },
   LoginButtonContainer: {
-    flex: "0 0 auto",
     display: "flex",
     alignItems: "flex-start",
-    paddingTop: "0px",
   },
   BoxTitle: {
+    alignSelf: "stretch",
+    height: "37px",
     fontFamily: "Inter",
     fontSize: "24px",
     fontWeight: 700,
     color: "#18588E",
-    marginBottom: "25px",
-    lineHeight: "25.57px",
+    letterSpacing: "-0.02em",
+    lineHeight: "106.52%",
+    display: "flex",
+    alignItems: "center",
   },
   BodyText: {
     fontFamily: "Roboto",
     fontSize: "16px",
     fontWeight: 400,
-    color: "black",
-    lineHeight: "24px",
+    color: "#000",
     letterSpacing: "0.2px",
-    marginBottom: "12px",
+    lineHeight: "150%",
+    marginBottom: "0px",
   },
   NoteText: {
+    alignSelf: "stretch",
     fontFamily: "Roboto",
     fontSize: "16px",
     fontWeight: 700,
-    color: "black",
-    lineHeight: "24px",
+    color: "#000",
     letterSpacing: "0.2px",
-    marginBottom: "0px",
+    lineHeight: "150%",
   },
   FooterNote: {
     fontFamily: "Roboto",
     fontSize: "16px",
     fontWeight: 400,
-    color: "black",
-    marginTop: "12px",
-    lineHeight: "24px",
+    color: "#000",
     letterSpacing: "0.2px",
+    lineHeight: "150%",
   },
-  LoginButton: {
+  LoginButtonEra: {
+    width: "213px",
+    height: "47px",
     fontFamily: "Roboto",
     fontSize: "16px",
     fontWeight: 500,
-    color: "black",
-    backgroundColor: "white",
+    color: "#000000",
+    backgroundColor: "#FFFFFF",
+    border: "1.25px solid #3795A9",
+    borderRadius: "10px",
+    padding: "11px 14px",
+    gap: "10px",
+    textTransform: "none",
+    textAlign: "center",
+    lineHeight: "24.5px",
+    whiteSpace: "nowrap",
+    "&:hover": {
+      backgroundColor: "#F0F9F7",
+      border: "1.25px solid #3795A9",
+    },
+  },
+  LoginButtonRas: {
+    width: "215px",
+    height: "47px",
+    fontFamily: "Roboto",
+    fontSize: "16px",
+    fontWeight: 500,
+    color: "#000000",
+    backgroundColor: "#FFFFFF",
     border: "1.25px solid #3795A9",
     borderRadius: "10px",
     padding: "11px 53px",
+    gap: "10px",
     textTransform: "none",
-    minWidth: "auto",
-    whiteSpace: "nowrap",
+    textAlign: "center",
     lineHeight: "24.5px",
+    whiteSpace: "nowrap",
     "&:hover": {
       backgroundColor: "#F0F9F7",
       border: "1.25px solid #3795A9",
@@ -571,9 +628,9 @@ const styles = (theme) => ({
     fontFamily: "Roboto",
     fontSize: "16px",
     fontWeight: 500,
-    color: "black",
-    backgroundColor: "white",
-    border: "1.25px solid #3795A9",
+    color: "#000",
+    backgroundColor: "#FFF",
+    border: "1.3px solid #3795A9",
     borderRadius: "10px",
     padding: "11px 53px",
     textTransform: "none",
@@ -582,15 +639,14 @@ const styles = (theme) => ({
     lineHeight: "24.5px",
     "&:hover": {
       backgroundColor: "rgba(255, 255, 255, 0.9)",
-      border: "1.25px solid #3795A9",
+      border: "1.3px solid #3795A9",
     },
   },
 
   // Request Access Section
   RequestSection: {
-    maxWidth: "1200px",
-    margin: "40px auto",
     padding: "30px 40px 40px 40px",
+    marginTop: "40px",
     backgroundColor: "#F0F8FA",
     borderRadius: "35px",
     boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.25)",
@@ -637,9 +693,8 @@ const styles = (theme) => ({
 
   // Warning Section
   WarningSection: {
-    maxWidth: "1200px",
-    margin: "40px auto 60px",
     padding: "30px 40px",
+    marginTop: "40px",
     backgroundColor: "transparent",
     borderRadius: "35px",
     boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.25)",
