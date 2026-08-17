@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Typography, Button, Box } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
@@ -9,6 +9,7 @@ import HelpIconSvg from "../../assets/login/help-icon.svg";
 
 function RASLoginPage(props) {
   const { classes } = props;
+  const [verificationOpen, setVerificationOpen] = useState(false);
 
   return (
     <div className={classes.Container}>
@@ -29,131 +30,31 @@ function RASLoginPage(props) {
       <Grid container className={classes.ContentWrapper}>
         <Grid container spacing={4}>
           {/* Left Column - Combined Login Box */}
-          <Grid item xs={12} md={8}>
+          <Grid item xs={12} md>
             <Box className={classes.CombinedLoginBox}>
-              {/* eRA Commons Section */}
-              <Box className={classes.LoginSection}>
-                <Typography className={classes.BoxTitle}>
-                  Log in with eRA Commons
-                </Typography>
-                <Box className={classes.LoginContentRow}>
-                  <Box className={classes.LoginTextContent}>
-                    <Typography
-                      className={classes.BodyText}
-                      style={{ marginBottom: "8px" }}
-                    >
-                      Click on the button below to go to the NIH Login page.
-                    </Typography>
-                    <Typography className={classes.BodyText}>
-                      Enter your eRA Commons credentials.
-                    </Typography>
-                    <Typography
-                      className={classes.NoteText}
-                      style={{ marginTop: "12px" }}
-                    >
-                      <strong>Note:</strong> Logging in with another identity
-                      provider will not grant access.
-                    </Typography>
-                  </Box>
-                  <Box className={classes.LoginButtonContainer}>
-                    <Button
-                      variant="outlined"
-                      className={classes.LoginButtonEra}
-                    >
-                      Login with eRA Commons
-                    </Button>
-                  </Box>
-                </Box>
-              </Box>
-
-              {/* Divider */}
-              <Box className={classes.Divider} />
-
               {/* RAS Section */}
-              <Box className={classes.LoginSection}>
+              <Box className={classes.RasSection}>
                 <Typography className={classes.BoxTitle}>
                   Log in with NIH Research Auth Service (RAS)
                 </Typography>
+
+                {/* Text + Button row */}
                 <Box className={classes.LoginContentRow}>
-                  <Box className={classes.LoginTextContent}>
+                  <Box className={classes.RasTextWrapper}>
                     <Typography className={classes.BodyText}>
                       Before accessing CTDC data, you may be required to verify
-                      your identity through NIH's secure Researcher Auth Service
-                      (RAS) using Login.gov. This identity verification is
-                      required to comply with federal policies governing access
-                      to controlled-access data repositories (CADRs).
-                    </Typography>
-
-                    <Typography className={classes.BodyText}>
+                      your identity through NIH&apos;s secure Researcher Auth
+                      Service (RAS) using Login.gov. This identity verification
+                      is required to comply with federal policies governing
+                      access to controlled-access data repositories (CADRs).
+                      <br />
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                       If you already have a CTDC account, you must complete
                       identity verification to continue accessing
                       controlled-access data unless you sign in with an NIH
                       account, which does not require this additional
                       verification. Identity verification must be renewed
                       annually.
-                    </Typography>
-
-                    <Typography className={classes.BodyText}>
-                      The verification process typically takes up to 30 minutes
-                      and requires:
-                    </Typography>
-
-                    <Typography
-                      className={classes.BodyText}
-                      component="div"
-                      style={{ marginBottom: "4px", marginTop: "4px" }}
-                    >
-                      • A mobile phone with a working camera
-                    </Typography>
-                    <Typography
-                      className={classes.BodyText}
-                      component="div"
-                      style={{ marginBottom: "4px" }}
-                    >
-                      • Your Social Security number
-                    </Typography>
-                    <Typography
-                      className={classes.BodyText}
-                      component="div"
-                      style={{ marginBottom: "4px" }}
-                    >
-                      • A phone number associated with a phone plan in your name
-                    </Typography>
-                    <Typography
-                      className={classes.BodyText}
-                      component="div"
-                      style={{ marginBottom: "4px" }}
-                    >
-                      • One of the following valid government-issued IDs:
-                    </Typography>
-                    <Typography
-                      className={classes.BodyText}
-                      component="div"
-                      style={{ marginLeft: "20px", marginBottom: "4px" }}
-                    >
-                      • U.S. driver's license
-                    </Typography>
-                    <Typography
-                      className={classes.BodyText}
-                      component="div"
-                      style={{ marginLeft: "20px", marginBottom: "4px" }}
-                    >
-                      • State-issued ID
-                    </Typography>
-                    <Typography
-                      className={classes.BodyText}
-                      component="div"
-                      style={{ marginLeft: "20px", marginBottom: "12px" }}
-                    >
-                      • U.S. passport
-                    </Typography>
-
-                    <Typography className={classes.FooterNote}>
-                      Before selecting Log in with NIH Research Auth Service
-                      (RAS), please gather the required information,
-                      identification, and devices. For more information, see the
-                      Login.gov Identity Verification Guidelines or the
-                      Login.gov Help Center.
                     </Typography>
                   </Box>
                   <Box className={classes.LoginButtonContainer}>
@@ -163,6 +64,67 @@ function RASLoginPage(props) {
                     >
                       Login with RAS
                     </Button>
+                  </Box>
+                </Box>
+
+                {/* Divider */}
+                <Box className={classes.Divider} />
+
+                {/* Collapsible CTDC Verification Process */}
+                <Box className={classes.VerificationWrapper}>
+                  <Box className={classes.VerificationSection}>
+                    <Box
+                      className={classes.VerificationHeader}
+                      onClick={() => setVerificationOpen(!verificationOpen)}
+                    >
+                      <Typography className={classes.VerificationTitle}>
+                        CTDC Verification Process
+                      </Typography>
+                      <svg
+                        width="26"
+                        height="26"
+                        viewBox="0 0 26 26"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        style={{ cursor: "pointer", flexShrink: 0 }}
+                      >
+                        {verificationOpen ? (
+                          <path d="M26 22L16 12L6 22L26 22Z" fill="black" />
+                        ) : (
+                          <path d="M6 12L16 22L26 12H6Z" fill="black" />
+                        )}
+                      </svg>
+                    </Box>
+
+                    {verificationOpen && (
+                      <Typography className={classes.VerificationText}>
+                        The verification process typically takes up to 30
+                        minutes and requires:
+                        <br />
+                        &nbsp;&nbsp;A mobile phone with a working camera
+                        <br />
+                        &nbsp;&nbsp;Your Social Security number
+                        <br />
+                        &nbsp;&nbsp;A phone number associated with a phone plan
+                        in your name
+                        <br />
+                        &nbsp;&nbsp;One of the following valid government-issued
+                        IDs:
+                        <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;U.S. driver&apos;s license
+                        <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;State-issued ID
+                        <br />
+                        &nbsp;&nbsp;&nbsp;&nbsp;U.S. passport
+                        <br />
+                        <br />
+                        Before selecting Log in with NIH Research Auth Service
+                        (RAS), please gather the required information,
+                        identification, and devices. For more information, see
+                        the Login.gov Identity Verification Guidelines or the
+                        Login.gov Help Center.
+                      </Typography>
+                    )}
                   </Box>
                 </Box>
               </Box>
@@ -301,7 +263,7 @@ function RASLoginPage(props) {
           </Grid>
 
           {/* Right Column - Help Sidebar */}
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md className={classes.RightColumn}>
             <Box className={classes.HelpSidebar}>
               {/* Need Help Section */}
               <Box className={classes.HelpHeader}>
@@ -366,7 +328,6 @@ const styles = (theme) => ({
     minHeight: "100vh",
     paddingBottom: "60px",
     boxShadow: "0px 4px 20px 0px #00000040 inset",
-
   },
 
   // Hero Section Styles
@@ -413,7 +374,7 @@ const styles = (theme) => ({
 
   // Content Wrapper
   ContentWrapper: {
-    maxWidth: "1200px",
+    maxWidth: "1500px",
     margin: "40px auto",
     padding: "0 20px",
   },
@@ -435,6 +396,11 @@ const styles = (theme) => ({
     alignItems: "center",
     gap: "40px",
   },
+  RightColumn: {
+    [theme.breakpoints.up("md")]: {
+      maxWidth: "361px",
+    },
+  },
   LoginSection: {
     alignSelf: "stretch",
     display: "flex",
@@ -442,8 +408,68 @@ const styles = (theme) => ({
     alignItems: "flex-start",
     gap: "25px",
   },
+  RasSection: {
+    alignSelf: "stretch",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: "15px",
+  },
+  RasTextWrapper: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: "25px",
+    minWidth: 0,
+  },
+  RasDivider: {
+    width: "100%",
+    height: "0px",
+    outline: "1px #8A8A8A solid",
+    outlineOffset: "-0.5px",
+  },
+  VerificationWrapper: {
+    width: "100%",
+    display: "flex",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    gap: "100px",
+  },
+  VerificationSection: {
+    width: "100%",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: "10px",
+  },
+  VerificationHeader: {
+    alignSelf: "stretch",
+    paddingRight: "10px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    cursor: "pointer",
+  },
+  VerificationTitle: {
+    flex: 1,
+    fontFamily: "Inter",
+    fontSize: "20px",
+    fontWeight: 600,
+    color: "#000",
+    lineHeight: "26px",
+  },
+  VerificationText: {
+    width: "100%",
+    fontFamily: "Roboto",
+    fontSize: "16px",
+    fontWeight: 400,
+    color: "#000",
+    lineHeight: "24px",
+    letterSpacing: "0.2px",
+  },
   Divider: {
-    width: "797px",
+    width: "100%",
     height: "1px",
     position: "relative",
     borderTop: "1px solid #D8D8D8",
