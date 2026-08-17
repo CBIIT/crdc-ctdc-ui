@@ -10,6 +10,8 @@ import HelpIconSvg from "../../assets/login/help-icon.svg";
 function RASLoginPage(props) {
   const { classes } = props;
   const [verificationOpen, setVerificationOpen] = useState(false);
+  const [requestAccessOpen, setRequestAccessOpen] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(false);
 
   return (
     <div className={classes.Container}>
@@ -132,133 +134,161 @@ function RASLoginPage(props) {
 
             {/* Request Access Section */}
             <Box className={classes.RequestSection}>
-              <Typography className={classes.SectionTitle}>
-                Request Access
-              </Typography>
+              {/* Top section: Title + Access Requirements */}
+              <Box className={classes.RequestTopSection}>
+                <Typography className={classes.SectionTitle}>
+                  Request Access
+                </Typography>
+                <Box className={classes.VerificationWrapper}>
+                  <Box className={classes.VerificationSection}>
+                    <Typography
+                      className={classes.SubsectionTitle}
+                      style={{ marginTop: 0, marginBottom: 0 }}
+                    >
+                      Access Requirements
+                    </Typography>
+                    <Typography className={classes.BodyText}>
+                      CTDC contains controlled-access research data. To comply
+                      with federal security requirements, users must verify
+                      their identity and affiliation before they can access the
+                      platform.
+                      <br />
+                      <br />
+                      To request CTDC access, you must have:
+                      <br />
+                      An <strong>NIH account</strong> linked to a{" "}
+                      <strong>Login.gov</strong> account with{" "}
+                      <strong>NIH Researcher Auth Service (RAS)</strong>{" "}
+                      identity verification
+                      <br />
+                      An <strong>ORCID iD</strong>
+                    </Typography>
+                  </Box>
+                </Box>
+              </Box>
 
-              <Typography className={classes.SubsectionTitle}>
-                Access Requirements
-              </Typography>
+              {/* Divider */}
+              <Box className={classes.Divider} />
 
-              <Typography className={classes.BodyText}>
-                CTDC contains controlled-access research data. To comply with
-                federal security requirements, users must verify their identity
-                and affiliation before they can access the platform.
-              </Typography>
-
-              <Typography className={classes.BodyText}>
-                To request CTDC access, you must have:
-              </Typography>
-
-              <ul className={classes.BodyText} style={{ marginTop: "8px" }}>
-                <li>
-                  An <strong>NIH account</strong>, or an{" "}
-                  <strong>eRA Commons account</strong> linked to a{" "}
-                  <strong>Login.gov account</strong> with{" "}
-                  <strong>NIH Researcher Auth Service (RAS)</strong> identity
-                  verification
-                </li>
-                <li>
-                  An <strong>ORCID iD</strong>
-                </li>
-              </ul>
-
-              <Typography className={classes.SubsectionTitle}>
-                Request Access
-              </Typography>
-
-              <ol className={classes.InstructionList}>
-                <li>Create a Login.gov or ID.me account.</li>
-                <li>
-                  If you do not have an NIH account, also create an eRA Commons
-                  account.
-                </li>
-                <li>
-                  Complete NIH RAS identity verification. Verify your identity
-                  through Login.gov using NIH RAS.
-                  <Typography
-                    className={classes.BodyText}
-                    style={{ marginTop: "8px", marginLeft: "20px" }}
+              {/* Collapsible: Instructions to Request Access */}
+              <Box className={classes.RequestBottomSection}>
+                <Box className={classes.VerificationSection}>
+                  <Box
+                    className={classes.VerificationHeader}
+                    onClick={() => setRequestAccessOpen(!requestAccessOpen)}
                   >
-                    Link your Login.gov account to your eRA Commons account. If
-                    you are not an NIH user, create an ORCID iD for your eRA
-                    Commons account, and allow up to two business days for
-                    processing.
-                  </Typography>
-                </li>
-                <li>
-                  Request CTDC access. On the Request SEER Incidence Data page,
-                  sign in with your NIH or Login.gov account and complete the
-                  Research Plus request application. Review and accept the
-                  required data use agreement, then submit your request.
-                </li>
-              </ol>
+                    <Typography
+                      className={classes.SubsectionTitle}
+                      style={{ marginTop: 0, marginBottom: 0 }}
+                    >
+                      Instructions to Request Access
+                    </Typography>
+                    <svg
+                      width="26"
+                      height="26"
+                      viewBox="0 0 26 26"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{ cursor: "pointer", flexShrink: 0 }}
+                    >
+                      {requestAccessOpen ? (
+                        <path d="M26 22L16 12L6 22L26 22Z" fill="black" />
+                      ) : (
+                        <path d="M6 12L16 22L26 12H6Z" fill="black" />
+                      )}
+                    </svg>
+                  </Box>
+                </Box>
 
-              <Typography
-                className={classes.BodyText}
-                style={{ marginTop: "16px" }}
-              >
-                Access requests are typically processed within two business
-                days. Once approved, you can sign in to CTDC using your NIH or
-                Login.gov account.
-              </Typography>
+                {requestAccessOpen && (
+                  <>
+                    <Box className={classes.VerificationWrapper}>
+                      <Box className={classes.VerificationSection}>
+                        <Typography className={classes.BodyText}>
+                          Create a Login.gov or ID.me account. If you do not
+                          have an NIH account, also create an eRA Commons
+                          account.
+                          <br />
+                          Complete NIH RAS identity verification. Verify your
+                          identity through Login.gov using NIH RAS.
+                          <br />
+                          Link your accounts. Link your Login.gov account to
+                          your eRA Commons account. If you are not an NIH user,
+                          create an ORCID iD, link it to your eRA Commons
+                          account, and allow up to two business days for
+                          processing.
+                          <br />
+                          Request CTDC access. On the Request SEER Incidence
+                          Data page, sign in with your NIH or Login.gov account
+                          and complete the Research Plus request application.
+                          Review and accept the required data use agreements,
+                          then submit your request.
+                          <br />
+                          <br />
+                          Access requests are typically processed within two
+                          business days. Once approved, you can sign in to CTDC
+                          using your NIH or Login.gov account.
+                        </Typography>
+                      </Box>
+                    </Box>
 
-              <Typography className={classes.SubsectionTitle}>
-                Documentation
-              </Typography>
-
-              <ul className={classes.DocumentationList}>
-                <li>
-                  <span className={classes.Link} role="button" tabIndex={0}>
-                    eRA Commons Account Creation
-                  </span>
-                </li>
-                <li>
-                  <span className={classes.Link} role="button" tabIndex={0}>
-                    Request SEER Incidence Data
-                  </span>
-                </li>
-                <li>
-                  <span className={classes.Link} role="button" tabIndex={0}>
-                    SEER Research Data Use Agreement
-                  </span>
-                </li>
-                <li>
-                  <span className={classes.Link} role="button" tabIndex={0}>
-                    SEER Treatment Data Limitations
-                  </span>
-                </li>
-                <li>
-                  <span className={classes.Link} role="button" tabIndex={0}>
-                    CTDC Use Agreement
-                  </span>
-                </li>
-              </ul>
+                    <Box className={classes.VerificationWrapper}>
+                      <Box className={classes.VerificationSection}>
+                        <Typography
+                          className={classes.SubsectionTitle}
+                          style={{ marginTop: 0, marginBottom: 0 }}
+                        >
+                          Documentation
+                        </Typography>
+                        <Typography className={classes.Link} component="div">
+                          eRA Commons Account Creation
+                          <br />
+                          Request SEER Incidence Data
+                          <br />
+                          SEER Research Data Use Agreement
+                          <br />
+                          SEER Treatment Data Limitations
+                          <br />
+                          CTDC Use Agreement
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </>
+                )}
+              </Box>
             </Box>
 
             {/* Warning Notice Section */}
             <Box className={classes.WarningSection}>
-              <Typography className={classes.WarningTitle}>
-                Warning Notice
-              </Typography>
-              <Typography className={classes.WarningText}>
-                This warning banner provides privacy and security notices
-                consistent with applicable federal laws, directives, and other
-                federal guidance for accessing this Government system, which
-                includes (1) this computer network, (2) all computers connected
-                to this network, and (3) all devices and storage media attached
-                to this network or to a computer on this network. This system is
-                provided for Government-authorized use only. Unauthorized or
-                improper use of this system is prohibited and may result in
-                disciplinary action and/or civil and criminal penalties. At any
-                time, and for any lawful Government purpose, the government may
-                monitor, record, and audit your system usage and/or intercept,
-                search and seize any communication or data transiting or stored
-                on this system. Therefore, you have no reasonable expectation of
-                privacy. Any communication or data transiting or stored on this
-                system may be disclosed or used for any lawful Government
-                purpose.
-              </Typography>
+              <Box className={classes.WarningContent}>
+                <Typography className={classes.WarningTitle}>
+                  Warning Notice
+                </Typography>
+                <Box
+                  className={classes.WarningToggle}
+                  onClick={() => setWarningOpen(!warningOpen)}
+                >
+                  <Typography className={classes.WarningText}>
+                    {warningOpen
+                      ? "This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties. At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose."
+                      : "This warning banner provides privacy and security notices consistent with applicable federal laws ..."}
+                  </Typography>
+                  <svg
+                    width="26"
+                    height="26"
+                    viewBox="0 0 26 26"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{ cursor: "pointer", flexShrink: 0 }}
+                  >
+                    {warningOpen ? (
+                      <path d="M26 22L16 12L6 22L26 22Z" fill="black" />
+                    ) : (
+                      <path d="M6 7L16 17L26 7H6Z" fill="black" />
+                    )}
+                  </svg>
+                </Box>
+              </Box>
             </Box>
           </Grid>
 
@@ -413,7 +443,6 @@ const styles = (theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    gap: "15px",
   },
   RasTextWrapper: {
     flex: 1,
@@ -422,12 +451,6 @@ const styles = (theme) => ({
     alignItems: "flex-start",
     gap: "25px",
     minWidth: 0,
-  },
-  RasDivider: {
-    width: "100%",
-    height: "0px",
-    outline: "1px #8A8A8A solid",
-    outlineOffset: "-0.5px",
   },
   VerificationWrapper: {
     width: "100%",
@@ -470,11 +493,10 @@ const styles = (theme) => ({
   },
   Divider: {
     width: "100%",
-    height: "1px",
-    position: "relative",
-    borderTop: "1px solid #D8D8D8",
+    height: "0px",
+    borderTop: "1px solid #8A8A8A",
     boxSizing: "border-box",
-    alignSelf: "center",
+    margin: "25px 0",
   },
   LoginContentRow: {
     alignSelf: "stretch",
@@ -676,16 +698,37 @@ const styles = (theme) => ({
     backgroundColor: "#F0F8FA",
     borderRadius: "35px",
     boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.25)",
-    outline: "3px #DAF1FB solid",
+    outline: "3px #F4FBFE solid",
     outlineOffset: "-3px",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+  },
+  RequestTopSection: {
+    alignSelf: "stretch",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: "15px",
+  },
+  RequestBottomSection: {
+    alignSelf: "stretch",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: "15px",
   },
   SectionTitle: {
+    alignSelf: "stretch",
+    height: "37px",
     fontFamily: "Inter",
     fontSize: "24px",
     fontWeight: 700,
     color: "#18588E",
-    marginBottom: "25px",
     lineHeight: "25.57px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
   },
   SubsectionTitle: {
     fontFamily: "Inter",
@@ -719,23 +762,44 @@ const styles = (theme) => ({
 
   // Warning Section
   WarningSection: {
+    width: "100%",
     padding: "30px 40px",
     marginTop: "40px",
-    backgroundColor: "transparent",
+    backgroundColor: "#F4FBFE",
     borderRadius: "35px",
     boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.25)",
-    outline: "3px #DAF1FB solid",
+    outline: "3px #BA1F40 solid",
     outlineOffset: "-3px",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "flex-start",
+    gap: "40px",
+    boxSizing: "border-box",
+  },
+  WarningContent: {
+    flex: "1 1 0",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    gap: "15px",
+  },
+  WarningToggle: {
+    alignSelf: "stretch",
+    paddingRight: "10px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "flex-start",
+    cursor: "pointer",
   },
   WarningTitle: {
     fontFamily: "Inter",
     fontSize: "20px",
     fontWeight: 600,
     color: "#BA1F40",
-    marginBottom: "17px",
     lineHeight: "26px",
   },
   WarningText: {
+    flex: 1,
     fontFamily: "Roboto",
     fontSize: "16px",
     fontWeight: 400,
