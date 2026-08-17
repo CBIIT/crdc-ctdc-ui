@@ -49,8 +49,7 @@ function RASLoginPage(props) {
                       Service (RAS) using Login.gov. This identity verification
                       is required to comply with federal policies governing
                       access to controlled-access data repositories (CADRs).
-                      <br />
-                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <br /><br />
                       If you already have a CTDC account, you must complete
                       identity verification to continue accessing
                       controlled-access data unless you sign in with an NIH
@@ -268,10 +267,24 @@ function RASLoginPage(props) {
                   className={classes.WarningToggle}
                   onClick={() => setWarningOpen(!warningOpen)}
                 >
-                  <Typography className={classes.WarningText}>
-                    {warningOpen
-                      ? "This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties. At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose."
-                      : "This warning banner provides privacy and security notices consistent with applicable federal laws ..."}
+                  <Typography
+                    className={`${classes.WarningText} ${!warningOpen ? classes.WarningTextCollapsed : ""}`}
+                  >
+                    This warning banner provides privacy and security notices
+                    consistent with applicable federal laws, directives, and
+                    other federal guidance for accessing this Government system,
+                    which includes all devices/storage media attached to this
+                    system. This system is provided for Government-authorized
+                    use only. Unauthorized or improper use of this system is
+                    prohibited and may result in disciplinary action and/or
+                    civil and criminal penalties. At any time, and for any
+                    lawful Government purpose, the government may monitor,
+                    record, and audit your system usage and/or intercept, search
+                    and seize any communication or data transiting or stored on
+                    this system. Therefore, you have no reasonable expectation
+                    of privacy. Any communication or data transiting or stored
+                    on this system may be disclosed or used for any lawful
+                    Government purpose.
                   </Typography>
                   <svg
                     width="26"
@@ -362,13 +375,13 @@ const styles = (theme) => ({
 
   // Hero Section Styles
   HeroSection: {
-    padding: "30px 92px 50px",
+    padding: "30px 32px 55px",
     textAlign: "center",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "51px",
     overflow: "hidden",
+    margin: "auto",
   },
   HeroIconWrapper: {
     position: "relative",
@@ -405,7 +418,7 @@ const styles = (theme) => ({
   // Content Wrapper
   ContentWrapper: {
     maxWidth: "1500px",
-    margin: "40px auto",
+    margin: "auto",
     padding: "0 20px",
   },
 
@@ -806,6 +819,15 @@ const styles = (theme) => ({
     color: "black",
     lineHeight: "24px",
     letterSpacing: "0.2px",
+  },
+  WarningTextCollapsed: {
+    overflow: "hidden",
+    display: "-webkit-box",
+    WebkitLineClamp: 1,
+    WebkitBoxOrient: "vertical",
+    textOverflow: "ellipsis",
+    marginRight: "10px",
+    wordSpacing: "3px",
   },
 });
 
