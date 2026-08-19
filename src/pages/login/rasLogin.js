@@ -64,6 +64,11 @@ function RASLoginPage(props) {
                       variant="outlined"
                       className={classes.LoginButtonRas}
                       onClick={() => {
+                        console.log('[RAS login] Redirecting to RAS authorize URL', {
+                          hasAuthorizeUrl: Boolean(env.REACT_APP_RAS_AUTHORIZE_URL),
+                          authorizeUrlStartsWith: env.REACT_APP_RAS_AUTHORIZE_URL?.split('?')[0],
+                        });
+
                         window.location.href = env.REACT_APP_RAS_AUTHORIZE_URL;
                       }}
                     >

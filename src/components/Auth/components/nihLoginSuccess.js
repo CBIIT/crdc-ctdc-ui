@@ -36,6 +36,15 @@ function nihLoginSuccess({ idp = 'dcf', callbackPath = '/login' }) {
   const onError = (error) => {console.log("Error: ", error)};
 
   useEffect(() => {
+    console.log('[Auth callback] Processing callback', {
+      idp,
+      callbackPath,
+      redirectUri: `${originDomain}${callbackPath}`,
+      hasCode: Boolean(nihCode),
+      codePreview: nihCode ? `${nihCode.slice(0, 8)}...${nihCode.slice(-4)}` : null,
+      currentPath: window.location.pathname,
+    });
+
     if (nihCode) {
       authServiceLogin(nihCode, idp, `${originDomain}${callbackPath}`, onSuccess, onError);
     } else {

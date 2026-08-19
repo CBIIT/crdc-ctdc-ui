@@ -20,8 +20,28 @@ const App = () => {
       <GlobalProvider>
         <BrowserRouter>
           <Switch>
-            <Route path="/api/auth/callback" render={(props) => <NihLoginSuccess {...props} idp="ras" callbackPath="/api/auth/callback" />} />
-            <Route path="/login" render={(props) => <NihLoginSuccess {...props} idp="dcf" callbackPath="/login" />} />
+            <Route
+              path="/api/auth/callback"
+              render={(props) => {
+                console.log('[RAS callback] Frontend route hit', {
+                  pathname: props.location.pathname,
+                  hasSearch: Boolean(props.location.search),
+                });
+
+                return <NihLoginSuccess {...props} idp="ras" callbackPath="/api/auth/callback" />;
+              }}
+            />
+            <Route
+              path="/login"
+              render={(props) => {
+                console.log('[eRA callback] Frontend route hit', {
+                  pathname: props.location.pathname,
+                  hasSearch: Boolean(props.location.search),
+                });
+
+                return <NihLoginSuccess {...props} idp="dcf" callbackPath="/login" />;
+              }}
+            />
             <Route path="/" component={Layout} />
           </Switch>
         </BrowserRouter>

@@ -101,6 +101,13 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
       async function authServiceLogin(
         code, IDP, redirectUri, signInSuccess = () => {}, signInError = () => {},
       ) {
+        console.log('[Auth service login] Sending code to Auth service', {
+          url: `${AUTH_API}login`,
+          IDP,
+          redirectUri,
+          hasCode: Boolean(code),
+        });
+
         const rawResponse = await fetch(`${AUTH_API}login`, {
           method: 'POST',
           headers: {
@@ -109,6 +116,11 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
           },
           body: JSON.stringify({ code, IDP, redirectUri }),
         }).then((response) => response).catch(() => {
+        });
+
+        console.log('[Auth service login] Response received', {
+          status: rawResponse && rawResponse.status,
+          ok: rawResponse && rawResponse.ok,
         });
 
         const responseData = rawResponse.json();
@@ -150,6 +162,12 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
       };
 
       const signInWithAuthURL = (state) => {
+        console.log('[eRA login] Redirecting to eRA authorize URL', {
+          hasAuthUrl: Boolean(AUTH_URL),
+          authUrlStartsWith: AUTH_URL?.split('?')[0],
+          hasState: Boolean(state),
+        });
+
         window.location.href = `${AUTH_URL}`;
       };
 
