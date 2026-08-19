@@ -64,10 +64,16 @@ function RASLoginPage(props) {
                       variant="outlined"
                       className={classes.LoginButtonRas}
                       onClick={() => {
-                        console.log('[RAS login] Redirecting to RAS authorize URL', {
-                          hasAuthorizeUrl: Boolean(env.REACT_APP_RAS_AUTHORIZE_URL),
-                          authorizeUrlStartsWith: env.REACT_APP_RAS_AUTHORIZE_URL?.split('?')[0],
-                        });
+                        console.log(
+                          "[RAS login] Redirecting to RAS authorize URL",
+                          {
+                            hasAuthorizeUrl: Boolean(
+                              env.REACT_APP_RAS_AUTHORIZE_URL,
+                            ),
+                            authorizeUrlStartsWith:
+                              env.REACT_APP_RAS_AUTHORIZE_URL?.split("?")[0],
+                          },
+                        );
 
                         window.location.href = env.REACT_APP_RAS_AUTHORIZE_URL;
                       }}
@@ -107,33 +113,51 @@ function RASLoginPage(props) {
                     </Box>
 
                     {verificationOpen && (
-                      <Typography className={classes.VerificationText}>
-                        The verification process typically takes up to 30
-                        minutes and requires:
-                        <br />
-                        &nbsp;&nbsp;A mobile phone with a working camera
-                        <br />
-                        &nbsp;&nbsp;Your Social Security number
-                        <br />
-                        &nbsp;&nbsp;A phone number associated with a phone plan
-                        in your name
-                        <br />
-                        &nbsp;&nbsp;One of the following valid government-issued
-                        IDs:
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;U.S. driver&apos;s license
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;State-issued ID
-                        <br />
-                        &nbsp;&nbsp;&nbsp;&nbsp;U.S. passport
-                        <br />
-                        <br />
-                        Before selecting Log in with NIH Research Auth Service
-                        (RAS), please gather the required information,
-                        identification, and devices. For more information, see
-                        the Login.gov Identity Verification Guidelines or the
-                        Login.gov Help Center.
-                      </Typography>
+                      <Box className={classes.VerificationText}>
+                        <Typography className={classes.BodyText}>
+                          The verification process typically takes up to 30
+                          minutes and requires:
+                        </Typography>
+                        <ol
+                          style={{
+                            margin: "2px 0px 30px 0px",
+                            paddingLeft: "48px",
+                            listStyleType: "lower-alpha",
+                          }}
+                        >
+                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+                            A mobile phone with a working camera
+                          </li>
+                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+                            Your Social Security number
+                          </li>
+                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+                            A phone number associated with a phone plan in your
+                            name
+                          </li>
+                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+                            One of the following valid government-issued IDs:
+                            <ul
+                              style={{
+                                margin: "2px 0",
+                                paddingLeft: "20px",
+                                listStyleType: "disc",
+                              }}
+                            >
+                              <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>U.S. driver&apos;s license</li>
+                              <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>State-issued ID</li>
+                              <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>U.S. passport</li>
+                            </ul>
+                          </li>
+                        </ol>
+                        <Typography className={classes.BodyText}>
+                          Before selecting Log in with NIH Research Auth Service
+                          (RAS), please gather the required information,
+                          identification, and devices. For more information, see
+                          the Login.gov Identity Verification Guidelines or the
+                          Login.gov Help Center.
+                        </Typography>
+                      </Box>
                     )}
                   </Box>
                 </Box>
@@ -164,12 +188,17 @@ function RASLoginPage(props) {
                       <br />
                       To request CTDC access, you must have:
                       <br />
-                      An <strong>NIH account</strong> linked to a{" "}
-                      <strong>Login.gov</strong> account with{" "}
-                      <strong>NIH Researcher Auth Service (RAS)</strong>{" "}
-                      identity verification
-                      <br />
-                      An <strong>ORCID iD</strong>
+                      <ul style={{ margin: "2px 0", paddingLeft: "25px"}}>
+                        <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+                          An <strong>NIH account</strong> linked to a{" "}
+                          <strong>Login.gov</strong> account with{" "}
+                          <strong>NIH Researcher Auth Service (RAS)</strong>{" "}
+                          identity verification
+                        </li>
+                        <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+                          An <strong>ORCID iD</strong>
+                        </li>
+                      </ul>
                     </Typography>
                   </Box>
                 </Box>
@@ -213,25 +242,37 @@ function RASLoginPage(props) {
                     <Box className={classes.VerificationWrapper}>
                       <Box className={classes.VerificationSection}>
                         <Typography className={classes.BodyText}>
-                          Create a Login.gov or ID.me account. If you do not
-                          have an NIH account, also create an eRA Commons
-                          account.
-                          <br />
-                          Complete NIH RAS identity verification. Verify your
-                          identity through Login.gov using NIH RAS.
-                          <br />
-                          Link your accounts. Link your Login.gov account to
-                          your eRA Commons account. If you are not an NIH user,
-                          create an ORCID iD, link it to your eRA Commons
-                          account, and allow up to two business days for
-                          processing.
-                          <br />
-                          Request CTDC access. On the Request SEER Incidence
-                          Data page, sign in with your NIH or Login.gov account
-                          and complete the Research Plus request application.
-                          Review and accept the required data use agreements,
-                          then submit your request.
-                          <br />
+                        <ol style={{  
+                                margin: "2px 0",
+                                paddingLeft: "25px",
+                              }}>
+                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+
+                            Create a Login.gov or ID.me account. If you do not
+                            have an NIH account, also create an eRA Commons
+                            account.
+                          </li>
+                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+         
+                            Complete NIH RAS identity verification. Verify your
+                            identity through Login.gov using NIH RAS.
+                          </li>
+                          
+                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+                            Link your accounts. Link your Login.gov account to
+                            your eRA Commons account. If you are not an NIH user,
+                            create an ORCID iD, link it to your eRA Commons
+                            account, and allow up to two business days for
+                            processing.
+                          </li>
+                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+                            Request CTDC access. On the Request SEER Incidence
+                            Data page, sign in with your NIH or Login.gov account
+                            and complete the Research Plus request application.
+                            Review and accept the required data use agreements,
+                            then submit your request.
+                          </li>
+                        </ol>
                           <br />
                           Access requests are typically processed within two
                           business days. Once approved, you can sign in to CTDC
@@ -249,15 +290,16 @@ function RASLoginPage(props) {
                           Documentation
                         </Typography>
                         <Typography className={classes.Link} component="div">
-                          eRA Commons Account Creation
-                          <br />
-                          Request SEER Incidence Data
-                          <br />
-                          SEER Research Data Use Agreement
-                          <br />
-                          SEER Treatment Data Limitations
-                          <br />
-                          CTDC Use Agreement
+                        <ul style={{
+                                margin: "2px 0",
+                                paddingLeft: "25px",
+                              }}>
+                          <li>eRA Commons Account Creation</li>
+                          <li>Request SEER Incidence Data</li>
+                          <li>SEER Research Data Use Agreement</li>
+                          <li>SEER Treatment Data Limitations</li>
+                          <li>CTDC Use Agreement</li>
+                        </ul>
                         </Typography>
                       </Box>
                     </Box>
@@ -378,7 +420,7 @@ const styles = (theme) => ({
       "linear-gradient(148.75deg, #E6E6E6, #A1D2D5 32.21%, #0E8EB1), linear-gradient(#088CBA, #088CBA)",
     fontFamily: 'Lato, "Open Sans", sans-serif',
     minHeight: "100vh",
-    paddingBottom: "60px",
+    padding: "0px 102px 50px",
     boxShadow: "0px 4px 20px 0px #00000040 inset",
   },
 
@@ -487,6 +529,9 @@ const styles = (theme) => ({
     flexDirection: "column",
     alignItems: "flex-start",
     gap: "10px",
+    "& $BodyText": {
+      paddingRight: "50px",
+    },
   },
   VerificationHeader: {
     alignSelf: "stretch",
@@ -512,6 +557,7 @@ const styles = (theme) => ({
     color: "#000",
     lineHeight: "24px",
     letterSpacing: "0.2px",
+    paddingRight: "50px",
   },
   Divider: {
     width: "100%",
@@ -526,6 +572,7 @@ const styles = (theme) => ({
     justifyContent: "space-between",
     alignItems: "flex-start",
     gap: "20px",
+    paddingTop: "20px",
   },
   LoginTextContent: {
     width: "537px",
