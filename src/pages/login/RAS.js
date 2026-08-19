@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Typography, Button, Box } from "@material-ui/core";
 import PlayArrowIcon from "@material-ui/icons/PlayArrow";
-import Stats from "../../components/Stats/AllStatsController";
 import LockIconSvg from "../../assets/login/lock-icon.svg";
 import LockBorderSvg from "../../assets/login/lock-border.svg";
 import HelpIconSvg from "../../assets/login/help-icon.svg";
+import env from "../../utils/env";
 
 function RASLoginPage(props) {
   const { classes } = props;
@@ -49,7 +49,8 @@ function RASLoginPage(props) {
                       Service (RAS) using Login.gov. This identity verification
                       is required to comply with federal policies governing
                       access to controlled-access data repositories (CADRs).
-                      <br /><br />
+                      <br />
+                      <br />
                       If you already have a CTDC account, you must complete
                       identity verification to continue accessing
                       controlled-access data unless you sign in with an NIH
@@ -62,6 +63,9 @@ function RASLoginPage(props) {
                     <Button
                       variant="outlined"
                       className={classes.LoginButtonRas}
+                      onClick={() => {
+                        window.location.href = env.REACT_APP_RAS_AUTHORIZE_URL;
+                      }}
                     >
                       Login with RAS
                     </Button>

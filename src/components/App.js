@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Layout from './Layout/LayoutContainer';
-import nihLoginSuccess from './Auth/components/nihLoginSuccess';
+import NihLoginSuccess from './Auth/components/nihLoginSuccess';
 import { CustomThemeProvider } from './ThemeContext';
 import { AuthProviderGenerator } from './Authentication';
 import AUTHPROVIDER_CONFIG from './Auth/authProviderConfig';
@@ -20,7 +20,8 @@ const App = () => {
       <GlobalProvider>
         <BrowserRouter>
           <Switch>
-            <Route path="/login" component={nihLoginSuccess} />
+            <Route path="/api/auth/callback" render={(props) => <NihLoginSuccess {...props} idp="ras" callbackPath="/api/auth/callback" />} />
+            <Route path="/login" render={(props) => <NihLoginSuccess {...props} idp="dcf" callbackPath="/login" />} />
             <Route path="/" component={Layout} />
           </Switch>
         </BrowserRouter>

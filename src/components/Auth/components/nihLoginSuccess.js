@@ -22,7 +22,7 @@ function getErrorData(query) {
   return { error, errorDescription };
 }
 
-function nihLoginSuccess() {
+function nihLoginSuccess({ idp = 'dcf', callbackPath = '/login' }) {
   const history = useHistory();
   const query = useQuery();
   const { authServiceLogin } = useAuth();
@@ -37,7 +37,7 @@ function nihLoginSuccess() {
 
   useEffect(() => {
     if (nihCode) {
-      authServiceLogin(nihCode, 'dcf', `${originDomain}/login`, onSuccess, onError);
+      authServiceLogin(nihCode, idp, `${originDomain}${callbackPath}`, onSuccess, onError);
     } else {
       const { error, errorDescription } = getErrorData(query);
       if (error) {

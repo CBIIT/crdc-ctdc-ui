@@ -73,7 +73,8 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route exact path="/graphql" component={GraphqlClient} />
             <Route exact path="/data-model" component={DataModelNavigator} />
             <Route exact path="/sysinfo" component={SysInfo} />
-            <Route exact path="/ras" component={RAS} />
+            {/* In place for internal testing, will be removed in future */}
+            <Route exact path="/user/era-login" component={Login} />
 
             {/* END: Private Routes */}
             {aboutPageRoutes.map(
@@ -85,7 +86,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
                 />
               ),
             )}
-            <LoginRoute path="/user/login" component={Login} />
+            <LoginRoute path="/user/login" component={RAS} />
             <Route component={Error} />
           </Switch>
           </ActivitiesController>
