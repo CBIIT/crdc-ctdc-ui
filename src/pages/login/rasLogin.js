@@ -92,6 +92,7 @@ function RASLoginPage(props) {
                               env.REACT_APP_RAS_AUTHORIZE_URL?.split("?")[0],
                           },
                         );
+                        // TODO: Remove hardcoded fallback URL after devops configures REACT_APP_RAS_AUTHORIZE_URL
                         const rasUrl =
                           env.REACT_APP_RAS_AUTHORIZE_URL ||
                           "https://stsstg.nih.gov/auth/oauth/v2/authorize?client_id=b0714287-43ee-479f-b151-8e58f3622899&response_type=code&redirect_uri=https%3A%2F%2Fclinical-dev.datacommons.cancer.gov%2Fapi%2Fauth%2Fcallback&scope=openid%20profile%20email%20ga4gh_passport_v1%20researcher_role%20federated_identities_ial2%20federated_identities%20federated_sources%20source";
