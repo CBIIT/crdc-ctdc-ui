@@ -65,6 +65,7 @@ const styles = (theme) => ({
   },
   ColumnContainer: {
     gap: "60px",
+    justifyContent: "center",
     [theme.breakpoints.down("sm")]: {
       gap: "40px",
     },
