@@ -18,8 +18,8 @@ function ToggleArrow({ isOpen }) {
       style={{
         cursor: "pointer",
         flexShrink: 0,
-        width: "26px",
-        height: "26px",
+        // width: "2px",
+        // height: "26px",
       }}
     />
   );
@@ -388,6 +388,9 @@ const styles = (theme) => ({
     padding: "0px 16px 50px",
     boxShadow: "0px 4px 20px 0px #00000040 inset",
     [theme.breakpoints.up("md")]: {
+      padding: "0px 32px 50px",
+    },
+    "@media (min-width: 1400px)": {
       padding: "0px 102px 50px",
     },
   },
@@ -439,7 +442,7 @@ const styles = (theme) => ({
   ContentWrapper: {
     maxWidth: "1500px",
     margin: "auto",
-    padding: "0 20px",
+    padding: "0px",
   },
 
   // Combined Login Box Styles
@@ -465,12 +468,14 @@ const styles = (theme) => ({
     },
   },
   LoginSection: {
+    alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
     gap: "25px",
   },
   RasSection: {
+    alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
@@ -501,6 +506,7 @@ const styles = (theme) => ({
     },
   },
   VerificationHeader: {
+    alignSelf: "stretch",
     paddingRight: "10px",
     display: "flex",
     justifyContent: "space-between",
@@ -525,6 +531,7 @@ const styles = (theme) => ({
     paddingRight: "50px",
   },
   Divider: {
+    alignSelf: "stretch",
     width: "100%",
     height: "0px",
     borderTop: "1px solid #8A8A8A",
@@ -788,12 +795,14 @@ const styles = (theme) => ({
     alignItems: "center",
   },
   RequestTopSection: {
+    alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
     gap: "15px",
   },
   RequestBottomSection: {
+    alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
