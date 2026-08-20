@@ -1,11 +1,29 @@
 import React, { useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Typography, Button, Box } from "@material-ui/core";
-import PlayArrowIcon from "@material-ui/icons/PlayArrow";
 import LockIconSvg from "../../assets/login/lock-icon.svg";
 import LockBorderSvg from "../../assets/login/lock-border.svg";
 import HelpIconSvg from "../../assets/login/help-icon.svg";
+import VideoThumbnailImg from "../../assets/login/CTDC_Tutorial_Video_Placeholder.png";
+import PlayIconSvg from "../../assets/login/video_play_icon_large.svg";
+import UpArrowSvg from "../../assets/login/up_arrow.svg";
+import DownArrowSvg from "../../assets/login/down_arrow.svg";
 import env from "../../utils/env";
+
+function ToggleArrow({ isOpen }) {
+  return (
+    <img
+      src={isOpen ? UpArrowSvg : DownArrowSvg}
+      alt={isOpen ? "Collapse" : "Expand"}
+      style={{
+        cursor: "pointer",
+        flexShrink: 0,
+        width: "26px",
+        height: "26px",
+      }}
+    />
+  );
+}
 
 function RASLoginPage(props) {
   const { classes } = props;
@@ -74,8 +92,10 @@ function RASLoginPage(props) {
                               env.REACT_APP_RAS_AUTHORIZE_URL?.split("?")[0],
                           },
                         );
-
-                        window.location.href = env.REACT_APP_RAS_AUTHORIZE_URL;
+                        const rasUrl =
+                          env.REACT_APP_RAS_AUTHORIZE_URL ||
+                          "https://stsstg.nih.gov/auth/oauth/v2/authorize?client_id=b0714287-43ee-479f-b151-8e58f3622899&response_type=code&redirect_uri=https%3A%2F%2Fclinical-dev.datacommons.cancer.gov%2Fapi%2Fauth%2Fcallback&scope=openid%20profile%20email%20ga4gh_passport_v1%20researcher_role%20federated_identities_ial2%20federated_identities%20federated_sources%20source";
+                        window.location.href = rasUrl;
                       }}
                     >
                       Login with RAS
@@ -96,20 +116,7 @@ function RASLoginPage(props) {
                       <Typography className={classes.VerificationTitle}>
                         CTDC Verification Process
                       </Typography>
-                      <svg
-                        width="26"
-                        height="26"
-                        viewBox="0 0 26 26"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        style={{ cursor: "pointer", flexShrink: 0 }}
-                      >
-                        {verificationOpen ? (
-                          <path d="M26 22L16 12L6 22L26 22Z" fill="black" />
-                        ) : (
-                          <path d="M6 12L16 22L26 12H6Z" fill="black" />
-                        )}
-                      </svg>
+                      <ToggleArrow isOpen={verificationOpen} />
                     </Box>
 
                     {verificationOpen && (
@@ -118,35 +125,19 @@ function RASLoginPage(props) {
                           The verification process typically takes up to 30
                           minutes and requires:
                         </Typography>
-                        <ol
-                          style={{
-                            margin: "2px 0px 30px 0px",
-                            paddingLeft: "48px",
-                            listStyleType: "lower-alpha",
-                          }}
-                        >
-                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
-                            A mobile phone with a working camera
-                          </li>
-                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
-                            Your Social Security number
-                          </li>
-                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+                        <ol className={classes.orderedListAlpha}>
+                          <li>A mobile phone with a working camera</li>
+                          <li>Your Social Security number</li>
+                          <li>
                             A phone number associated with a phone plan in your
                             name
                           </li>
-                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+                          <li>
                             One of the following valid government-issued IDs:
-                            <ul
-                              style={{
-                                margin: "2px 0",
-                                paddingLeft: "20px",
-                                listStyleType: "disc",
-                              }}
-                            >
-                              <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>U.S. driver&apos;s license</li>
-                              <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>State-issued ID</li>
-                              <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>U.S. passport</li>
+                            <ul className={classes.nestedList}>
+                              <li>U.S. driver&apos;s license</li>
+                              <li>State-issued ID</li>
+                              <li>U.S. passport</li>
                             </ul>
                           </li>
                         </ol>
@@ -188,14 +179,14 @@ function RASLoginPage(props) {
                       <br />
                       To request CTDC access, you must have:
                       <br />
-                      <ul style={{ margin: "2px 0", paddingLeft: "25px"}}>
-                        <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+                      <ul className={classes.unorderedList}>
+                        <li>
                           An <strong>NIH account</strong> linked to a{" "}
                           <strong>Login.gov</strong> account with{" "}
                           <strong>NIH Researcher Auth Service (RAS)</strong>{" "}
                           identity verification
                         </li>
-                        <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
+                        <li>
                           An <strong>ORCID iD</strong>
                         </li>
                       </ul>
@@ -220,20 +211,7 @@ function RASLoginPage(props) {
                     >
                       Instructions to Request Access
                     </Typography>
-                    <svg
-                      width="26"
-                      height="26"
-                      viewBox="0 0 26 26"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      style={{ cursor: "pointer", flexShrink: 0 }}
-                    >
-                      {requestAccessOpen ? (
-                        <path d="M26 22L16 12L6 22L26 22Z" fill="black" />
-                      ) : (
-                        <path d="M6 12L16 22L26 12H6Z" fill="black" />
-                      )}
-                    </svg>
+                    <ToggleArrow isOpen={requestAccessOpen} />
                   </Box>
                 </Box>
 
@@ -242,37 +220,31 @@ function RASLoginPage(props) {
                     <Box className={classes.VerificationWrapper}>
                       <Box className={classes.VerificationSection}>
                         <Typography className={classes.BodyText}>
-                        <ol style={{  
-                                margin: "2px 0",
-                                paddingLeft: "25px",
-                              }}>
-                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
-
-                            Create a Login.gov or ID.me account. If you do not
-                            have an NIH account, also create an eRA Commons
-                            account.
-                          </li>
-                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
-         
-                            Complete NIH RAS identity verification. Verify your
-                            identity through Login.gov using NIH RAS.
-                          </li>
-                          
-                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
-                            Link your accounts. Link your Login.gov account to
-                            your eRA Commons account. If you are not an NIH user,
-                            create an ORCID iD, link it to your eRA Commons
-                            account, and allow up to two business days for
-                            processing.
-                          </li>
-                          <li style={{ marginBottom: "2px", paddingLeft: "4px" }}>
-                            Request CTDC access. On the Request SEER Incidence
-                            Data page, sign in with your NIH or Login.gov account
-                            and complete the Research Plus request application.
-                            Review and accept the required data use agreements,
-                            then submit your request.
-                          </li>
-                        </ol>
+                          <ol className={classes.orderedListNumeric}>
+                            <li>
+                              Create a Login.gov or ID.me account. If you do not
+                              have an NIH account, also create an eRA Commons
+                              account.
+                            </li>
+                            <li>
+                              Complete NIH RAS identity verification. Verify
+                              your identity through Login.gov using NIH RAS.
+                            </li>
+                            <li>
+                              Link your accounts. Link your Login.gov account to
+                              your eRA Commons account. If you are not an NIH
+                              user, create an ORCID iD, link it to your eRA
+                              Commons account, and allow up to two business days
+                              for processing.
+                            </li>
+                            <li>
+                              Request CTDC access. On the Request SEER Incidence
+                              Data page, sign in with your NIH or Login.gov
+                              account and complete the Research Plus request
+                              application. Review and accept the required data
+                              use agreements, then submit your request.
+                            </li>
+                          </ol>
                           <br />
                           Access requests are typically processed within two
                           business days. Once approved, you can sign in to CTDC
@@ -290,16 +262,13 @@ function RASLoginPage(props) {
                           Documentation
                         </Typography>
                         <Typography className={classes.Link} component="div">
-                        <ul style={{
-                                margin: "2px 0",
-                                paddingLeft: "25px",
-                              }}>
-                          <li>eRA Commons Account Creation</li>
-                          <li>Request SEER Incidence Data</li>
-                          <li>SEER Research Data Use Agreement</li>
-                          <li>SEER Treatment Data Limitations</li>
-                          <li>CTDC Use Agreement</li>
-                        </ul>
+                          <ul className={classes.unorderedList}>
+                            <li>eRA Commons Account Creation</li>
+                            <li>Request SEER Incidence Data</li>
+                            <li>SEER Research Data Use Agreement</li>
+                            <li>SEER Treatment Data Limitations</li>
+                            <li>CTDC Use Agreement</li>
+                          </ul>
                         </Typography>
                       </Box>
                     </Box>
@@ -337,20 +306,7 @@ function RASLoginPage(props) {
                     on this system may be disclosed or used for any lawful
                     Government purpose.
                   </Typography>
-                  <svg
-                    width="26"
-                    height="26"
-                    viewBox="0 0 26 26"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    style={{ cursor: "pointer", flexShrink: 0 }}
-                  >
-                    {warningOpen ? (
-                      <path d="M26 22L16 12L6 22L26 22Z" fill="black" />
-                    ) : (
-                      <path d="M6 7L16 17L26 7H6Z" fill="black" />
-                    )}
-                  </svg>
+                  <ToggleArrow isOpen={warningOpen} />
                 </Box>
               </Box>
             </Box>
@@ -383,12 +339,20 @@ function RASLoginPage(props) {
                   registering for Research RAS.
                 </Typography>
 
-                {/* Video Thumbnail Placeholder */}
+                {/* Video Thumbnail */}
                 <Box className={classes.VideoThumbnail}>
-                  <PlayArrowIcon className={classes.PlayIcon} />
-                  <Typography className={classes.VideoText}>
-                    Tutorial Video
-                  </Typography>
+                  <img
+                    src={VideoThumbnailImg}
+                    alt="Tutorial Video"
+                    className={classes.VideoImage}
+                  />
+                  <Box className={classes.PlayOverlay}>
+                    <img
+                      src={PlayIconSvg}
+                      alt="Play"
+                      className={classes.PlayIcon}
+                    />
+                  </Box>
                 </Box>
               </Box>
 
@@ -420,8 +384,11 @@ const styles = (theme) => ({
       "linear-gradient(148.75deg, #E6E6E6, #A1D2D5 32.21%, #0E8EB1), linear-gradient(#088CBA, #088CBA)",
     fontFamily: 'Lato, "Open Sans", sans-serif',
     minHeight: "100vh",
-    padding: "0px 102px 50px",
+    padding: "0px 16px 50px",
     boxShadow: "0px 4px 20px 0px #00000040 inset",
+    [theme.breakpoints.up("md")]: {
+      padding: "0px 102px 50px",
+    },
   },
 
   // Hero Section Styles
@@ -463,7 +430,8 @@ const styles = (theme) => ({
     fontWeight: 500,
     color: "#004D73",
     marginTop: "10px",
-    lineHeight: "32px",
+    lineHeight: "107%",
+    letterSpacing: "-2%",
   },
 
   // Content Wrapper
@@ -479,7 +447,7 @@ const styles = (theme) => ({
     borderRadius: "35px",
     padding: "30px 40px 50px",
     marginBottom: "40px",
-    boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.25)",
+    boxShadow: "0px 2px 10px 0px #00000040",
     border: "3px solid transparent",
     backgroundImage:
       "linear-gradient(#F0F8FA, #F0F8FA), linear-gradient(180deg, #DAF1FB, #F4FBFE 31.48%, #FFF)",
@@ -496,14 +464,12 @@ const styles = (theme) => ({
     },
   },
   LoginSection: {
-    alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
     gap: "25px",
   },
   RasSection: {
-    alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
@@ -534,7 +500,6 @@ const styles = (theme) => ({
     },
   },
   VerificationHeader: {
-    alignSelf: "stretch",
     paddingRight: "10px",
     display: "flex",
     justifyContent: "space-between",
@@ -555,19 +520,66 @@ const styles = (theme) => ({
     fontSize: "16px",
     fontWeight: 400,
     color: "#000",
-    lineHeight: "24px",
-    letterSpacing: "0.2px",
+    lineHeight: "150%",
     paddingRight: "50px",
   },
   Divider: {
     width: "100%",
     height: "0px",
     borderTop: "1px solid #8A8A8A",
-    boxSizing: "border-box",
     margin: "25px 0",
   },
+  orderedListAlpha: {
+    margin: "2px 0px 30px 0px",
+    paddingLeft: "48px",
+
+    fontFamily: "Roboto",
+    fontWeight: 400,
+    fontSize: "16px",
+    color: "#000",
+    letterSpacing: "0.2px",
+    lineHeight: "150%",
+    "& li": {
+      marginBottom: "2px",
+      paddingLeft: "4px",
+    },
+  },
+  orderedListNumeric: {
+    margin: "2px 0",
+    paddingLeft: "25px",
+    fontFamily: "Roboto",
+    fontSize: "16px",
+    color: "#000",
+    letterSpacing: "0.2px",
+    lineHeight: "150%",
+    "& li": {
+      marginBottom: "2px",
+      paddingLeft: "4px",
+    },
+  },
+  unorderedList: {
+    margin: "2px 0",
+    paddingLeft: "25px",
+    fontFamily: "Roboto",
+    fontSize: "16px",
+    color: "#000",
+    letterSpacing: "0.2px",
+    lineHeight: "150%",
+    "& li": {
+      marginBottom: "2px",
+      paddingLeft: "4px",
+    },
+  },
+  nestedList: {
+    margin: "2px 0",
+    paddingLeft: "20px",
+    listStyleType: "disc",
+    "& li": {
+      marginBottom: "2px",
+      paddingLeft: "4px",
+    },
+  },
   LoginContentRow: {
-    alignSelf: "stretch",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
@@ -586,7 +598,6 @@ const styles = (theme) => ({
     alignItems: "flex-start",
   },
   BoxTitle: {
-    alignSelf: "stretch",
     height: "37px",
     fontFamily: "Inter",
     fontSize: "24px",
@@ -595,7 +606,6 @@ const styles = (theme) => ({
     letterSpacing: "-0.02em",
     lineHeight: "106.52%",
     display: "flex",
-    alignItems: "center",
   },
   BodyText: {
     fontFamily: "Roboto",
@@ -607,7 +617,6 @@ const styles = (theme) => ({
     marginBottom: "0px",
   },
   NoteText: {
-    alignSelf: "stretch",
     fontFamily: "Roboto",
     fontSize: "16px",
     fontWeight: 700,
@@ -657,9 +666,11 @@ const styles = (theme) => ({
     padding: "11px 53px",
     gap: "10px",
     textTransform: "none",
-    textAlign: "center",
     lineHeight: "24.5px",
     whiteSpace: "nowrap",
+
+    letterSpacing: "0%",
+
     "&:hover": {
       backgroundColor: "#F0F9F7",
       border: "1.25px solid #3795A9",
@@ -673,7 +684,7 @@ const styles = (theme) => ({
     padding: "20px 30px 40px 30px",
     color: "#FFFFFF",
     minHeight: "925px",
-    boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.25)",
+    boxShadow: "0px 2px 10px 0px #00000040",
   },
   HelpHeader: {
     display: "flex",
@@ -689,10 +700,10 @@ const styles = (theme) => ({
     fontFamily: "Nunito",
     fontSize: "18px",
     fontWeight: 600,
-    color: "white",
+    color: "#FFFFFF",
+    lineHeight: "107%",
+    letterSpacing: "5%",
     textTransform: "uppercase",
-    letterSpacing: "0.9px",
-    lineHeight: "19.17px",
   },
   TutorialSection: {
     marginBottom: "50px",
@@ -703,7 +714,8 @@ const styles = (theme) => ({
     fontWeight: 700,
     color: "#8BEAFB",
     marginBottom: "5px",
-    lineHeight: "25.57px",
+    lineHeight: "112%",
+    letterSpacing: "-2%",
   },
   SidebarText: {
     fontFamily: "Lato",
@@ -715,28 +727,30 @@ const styles = (theme) => ({
     marginBottom: "17px",
   },
   VideoThumbnail: {
-    backgroundColor: "#094A61",
-    borderRadius: "8px",
-    padding: "40px",
-    textAlign: "center",
     marginTop: "16px",
     cursor: "pointer",
     position: "relative",
-    border: "2px solid #0A6D8A",
-    "&:hover": {
-      backgroundColor: "#0A5670",
-    },
+    overflow: "hidden",
+  },
+  VideoImage: {
+    width: "100%",
+    height: "auto",
+    display: "block",
+  },
+  PlayOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "8px",
   },
   PlayIcon: {
-    fontSize: "48px",
-    color: "#FFFFFF",
-    marginBottom: "8px",
-  },
-  VideoText: {
-    fontFamily: "Lato",
-    fontSize: "14px",
-    fontWeight: 500,
-    color: "#FFFFFF",
+    width: "23%",
+    height: "auto",
   },
   ContactSection: {
     marginTop: "40px",
@@ -747,7 +761,7 @@ const styles = (theme) => ({
     fontWeight: 500,
     color: "#000",
     backgroundColor: "#FFF",
-    border: "1.3px solid #3795A9",
+    border: "1.25px solid #3795A9",
     borderRadius: "10px",
     padding: "11px 53px",
     textTransform: "none",
@@ -756,7 +770,7 @@ const styles = (theme) => ({
     lineHeight: "24.5px",
     "&:hover": {
       backgroundColor: "rgba(255, 255, 255, 0.9)",
-      border: "1.3px solid #3795A9",
+      border: "1.25px solid #3795A9",
     },
   },
 
@@ -766,29 +780,25 @@ const styles = (theme) => ({
     marginTop: "40px",
     backgroundColor: "#F0F8FA",
     borderRadius: "35px",
-    boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.25)",
-    outline: "3px #F4FBFE solid",
-    outlineOffset: "-3px",
+    boxShadow: "0px 2px 10px 0px #00000040",
+    border: "3px #F4FBFE solid",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
   },
   RequestTopSection: {
-    alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
     gap: "15px",
   },
   RequestBottomSection: {
-    alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
     gap: "15px",
   },
   SectionTitle: {
-    alignSelf: "stretch",
     height: "37px",
     fontFamily: "Inter",
     fontSize: "24px",
@@ -806,7 +816,8 @@ const styles = (theme) => ({
     color: "black",
     marginTop: "17px",
     marginBottom: "17px",
-    lineHeight: "26px",
+    lineHeight: "130%",
+    letterSpacing: "0%",
   },
   DocumentationList: {
     fontFamily: "Roboto",
@@ -823,9 +834,14 @@ const styles = (theme) => ({
     fontWeight: 400,
     cursor: "pointer",
     letterSpacing: "0.2px",
-    lineHeight: "24px",
+    lineHeight: "150%",
     "&:hover": {
       textDecoration: "underline",
+    },
+    fontFamily: "Roboto",
+    fontSize: "16px",
+    "& $unorderedList": {
+      color: "#990099",
     },
   },
 
@@ -836,14 +852,10 @@ const styles = (theme) => ({
     marginTop: "40px",
     backgroundColor: "#F4FBFE",
     borderRadius: "35px",
-    boxShadow: "0px 2px 10px rgba(0, 0, 0, 0.25)",
-    outline: "3px #BA1F40 solid",
-    outlineOffset: "-3px",
+    boxShadow: "0px 2px 10px 0px #00000040",
+    border: "3px #BA1F40 solid",
     display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-start",
     gap: "40px",
-    boxSizing: "border-box",
   },
   WarningContent: {
     flex: "1 1 0",
@@ -853,7 +865,6 @@ const styles = (theme) => ({
     gap: "15px",
   },
   WarningToggle: {
-    alignSelf: "stretch",
     paddingRight: "10px",
     display: "flex",
     justifyContent: "space-between",
@@ -865,7 +876,8 @@ const styles = (theme) => ({
     fontSize: "20px",
     fontWeight: 600,
     color: "#BA1F40",
-    lineHeight: "26px",
+    lineHeight: "130%",
+    letterSpacing: "0%",
   },
   WarningText: {
     flex: 1,
