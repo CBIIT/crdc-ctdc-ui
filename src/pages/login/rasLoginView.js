@@ -50,9 +50,9 @@ function RASLoginPage(props) {
 
       {/* Main Content - Two Column Layout */}
       <Grid container className={classes.ContentWrapper}>
-        <Grid container spacing={4}>
+        <Grid container className={classes.ColumnContainer}>
           {/* Left Column - Combined Login Box */}
-          <Grid item xs={12} md>
+          <Grid item xs={12} md className={classes.LeftColumn}>
             <Box className={classes.CombinedLoginBox}>
               {/* RAS Section */}
               <Box className={classes.RasSection}>
@@ -336,10 +336,8 @@ function RASLoginPage(props) {
                   Creating Accounts to Access CTDC data
                 </Typography>
                 <Typography className={classes.SidebarText}>
-                  This tutorial walks you through the steps involved in
-                  acquiring an eRA Commons account, creating a Login.gov account
-                  if you don't have one, linking your accounts together, and
-                  registering for Research RAS.
+                  This tutorial explains the steps involved in creating a Login.gov account,
+                  linking those accounts together, and registering for Research Plus.
                 </Typography>
 
                 {/* Video Thumbnail */}
@@ -362,7 +360,7 @@ function RASLoginPage(props) {
               {/* Contact Section */}
               <Box className={classes.ContactSection}>
                 <Typography className={classes.SidebarTitle}>
-                  Let us assist you with your CTDC access
+                  Let us assist you with your login or access issues
                 </Typography>
                 <Typography className={classes.SidebarText}>
                   If you experience any difficulties with logging in or

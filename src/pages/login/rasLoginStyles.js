@@ -63,6 +63,12 @@ const styles = (theme) => ({
     margin: "auto",
     padding: "0px",
   },
+  ColumnContainer: {
+    gap: "60px",
+    [theme.breakpoints.down("sm")]: {
+      gap: "40px",
+    },
+  },
 
   // Combined Login Box Styles
   CombinedLoginBox: {
@@ -83,7 +89,12 @@ const styles = (theme) => ({
   },
   RightColumn: {
     [theme.breakpoints.up("md")]: {
-      maxWidth: "361px",
+      maxWidth: "329px",
+    },
+  },
+  LeftColumn: {
+    [theme.breakpoints.up("md")]: {
+      maxWidth: "876px",
     },
   },
   LoginSection: {
@@ -308,15 +319,14 @@ const styles = (theme) => ({
   HelpSidebar: {
     backgroundColor: "#004D73",
     borderRadius: "35px",
-    padding: "20px 30px 40px 30px",
+    padding: "20px 30px 50px 30px",
     color: "#FFFFFF",
-    minHeight: "925px",
     boxShadow: "0px 2px 10px 0px #00000040",
   },
   HelpHeader: {
     display: "flex",
     alignItems: "center",
-    marginBottom: "20px",
+    marginBottom: "15px",
     gap: "15px",
   },
   HelpIcon: {
@@ -333,7 +343,8 @@ const styles = (theme) => ({
     textTransform: "uppercase",
   },
   TutorialSection: {
-    marginBottom: "50px",
+    marginBottom: "60px",
+    padding: "0px 10px",
   },
   SidebarTitle: {
     fontFamily: "Inter",
@@ -351,10 +362,9 @@ const styles = (theme) => ({
     color: "white",
     lineHeight: "21px",
     letterSpacing: "0.2px",
-    marginBottom: "17px",
   },
   VideoThumbnail: {
-    marginTop: "16px",
+    marginTop: "25px",
     cursor: "pointer",
     position: "relative",
     overflow: "hidden",
@@ -381,6 +391,7 @@ const styles = (theme) => ({
   },
   ContactSection: {
     marginTop: "40px",
+    padding: "0px 10px",
   },
   ContactButton: {
     fontFamily: "Roboto",
@@ -392,13 +403,17 @@ const styles = (theme) => ({
     borderRadius: "10px",
     padding: "11px 53px",
     textTransform: "none",
-    marginTop: "16px",
     width: "100%",
     lineHeight: "24.5px",
     "&:hover": {
       backgroundColor: "rgba(255, 255, 255, 0.9)",
       border: "1.25px solid #3795A9",
     },
+    maxWidth: "213px",
+    height: "47px",
+    display: "block",
+    margin: "26px auto 0",
+
   },
 
   // Request Access Section
