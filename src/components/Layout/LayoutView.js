@@ -30,7 +30,7 @@ import useVisitedPageSync from '../../utils/useVisitedPageSync';
 import StudiesContainer from '../../pages/studies/studiesController';
 import DataModelNavigator from '../../pages/dmn';
 import SysInfo from '../../pages/sysinfo/sysinfo';
-import RAS from '../../pages/login/rasLogin';
+import rasLogin from '../../pages/login/rasLoginView';
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -86,7 +86,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
                 />
               ),
             )}
-            <LoginRoute path="/user/login" component={RAS} />
+            <LoginRoute path="/user/login" component={rasLogin} />
             <Route component={Error} />
           </Switch>
           </ActivitiesController>
