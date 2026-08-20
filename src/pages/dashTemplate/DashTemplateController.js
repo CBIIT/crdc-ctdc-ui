@@ -78,7 +78,11 @@ const getDashData = (states) => {
       try {
         const result = await client.query({
           query: DASHBOARD_QUERY_NEW,
-          variables: activeFilters,
+          variables: {
+            ...activeFilters,
+            files_association: ['biospecimen', 'participant'],
+            study_association: ['study'],
+          },
         });
 
         if (result.data && result.data.searchParticipants) {
@@ -89,6 +93,8 @@ const getDashData = (states) => {
 
           setDashData({
             ...result.data.searchParticipants,
+            numberOfFiles: result.data?.filesTabCount?.numberOfFiles ?? result.data.searchParticipants.numberOfFiles,
+            numberOfStudyFiles: result.data?.studyFilesTabCount?.numberOfStudyFiles ?? result.data.searchParticipants.numberOfStudyFiles,
             ...targetedTherapyCombination,
             ...filterTargetedTherapyCombination,
           });

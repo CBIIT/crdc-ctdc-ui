@@ -1,5 +1,17 @@
-/* eslint-disable */
-import React, { PureComponent } from "react";
+/**
+ * BarChart - DevExtreme-based bar chart component
+ * 
+ * Used in: Biospecimen Profile main view (Study Detail page)
+ * Library: DevExtreme React Chart
+ * 
+ * Key features:
+ * - Built-in tooltip with automatic arrow centering
+ * - Highly configurable through defaultProps
+ * - Gray hover highlight on bars
+ * - Class-based component with extensive configuration options
+ * - Supports palette extension and custom series settings
+ */
+import React, { PureComponent } from 'react';
 import Chart, {
   Series,
   CommonSeriesSettings,
@@ -14,10 +26,9 @@ import Chart, {
   Size,
   Font,
   Title,
-  Legend,
   Tick,
   HoverStyle,
-} from "devextreme-react/chart";
+} from 'devextreme-react/chart';
 
 const enable = true;
 
@@ -30,11 +41,10 @@ class BarChart extends PureComponent {
   /** repeat palette to argument length */
   extendPalette = (palette, data) => {
     if (palette && palette.length > 0) {
-      return [].concat(
-        ...new Array(Math.ceil(data.length / palette.length)).fill(palette),
-      );
+      return [].concat(...new Array(Math
+        .ceil(data.length / palette.length)).fill(palette));
     }
-  };
+  }
 
   /** override deafault config values */
   setConfigValues = (props) => {
@@ -46,22 +56,15 @@ class BarChart extends PureComponent {
     // update data
     const { data } = this.props;
     this.state = { ...this.state, ...properties, data };
-  };
+  }
 
   render() {
     this.setConfigValues(this.props);
     const {
-      data,
-      palette,
-      mode,
-      tooltipContent,
-      size,
-      tooltipConfig,
-      seriesSetting,
-      argument,
-      value,
-      type,
+      data, palette, mode, tooltipContent, size,
+      tooltipConfig, seriesSetting, argument, value, type,
     } = this.state;
+
     return (
       <>
         <Chart
@@ -114,7 +117,11 @@ class BarChart extends PureComponent {
           {/* value or y axis */}
           <ValueAxis allowDecimals={value.allowDecimals}>
             <Tick {...value.tick} />
-            <Title text={value.title.text}>
+            <Title
+              text={value.title.text}
+              margin={value.title.margin}
+              alignment={value.title.alignment}
+            >
               <Font {...value.title} />
             </Title>
             <ChartGrid visible={value.chartGrid.visible} />
@@ -125,13 +132,14 @@ class BarChart extends PureComponent {
 
           {/* argument axis */}
           <ArgumentAxis>
-            <Title text={argument.title.text}>
+            <Title
+              text={argument.title.text}
+              margin={argument.title.margin}
+              alignment={argument.title.alignment}
+            >
               <Font {...argument.title} />
             </Title>
-            <Label
-              visible={argument.visible}
-              position={argument.label.position}
-            >
+            <Label visible={argument.visible} position={argument.label.position}>
               <Font {...argument.label} />
             </Label>
           </ArgumentAxis>
@@ -141,18 +149,20 @@ class BarChart extends PureComponent {
             <CartToolTip
               enabled={tooltipConfig.enable}
               contentRender={tooltipContent}
+              arrowLength={tooltipConfig.arrowLength}
+              paddingTopBottom={tooltipConfig.paddingTopBottom}
             >
               <Font family={tooltipConfig.family} size={tooltipConfig.size} />
               <Border color={tooltipConfig.color} width={tooltipConfig.width} />
               <Shadow
                 blur={tooltipConfig.blur}
+                offsetX={tooltipConfig.offsetX}
                 offsetY={tooltipConfig.offsetY}
                 opacity={tooltipConfig.opacity}
+                color={tooltipConfig.shadowColor}
               />
             </CartToolTip>
           )}
-
-          {/*<Legend visible />*/}
         </Chart>
       </>
     );
@@ -160,18 +170,18 @@ class BarChart extends PureComponent {
 }
 
 BarChart.defaultProps = {
-  type: "bar",
-  palette: "",
+  type: 'bar',
+  palette: '',
   defaultConfig: {
     //* * Xaxis config value */
     argument: {
-      field: "",
+      field: '',
       visible: false,
-      position: "inside",
+      position: 'inside',
       title: {
-        text: "",
-        color: "#ffffff",
-        family: "Open Sans",
+        text: '',
+        color: '#ffffff',
+        family: 'Open Sans',
         opacity: 1,
         size: 14,
         weight: 400,
@@ -180,18 +190,18 @@ BarChart.defaultProps = {
       label: {
         visible: false,
         size: 12,
-        position: "inside",
+        position: 'inside',
         staggeringSpacing: 10,
       },
     },
 
     //* * Yaxis config value */
     value: {
-      field: "count",
+      field: 'count',
       title: {
-        text: "",
-        color: "#ffffff",
-        family: "Open Sans",
+        text: '',
+        color: '#ffffff',
+        family: 'Open Sans',
         opacity: 1,
         size: 14,
         weight: 400,
@@ -203,7 +213,7 @@ BarChart.defaultProps = {
       },
       label: {
         size: 12,
-        position: "outside",
+        position: 'outside',
       },
       tick: {
         visible: true,
@@ -215,18 +225,18 @@ BarChart.defaultProps = {
       ignoreEmptyPoints: true,
       showInLegend: false,
       maxBarWidth: 80,
-      hoverMode: "none",
+      hoverMode: 'none',
       label: {
         visible: false,
         backgroundColor: undefined,
-        alignment: "center",
-        color: "#ffffff",
-        family: "Open Sans",
+        alignment: 'center',
+        color: '#ffffff',
+        family: 'Open Sans',
         opacity: 1,
         size: 14,
         weight: 400,
       },
-      color: "",
+      color: '',
       border: {
         color: undefined,
         dashStyle: undefined,
@@ -235,13 +245,13 @@ BarChart.defaultProps = {
       },
       hoverStyle: {
         border: {
-          color: "red",
+          color: 'red',
           dashStyle: undefined,
           visible: false,
           with: false,
         },
         color: undefined,
-        dashStyle: "solid",
+        dashStyle: 'solid',
         width: 3,
       },
     },
@@ -255,9 +265,9 @@ BarChart.defaultProps = {
     /** tooltip configuration */
     tooltipConfig: {
       enable: true,
-      family: "Open Sans",
+      family: 'Open Sans',
       size: 12,
-      color: "#A7AFB3",
+      color: '#A7AFB3',
       width: 2,
       blur: 0,
       offsetY: 0,

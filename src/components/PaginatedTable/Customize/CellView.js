@@ -37,6 +37,15 @@ const ClinicalDataDescriptionWrapper = styled('span')(({ $hasNoValues }) => ({
   ...($hasNoValues ? { color: '#AAAAAA' } : { color: '#13344A' }),
 }));
 
+const ClinicalDataCountWrapper = styled('span')(({ $hasNoValues }) => ({
+  fontFamily: 'Nunito',
+  fontSize: '16px',
+  fontWeight: '400',
+  lineHeight: '16px',
+  letterSpacing: '0em',
+  ...($hasNoValues ? { color: '#AAAAAA' } : { color: '#13344A' }),
+}));
+
 const CaseIdLink = (props) => {
   const {
     other_cases: otherCases,
@@ -121,8 +130,8 @@ const DocumentDownloadView = ({
 
 // Custom Cell View
 export const CustomCellView = (props) => {
-  const { dataField, clinicalDataDescription, clinicalDataNode, caseCount, csvDataRow } = props;
-  const hasNoValues = caseCount === " " && defaultTo(csvDataRow, []).length === 0;
+  const { dataField, clinicalDataDescription, clinicalDataNode, participantCount, csvDataRow } = props;
+  const hasNoValues = participantCount === 0 && defaultTo(csvDataRow, []).length === 0;
 
   switch (dataField) {
     case customizeColumn.DOCUMENT_DOWNLOAD:
@@ -174,7 +183,11 @@ export const CustomCellView = (props) => {
     case customizeColumn.clinicalDataNode: 
       return <ClinicalDataNodeWrapper $hasNoValues={hasNoValues}>{clinicalDataNode}</ClinicalDataNodeWrapper>
     case customizeColumn.clinicalDataDescription:
-        return <ClinicalDataDescriptionWrapper $hasNoValues={hasNoValues}>{clinicalDataDescription}</ClinicalDataDescriptionWrapper>
+      return <ClinicalDataDescriptionWrapper $hasNoValues={hasNoValues}>{clinicalDataDescription}</ClinicalDataDescriptionWrapper>
+    case customizeColumn.participantCount:
+      return <ClinicalDataCountWrapper $hasNoValues={hasNoValues}>{participantCount}</ClinicalDataCountWrapper>
+    case customizeColumn.recordCount:
+      return <ClinicalDataCountWrapper $hasNoValues={hasNoValues}>{props.recordCount}</ClinicalDataCountWrapper>
     default:
       return (<></>);
   }

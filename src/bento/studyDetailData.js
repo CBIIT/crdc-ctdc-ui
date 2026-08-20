@@ -1,5 +1,7 @@
-import { cellTypes } from "@bento-core/table";
+import { cellTypes, dataFormatTypes } from "@bento-core/table";
 import gql from "graphql-tag";
+import downloadSuccess from "../assets/dash/downloadSuccess.svg";
+import downloadLock from "../assets/dash/downloadLock.svg";
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
@@ -28,6 +30,188 @@ export const tab = {
       index: 1,
       label: "Clinical Data",
       value: "clinical_data",
+    },
+    {
+      index: 2,
+      label: "Study Files",
+      value: "study_files",
+    },
+    {
+      index: 3,
+      label: "Publications",
+      value: "publications",
+    },
+  ],
+};
+
+export const STUDY_FILES_BUTTON_TOOLTIP = "Add selected file(s) to cart";
+
+// Tooltip configuration for Study Files wrapper buttons
+export const studyFilesTooltipContent = {
+  icon: "https://raw.githubusercontent.com/google/material-design-icons/master/src/action/help/materialicons/24px.svg",
+  alt: "tooltipIcon",
+  arrow: false,
+  classes: "customTooltip",
+  Study_Files: STUDY_FILES_BUTTON_TOOLTIP,
+};
+
+// --------------- GraphQL Queries for Study Files Tab ---------------
+
+// Separate query for Study Files Tab with pagination support
+// Uses fileOverview with association filter set to 'study'
+export const GET_STUDY_FILES_QUERY = gql`
+  query fileOverview(
+    $study_id: [String]
+    $study_short_name: [String]
+    $association: [String]
+    $data_file_type: [String]
+    $data_file_format: [String]
+    $data_file_uuid: [String]
+    $study_accession: [String]
+    $first: Int
+    $offset: Int = 0
+    $order_by: String = "data_file_uuid"
+    $sort_direction: String = "asc"
+  ) {
+    fileOverview(
+      study_short_name: $study_short_name
+      study_id: $study_id
+      study_accession: $study_accession
+      association: $association
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+      data_file_uuid: $data_file_uuid
+      first: $first
+      offset: $offset
+      order_by: $order_by
+      sort_direction: $sort_direction
+    ) {
+      data_file_name
+      data_file_type
+      data_file_description
+      data_file_format
+      data_file_size
+      data_file_uuid
+    }
+  }
+`;
+
+// Query for adding selected study files to cart
+// Uses fileOverview with association filter set to 'study'
+export const GET_FILE_IDS_FOR_SELECTED_STUDY_FILES = gql`
+  query fileAddSelectedToCart(
+    $data_file_uuid: [String]
+    $study_id: [String]
+    $study_short_name: [String]
+    $association: [String]
+    $data_file_type: [String]
+    $data_file_format: [String]
+    $study_accession: [String]
+    $first: Int
+    $offset: Int = 0
+    $order_by: String = "data_file_uuid"
+    $sort_direction: String = "asc"
+  ) {
+    fileOverview(
+      data_file_uuid: $data_file_uuid
+      study_id: $study_id
+      study_short_name: $study_short_name
+      study_accession: $study_accession
+      association: $association
+      data_file_type: $data_file_type
+      data_file_format: $data_file_format
+      first: $first
+      offset: $offset
+      order_by: $order_by
+      sort_direction: $sort_direction
+    ) {
+      data_file_uuid
+    }
+  }
+`;
+
+// Study Detail: Study Files Tab table configuration
+export const studyFilesTableConfig = {
+  name: "Study_Files",
+  dataKey: "data_file_uuid",
+  buttonText: "Add Selected Files",
+  addFilesRequestVariableKey: "data_file_uuid",
+  addFilesResponseKeys: ["fileOverview", "data_file_uuid"],
+  addSelectedFilesQuery: GET_FILE_IDS_FOR_SELECTED_STUDY_FILES,
+  tableMsg: {
+    noMatch: "No study-level files associated with this study.",
+  },
+  selectableRows: true,
+  defaultSortField: "data_file_name",
+  defaultSortDirection: "asc",
+  extendedViewConfig: {
+    pagination: true,
+    manageViewColumns: { title: "View Columns" },
+    download: {
+      downloadCsv: "Download Table Contents As CSV",
+      downloadFileName: "CTDC_Study_Files",
+    },
+  },
+  columns: [
+    {
+      cellType: cellTypes.CHECKBOX,
+      role: cellTypes.CHECKBOX,
+      display: true,
+      tooltipText: "",
+    },
+    {
+      dataField: "data_file_name",
+      header: "File Name",
+      display: true,
+    },
+    {
+      dataField: "data_file_type",
+      header: "File Type",
+      display: true,
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: "data_file_description",
+      header: "Description",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "data_file_format",
+      header: "Format",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "data_file_size",
+      header: "Size",
+      display: true,
+      role: cellTypes.DISPLAY,
+      dataFormatType: dataFormatTypes.FORMAT_BYTES,
+      cellType: cellTypes.FORMAT_DATA,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "data_file_uuid",
+      header: "Access",
+      display: true,
+      cellType: cellTypes.CUSTOM_ELEM,
+      downloadDocument: true,
+      documentDownloadProps: {
+        fileSizeColumn: "data_file_size",
+        fileLocationColumn: "data_file_uuid",
+        fileFormatColumn: "data_file_format",
+        fileName: "data_file_name",
+        toolTipTextFileDownload: "Click to download a copy of this file if you have been approved by dbGaP",
+        iconFileDownload: downloadSuccess,
+        iconUnauthenticated: downloadLock,
+        toolTipTextUnauthenticated:
+          "You must be logged in and must have already been granted access to download a copy of this file",
+      },
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
     },
   ],
 };
@@ -71,10 +255,13 @@ export const argumentConfiguration = {
   size: 12,
   title: {
     text: "Biospecimens",
-    size: 13,
+    margin: 15,
+    alignment: "center",
+
+    size: 12,
     color: "#444444",
-    weight: 500,
-    family: "Inter",
+    weight: 400,
+    family: "Roboto",
   },
   label: {
     size: 20,
@@ -99,10 +286,10 @@ export const valueConfiguration = {
   allowDecimals: false,
   title: {
     text: "Biospecimen Count",
-    size: 13,
+    size: 12,
     color: "#444444",
-    weight: 500,
-    family: "Inter",
+    weight: 400,
+    family: "Roboto",
   },
   chartGrid: {
     visible: true,
@@ -119,6 +306,22 @@ export const valueConfiguration = {
 /** common series setting */
 export const seriesSetting = {
   maxBarWidth: 200,
+};
+
+export const tooltipConfig = {
+  enable: true,
+  family: "Open Sans",
+  size: 13,
+  color: "#929292", // border Color
+  width: 1,
+  blur: 4,
+  offsetX: 0,
+  offsetY: 4,
+  opacity: 0.25,
+  shadowColor: "#000000",
+  arrowLength: 10,
+  paddingTopBottom: 10,
+  interactive: false,
 };
 
 export const studyClinicalDataQuery = gql`
@@ -214,9 +417,8 @@ export const studyClinicalDataQuery = gql`
   }
 `;
 
-// --------------- GraphQL query configuration --------------
 export const GET_STUDY_DETAIL_DATA_QUERY = gql`
-  query studyByStudyShortNameQueries($study_id: [String]) {
+  query studyDetailPageQueries($study_id: [String]) {
     # Clinical Data Tab: Node Counts
     clinicalDataNodeCounts: clinicalData(study_id: $study_id) {
       diagnosis: diagnosisNodeCount
@@ -270,11 +472,6 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
 
     StudyDataFileByStudyShortName(study_id: $study_id) {
       list_type
-      study_data_files {
-        data_file_uuid
-        data_file_name
-        data_file_format
-      }
     }
 
     StudySpecimenByStudyShortName(study_id: $study_id) {
@@ -287,6 +484,24 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
         count
       }
       specimen_count
+    }
+
+    studyZipFileQuery(study_id: $study_id) {
+      study_short_name
+      study_id
+      data_file_type
+      zip_files {
+        data_file_uuid
+        data_file_name
+        data_file_type
+        data_file_description
+        data_file_format
+        data_file_size
+        data_file_checksum_value
+        data_file_checksum_type
+        data_file_compression_status
+        data_file_location
+      }
     }
   }
 `;
@@ -388,26 +603,22 @@ export const table = {
       tooltipText: "sort",
     },
     {
-      dataField: "caseCount",
+      dataField: "participantCount",
       header: "Participants",
       sort: "asc",
       display: true,
+      cellType: cellTypes.CUSTOM_ELEM,
       tooltipText:
         "For each of the nodes listed below, the number of participants represented by one or more records within that node",
-      columnDefaultValues: {
-        0: " ",
-      },
     },
     {
       dataField: "recordCount",
       header: "Records",
       sort: "asc",
       display: true,
+      cellType: cellTypes.CUSTOM_ELEM,
       tooltipText:
         "For each of the nodes listed below, the total number of records within each node. Participants may have multiple/numerous records within certain nodes",
-      columnDefaultValues: {
-        0: " ",
-      },
     },
     {
       dataField: "csvDataRow",
@@ -465,3 +676,24 @@ export const tableLayOut = [
     paginatedTable: true,
   },
 ];
+
+// --------------- Publications Tab Configuration ---------------
+export const GET_STUDY_PUBLICATIONS_QUERY = gql`
+  query studyPublications($study_id: [String]) {
+    publicationInfo(study_id: $study_id) {
+      publication_title
+      authorship
+      year_of_publication
+      journal_citation
+      digital_object_id
+      pubmed_id
+    }
+  }
+`;
+
+export const publicationsTableConfig = {
+  name: "Publications",
+  tableMsg: {
+    noMatch: "There are no publications available for this study.",
+  },
+};

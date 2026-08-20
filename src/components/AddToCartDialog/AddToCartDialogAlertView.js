@@ -1,13 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Dialog, DialogContent, DialogContentText,
 } from '@material-ui/core';
 import DialogThemeProvider from './dialogThemeConfig';
-import { alertMessage } from '../../bento/fileCentricCartWorkflowData';
+import { alertMessage as defaultAlertMessage } from '../../bento/fileCentricCartWorkflowData';
 
 function AddToCartDialogAlertView(props) {
-  const { open, classes, onClose } = props;
+  const { open, classes = {}, onClose, alertMessage = defaultAlertMessage } = props;
   const closeAlertModelTimer = 4000;
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const timer = setTimeout(() => { onClose(); }, closeAlertModelTimer);
+    return () => clearTimeout(timer);
+  }, [open, onClose]);
 
   const AlertDialog = (
     <DialogThemeProvider>
@@ -26,10 +32,6 @@ function AddToCartDialogAlertView(props) {
     </DialogThemeProvider>
   );
 
-  if (open === true) {
-    //  close the Dialog after 3 seconds.
-    setTimeout(() => { onClose(); }, closeAlertModelTimer);
-  }
   return AlertDialog;
 }
 

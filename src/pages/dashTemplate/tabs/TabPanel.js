@@ -24,6 +24,10 @@ const TabView = (props) => {
     classes,
     activeTab,
   } = props;
+  const mergedActiveFilters = {
+    ...activeFilters,
+    ...config.defaultFilters,
+  };
   /*
   * useReducer table state
   * paginated table update data when state change
@@ -71,15 +75,15 @@ const TabView = (props) => {
         wrapConfig={configWrapper(config, wrapperConfig, "", dashboardStats[config.count])}
         customTheme={customTheme}
         classes={classes}
-        section={config.name}
-        activeFilters={activeFilters}
+        section={config.name.replace(/ /g, '_')}
+        activeFilters={mergedActiveFilters}
       >
         <Grid container>
           <Grid item xs={12} id={config.tableID}>
             <TableView
               initState={initTblState}
               themeConfig={themeConfig}
-              queryVariables={activeFilters}
+              queryVariables={mergedActiveFilters}
               totalRowCount={dashboardStats[config.count]}
               activeTab={activeTab}
             />

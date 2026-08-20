@@ -1,0 +1,499 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { act } from 'react-dom/test-utils';
+import HeaderPanel from './HeaderPanel';
+
+/**
+ * Purpose: Unit tests for the HeaderPanel component on the participant detail page.
+ * Validates rendering of participant demographics, diagnosis, and targeted therapy sections,
+ * with special focus on the N/A fallback logic for missing or empty values.
+ *
+ * Reviewed by [Name] on [Date]
+ */
+
+jest.mock('../../../components/Breadcrumb/BreadcrumbView', () => {
+  const React = require('react');
+  return function MockBreadcrumb(props) {
+    const items = (props.data || []).map((item, i) => {
+      const name = typeof item.name === 'string' ? item.name : (item.to || 'breadcrumb-item');
+      return React.createElement(
+        'span',
+        {
+          key: i,
+          'data-crumb-index': i,
+          'data-to': item.to || '',
+          'data-is-link': String(!!item.isALink),
+        },
+        name,
+      );
+    });
+    return React.createElement(
+      'div',
+      { 'data-testid': 'breadcrumb', 'data-separator': props.separator },
+      ...items,
+    );
+  };
+});
+
+jest.mock('../../../bento/participantDetailData', () => ({
+  headerIcon: 'mock-header-icon.png',
+}));
+
+describe('HeaderPanel', () => {
+  let container;
+
+  const classes = {
+    breadCrumb: 'breadCrumb',
+    header: 'header',
+    logo: 'logo',
+    headerTitle: 'headerTitle',
+    headerMainTitle: 'headerMainTitle',
+    headerMainSubTitle: 'headerMainSubTitle',
+    infoPanelContainer: 'infoPanelContainer',
+    infoPanelSection: 'infoPanelSection',
+    infoPanelSectionTitle: 'infoPanelSectionTitle',
+    infoPanelRow: 'infoPanelRow',
+    infoPanelLabel: 'infoPanelLabel',
+    infoPanelValue: 'infoPanelValue',
+  };
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    ReactDOM.unmountComponentAtNode(container);
+    container.remove();
+    container = null;
+  });
+
+  /** Helper: render component into the test container */
+  const renderComponent = (participant) => {
+    act(() => {
+      ReactDOM.render(
+        <HeaderPanel classes={classes} participant={participant} />,
+        container,
+      );
+    });
+  };
+
+  /** Helper: count occurrences of a substring in container text */
+  const countText = (substring) =>
+    (container.textContent.match(new RegExp(substring, 'g')) || []).length;
+
+  // ────────────────────────────────────────────────────
+  // Breadcrumb rendering
+  // ────────────────────────────────────────────────────
+  describe('Breadcrumb rendering', () => {
+    it('should render a breadcrumb component with the participant id', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'CTDC-001',
+        study_short_name: 'NCT001',
+        study_id: 'ST-001',
+        age_at_enrollment: 30,
+        race: 'White',
+        ethnicity: 'Not Hispanic',
+        sex: 'Male',
+        survival_status: 'Alive',
+        primary_diagnosis_disease_group: 'Lymphoma',
+        primary_disease_site: 'Chest',
+        stage_of_disease: 'Stage II',
+        targeted_therapy: 'Drug X',
+        best_response_to_targeted_therapy: 'Partial Response',
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert – separator prop forwarded
+      const breadcrumb = container.querySelector('[data-testid="breadcrumb"]');
+      expect(breadcrumb).not.toBeNull();
+      expect(breadcrumb.getAttribute('data-separator')).toBe('>');
+
+      // Crumb 0 – "ALL STUDIES" links to /studies
+      const allStudiesCrumb = container.querySelector('[data-crumb-index="0"]');
+      expect(allStudiesCrumb.textContent).toBe('ALL STUDIES');
+      expect(allStudiesCrumb.getAttribute('data-to')).toBe('/studies');
+      expect(allStudiesCrumb.getAttribute('data-is-link')).toBe('true');
+
+      // Crumb 1 – study short name links to the study detail page
+      const studyCrumb = container.querySelector('[data-crumb-index="1"]');
+      expect(studyCrumb.textContent).toBe('NCT001 DETAIL');
+      expect(studyCrumb.getAttribute('data-to')).toBe('/study/ST-001');
+      expect(studyCrumb.getAttribute('data-is-link')).toBe('true');
+
+      // Crumb 2 – participant id is not a link
+      const participantCrumb = container.querySelector('[data-crumb-index="2"]');
+      expect(participantCrumb.textContent).toBe('CTDC-001');
+      expect(participantCrumb.getAttribute('data-to')).toBe('');
+      expect(participantCrumb.getAttribute('data-is-link')).toBe('false');
+    });
+
+    it('should fall back to "STUDY DETAIL" when study_short_name is missing', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'CTDC-002',
+        study_short_name: null,
+        study_id: 'ST-002',
+        age_at_enrollment: 25,
+        race: 'Asian',
+        ethnicity: 'Hispanic',
+        sex: 'Female',
+        survival_status: 'Deceased',
+        primary_diagnosis_disease_group: 'Sarcoma',
+        primary_disease_site: 'Bone',
+        stage_of_disease: 'Stage I',
+        targeted_therapy: null,
+        best_response_to_targeted_therapy: null,
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert – fallback label, no null/undefined prefix, link still built from study_id
+      const studyCrumb = container.querySelector('[data-crumb-index="1"]');
+      expect(studyCrumb).not.toBeNull();
+      expect(studyCrumb.textContent).toBe('STUDY DETAIL');
+      expect(studyCrumb.textContent).not.toMatch(/^null |^undefined /);
+      expect(studyCrumb.getAttribute('data-to')).toBe('/study/ST-002');
+      expect(studyCrumb.getAttribute('data-is-link')).toBe('true');
+    });
+
+    it('should set the study crumb as a non-link when study_id is missing', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'CTDC-003',
+        study_short_name: null,
+        study_id: null,
+        age_at_enrollment: 40,
+        race: 'White',
+        ethnicity: 'Not Hispanic',
+        sex: 'Male',
+        survival_status: 'Unknown',
+        primary_diagnosis_disease_group: 'CML',
+        primary_disease_site: 'Blood',
+        stage_of_disease: 'Stage II',
+        targeted_therapy: null,
+        best_response_to_targeted_therapy: null,
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert – middle crumb (index 1) shows fallback label, has no path, and isALink is false
+      const studyCrumb = container.querySelector('[data-crumb-index="1"]');
+      expect(studyCrumb).not.toBeNull();
+      expect(studyCrumb.textContent).toBe('STUDY DETAIL');
+      expect(studyCrumb.getAttribute('data-to')).toBe('');
+      expect(studyCrumb.getAttribute('data-is-link')).toBe('false');
+    });
+  });
+
+  // ────────────────────────────────────────────────────
+  // Page header
+  // ────────────────────────────────────────────────────
+  describe('Page header', () => {
+    it('should display the participant id in the header title', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'P-5678',
+        age_at_enrollment: null, race: null, ethnicity: null, sex: null,
+        survival_status: null,
+        primary_diagnosis_disease_group: null, primary_disease_site: null,
+        stage_of_disease: null, targeted_therapy: null,
+        best_response_to_targeted_therapy: null,
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert
+      const subtitle = container.querySelector('.headerMainSubTitle');
+      expect(subtitle).not.toBeNull();
+      expect(subtitle.textContent).toBe('P-5678');
+    });
+
+    it('should render the header icon image with alt text', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'P-0001',
+        age_at_enrollment: 10, race: 'Asian', ethnicity: 'Hispanic', sex: 'Female',
+        survival_status: 'Alive',
+        primary_diagnosis_disease_group: 'Leukemia', primary_disease_site: 'Blood',
+        stage_of_disease: 'Stage I', targeted_therapy: 'Drug A',
+        best_response_to_targeted_therapy: 'Complete Response',
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert
+      const img = container.querySelector('img[alt="Participant detail header icon"]');
+      expect(img).not.toBeNull();
+      expect(img.src).toContain('mock-header-icon.png');
+    });
+  });
+
+  // ────────────────────────────────────────────────────
+  // InfoRow N/A fallback logic
+  // ────────────────────────────────────────────────────
+  describe('InfoRow N/A fallback for missing values', () => {
+    it('should show N/A when a field value is null', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'P-NULL',
+        age_at_enrollment: null,
+        race: 'White',
+        ethnicity: null,
+        sex: 'Male',
+        survival_status: null,
+        primary_diagnosis_disease_group: null,
+        primary_disease_site: 'Lung',
+        stage_of_disease: null,
+        targeted_therapy: null,
+        best_response_to_targeted_therapy: 'Stable',
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert – 6 null fields should each render N/A
+      expect(countText('N/A')).toBe(6);
+    });
+
+    it('should show N/A when a field value is an empty string', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'P-EMPTY',
+        age_at_enrollment: '',
+        race: '',
+        ethnicity: '',
+        sex: '',
+        survival_status: '',
+        primary_diagnosis_disease_group: '',
+        primary_disease_site: '',
+        stage_of_disease: '',
+        targeted_therapy: '',
+        best_response_to_targeted_therapy: '',
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert – all 10 info fields should show N/A
+      expect(countText('N/A')).toBe(10);
+    });
+
+    it('should show actual values and zero N/A when all fields are populated', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'P-FULL',
+        age_at_enrollment: 45,
+        race: 'Black',
+        ethnicity: 'Not Hispanic',
+        sex: 'Female',
+        survival_status: 'Alive',
+        primary_diagnosis_disease_group: 'Sarcoma',
+        primary_disease_site: 'Bone',
+        stage_of_disease: 'Stage III',
+        targeted_therapy: 'Imatinib',
+        best_response_to_targeted_therapy: 'Complete Response',
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert
+      expect(countText('N/A')).toBe(0);
+      expect(container.textContent).toContain('45');
+      expect(container.textContent).toContain('Black');
+      expect(container.textContent).toContain('Sarcoma');
+      expect(container.textContent).toContain('Imatinib');
+      expect(container.textContent).toContain('Complete Response');
+    });
+
+    it('should display numeric zero as a valid value, not N/A', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'P-ZERO',
+        age_at_enrollment: 0,
+        race: 'White',
+        ethnicity: 'Hispanic',
+        sex: 'Male',
+        survival_status: 'Deceased',
+        primary_diagnosis_disease_group: 'CML',
+        primary_disease_site: 'Blood',
+        stage_of_disease: 'Stage I',
+        targeted_therapy: 'Drug B',
+        best_response_to_targeted_therapy: 'Partial',
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert – 0 is a valid value; none should be N/A
+      expect(countText('N/A')).toBe(0);
+      expect(container.textContent).toContain('0');
+    });
+
+    it('should show N/A for a mix of null and empty-string fields', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'P-MIX',
+        age_at_enrollment: 12,
+        race: '',
+        ethnicity: null,
+        sex: 'Female',
+        survival_status: null,
+        primary_diagnosis_disease_group: 'Leukemia',
+        primary_disease_site: '',
+        stage_of_disease: null,
+        targeted_therapy: 'Drug A',
+        best_response_to_targeted_therapy: '',
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert – race(''), ethnicity(null), survival_status(null), primary_disease_site(''),
+      // stage_of_disease(null), best_response('') = 6 N/A
+      expect(countText('N/A')).toBe(6);
+    });
+  });
+
+  // ────────────────────────────────────────────────────
+  // Section titles
+  // ────────────────────────────────────────────────────
+  describe('Info panel section titles', () => {
+    it('should render Demographics, Diagnosis, and Targeted Therapy sections', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'P-SEC',
+        age_at_enrollment: 20, race: 'Asian', ethnicity: 'Not Hispanic', sex: 'Female',
+        survival_status: 'Alive',
+        primary_diagnosis_disease_group: 'ALL', primary_disease_site: 'Blood',
+        stage_of_disease: 'Stage IV', targeted_therapy: 'Drug C',
+        best_response_to_targeted_therapy: 'No Response',
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert
+      const sectionTitles = Array.from(
+        container.querySelectorAll('.infoPanelSectionTitle'),
+      ).map((el) => el.textContent);
+      expect(sectionTitles).toEqual(['Demographics', 'Diagnosis', 'Targeted Therapy']);
+    });
+  });
+
+  // ────────────────────────────────────────────────────
+  // Label rendering
+  // ────────────────────────────────────────────────────
+  describe('Info panel labels', () => {
+    it('should render all expected field labels in order', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'P-LABELS',
+        age_at_enrollment: 10, race: 'White', ethnicity: 'Hispanic', sex: 'Male',
+        survival_status: 'Alive',
+        primary_diagnosis_disease_group: 'AML', primary_disease_site: 'Bone Marrow',
+        stage_of_disease: 'Stage II', targeted_therapy: 'Drug D',
+        best_response_to_targeted_therapy: 'Stable Disease',
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert
+      const expectedLabels = [
+        'Age at Enrollment:',
+        'Race:',
+        'Ethnicity:',
+        'Sex:',
+        'Survival Status:',
+        'Primary Diagnosis:',
+        'Primary Disease Site:',
+        'Stage of Disease:',
+        'Targeted Therapy:',
+        'Response to Targeted Therapy:',
+      ];
+      const renderedLabels = Array.from(
+        container.querySelectorAll('.infoPanelLabel'),
+      ).map((el) => el.textContent);
+      expect(renderedLabels).toEqual(expectedLabels);
+    });
+  });
+
+  // ────────────────────────────────────────────────────
+  // Survival Status display (CTDC-2158)
+  // Values are pre-formatted by the controller using toTitleCase
+  // HeaderPanel component just displays the formatted values
+  // Formatting logic is tested comprehensively in utils.test.js
+  // ────────────────────────────────────────────────────
+  describe('Survival Status display (pre-formatted by controller)', () => {
+    it('should display survival status value received from controller', () => {
+      // Arrange - controller pre-formats using toTitleCase (tested in utils.test.js)
+      const participant = {
+        participant_id: 'P-SURVIVAL',
+        age_at_enrollment: 50,
+        race: 'White',
+        ethnicity: 'Not Hispanic',
+        sex: 'Male',
+        survival_status: 'Dead', // Already formatted by controller
+        primary_diagnosis_disease_group: 'Cancer',
+        primary_disease_site: 'Lung',
+        stage_of_disease: 'Stage IV',
+        targeted_therapy: 'Drug A',
+        best_response_to_targeted_therapy: 'Progressive Disease',
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert - Find survival status by label index for resilience to field reordering
+      const labels = Array.from(
+        container.querySelectorAll('.infoPanelLabel'),
+      ).map((el) => el.textContent);
+      const survivalIdx = labels.indexOf('Survival Status:');
+      expect(survivalIdx).toBeGreaterThanOrEqual(0);
+      const survivalStatusValue = Array.from(
+        container.querySelectorAll('.infoPanelValue'),
+      )[survivalIdx];
+      expect(survivalStatusValue.textContent).toBe('Dead');
+    });
+
+    it('should display complex survival status values with multiple words', () => {
+      // Arrange
+      const participant = {
+        participant_id: 'P-COMPLEX-STATUS',
+        age_at_enrollment: 40,
+        race: 'Asian',
+        ethnicity: 'Not Hispanic',
+        sex: 'Female',
+        survival_status: 'Alive with No Evidence of Disease', // Already formatted by controller
+        primary_diagnosis_disease_group: 'Lymphoma',
+        primary_disease_site: 'Lymph Node',
+        stage_of_disease: 'Stage III',
+        targeted_therapy: 'Drug D',
+        best_response_to_targeted_therapy: 'Complete Response',
+      };
+
+      // Act
+      renderComponent(participant);
+
+      // Assert - Find survival status by label index for resilience to field reordering
+      const labels = Array.from(
+        container.querySelectorAll('.infoPanelLabel'),
+      ).map((el) => el.textContent);
+      const survivalIdx = labels.indexOf('Survival Status:');
+      expect(survivalIdx).toBeGreaterThanOrEqual(0);
+      const survivalStatusValue = Array.from(
+        container.querySelectorAll('.infoPanelValue'),
+      )[survivalIdx];
+      expect(survivalStatusValue.textContent).toBe('Alive with No Evidence of Disease');
+    });
+  });
+});

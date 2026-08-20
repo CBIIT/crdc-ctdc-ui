@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Grid, withStyles, Tabs, Tab } from "@material-ui/core";
 import { Link } from "react-router-dom";
-import { BarChart } from "bento-components";
+import BarChart from "../../../../../../components/BarChart/index.js";
 
 import {
   biospecimenProfile,
@@ -10,6 +10,7 @@ import {
   timePointArgumentConfiguration,
   argumentConfiguration,
   seriesSetting,
+  tooltipConfig,
 } from "../../../../../../bento/studyDetailData.js";
 import TabPanel from "../../../../../../components/Tab/TabPanel.js";
 // import { navigatedToDashboard } from '../../../utils/utils';
@@ -29,36 +30,38 @@ import {
   // StyledTabs,
 } from "./biospecimen-profile-styled.js";
 import useDashboardTabs from "../../../../../dashTemplate/components/dashboard-tabs-store.js";
-import { onClearAllFilters } from "../../../../../dashTemplate/sideBar/BentoFilterUtils.js";
+import { onClearAllAndSelectFacetValue } from "../../../../../dashTemplate/sideBar/BentoFilterUtils.js";
 
 const tooltipContent = ({ argument, originalValue }) => (
   <div>
-    <span style={{ fontWeight: 600, color: "#444444" }}>{argument}, </span>
-    <span style={{ color: "#444444", fontWeight: 900 }}>{originalValue}</span>
+    <span style={{ fontWeight: 400, color: "#444444" }}>{argument}, </span>
+    <span style={{ color: "#444444", fontWeight: 700 }}>{originalValue}</span>
   </div>
 );
 
-const BiospecimenProfile = ({ classes, d }) => {
-  let data = d["StudySpecimenByStudyShortName"][0];
+const BiospecimenProfile = ({ classes, data, studyShortName, studyId }) => {
 
   const [, { setIsModalOpen }] = useBiospecimenProfileModal();
   const [, actions] = useDashboardTabs();
-
-  const studyName = d.studyByStudyShortName[0].study_short_name;
-  const studyCode = d.studyByStudyShortName[0].study_id;
 
   const [currentTab, setCurrentTab] = useState(0);
 
   const handleTabChange = (event, value) => {
     setCurrentTab(value);
   };
-  const tabCount = biospecimenProfile.tabs.filter(
-    (tab) => data[tab.value] && data[tab.value].length > 0
-  );
+
+  // Check if data exists and has valid biospecimen information
+  const hasData = data && Object.keys(data).length > 0;
+
+  const tabCount = hasData
+    ? biospecimenProfile.tabs.filter(
+        (tab) => data[tab.value] && data[tab.value].length > 0,
+      )
+    : [];
 
   const linkToDashboard = () => {
     // TODO: Once local-find is enabled; dispatch(resetAllData()) from bento-core/local-find to RESET_LOCALFIND_ALL_DATA
-    onClearAllFilters();
+    onClearAllAndSelectFacetValue('study_short_name', studyShortName);
     actions.changeCurrentTab(1);
   };
 
@@ -101,6 +104,7 @@ const BiospecimenProfile = ({ classes, d }) => {
             data={data[item.value]}
             palette={palette}
             tooltipContent={tooltipContent}
+            tooltipConfig={tooltipConfig}
             argument={
               item.label === "TIMEPOINT"
                 ? timePointArgumentConfiguration
@@ -114,8 +118,8 @@ const BiospecimenProfile = ({ classes, d }) => {
         <BiospecimenProfileModal
           biospecimenProfile={biospecimenProfile}
           data={data}
-          studyName={studyName}
-          studyCode={studyCode}
+          studyShortName={studyShortName}
+          studyId={studyId}
           handleTabChange={handleTabChange}
           currentTab={currentTab}
         />
@@ -144,7 +148,7 @@ const BiospecimenProfile = ({ classes, d }) => {
                   onClick={() => linkToDashboard()}
                 >
                   <span className={classes.headerButtonLinkNumber}>
-                    {0 || data.specimen_count}
+                    {data?.specimen_count || 0}
                   </span>
                   <span className={classes.headerButtonLinkText}>
                     Associated Biospecimens
@@ -166,7 +170,7 @@ const BiospecimenProfile = ({ classes, d }) => {
         <Grid container className={classes.detailContainerCL}>
           <Grid item xs={12} sm={10}>
             <div className={classes.content}>
-              This study currently has no associated Biospecimen Profile
+              This study does not have any biospecimens
             </div>
           </Grid>
         </Grid>
@@ -200,8 +204,11 @@ const styles = (theme) => ({
     paddingBottom: "25px",
   },
   content: {
-    fontSize: "14px",
-    fontFamily: theme.custom.fontFamilyNunitoSansRegular,
+    fontSize: '16px',
+    fontFamily: theme.custom.fontFamilyNunito,
+    marginTop: '8px',
+    fontWeight: 400,
+    color: '#000'
   },
   tabHighlight: {
     color: "#0296c9",

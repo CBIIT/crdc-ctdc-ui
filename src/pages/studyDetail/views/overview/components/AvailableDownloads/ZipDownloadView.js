@@ -1,0 +1,265 @@
+import React from "react";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { Button, withStyles } from "@material-ui/core";
+import ToolTip from "@bento-core/tool-tip";
+
+import { enableAuthentication } from "../../../../../../bento/siteWideConfig";
+import SessionTimeOutModal from "../../../../../../components/sessionTimeOutModal";
+import { useAuth } from "../../../../../../components/Authentication";
+import { fetchFileToDownload } from "../../../../../../components/DocumentDownload/DocumentDownloadView";
+import { useGlobal } from "../../../../../../components/Global/GlobalProvider";
+
+const DocumentDownload = ({
+  classes,
+  fileFormat = "",
+  toolTipTextUnauthenticated = "You must be logged in and must already have been granted access to download a copy of this file",
+  toolTipTextFileDownload = "Click to download a copy of this file if you have been approved by dbGaP",
+  iconFileDownload = "",
+  iconUnauthenticated = "",
+  fileLocation = "",
+  fileName,
+  toolTipIcon,
+  disabled = false, //  allow parent to fully disable the button (e.g., when no ZIP exists)
+  buttonText = "ZIP FILE",
+}) => {
+  const { signInWithAuthURL, signOut } = useAuth();
+  const { isSignedIn } = useSelector((state) => state.login);
+  const [showModal, setShowModal] = React.useState(false);
+  const history = useHistory();
+
+  const closeModal = () => {
+    setShowModal(false);
+  };
+
+  // NOTE: Access control is currently enforced server-side by DCF (Data Commons Framework) at download time.
+  // Future enhancement: Implement client-side ACL checking to proactively show button states based on user
+  // permissions before the download attempt, providing better UX by preventing unauthorized click attempts.
+  // const hasAccess = () => { return isSignedIn && userHasRequiredACLs; };
+
+  const { Notification } = useGlobal();
+  const showUnauthorizedNotification = () => {
+    const customElem = (
+      <span>
+        You must be logged in and must already have been granted access to
+        download a copy of this file.{" "}
+        <a className={classes.requestAccessLink} href="/#/request-access">
+          Request access
+        </a>{" "}
+        through dbGaP to download this file.
+      </span>
+    );
+
+    Notification.show(customElem, 6000, classes.alertStyles);
+  };
+
+  // Decide what to render based on `disabled` and auth state
+  let buttonBlock = null;
+
+  if (disabled) {
+    // Case 0: No file available (e.g., no ZIP) – always disabled,
+    buttonBlock = (
+      <div className={classes.downloadAllBtnContainer}>
+        <ToolTip
+          classes={{ tooltip: classes.customTooltip }}
+          title={toolTipTextFileDownload}
+          placement="top"
+        >
+          <span>
+            <Button classes={{ root: classes.disabledDownloadAllBtn }} disabled>
+              {buttonText}
+              <img
+                src={iconUnauthenticated || iconFileDownload}
+                alt="download icon"
+                className={classes.downloadIcon}
+              />
+            </Button>
+          </span>
+        </ToolTip>
+        <ToolTip
+          classes={{ tooltip: classes.customTooltip }}
+          title={toolTipTextUnauthenticated}
+          placement="right"
+        >
+          <img
+            src={toolTipIcon}
+            alt="tooltip"
+            className={classes.tooltipIcon}
+          />
+        </ToolTip>
+      </div>
+    );
+  } else if (enableAuthentication && isSignedIn) {
+    // Case 1: Logged in
+    buttonBlock = (
+      <div className={classes.downloadAllBtnContainer}>
+        <ToolTip
+          classes={{ tooltip: classes.customTooltip }}
+          title={toolTipTextFileDownload}
+          placement="top"
+        >
+          <Button
+            classes={{ root: classes.downloadAllBtn }}
+            onClick={() =>
+              fetchFileToDownload(
+                fileLocation,
+                signOut,
+                setShowModal,
+                fileName,
+                fileFormat,
+                showUnauthorizedNotification,
+              )
+            }
+            variant="contained"
+          >
+            {buttonText}
+            <img
+              src={iconFileDownload}
+              alt="download icon"
+              className={classes.downloadIcon}
+            />
+          </Button>
+        </ToolTip>
+        <ToolTip
+          classes={{ tooltip: classes.customTooltip }}
+          title={toolTipTextUnauthenticated}
+          placement="right"
+        >
+          <img
+            src={toolTipIcon}
+            alt="tooltip"
+            className={classes.tooltipIcon}
+          />
+        </ToolTip>
+      </div>
+    );
+  } else {
+    // Case 2: Not logged in
+    buttonBlock = (
+      <div className={classes.downloadAllBtnContainer}>
+        <ToolTip
+          classes={{ tooltip: classes.customTooltip }}
+          title={toolTipTextFileDownload}
+          placement="top"
+        >
+          <Button
+            classes={{ root: classes.disabledDownloadAllBtn }}
+            onClick={() => history.push("/user/login")}
+          >
+            {buttonText}
+            <img
+              src={iconUnauthenticated}
+              alt="download icon"
+              className={classes.downloadIcon}
+            />
+          </Button>
+        </ToolTip>
+        <ToolTip
+          classes={{ tooltip: classes.customTooltip }}
+          title={toolTipTextUnauthenticated}
+          placement="right"
+        >
+          <img
+            src={toolTipIcon}
+            alt="tooltip"
+            className={classes.tooltipIcon}
+          />
+        </ToolTip>
+      </div>
+    );
+  }
+
+  return (
+    <>
+      <div>
+        {buttonBlock}
+
+        <SessionTimeOutModal
+          open={showModal}
+          closeModal={closeModal}
+          handleClose={closeModal}
+          submit={signInWithAuthURL}
+          message="Please login to access files!"
+        />
+      </div>
+    </>
+  );
+};
+
+const commonStyles = {
+  buttonBase: {
+    width: "305px",
+    height: "46px",
+    fontSize: "14px",
+    lineHeight: "14px",
+    fontWeight: 500,
+    fontStyle: "normal",
+    fontFamily: "Roboto",
+    color: "#FFFFFF",
+    borderRadius: "10px",
+    textAlign: "center",
+    boxShadow: "none",
+    filter: "none",
+    textTransform: "uppercase",
+  },
+};
+
+const styles = () => ({
+  downloadAllBtnContainer: {
+    marginTop: "16px",
+  },
+  downloadAllBtn: {
+    ...commonStyles.buttonBase,
+    background: "#004D73",
+    "&:hover": {
+      border: "1px solid #004D73",
+    },
+  },
+  disabledDownloadAllBtn: {
+    ...commonStyles.buttonBase,
+    background: "#004D7380",
+    "&:hover": {
+      background: "#004D7380",
+    },
+  },
+  downloadIcon: {
+    width: "24.71px",
+    height: "24.72px",
+    marginLeft: "10px",
+  },
+  customTooltip: {
+    maxWidth: "500px",
+    borderRadius: "5px",
+    border: ".2px solid #C3C3C3",
+    boxShadow: "0px 4px 10px 0px #00000040",
+    fontFamily: "Open Sans",
+    color: "#223D4C",
+    fontSize: "13px",
+    fontWeight: 600,
+    lineHeight: "19px",
+    letterSpacing: "0em",
+    textAlign: "left",
+    padding: "10px 15px",
+    position: "relative",
+  },
+  tooltipIcon: {
+    position: "relative",
+    left: "4px",
+    bottom: "13px",
+  },
+  alertStyles: {
+    backgroundColor: "#155E6F !important",
+  },
+  requestAccessLink: {
+    fontWeight: 600,
+    textDecoration: "underline !important",
+    color: "#FFFFFF",
+    fontSize: "16px",
+    "&:hover": {
+      textDecoration: "none",
+      color: "#FFFFFF",
+    },
+  },
+});
+
+export default withStyles(styles)(DocumentDownload);

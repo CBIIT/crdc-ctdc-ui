@@ -4,8 +4,8 @@ export default () => ({
   },
   dataAvailIndicatorIcon: {
     color: '#4E71CB',
-    height: '13px',
-    width: '13px',
+    height: '18px',
+    width: '18px',
   },
   dalIcon: {
     width: '25px',

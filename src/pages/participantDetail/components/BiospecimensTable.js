@@ -1,0 +1,62 @@
+import React, { useMemo } from 'react';
+import {
+  TableContextProvider,
+  TableView,
+  Wrapper,
+} from '@bento-core/paginated-table';
+import { themeConfig, customTheme } from '../tableThemeConfig';
+import { biospecimenColumns } from '../../../bento/participantDetailData';
+import { getBiospecimenWrapperConfig } from '../wrapperConfig';
+import { wrapperCustomTheme } from '../wrapperTheme';
+
+export const initBiospecimenTableState = (initialState) => ({
+  ...initialState,
+  title: 'Biospecimens',
+  dataKey: 'specimen_record_id',
+  tableMsg: { noMatch: 'There are no biospecimens available for this participant.' },
+  columns: biospecimenColumns,
+  selectedRows: [],
+  sortBy: 'specimen_record_id',
+  sortOrder: 'asc',
+  rowsPerPage: 10,
+  page: 0,
+  extendedViewConfig: {
+    pagination: false,
+    manageViewColumns: { title: 'View Columns' },
+    download: {
+      downloadCsv: 'Download Table Contents As CSV',
+      downloadFileName: 'CTDC_Participant_Biospecimens',
+    },
+  },
+});
+
+const BiospecimensTable = ({ classes, biospecimens = [], files = [] }) => {
+  const wrapperConfig = useMemo(() => getBiospecimenWrapperConfig(files), [files]);
+
+  return (
+    <div className={classes.tableSection}>
+      <div className={classes.tableSectionTitle}>Associated Biospecimens</div>
+      <div className={classes.tableWrapper}>
+        <TableContextProvider>
+          <Wrapper
+            wrapConfig={wrapperConfig}
+            customTheme={wrapperCustomTheme}
+            classes={classes}
+            section="Biospecimens"
+          >
+            <TableView
+              initState={initBiospecimenTableState}
+              themeConfig={{ ...themeConfig, customTheme }}
+              queryVariables={{}}
+              totalRowCount={biospecimens.length}
+              server={false}
+              tblRows={biospecimens}
+            />
+          </Wrapper>
+        </TableContextProvider>
+      </div>
+    </div>
+  );
+};
+
+export default BiospecimensTable;

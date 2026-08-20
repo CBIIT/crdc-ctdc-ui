@@ -1,4 +1,16 @@
-import React, { useState } from 'react';
+/**
+ * BarChartV2 - Recharts-based bar chart component
+ * 
+ * Used in: Biospecimen Profile modal (expanded view)
+ * Library: Recharts
+ * 
+ * Key features:
+ * - Interactive legend on the right side (highlights on hover)
+ * - Custom tooltip without arrow (matches production behavior)
+ * - Alternating row colors in legend
+ * - Synchronized hover state between bars and legend items
+ */
+import React, { useState, useEffect } from 'react';
 import { withStyles } from '@material-ui/core';
 import {
   BarChart,
@@ -35,11 +47,25 @@ const styles = theme => ({
   },
   tooltipWrapper: {
     backgroundColor: '#fff',
-    padding: '10px',
-    border: '1px solid #ccc',
-    boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
+    padding: '0px 10px',
+    border: '1px solid #929292',
+    boxShadow: '0px 4px 4px 0px #00000040',
     display: 'flex',
     gap: '4px',
+    position: 'relative',
+  },
+  tooltipArrow: {
+    position: 'absolute',
+    left: '50%',
+    bottom: '-6.8px',
+    width: '12px',
+    height: '12px',
+    backgroundColor: '#fff',
+    borderTop: 'none',
+    borderRight: '1px solid #929292',
+    borderBottom: '1px solid #929292',
+    borderLeft: 'none',
+    transform: 'translateX(-50%) rotate(45deg)',
   },
   container: {
     display: 'flex',
@@ -68,15 +94,21 @@ const BarChartV2 = ({
   palette,
   xAxisLabel,
   yAxisLabel,
+  tooltipCursor,
   classes,
 }) => {
   const [hoveredGroup, setHoveredGroup] = useState(null);
 
 
   const CustomTooltip = ({ active, payload }) => {
+    const currentGroup = active ? (payload?.[0]?.payload?.group || null) : null;
+
+    useEffect(() => {
+      setHoveredGroup(currentGroup);
+    }, [currentGroup]);
+
     if (active && payload && payload.length) {
       const data = payload[0].payload;
-      setHoveredGroup(data.group);
 
       return (
         <div className={classes.tooltipWrapper}>
@@ -86,7 +118,6 @@ const BarChartV2 = ({
       );
     }
 
-    setHoveredGroup(null);
     return null;
   };
 
@@ -152,7 +183,17 @@ const BarChartV2 = ({
             style: { fontFamily: 'Inter', fontWeight: '400', color: '#444444' },
           }}
         />
-        <Tooltip content={<CustomTooltip />} />
+        <Tooltip
+          content={<CustomTooltip />}
+          cursor={tooltipCursor}
+          isAnimationActive={false}
+          allowEscapeViewBox={{ x: false, y: false }}
+          wrapperStyle={{
+            transform: 'translateX(-50%)',
+            pointerEvents: 'none',
+          }}
+          offset={-80}
+        />
         <Bar dataKey="count">
           {chartData.map((_entry, index) => (
             <Cell

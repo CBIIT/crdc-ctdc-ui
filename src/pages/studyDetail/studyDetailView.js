@@ -7,16 +7,18 @@ import {
 } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
-import Stats from "../../components/Stats/AllStatsController";
+import Stats from "../../components/Stats/ScopedStatsController";
 import { headerIcon, tab } from "../../bento/studyDetailData";
 import Tab from "../../components/Tab/Tab";
 import TabPanel from "../../components/Tab/TabPanel";
 import Styles from "./studyDetailsStyle";
 import StudyThemeProvider from "./studyDetailsThemeConfig";
 import Overview from "./views/overview/overview";
-import { onClearAllFilters } from "../dashTemplate/sideBar/BentoFilterUtils";
+import { onClearAllAndSelectFacetValue } from "../dashTemplate/sideBar/BentoFilterUtils";
 import useDashboardTabs from "../dashTemplate/components/dashboard-tabs-store";
 import ClinicalDataController from "./views/clinical-data/ClinicalDataController";
+import StudyFilesView from "./views/study-files/StudyFilesView";
+import PublicationsView from "./views/publications/PublicationsView";
 import CustomBreadcrumb from "../../components/Breadcrumb/BreadcrumbView";
 const StudyDetailView = ({
   classes,
@@ -27,7 +29,9 @@ const StudyDetailView = ({
 }) => {
   const studyData = data;
   const processedTabs = tab.items;
-  const study_short_name = studyData?.studyByStudyShortName?.at(0)?.study_short_name;
+  const study_short_name =
+    studyData?.studyByStudyShortName?.at(0)?.study_short_name;
+  const zipFileData = data?.studyZipFileQuery || [];
 
   const breadCrumbJson = [
     { name: "Studies", to: "/studies", isALink: true },
@@ -42,7 +46,7 @@ const StudyDetailView = ({
   };
 
   const getHeaderIcon = () => (
-    <img src={headerIcon} alt="CTDC trail detail header logo" />
+    <img src={headerIcon} alt="CTDC Study detail header logo" />
   );
 
   if (isLoading) {
@@ -59,7 +63,7 @@ const StudyDetailView = ({
 
   const linkToDashboard = () => {
     // TODO: Once local-find is enabled; dispatch(resetAllData()) from bento-core/local-find to RESET_LOCALFIND_ALL_DATA
-    onClearAllFilters();
+    onClearAllAndSelectFacetValue("study_short_name", study_short_name);
     actions.changeCurrentTab(0);
   };
 
@@ -74,7 +78,7 @@ const StudyDetailView = ({
 
   return (
     <StudyThemeProvider>
-      <Stats />
+      <Stats variables={{ study_short_name: [study_short_name] }} />
 
       <div className={classes.container}>
         <div className={classes.breadCrumb}>
@@ -130,23 +134,45 @@ const StudyDetailView = ({
         switch (processedTab.value) {
           case "overview":
             return (
-              <TabPanel value={currentTab} index={index} maxWidth="1800px">
-                <Overview data={data} />
-              </TabPanel>
+              <div key={processedTab.value} hidden={currentTab !== index}>
+                <TabPanel value={currentTab} index={index} maxWidth="1800px">
+                  <Overview data={data} zipFileData={zipFileData} />
+                </TabPanel>
+              </div>
             );
 
           case "clinical_data":
             return (
-              <TabPanel value={currentTab} index={index} maxWidth="1800px">
-                <ClinicalDataController
-                  dataCount={{
-                    caseCount: clinicalDataNodeParticipantCounts,
-                    nodeCount: clinicalDataNodeCounts,
-                  }}
-                  study_id={study_id}
-                  study_short_name={study_short_name}
-                />
-              </TabPanel>
+              <div key={processedTab.value} hidden={currentTab !== index}>
+                <TabPanel value={currentTab} index={index} maxWidth="1800px">
+                  <ClinicalDataController
+                    dataCount={{
+                      participantCount: clinicalDataNodeParticipantCounts,
+                      nodeCount: clinicalDataNodeCounts,
+                    }}
+                    study_id={study_id}
+                    study_short_name={study_short_name}
+                  />
+                </TabPanel>
+              </div>
+            );
+
+          case "study_files":
+            return (
+              <div key={processedTab.value} hidden={currentTab !== index}>
+                <TabPanel value={currentTab} index={index} maxWidth="1800px">
+                  <StudyFilesView study_id={study_id} />
+                </TabPanel>
+              </div>
+            );
+
+          case "publications":
+            return (
+              <div key={processedTab.value} hidden={currentTab !== index}>
+                <TabPanel value={currentTab} index={index} maxWidth="1800px">
+                  <PublicationsView study_id={study_id} />
+                </TabPanel>
+              </div>
             );
 
           default:

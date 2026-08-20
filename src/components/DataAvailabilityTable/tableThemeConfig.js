@@ -16,24 +16,33 @@ const dynamicDataAvailColStyling = (table, isBody = false) => {
     const lastItem = displayDavaAvailCols[length - 1];
     if (length === 1) {
       customStyle[`&.${firstItem.dataField}`] = {
-        borderLeft: isBody ? undefined : '1px solid #808080',
-        borderRight: isBody ? undefined : '1px solid #808080',
         textAlign: 'center',
         padding: '15px',
+        paddingLeft: '100px',
+        paddingRight: '100px',
       };
     }
     if (length > 1) {
       customStyle[`&.${firstItem.dataField}`] = {
-        borderLeft: isBody ? undefined : '1px solid #808080',
         textAlign: 'center',
         padding: '15px',
+        paddingLeft: '100px',
       };
       customStyle[`&.${lastItem.dataField}`] = {
-        borderRight: isBody ? undefined : '1px solid #808080',
         textAlign: 'center',
         padding: '15px',
+        paddingRight: '100px',
       };
     }
+    // Style middle DA columns
+    displayDavaAvailCols.forEach((col) => {
+      if (col !== firstItem && col !== lastItem) {
+        customStyle[`&.${col.dataField}`] = {
+          textAlign: 'center',
+          padding: '15px',
+        };
+      }
+    });
   }
   return customStyle;
 };
@@ -71,6 +80,7 @@ export const tblBody = (table) => {
             fontWeight: '400',
             letterSpacing: '0.025em',
           },
+          ...dynamicDataAvailColStyling(table, true),
         },
         paddingCheckbox: {
           width: '48px',
@@ -161,27 +171,7 @@ export const headerTheme = (table) => {
           '&.group_1': {
             padding: '0',
           },
-          '&.participant_file_count': {
-            textAlign: 'center',
-            padding: '15px',
-          },
-          '&.study_file_count': {
-            textAlign: 'center',
-            padding: '15px',
-          },
-          '&.image_collection_count': {
-            textAlign: 'center',
-            padding: '15px',
-          },
-          '&.numberOfPublications': {
-            textAlign: 'center',
-            padding: '15px',
-          },
-          '&.unique_repository': {
-            textAlign: 'center',
-            padding: '15px',
-          },
-          // ...customDataAvailColStyles,
+          ...dynamicDataAvailColStyling(table),
         },
         head: {
           '&.other_columns_right': {
