@@ -114,7 +114,15 @@ function RASLoginPage(props) {
                   <Box className={classes.VerificationSection}>
                     <Box
                       className={classes.VerificationHeader}
-                      onClick={() => setVerificationOpen(!verificationOpen)}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => setVerificationOpen((v) => !v)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          setVerificationOpen((v) => !v);
+                        }
+                      }}
                     >
                       <Typography className={classes.VerificationTitle}>
                         CTDC Verification Process
