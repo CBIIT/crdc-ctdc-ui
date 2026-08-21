@@ -1,16 +1,15 @@
 const styles = (theme) => ({
   Container: {
-    background:
-      "linear-gradient(148.75deg, #E6E6E6, #A1D2D5 32.21%, #0E8EB1), linear-gradient(#088CBA, #088CBA)",
+    background: 
+        "linear-gradient(147deg, #0E8EB1 0%, #A1D2D5 68%, #E6E6E6 100%), #088CBA",
     fontFamily: 'Lato, "Open Sans", sans-serif',
-    minHeight: "100vh",
-    padding: "0px 16px 50px",
+    padding: "0px 16px 80px",
     boxShadow: "0px 4px 20px 0px #00000040 inset",
     [theme.breakpoints.up("md")]: {
-      padding: "0px 32px 50px",
+      padding: "0px 32px 120px",
     },
     "@media (min-width: 1400px)": {
-      padding: "0px 102px 50px",
+      padding: "0px 92px 120px",
     },
   },
 
@@ -59,7 +58,6 @@ const styles = (theme) => ({
 
   // Content Wrapper
   ContentWrapper: {
-    maxWidth: "1500px",
     margin: "auto",
     padding: "0px",
   },
@@ -78,11 +76,7 @@ const styles = (theme) => ({
     padding: "30px 40px 50px",
     marginBottom: "40px",
     boxShadow: "0px 2px 10px 0px #00000040",
-    border: "3px solid transparent",
-    backgroundImage:
-      "linear-gradient(#F0F8FA, #F0F8FA), linear-gradient(180deg, #DAF1FB, #F4FBFE 31.48%, #FFF)",
-    backgroundOrigin: "border-box",
-    backgroundClip: "padding-box, border-box",
+    border: "3px solid #F4FBFE",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -92,6 +86,7 @@ const styles = (theme) => ({
     [theme.breakpoints.up("md")]: {
       maxWidth: "329px",
     },
+    // marginLeft: "60px",
   },
   LeftColumn: {
     [theme.breakpoints.up("md")]: {
