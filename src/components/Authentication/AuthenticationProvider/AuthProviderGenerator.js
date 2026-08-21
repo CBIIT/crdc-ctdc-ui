@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { connect } from 'react-redux';
 import { useGoogleLogin } from 'react-use-googlelogin';
-import { useLazyQuery } from '@apollo/client';
 import { signInRed, signOutRed } from '../store/actions/Actions';
 import DEFAULT_CONFIG from './config';
 
@@ -21,6 +20,25 @@ const createContext = () => {
   return [useCtx, ctx.Provider];
 };
 const [useAuth, Auth] = createContext();
+
+const SAMPLE_GOOGLE_CLIENT_ID = 'Sample Id';
+
+const isConfiguredGoogleClientId = (clientId) => (
+  typeof clientId === 'string'
+  && clientId.trim() !== ''
+  && clientId.trim() !== SAMPLE_GOOGLE_CLIENT_ID
+);
+
+const GoogleLoginState = ({ clientId, children }) => {
+  const googleAuth = useGoogleLogin({
+    clientId,
+  });
+
+  // what does this return?
+  return children(googleAuth);
+};
+
+const googleNotConfigured = () => Promise.reject(new Error('Google login is not configured.'));
 
 /**
  * Generate a Authentication Provider component with the custom configuration applied
@@ -65,9 +83,6 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
     ? config.AUTH_URL
     : DEFAULT_CONFIG.config.AUTH_URL;
 
-  const GET_USER_DETAILS = config && typeof config.GET_USER_DETAILS === 'string'
-    ? config.GET_USER_DETAILS
-    : DEFAULT_CONFIG.config.GET_USER_DETAILS;
 
   const stateProps = () => ({
     // autocomplete: state.login.autocomplete,
@@ -83,20 +98,16 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
     // eslint-disable-next-line max-len
     AuthProvider: connect(stateProps, dispatchProps)((props) => {
       const { children, signIn, signOut } = props;
-
-      const {
-        googleUser,
-        isInitialized,
-        grantOfflineAccess,
-        googleSignOut: googleSignOut,
-        isSignedIn,
-      } = useGoogleLogin({
-        clientId: GOOGLE_CLIENT_ID,
-      });
-
-      const [getUserDetails] = useLazyQuery(GET_USER_DETAILS, { context: { clientName: 'userService' }, fetchPolicy: 'no-cache' });
-
       const originDomain = window.location.origin;
+      const googleLoginEnabled = isConfiguredGoogleClientId(GOOGLE_CLIENT_ID);
+
+      const renderAuthProvider = ({
+        googleUser = null,
+        isInitialized = !googleLoginEnabled,
+        grantOfflineAccess = googleNotConfigured,
+        isSignedIn = false,
+      } = {}) => {
+
 
       async function authServiceLogin(
         code, IDP, redirectUri, signInSuccess = () => {}, signInError = () => {},
@@ -144,7 +155,12 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
           } else {
             error();
           }
-        }).catch(() => {
+        }).catch((err) => {
+          console.warn('[Google login] Unable to start Google login', {
+            configured: googleLoginEnabled,
+            message: err && err.message,
+          });
+          error(err);
         });
       };
 
@@ -209,6 +225,17 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
         >
           {children}
         </Auth>
+      );
+      };
+
+      if (!googleLoginEnabled) {
+        return renderAuthProvider();
+      }
+
+      return (
+        <GoogleLoginState clientId={GOOGLE_CLIENT_ID}>
+          {renderAuthProvider}
+        </GoogleLoginState>
       );
     }),
   };
