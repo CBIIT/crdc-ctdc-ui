@@ -32,7 +32,8 @@ const { SessionTimeout } = SessionTimeoutGenerator({
 export default () => {
   const history = useHistory();
   const { signOut } = useAuth();
-  const IDP = 'dcf';
+  // Timeout logout should use the same RAS cleanup as manual logout.
+  const IDP = 'ras';
   const onSignOut = () => signOut(history, REDIRECT_AFTER_SIGN_OUT, IDP);
 
   const { Notification } = useGlobal();

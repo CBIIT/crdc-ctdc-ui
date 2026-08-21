@@ -391,7 +391,8 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     setClickedTitle("");
-    signOut(history, "/", 'DCF');
+    // Send RAS IDP so Auth service calls the RAS logout endpoint.
+    signOut(history, "/", 'ras');
     onShowNotification("You have been logged out.", 2000)
     history.push('/');
   };
