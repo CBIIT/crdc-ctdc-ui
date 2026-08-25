@@ -32,6 +32,10 @@ function RASLoginPage(props) {
   const [verificationOpen, setVerificationOpen] = useState(false);
   const [requestAccessOpen, setRequestAccessOpen] = useState(false);
   const [warningOpen, setWarningOpen] = useState(false);
+  const rasAuthorizeUrl =
+    typeof env.REACT_APP_RAS_AUTHORIZE_URL === "string"
+      ? env.REACT_APP_RAS_AUTHORIZE_URL.trim()
+      : "";
 
   return (
     <div className={classes.Container}>
@@ -83,26 +87,21 @@ function RASLoginPage(props) {
                     <Button
                       variant="outlined"
                       className={classes.LoginButtonRas}
+                      disabled={!rasAuthorizeUrl}
                       onClick={() => {
-                        console.log(
-                          "[RAS login] Redirecting to RAS authorize URL",
-                          {
-                            hasAuthorizeUrl: Boolean(
-                              env.REACT_APP_RAS_AUTHORIZE_URL,
-                            ),
-                            authorizeUrlStartsWith:
-                              env.REACT_APP_RAS_AUTHORIZE_URL?.split("?")[0],
-                          },
-                        );
-                        // TODO: Remove hardcoded fallback URL after devops configures REACT_APP_RAS_AUTHORIZE_URL
-                        const rasUrl =
-                          env.REACT_APP_RAS_AUTHORIZE_URL ||
-                          "https://stsstg.nih.gov/auth/oauth/v2/authorize?client_id=b0714287-43ee-479f-b151-8e58f3622899&response_type=code&redirect_uri=https%3A%2F%2Fclinical-dev.datacommons.cancer.gov%2Fapi%2Fauth%2Fcallback&scope=openid%20profile%20email%20ga4gh_passport_v1%20researcher_role%20federated_identities_ial2%20federated_identities%20federated_sources%20source";
-                        window.location.href = rasUrl;
+                        if (rasAuthorizeUrl) {
+                          window.location.href = rasAuthorizeUrl;
+                        }
                       }}
                     >
                       Login with RAS
                     </Button>
+                    {!rasAuthorizeUrl && (
+                      <Typography className={classes.BodyText} role="alert">
+                        RAS login is temporarily unavailable because it is not
+                        configured.
+                      </Typography>
+                    )}
                   </Box>
                 </Box>
 
@@ -181,7 +180,7 @@ function RASLoginPage(props) {
                     >
                       Access Requirements
                     </Typography>
-                    <Typography className={classes.BodyText}>
+                    <Typography className={classes.BodyText} component="div">
                       CTDC contains controlled-access research data. To comply
                       with federal security requirements, users must verify
                       their identity and affiliation before they can access the
@@ -214,7 +213,15 @@ function RASLoginPage(props) {
                 <Box className={classes.VerificationSection}>
                   <Box
                     className={classes.VerificationHeader}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => setRequestAccessOpen(!requestAccessOpen)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setRequestAccessOpen(!requestAccessOpen);
+                      }
+                    }}
                   >
                     <Typography
                       className={classes.SubsectionTitle}
@@ -230,7 +237,10 @@ function RASLoginPage(props) {
                   <>
                     <Box className={classes.VerificationWrapper}>
                       <Box className={classes.VerificationSection}>
-                        <Typography className={classes.BodyText}>
+                        <Typography
+                          className={classes.BodyText}
+                          component="div"
+                        >
                           <ol className={classes.orderedListNumeric}>
                             <li>
                               Create a Login.gov or ID.me account. If you do not
@@ -296,7 +306,15 @@ function RASLoginPage(props) {
                 </Typography>
                 <Box
                   className={classes.WarningToggle}
+                  role="button"
+                  tabIndex={0}
                   onClick={() => setWarningOpen(!warningOpen)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      e.preventDefault();
+                      setWarningOpen(!warningOpen);
+                    }
+                  }}
                 >
                   <Typography
                     className={`${classes.WarningText} ${!warningOpen ? classes.WarningTextCollapsed : ""}`}
@@ -344,8 +362,9 @@ function RASLoginPage(props) {
                   Creating Accounts to Access CTDC data
                 </Typography>
                 <Typography className={classes.SidebarText}>
-                  This tutorial explains the steps involved in creating a Login.gov account,
-                  linking those accounts together, and registering for Research Plus.
+                  This tutorial explains the steps involved in creating a
+                  Login.gov account, linking those accounts together, and
+                  registering for Research Plus.
                 </Typography>
 
                 {/* Video Thumbnail */}
