@@ -8,6 +8,7 @@ import { useGlobal } from '../../Global/GlobalProvider';
 import { useAuth } from '../../Authentication';
 import CartContainer from '../../Cart/CartController';
 import { navMobileList, navbarSublists } from '../../../config/globalHeaderData';
+import { getAuthenticatedIdp } from '../../../utils/authUtil';
 import { Box } from '@material-ui/core';
 
 
@@ -391,8 +392,8 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     setClickedTitle("");
-    // Send RAS IDP so Auth service calls the RAS logout endpoint.
-    signOut(history, "/", 'ras');
+    const idp = getAuthenticatedIdp(authData);
+    signOut(history, "/", idp);
     onShowNotification("You have been logged out.", 2000)
     history.push('/');
   };

@@ -9,6 +9,8 @@ import {
   SHOW_WARNING_BEFORE,
 } from '../../bento/siteWideConfig';
 import { useGlobal } from '../Global/GlobalProvider';
+import { useSelector } from 'react-redux';
+import { getAuthenticatedIdp } from '../../utils/authUtil';
 
 const {
   REACT_APP_AUTH_SERVICE_API,
@@ -32,9 +34,15 @@ const { SessionTimeout } = SessionTimeoutGenerator({
 export default () => {
   const history = useHistory();
   const { signOut } = useAuth();
-  // Timeout logout should use the same RAS cleanup as manual logout.
-  const IDP = 'ras';
-  const onSignOut = () => signOut(history, REDIRECT_AFTER_SIGN_OUT, IDP);
+  const authData = useSelector((state) => state.login);
+  const onSignOut = () => {
+    const idp = getAuthenticatedIdp(authData);
+    return signOut(
+      history,
+      REDIRECT_AFTER_SIGN_OUT,
+      idp,
+    );
+  };
 
   const { Notification } = useGlobal();
   const onShowNotification = (content, duration) => Notification.show(content, duration);
