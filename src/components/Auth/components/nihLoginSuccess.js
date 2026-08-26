@@ -22,7 +22,7 @@ function getErrorData(query) {
   return { error, errorDescription };
 }
 
-function nihLoginSuccess({ idp = 'dcf', callbackPath = '/login' }) {
+function nihLoginSuccess({ idp = 'ras', callbackPath = '/api/auth/callback' }) {
   const history = useHistory();
   const query = useQuery();
   const { authServiceLogin } = useAuth();
