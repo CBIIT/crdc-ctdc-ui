@@ -20,8 +20,6 @@ function ToggleArrow({ isOpen }) {
       style={{
         cursor: "pointer",
         flexShrink: 0,
-        // width: "2px",
-        // height: "26px",
       }}
     />
   );

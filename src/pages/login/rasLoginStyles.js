@@ -50,7 +50,7 @@ const styles = (theme) => ({
     fontFamily: "Inter",
     fontSize: "30px",
     fontWeight: 500,
-    color: "#004D73",
+    color: "#FFFFFF",
     marginTop: "10px",
     lineHeight: "107%",
     letterSpacing: "-2%",
