@@ -31,6 +31,7 @@ import StudiesContainer from '../../pages/studies/studiesController';
 import DataModelNavigator from '../../pages/dmn';
 import SysInfo from '../../pages/sysinfo/sysinfo';
 import rasLogin from '../../pages/login/rasLoginView';
+import RasTestFilesView from '../../pages/rasTestFiles/RasTestFilesView';
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -73,6 +74,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route exact path="/graphql" component={GraphqlClient} />
             <Route exact path="/data-model" component={DataModelNavigator} />
             <Route exact path="/sysinfo" component={SysInfo} />
+            <Route exact path="/user/ras-test-files" component={RasTestFilesView} />
             {process.env.NODE_ENV !== 'production' && (
               <Route exact path="/user/era-login" component={Login} />
             )}

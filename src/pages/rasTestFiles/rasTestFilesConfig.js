@@ -1,0 +1,126 @@
+import downloadSuccess from "../../assets/dash/downloadSuccess.svg";
+import downloadLock from "../../assets/dash/downloadLock.svg";
+import { cellTypes, dataFormatTypes } from "@bento-core/table";
+
+export const rasTestFilesTableConfig = {
+  name: "RAS_QA_Test_Files",
+  dataKey: "guid",
+  tableMsg: {
+    noMatch: "No matching test files found.",
+  },
+  selectableRows: false,
+  defaultSortField: "phs_consent",
+  defaultSortDirection: "asc",
+  extendedViewConfig: {
+    pagination: true,
+    manageViewColumns: { title: "View Columns" },
+    download: {
+      downloadCsv: "Download Table Content (CSV)",
+      downloadFileName: "CTDC_RAS_QA_Test_Files",
+    },
+  },
+  columns: [
+    {
+      dataField: "guid",
+      header: "Access",
+      display: true,
+      cellType: cellTypes.CUSTOM_ELEM,
+      downloadDocument: true,
+      documentDownloadProps: {
+        fileSizeColumn: "data_file_size",
+        fileLocationColumn: "guid",
+        fileFormatColumn: "data_file_format",
+        fileName: "file_name",
+        toolTipTextFileDownload: "Click to download a copy of this file",
+        iconFileDownload: downloadSuccess,
+        iconUnauthenticated: downloadLock,
+        toolTipTextUnauthenticated: "Login to access this file",
+      },
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: "phs_id_version_participant_set",
+      header: "phs_id.version.participant_set",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "consent_name",
+      header: "Consent Name",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "consent_group",
+      header: "Consent Group",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "phs_consent",
+      header: "phs Consent",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "guid",
+      header: "GUID",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "md5",
+      header: "MD5",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "data_file_size",
+      header: "Size",
+      display: true,
+      role: cellTypes.DISPLAY,
+      dataFormatType: dataFormatTypes.FORMAT_BYTES,
+      cellType: cellTypes.FORMAT_DATA,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "file_name",
+      header: "File Name",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "urls",
+      header: "URLs",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+    {
+      dataField: "acl",
+      header: "ACL",
+      display: true,
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: "authz",
+      header: "Authz",
+      display: true,
+      role: cellTypes.DISPLAY,
+    },
+    {
+      dataField: "drs_uri",
+      header: "DRS URI",
+      display: true,
+      role: cellTypes.DISPLAY,
+      tooltipText: "Sort",
+    },
+  ],
+};
