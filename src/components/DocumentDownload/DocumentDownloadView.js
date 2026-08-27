@@ -12,7 +12,7 @@ import SessionTimeOutModal from '../sessionTimeOutModal';
 import { useAuth } from '../Authentication';
 import { useGlobal } from '../Global/GlobalProvider';
 
-const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
+const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API + 'ras/';
 
 // Function to fetch and download a file
 export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification) => {
