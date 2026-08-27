@@ -6,7 +6,7 @@ import HeaderMobile from './HeaderMobile';
 import USABanner from './USABanner';
 import GenericBanner from '../GenericBanner/GenericBanner';
 
-const HeaderContainer = styled.div`
+const HeaderContainer = styled.header`
  @media (min-width: 1024px) {
     .desktop {
       display: block;

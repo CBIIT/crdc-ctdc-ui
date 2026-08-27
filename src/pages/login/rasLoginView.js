@@ -47,7 +47,9 @@ function RASLoginPage(props) {
           />
           <img src={LockIconSvg} alt="Lock Icon" className={classes.HeroIcon} />
         </div>
-        <Typography className={classes.HeroTitle}>Login to the CTDC</Typography>
+        <Typography variant="h1" component="h1" className={classes.HeroTitle}>
+          Login to the CTDC
+        </Typography>
       </Box>
 
       {/* Main Content - Two Column Layout */}
@@ -58,7 +60,11 @@ function RASLoginPage(props) {
             <Box className={classes.CombinedLoginBox}>
               {/* RAS Section */}
               <Box className={classes.RasSection}>
-                <Typography className={classes.BoxTitle}>
+                <Typography
+                  variant="h2"
+                  component="h2"
+                  className={classes.BoxTitle}
+                >
                   Log in with NIH Research Auth Service (RAS)
                 </Typography>
 
@@ -121,7 +127,11 @@ function RASLoginPage(props) {
                         }
                       }}
                     >
-                      <Typography className={classes.VerificationTitle}>
+                      <Typography
+                        variant="h3"
+                        component="h3"
+                        className={classes.VerificationTitle}
+                      >
                         CTDC Verification Process
                       </Typography>
                       <ToggleArrow isOpen={verificationOpen} />
@@ -167,12 +177,18 @@ function RASLoginPage(props) {
             <Box className={classes.RequestSection}>
               {/* Top section: Title + Access Requirements */}
               <Box className={classes.RequestTopSection}>
-                <Typography className={classes.SectionTitle}>
+                <Typography
+                  variant="h2"
+                  component="h2"
+                  className={classes.SectionTitle}
+                >
                   Request Access
                 </Typography>
                 <Box className={classes.VerificationWrapper}>
                   <Box className={classes.VerificationSection}>
                     <Typography
+                      variant="h3"
+                      component="h3"
                       className={classes.SubsectionTitle}
                       style={{ marginTop: 0, marginBottom: 0 }}
                     >
@@ -222,6 +238,8 @@ function RASLoginPage(props) {
                     }}
                   >
                     <Typography
+                      variant="h3"
+                      component="h3"
                       className={classes.SubsectionTitle}
                       style={{ marginTop: 0, marginBottom: 0 }}
                     >
@@ -275,6 +293,8 @@ function RASLoginPage(props) {
                     <Box className={classes.VerificationWrapper}>
                       <Box className={classes.VerificationSection}>
                         <Typography
+                          variant="h3"
+                          component="h3"
                           className={classes.SubsectionTitle}
                           style={{ marginTop: 0, marginBottom: 0 }}
                         >
@@ -299,7 +319,11 @@ function RASLoginPage(props) {
             {/* Warning Notice Section */}
             <Box className={classes.WarningSection}>
               <Box className={classes.WarningContent}>
-                <Typography className={classes.WarningTitle}>
+                <Typography
+                  variant="h2"
+                  component="h2"
+                  className={classes.WarningTitle}
+                >
                   Warning Notice
                 </Typography>
                 <Box
@@ -341,7 +365,11 @@ function RASLoginPage(props) {
 
           {/* Right Column - Help Sidebar */}
           <Grid item xs={12} md className={classes.RightColumn}>
-            <Box className={classes.HelpSidebar}>
+            <Box
+              component="aside"
+              className={classes.HelpSidebar}
+              aria-label="Help and Support"
+            >
               {/* Need Help Section */}
               <Box className={classes.HelpHeader}>
                 <img
@@ -349,14 +377,22 @@ function RASLoginPage(props) {
                   alt="Help Icon"
                   className={classes.HelpIcon}
                 />
-                <Typography className={classes.HelpHeaderText}>
+                <Typography
+                  variant="h2"
+                  component="h2"
+                  className={classes.HelpHeaderText}
+                >
                   NEED HELP?
                 </Typography>
               </Box>
 
               {/* Tutorial Section */}
               <Box className={classes.TutorialSection}>
-                <Typography className={classes.SidebarTitle}>
+                <Typography
+                  variant="h3"
+                  component="h3"
+                  className={classes.SidebarTitle}
+                >
                   Creating Accounts to Access CTDC data
                 </Typography>
                 <Typography className={classes.SidebarText}>
@@ -384,7 +420,11 @@ function RASLoginPage(props) {
 
               {/* Contact Section */}
               <Box className={classes.ContactSection}>
-                <Typography className={classes.SidebarTitle}>
+                <Typography
+                  variant="h3"
+                  component="h3"
+                  className={classes.SidebarTitle}
+                >
                   Let us assist you with your login or access issues
                 </Typography>
                 <Typography className={classes.SidebarText}>

@@ -12,7 +12,7 @@ import { getAuthenticatedIdp } from '../../../utils/authUtil';
 import { Box } from '@material-ui/core';
 
 
-const Nav = styled.div`
+const Nav = styled.nav`
     top: 0;
     left: 0;
     width: 100%;
@@ -420,7 +420,7 @@ const NavBar = () => {
   const EnhancedNav = withRouter(Nav);
 
   return (
-    <EnhancedNav>
+    <EnhancedNav aria-label="Main Navigation">
       <NavContainer>
         <UlContainer>
           {

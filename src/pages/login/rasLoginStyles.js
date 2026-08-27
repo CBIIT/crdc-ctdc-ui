@@ -1,7 +1,7 @@
 const styles = (theme) => ({
   Container: {
-    background: 
-        "linear-gradient(147deg, #0E8EB1 0%, #A1D2D5 68%, #E6E6E6 100%), #088CBA",
+    background:
+      "linear-gradient(147deg, #0E8EB1 0%, #A1D2D5 68%, #E6E6E6 100%), #088CBA",
     fontFamily: 'Lato, "Open Sans", sans-serif',
     padding: "0px 16px 80px",
     boxShadow: "0px 4px 20px 0px #00000040 inset",
@@ -409,7 +409,6 @@ const styles = (theme) => ({
     height: "47px",
     display: "block",
     margin: "26px auto 0",
-
   },
 
   // Request Access Section

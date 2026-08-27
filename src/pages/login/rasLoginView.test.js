@@ -89,4 +89,25 @@ describe("RASLoginPage", () => {
       "This warning banner provides privacy",
     );
   });
+
+  it("renders semantic accessibility landmarks and heading structure", () => {
+    renderPage();
+
+    const pageContainer = container.firstElementChild;
+    expect(pageContainer).not.toBeNull();
+
+    const h1Heading = container.querySelector("h1");
+    expect(h1Heading).not.toBeNull();
+    expect(h1Heading.textContent).toBe("Login to the CTDC");
+
+    const h2Headings = container.querySelectorAll("h2");
+    expect(h2Headings.length).toBeGreaterThan(0);
+
+    const h3Headings = container.querySelectorAll("h3");
+    expect(h3Headings.length).toBeGreaterThan(0);
+
+    const asideLandmark = container.querySelector("aside");
+    expect(asideLandmark).not.toBeNull();
+    expect(asideLandmark.getAttribute("aria-label")).toBe("Help and Support");
+  });
 });

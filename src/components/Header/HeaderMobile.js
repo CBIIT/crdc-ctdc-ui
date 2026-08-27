@@ -299,7 +299,7 @@ const Header = () => {
 
   return (
     <>
-      <HeaderBanner role="banner">
+      <HeaderBanner>
         <HeaderContainer>
           <Logo />
           <div className="headerLowerContainer">

@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import styled from 'styled-components';
 import FooterData from '../../config/globalFooterData';
 
-const FooterStyled = styled.footer`
+const FooterStyled = styled.div`
   background-color: #1B496E;
   bottom: 0;
   width: 100%;
@@ -332,7 +332,7 @@ const FooterMobile = () => {
 
   return (
     <>
-      <FooterStyled role="contentinfo">
+      <FooterStyled>
         <FooterContainer>
           <FooterLinksContainer>
             {
@@ -368,9 +368,9 @@ const FooterMobile = () => {
           </FooterLinksContainer>
           <FooterEmailSignupContainer onSubmit={handleSubmit} ref={emailForm} action="https://public.govdelivery.com/accounts/USNIHNCI/subscribers/qualify" method="post" target="_blank" id="signup" noValidate>
             <input type="hidden" name="topic_id" id="topic_id" value="USNIHNCI_223" aria-label="topic_id"/>
-            <div className="signUpTitle">
+            <h2 className="signUpTitle">
               Sign up for email updates
-            </div>
+            </h2>
             <div className={errorClass !== "" ? 'ErrorBorder' : null}>
               <div className="enterTitle">
                   Enter your email address

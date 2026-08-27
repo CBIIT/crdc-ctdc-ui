@@ -53,7 +53,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
         <AuthSessionTimeoutController />
         <Header />
         <OverlayWindow />
-        <div className={classes.content}>
+        <main className={classes.content}>
           <Route component={ScrollToTopComponent} />
             <ActivitiesController >
           <Switch>
@@ -92,8 +92,8 @@ const Layout = ({ classes, isSidebarOpened }) => {
           </Switch>
           </ActivitiesController>
           <ScrollToTop />
-          <Footer />
-        </div>
+        </main>
+        <Footer />
       </>
     </HashRouter>
   </>
