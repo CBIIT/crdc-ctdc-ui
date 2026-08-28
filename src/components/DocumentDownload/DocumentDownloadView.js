@@ -42,12 +42,29 @@ export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fi
       throw new Error(`Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`);
     }
 
-    // Parse response body as JSON
-    const jsonResponse = await response.json();
+    // RAS returns a raw signed URL string; DCF wraps it as { url: ... }
+    const responseText = await response.text();
+    let fileURL = '';
 
-    // Extract file URL from the response
-    const fileURL = jsonResponse.url;
-    if (!fileURL) {
+    try {
+      const parsed = JSON.parse(responseText);
+      if (typeof parsed === 'string') {
+        fileURL = parsed;
+      } else if (parsed && typeof parsed === 'object') {
+        fileURL = parsed.url || parsed.presigned_url || parsed.fileURL || '';
+      }
+    } catch (e) {
+      fileURL = responseText;
+    }
+
+    fileURL = typeof fileURL === 'string' ? fileURL.trim() : '';
+    if (fileURL.startsWith('"') && fileURL.endsWith('"')) {
+      fileURL = fileURL.slice(1, -1);
+    }
+
+    // Guard against non-URL bodies (e.g. HTML error pages) being treated as a download link
+    if (!fileURL || !/^https?:\/\//i.test(fileURL)) {
+      console.error(`No valid file URL found in response for "${fileId}":`, responseText);
       throw new Error('Missing File URL');
     }
 
