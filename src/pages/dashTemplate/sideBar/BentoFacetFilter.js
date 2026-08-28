@@ -23,6 +23,7 @@ import {
 import store from '../../../store';
 import styles from './BentoFacetFilterStyle';
 import LocalFindSearchView from './LocalFindSearchView';
+import ParticipantIdSearchBox from './ParticipantIdSearchBox';
 import { FacetFilter, ClearAllFiltersBtn } from '@bento-core/facet-filter';
 import { facetsConfig, facetSectionVariables, resetIcon } from '../../../bento/dashTemplate';
 import FacetFilterThemeProvider from './FilterThemeConfig';
@@ -239,6 +240,7 @@ const BentoFacetFilter = ({
           Component={CustomClearAllFiltersBtn}
           activeFilters={activeFilters}
         />
+        <ParticipantIdSearchBox classes={classes} />
         <FacetFilter
           data={searchData}
           facetSectionConfig={facetSectionVariables}

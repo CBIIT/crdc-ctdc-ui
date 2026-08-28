@@ -179,4 +179,19 @@ export default () => ({
     marginRight: 0,
     marginBottom: 6,
   },
+  participantIdSearchContainer: {
+    padding: '10px 8px 15px 8px',
+  },
+  participantIdSearchLabel: {
+    display: 'block',
+    fontSize: '13px',
+    fontFamily: 'Open Sans',
+    fontWeight: '600',
+    color: '#3d4241',
+    marginBottom: '6px',
+  },
+  participantIdSearchInput: {
+    width: '100%',
+    backgroundColor: '#fff',
+  },
 });
