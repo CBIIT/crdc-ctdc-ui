@@ -79,9 +79,10 @@ export default () => ({
     alignItems: 'center',
     justifyContent: 'space-between',
     zIndex: 2,
-    fontFamily: 'Open Sans, Lato',
-    fontSize: 16, // 20
+    fontFamily: 'Open Sans',
+    fontSize: 16,
     fontWeight: 300,
+    lineHeight: '16px',
     marginLeft: 3,
     color: '#000000',
 
@@ -106,7 +107,6 @@ export default () => ({
     color: '#323232',
     fontFamily: 'Nunito',
     fontSize: '14px',
-    marginRight: '0px',
   },
   "activeFacetFilter_by_Participants": {
     color: '#076448',
@@ -179,19 +179,120 @@ export default () => ({
     marginRight: 0,
     marginBottom: 6,
   },
-  participantIdSearchContainer: {
-    padding: '10px 8px 15px 8px',
+  uploadModalPaper: {
+    border: '1px solid #1F344F',
+    boxShadow: 'none',
+    '& #local_find_upload_browse': {
+      backgroundColor: '#026551',
+      cursor: 'pointer',
+    },
+    '& #local_find_upload_input': {
+      width: '143px',
+      borderRadius: 0,
+      cursor: 'pointer',
+      '&::-webkit-file-upload-button': {
+        cursor: 'pointer',
+      },
+      '&::file-selector-button': {
+        cursor: 'pointer',
+      },
+    },
+    '& #local_find_upload_cancel': {
+      backgroundColor: '#4F5D69 !important',
+    },
+    '& #local_find_upload_clear': {
+      backgroundColor: '#127EA6 !important',
+    },
+    '& #local_find_upload_submit': {
+      backgroundColor: '#06846A !important',
+    },
+    '& [class*="fileName"]': {
+      color: '#026551',
+      fontFamily: 'Lato',
+      fontSize: 14,
+      fontStyle: 'italic',
+      fontWeight: 700,
+      lineHeight: '15px',
+      paddingTop: 8,
+      paddingBottom: 8,
+    },
+    '& [class*="horizontal"]': {
+      marginTop: 0,
+      display: 'none',
+    },
+    '& [class*="fileNameContainer"] ~ [class*="horizontal"]': {
+      display: 'block',
+    },
   },
-  participantIdSearchLabel: {
-    display: 'block',
-    fontSize: '13px',
-    fontFamily: 'Open Sans',
-    fontWeight: '600',
-    color: '#3d4241',
-    marginBottom: '6px',
+  uploadModalOrTitle: {
+    color: '#026551',
+    fontWeight: 700,
+    letterSpacing: '0.17px',
   },
-  participantIdSearchInput: {
-    width: '100%',
-    backgroundColor: '#fff',
+  uploadModalTextArea: {
+    border: '1.5px solid #026551',
+    color: '#026551',
+    fontFamily: 'Lato',
+    fontSize: 13,
+    fontStyle: 'normal',
+    fontWeight: 600,
+    lineHeight: '19px',
+    '&::placeholder': {
+      color: '#026551',
+      fontFamily: 'Lato',
+      fontSize: 13,
+      fontStyle: 'normal',
+      fontWeight: 600,
+      lineHeight: '19px',
+    },
+    '&:focus': {
+      outline: 'none',
+      border: '1.5px solid #026551',
+    },
   },
+  uploadModalTitle: {
+    color: '#08A383',
+    lineHeight: '20px',
+  },
+  paper: {
+    backgroundColor: '#595959',
+    fontSize: 11,
+    fontWeight: 600,
+    lineHeight: '11px',
+  },
+  inputRoot: {
+    color: '#000',
+    fontWeight: 600,
+    lineHeight: '11px',
+    '& fieldset': {
+      borderColor: '#026551 !important',
+    },
+  },
+  option: {
+    minHeight: 27,
+  },
+  searchResultDetailText: {
+    color: '#026551',
+    fontFamily: 'Lato',
+    fontSize: 13,
+    fontStyle: 'normal',
+    fontWeight: 600,
+    lineHeight: '19px',
+  },
+  searchBoxRoot: {
+    '& .MuiListItem-root': {
+      paddingTop: 2,
+      paddingBottom: 2,
+    },
+  },
+  listItemGutters: {
+    padding: '2px 10px 2px 10px',
+    display: 'flex',
+    justifyContent: 'space-between',
+  },
+  divider: {
+    marginLeft: 0,
+    marginRight: 0,
+  },
+
 });

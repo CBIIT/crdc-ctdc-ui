@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Button } from "@material-ui/core";
 import { SearchList, resetUploadData } from "@bento-core/local-find";
-import uploadIcon from '../../../assets/dash/uploadIcon.svg';
+import uploadIcon from '../../../../assets/dash/uploadIcon.svg';
 
 /**
  * Custom Local Find Search View for CTDC.
@@ -56,7 +56,16 @@ const LocalFindSearchView = (props) => {
           />
         </span>
       </Button>
-      <UploadModal open={showModal} onCloseModal={() => setShowModal(false)} />
+      <UploadModal
+        open={showModal}
+        onCloseModal={() => setShowModal(false)}
+        classes={{
+          paper: classes.uploadModalPaper,
+          modalTitle: classes.uploadModalTitle,
+          textArea: classes.uploadModalTextArea,
+          orTitle: classes.uploadModalOrTitle,
+        }}
+      />
     </div>
   );
 };

@@ -18,12 +18,12 @@ import {
 import clsx from 'clsx';
 import {
   resetAllData, chunkSplit,
-  SearchBoxGenerator, UploadModalGenerator,
+  SearchBoxGenerator,
 } from '@bento-core/local-find';
+import UploadModalGenerator from './localfind/UploadModalGenerator';
 import store from '../../../store';
 import styles from './BentoFacetFilterStyle';
-import LocalFindSearchView from './LocalFindSearchView';
-import ParticipantIdSearchBox from './ParticipantIdSearchBox';
+import LocalFindSearchView from './localfind/LocalFindSearchView';
 import { FacetFilter, ClearAllFiltersBtn } from '@bento-core/facet-filter';
 import { facetsConfig, facetSectionVariables, resetIcon } from '../../../bento/dashTemplate';
 import FacetFilterThemeProvider from './FilterThemeConfig';
@@ -240,7 +240,6 @@ const BentoFacetFilter = ({
           Component={CustomClearAllFiltersBtn}
           activeFilters={activeFilters}
         />
-        <ParticipantIdSearchBox classes={classes} />
         <FacetFilter
           data={searchData}
           facetSectionConfig={facetSectionVariables}
