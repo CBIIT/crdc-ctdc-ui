@@ -34,8 +34,8 @@ query getMyUser {
 export const DEFAULT_CONFIG_AUTHPROVIDER = {
   // Misc. Configuration Options
   config: {
-    GOOGLE_CLIENT_ID: 'Sample Id',
-    NIH_CLIENT_ID: 'Sample Id',
+    GOOGLE_CLIENT_ID: '',
+    NIH_CLIENT_ID: '',
     NIH_AUTH_URL: 'https://stsstg.nih.gov/auth/oauth/v2/authorize',
     AUTH_API: '',
     GET_USER_DETAILS,

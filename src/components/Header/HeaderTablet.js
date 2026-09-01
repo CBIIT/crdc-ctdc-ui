@@ -11,6 +11,7 @@ import menuClearIcon from '../../assets/header/Menu_Cancel_Icon.svg';
 import rightArrowIcon from '../../assets/header/Right_Arrow.svg';
 import leftArrowIcon from '../../assets/header/Left_Arrow.svg';
 import { navMobileList, navbarSublists } from '../../config/globalHeaderData';
+import { getAuthenticatedIdp } from '../../utils/authUtil';
 
 const HeaderBanner = styled.div`
   width: 100%;
@@ -192,7 +193,8 @@ const Header = () => {
   const displayName = authData.name || "N/A";
 
   const handleLogout = async () => {
-    signOut(history, "/", 'DCF');
+    const idp = getAuthenticatedIdp(authData);
+    signOut(history, "/", idp);
     onShowNotification("You have been logged out.", 2000)
     history.push('/');
     setNavMobileDisplay('none');
@@ -292,7 +294,7 @@ const Header = () => {
 
   return (
     <>
-      <HeaderBanner role="banner">
+      <HeaderBanner>
         <HeaderContainer>
           <Logo />
           <div className="headerLowerContainer">

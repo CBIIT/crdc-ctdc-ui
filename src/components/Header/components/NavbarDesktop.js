@@ -8,10 +8,11 @@ import { useGlobal } from '../../Global/GlobalProvider';
 import { useAuth } from '../../Authentication';
 import CartContainer from '../../Cart/CartController';
 import { navMobileList, navbarSublists } from '../../../config/globalHeaderData';
+import { getAuthenticatedIdp } from '../../../utils/authUtil';
 import { Box } from '@material-ui/core';
 
 
-const Nav = styled.div`
+const Nav = styled.nav`
     top: 0;
     left: 0;
     width: 100%;
@@ -391,7 +392,8 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     setClickedTitle("");
-    signOut(history, "/", 'DCF');
+    const idp = getAuthenticatedIdp(authData);
+    signOut(history, "/", idp);
     onShowNotification("You have been logged out.", 2000)
     history.push('/');
   };
@@ -418,7 +420,7 @@ const NavBar = () => {
   const EnhancedNav = withRouter(Nav);
 
   return (
-    <EnhancedNav>
+    <EnhancedNav aria-label="Main Navigation">
       <NavContainer>
         <UlContainer>
           {

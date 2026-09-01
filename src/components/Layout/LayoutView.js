@@ -30,6 +30,7 @@ import useVisitedPageSync from '../../utils/useVisitedPageSync';
 import StudiesContainer from '../../pages/studies/studiesController';
 import DataModelNavigator from '../../pages/dmn';
 import SysInfo from '../../pages/sysinfo/sysinfo';
+import rasLogin from '../../pages/login/rasLoginView';
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -52,7 +53,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
         <AuthSessionTimeoutController />
         <Header />
         <OverlayWindow />
-        <div className={classes.content}>
+        <main className={classes.content}>
           <Route component={ScrollToTopComponent} />
             <ActivitiesController >
           <Switch>
@@ -72,6 +73,9 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route exact path="/graphql" component={GraphqlClient} />
             <Route exact path="/data-model" component={DataModelNavigator} />
             <Route exact path="/sysinfo" component={SysInfo} />
+            {process.env.NODE_ENV !== 'production' && (
+              <Route exact path="/user/era-login" component={Login} />
+            )}
 
             {/* END: Private Routes */}
             {aboutPageRoutes.map(
@@ -83,13 +87,13 @@ const Layout = ({ classes, isSidebarOpened }) => {
                 />
               ),
             )}
-            <LoginRoute path="/user/login" component={Login} />
+            <LoginRoute path="/user/login" component={rasLogin} />
             <Route component={Error} />
           </Switch>
           </ActivitiesController>
           <ScrollToTop />
-          <Footer />
-        </div>
+        </main>
+        <Footer />
       </>
     </HashRouter>
   </>
