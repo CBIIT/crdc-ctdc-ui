@@ -18,10 +18,12 @@ import {
 import clsx from 'clsx';
 import {
   resetAllData, chunkSplit,
-  SearchView, SearchBoxGenerator, UploadModalGenerator,
+  SearchBoxGenerator,
 } from '@bento-core/local-find';
+import UploadModalGenerator from './localfind/UploadModalGenerator';
 import store from '../../../store';
 import styles from './BentoFacetFilterStyle';
+import LocalFindSearchView from './localfind/LocalFindSearchView';
 import { FacetFilter, ClearAllFiltersBtn } from '@bento-core/facet-filter';
 import { facetsConfig, facetSectionVariables, resetIcon } from '../../../bento/dashTemplate';
 import FacetFilterThemeProvider from './FilterThemeConfig';
@@ -54,9 +56,9 @@ const { SearchBox } = SearchBoxGenerator({
   functions: {
     getSuggestions: async (searchType) => {
       try {
-        const response = await getAllIds(searchType).catch(() => []);
-        return response && response[searchType] instanceof Array
-          ? response[searchType].map((id) => ({ type: searchType, title: id }))
+        const response = await getAllIds().catch(() => ({ participantIds: [] }));
+        return response && response.participantIds instanceof Array
+          ? response.participantIds.map((id) => ({ type: searchType, title: id }))
           : [];
       } catch (e) {
         return [];
@@ -66,7 +68,7 @@ const { SearchBox } = SearchBoxGenerator({
   config: {
     inputPlaceholder: 'e.g. MSB-00140, MSB-00205', // The textarea placeholder
     noOptionsText: 'No matching items found',      // The text to display when no autocomplete opts are found
-    searchType: 'subjectIds',                      // The search type to use for the autocomplete
+    searchType: 'participantIds',                  // The search type to use for the autocomplete
   },
 });
 
@@ -93,11 +95,11 @@ const { UploadModal } = UploadModalGenerator({
   },
   config: {
     title: 'Upload Participant Set',                   // The title of the modal
-    inputPlaceholder: 'eg. PARTICIPANT-123',           // The placeholder text for the textarea input
-    inputTooltip: 'Add the participant indentifier.',  // The tooltip text for the textarea input section. Empty = no tooltip
-    uploadTooltip: 'Add the participant indentifier.', // The tooltip text for the upload button section. Empty = no tooltip
+    inputPlaceholder: 'eg. MSB-00140, MSB-00205',    // The placeholder text for the textarea input
+    inputTooltip: 'Enter valid Participant IDs.',     // The tooltip text for the textarea input section
+    uploadTooltip: 'Select a file from your computer.', // The tooltip text for the upload button section
     accept: '.csv,.txt',                        // The file types that can be uploaded (must be text/* files only)
-    maxSearchTerms: 1000,                       // The maximum number of search terms that can be searched for. See note below.
+    maxSearchTerms: 1000,                       // The maximum number of search terms that can be searched for
   },
 });
 
@@ -186,7 +188,7 @@ const BentoFacetFilter = ({
             )}
           </div>
           {hasSearch && (
-            <SearchView
+            <LocalFindSearchView
               classes={classes}
               SearchBox={SearchBox}
               UploadModal={UploadModal}
