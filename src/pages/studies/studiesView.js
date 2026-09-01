@@ -91,7 +91,7 @@ const styles = (theme) => ({
   headerTitle: {
     float: 'left',
     top: '23px',
-    left: '85px',
+    left: '96px',
     position: 'absolute',
 
     fontFamily: 'Inter',

@@ -2,6 +2,7 @@ import { cellTypes, dataFormatTypes } from "@bento-core/table";
 import gql from "graphql-tag";
 import downloadSuccess from "../assets/dash/downloadSuccess.svg";
 import downloadLock from "../assets/dash/downloadLock.svg";
+import studiesIcon from "../assets/study/studies_icon.svg";
 
 // --------------- Tooltip configuration --------------
 export const tooltipContent = {
@@ -14,8 +15,7 @@ export const title = {
   armsAndCohort: "",
 };
 
-export const headerIcon =
-  "https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/Icon-TrialDetail.svg";
+export const headerIcon = studiesIcon;
 export const externalIcon =
   "https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExternalLinkIcon.svg";
 

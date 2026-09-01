@@ -291,6 +291,8 @@ export default (theme) => ({
       overflow: "hidden",
       objectFit: "contain",
       display: "block",
+      // match the previous icon's visual size
+      transform: "scale(1.235)",
     },
     [theme.breakpoints.down("md")]: {
       gridColumn: "1",

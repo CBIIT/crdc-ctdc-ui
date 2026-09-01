@@ -8,7 +8,7 @@ import fileDrawerIcon from '../assets/study/file_drawer.svg';
 import photographIcon from '../assets/study/photograph.svg';
 import documentAndPenIcon from '../assets/study/document_and_pen.svg';
 import abstractGraphIcon from '../assets/study/abstract_graph.svg';
-import clipboardWithChecklist from '../assets/study/clipboard_with_checklist.svg'
+import studiesIcon from '../assets/study/studies_icon.svg';
 
 export const tableLayOut = [
   {
@@ -20,8 +20,8 @@ export const tableLayOut = [
 export const pageData = {
   embargoFileIcon: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/icdc/images/svgs/Icon-Embargo-File.svg',
   studyListingIcon: {
-    src: clipboardWithChecklist,
-    alt: 'Clipboard with checklist',
+    src: studiesIcon,
+    alt: 'Studies header icon',
   },
   externalLinkIcon: {
     src: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExternalLinkIcon.svg',
