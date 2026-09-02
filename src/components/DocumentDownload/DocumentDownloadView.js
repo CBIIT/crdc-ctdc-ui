@@ -3,7 +3,6 @@ import { useSelector } from 'react-redux';
 import { withStyles } from '@material-ui/core';
 import ToolTip from '@bento-core/tool-tip';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
 
 import env from '../../utils/env';
 import CustomIcon from '../CustomIcon/CustomIconView';
@@ -75,38 +74,13 @@ export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fi
   }
 };
 
-// Function to download the file
-const downloadFile = async (signedUrl, fileName, fileFormat) => {
-  try {
-    const response = await axios({
-      url: signedUrl,
-      method: 'GET',
-      responseType: 'blob',
-    });
-
-    // Optionally append fileFormat to fileName
-    let downloadName = fileName;
-    if (fileFormat && !fileName.endsWith(`.${fileFormat}`)) {
-      downloadName += `.${fileFormat}`;
-    }
-
-    // Create a URL for the blob
-    const url = window.URL.createObjectURL(response.data);
-    const link = document.createElement('a');
-    link.href = url;
-
-    link.setAttribute('download', downloadName);
-    document.body.appendChild(link);
-
-    // Trigger the download
-    link.click();
-
-    // Clean up
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error('Failed to download file:', error);
-  }
+// Direct navigation avoids requiring CORS permission for an XHR blob request.
+const downloadFile = (signedUrl) => {
+  const link = document.createElement('a');
+  link.href = signedUrl;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
 };
 
 // NOTE: This component is getting more complex, will need to refactor at some point.
