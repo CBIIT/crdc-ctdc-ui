@@ -14,9 +14,9 @@ const useStyles = makeStyles(() => ({
   root: {
     width: '100%',
   },
-  snackbarStyles: {
-    marginTop: '115px',
-  },
+  snackbarStyles: (props) => ({
+    marginTop: props.vertical === 'top' ? '115px' : 0,
+  }),
   alertStyles: {
     // Widths & Size
     width: '535px',
@@ -49,9 +49,9 @@ const NotificationView = () => {
   const {
     open, message, duration, location, customStyle
   } = Notification.getProps();
-  const classes = useStyles();
 
   const { vertical, horizontal } = location;
+  const classes = useStyles({ vertical });
 
   const handleClose = () => {
     Notification.close();

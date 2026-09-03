@@ -1,15 +1,16 @@
 import React from 'react';
 
+const defaultLocation = {
+  vertical: 'top',
+  horizontal: 'center',
+};
+
 const NotificationFunctions = () => {
   // States
   const [open, setOpen] = React.useState(false);
   const [duration, setDuration] = React.useState(10000);
   const [message, setMessage] = React.useState('');
-  // eslint-disable-next-line no-unused-vars
-  const [location, setLocation] = React.useState({
-    vertical: 'top',
-    horizontal: 'center',
-  });
+  const [location, setLocation] = React.useState(defaultLocation);
   const [customStyle, setCustomStyle] = React.useState({});
 
   // Variables
@@ -23,10 +24,11 @@ const NotificationFunctions = () => {
     setOpen(false);
   };
 
-  const show = (msg, timeoutDuration, style) => {
+  const show = (msg, timeoutDuration, style, notificationLocation = defaultLocation) => {
     setMessage(msg);
     setDuration(timeoutDuration);
-    setCustomStyle(style); // Add this line to set the custom style
+    setCustomStyle(style);
+    setLocation(notificationLocation);
     setOpen(true);
   };
 

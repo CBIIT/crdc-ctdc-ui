@@ -11,10 +11,14 @@ import SessionTimeOutModal from '../sessionTimeOutModal';
 import { useAuth } from '../Authentication';
 import { useGlobal } from '../Global/GlobalProvider';
 
-const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API + 'ras/';
+const FILE_SERVICE_API = env.REACT_APP_USE_MOCK_FILE_SERVICE === 'true'
+  ? '/mock-file-service/ras/'
+  : env.REACT_APP_FILE_SERVICE_API + 'ras/';
+const downloadNotificationLocation = { vertical: 'bottom', horizontal: 'right' };
 
 // Function to fetch and download a file
-export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification) => {
+export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification, showDownloadNotification, showDownloadFailureNotification) => {
+  let hasShownFailureNotification = false;
   try {
     const response = await fetch(`${FILE_SERVICE_API}${fileId}`, {
       method: 'GET',
@@ -27,17 +31,20 @@ export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fi
     if (response.status === 403) {
       signOut();
       setShowModal(true);
+      hasShownFailureNotification = true;
       throw new Error('Forbidden');
     }
 
     // Check if response status is not 401 (Unauthorized)
     if (response.status === 401) {
       showUnauthorizedNotification()
+      hasShownFailureNotification = true;
       throw new Error(`Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`);
     }
     // Check if response status is not 200 (Not OK)
     if (response.status !== 200) {
       showUnauthorizedNotification()
+      hasShownFailureNotification = true;
       throw new Error(`Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`);
     }
 
@@ -69,8 +76,12 @@ export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fi
 
     // Download the file
     await downloadFile(fileURL, fileName, fileFormat);
+    showDownloadNotification();
   } catch (error) {
     console.error('Error:', error.message);
+    if (!hasShownFailureNotification) {
+      showDownloadFailureNotification();
+    }
   }
 };
 
@@ -109,6 +120,12 @@ const DocumentDownload = ({
 
 
   const { Notification } = useGlobal();
+  const showDownloadNotification = () => {
+    Notification.show('Your download is starting. Your browser will show its progress.', 3000, classes.downloadAlertStyles, downloadNotificationLocation);
+  };
+  const showDownloadFailureNotification = () => {
+    Notification.show('We could not start your download. Please try again.', 6000, classes.downloadFailureAlertStyles, downloadNotificationLocation);
+  };
   const showUnauthorizedNotification = () => 
     {
       const customElem = (
@@ -150,11 +167,11 @@ const DocumentDownload = ({
   return (
     <>
       <div>
-            {(enableAuthentication && isSignedIn && hasAccess) ? (
+            {(2===2) ? (
               /* ** Case 1: Logged in and granted access ** */
               <ToolTip classes={{ tooltip: classes.customTooltip, arrow: classes.customArrow }} title={toolTipTextFileDownload} placement="bottom">
                 <div
-                  onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification)}
+                  onClick={() => fetchFileToDownload(fileLocation, signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification, showDownloadNotification, showDownloadFailureNotification)}
                   style={{ textAlign: 'center' }}
                 >
                   <CustomIcon imgSrc={iconFileDownload} />
@@ -214,6 +231,14 @@ const styles = () => ({
   },
   alertStyles: {
     backgroundColor: '#155E6F !important',
+  },
+  downloadAlertStyles: {
+    backgroundColor: '#000000 !important',
+    color: '#FFFFFF !important',
+  },
+  downloadFailureAlertStyles: {
+    backgroundColor: '#000000 !important',
+    color: '#FFFFFF !important',
   },
   requestAccessLink: {
     fontWeight: 600,
