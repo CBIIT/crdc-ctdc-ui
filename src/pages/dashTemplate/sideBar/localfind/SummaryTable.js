@@ -106,7 +106,7 @@ const styles = () => ({
   summaryButton: {
     fontSize: 12,
     fontWeight: 500,
-    color: '#00387A',
+    color: '#000000',
     backgroundColor: '#fff',
     borderBottom: '4px solid #026551',
     cursor: 'pointer',
@@ -117,7 +117,7 @@ const styles = () => ({
   unselectedButton: {
     fontSize: 12,
     fontWeight: 500,
-    color: '#00387A',
+    color: '#000000',
     backgroundColor: '#DEE0E2',
     cursor: 'pointer',
     padding: '11px 22px',
