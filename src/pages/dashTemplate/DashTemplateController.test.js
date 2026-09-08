@@ -24,4 +24,11 @@ describe('buildParticipantIdFilter', () => {
     expect(buildParticipantIdFilter(undefined, undefined)).toEqual([]);
     expect(buildParticipantIdFilter([], [])).toEqual([]);
   });
+
+  it('deduplicates IDs present in both upload and autocomplete', () => {
+    expect(buildParticipantIdFilter(
+      [{ subject_id: 'MSB-00140' }],
+      [{ title: 'MSB-00140' }, { title: 'MSB-01068' }],
+    )).toEqual(['MSB-00140', 'MSB-01068']);
+  });
 });

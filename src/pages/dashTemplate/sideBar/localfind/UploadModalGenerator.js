@@ -5,6 +5,7 @@ import {
   TextareaAutosize, IconButton, withStyles,
 } from '@material-ui/core';
 import HelpIcon from '@material-ui/icons/Help';
+import CloseIcon from '@material-ui/icons/Close';
 import ToolTip from '@bento-core/tool-tip';
 import { updateUploadData, updateUploadMetadata } from '@bento-core/local-find/dist/store/actions/Actions';
 import FileUploader from '@bento-core/local-find/dist/UploadModal/components/FileUploader';
@@ -118,13 +119,16 @@ const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
           <div className={classes.paper}>
             <h1 className={classes.modalTitle}>
               <span>{modalTitle}</span>
-              <span className={classes.closeIcon} onClick={closeModalWrapper}>
-                <img
-                  src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/bento/images/icons/svgs/LocalFindCaseDeleteIcon.svg"
-                  alt="close icon"
+              <IconButton
+                className={classes.closeIcon}
+                onClick={closeModalWrapper}
+                aria-label="close"
+              >
+                <CloseIcon
+                  fontSize="small"
                   className={classes.closeRoot}
                 />
-              </span>
+              </IconButton>
             </h1>
             <div className={classes.modalContainer}>
               <div className={classes.textSection}>

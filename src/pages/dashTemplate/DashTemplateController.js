@@ -7,10 +7,10 @@ import DashTemplateView from './DashTemplateView';
 import { DASHBOARD_QUERY_NEW, TARGETED_THERAPY_QUERY } from '../../bento/dashboardTabData';
 import { generateValidTherapyCombinations, updateTargetedTherapyFacetData } from './utils';
 
-export const buildParticipantIdFilter = (localFindUpload, localFindAutocomplete) => [
+export const buildParticipantIdFilter = (localFindUpload, localFindAutocomplete) => [...new Set([
   ...(localFindUpload || []).map((obj) => obj.subject_id),
   ...(localFindAutocomplete || []).map((obj) => obj.title),
-];
+])];
 
 const getDashData = (states) => {
   const {

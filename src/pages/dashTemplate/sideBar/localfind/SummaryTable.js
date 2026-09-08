@@ -27,22 +27,24 @@ const SummaryTable = (props) => {
         <ArrowRight className={classes.arrowRight} />
       </p>
       <div className={classes.btnContainer}>
-        <span
-          className={tab === 'matched' ? classes.summaryButton : classes.unselectedButton}
+        <button
+          type="button"
+          className={clsx(classes.tabButton, tab === 'matched' ? classes.summaryButton : classes.unselectedButton)}
           onClick={() => setTab('matched')}
           id="uploadCaseSetMatched"
         >
           <span>Matched&nbsp;-&nbsp;</span>
           <span id="uploadCaseSetMatchedCount">{matched.length}</span>
-        </span>
-        <span
-          className={tab === 'unmatched' ? classes.summaryButton : classes.unselectedButton}
+        </button>
+        <button
+          type="button"
+          className={clsx(classes.tabButton, tab === 'unmatched' ? classes.summaryButton : classes.unselectedButton)}
           onClick={() => setTab('unmatched')}
           id="uploadCaseSetUnMatched"
         >
           <span>Unmatched&nbsp;-&nbsp;</span>
           <span id="uploadCaseSetUnMatchedCount">{unmatched.length}</span>
-        </span>
+        </button>
       </div>
       <div className={classes.tableBox}>
         {tab === 'matched' ? (
@@ -50,19 +52,19 @@ const SummaryTable = (props) => {
             <table className={classes.tableContainer} id="uploadCaseSetMatchedTable">
               <thead>
                 <tr id="uploadCaseSetMatchedHeader">
-                  <th className={classes.header} style={{ width: '55%' }}>Participant ID</th>
-                  <td className={classes.emptyCell} />
-                  <th className={classes.header} style={{ width: '45%' }}>Associated Study</th>
+                  <th scope="col" className={classes.header} style={{ width: '55%' }}>Participant ID</th>
+                  <th scope="col" className={classes.emptyCell} aria-hidden="true" />
+                  <th scope="col" className={classes.header} style={{ width: '45%' }}>Associated Study</th>
                 </tr>
-                <tr className={classes.heading}>
-                  <td className={classes.columnPadding}><Divider style={{ width: '100%' }} className={classes.divider} /></td>
-                  <td className={classes.emptyCell} />
-                  <td className={classes.dividerContainer}><Divider className={classes.divider} /></td>
+                <tr className={classes.heading} aria-hidden="true">
+                  <th scope="col" className={classes.columnPadding}><Divider style={{ width: '100%' }} className={classes.divider} /></th>
+                  <th scope="col" className={classes.emptyCell} />
+                  <th scope="col" className={classes.dividerContainer}><Divider className={classes.divider} /></th>
                 </tr>
               </thead>
               <tbody>
                 {matched.map((data, idx) => (
-                  <tr key={idx}>
+                  <tr key={`${data.subject_id}-${data.program_id}`}>
                     <td className={classes.tableColumn} style={{ backgroundColor: idx % 2 ? '#fff' : '#F8F8F8' }}>{data.subject_id}</td>
                     <td className={classes.emptyCell} />
                     <td className={classes.programHeading} style={{ backgroundColor: idx % 2 ? '#fff' : '#F8F8F8' }}>{data.program_id}</td>
@@ -76,13 +78,13 @@ const SummaryTable = (props) => {
             <table className={classes.tableContainer} id="uploadCaseSetUnMatchedTable">
               <thead>
                 <tr>
-                  <th id="uploadCaseSetUnMatchedHeader" className={classes.header}>Participant ID</th>
+                  <th scope="col" id="uploadCaseSetUnMatchedHeader" className={classes.header}>Participant ID</th>
                 </tr>
-                <tr className={classes.heading}><td><Divider className={classes.divider} /></td></tr>
+                <tr className={classes.heading} aria-hidden="true"><th scope="col"><Divider className={classes.divider} /></th></tr>
               </thead>
               <tbody>
                 {unmatched.map((data, idx) => (
-                  <tr key={idx} style={{ backgroundColor: idx % 2 ? '#fff' : '#F8F8F8' }}>
+                  <tr key={data} style={{ backgroundColor: idx % 2 ? '#fff' : '#F8F8F8' }}>
                     <td className={classes.tableColumn}>{data}</td>
                   </tr>
                 ))}
@@ -127,6 +129,10 @@ const styles = () => ({
   btnContainer: {
     display: 'flex',
     marginBottom: 0,
+  },
+  tabButton: {
+    border: 'none',
+    outline: 'inherit',
   },
   summary: {
     color: '#026551',
@@ -178,6 +184,9 @@ const styles = () => ({
   },
   programHeading: {
     textAlign: 'center',
+  },
+  columnPadding: {
+    width: '55%',
   },
   divider: {
     backgroundColor: '#A4D0B4',
