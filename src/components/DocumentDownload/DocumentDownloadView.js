@@ -24,12 +24,7 @@ export const fetchFileToDownload = async (
   showUnauthorizedNotification,
 ) => {
   try {
-    const response = await fetch(`${FILE_SERVICE_API}${fileId}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/pdf",
-      },
-    });
+    const response = await fetch(`${FILE_SERVICE_API}${fileId}`, { method: "GET" });
 
     // Check if response status is 403 (Forbidden)
     if (response.status === 403) {
