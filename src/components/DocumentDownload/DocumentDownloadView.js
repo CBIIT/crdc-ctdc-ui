@@ -16,12 +16,7 @@ const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API + 'ras/';
 // Function to fetch and download a file
 export const fetchFileToDownload = async (fileId = '', signOut, setShowModal, fileName, fileFormat, showUnauthorizedNotification) => {
   try {
-    const response = await fetch(`${FILE_SERVICE_API}${fileId}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/pdf',
-      },
-    });
+    const response = await fetch(`${FILE_SERVICE_API}${fileId}`, { method: 'GET'});
 
     // Check if response status is 403 (Forbidden)
     if (response.status === 403) {
