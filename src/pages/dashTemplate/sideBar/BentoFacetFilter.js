@@ -66,7 +66,7 @@ const { SearchBox } = SearchBoxGenerator({
     },
   },
   config: {
-    inputPlaceholder: 'e.g. MSB-00140, MSB-00205', // The textarea placeholder
+    inputPlaceholder: 'e.g. MSB-01723', // The textarea placeholder
     noOptionsText: 'No matching items found',      // The text to display when no autocomplete opts are found
     searchType: 'participantIds',                  // The search type to use for the autocomplete
   },

@@ -181,6 +181,8 @@ export default () => ({
   },
   uploadModalPaper: {
     border: '1px solid #1F344F',
+    borderRadius: 10,
+    backgroundColor: '#FFF',
     boxShadow: 'none',
     '& #local_find_upload_browse': {
       backgroundColor: '#026551',
@@ -265,7 +267,16 @@ export default () => ({
     fontWeight: 600,
     lineHeight: '11px',
     '& fieldset': {
-      borderColor: '#026551 !important',
+      borderColor: '#874100 !important',
+    },
+    '& input::placeholder': {
+      color: '#AEBDBE',
+      fontFamily: 'Lato',
+      fontSize: 11,
+      fontStyle: 'normal',
+      fontWeight: 600,
+      lineHeight: '11px',
+      opacity: 1,
     },
   },
   option: {

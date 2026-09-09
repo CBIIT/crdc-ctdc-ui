@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
+import clsx from 'clsx';
 import {
   Modal, Button, Typography,
   TextareaAutosize, IconButton, withStyles,
@@ -12,6 +13,36 @@ import FileUploader from '@bento-core/local-find/dist/UploadModal/components/Fil
 import DEFAULT_STYLES from '@bento-core/local-find/dist/UploadModal/styles';
 import DEFAULT_CONFIG from '@bento-core/local-find/dist/UploadModal/config';
 import SummaryTable from './SummaryTable';
+import localFindReopenIcon from '../../../../assets/dash/localFindReopenIcon.svg';
+
+// Adds a fileUploaderRefresh rule on top of the bento-core UploadModal stylesheet
+// so the FileUploader's refresh icon can be swapped for the CTDC arrow asset.
+const MODAL_STYLES = (theme) => ({
+  ...DEFAULT_STYLES(theme),
+  fileUploaderRefresh: {
+    color: 'transparent !important',
+    backgroundImage: `url(${localFindReopenIcon})`,
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'contain',
+    width: '12px !important',
+    height: '12px !important',
+    marginLeft: '8px !important',
+    cursor: 'pointer',
+  },
+  modalCloseIcon: {
+    height: '20px !important',
+    width: '20px !important',
+  },
+  helpIconButton: {
+    padding: '4px !important',
+    marginLeft: '2px !important',
+    transform: 'translateY(-6px)',
+  },
+  helpIcon: {
+    color: '#1F344F !important',
+    fontSize: '18px !important',
+  },
+});
 
 // Forked from @bento-core/local-find UploadModalGenerator
 // to use CTDC-specific SummaryTable and "Participant IDs" terminology.
@@ -42,16 +73,16 @@ const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
   });
 
   return {
-    UploadModal: withStyles(DEFAULT_STYLES, { withTheme: true })(connect(stateProps, dispatchProps)((props) => {
+    UploadModal: withStyles(MODAL_STYLES, { withTheme: true })(connect(stateProps, dispatchProps)((props) => {
       const {
         classes, open, metadata = {},
         onApplySearch, updateMetadata,
       } = props;
 
       const {
-        FileUploader: uploaderClasses,
         SummaryTable: summaryClasses,
       } = classes;
+      const uploaderClasses = { refresh: classes.fileUploaderRefresh };
 
       const [filename, setUploadedFileName] = useState(metadata.filename || '');
       const [fileContent, setFileContent] = useState(metadata.fileContent || '');
@@ -125,8 +156,7 @@ const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 aria-label="close"
               >
                 <CloseIcon
-                  fontSize="small"
-                  className={classes.closeRoot}
+                  className={clsx(classes.closeRoot, classes.modalCloseIcon)}
                 />
               </IconButton>
             </h1>
