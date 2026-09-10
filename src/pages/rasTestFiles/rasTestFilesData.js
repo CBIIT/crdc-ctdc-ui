@@ -14055,7 +14055,7 @@ export const qaTestFilesData = [
 ];
 
 qaTestFilesData.forEach((file) => {
-  file.guid = `ras/${file.phs_consent}/${file.guid}`;
+  file.guid = `${file.phs_consent}/${file.guid}`;
 });
 
 export default qaTestFilesData;
