@@ -66,6 +66,7 @@ const DocumentDownloadView = ({
     fileSize={fileSize}
     fileFormat={fileFormat}
     caseId={caseId}
+    studyAccession={props[documentDownloadProps.studyAccessionColumn] || props.study_accession}
     {...documentDownloadProps}
     fileLocation={props[documentDownloadProps.fileLocation]
       ? props[documentDownloadProps.fileLocation]
