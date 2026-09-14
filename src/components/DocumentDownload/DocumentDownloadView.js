@@ -98,6 +98,11 @@ export const fetchFileToDownload = async ({
     }
 
     fileURL = typeof fileURL === "string" ? fileURL.trim() : "";
+    if (fileURL.startsWith('"') && fileURL.endsWith('"')) {
+      fileURL = fileURL.slice(1, -1);
+    }
+
+    // Guard against non-URL bodies (e.g. HTML error pages) being treated as a download link
     if (!fileURL || !/^https?:\/\//i.test(fileURL)) {
       console.error(
         `No valid file URL found in response for "${fileId}":`,
