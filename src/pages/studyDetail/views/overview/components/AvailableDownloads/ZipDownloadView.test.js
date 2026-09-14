@@ -48,9 +48,9 @@ jest.mock("../../../../../../components/Global/GlobalProvider", () => ({
 }));
 
 // Minimal Redux store
-const createMockStore = (isSignedIn = false) =>
+const createMockStore = (isSignedIn = false, loginOverrides = {}) =>
   createStore(() => ({
-    login: { isSignedIn },
+    login: { isSignedIn, ...loginOverrides },
   }));
 
 const defaultProps = {
@@ -80,8 +80,8 @@ afterEach(() => {
   container = null;
 });
 
-const renderComponent = (props = {}, isSignedIn = false) => {
-  const store = createMockStore(isSignedIn);
+const renderComponent = (props = {}, isSignedIn = false, loginOverrides = {}) => {
+  const store = createMockStore(isSignedIn, loginOverrides);
   act(() => {
     ReactDOM.render(
       <Provider store={store}>
@@ -144,25 +144,45 @@ describe("ZipDownloadView", () => {
 
   describe("when user is signed in and has access", () => {
     it("renders the button as enabled", () => {
-      renderComponent({ disabled: false }, true);
+      renderComponent({ disabled: false }, true, { IDP: "ras" });
       const button = container.querySelector("button");
       expect(button.disabled).toBe(false);
     });
 
     it("calls fetchFileToDownload on click", () => {
-      renderComponent({ disabled: false }, true);
+      renderComponent({ disabled: false }, true, { IDP: "ras" });
       const button = container.querySelector("button");
       act(() => {
         button.click();
       });
-      expect(fetchFileToDownload).toHaveBeenCalledWith(
-        "file-uuid-123",
-        expect.any(Function),
-        expect.any(Function),
-        "test_file.zip",
-        "zip",
-        expect.any(Function),
-      );
+      expect(fetchFileToDownload).toHaveBeenCalledWith({
+        fileId: "file-uuid-123",
+        signOut: expect.any(Function),
+        setShowModal: expect.any(Function),
+        fileName: "test_file.zip",
+        fileFormat: "zip",
+        showUnauthorizedNotification: expect.any(Function),
+        studyAccession: "",
+        idp: "ras",
+      });
+    });
+
+    it("uses the default file path for non-RAS logins", () => {
+      renderComponent({ disabled: false }, true, { IDP: "dcf" });
+      const button = container.querySelector("button");
+      act(() => {
+        button.click();
+      });
+      expect(fetchFileToDownload).toHaveBeenCalledWith({
+        fileId: "file-uuid-123",
+        signOut: expect.any(Function),
+        setShowModal: expect.any(Function),
+        fileName: "test_file.zip",
+        fileFormat: "zip",
+        showUnauthorizedNotification: expect.any(Function),
+        studyAccession: "",
+        idp: "",
+      });
     });
 
     it("displays the correct buttonText", () => {

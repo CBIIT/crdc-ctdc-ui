@@ -5,3 +5,10 @@ export const getAuthenticatedIdp = (authData = {}) => {
     ? idp.trim().toLowerCase()
     : "ras";
 };
+
+export const getFileDownloadIdp = (authData = {}) => {
+  const idp = authData.IDP || authData.idp;
+  const normalizedIdp = typeof idp === "string" ? idp.trim().toLowerCase() : "";
+
+  return normalizedIdp === "ras" ? "ras" : "";
+};

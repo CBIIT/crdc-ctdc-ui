@@ -11,20 +11,54 @@ import { enableAuthentication } from "../../bento/siteWideConfig";
 import SessionTimeOutModal from "../sessionTimeOutModal";
 import { useAuth } from "../Authentication";
 import { useGlobal } from "../Global/GlobalProvider";
+import { getFileDownloadIdp } from "../../utils/authUtil";
 
-const FILE_SERVICE_API = env.REACT_APP_FILE_SERVICE_API;
+export const buildFileServiceUrl = ({
+  fileId = "",
+  studyAccession = "",
+  idp = "",
+} = {}) => {
+  const baseApi = (env.REACT_APP_FILE_SERVICE_API || "").replace(/\/+$/, "");
+  const cleanIdp = String(idp || "").replace(/^\/+|\/+$/g, "");
+  const cleanStudyAccession = String(studyAccession || "").replace(
+    /^\/+|\/+$/g,
+    "",
+  );
+  const cleanFileId = String(fileId || "")
+    .replace(/^drs:\/\//i, "")
+    .replace(/^\/+|\/+$/g, "");
+
+  const fileIdParts = cleanFileId.split("/").filter(Boolean);
+  const pathParts = cleanIdp ? [cleanIdp] : [];
+
+  if (cleanIdp && cleanStudyAccession) {
+    pathParts.push(cleanStudyAccession);
+  }
+
+  pathParts.push(...fileIdParts);
+
+  return `${baseApi}/${pathParts.map(encodeURIComponent).join("/")}`;
+};
 
 // Function to fetch and download a file
-export const fetchFileToDownload = async (
+export const fetchFileToDownload = async ({
   fileId = "",
   signOut,
   setShowModal,
   fileName,
   fileFormat,
   showUnauthorizedNotification,
-) => {
+  studyAccession = "",
+  idp = "",
+} = {}) => {
   try {
-    const response = await fetch(`${FILE_SERVICE_API}${fileId}`, { method: "GET" });
+    const requestUrl = buildFileServiceUrl({
+      fileId,
+      studyAccession,
+      idp,
+    });
+
+    const response = await fetch(requestUrl, { method: "GET" });
 
     // Check if response status is 403 (Forbidden)
     if (response.status === 403) {
@@ -134,12 +168,16 @@ const DocumentDownload = ({
   fileLocation = "",
   requiredACLs = [],
   fileName,
+  studyAccession = "",
+  idp: propIdp,
 }) => {
   const { signInWithAuthURL, signOut } = useAuth();
   const history = useHistory();
 
   // const { isSignedIn, acl: currentUserACL = [], role } = useSelector((state) => state.login);
-  const { isSignedIn } = useSelector((state) => state.login);
+  const authData = useSelector((state) => state.login);
+  const { isSignedIn } = authData;
+  const idp = propIdp || getFileDownloadIdp(authData);
 
   const [showModal, setShowModal] = React.useState(false);
   const [hasAccess] = React.useState(true);
@@ -200,14 +238,16 @@ const DocumentDownload = ({
           >
             <div
               onClick={() =>
-                fetchFileToDownload(
-                  fileLocation,
+                fetchFileToDownload({
+                  fileId: fileLocation,
                   signOut,
                   setShowModal,
                   fileName,
                   fileFormat,
                   showUnauthorizedNotification,
-                )
+                  studyAccession,
+                  idp,
+                })
               }
               style={{ textAlign: "center" }}
             >
