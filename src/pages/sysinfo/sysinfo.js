@@ -95,7 +95,7 @@ const SysInfo = () => {
 
   const authApiEndpoint = env.REACT_APP_AUTH_SERVICE_API;
   const backendApiEndpoint = env.REACT_APP_BACKEND_API;
-  const fileServiceApiEndpoint = env.REACT_APP_FILE_SERVICE_API;
+  const fileServiceApiEndpoint = env.REACT_APP_FILE_SERVICE_API+ 'ras/';
   const interopApiEndpoint = env.REACT_APP_INTEROP_SERVICE_URL;
 
   const coreServicesData = [

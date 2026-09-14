@@ -520,6 +520,14 @@ const NavBar = () => {
        <NameDropdown id="NameDropdown"  ref={nameDropdownSelection} className={clickedTitle !== displayName ? "invisible" : ""}>
         <NameDropdownContainer>
           <div className="dropdownList">
+            <Link
+              id="navbar-dropdown-item-ras-test-files"
+              to="/user/ras-test-files"
+              className="dropdownItem"
+              onClick={() => setClickedTitle("")}
+            >
+              RAS Test Files
+            </Link>
             <div
               id="navbar-dropdown-item-name-logout"
               role="button"
