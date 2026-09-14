@@ -92,6 +92,7 @@ export const GET_STUDY_FILES_QUERY = gql`
       data_file_format
       data_file_size
       data_file_uuid
+      study_accession
     }
   }
 `;
