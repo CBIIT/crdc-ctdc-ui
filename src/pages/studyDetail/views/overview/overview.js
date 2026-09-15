@@ -140,6 +140,7 @@ const Overview = ({ classes, data, zipFileData = [] }) => {
                   <AvailableDownloads 
                     zipFileData={zipFileData} 
                     participantFileTypes={participantFileTypes} 
+                    studyAccession={study_accession}
                   />
 
                 </Grid>

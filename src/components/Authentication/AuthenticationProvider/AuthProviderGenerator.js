@@ -148,9 +148,13 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
             }
 
             if (rawResponse.status === 200) {
-              signIn(responseData);
-              storeInLocalStorage("userDetails", responseData);
-              signInSuccess(responseData);
+              const userDetails = {
+                ...responseData,
+                IDP: responseData.IDP || responseData.idp || IDP,
+              };
+              signIn(userDetails);
+              storeInLocalStorage("userDetails", userDetails);
+              signInSuccess(userDetails);
             } else if (
               rawResponse.status === 400 ||
               rawResponse.status === 403

@@ -1584,10 +1584,10 @@ export const tabContainers = [
           fileLocationColumn: 'data_file_uuid',
           // datafield where file format exists in the table
           fileFormatColumn: 'data_file_format',
-          // datafield where file case id exists in the table which is used to get file information
-          caseIdColumn: 'participant_id',
           // datafield where file name exists
           fileName: 'data_file_name',
+          // datafield where study accession exists
+          studyAccessionColumn: 'study_accession',
 
           // Case 1: Logged in (authorization is enforced server-side at download time)
           toolTipTextFileDownload: 'Click to download a copy of this file if you have been approved by dbGaP',
@@ -1732,10 +1732,10 @@ export const tabContainers = [
           fileLocationColumn: 'data_file_uuid',
           // datafield where file format exists in the table
           fileFormatColumn: 'data_file_format',
-          // datafield where file case id exists in the table which is used to get file information
-          caseIdColumn: 'study_accession',
           // datafield where file name exists
           fileName: 'data_file_name',
+          // datafield where study accession exists
+          studyAccessionColumn: 'study_accession',
 
           // Case 1: Logged in and granted access
           toolTipTextFileDownload: 'Click to download a copy of this file if you have been approved by dbGaP',

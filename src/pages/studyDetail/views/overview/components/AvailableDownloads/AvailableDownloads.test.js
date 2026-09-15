@@ -20,12 +20,13 @@ jest.mock("@material-ui/core", () => ({
 
 // Mock ZipDownloadView component
 jest.mock("./ZipDownloadView", () => {
-  return ({ buttonText, disabled, toolTipTextFileDownload }) => (
+  return ({ buttonText, disabled, toolTipTextFileDownload, studyAccession }) => (
     <div
       data-testid="zip-download-view"
       data-button-text={buttonText}
       data-disabled={disabled}
       data-tooltip={toolTipTextFileDownload}
+      data-study-accession={studyAccession}
     >
       {buttonText} {disabled ? "(disabled)" : "(enabled)"}{" "}
       {toolTipTextFileDownload}
@@ -47,12 +48,17 @@ describe("AvailableDownloads Component", () => {
   });
 
   // Helper function to render component
-  const renderComponent = (participantFileTypes = [], zipFileData = []) => {
+  const renderComponent = (
+    participantFileTypes = [],
+    zipFileData = [],
+    props = {},
+  ) => {
     act(() => {
       ReactDOM.render(
         <AvailableDownloads
           participantFileTypes={participantFileTypes}
           zipFileData={zipFileData}
+          {...props}
         />,
         container,
       );
@@ -130,6 +136,18 @@ describe("AvailableDownloads Component", () => {
       expect(buttons[0]).toBe("Radiology Imaging Collection");
       expect(buttons[1]).toBe("Variant Call File Collection");
       expect(buttons[2]).toBe("Variant Report Collection");
+    });
+
+    it("should pass study accession to ZIP download buttons", () => {
+      renderComponent(
+        ["Variant Report"],
+        [createZipData("Variant Report", "valid-uuid")],
+        { studyAccession: "phs000000" },
+      );
+
+      expect(getButtons()[0].getAttribute("data-study-accession")).toBe(
+        "phs000000",
+      );
     });
   });
 

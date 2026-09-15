@@ -9,6 +9,7 @@ import SessionTimeOutModal from "../../../../../../components/sessionTimeOutModa
 import { useAuth } from "../../../../../../components/Authentication";
 import { fetchFileToDownload } from "../../../../../../components/DocumentDownload/DocumentDownloadView";
 import { useGlobal } from "../../../../../../components/Global/GlobalProvider";
+import { getFileDownloadIdp } from "../../../../../../utils/authUtil";
 
 const DocumentDownload = ({
   classes,
@@ -22,9 +23,13 @@ const DocumentDownload = ({
   toolTipIcon,
   disabled = false, //  allow parent to fully disable the button (e.g., when no ZIP exists)
   buttonText = "ZIP FILE",
+  studyAccession = "",
+  idp: propIdp,
 }) => {
   const { signInWithAuthURL, signOut } = useAuth();
-  const { isSignedIn } = useSelector((state) => state.login);
+  const authData = useSelector((state) => state.login);
+  const { isSignedIn } = authData;
+  const idp = propIdp || getFileDownloadIdp(authData);
   const [showModal, setShowModal] = React.useState(false);
   const history = useHistory();
 
@@ -101,14 +106,16 @@ const DocumentDownload = ({
           <Button
             classes={{ root: classes.downloadAllBtn }}
             onClick={() =>
-              fetchFileToDownload(
-                fileLocation,
+              fetchFileToDownload({
+                fileId: fileLocation,
                 signOut,
                 setShowModal,
                 fileName,
                 fileFormat,
                 showUnauthorizedNotification,
-              )
+                studyAccession,
+                idp,
+              })
             }
             variant="contained"
           >

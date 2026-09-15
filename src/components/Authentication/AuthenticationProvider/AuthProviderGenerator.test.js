@@ -96,6 +96,7 @@ describe("AuthProviderGenerator authServiceLogin", () => {
 
   it("stores user details and calls success for a valid response", async () => {
     const userDetails = { name: "Researcher" };
+    const storedUserDetails = { ...userDetails, IDP: "ras" };
     const onSuccess = jest.fn();
     global.fetch.mockResolvedValue({
       status: 200,
@@ -113,7 +114,7 @@ describe("AuthProviderGenerator authServiceLogin", () => {
       );
     });
 
-    expect(onSuccess).toHaveBeenCalledWith(userDetails);
+    expect(onSuccess).toHaveBeenCalledWith(storedUserDetails);
     expect(global.fetch).toHaveBeenCalledWith(
       "https://example.test/api/login",
       expect.objectContaining({
