@@ -32,6 +32,7 @@ const AvailableDownloads = ({
   classes,
   zipFileData = [],
   participantFileTypes = [],
+  studyAccession = "",
 }) => {
   /**
    * Add "Collection" suffix to file type if not already present.
@@ -134,6 +135,7 @@ const AvailableDownloads = ({
                 fileFormat={hasZip ? zipFile.data_file_format : undefined}
                 fileName={hasZip ? zipFile.data_file_name : undefined}
                 fileLocation={hasZip ? zipFile.data_file_uuid : undefined}
+                studyAccession={studyAccession}
                 toolTipTextFileDownload={
                   hasZip ? btn.tooltip : missingZipTooltip
                 }
