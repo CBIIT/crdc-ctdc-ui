@@ -45,8 +45,6 @@ export const fetchFileToDownload = async ({
   fileId = "",
   signOut,
   setShowModal,
-  fileName,
-  fileFormat,
   showUnauthorizedNotification,
   studyAccession = "",
   idp = "",
