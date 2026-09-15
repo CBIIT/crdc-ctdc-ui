@@ -31,4 +31,12 @@ describe('buildFileServiceUrl', () => {
       idp: 'ras',
     })).toBe('https://files.example.org/api/files/ras/phs000000.v1.p1/file-uuid-123');
   });
+
+  it('builds the RAS path without study accession when only IDP is available', () => {
+    expect(buildFileServiceUrl({
+      fileId: 'dg.4DFC/file-uuid-123',
+      studyAccession: '',
+      idp: 'ras',
+    })).toBe('https://files.example.org/api/files/ras/dg.4DFC/file-uuid-123');
+  });
 });

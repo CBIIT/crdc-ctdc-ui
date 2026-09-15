@@ -44,6 +44,3 @@ export const DEFAULT_VALUE = "No value";
 
 // Constant for last visited hash key in localStorage
 export const LAST_VISITED_HASH_KEY = "lastVisitedHash";
-
-// File Service Identity Provider /:idp/:phs/:prefix/:fileId
-export const FILE_SERVICE_IDP = 'ras';
