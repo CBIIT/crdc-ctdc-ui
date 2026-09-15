@@ -31,7 +31,7 @@ export const rasTestFilesTableConfig = {
         fileLocationColumn: "guid",
         fileFormatColumn: "data_file_format",
         fileName: "file_name",
-        studyAccessionColumn: "phs_id_version_participant_set",
+        studyAccessionColumn: "phs_consent",
         toolTipTextFileDownload: "Click to download a copy of this file",
         iconFileDownload: downloadSuccess,
         iconUnauthenticated: downloadLock,
