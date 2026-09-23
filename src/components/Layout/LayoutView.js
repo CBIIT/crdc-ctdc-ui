@@ -30,7 +30,7 @@ import useVisitedPageSync from '../../utils/useVisitedPageSync';
 import StudiesContainer from '../../pages/studies/studiesController';
 import DataModelNavigator from '../../pages/dmn';
 import SysInfo from '../../pages/sysinfo/sysinfo';
-import rasLogin from '../../pages/login/rasLoginView';
+import rasLogin from '../../pages/login/rasLoginController';
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);

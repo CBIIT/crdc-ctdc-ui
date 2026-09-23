@@ -2,22 +2,39 @@
 import React, { useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Typography, Button, Box } from "@material-ui/core";
-import LockIconSvg from "../../assets/login/lock-icon.svg";
-import LockBorderSvg from "../../assets/login/lock-border.svg";
-import HelpIconSvg from "../../assets/login/help-icon.svg";
-import VideoThumbnailImg from "../../assets/login/CTDC_Tutorial_Video_Placeholder.png";
-import PlayIconSvg from "../../assets/login/video_play_icon_large.svg";
-import UpArrowSvg from "../../assets/login/up_arrow.svg";
-import DownArrowSvg from "../../assets/login/down_arrow.svg";
 import env from "../../utils/env";
-import ExternalLink from "../../utils/ExternalLink";
 import styles from "./rasLoginStyles";
 
-function ToggleArrow({ isOpen }) {
+function getAsset(assets, key) {
+  const asset = assets[key];
+
+  if (typeof asset === "string") {
+    return { src: asset };
+  }
+
+  return asset || {};
+}
+
+function ContentImage({ asset, className, fallbackAlt, style }) {
+  if (!asset || !asset.src) return null;
+
   return (
     <img
-      src={isOpen ? UpArrowSvg : DownArrowSvg}
-      alt={isOpen ? "Collapse" : "Expand"}
+      src={asset.src}
+      alt={asset.alt || fallbackAlt || ""}
+      className={className}
+      style={style}
+    />
+  );
+}
+
+function ToggleArrow({ isOpen, openIcon, closedIcon }) {
+  const icon = isOpen ? openIcon : closedIcon;
+
+  return (
+    <ContentImage
+      asset={icon}
+      fallbackAlt={isOpen ? "Collapse" : "Expand"}
       style={{
         cursor: "pointer",
         flexShrink: 0,
@@ -26,34 +43,258 @@ function ToggleArrow({ isOpen }) {
   );
 }
 
-const documentationLinks = [
-  {
-    href: "https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm",
-    text: "eRA Commons Account Creation",
-  },
-  {
-    href: "https://seerdataaccess.cancer.gov/seer-data-access",
-    text: "Request SEER Incidence Data",
-  },
-  {
-    href: "https://seer.cancer.gov/data/agreements.html",
-    text: "SEER Research Data Use Agreement",
-  },
-  {
-    href: "https://seer.cancer.gov/data/agreements.html",
-    text: "SEER Treatment Data Limitations",
-  },
-  {
-    href: "https://seer.cancer.gov/data/agreements.html",
-    text: "CTDC Use Agreement",
-  },
-];
+function isBlankLine(line) {
+  return !line || line.trim() === "";
+}
+
+function isListLine(line) {
+  return /^\s*(\d+\.|-|\*)\s+/.test(line);
+}
+
+function parseMarkdownBlocks(markdown) {
+  const lines = markdown.split(/\r?\n/);
+  const blocks = [];
+  let index = 0;
+
+  while (index < lines.length) {
+    const line = lines[index];
+
+    if (isBlankLine(line)) {
+      index += 1;
+      continue;
+    }
+
+    if (/^\s*\d+\.\s+/.test(line)) {
+      const items = [];
+
+      while (index < lines.length && /^\s*\d+\.\s+/.test(lines[index])) {
+        const [, text] = lines[index].match(/^\s*\d+\.\s+(.*)$/);
+        const item = { text, children: [] };
+        index += 1;
+
+        while (
+          index < lines.length &&
+          /^\s+[-*]\s+/.test(lines[index])
+        ) {
+          const [, childText] = lines[index].match(/^\s+[-*]\s+(.*)$/);
+          item.children.push(childText);
+          index += 1;
+        }
+
+        items.push(item);
+      }
+
+      blocks.push({ type: "ol", items });
+      continue;
+    }
+
+    if (/^\s*[-*]\s+/.test(line)) {
+      const items = [];
+
+      while (index < lines.length && /^\s*[-*]\s+/.test(lines[index])) {
+        const [, text] = lines[index].match(/^\s*[-*]\s+(.*)$/);
+        items.push({ text, children: [] });
+        index += 1;
+      }
+
+      blocks.push({ type: "ul", items });
+      continue;
+    }
+
+    const paragraphLines = [];
+
+    while (
+      index < lines.length &&
+      !isBlankLine(lines[index]) &&
+      !isListLine(lines[index])
+    ) {
+      paragraphLines.push(lines[index].trim());
+      index += 1;
+    }
+
+    blocks.push({
+      type: "p",
+      text: paragraphLines.join(" "),
+    });
+  }
+
+  return blocks;
+}
+
+function renderInlineMarkdown(text, linkIcon, classes, keyPrefix) {
+  const pattern = /(\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|\*([^*]+)\*)/g;
+  const nodes = [];
+  let lastIndex = 0;
+  let match;
+
+  while ((match = pattern.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      nodes.push(text.slice(lastIndex, match.index));
+    }
+
+    if (match[2] && match[3]) {
+      nodes.push(
+        <React.Fragment key={`${keyPrefix}-link-${match.index}`}>
+          <a href={match[3]} target="_blank" rel="noopener noreferrer">
+            {match[2]}
+          </a>
+          <ContentImage
+            asset={linkIcon}
+            fallbackAlt="outbound web site icon"
+            className={classes.linkIcon}
+          />
+        </React.Fragment>,
+      );
+    } else if (match[4]) {
+      nodes.push(
+        <strong key={`${keyPrefix}-strong-${match.index}`}>
+          {match[4]}
+        </strong>,
+      );
+    } else if (match[5]) {
+      nodes.push(
+        <em key={`${keyPrefix}-em-${match.index}`}>
+          {match[5]}
+        </em>,
+      );
+    }
+
+    lastIndex = pattern.lastIndex;
+  }
+
+  if (lastIndex < text.length) {
+    nodes.push(text.slice(lastIndex));
+  }
+
+  return nodes;
+}
+
+function renderListItem({
+  item,
+  itemIndex,
+  classes,
+  unorderedListClassName,
+  linkIcon,
+  keyPrefix,
+}) {
+  return (
+    <li key={`${keyPrefix}-${itemIndex}`}>
+      {renderInlineMarkdown(item.text, linkIcon, classes, `${keyPrefix}-${itemIndex}`)}
+      {item.children.length > 0 && (
+        <ul className={unorderedListClassName}>
+          {item.children.map((child, childIndex) => (
+            <li key={`${keyPrefix}-${itemIndex}-${childIndex}`}>
+              {renderInlineMarkdown(
+                child,
+                linkIcon,
+                classes,
+                `${keyPrefix}-${itemIndex}-${childIndex}`,
+              )}
+            </li>
+          ))}
+        </ul>
+      )}
+    </li>
+  );
+}
+
+function renderMarkdownBlock({
+  block,
+  blockIndex,
+  classes,
+  paragraphClassName,
+  unorderedListClassName,
+  orderedListClassName,
+  linkIcon,
+}) {
+  if (block.type === "p") {
+    return (
+      <Typography key={`paragraph-${blockIndex}`} className={paragraphClassName}>
+        {renderInlineMarkdown(block.text, linkIcon, classes, `paragraph-${blockIndex}`)}
+      </Typography>
+    );
+  }
+
+  if (block.type === "ol") {
+    return (
+      <ol key={`ordered-list-${blockIndex}`} className={orderedListClassName}>
+        {block.items.map((item, itemIndex) =>
+          renderListItem({
+            item,
+            itemIndex,
+            classes,
+            unorderedListClassName,
+            linkIcon,
+            keyPrefix: `ordered-list-${blockIndex}`,
+          }))}
+      </ol>
+    );
+  }
+
+  return (
+    <ul key={`unordered-list-${blockIndex}`} className={unorderedListClassName}>
+      {block.items.map((item, itemIndex) =>
+        renderListItem({
+          item,
+          itemIndex,
+          classes,
+          unorderedListClassName,
+          linkIcon,
+          keyPrefix: `unordered-list-${blockIndex}`,
+        }))}
+    </ul>
+  );
+}
+
+function MarkdownContent({
+  markdown,
+  classes,
+  paragraphClassName,
+  unorderedListClassName,
+  orderedListClassName,
+  linkIcon,
+}) {
+  if (!markdown) return null;
+
+  const blocks = parseMarkdownBlocks(markdown);
+
+  return (
+    <Box className={classes.MarkdownContent}>
+      {blocks.map((block, blockIndex) =>
+        renderMarkdownBlock({
+          block,
+          blockIndex,
+          classes,
+          paragraphClassName: paragraphClassName || classes.BodyText,
+          unorderedListClassName: unorderedListClassName || classes.unorderedList,
+          orderedListClassName: orderedListClassName || classes.orderedListNumeric,
+          linkIcon,
+        }))}
+    </Box>
+  );
+}
 
 function RASLoginPage(props) {
-  const { classes } = props;
+  const { classes, content = {} } = props;
+  const assets = content.assets || {};
+  const arrowOpenIcon = getAsset(assets, "arrowOpen");
+  const arrowClosedIcon = getAsset(assets, "arrowClosed");
+  const externalLinkIcon = getAsset(assets, "externalLinkIcon");
+  const hero = content.hero || {};
+  const ras = content.ras || {};
+  const verification = content.verification || {};
+  const requestAccess = content.requestAccess || {};
+  const warning = content.warning || {};
+  const help = content.help || {};
+  const accessRequirements = requestAccess.accessRequirements || {};
+  const requestInstructions = requestAccess.instructions || {};
+  const documentation = requestAccess.documentation || {};
+  const tutorial = help.tutorial || {};
+  const contact = help.contact || {};
   const [verificationOpen, setVerificationOpen] = useState(false);
   const [requestAccessOpen, setRequestAccessOpen] = useState(false);
   const [warningOpen, setWarningOpen] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
   const rasAuthorizeUrl =
     typeof env.REACT_APP_RAS_AUTHORIZE_URL === "string"
       ? env.REACT_APP_RAS_AUTHORIZE_URL.trim()
@@ -64,15 +305,19 @@ function RASLoginPage(props) {
       {/* Hero Section */}
       <Box className={classes.HeroSection}>
         <div className={classes.HeroIconWrapper}>
-          <img
-            src={LockBorderSvg}
-            alt="Lock Border"
+          <ContentImage
+            asset={getAsset(assets, "lockBorder")}
+            fallbackAlt="Lock Border"
             className={classes.LockBorder}
           />
-          <img src={LockIconSvg} alt="Lock Icon" className={classes.HeroIcon} />
+          <ContentImage
+            asset={getAsset(assets, "lockIcon")}
+            fallbackAlt="Lock Icon"
+            className={classes.HeroIcon}
+          />
         </div>
         <Typography variant="h1" component="h1" className={classes.HeroTitle}>
-          Login to the CTDC
+          {hero.title}
         </Typography>
       </Box>
 
@@ -89,27 +334,17 @@ function RASLoginPage(props) {
                   component="h2"
                   className={classes.BoxTitle}
                 >
-                  Log in with NIH Research Auth Service (RAS)
+                  {ras.title}
                 </Typography>
 
                 {/* Text + Button row */}
                 <Box className={classes.LoginContentRow}>
                   <Box className={classes.RasTextWrapper}>
-                    <Typography className={classes.BodyText}>
-                      Before accessing CTDC data, you may be required to verify
-                      your identity through NIH&apos;s secure Researcher Auth
-                      Service (RAS) using Login.gov. This identity verification
-                      is required to comply with federal policies governing
-                      access to controlled-access data repositories (CADRs).
-                      <br />
-                      <br />
-                      If you already have a CTDC account, you must complete
-                      identity verification to continue accessing
-                      controlled-access data unless you sign in with an NIH
-                      account, which does not require this additional
-                      verification. Identity verification must be renewed
-                      annually.
-                    </Typography>
+                    <MarkdownContent
+                      markdown={ras.bodyMarkdown}
+                      classes={classes}
+                      linkIcon={externalLinkIcon}
+                    />
                   </Box>
                   <Box className={classes.LoginButtonContainer}>
                     <Button
@@ -122,12 +357,11 @@ function RASLoginPage(props) {
                         }
                       }}
                     >
-                      Login with RAS
+                      {ras.buttonText}
                     </Button>
                     {!rasAuthorizeUrl && (
                       <Typography className={classes.BodyText} role="alert">
-                        RAS login is temporarily unavailable because it is not
-                        configured.
+                        {ras.unavailableText}
                       </Typography>
                     )}
                   </Box>
@@ -143,6 +377,7 @@ function RASLoginPage(props) {
                       className={classes.VerificationHeader}
                       role="button"
                       tabIndex={0}
+                      aria-expanded={verificationOpen}
                       onClick={() => setVerificationOpen((v) => !v)}
                       onKeyDown={(e) => {
                         if (e.key === "Enter" || e.key === " ") {
@@ -156,40 +391,24 @@ function RASLoginPage(props) {
                         component="h3"
                         className={classes.VerificationTitle}
                       >
-                        CTDC Verification Process
+                        {verification.title}
                       </Typography>
-                      <ToggleArrow isOpen={verificationOpen} />
+                      <ToggleArrow
+                        isOpen={verificationOpen}
+                        openIcon={arrowOpenIcon}
+                        closedIcon={arrowClosedIcon}
+                      />
                     </Box>
 
                     {verificationOpen && (
                       <Box className={classes.VerificationText}>
-                        <Typography className={classes.BodyText}>
-                          The verification process typically takes up to 30
-                          minutes and requires:
-                        </Typography>
-                        <ol className={classes.orderedListAlpha}>
-                          <li>A mobile phone with a working camera</li>
-                          <li>Your Social Security number</li>
-                          <li>
-                            A phone number associated with a phone plan in your
-                            name
-                          </li>
-                          <li>
-                            One of the following valid government-issued IDs:
-                            <ul className={classes.nestedList}>
-                              <li>U.S. driver&apos;s license</li>
-                              <li>State-issued ID</li>
-                              <li>U.S. passport</li>
-                            </ul>
-                          </li>
-                        </ol>
-                        <Typography className={classes.BodyText}>
-                          Before selecting Log in with NIH Research Auth Service
-                          (RAS), please gather the required information,
-                          identification, and devices. For more information, see
-                          the Login.gov Identity Verification Guidelines or the
-                          Login.gov Help Center.
-                        </Typography>
+                        <MarkdownContent
+                          markdown={verification.bodyMarkdown}
+                          classes={classes}
+                          orderedListClassName={classes.orderedListAlpha}
+                          unorderedListClassName={classes.nestedList}
+                          linkIcon={externalLinkIcon}
+                        />
                       </Box>
                     )}
                   </Box>
@@ -206,7 +425,7 @@ function RASLoginPage(props) {
                   component="h2"
                   className={classes.SectionTitle}
                 >
-                  Request Access
+                  {requestAccess.title}
                 </Typography>
                 <Box className={classes.VerificationWrapper}>
                   <Box className={classes.VerificationSection}>
@@ -216,29 +435,13 @@ function RASLoginPage(props) {
                       className={classes.SubsectionTitle}
                       style={{ marginTop: 0, marginBottom: 0 }}
                     >
-                      Access Requirements
+                      {accessRequirements.title}
                     </Typography>
-                    <Typography className={classes.BodyText} component="div">
-                      CTDC contains controlled-access research data. To comply
-                      with federal security requirements, users must verify
-                      their identity and affiliation before they can access the
-                      platform.
-                      <br />
-                      <br />
-                      To request CTDC access, you must have:
-                      <br />
-                      <ul className={classes.unorderedList}>
-                        <li>
-                          An <strong>NIH account</strong> linked to a{" "}
-                          <strong>Login.gov</strong> account with{" "}
-                          <strong>NIH Researcher Auth Service (RAS)</strong>{" "}
-                          identity verification
-                        </li>
-                        <li>
-                          An <strong>ORCID iD</strong>
-                        </li>
-                      </ul>
-                    </Typography>
+                    <MarkdownContent
+                      markdown={accessRequirements.bodyMarkdown}
+                      classes={classes}
+                      linkIcon={externalLinkIcon}
+                    />
                   </Box>
                 </Box>
               </Box>
@@ -253,6 +456,7 @@ function RASLoginPage(props) {
                     className={classes.VerificationHeader}
                     role="button"
                     tabIndex={0}
+                    aria-expanded={requestAccessOpen}
                     onClick={() => setRequestAccessOpen(!requestAccessOpen)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
@@ -267,9 +471,13 @@ function RASLoginPage(props) {
                       className={classes.SubsectionTitle}
                       style={{ marginTop: 0, marginBottom: 0 }}
                     >
-                      Instructions to Request Access
+                      {requestInstructions.title}
                     </Typography>
-                    <ToggleArrow isOpen={requestAccessOpen} />
+                    <ToggleArrow
+                      isOpen={requestAccessOpen}
+                      openIcon={arrowOpenIcon}
+                      closedIcon={arrowClosedIcon}
+                    />
                   </Box>
                 </Box>
 
@@ -281,35 +489,12 @@ function RASLoginPage(props) {
                           className={classes.BodyText}
                           component="div"
                         >
-                          <ol className={classes.orderedListNumeric}>
-                            <li>
-                              Create a Login.gov or ID.me account. If you do not
-                              have an NIH account, also create an eRA Commons
-                              account.
-                            </li>
-                            <li>
-                              Complete NIH RAS identity verification. Verify
-                              your identity through Login.gov using NIH RAS.
-                            </li>
-                            <li>
-                              Link your accounts. Link your Login.gov account to
-                              your eRA Commons account. If you are not an NIH
-                              user, create an ORCID iD, link it to your eRA
-                              Commons account, and allow up to two business days
-                              for processing.
-                            </li>
-                            <li>
-                              Request CTDC access. On the Request SEER Incidence
-                              Data page, sign in with your NIH or Login.gov
-                              account and complete the Research Plus request
-                              application. Review and accept the required data
-                              use agreements, then submit your request.
-                            </li>
-                          </ol>
-                          <br />
-                          Access requests are typically processed within two
-                          business days. Once approved, you can sign in to CTDC
-                          using your NIH or Login.gov account.
+                          <MarkdownContent
+                            markdown={requestInstructions.bodyMarkdown}
+                            classes={classes}
+                            orderedListClassName={classes.orderedListNumeric}
+                            linkIcon={externalLinkIcon}
+                          />
                         </Typography>
                       </Box>
                     </Box>
@@ -322,20 +507,15 @@ function RASLoginPage(props) {
                           className={classes.SubsectionTitle}
                           style={{ marginTop: 0, marginBottom: 0 }}
                         >
-                          Documentation
+                          {documentation.title}
                         </Typography>
-                        <Typography className={classes.Link} component="div">
-                          <ul className={classes.unorderedList}>
-                            {documentationLinks.map(({ href, text }) => (
-                              <ExternalLink
-                                key={href + text}
-                                href={href}
-                                text={text}
-                                linkIconClass={classes.linkIcon}
-                              />
-                            ))}
-                          </ul>
-                        </Typography>
+                        <Box className={classes.Link}>
+                          <MarkdownContent
+                            markdown={documentation.bodyMarkdown}
+                            classes={classes}
+                            linkIcon={externalLinkIcon}
+                          />
+                        </Box>
                       </Box>
                     </Box>
                   </>
@@ -351,12 +531,13 @@ function RASLoginPage(props) {
                   component="h2"
                   className={classes.WarningTitle}
                 >
-                  Warning Notice
+                  {warning.title}
                 </Typography>
                 <Box
                   className={classes.WarningToggle}
                   role="button"
                   tabIndex={0}
+                  aria-expanded={warningOpen}
                   onClick={() => setWarningOpen(!warningOpen)}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
@@ -365,26 +546,17 @@ function RASLoginPage(props) {
                     }
                   }}
                 >
-                  <Typography
-                    className={`${classes.WarningText} ${!warningOpen ? classes.WarningTextCollapsed : ""}`}
-                  >
-                    This warning banner provides privacy and security notices
-                    consistent with applicable federal laws, directives, and
-                    other federal guidance for accessing this Government system,
-                    which includes all devices/storage media attached to this
-                    system. This system is provided for Government-authorized
-                    use only. Unauthorized or improper use of this system is
-                    prohibited and may result in disciplinary action and/or
-                    civil and criminal penalties. At any time, and for any
-                    lawful Government purpose, the government may monitor,
-                    record, and audit your system usage and/or intercept, search
-                    and seize any communication or data transiting or stored on
-                    this system. Therefore, you have no reasonable expectation
-                    of privacy. Any communication or data transiting or stored
-                    on this system may be disclosed or used for any lawful
-                    Government purpose.
-                  </Typography>
-                  <ToggleArrow isOpen={warningOpen} />
+                  <MarkdownContent
+                    markdown={warning.bodyMarkdown}
+                    classes={classes}
+                    paragraphClassName={`${classes.WarningText} ${!warningOpen ? classes.WarningTextCollapsed : ""}`}
+                    linkIcon={externalLinkIcon}
+                  />
+                  <ToggleArrow
+                    isOpen={warningOpen}
+                    openIcon={arrowOpenIcon}
+                    closedIcon={arrowClosedIcon}
+                  />
                 </Box>
               </Box>
             </Box>
@@ -395,13 +567,13 @@ function RASLoginPage(props) {
             <Box
               component="aside"
               className={classes.HelpSidebar}
-              aria-label="Help and Support"
+              aria-label={help.ariaLabel}
             >
               {/* Need Help Section */}
               <Box className={classes.HelpHeader}>
-                <img
-                  src={HelpIconSvg}
-                  alt="Help Icon"
+                <ContentImage
+                  asset={getAsset(assets, "helpIcon")}
+                  fallbackAlt="Help Icon"
                   className={classes.HelpIcon}
                 />
                 <Typography
@@ -409,7 +581,7 @@ function RASLoginPage(props) {
                   component="h2"
                   className={classes.HelpHeaderText}
                 >
-                  NEED HELP?
+                  {help.headerText}
                 </Typography>
               </Box>
 
@@ -420,28 +592,54 @@ function RASLoginPage(props) {
                   component="h3"
                   className={classes.SidebarTitle}
                 >
-                  Creating Accounts to Access CTDC data
+                  {tutorial.title}
                 </Typography>
-                <Typography className={classes.SidebarText}>
-                  This tutorial explains the steps involved in creating a
-                  Login.gov account, linking those accounts together, and
-                  registering for Research Plus.
-                </Typography>
+                <MarkdownContent
+                  markdown={tutorial.bodyMarkdown}
+                  classes={classes}
+                  paragraphClassName={classes.SidebarText}
+                  linkIcon={externalLinkIcon}
+                />
 
                 {/* Video Thumbnail */}
                 <Box className={classes.VideoThumbnail}>
-                  <img
-                    src={VideoThumbnailImg}
-                    alt="Tutorial Video"
-                    className={classes.VideoImage}
-                  />
-                  <Box className={classes.PlayOverlay}>
-                    <img
-                      src={PlayIconSvg}
-                      alt="Play"
-                      className={classes.PlayIcon}
-                    />
-                  </Box>
+                  {videoPlaying ? (
+                    <video
+                      src={tutorial.videoUrl}
+                      className={classes.VideoImage}
+                      controls
+                      autoPlay
+                    >
+                      <track kind="captions" />
+                    </video>
+                  ) : (
+                    <>
+                      <ContentImage
+                        asset={getAsset(assets, "videoThumbnail")}
+                        fallbackAlt="Tutorial Video"
+                        className={classes.VideoImage}
+                      />
+                      <Box
+                        className={classes.PlayOverlay}
+                        role="button"
+                        tabIndex={0}
+                        aria-label={tutorial.playButtonAriaLabel}
+                        onClick={() => setVideoPlaying(true)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            setVideoPlaying(true);
+                          }
+                        }}
+                      >
+                        <ContentImage
+                          asset={getAsset(assets, "playIcon")}
+                          fallbackAlt="Play"
+                          className={classes.PlayIcon}
+                        />
+                      </Box>
+                    </>
+                  )}
                 </Box>
               </Box>
 
@@ -452,15 +650,22 @@ function RASLoginPage(props) {
                   component="h3"
                   className={classes.SidebarTitle}
                 >
-                  Let us assist you with your login or access issues
+                  {contact.title}
                 </Typography>
-                <Typography className={classes.SidebarText}>
-                  If you experience any difficulties with logging in or
-                  accessing your account, please reach out to our support team
-                  for assistance.
-                </Typography>
-                <Button variant="outlined" className={classes.ContactButton}>
-                  Contact Us
+                <MarkdownContent
+                  markdown={contact.bodyMarkdown}
+                  classes={classes}
+                  paragraphClassName={classes.SidebarText}
+                  linkIcon={externalLinkIcon}
+                />
+                <Button
+                  variant="outlined"
+                  className={classes.ContactButton}
+                  href={contact.href || undefined}
+                  target={contact.target || undefined}
+                  rel={contact.rel || undefined}
+                >
+                  {contact.buttonText}
                 </Button>
               </Box>
             </Box>

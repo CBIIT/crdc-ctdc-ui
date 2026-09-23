@@ -10,12 +10,87 @@ jest.mock("../../utils/env", () => ({
 const env = require("../../utils/env").default;
 const RASLoginPage = require("./rasLoginView").default;
 
+const loginContent = {
+  assets: {
+    lockBorder: { src: "/login/lock-border.svg", alt: "Lock Border" },
+    lockIcon: { src: "/login/lock-icon.svg", alt: "Lock Icon" },
+    helpIcon: { src: "/login/help-icon.svg", alt: "Help Icon" },
+    videoThumbnail: {
+      src: "/login/CTDC_Tutorial_Video_Placeholder.png",
+      alt: "Tutorial Video",
+    },
+    playIcon: { src: "/login/video_play_icon_large.svg", alt: "Play" },
+    arrowOpen: { src: "/login/up_arrow.svg", alt: "Collapse" },
+    arrowClosed: { src: "/login/down_arrow.svg", alt: "Expand" },
+    externalLinkIcon: {
+      src: "/login/externalLinkIcon.svg",
+      alt: "outbound web site icon",
+    },
+  },
+  hero: {
+    title: "Login to the CTDC",
+  },
+  ras: {
+    title: "Log in with NIH Research Auth Service (RAS)",
+    bodyMarkdown:
+      "Before accessing CTDC data, you may be required to verify your identity.\n\nIf you already have a CTDC account, you must complete identity verification.",
+    buttonText: "Login with RAS",
+    unavailableText:
+      "RAS login is temporarily unavailable because it is not configured.",
+  },
+  verification: {
+    title: "CTDC Verification Process",
+    bodyMarkdown:
+      "The verification process typically takes up to 30 minutes and requires:\n\n1. A mobile phone with a working camera\n2. Your Social Security number\n3. One of the following valid government-issued IDs:\n   - U.S. driver's license\n   - State-issued ID\n\nBefore selecting **Log in with NIH Research Auth Service (RAS)**, please gather the required information.",
+  },
+  requestAccess: {
+    title: "Request Access",
+    accessRequirements: {
+      title: "Access Requirements",
+      bodyMarkdown:
+        "CTDC contains controlled-access research data.\n\nTo request CTDC access, you must have:\n\n- An **NIH account**",
+    },
+    instructions: {
+      title: "Instructions to Request Access",
+      bodyMarkdown:
+        "1. Create a Login.gov or ID.me account. If you do not have an NIH account, also create an eRA Commons account.\n\nAccess requests are typically processed within two business days.",
+    },
+    documentation: {
+      title: "Documentation",
+      bodyMarkdown:
+        "- [eRA Commons Account Creation](https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm)",
+    },
+  },
+  warning: {
+    title: "Warning Notice",
+    bodyMarkdown:
+      "This warning banner provides privacy and security notices consistent with applicable federal laws.",
+  },
+  help: {
+    ariaLabel: "Help and Support",
+    headerText: "NEED HELP?",
+    tutorial: {
+      title: "Creating Accounts to Access CTDC data",
+      bodyMarkdown:
+        "This tutorial explains the steps involved in creating a Login.gov account.",
+      videoUrl: "https://example.org/tutorial.mp4",
+      playButtonAriaLabel: "Play tutorial video",
+    },
+    contact: {
+      title: "Let us assist you with your login or access issues",
+      bodyMarkdown:
+        "If you experience any difficulties with logging in or accessing your account, please reach out to our support team for assistance.",
+      buttonText: "Contact Us",
+    },
+  },
+};
+
 describe("RASLoginPage", () => {
   let container;
 
   const renderPage = () => {
     act(() => {
-      ReactDOM.render(<RASLoginPage />, container);
+      ReactDOM.render(<RASLoginPage content={loginContent} />, container);
     });
   };
 
@@ -59,7 +134,7 @@ describe("RASLoginPage", () => {
   it("supports Enter and Space for each collapsible section", () => {
     renderPage();
 
-    const toggles = container.querySelectorAll('[role="button"]');
+    const toggles = container.querySelectorAll('[aria-expanded]');
     expect(toggles).toHaveLength(3);
 
     pressKey(toggles[0], "Enter");

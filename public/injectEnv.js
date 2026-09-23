@@ -25,7 +25,7 @@ window.injectedEnv = {
   // About Content API:
   REACT_APP_ABOUT_CONTENT_URL: 'https://raw.githubusercontent.com/CBIIT/bento-ctdc-static-content/refs/heads/develop/aboutPagesContent.yaml',
   REACT_APP_STATIC_CONTENT_URL: 'https://raw.githubusercontent.com/CBIIT/bento-ctdc-static-content/refs/heads/develop/',
-
+  REACT_APP_LOGIN_CONTENT_URL: 'https://raw.githubusercontent.com/CBIIT/bento-ctdc-static-content/refs/heads/login_page/login/loginView.yaml',
   REACT_APP_FILE_CENTRIC_CART_README: 'https://raw.githubusercontent.com/CBIIT/ctdc-readMe-content/refs/heads/dev/My_Files_Cart_Page_README.md',
 
   REACT_APP_DATA_MODEL_FILE: 'https://raw.githubusercontent.com/CBIIT/ctdc-model/refs/heads/prod/model-desc/ctdc_model_file.yaml',

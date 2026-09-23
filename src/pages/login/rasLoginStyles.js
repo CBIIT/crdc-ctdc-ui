@@ -250,6 +250,22 @@ const styles = (theme) => ({
     lineHeight: "150%",
     marginBottom: "0px",
   },
+  MarkdownContent: {
+    width: "100%",
+    "& p": {
+      marginTop: 0,
+    },
+    "& p:not(:last-child)": {
+      marginBottom: "24px",
+    },
+    "& li p": {
+      display: "inline",
+      margin: 0,
+    },
+    "& li ul, & li ol": {
+      marginTop: "2px",
+    },
+  },
   NoteText: {
     fontFamily: "Roboto",
     fontSize: "16px",
