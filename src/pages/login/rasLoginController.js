@@ -5,6 +5,7 @@ import env from "../../utils/env";
 import RASLoginPage from "./rasLoginView";
 
 const LOGIN_CONTENT_URL = env.REACT_APP_LOGIN_CONTENT_URL;
+const RAS_AUTHORIZE_URL = env.REACT_APP_RAS_AUTHORIZE_URL;
 
 function resolveUrl(url, baseUrl) {
   if (!url || typeof url !== "string") return url;
@@ -89,7 +90,12 @@ const RASLoginController = () => {
     return null;
   }
 
-  return <RASLoginPage content={content} />;
+  return (
+    <RASLoginPage
+      content={content}
+      rasAuthorizeUrl={RAS_AUTHORIZE_URL}
+    />
+  );
 };
 
 export default RASLoginController;
