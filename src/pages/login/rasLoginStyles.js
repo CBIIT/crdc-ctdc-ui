@@ -477,11 +477,21 @@ const styles = (theme) => ({
     "&:hover": {
       textDecoration: "underline",
     },
+    "& a": {
+      color: "inherit",
+    },
+    "& a:visited": {
+      color: "inherit",
+    },
     fontFamily: "Roboto",
     fontSize: "16px",
     "& $unorderedList": {
       color: "#990099",
     },
+  },
+  linkIcon: {
+    marginLeft: "4px",
+    verticalAlign: "middle",
   },
 
   // Warning Section

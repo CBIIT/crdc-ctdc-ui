@@ -10,6 +10,7 @@ import PlayIconSvg from "../../assets/login/video_play_icon_large.svg";
 import UpArrowSvg from "../../assets/login/up_arrow.svg";
 import DownArrowSvg from "../../assets/login/down_arrow.svg";
 import env from "../../utils/env";
+import ExternalLink from "../../utils/ExternalLink";
 import styles from "./rasLoginStyles";
 
 function ToggleArrow({ isOpen }) {
@@ -24,6 +25,29 @@ function ToggleArrow({ isOpen }) {
     />
   );
 }
+
+const documentationLinks = [
+  {
+    href: "https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm",
+    text: "eRA Commons Account Creation",
+  },
+  {
+    href: "https://seerdataaccess.cancer.gov/seer-data-access",
+    text: "Request SEER Incidence Data",
+  },
+  {
+    href: "https://seer.cancer.gov/data/agreements.html",
+    text: "SEER Research Data Use Agreement",
+  },
+  {
+    href: "https://seer.cancer.gov/data/agreements.html",
+    text: "SEER Treatment Data Limitations",
+  },
+  {
+    href: "https://seer.cancer.gov/data/agreements.html",
+    text: "CTDC Use Agreement",
+  },
+];
 
 function RASLoginPage(props) {
   const { classes } = props;
@@ -302,11 +326,14 @@ function RASLoginPage(props) {
                         </Typography>
                         <Typography className={classes.Link} component="div">
                           <ul className={classes.unorderedList}>
-                            <li>eRA Commons Account Creation</li>
-                            <li>Request SEER Incidence Data</li>
-                            <li>SEER Research Data Use Agreement</li>
-                            <li>SEER Treatment Data Limitations</li>
-                            <li>CTDC Use Agreement</li>
+                            {documentationLinks.map(({ href, text }) => (
+                              <ExternalLink
+                                key={href + text}
+                                href={href}
+                                text={text}
+                                linkIconClass={classes.linkIcon}
+                              />
+                            ))}
                           </ul>
                         </Typography>
                       </Box>
