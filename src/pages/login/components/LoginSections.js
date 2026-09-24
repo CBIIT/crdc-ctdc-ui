@@ -87,27 +87,29 @@ export function RasLoginSection({
 export function LoginAccordionList({
   classes,
   accordions,
-  openAccordions,
-  onToggle,
+  openAccordions = {},
+  onToggleAccordion = () => {},
   arrowOpenIcon,
   arrowClosedIcon,
   externalLinkIcon,
 }) {
-  if (!accordions || accordions.length === 0) return null;
+  const accordionItems = Array.isArray(accordions) ? accordions : [];
+
+  if (accordionItems.length === 0) return null;
 
   return (
     <Box className={classes.AccordionList}>
-      {accordions.map((accordion, index) => {
+      {accordionItems.map((item, index) => {
         const isOpen = Boolean(openAccordions[index]);
-        const key = accordion.id || `${accordion.title || "accordion"}-${index}`;
+        const key = item.id || `${item.title || "item"}-${index}`;
 
         return (
           <LoginAccordionItem
             key={key}
             classes={classes}
-            item={accordion}
+            item={item}
             isOpen={isOpen}
-            onToggle={() => onToggle(index)}
+            onToggle={() => onToggleAccordion(index)}
             arrowOpenIcon={arrowOpenIcon}
             arrowClosedIcon={arrowClosedIcon}
             externalLinkIcon={externalLinkIcon}
@@ -116,6 +118,10 @@ export function LoginAccordionList({
       })}
     </Box>
   );
+}
+
+function isCollapsible(item) {
+  return item.collapsible !== false;
 }
 
 function LoginAccordionItem({
@@ -131,21 +137,35 @@ function LoginAccordionItem({
   const accordionTextClassName = bodyClassName
     ? `${classes.AccordionText} ${bodyClassName}`
     : classes.AccordionText;
+  const itemIsCollapsible = isCollapsible(item);
+  const itemIsOpen = itemIsCollapsible ? isOpen : true;
 
   return (
     <Box className={classes.AccordionItem}>
-      <ToggleHeader
-        classes={classes}
-        headerClassName={classes.AccordionHeader}
-        title={item.title}
-        titleClassName={classes.AccordionTitle}
-        isOpen={isOpen}
-        onToggle={onToggle}
-        openIcon={arrowOpenIcon}
-        closedIcon={arrowClosedIcon}
-      />
+      {itemIsCollapsible ? (
+        <ToggleHeader
+          classes={classes}
+          headerClassName={classes.AccordionHeader}
+          title={item.title}
+          titleClassName={classes.AccordionTitle}
+          isOpen={itemIsOpen}
+          onToggle={onToggle}
+          openIcon={arrowOpenIcon}
+          closedIcon={arrowClosedIcon}
+        />
+      ) : item.title && (
+        <Box className={classes.AccordionHeader}>
+          <Typography
+            variant="h3"
+            component="h3"
+            className={classes.AccordionTitle}
+          >
+            {item.title}
+          </Typography>
+        </Box>
+      )}
 
-      {isOpen && (
+      {itemIsOpen && (
         <Box className={accordionTextClassName}>
           <LoginMarkdownContent
             content={item.content}
@@ -193,13 +213,15 @@ function hasContent(item) {
 export function ContentBoxSection({
   classes,
   section,
-  openGroups = {},
-  onToggleGroup = () => {},
+  openAccordions = {},
+  onToggleAccordion = () => {},
   arrowOpenIcon,
   arrowClosedIcon,
   externalLinkIcon,
 }) {
-  const groups = Array.isArray(section.groups) ? section.groups : [];
+  const accordions = Array.isArray(section.accordions)
+    ? section.accordions
+    : [];
   const hasSectionContent = hasContent(section);
 
   return (
@@ -228,28 +250,33 @@ export function ContentBoxSection({
         )}
       </Box>
 
-      {groups.map((group, index) => {
-        const groupKey = group.id || `${group.title || "group"}-${index}`;
-        const isOpen = Boolean(openGroups[index]);
-        const useLinkStyle = group.variant === "links" || group.linkStyle;
-        const previousGroup = groups[index - 1];
+      {accordions.map((accordion, index) => {
+        const accordionKey =
+          accordion.id || `${accordion.title || "accordion"}-${index}`;
+        const accordionIsCollapsible = isCollapsible(accordion);
+        const isOpen = Boolean(openAccordions[index]);
+        const useLinkStyle =
+          accordion.variant === "links" || accordion.linkStyle;
+        const previousAccordion = accordions[index - 1];
+        const previousAccordionIsCollapsible =
+          previousAccordion && isCollapsible(previousAccordion);
         const isNextToAccordion =
-          group.collapsible || (previousGroup && previousGroup.collapsible);
+          accordionIsCollapsible || previousAccordionIsCollapsible;
         const shouldShowDivider =
           !isNextToAccordion && (hasSectionContent || index > 0);
 
         return (
-          <React.Fragment key={groupKey}>
+          <React.Fragment key={accordionKey}>
             {shouldShowDivider && <Box className={classes.Divider} />}
 
             <Box className={classes.RequestBottomSection}>
-              {group.collapsible ? (
+              {accordionIsCollapsible ? (
                 <Box className={classes.AccordionList}>
                   <LoginAccordionItem
                     classes={classes}
-                    item={group}
+                    item={accordion}
                     isOpen={isOpen}
-                    onToggle={() => onToggleGroup(index)}
+                    onToggle={() => onToggleAccordion(index)}
                     arrowOpenIcon={arrowOpenIcon}
                     arrowClosedIcon={arrowClosedIcon}
                     externalLinkIcon={externalLinkIcon}
@@ -259,21 +286,21 @@ export function ContentBoxSection({
               ) : (
                 <Box className={classes.VerificationWrapper}>
                   <Box className={classes.VerificationSection}>
-                    {group.title && (
+                    {accordion.title && (
                       <Typography
                         variant="h3"
                         component="h3"
                         className={classes.SubsectionTitle}
                         style={{ marginTop: 0, marginBottom: 0 }}
                       >
-                        {group.title}
+                        {accordion.title}
                       </Typography>
                     )}
 
-                    {hasContent(group) && (
+                    {hasContent(accordion) && (
                       <LoginContentBlock
-                      classes={classes}
-                        item={group}
+                        classes={classes}
+                        item={accordion}
                         externalLinkIcon={externalLinkIcon}
                         className={useLinkStyle ? classes.Link : undefined}
                       />

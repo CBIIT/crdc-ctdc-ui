@@ -1,5 +1,5 @@
 // RAS (NIH Researcher Auth Service) login page
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid, Box } from "@material-ui/core";
 import styles from "./rasLoginStyles";
@@ -13,90 +13,44 @@ import {
   WarningNotice,
 } from "./components/LoginSections";
 
-function getLoginAccordions(ras, verification) {
-  if (Array.isArray(ras.accordions) && ras.accordions.length > 0) {
-    return ras.accordions;
-  }
-
-  if (verification.title || verification.bodyMarkdown || verification.content) {
-    return [verification];
-  }
-
-  return [];
-}
-
-function hasSectionContent(section) {
-  return Boolean(
-    section &&
-      (section.title ||
-        section.bodyMarkdown ||
-        (Array.isArray(section.content) && section.content.length > 0)),
-  );
-}
-
-function getLegacyContentBoxGroups(requestAccess) {
-  const groups = [
-    requestAccess.accessRequirements,
-    {
-      ...requestAccess.instructions,
-      collapsible: true,
-    },
-    {
-      ...requestAccess.documentation,
-      variant: "links",
-    },
-  ];
-
-  return groups.filter(hasSectionContent);
-}
-
-function getLegacySections(content) {
-  const ras = content.ras || {};
-  const verification = content.verification || {};
-  const requestAccess = content.requestAccess || {};
-  const sections = [];
-
-  if (
-    hasSectionContent(ras) ||
-    (Array.isArray(ras.accordions) && ras.accordions.length > 0) ||
-    hasSectionContent(verification)
-  ) {
-    sections.push({
-      ...ras,
-      id: "ras-login",
-      type: "rasLogin",
-      accordions: getLoginAccordions(ras, verification),
-    });
-  }
-
-  if (
-    requestAccess.title ||
-    hasSectionContent(requestAccess) ||
-    getLegacyContentBoxGroups(requestAccess).length > 0
-  ) {
-    sections.push({
-      id: "request-access",
-      type: "contentBox",
-      title: requestAccess.title,
-      content: requestAccess.content,
-      bodyMarkdown: requestAccess.bodyMarkdown,
-      groups: getLegacyContentBoxGroups(requestAccess),
-    });
-  }
-
-  return sections;
-}
-
 function getLoginSections(content) {
-  if (Array.isArray(content.sections) && content.sections.length > 0) {
-    return content.sections;
-  }
-
-  return getLegacySections(content);
+  return Array.isArray(content.sections) ? content.sections : [];
 }
 
 function getSectionKey(section, index) {
   return section.id || `${section.type || "section"}-${index}`;
+}
+
+function getDefaultOpenAccordions(accordions = []) {
+  const accordionList = Array.isArray(accordions) ? accordions : [];
+
+  return accordionList.reduce((openAccordions, accordion, index) => {
+    if (
+      accordion &&
+      accordion.collapsible !== false &&
+      accordion.defaultOpen === true
+    ) {
+      return {
+        ...openAccordions,
+        [index]: true,
+      };
+    }
+
+    return openAccordions;
+  }, {});
+}
+
+function getDefaultOpenSectionAccordions(sections, sectionType) {
+  return sections.reduce((openSections, section, index) => {
+    if (section.type !== sectionType) return openSections;
+
+    return {
+      ...openSections,
+      [getSectionKey(section, index)]: getDefaultOpenAccordions(
+        section.accordions,
+      ),
+    };
+  }, {});
 }
 
 function RASLoginPage(props) {
@@ -110,26 +64,42 @@ function RASLoginPage(props) {
   const help = content.help || {};
   const tutorial = help.tutorial || {};
   const contact = help.contact || {};
-  const sections = getLoginSections(content);
-  const [loginAccordionsOpen, setLoginAccordionsOpen] = useState({});
-  const [contentGroupsOpen, setContentGroupsOpen] = useState({});
+  const sections = useMemo(() => getLoginSections(content), [content]);
+  const [loginAccordionsOpen, setLoginAccordionsOpen] = useState(() =>
+    getDefaultOpenSectionAccordions(sections, "rasLogin"));
+  const [contentAccordionsOpen, setContentAccordionsOpen] = useState(() =>
+    getDefaultOpenSectionAccordions(sections, "contentBox"));
   const [warningOpen, setWarningOpen] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
+
+  useEffect(() => {
+    setLoginAccordionsOpen(
+      getDefaultOpenSectionAccordions(sections, "rasLogin"),
+    );
+    setContentAccordionsOpen(
+      getDefaultOpenSectionAccordions(sections, "contentBox"),
+    );
+  }, [sections]);
+
   const toggleLoginAccordion = (sectionKey, index) => {
-    setLoginAccordionsOpen((openItems) => ({
-      ...openItems,
+    setLoginAccordionsOpen((openAccordions) => ({
+      ...openAccordions,
       [sectionKey]: {
-        ...openItems[sectionKey],
-        [index]: !(openItems[sectionKey] && openItems[sectionKey][index]),
+        ...openAccordions[sectionKey],
+        [index]: !(
+          openAccordions[sectionKey] && openAccordions[sectionKey][index]
+        ),
       },
     }));
   };
-  const toggleContentGroup = (sectionKey, index) => {
-    setContentGroupsOpen((openItems) => ({
-      ...openItems,
+  const toggleContentAccordion = (sectionKey, index) => {
+    setContentAccordionsOpen((openAccordions) => ({
+      ...openAccordions,
       [sectionKey]: {
-        ...openItems[sectionKey],
-        [index]: !(openItems[sectionKey] && openItems[sectionKey][index]),
+        ...openAccordions[sectionKey],
+        [index]: !(
+          openAccordions[sectionKey] && openAccordions[sectionKey][index]
+        ),
       },
     }));
   };
@@ -158,7 +128,7 @@ function RASLoginPage(props) {
                       classes={classes}
                       accordions={section.accordions}
                       openAccordions={loginAccordionsOpen[sectionKey] || {}}
-                      onToggle={(accordionIndex) =>
+                      onToggleAccordion={(accordionIndex) =>
                         toggleLoginAccordion(sectionKey, accordionIndex)}
                       arrowOpenIcon={arrowOpenIcon}
                       arrowClosedIcon={arrowClosedIcon}
@@ -174,9 +144,11 @@ function RASLoginPage(props) {
                     key={sectionKey}
                     classes={classes}
                     section={section}
-                    openGroups={contentGroupsOpen[sectionKey] || {}}
-                    onToggleGroup={(groupIndex) =>
-                      toggleContentGroup(sectionKey, groupIndex)}
+                    openAccordions={
+                      contentAccordionsOpen[sectionKey] || {}
+                    }
+                    onToggleAccordion={(accordionIndex) =>
+                      toggleContentAccordion(sectionKey, accordionIndex)}
                     arrowOpenIcon={arrowOpenIcon}
                     arrowClosedIcon={arrowClosedIcon}
                     externalLinkIcon={externalLinkIcon}

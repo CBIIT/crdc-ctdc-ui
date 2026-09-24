@@ -66,6 +66,7 @@ const loginContent = {
         },
         {
           title: "Preparing your identity",
+          collapsible: false,
           content: [
             {
               paragraph:
@@ -96,9 +97,10 @@ const loginContent = {
       id: "request-access",
       type: "contentBox",
       title: "Request Access",
-      groups: [
+      accordions: [
         {
           title: "Access Requirements",
+          collapsible: false,
           content: [
             {
               paragraph: "CTDC contains controlled-access research data.",
@@ -208,9 +210,9 @@ const loginContent = {
 describe("RASLoginPage", () => {
   let container;
 
-  const renderPage = () => {
+  const renderPage = (content = loginContent) => {
     act(() => {
-      ReactDOM.render(<RASLoginPage content={loginContent} />, container);
+      ReactDOM.render(<RASLoginPage content={content} />, container);
     });
   };
 
@@ -259,6 +261,9 @@ describe("RASLoginPage", () => {
     expect(container.textContent).toContain("Italic note");
     expect(container.textContent).toContain("ctdc@example.org");
     expect(container.textContent).toContain("Indented note");
+    expect(container.textContent).toContain(
+      "The verification process typically",
+    );
 
     const toggles = container.querySelectorAll('[aria-expanded]');
     pressKey(toggles[2], "Enter");
@@ -290,15 +295,76 @@ describe("RASLoginPage", () => {
     );
   });
 
-  it("uses the shared accordion styling for contentBox collapsible groups", () => {
+  it("uses the shared accordion styling for contentBox accordions", () => {
     renderPage();
 
     const toggles = container.querySelectorAll('[aria-expanded]');
-    const contentBoxToggle = toggles[2];
+    const contentBoxToggle = toggles[1];
     const contentBoxTitle = contentBoxToggle.querySelector("h3, h4, span, div");
 
     expect(contentBoxToggle.className).toMatch(/AccordionHeader/);
     expect(contentBoxTitle.className).toMatch(/AccordionTitle/);
+  });
+
+  it("renders accordion content as always open when collapsible is false", () => {
+    renderPage();
+
+    expect(container.textContent).toContain(
+      "The verification process typically",
+    );
+
+    const toggles = container.querySelectorAll('[aria-expanded]');
+    expect(toggles).toHaveLength(4);
+    expect(Array.from(toggles).some((toggle) =>
+      toggle.textContent.includes("Preparing your identity"))).toBe(false);
+  });
+
+  it("supports defaultOpen for rasLogin and contentBox accordions", () => {
+    const contentWithDefaultOpenAccordions = {
+      ...loginContent,
+      sections: loginContent.sections.map((section) => {
+        if (section.id === "ras-login") {
+          return {
+            ...section,
+            accordions: section.accordions.map((accordion, index) =>
+              (index === 0
+                ? { ...accordion, defaultOpen: true }
+                : accordion)),
+          };
+        }
+
+        if (section.id === "request-access") {
+          return {
+            ...section,
+            accordions: section.accordions.map((accordion) =>
+              (accordion.title === "Documentation"
+                ? { ...accordion, defaultOpen: true }
+                : accordion)),
+          };
+        }
+
+        return section;
+      }),
+    };
+
+    renderPage(contentWithDefaultOpenAccordions);
+
+    expect(container.textContent).toContain("Begin from the CTDC login page");
+    expect(container.textContent).toContain("eRA Commons Account Creation");
+
+    const toggles = container.querySelectorAll('[aria-expanded]');
+    expect(toggles[0].getAttribute("aria-expanded")).toBe("true");
+    expect(toggles[2].getAttribute("aria-expanded")).toBe("true");
+
+    pressKey(toggles[0], " ");
+    pressKey(toggles[2], " ");
+
+    expect(container.textContent).not.toContain(
+      "Begin from the CTDC login page",
+    );
+    expect(container.textContent).not.toContain(
+      "eRA Commons Account Creation",
+    );
   });
 
   it("supports Enter and Space for each collapsible section", () => {
@@ -318,20 +384,20 @@ describe("RASLoginPage", () => {
 
     pressKey(toggles[1], "Enter");
     expect(container.textContent).toContain(
-      "The verification process typically",
+      "Create a Login.gov or ID.me account",
     );
     pressKey(toggles[1], " ");
     expect(container.textContent).not.toContain(
-      "The verification process typically",
+      "Create a Login.gov or ID.me account",
     );
 
     pressKey(toggles[2], "Enter");
     expect(container.textContent).toContain(
-      "Create a Login.gov or ID.me account",
+      "eRA Commons Account Creation",
     );
     pressKey(toggles[2], " ");
     expect(container.textContent).not.toContain(
-      "Create a Login.gov or ID.me account",
+      "eRA Commons Account Creation",
     );
 
     pressKey(toggles[3], "Enter");
