@@ -258,6 +258,7 @@ const styles = (theme) => ({
     alignItems: "flex-start",
   },
   BoxTitle: {
+    alignSelf: "stretch",
     height: "37px",
     fontFamily: "Inter",
     fontSize: "24px",
@@ -266,6 +267,7 @@ const styles = (theme) => ({
     letterSpacing: "-0.02em",
     lineHeight: "106.52%",
     display: "flex",
+    justifyContent: "flex-start",
     paddingBottom: "15px",
   },
   BodyText: {
@@ -383,6 +385,10 @@ const styles = (theme) => ({
   },
   TutorialSection: {
     marginBottom: "60px",
+    padding: "0px 10px",
+  },
+  HelpContentSection: {
+    marginBottom: "30px",
     padding: "0px 10px",
   },
   SidebarTitle: {

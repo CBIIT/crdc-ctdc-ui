@@ -40,16 +40,19 @@ export function RasLoginSection({
   ras,
   rasAuthorizeUrl,
   externalLinkIcon,
+  showTitle = true,
 }) {
   return (
     <Box className={classes.RasSection}>
-      <Typography
-        variant="h2"
-        component="h2"
-        className={classes.BoxTitle}
-      >
-        {ras.title}
-      </Typography>
+      {showTitle && (
+        <Typography
+          variant="h2"
+          component="h2"
+          className={classes.BoxTitle}
+        >
+          {ras.title}
+        </Typography>
+      )}
 
       <Box className={classes.LoginContentRow}>
         <Box className={classes.RasTextWrapper}>
@@ -80,6 +83,73 @@ export function RasLoginSection({
           )}
         </Box>
       </Box>
+    </Box>
+  );
+}
+
+export function RasLoginBox({
+  classes,
+  ras,
+  rasAuthorizeUrl,
+  openAccordions = {},
+  onToggleAccordion = () => {},
+  arrowOpenIcon,
+  arrowClosedIcon,
+  externalLinkIcon,
+}) {
+  const accordions = Array.isArray(ras.accordions) ? ras.accordions : [];
+  const orderedComponents = getOrderedComponents(ras, [
+    {
+      type: "content",
+      enabled: hasContent(ras),
+      keys: ["content", "bodyMarkdown"],
+    },
+    {
+      type: "accordions",
+      enabled: accordions.length > 0,
+      keys: ["accordions"],
+    },
+  ]);
+
+  return (
+    <Box className={classes.CombinedLoginBox}>
+      {ras.title && (
+        <Typography
+          variant="h2"
+          component="h2"
+          className={classes.BoxTitle}
+        >
+          {ras.title}
+        </Typography>
+      )}
+
+      {orderedComponents.map((component) => {
+        if (component.type === "content") {
+          return (
+            <RasLoginSection
+              key="content"
+              classes={classes}
+              ras={ras}
+              rasAuthorizeUrl={rasAuthorizeUrl}
+              externalLinkIcon={externalLinkIcon}
+              showTitle={false}
+            />
+          );
+        }
+
+        return (
+          <LoginAccordionList
+            key="accordions"
+            classes={classes}
+            accordions={accordions}
+            openAccordions={openAccordions}
+            onToggleAccordion={onToggleAccordion}
+            arrowOpenIcon={arrowOpenIcon}
+            arrowClosedIcon={arrowClosedIcon}
+            externalLinkIcon={externalLinkIcon}
+          />
+        );
+      })}
     </Box>
   );
 }
@@ -210,38 +280,22 @@ function hasContent(item) {
   );
 }
 
-function getContentOrder(section) {
+function getFieldOrder(section, fieldNames) {
   const keys = Object.keys(section);
-  const contentIndex = keys.findIndex((key) =>
-    key === "content" || key === "bodyMarkdown");
+  const fieldIndex = keys.findIndex((key) => fieldNames.includes(key));
 
-  return contentIndex === -1 ? Number.MAX_SAFE_INTEGER : contentIndex;
+  return fieldIndex === -1 ? Number.MAX_SAFE_INTEGER : fieldIndex;
 }
 
-function getOrderedContentBoxComponents(section, accordions) {
-  const keys = Object.keys(section);
-  const components = [];
-
-  if (hasContent(section)) {
-    components.push({
-      type: "content",
-      order: getContentOrder(section),
-    });
-  }
-
-  if (accordions.length > 0) {
-    const accordionIndex = keys.indexOf("accordions");
-
-    components.push({
-      type: "accordions",
-      order: accordionIndex === -1
-        ? Number.MAX_SAFE_INTEGER
-        : accordionIndex,
-    });
-  }
-
-  return components.sort((firstComponent, secondComponent) =>
-    firstComponent.order - secondComponent.order);
+function getOrderedComponents(section, components) {
+  return components
+    .filter((component) => component.enabled)
+    .map((component) => ({
+      ...component,
+      order: getFieldOrder(section, component.keys),
+    }))
+    .sort((firstComponent, secondComponent) =>
+      firstComponent.order - secondComponent.order);
 }
 
 export function ContentBoxSection({
@@ -256,10 +310,18 @@ export function ContentBoxSection({
   const accordions = Array.isArray(section.accordions)
     ? section.accordions
     : [];
-  const orderedComponents = getOrderedContentBoxComponents(
-    section,
-    accordions,
-  );
+  const orderedComponents = getOrderedComponents(section, [
+    {
+      type: "content",
+      enabled: hasContent(section),
+      keys: ["content", "bodyMarkdown"],
+    },
+    {
+      type: "accordions",
+      enabled: accordions.length > 0,
+      keys: ["accordions"],
+    },
+  ]);
 
   return (
     <Box className={classes.RequestSection}>
@@ -421,6 +483,28 @@ export function HelpSidebar({
   onPlayVideo,
   externalLinkIcon,
 }) {
+  const orderedComponents = getOrderedComponents(help, [
+    {
+      type: "content",
+      enabled: hasContent(help),
+      keys: ["content", "bodyMarkdown"],
+    },
+    {
+      type: "tutorial",
+      enabled: Boolean(
+        tutorial.title || hasContent(tutorial) || tutorial.videoUrl,
+      ),
+      keys: ["tutorial"],
+    },
+    {
+      type: "contact",
+      enabled: Boolean(
+        contact.title || hasContent(contact) || contact.buttonText,
+      ),
+      keys: ["contact"],
+    },
+  ]);
+
   return (
     <Grid item xs={12} md className={classes.RightColumn}>
       <Box
@@ -443,83 +527,113 @@ export function HelpSidebar({
           </Typography>
         </Box>
 
-        <Box className={classes.TutorialSection}>
-          <Typography
-            variant="h3"
-            component="h3"
-            className={classes.SidebarTitle}
-          >
-            {tutorial.title}
-          </Typography>
-          <LoginMarkdownContent
-            content={tutorial.content}
-            markdown={tutorial.bodyMarkdown}
-            classes={classes}
-            paragraphClassName={classes.SidebarText}
-            linkIcon={externalLinkIcon}
-          />
-
-          <Box className={classes.VideoThumbnail}>
-            {videoPlaying ? (
-              <video
-                src={tutorial.videoUrl}
-                className={classes.VideoImage}
-                controls
-                autoPlay
-              >
-                <track kind="captions" />
-              </video>
-            ) : (
-              <>
-                <ContentImage
-                  asset={getAsset(assets, "videoThumbnail")}
-                  fallbackAlt="Tutorial Video"
-                  className={classes.VideoImage}
+        {orderedComponents.map((component) => {
+          if (component.type === "content") {
+            return (
+              <Box key="content" className={classes.HelpContentSection}>
+                <LoginMarkdownContent
+                  content={help.content}
+                  markdown={help.bodyMarkdown}
+                  classes={classes}
+                  paragraphClassName={classes.SidebarText}
+                  linkIcon={externalLinkIcon}
                 />
-                <Box
-                  className={classes.PlayOverlay}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={tutorial.playButtonAriaLabel}
-                  onClick={onPlayVideo}
-                  onKeyDown={handleActivation(onPlayVideo)}
-                >
-                  <ContentImage
-                    asset={getAsset(assets, "playIcon")}
-                    fallbackAlt="Play"
-                    className={classes.PlayIcon}
-                  />
-                </Box>
-              </>
-            )}
-          </Box>
-        </Box>
+              </Box>
+            );
+          }
 
-        <Box className={classes.ContactSection}>
-          <Typography
-            variant="h3"
-            component="h3"
-            className={classes.SidebarTitle}
-          >
-            {contact.title}
-          </Typography>
-          <LoginMarkdownContent
-            content={contact.content}
-            markdown={contact.bodyMarkdown}
-            classes={classes}
-            paragraphClassName={classes.SidebarText}
-            linkIcon={externalLinkIcon}
-          />
-          <Button
-            variant="outlined"
-            className={classes.ContactButton}
-            href={contact.href || undefined}
-            target={contact.target || undefined}
-            rel={contact.rel || undefined}
-          >
-            {contact.buttonText}
-          </Button>
-        </Box>
+          if (component.type === "tutorial") {
+            return (
+              <Box key="tutorial" className={classes.TutorialSection}>
+                {tutorial.title && (
+                  <Typography
+                    variant="h3"
+                    component="h3"
+                    className={classes.SidebarTitle}
+                  >
+                    {tutorial.title}
+                  </Typography>
+                )}
+                <LoginMarkdownContent
+                  content={tutorial.content}
+                  markdown={tutorial.bodyMarkdown}
+                  classes={classes}
+                  paragraphClassName={classes.SidebarText}
+                  linkIcon={externalLinkIcon}
+                />
+
+                {tutorial.videoUrl && (
+                  <Box className={classes.VideoThumbnail}>
+                    {videoPlaying ? (
+                      <video
+                        src={tutorial.videoUrl}
+                        className={classes.VideoImage}
+                        controls
+                        autoPlay
+                      >
+                        <track kind="captions" />
+                      </video>
+                    ) : (
+                      <>
+                        <ContentImage
+                          asset={getAsset(assets, "videoThumbnail")}
+                          fallbackAlt="Tutorial Video"
+                          className={classes.VideoImage}
+                        />
+                        <Box
+                          className={classes.PlayOverlay}
+                          role="button"
+                          tabIndex={0}
+                          aria-label={tutorial.playButtonAriaLabel}
+                          onClick={onPlayVideo}
+                          onKeyDown={handleActivation(onPlayVideo)}
+                        >
+                          <ContentImage
+                            asset={getAsset(assets, "playIcon")}
+                            fallbackAlt="Play"
+                            className={classes.PlayIcon}
+                          />
+                        </Box>
+                      </>
+                    )}
+                  </Box>
+                )}
+              </Box>
+            );
+          }
+
+          return (
+            <Box key="contact" className={classes.ContactSection}>
+              {contact.title && (
+                <Typography
+                  variant="h3"
+                  component="h3"
+                  className={classes.SidebarTitle}
+                >
+                  {contact.title}
+                </Typography>
+              )}
+              <LoginMarkdownContent
+                content={contact.content}
+                markdown={contact.bodyMarkdown}
+                classes={classes}
+                paragraphClassName={classes.SidebarText}
+                linkIcon={externalLinkIcon}
+              />
+              {contact.buttonText && (
+                <Button
+                  variant="outlined"
+                  className={classes.ContactButton}
+                  href={contact.href || undefined}
+                  target={contact.target || undefined}
+                  rel={contact.rel || undefined}
+                >
+                  {contact.buttonText}
+                </Button>
+              )}
+            </Box>
+          );
+        })}
       </Box>
     </Grid>
   );

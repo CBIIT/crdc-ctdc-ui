@@ -168,6 +168,12 @@ const loginContent = {
   help: {
     ariaLabel: "Help and Support",
     headerText: "NEED HELP?",
+    content: [
+      {
+        paragraph:
+          "For help signing in, review the resources below or contact CTDC support.",
+      },
+    ],
     tutorial: {
       title: "Creating Accounts to Access CTDC data",
       content: [
@@ -289,6 +295,67 @@ describe("RASLoginPage", () => {
     expect(container.textContent).toContain(
       "This can be added without frontend code changes.",
     );
+  });
+
+  it("renders generic help content before tutorial content", () => {
+    renderPage();
+
+    const renderedText = container.textContent;
+    expect(renderedText).toContain("For help signing in");
+    expect(renderedText.indexOf("For help signing in"))
+      .toBeLessThan(renderedText.indexOf("Creating Accounts"));
+  });
+
+  it("renders RAS content and accordions in YAML key order", () => {
+    renderPage();
+
+    let renderedText = container.textContent;
+    expect(renderedText.indexOf("Before accessing CTDC data"))
+      .toBeLessThan(renderedText.indexOf("How to sign in"));
+
+    const rasContentAfterAccordions = {
+      ...loginContent,
+      sections: loginContent.sections.map((section) => {
+        if (section.id !== "ras-login") return section;
+
+        const { content, accordions, ...sectionMetadata } = section;
+
+        return {
+          ...sectionMetadata,
+          accordions,
+          content,
+        };
+      }),
+    };
+
+    renderPage(rasContentAfterAccordions);
+
+    renderedText = container.textContent;
+    expect(renderedText.indexOf("How to sign in"))
+      .toBeLessThan(renderedText.indexOf("Before accessing CTDC data"));
+  });
+
+  it("renders Help panel components in YAML key order", () => {
+    const helpContentAfterContact = {
+      ...loginContent,
+      help: (() => {
+        const { content, tutorial, contact, ...helpMetadata } =
+          loginContent.help;
+
+        return {
+          ...helpMetadata,
+          tutorial,
+          contact,
+          content,
+        };
+      })(),
+    };
+
+    renderPage(helpContentAfterContact);
+
+    const renderedText = container.textContent;
+    expect(renderedText.indexOf("Let us assist you"))
+      .toBeLessThan(renderedText.indexOf("For help signing in"));
   });
 
   it("renders contentBox content in YAML key order", () => {

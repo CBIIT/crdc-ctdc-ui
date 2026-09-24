@@ -1,15 +1,14 @@
 // RAS (NIH Researcher Auth Service) login page
 import React, { useEffect, useMemo, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Grid, Box } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import styles from "./rasLoginStyles";
 import { getAsset } from "./components/ContentImage";
 import {
   ContentBoxSection,
   HelpSidebar,
-  LoginAccordionList,
   LoginHero,
-  RasLoginSection,
+  RasLoginBox,
   WarningNotice,
 } from "./components/LoginSections";
 
@@ -116,25 +115,18 @@ function RASLoginPage(props) {
 
               if (section.type === "rasLogin") {
                 return (
-                  <Box className={classes.CombinedLoginBox} key={sectionKey}>
-                    <RasLoginSection
-                      classes={classes}
-                      ras={section}
-                      rasAuthorizeUrl={rasAuthorizeUrl}
-                      externalLinkIcon={externalLinkIcon}
-                    />
-
-                    <LoginAccordionList
-                      classes={classes}
-                      accordions={section.accordions}
-                      openAccordions={loginAccordionsOpen[sectionKey] || {}}
-                      onToggleAccordion={(accordionIndex) =>
-                        toggleLoginAccordion(sectionKey, accordionIndex)}
-                      arrowOpenIcon={arrowOpenIcon}
-                      arrowClosedIcon={arrowClosedIcon}
-                      externalLinkIcon={externalLinkIcon}
-                    />
-                  </Box>
+                  <RasLoginBox
+                    key={sectionKey}
+                    classes={classes}
+                    ras={section}
+                    rasAuthorizeUrl={rasAuthorizeUrl}
+                    openAccordions={loginAccordionsOpen[sectionKey] || {}}
+                    onToggleAccordion={(accordionIndex) =>
+                      toggleLoginAccordion(sectionKey, accordionIndex)}
+                    arrowOpenIcon={arrowOpenIcon}
+                    arrowClosedIcon={arrowClosedIcon}
+                    externalLinkIcon={externalLinkIcon}
+                  />
                 );
               }
 
