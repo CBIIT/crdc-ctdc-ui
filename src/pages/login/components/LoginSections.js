@@ -35,7 +35,7 @@ export function LoginHero({ classes, assets, hero }) {
   );
 }
 
-export function RasLoginSection({
+export function RasLoginContent({
   classes,
   ras,
   rasAuthorizeUrl,
@@ -126,7 +126,7 @@ export function RasLoginBox({
       {orderedComponents.map((component) => {
         if (component.type === "content") {
           return (
-            <RasLoginSection
+            <RasLoginContent
               key="content"
               classes={classes}
               ras={ras}
@@ -288,6 +288,8 @@ function getFieldOrder(section, fieldNames) {
 }
 
 function getOrderedComponents(section, components) {
+  // Preserve YAML key order so content editors can move flexible blocks
+  // before or after accordions/help sections without frontend changes.
   return components
     .filter((component) => component.enabled)
     .map((component) => ({
@@ -324,8 +326,8 @@ export function ContentBoxSection({
   ]);
 
   return (
-    <Box className={classes.RequestSection}>
-      <Box className={classes.RequestTopSection}>
+    <Box className={classes.ContentBoxSection}>
+      <Box className={classes.ContentBoxHeader}>
         {section.title && (
           <Typography
             variant="h2"
@@ -342,10 +344,10 @@ export function ContentBoxSection({
           return (
             <Box
               key="content"
-              className={classes.RequestBottomSection}
+              className={classes.ContentBoxBody}
             >
-              <Box className={classes.VerificationWrapper}>
-                <Box className={classes.VerificationSection}>
+              <Box className={classes.ContentBlockWrapper}>
+                <Box className={classes.ContentBlock}>
                   <LoginContentBlock
                     classes={classes}
                     item={section}
@@ -380,7 +382,7 @@ export function ContentBoxSection({
             <React.Fragment key={accordionKey}>
               {shouldShowDivider && <Box className={classes.Divider} />}
 
-              <Box className={classes.RequestBottomSection}>
+              <Box className={classes.ContentBoxBody}>
                 {accordionIsCollapsible ? (
                   <Box className={classes.AccordionList}>
                     <LoginAccordionItem
@@ -395,8 +397,8 @@ export function ContentBoxSection({
                     />
                   </Box>
                 ) : (
-                  <Box className={classes.VerificationWrapper}>
-                    <Box className={classes.VerificationSection}>
+                  <Box className={classes.ContentBlockWrapper}>
+                    <Box className={classes.ContentBlock}>
                       {accordion.title && (
                         <Typography
                           variant="h3"
@@ -483,6 +485,11 @@ export function HelpSidebar({
   onPlayVideo,
   externalLinkIcon,
 }) {
+  const contactButtonTarget = contact.target || undefined;
+  const contactButtonRel = contact.rel ||
+    (contactButtonTarget && contactButtonTarget !== "_self"
+      ? "noopener noreferrer"
+      : undefined);
   const orderedComponents = getOrderedComponents(help, [
     {
       type: "content",
@@ -625,8 +632,8 @@ export function HelpSidebar({
                   variant="outlined"
                   className={classes.ContactButton}
                   href={contact.href || undefined}
-                  target={contact.target || undefined}
-                  rel={contact.rel || undefined}
+                  target={contactButtonTarget}
+                  rel={contactButtonRel}
                 >
                   {contact.buttonText}
                 </Button>

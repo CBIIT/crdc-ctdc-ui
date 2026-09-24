@@ -131,13 +131,6 @@ const styles = (theme) => ({
       maxWidth: "876px",
     },
   },
-  LoginSection: {
-    alignSelf: "stretch",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: "25px",
-  },
   RasSection: {
     alignSelf: "stretch",
     display: "flex",
@@ -152,14 +145,14 @@ const styles = (theme) => ({
     gap: "25px",
     minWidth: 0,
   },
-  VerificationWrapper: {
+  ContentBlockWrapper: {
     width: "100%",
     display: "flex",
     justifyContent: "flex-start",
     alignItems: "flex-start",
     gap: "100px",
   },
-  VerificationSection: {
+  ContentBlock: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -168,14 +161,6 @@ const styles = (theme) => ({
     "& $BodyText": {
       paddingRight: "50px",
     },
-  },
-  VerificationHeader: {
-    alignSelf: "stretch",
-    paddingRight: "10px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    cursor: "pointer",
   },
   Divider: {
     alignSelf: "stretch",
@@ -246,13 +231,6 @@ const styles = (theme) => ({
     gap: "20px",
     paddingTop: "0px",
   },
-  LoginTextContent: {
-    width: "537px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: "17px",
-  },
   LoginButtonContainer: {
     display: "flex",
     alignItems: "flex-start",
@@ -293,43 +271,6 @@ const styles = (theme) => ({
     },
     "& li ul, & li ol": {
       marginTop: "2px",
-    },
-  },
-  NoteText: {
-    fontFamily: "Roboto",
-    fontSize: "16px",
-    fontWeight: 700,
-    color: "#000",
-    letterSpacing: "0.2px",
-    lineHeight: "150%",
-  },
-  FooterNote: {
-    fontFamily: "Roboto",
-    fontSize: "16px",
-    fontWeight: 400,
-    color: "#000",
-    letterSpacing: "0.2px",
-    lineHeight: "150%",
-  },
-  LoginButtonEra: {
-    width: "213px",
-    height: "47px",
-    fontFamily: "Roboto",
-    fontSize: "16px",
-    fontWeight: 500,
-    color: "#000000",
-    backgroundColor: "#FFFFFF",
-    border: "1.25px solid #3795A9",
-    borderRadius: "10px",
-    padding: "11px 14px",
-    gap: "10px",
-    textTransform: "none",
-    textAlign: "center",
-    lineHeight: "24.5px",
-    whiteSpace: "nowrap",
-    "&:hover": {
-      backgroundColor: "#F0F9F7",
-      border: "1.25px solid #3795A9",
     },
   },
   LoginButtonRas: {
@@ -460,8 +401,8 @@ const styles = (theme) => ({
     margin: "26px auto 0",
   },
 
-  // Request Access Section
-  RequestSection: {
+  // Content Box Section
+  ContentBoxSection: {
     padding: "30px 40px 40px 40px",
     marginTop: "40px",
     backgroundColor: "#F0F8FA",
@@ -472,14 +413,14 @@ const styles = (theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
-  RequestTopSection: {
+  ContentBoxHeader: {
     alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
     gap: "15px",
   },
-  RequestBottomSection: {
+  ContentBoxBody: {
     alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",
@@ -507,15 +448,6 @@ const styles = (theme) => ({
     marginBottom: "17px",
     lineHeight: "130%",
     letterSpacing: "0%",
-  },
-  DocumentationList: {
-    fontFamily: "Roboto",
-    fontSize: "16px",
-    listStyleType: "none",
-    paddingLeft: "0px",
-    "& li": {
-      marginBottom: "4px",
-    },
   },
   title: {
     color: "inherit",

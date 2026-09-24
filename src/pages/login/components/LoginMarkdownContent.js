@@ -157,6 +157,8 @@ function parseContentLink(value) {
     href,
     label,
     target,
+    // Outbound icons are based on URL behavior and target, not the optional
+    // Bento `type:` attribute used by older About page content.
     hideIcon: target === "_self" || isInternalHref(href),
   };
 }

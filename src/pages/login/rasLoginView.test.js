@@ -208,6 +208,8 @@ const loginContent = {
         },
       ],
       buttonText: "Contact Us",
+      href: "mailto:NCICRDC@mail.nih.gov",
+      target: "_self",
     },
   },
 };
@@ -356,6 +358,40 @@ describe("RASLoginPage", () => {
     const renderedText = container.textContent;
     expect(renderedText.indexOf("Let us assist you"))
       .toBeLessThan(renderedText.indexOf("For help signing in"));
+  });
+
+  it("renders the configured contact button link", () => {
+    renderPage();
+
+    const contactButton = container.querySelector(
+      'a[href="mailto:NCICRDC@mail.nih.gov"]',
+    );
+
+    expect(contactButton).not.toBeNull();
+    expect(contactButton.textContent).toBe("Contact Us");
+    expect(contactButton.getAttribute("target")).toBe("_self");
+    expect(contactButton.getAttribute("rel")).toBeNull();
+
+    renderPage({
+      ...loginContent,
+      help: {
+        ...loginContent.help,
+        contact: {
+          ...loginContent.help.contact,
+          href: "https://example.org/support",
+          target: "_blank",
+        },
+      },
+    });
+
+    const externalContactButton = container.querySelector(
+      'a[href="https://example.org/support"]',
+    );
+
+    expect(externalContactButton).not.toBeNull();
+    expect(externalContactButton.getAttribute("target")).toBe("_blank");
+    expect(externalContactButton.getAttribute("rel"))
+      .toBe("noopener noreferrer");
   });
 
   it("renders contentBox content in YAML key order", () => {

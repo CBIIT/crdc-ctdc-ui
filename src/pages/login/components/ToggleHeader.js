@@ -39,7 +39,7 @@ function ToggleHeader({
 
   return (
     <Box
-      className={headerClassName || classes.VerificationHeader}
+      className={headerClassName || classes.AccordionHeader}
       role="button"
       tabIndex={0}
       aria-expanded={isOpen}
