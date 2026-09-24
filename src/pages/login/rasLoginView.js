@@ -18,7 +18,7 @@ function getLoginAccordions(ras, verification) {
     return ras.accordions;
   }
 
-  if (verification.title || verification.bodyMarkdown) {
+  if (verification.title || verification.bodyMarkdown || verification.content) {
     return [verification];
   }
 

@@ -276,7 +276,7 @@ const styles = (theme) => ({
       marginTop: 0,
     },
     "& p:not(:last-child)": {
-      marginBottom: "24px",
+      marginBottom: "0px",
     },
     "& li p": {
       display: "inline",

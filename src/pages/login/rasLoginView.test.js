@@ -32,21 +32,56 @@ const loginContent = {
   },
   ras: {
     title: "Log in with NIH Research Auth Service (RAS)",
-    bodyMarkdown:
-      "Before accessing CTDC data, you may be required to verify your identity.\n\nIf you already have a CTDC account, you must complete identity verification.",
+    content: [
+      {
+        paragraph:
+          "Before accessing CTDC data, you may be required to verify your identity.",
+      },
+      {
+        paragraph:
+          "If you already have a CTDC account, you must complete identity verification.",
+      },
+    ],
     buttonText: "Login with RAS",
     unavailableText:
       "RAS login is temporarily unavailable because it is not configured.",
     accordions: [
       {
         title: "How to sign in",
-        bodyMarkdown:
-          "1. Begin from the CTDC login page and select the RAS sign-in option.\n2. Complete the required identity proofing steps.",
+        content: [
+          {
+            listWithNumbers: [
+              "Begin from the CTDC login page and select the RAS sign-in option.",
+              "Complete the required identity proofing steps.",
+            ],
+          },
+        ],
       },
       {
         title: "Preparing your identity",
-        bodyMarkdown:
-          "The verification process typically takes up to 30 minutes and requires:\n\na. A mobile phone with a working camera\nb. Your Social Security number\nc. One of the following valid government-issued IDs:\n   - U.S. driver's license\n   - State-issued ID\n\nBefore selecting **Log in with NIH Research Auth Service (RAS)**, please gather the required information.",
+        content: [
+          {
+            paragraph:
+              "The verification process typically takes up to 30 minutes and requires:",
+          },
+          {
+            listWithLetters: [
+              "A mobile phone with a working camera",
+              "Your Social Security number",
+              {
+                text: "One of the following valid government-issued IDs:",
+                listWithDots: [
+                  "U.S. driver's license",
+                  "State-issued ID",
+                ],
+              },
+            ],
+          },
+          {
+            paragraph:
+              "Before selecting $$*Log in with NIH Research Auth Service (RAS)*$$, please gather the required information.",
+          },
+        ],
       },
     ],
   },
@@ -54,39 +89,76 @@ const loginContent = {
     title: "Request Access",
     accessRequirements: {
       title: "Access Requirements",
-      bodyMarkdown:
-        "CTDC contains controlled-access research data.\n\nTo request CTDC access, you must have:\n\n- An **NIH account**",
+      content: [
+        {
+          paragraph: "CTDC contains controlled-access research data.",
+        },
+        {
+          paragraph: "To request CTDC access, you must have:",
+        },
+        {
+          listWithDots: [
+            "An $$*NIH account*$$",
+          ],
+        },
+      ],
     },
     instructions: {
       title: "Instructions to Request Access",
-      bodyMarkdown:
-        "1. Create a Login.gov or ID.me account. If you do not have an NIH account, also create an eRA Commons account.\n\nAccess requests are typically processed within two business days.",
+      content: [
+        {
+          listWithNumbers: [
+            "Create a Login.gov or ID.me account. If you do not have an NIH account, also create an eRA Commons account.",
+          ],
+        },
+        {
+          paragraph:
+            "Access requests are typically processed within two business days.",
+        },
+      ],
     },
     documentation: {
       title: "Documentation",
-      bodyMarkdown:
-        "- [eRA Commons Account Creation](https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm)",
+      content: [
+        {
+          listWithDots: [
+            "$$[eRA Commons Account Creation](https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm)$$",
+          ],
+        },
+      ],
     },
   },
   warning: {
     title: "Warning Notice",
-    bodyMarkdown:
-      "This warning banner provides privacy and security notices consistent with applicable federal laws.",
+    content: [
+      {
+        paragraph:
+          "This warning banner provides privacy and security notices consistent with applicable federal laws.",
+      },
+    ],
   },
   help: {
     ariaLabel: "Help and Support",
     headerText: "NEED HELP?",
     tutorial: {
       title: "Creating Accounts to Access CTDC data",
-      bodyMarkdown:
-        "This tutorial explains the steps involved in creating a Login.gov account.",
+      content: [
+        {
+          paragraph:
+            "This tutorial explains the steps involved in creating a Login.gov account.",
+        },
+      ],
       videoUrl: "https://example.org/tutorial.mp4",
       playButtonAriaLabel: "Play tutorial video",
     },
     contact: {
       title: "Let us assist you with your login or access issues",
-      bodyMarkdown:
-        "If you experience any difficulties with logging in or accessing your account, please reach out to our support team for assistance.",
+      content: [
+        {
+          paragraph:
+            "If you experience any difficulties with logging in or accessing your account, please reach out to our support team for assistance.",
+        },
+      ],
       buttonText: "Contact Us",
     },
   },

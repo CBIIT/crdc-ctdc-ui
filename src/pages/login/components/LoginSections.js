@@ -54,6 +54,7 @@ export function RasLoginSection({
       <Box className={classes.LoginContentRow}>
         <Box className={classes.RasTextWrapper}>
           <LoginMarkdownContent
+            content={ras.content}
             markdown={ras.bodyMarkdown}
             classes={classes}
             linkIcon={externalLinkIcon}
@@ -116,6 +117,7 @@ export function LoginAccordionList({
             {isOpen && (
               <Box className={classes.AccordionText}>
                 <LoginMarkdownContent
+                  content={accordion.content}
                   markdown={accordion.bodyMarkdown}
                   classes={classes}
                   orderedListClassName={classes.orderedListNumeric}
@@ -165,6 +167,7 @@ export function RequestAccessSection({
               {accessRequirements.title}
             </Typography>
             <LoginMarkdownContent
+              content={accessRequirements.content}
               markdown={accessRequirements.bodyMarkdown}
               classes={classes}
               linkIcon={externalLinkIcon}
@@ -195,6 +198,7 @@ export function RequestAccessSection({
               <Box className={classes.VerificationSection}>
                 <Typography className={classes.BodyText} component="div">
                   <LoginMarkdownContent
+                    content={requestInstructions.content}
                     markdown={requestInstructions.bodyMarkdown}
                     classes={classes}
                     orderedListClassName={classes.orderedListNumeric}
@@ -216,6 +220,7 @@ export function RequestAccessSection({
                 </Typography>
                 <Box className={classes.Link}>
                   <LoginMarkdownContent
+                    content={documentation.content}
                     markdown={documentation.bodyMarkdown}
                     classes={classes}
                     linkIcon={externalLinkIcon}
@@ -258,6 +263,7 @@ export function WarningNotice({
           onKeyDown={handleActivation(onToggle)}
         >
           <LoginMarkdownContent
+            content={warning.content}
             markdown={warning.bodyMarkdown}
             classes={classes}
             paragraphClassName={`${classes.WarningText} ${!warningOpen ? classes.WarningTextCollapsed : ""}`}
@@ -315,6 +321,7 @@ export function HelpSidebar({
             {tutorial.title}
           </Typography>
           <LoginMarkdownContent
+            content={tutorial.content}
             markdown={tutorial.bodyMarkdown}
             classes={classes}
             paragraphClassName={classes.SidebarText}
@@ -366,6 +373,7 @@ export function HelpSidebar({
             {contact.title}
           </Typography>
           <LoginMarkdownContent
+            content={contact.content}
             markdown={contact.bodyMarkdown}
             classes={classes}
             paragraphClassName={classes.SidebarText}

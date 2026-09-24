@@ -96,8 +96,91 @@ function parseMarkdownBlocks(markdown) {
   return blocks;
 }
 
-function renderInlineMarkdown(text, linkIcon, classes, keyPrefix) {
-  const pattern = /(\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|\*([^*]+)\*)/g;
+function parseEnhancedLink(value) {
+  const labelMatch = value.match(/^\[([^\]]+)\]\((.*)\)$/);
+  if (!labelMatch) return null;
+
+  const [, label, linkValue] = labelMatch;
+  const urlMatch = linkValue.match(/url:\s*(?:\[([^\]]+)\]|([^\s]+))/);
+  const targetMatch = linkValue.match(/target:\s*(?:\[([^\]]+)\]|([^\s]+))/);
+
+  if (urlMatch) {
+    return {
+      href: urlMatch[1] || urlMatch[2],
+      label,
+      target: targetMatch ? targetMatch[1] || targetMatch[2] : "_blank",
+    };
+  }
+
+  return {
+    href: linkValue,
+    label,
+    target: "_blank",
+  };
+}
+
+function renderLink({
+  href,
+  label,
+  target,
+  linkIcon,
+  classes,
+  keyPrefix,
+}) {
+  const isExternalTarget = target !== "_self";
+
+  return (
+    <React.Fragment key={keyPrefix}>
+      <a
+        href={href}
+        target={target}
+        rel={isExternalTarget ? "noopener noreferrer" : undefined}
+      >
+        {label}
+      </a>
+      {isExternalTarget && (
+        <ContentImage
+          asset={linkIcon}
+          fallbackAlt="outbound web site icon"
+          className={classes.linkIcon}
+        />
+      )}
+    </React.Fragment>
+  );
+}
+
+function renderBentoToken(token, linkIcon, classes, keyPrefix) {
+  if (token === "%space%") {
+    return <br key={keyPrefix} />;
+  }
+
+  const link = parseEnhancedLink(token);
+  if (link) {
+    return renderLink({
+      ...link,
+      linkIcon,
+      classes,
+      keyPrefix,
+    });
+  }
+
+  if (/^\*.*\*$/.test(token)) {
+    return <strong key={keyPrefix}>{token.slice(1, -1)}</strong>;
+  }
+
+  if (/^#.*#$/.test(token)) {
+    return <strong key={keyPrefix}>{token.slice(1, -1)}</strong>;
+  }
+
+  if (/^~.*~$/.test(token)) {
+    return <strong key={keyPrefix}>{token.slice(1, -1)}</strong>;
+  }
+
+  return token;
+}
+
+function renderInlineContent(text, linkIcon, classes, keyPrefix) {
+  const pattern = /(\$\$([\s\S]*?)\$\$|\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|\*([^*]+)\*)/g;
   const nodes = [];
   let lastIndex = 0;
   let match;
@@ -107,29 +190,36 @@ function renderInlineMarkdown(text, linkIcon, classes, keyPrefix) {
       nodes.push(text.slice(lastIndex, match.index));
     }
 
-    if (match[2] && match[3]) {
+    if (match[2]) {
       nodes.push(
-        <React.Fragment key={`${keyPrefix}-link-${match.index}`}>
-          <a href={match[3]} target="_blank" rel="noopener noreferrer">
-            {match[2]}
-          </a>
-          <ContentImage
-            asset={linkIcon}
-            fallbackAlt="outbound web site icon"
-            className={classes.linkIcon}
-          />
-        </React.Fragment>,
+        renderBentoToken(
+          match[2],
+          linkIcon,
+          classes,
+          `${keyPrefix}-bento-${match.index}`,
+        ),
       );
-    } else if (match[4]) {
+    } else if (match[3] && match[4]) {
       nodes.push(
-        <strong key={`${keyPrefix}-strong-${match.index}`}>
-          {match[4]}
-        </strong>,
+        renderLink({
+          href: match[4],
+          label: match[3],
+          target: "_blank",
+          linkIcon,
+          classes,
+          keyPrefix: `${keyPrefix}-link-${match.index}`,
+        }),
       );
     } else if (match[5]) {
       nodes.push(
-        <em key={`${keyPrefix}-em-${match.index}`}>
+        <strong key={`${keyPrefix}-strong-${match.index}`}>
           {match[5]}
+        </strong>,
+      );
+    } else if (match[6]) {
+      nodes.push(
+        <em key={`${keyPrefix}-em-${match.index}`}>
+          {match[6]}
         </em>,
       );
     }
@@ -144,7 +234,182 @@ function renderInlineMarkdown(text, linkIcon, classes, keyPrefix) {
   return nodes;
 }
 
-function renderListItem({
+function getNestedListBlocks(item) {
+  if (!item || typeof item !== "object") return [];
+
+  return [
+    "listWithDots",
+    "listWithNumbers",
+    "listWithLetters",
+  ].reduce((blocks, key) => {
+    if (item[key]) {
+      return [...blocks, { [key]: item[key] }];
+    }
+    return blocks;
+  }, item.content || []);
+}
+
+function getListItemText(item) {
+  if (typeof item === "string") return item;
+  if (!item || typeof item !== "object") return "";
+
+  return item.text || item.paragraph || "";
+}
+
+function renderStructuredListItem({
+  item,
+  itemIndex,
+  classes,
+  unorderedListClassName,
+  orderedListClassName,
+  alphaOrderedListClassName,
+  linkIcon,
+  keyPrefix,
+}) {
+  const nestedBlocks = getNestedListBlocks(item);
+
+  return (
+    <li key={`${keyPrefix}-${itemIndex}`}>
+      {renderInlineContent(
+        getListItemText(item),
+        linkIcon,
+        classes,
+        `${keyPrefix}-${itemIndex}`,
+      )}
+      {nestedBlocks.map((block, nestedIndex) =>
+        renderStructuredBlock({
+          block,
+          blockIndex: `${itemIndex}-${nestedIndex}`,
+          classes,
+          paragraphClassName: classes.BodyText,
+          unorderedListClassName,
+          orderedListClassName,
+          alphaOrderedListClassName,
+          linkIcon,
+          keyPrefix: `${keyPrefix}-${itemIndex}`,
+        }))}
+    </li>
+  );
+}
+
+function renderStructuredList({
+  items,
+  listType,
+  listClassName,
+  classes,
+  unorderedListClassName,
+  orderedListClassName,
+  alphaOrderedListClassName,
+  linkIcon,
+  keyPrefix,
+}) {
+  const ListTag = listType;
+
+  return (
+    <ListTag className={listClassName} key={keyPrefix}>
+      {(items || []).map((item, itemIndex) =>
+        renderStructuredListItem({
+          item,
+          itemIndex,
+          classes,
+          unorderedListClassName,
+          orderedListClassName,
+          alphaOrderedListClassName,
+          linkIcon,
+          keyPrefix,
+        }))}
+    </ListTag>
+  );
+}
+
+function renderStructuredBlock({
+  block,
+  blockIndex,
+  classes,
+  paragraphClassName,
+  unorderedListClassName,
+  orderedListClassName,
+  alphaOrderedListClassName,
+  linkIcon,
+  keyPrefix = "content-block",
+}) {
+  if (typeof block === "string") {
+    return (
+      <Typography
+        key={`${keyPrefix}-paragraph-${blockIndex}`}
+        className={paragraphClassName}
+      >
+        {renderInlineContent(block, linkIcon, classes, `${keyPrefix}-${blockIndex}`)}
+      </Typography>
+    );
+  }
+
+  if (block.paragraph !== undefined) {
+    if (block.paragraph === "$$%space%$$") {
+      return <Box key={`${keyPrefix}-space-${blockIndex}`} height={16} />;
+    }
+
+    return (
+      <Typography
+        key={`${keyPrefix}-paragraph-${blockIndex}`}
+        className={paragraphClassName}
+      >
+        {renderInlineContent(
+          block.paragraph,
+          linkIcon,
+          classes,
+          `${keyPrefix}-${blockIndex}`,
+        )}
+      </Typography>
+    );
+  }
+
+  if (block.listWithDots) {
+    return renderStructuredList({
+      items: block.listWithDots,
+      listType: "ul",
+      listClassName: unorderedListClassName,
+      classes,
+      unorderedListClassName,
+      orderedListClassName,
+      alphaOrderedListClassName,
+      linkIcon,
+      keyPrefix: `${keyPrefix}-dots-${blockIndex}`,
+    });
+  }
+
+  if (block.listWithNumbers) {
+    return renderStructuredList({
+      items: block.listWithNumbers,
+      listType: "ol",
+      listClassName: orderedListClassName,
+      classes,
+      unorderedListClassName,
+      orderedListClassName,
+      alphaOrderedListClassName,
+      linkIcon,
+      keyPrefix: `${keyPrefix}-numbers-${blockIndex}`,
+    });
+  }
+
+  if (block.listWithLetters) {
+    return renderStructuredList({
+      items: block.listWithLetters,
+      listType: "ol",
+      listClassName: alphaOrderedListClassName,
+      classes,
+      unorderedListClassName,
+      orderedListClassName,
+      alphaOrderedListClassName,
+      linkIcon,
+      keyPrefix: `${keyPrefix}-letters-${blockIndex}`,
+    });
+  }
+
+  return null;
+}
+
+function renderMarkdownListItem({
   item,
   itemIndex,
   classes,
@@ -154,12 +419,12 @@ function renderListItem({
 }) {
   return (
     <li key={`${keyPrefix}-${itemIndex}`}>
-      {renderInlineMarkdown(item.text, linkIcon, classes, `${keyPrefix}-${itemIndex}`)}
+      {renderInlineContent(item.text, linkIcon, classes, `${keyPrefix}-${itemIndex}`)}
       {item.children.length > 0 && (
         <ul className={unorderedListClassName}>
           {item.children.map((child, childIndex) => (
             <li key={`${keyPrefix}-${itemIndex}-${childIndex}`}>
-              {renderInlineMarkdown(
+              {renderInlineContent(
                 child,
                 linkIcon,
                 classes,
@@ -186,7 +451,7 @@ function renderMarkdownBlock({
   if (block.type === "p") {
     return (
       <Typography key={`paragraph-${blockIndex}`} className={paragraphClassName}>
-        {renderInlineMarkdown(block.text, linkIcon, classes, `paragraph-${blockIndex}`)}
+        {renderInlineContent(block.text, linkIcon, classes, `paragraph-${blockIndex}`)}
       </Typography>
     );
   }
@@ -199,7 +464,7 @@ function renderMarkdownBlock({
     return (
       <ol key={`ordered-list-${blockIndex}`} className={listClassName}>
         {block.items.map((item, itemIndex) =>
-          renderListItem({
+          renderMarkdownListItem({
             item,
             itemIndex,
             classes,
@@ -214,7 +479,7 @@ function renderMarkdownBlock({
   return (
     <ul key={`unordered-list-${blockIndex}`} className={unorderedListClassName}>
       {block.items.map((item, itemIndex) =>
-        renderListItem({
+        renderMarkdownListItem({
           item,
           itemIndex,
           classes,
@@ -227,6 +492,7 @@ function renderMarkdownBlock({
 }
 
 function LoginMarkdownContent({
+  content,
   markdown,
   classes,
   paragraphClassName,
@@ -235,24 +501,40 @@ function LoginMarkdownContent({
   alphaOrderedListClassName,
   linkIcon,
 }) {
-  if (!markdown) return null;
+  const hasStructuredContent = Array.isArray(content) && content.length > 0;
+  if (!hasStructuredContent && !markdown) return null;
 
-  const blocks = parseMarkdownBlocks(markdown);
+  const resolvedParagraphClassName = paragraphClassName || classes.BodyText;
+  const resolvedUnorderedListClassName = unorderedListClassName || classes.unorderedList;
+  const resolvedOrderedListClassName = orderedListClassName || classes.orderedListNumeric;
+  const resolvedAlphaOrderedListClassName =
+    alphaOrderedListClassName || classes.orderedListAlpha;
 
   return (
     <Box className={classes.MarkdownContent}>
-      {blocks.map((block, blockIndex) =>
-        renderMarkdownBlock({
-          block,
-          blockIndex,
-          classes,
-          paragraphClassName: paragraphClassName || classes.BodyText,
-          unorderedListClassName: unorderedListClassName || classes.unorderedList,
-          orderedListClassName: orderedListClassName || classes.orderedListNumeric,
-          alphaOrderedListClassName:
-            alphaOrderedListClassName || classes.orderedListAlpha,
-          linkIcon,
-        }))}
+      {hasStructuredContent
+        ? content.map((block, blockIndex) =>
+          renderStructuredBlock({
+            block,
+            blockIndex,
+            classes,
+            paragraphClassName: resolvedParagraphClassName,
+            unorderedListClassName: resolvedUnorderedListClassName,
+            orderedListClassName: resolvedOrderedListClassName,
+            alphaOrderedListClassName: resolvedAlphaOrderedListClassName,
+            linkIcon,
+          }))
+        : parseMarkdownBlocks(markdown).map((block, blockIndex) =>
+          renderMarkdownBlock({
+            block,
+            blockIndex,
+            classes,
+            paragraphClassName: resolvedParagraphClassName,
+            unorderedListClassName: resolvedUnorderedListClassName,
+            orderedListClassName: resolvedOrderedListClassName,
+            alphaOrderedListClassName: resolvedAlphaOrderedListClassName,
+            linkIcon,
+          }))}
     </Box>
   );
 }
