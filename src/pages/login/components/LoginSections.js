@@ -83,40 +83,51 @@ export function RasLoginSection({
   );
 }
 
-export function VerificationSection({
+export function LoginAccordionList({
   classes,
-  verification,
-  verificationOpen,
+  accordions,
+  openAccordions,
   onToggle,
   arrowOpenIcon,
   arrowClosedIcon,
   externalLinkIcon,
 }) {
-  return (
-    <Box className={classes.VerificationWrapper}>
-      <Box className={classes.VerificationSection}>
-        <ToggleHeader
-          classes={classes}
-          title={verification.title}
-          titleClassName={classes.VerificationTitle}
-          isOpen={verificationOpen}
-          onToggle={onToggle}
-          openIcon={arrowOpenIcon}
-          closedIcon={arrowClosedIcon}
-        />
+  if (!accordions || accordions.length === 0) return null;
 
-        {verificationOpen && (
-          <Box className={classes.VerificationText}>
-            <LoginMarkdownContent
-              markdown={verification.bodyMarkdown}
+  return (
+    <Box className={classes.AccordionList}>
+      {accordions.map((accordion, index) => {
+        const isOpen = Boolean(openAccordions[index]);
+        const key = accordion.id || `${accordion.title || "accordion"}-${index}`;
+
+        return (
+          <Box className={classes.AccordionItem} key={key}>
+            <ToggleHeader
               classes={classes}
-              orderedListClassName={classes.orderedListAlpha}
-              unorderedListClassName={classes.nestedList}
-              linkIcon={externalLinkIcon}
+              headerClassName={classes.AccordionHeader}
+              title={accordion.title}
+              titleClassName={classes.AccordionTitle}
+              isOpen={isOpen}
+              onToggle={() => onToggle(index)}
+              openIcon={arrowOpenIcon}
+              closedIcon={arrowClosedIcon}
             />
+
+            {isOpen && (
+              <Box className={classes.AccordionText}>
+                <LoginMarkdownContent
+                  markdown={accordion.bodyMarkdown}
+                  classes={classes}
+                  orderedListClassName={classes.orderedListNumeric}
+                  alphaOrderedListClassName={classes.orderedListAlpha}
+                  unorderedListClassName={classes.nestedList}
+                  linkIcon={externalLinkIcon}
+                />
+              </Box>
+            )}
           </Box>
-        )}
-      </Box>
+        );
+      })}
     </Box>
   );
 }

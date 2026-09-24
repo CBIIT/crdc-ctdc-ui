@@ -37,11 +37,18 @@ const loginContent = {
     buttonText: "Login with RAS",
     unavailableText:
       "RAS login is temporarily unavailable because it is not configured.",
-  },
-  verification: {
-    title: "CTDC Verification Process",
-    bodyMarkdown:
-      "The verification process typically takes up to 30 minutes and requires:\n\n1. A mobile phone with a working camera\n2. Your Social Security number\n3. One of the following valid government-issued IDs:\n   - U.S. driver's license\n   - State-issued ID\n\nBefore selecting **Log in with NIH Research Auth Service (RAS)**, please gather the required information.",
+    accordions: [
+      {
+        title: "How to sign in",
+        bodyMarkdown:
+          "1. Begin from the CTDC login page and select the RAS sign-in option.\n2. Complete the required identity proofing steps.",
+      },
+      {
+        title: "Preparing your identity",
+        bodyMarkdown:
+          "The verification process typically takes up to 30 minutes and requires:\n\na. A mobile phone with a working camera\nb. Your Social Security number\nc. One of the following valid government-issued IDs:\n   - U.S. driver's license\n   - State-issued ID\n\nBefore selecting **Log in with NIH Research Auth Service (RAS)**, please gather the required information.",
+      },
+    ],
   },
   requestAccess: {
     title: "Request Access",
@@ -135,31 +142,40 @@ describe("RASLoginPage", () => {
     renderPage();
 
     const toggles = container.querySelectorAll('[aria-expanded]');
-    expect(toggles).toHaveLength(3);
+    expect(toggles).toHaveLength(4);
 
     pressKey(toggles[0], "Enter");
     expect(container.textContent).toContain(
-      "The verification process typically",
+      "Begin from the CTDC login page",
     );
     pressKey(toggles[0], " ");
     expect(container.textContent).not.toContain(
-      "The verification process typically",
+      "Begin from the CTDC login page",
     );
 
     pressKey(toggles[1], "Enter");
     expect(container.textContent).toContain(
-      "Create a Login.gov or ID.me account",
+      "The verification process typically",
     );
     pressKey(toggles[1], " ");
     expect(container.textContent).not.toContain(
-      "Create a Login.gov or ID.me account",
+      "The verification process typically",
     );
 
     pressKey(toggles[2], "Enter");
     expect(container.textContent).toContain(
-      "This warning banner provides privacy",
+      "Create a Login.gov or ID.me account",
     );
     pressKey(toggles[2], " ");
+    expect(container.textContent).not.toContain(
+      "Create a Login.gov or ID.me account",
+    );
+
+    pressKey(toggles[3], "Enter");
+    expect(container.textContent).toContain(
+      "This warning banner provides privacy",
+    );
+    pressKey(toggles[3], " ");
     expect(container.textContent).toContain(
       "This warning banner provides privacy",
     );

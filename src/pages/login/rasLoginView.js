@@ -6,12 +6,24 @@ import styles from "./rasLoginStyles";
 import { getAsset } from "./components/ContentImage";
 import {
   HelpSidebar,
+  LoginAccordionList,
   LoginHero,
   RasLoginSection,
   RequestAccessSection,
-  VerificationSection,
   WarningNotice,
 } from "./components/LoginSections";
+
+function getLoginAccordions(ras, verification) {
+  if (Array.isArray(ras.accordions) && ras.accordions.length > 0) {
+    return ras.accordions;
+  }
+
+  if (verification.title || verification.bodyMarkdown) {
+    return [verification];
+  }
+
+  return [];
+}
 
 function RASLoginPage(props) {
   const { classes, content = {}, rasAuthorizeUrl = "" } = props;
@@ -30,10 +42,17 @@ function RASLoginPage(props) {
   const documentation = requestAccess.documentation || {};
   const tutorial = help.tutorial || {};
   const contact = help.contact || {};
-  const [verificationOpen, setVerificationOpen] = useState(false);
+  const loginAccordions = getLoginAccordions(ras, verification);
+  const [loginAccordionsOpen, setLoginAccordionsOpen] = useState({});
   const [requestAccessOpen, setRequestAccessOpen] = useState(false);
   const [warningOpen, setWarningOpen] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const toggleLoginAccordion = (index) => {
+    setLoginAccordionsOpen((openItems) => ({
+      ...openItems,
+      [index]: !openItems[index],
+    }));
+  };
 
   return (
     <div className={classes.Container}>
@@ -50,13 +69,11 @@ function RASLoginPage(props) {
                 externalLinkIcon={externalLinkIcon}
               />
 
-              <Box className={classes.Divider} />
-
-              <VerificationSection
+              <LoginAccordionList
                 classes={classes}
-                verification={verification}
-                verificationOpen={verificationOpen}
-                onToggle={() => setVerificationOpen((value) => !value)}
+                accordions={loginAccordions}
+                openAccordions={loginAccordionsOpen}
+                onToggle={toggleLoginAccordion}
                 arrowOpenIcon={arrowOpenIcon}
                 arrowClosedIcon={arrowClosedIcon}
                 externalLinkIcon={externalLinkIcon}

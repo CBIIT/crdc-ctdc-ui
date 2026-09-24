@@ -82,6 +82,43 @@ const styles = (theme) => ({
     alignItems: "center",
     gap: "40px",
   },
+  AccordionList: {
+    alignSelf: "stretch",
+    width: "100%",
+    borderTop: "1px solid #8A8A8A",
+  },
+  AccordionItem: {
+    width: "100%",
+    borderBottom: "1px solid #8A8A8A",
+  },
+  AccordionHeader: {
+    minHeight: "52px",
+    padding: "14px 10px 14px 0",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    cursor: "pointer",
+  },
+  AccordionTitle: {
+    flex: 1,
+    fontFamily: "Inter",
+    fontSize: "20px",
+    fontWeight: 600,
+    color: "#000",
+    lineHeight: "26px",
+  },
+  AccordionText: {
+    width: "100%",
+    fontFamily: "Roboto",
+    fontSize: "16px",
+    fontWeight: 400,
+    color: "#000",
+    lineHeight: "150%",
+    padding: "0 50px 18px 0",
+    [theme.breakpoints.down("sm")]: {
+      paddingRight: 0,
+    },
+  },
   RightColumn: {
     [theme.breakpoints.up("md")]: {
       maxWidth: "329px",
@@ -139,23 +176,6 @@ const styles = (theme) => ({
     alignItems: "center",
     cursor: "pointer",
   },
-  VerificationTitle: {
-    flex: 1,
-    fontFamily: "Inter",
-    fontSize: "20px",
-    fontWeight: 600,
-    color: "#000",
-    lineHeight: "26px",
-  },
-  VerificationText: {
-    width: "100%",
-    fontFamily: "Roboto",
-    fontSize: "16px",
-    fontWeight: 400,
-    color: "#000",
-    lineHeight: "150%",
-    paddingRight: "50px",
-  },
   Divider: {
     alignSelf: "stretch",
     width: "100%",
@@ -164,9 +184,9 @@ const styles = (theme) => ({
     margin: "25px 0",
   },
   orderedListAlpha: {
-    margin: "2px 0px 30px 0px",
+    margin: "2px 0",
     paddingLeft: "48px",
-
+    listStyleType: "lower-alpha",
     fontFamily: "Roboto",
     fontWeight: 400,
     fontSize: "16px",

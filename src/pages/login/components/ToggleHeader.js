@@ -20,6 +20,7 @@ export function ToggleArrow({ isOpen, openIcon, closedIcon }) {
 function ToggleHeader({
   classes,
   title,
+  headerClassName,
   titleClassName,
   titleVariant = "h3",
   titleComponent = "h3",
@@ -38,7 +39,7 @@ function ToggleHeader({
 
   return (
     <Box
-      className={classes.VerificationHeader}
+      className={headerClassName || classes.VerificationHeader}
       role="button"
       tabIndex={0}
       aria-expanded={isOpen}

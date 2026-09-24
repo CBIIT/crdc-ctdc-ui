@@ -6,8 +6,16 @@ function isBlankLine(line) {
   return !line || line.trim() === "";
 }
 
+function getOrderedListMatch(line) {
+  return line.match(/^\s*(\d+|[a-zA-Z])\.\s+(.*)$/);
+}
+
+function getOrderedListStyle(marker) {
+  return /^\d+$/.test(marker) ? "numeric" : "alpha";
+}
+
 function isListLine(line) {
-  return /^\s*(\d+\.|-|\*)\s+/.test(line);
+  return /^\s*((\d+|[a-zA-Z])\.|-|\*)\s+/.test(line);
 }
 
 function parseMarkdownBlocks(markdown) {
@@ -23,11 +31,19 @@ function parseMarkdownBlocks(markdown) {
       continue;
     }
 
-    if (/^\s*\d+\.\s+/.test(line)) {
-      const items = [];
+    const orderedListMatch = getOrderedListMatch(line);
 
-      while (index < lines.length && /^\s*\d+\.\s+/.test(lines[index])) {
-        const [, text] = lines[index].match(/^\s*\d+\.\s+(.*)$/);
+    if (orderedListMatch) {
+      const items = [];
+      const listStyle = getOrderedListStyle(orderedListMatch[1]);
+
+      while (index < lines.length) {
+        const match = getOrderedListMatch(lines[index]);
+        if (!match || getOrderedListStyle(match[1]) !== listStyle) {
+          break;
+        }
+
+        const [, , text] = match;
         const item = { text, children: [] };
         index += 1;
 
@@ -43,7 +59,7 @@ function parseMarkdownBlocks(markdown) {
         items.push(item);
       }
 
-      blocks.push({ type: "ol", items });
+      blocks.push({ type: "ol", items, listStyle });
       continue;
     }
 
@@ -164,6 +180,7 @@ function renderMarkdownBlock({
   paragraphClassName,
   unorderedListClassName,
   orderedListClassName,
+  alphaOrderedListClassName,
   linkIcon,
 }) {
   if (block.type === "p") {
@@ -175,8 +192,12 @@ function renderMarkdownBlock({
   }
 
   if (block.type === "ol") {
+    const listClassName = block.listStyle === "alpha"
+      ? alphaOrderedListClassName
+      : orderedListClassName;
+
     return (
-      <ol key={`ordered-list-${blockIndex}`} className={orderedListClassName}>
+      <ol key={`ordered-list-${blockIndex}`} className={listClassName}>
         {block.items.map((item, itemIndex) =>
           renderListItem({
             item,
@@ -211,6 +232,7 @@ function LoginMarkdownContent({
   paragraphClassName,
   unorderedListClassName,
   orderedListClassName,
+  alphaOrderedListClassName,
   linkIcon,
 }) {
   if (!markdown) return null;
@@ -227,6 +249,8 @@ function LoginMarkdownContent({
           paragraphClassName: paragraphClassName || classes.BodyText,
           unorderedListClassName: unorderedListClassName || classes.unorderedList,
           orderedListClassName: orderedListClassName || classes.orderedListNumeric,
+          alphaOrderedListClassName:
+            alphaOrderedListClassName || classes.orderedListAlpha,
           linkIcon,
         }))}
     </Box>
