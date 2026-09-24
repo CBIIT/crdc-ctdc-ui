@@ -134,103 +134,120 @@ export function LoginAccordionList({
   );
 }
 
-export function RequestAccessSection({
+function LoginContentBlock({
   classes,
-  requestAccess,
-  accessRequirements,
-  requestInstructions,
-  documentation,
-  requestAccessOpen,
-  onToggle,
+  item,
+  externalLinkIcon,
+  className,
+}) {
+  return (
+    <Box className={className}>
+      <LoginMarkdownContent
+        content={item.content}
+        markdown={item.bodyMarkdown}
+        classes={classes}
+        orderedListClassName={classes.orderedListNumeric}
+        alphaOrderedListClassName={classes.orderedListAlpha}
+        linkIcon={externalLinkIcon}
+      />
+    </Box>
+  );
+}
+
+function hasContent(item) {
+  return Boolean(
+    item &&
+      ((Array.isArray(item.content) && item.content.length > 0) ||
+        item.bodyMarkdown),
+  );
+}
+
+export function ContentBoxSection({
+  classes,
+  section,
+  openGroups = {},
+  onToggleGroup,
   arrowOpenIcon,
   arrowClosedIcon,
   externalLinkIcon,
 }) {
+  const groups = Array.isArray(section.groups) ? section.groups : [];
+  const hasSectionContent = hasContent(section);
+
   return (
     <Box className={classes.RequestSection}>
       <Box className={classes.RequestTopSection}>
-        <Typography
-          variant="h2"
-          component="h2"
-          className={classes.SectionTitle}
-        >
-          {requestAccess.title}
-        </Typography>
-        <Box className={classes.VerificationWrapper}>
-          <Box className={classes.VerificationSection}>
-            <Typography
-              variant="h3"
-              component="h3"
-              className={classes.SubsectionTitle}
-              style={{ marginTop: 0, marginBottom: 0 }}
-            >
-              {accessRequirements.title}
-            </Typography>
-            <LoginMarkdownContent
-              content={accessRequirements.content}
-              markdown={accessRequirements.bodyMarkdown}
-              classes={classes}
-              linkIcon={externalLinkIcon}
-            />
+        {section.title && (
+          <Typography
+            variant="h2"
+            component="h2"
+            className={classes.SectionTitle}
+          >
+            {section.title}
+          </Typography>
+        )}
+
+        {hasSectionContent && (
+          <Box className={classes.VerificationWrapper}>
+            <Box className={classes.VerificationSection}>
+              <LoginContentBlock
+                classes={classes}
+                item={section}
+                externalLinkIcon={externalLinkIcon}
+              />
+            </Box>
           </Box>
-        </Box>
+        )}
       </Box>
 
-      <Box className={classes.Divider} />
+      {groups.map((group, index) => {
+        const groupKey = group.id || `${group.title || "group"}-${index}`;
+        const isOpen = Boolean(openGroups[index]);
+        const useLinkStyle = group.variant === "links" || group.linkStyle;
 
-      <Box className={classes.RequestBottomSection}>
-        <Box className={classes.VerificationSection}>
-          <ToggleHeader
-            classes={classes}
-            title={requestInstructions.title}
-            titleClassName={classes.SubsectionTitle}
-            titleStyle={{ marginTop: 0, marginBottom: 0 }}
-            isOpen={requestAccessOpen}
-            onToggle={onToggle}
-            openIcon={arrowOpenIcon}
-            closedIcon={arrowClosedIcon}
-          />
-        </Box>
+        return (
+          <React.Fragment key={groupKey}>
+            {(hasSectionContent || index > 0) && <Box className={classes.Divider} />}
 
-        {requestAccessOpen && (
-          <>
-            <Box className={classes.VerificationWrapper}>
-              <Box className={classes.VerificationSection}>
-                <Typography className={classes.BodyText} component="div">
-                  <LoginMarkdownContent
-                    content={requestInstructions.content}
-                    markdown={requestInstructions.bodyMarkdown}
-                    classes={classes}
-                    orderedListClassName={classes.orderedListNumeric}
-                    linkIcon={externalLinkIcon}
-                  />
-                </Typography>
-              </Box>
-            </Box>
+            <Box className={classes.RequestBottomSection}>
+              <Box className={classes.VerificationWrapper}>
+                <Box className={classes.VerificationSection}>
+                  {group.collapsible ? (
+                    <ToggleHeader
+                      classes={classes}
+                      title={group.title}
+                      titleClassName={classes.SubsectionTitle}
+                      titleStyle={{ marginTop: 0, marginBottom: 0 }}
+                      isOpen={isOpen}
+                      onToggle={() => onToggleGroup(index)}
+                      openIcon={arrowOpenIcon}
+                      closedIcon={arrowClosedIcon}
+                    />
+                  ) : group.title && (
+                    <Typography
+                      variant="h3"
+                      component="h3"
+                      className={classes.SubsectionTitle}
+                      style={{ marginTop: 0, marginBottom: 0 }}
+                    >
+                      {group.title}
+                    </Typography>
+                  )}
 
-            <Box className={classes.VerificationWrapper}>
-              <Box className={classes.VerificationSection}>
-                <Typography
-                  variant="h3"
-                  component="h3"
-                  className={classes.SubsectionTitle}
-                  style={{ marginTop: 0, marginBottom: 0 }}
-                >
-                  {documentation.title}
-                </Typography>
-                <Box className={classes.Link}>
-                  <LoginMarkdownContent
-                    content={documentation.content}
-                    markdown={documentation.bodyMarkdown}
-                    classes={classes}
-                    linkIcon={externalLinkIcon}
-                  />
+                  {(!group.collapsible || isOpen) && hasContent(group) && (
+                    <LoginContentBlock
+                      classes={classes}
+                      item={group}
+                      externalLinkIcon={externalLinkIcon}
+                      className={useLinkStyle ? classes.Link : undefined}
+                    />
+                  )}
                 </Box>
               </Box>
             </Box>
-          </>
-        )}
-      </Box>
+          </React.Fragment>
+        );
+      })}
     </Box>
   );
 }

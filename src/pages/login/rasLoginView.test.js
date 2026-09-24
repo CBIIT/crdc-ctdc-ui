@@ -30,111 +30,131 @@ const loginContent = {
   hero: {
     title: "Login to the CTDC",
   },
-  ras: {
-    title: "Log in with NIH Research Auth Service (RAS)",
-    content: [
-      {
-        paragraph:
-          "Before accessing CTDC data, you may be required to verify your identity.",
-      },
-      {
-        paragraph:
-          "If you already have a CTDC account, you must complete identity verification.",
-      },
-      {
-        paragraph:
-          "$$~Overview~$$ $$#RAS details#$$ $$!Italic note!$$ $$@ctdc@example.org@$$ $$>Indented note>$$",
-      },
-    ],
-    buttonText: "Login with RAS",
-    unavailableText:
-      "RAS login is temporarily unavailable because it is not configured.",
-    accordions: [
-      {
-        title: "How to sign in",
-        content: [
-          {
-            listWithNumbers: [
-              "Begin from the CTDC login page and select the RAS sign-in option.",
-              "Complete the required identity proofing steps.",
-            ],
-          },
-        ],
-      },
-      {
-        title: "Preparing your identity",
-        content: [
-          {
-            paragraph:
-              "The verification process typically takes up to 30 minutes and requires:",
-          },
-          {
-            listWithAlphabets: [
-              "A mobile phone with a working camera",
-              "Your Social Security number",
-              {
-                text: "One of the following valid government-issued IDs:",
-                listWithDots: [
-                  "U.S. driver's license",
-                  "State-issued ID",
-                ],
-              },
-            ],
-          },
-          {
-            paragraph:
-              "Before selecting $$*Log in with NIH Research Auth Service (RAS)*$$, please gather the required information.",
-          },
-        ],
-      },
-    ],
-  },
-  requestAccess: {
-    title: "Request Access",
-    accessRequirements: {
-      title: "Access Requirements",
+  sections: [
+    {
+      id: "ras-login",
+      type: "rasLogin",
+      title: "Log in with NIH Research Auth Service (RAS)",
       content: [
         {
-          paragraph: "CTDC contains controlled-access research data.",
-        },
-        {
-          paragraph: "To request CTDC access, you must have:",
-        },
-        {
-          listWithDots: [
-            "An $$*NIH account*$$",
-          ],
-        },
-      ],
-    },
-    instructions: {
-      title: "Instructions to Request Access",
-      content: [
-        {
-          listWithNumbers: [
-            "Create a Login.gov or ID.me account. If you do not have an NIH account, also create an eRA Commons account.",
-          ],
+          paragraph:
+            "Before accessing CTDC data, you may be required to verify your identity.",
         },
         {
           paragraph:
-            "Access requests are typically processed within two business days.",
+            "If you already have a CTDC account, you must complete identity verification.",
+        },
+        {
+          paragraph:
+            "$$~Overview~$$ $$#RAS details#$$ $$!Italic note!$$ $$@ctdc@example.org@$$ $$>Indented note>$$",
+        },
+      ],
+      buttonText: "Login with RAS",
+      unavailableText:
+        "RAS login is temporarily unavailable because it is not configured.",
+      accordions: [
+        {
+          title: "How to sign in",
+          content: [
+            {
+              listWithNumbers: [
+                "Begin from the CTDC login page and select the RAS sign-in option.",
+                "Complete the required identity proofing steps.",
+              ],
+            },
+          ],
+        },
+        {
+          title: "Preparing your identity",
+          content: [
+            {
+              paragraph:
+                "The verification process typically takes up to 30 minutes and requires:",
+            },
+            {
+              listWithAlphabets: [
+                "A mobile phone with a working camera",
+                "Your Social Security number",
+                {
+                  text: "One of the following valid government-issued IDs:",
+                  listWithDots: [
+                    "U.S. driver's license",
+                    "State-issued ID",
+                  ],
+                },
+              ],
+            },
+            {
+              paragraph:
+                "Before selecting $$*Log in with NIH Research Auth Service (RAS)*$$, please gather the required information.",
+            },
+          ],
         },
       ],
     },
-    documentation: {
-      title: "Documentation",
-      content: [
-          {
-            listWithDots: [
-              "$$[eRA Commons Account Creation](https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm)$$",
-              "$$[Same tab documentation](target:_self url:/documentation)$$",
-              "$$" +
-                "{link:https://example.org/download.pdf,title:Download Guide}$$",
-            ],
-          },
-        ],
+    {
+      id: "request-access",
+      type: "contentBox",
+      title: "Request Access",
+      groups: [
+        {
+          title: "Access Requirements",
+          content: [
+            {
+              paragraph: "CTDC contains controlled-access research data.",
+            },
+            {
+              paragraph: "To request CTDC access, you must have:",
+            },
+            {
+              listWithDots: [
+                "An $$*NIH account*$$",
+              ],
+            },
+          ],
+        },
+        {
+          title: "Instructions to Request Access",
+          collapsible: true,
+          content: [
+            {
+              listWithNumbers: [
+                "Create a Login.gov or ID.me account. If you do not have an NIH account, also create an eRA Commons account.",
+              ],
+            },
+            {
+              paragraph:
+                "Access requests are typically processed within two business days.",
+            },
+          ],
+        },
+        {
+          title: "Documentation",
+          variant: "links",
+          content: [
+            {
+              listWithDots: [
+                "$$[eRA Commons Account Creation](https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm)$$",
+                "$$[Same tab documentation](target:_self url:/documentation)$$",
+                "$$" +
+                  "{link:https://example.org/download.pdf,title:Download Guide}$$",
+              ],
+            },
+          ],
+        },
+      ],
     },
-  },
+    {
+      id: "another-section",
+      type: "contentBox",
+      title: "Another Editable Box",
+      content: [
+        {
+          paragraph: "This can be added without frontend code changes.",
+        },
+      ],
+    },
+  ],
   warning: {
     title: "Warning Notice",
     content: [
@@ -259,6 +279,15 @@ describe("RASLoginPage", () => {
     expect(
       container.querySelector('a[href="https://example.org/ras"]'),
     ).not.toBeNull();
+  });
+
+  it("renders additional contentBox sections from content", () => {
+    renderPage();
+
+    expect(container.textContent).toContain("Another Editable Box");
+    expect(container.textContent).toContain(
+      "This can be added without frontend code changes.",
+    );
   });
 
   it("supports Enter and Space for each collapsible section", () => {

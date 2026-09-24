@@ -5,11 +5,11 @@ import { Grid, Box } from "@material-ui/core";
 import styles from "./rasLoginStyles";
 import { getAsset } from "./components/ContentImage";
 import {
+  ContentBoxSection,
   HelpSidebar,
   LoginAccordionList,
   LoginHero,
   RasLoginSection,
-  RequestAccessSection,
   WarningNotice,
 } from "./components/LoginSections";
 
@@ -25,6 +25,80 @@ function getLoginAccordions(ras, verification) {
   return [];
 }
 
+function hasSectionContent(section) {
+  return Boolean(
+    section &&
+      (section.title ||
+        section.bodyMarkdown ||
+        (Array.isArray(section.content) && section.content.length > 0)),
+  );
+}
+
+function getLegacyContentBoxGroups(requestAccess) {
+  const groups = [
+    requestAccess.accessRequirements,
+    {
+      ...requestAccess.instructions,
+      collapsible: true,
+    },
+    {
+      ...requestAccess.documentation,
+      variant: "links",
+    },
+  ];
+
+  return groups.filter(hasSectionContent);
+}
+
+function getLegacySections(content) {
+  const ras = content.ras || {};
+  const verification = content.verification || {};
+  const requestAccess = content.requestAccess || {};
+  const sections = [];
+
+  if (
+    hasSectionContent(ras) ||
+    (Array.isArray(ras.accordions) && ras.accordions.length > 0) ||
+    hasSectionContent(verification)
+  ) {
+    sections.push({
+      ...ras,
+      id: "ras-login",
+      type: "rasLogin",
+      accordions: getLoginAccordions(ras, verification),
+    });
+  }
+
+  if (
+    requestAccess.title ||
+    hasSectionContent(requestAccess) ||
+    getLegacyContentBoxGroups(requestAccess).length > 0
+  ) {
+    sections.push({
+      id: "request-access",
+      type: "contentBox",
+      title: requestAccess.title,
+      content: requestAccess.content,
+      bodyMarkdown: requestAccess.bodyMarkdown,
+      groups: getLegacyContentBoxGroups(requestAccess),
+    });
+  }
+
+  return sections;
+}
+
+function getLoginSections(content) {
+  if (Array.isArray(content.sections) && content.sections.length > 0) {
+    return content.sections;
+  }
+
+  return getLegacySections(content);
+}
+
+function getSectionKey(section, index) {
+  return section.id || `${section.type || "section"}-${index}`;
+}
+
 function RASLoginPage(props) {
   const { classes, content = {}, rasAuthorizeUrl = "" } = props;
   const assets = content.assets || {};
@@ -32,25 +106,31 @@ function RASLoginPage(props) {
   const arrowClosedIcon = getAsset(assets, "arrowClosed");
   const externalLinkIcon = getAsset(assets, "externalLinkIcon");
   const hero = content.hero || {};
-  const ras = content.ras || {};
-  const verification = content.verification || {};
-  const requestAccess = content.requestAccess || {};
   const warning = content.warning || {};
   const help = content.help || {};
-  const accessRequirements = requestAccess.accessRequirements || {};
-  const requestInstructions = requestAccess.instructions || {};
-  const documentation = requestAccess.documentation || {};
   const tutorial = help.tutorial || {};
   const contact = help.contact || {};
-  const loginAccordions = getLoginAccordions(ras, verification);
+  const sections = getLoginSections(content);
   const [loginAccordionsOpen, setLoginAccordionsOpen] = useState({});
-  const [requestAccessOpen, setRequestAccessOpen] = useState(false);
+  const [contentGroupsOpen, setContentGroupsOpen] = useState({});
   const [warningOpen, setWarningOpen] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
-  const toggleLoginAccordion = (index) => {
+  const toggleLoginAccordion = (sectionKey, index) => {
     setLoginAccordionsOpen((openItems) => ({
       ...openItems,
-      [index]: !openItems[index],
+      [sectionKey]: {
+        ...openItems[sectionKey],
+        [index]: !(openItems[sectionKey] && openItems[sectionKey][index]),
+      },
+    }));
+  };
+  const toggleContentGroup = (sectionKey, index) => {
+    setContentGroupsOpen((openItems) => ({
+      ...openItems,
+      [sectionKey]: {
+        ...openItems[sectionKey],
+        [index]: !(openItems[sectionKey] && openItems[sectionKey][index]),
+      },
     }));
   };
 
@@ -61,37 +141,51 @@ function RASLoginPage(props) {
       <Grid container className={classes.ContentWrapper}>
         <Grid container className={classes.ColumnContainer}>
           <Grid item xs={12} md className={classes.LeftColumn}>
-            <Box className={classes.CombinedLoginBox}>
-              <RasLoginSection
-                classes={classes}
-                ras={ras}
-                rasAuthorizeUrl={rasAuthorizeUrl}
-                externalLinkIcon={externalLinkIcon}
-              />
+            {sections.map((section, index) => {
+              const sectionKey = getSectionKey(section, index);
 
-              <LoginAccordionList
-                classes={classes}
-                accordions={loginAccordions}
-                openAccordions={loginAccordionsOpen}
-                onToggle={toggleLoginAccordion}
-                arrowOpenIcon={arrowOpenIcon}
-                arrowClosedIcon={arrowClosedIcon}
-                externalLinkIcon={externalLinkIcon}
-              />
-            </Box>
+              if (section.type === "rasLogin") {
+                return (
+                  <Box className={classes.CombinedLoginBox} key={sectionKey}>
+                    <RasLoginSection
+                      classes={classes}
+                      ras={section}
+                      rasAuthorizeUrl={rasAuthorizeUrl}
+                      externalLinkIcon={externalLinkIcon}
+                    />
 
-            <RequestAccessSection
-              classes={classes}
-              requestAccess={requestAccess}
-              accessRequirements={accessRequirements}
-              requestInstructions={requestInstructions}
-              documentation={documentation}
-              requestAccessOpen={requestAccessOpen}
-              onToggle={() => setRequestAccessOpen((value) => !value)}
-              arrowOpenIcon={arrowOpenIcon}
-              arrowClosedIcon={arrowClosedIcon}
-              externalLinkIcon={externalLinkIcon}
-            />
+                    <LoginAccordionList
+                      classes={classes}
+                      accordions={section.accordions}
+                      openAccordions={loginAccordionsOpen[sectionKey] || {}}
+                      onToggle={(accordionIndex) =>
+                        toggleLoginAccordion(sectionKey, accordionIndex)}
+                      arrowOpenIcon={arrowOpenIcon}
+                      arrowClosedIcon={arrowClosedIcon}
+                      externalLinkIcon={externalLinkIcon}
+                    />
+                  </Box>
+                );
+              }
+
+              if (section.type === "contentBox") {
+                return (
+                  <ContentBoxSection
+                    key={sectionKey}
+                    classes={classes}
+                    section={section}
+                    openGroups={contentGroupsOpen[sectionKey] || {}}
+                    onToggleGroup={(groupIndex) =>
+                      toggleContentGroup(sectionKey, groupIndex)}
+                    arrowOpenIcon={arrowOpenIcon}
+                    arrowClosedIcon={arrowClosedIcon}
+                    externalLinkIcon={externalLinkIcon}
+                  />
+                );
+              }
+
+              return null;
+            })}
 
             <WarningNotice
               classes={classes}
