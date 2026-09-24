@@ -290,6 +290,17 @@ describe("RASLoginPage", () => {
     );
   });
 
+  it("uses the shared accordion styling for contentBox collapsible groups", () => {
+    renderPage();
+
+    const toggles = container.querySelectorAll('[aria-expanded]');
+    const contentBoxToggle = toggles[2];
+    const contentBoxTitle = contentBoxToggle.querySelector("h3, h4, span, div");
+
+    expect(contentBoxToggle.className).toMatch(/AccordionHeader/);
+    expect(contentBoxTitle.className).toMatch(/AccordionTitle/);
+  });
+
   it("supports Enter and Space for each collapsible section", () => {
     renderPage();
 

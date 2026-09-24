@@ -80,12 +80,13 @@ const styles = (theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "40px",
+    gap: "0px",
   },
   AccordionList: {
     alignSelf: "stretch",
     width: "100%",
     borderTop: "1px solid #8A8A8A",
+    margin: "25px 0",
   },
   AccordionItem: {
     width: "100%",
@@ -243,7 +244,7 @@ const styles = (theme) => ({
     justifyContent: "space-between",
     alignItems: "flex-start",
     gap: "20px",
-    paddingTop: "20px",
+    paddingTop: "0px",
   },
   LoginTextContent: {
     width: "537px",
@@ -265,6 +266,7 @@ const styles = (theme) => ({
     letterSpacing: "-0.02em",
     lineHeight: "106.52%",
     display: "flex",
+    paddingBottom: "15px",
   },
   BodyText: {
     fontFamily: "Roboto",
@@ -488,6 +490,7 @@ const styles = (theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+    paddingBottom: "15px",
   },
   SubsectionTitle: {
     fontFamily: "Inter",

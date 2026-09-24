@@ -102,34 +102,62 @@ export function LoginAccordionList({
         const key = accordion.id || `${accordion.title || "accordion"}-${index}`;
 
         return (
-          <Box className={classes.AccordionItem} key={key}>
-            <ToggleHeader
-              classes={classes}
-              headerClassName={classes.AccordionHeader}
-              title={accordion.title}
-              titleClassName={classes.AccordionTitle}
-              isOpen={isOpen}
-              onToggle={() => onToggle(index)}
-              openIcon={arrowOpenIcon}
-              closedIcon={arrowClosedIcon}
-            />
-
-            {isOpen && (
-              <Box className={classes.AccordionText}>
-                <LoginMarkdownContent
-                  content={accordion.content}
-                  markdown={accordion.bodyMarkdown}
-                  classes={classes}
-                  orderedListClassName={classes.orderedListNumeric}
-                  alphaOrderedListClassName={classes.orderedListAlpha}
-                  unorderedListClassName={classes.nestedList}
-                  linkIcon={externalLinkIcon}
-                />
-              </Box>
-            )}
-          </Box>
+          <LoginAccordionItem
+            key={key}
+            classes={classes}
+            item={accordion}
+            isOpen={isOpen}
+            onToggle={() => onToggle(index)}
+            arrowOpenIcon={arrowOpenIcon}
+            arrowClosedIcon={arrowClosedIcon}
+            externalLinkIcon={externalLinkIcon}
+          />
         );
       })}
+    </Box>
+  );
+}
+
+function LoginAccordionItem({
+  classes,
+  item,
+  isOpen,
+  onToggle,
+  arrowOpenIcon,
+  arrowClosedIcon,
+  externalLinkIcon,
+  bodyClassName,
+}) {
+  const accordionTextClassName = bodyClassName
+    ? `${classes.AccordionText} ${bodyClassName}`
+    : classes.AccordionText;
+
+  return (
+    <Box className={classes.AccordionItem}>
+      <ToggleHeader
+        classes={classes}
+        headerClassName={classes.AccordionHeader}
+        title={item.title}
+        titleClassName={classes.AccordionTitle}
+        isOpen={isOpen}
+        onToggle={onToggle}
+        openIcon={arrowOpenIcon}
+        closedIcon={arrowClosedIcon}
+      />
+
+      {isOpen && (
+        <Box className={accordionTextClassName}>
+          <LoginMarkdownContent
+            content={item.content}
+            markdown={item.bodyMarkdown}
+            classes={classes}
+            orderedListClassName={classes.orderedListNumeric}
+            alphaOrderedListClassName={classes.orderedListAlpha}
+            unorderedListClassName={classes.nestedList}
+            linkIcon={externalLinkIcon}
+          />
+        </Box>
+      )}
     </Box>
   );
 }
@@ -166,7 +194,7 @@ export function ContentBoxSection({
   classes,
   section,
   openGroups = {},
-  onToggleGroup,
+  onToggleGroup = () => {},
   arrowOpenIcon,
   arrowClosedIcon,
   externalLinkIcon,
@@ -204,46 +232,55 @@ export function ContentBoxSection({
         const groupKey = group.id || `${group.title || "group"}-${index}`;
         const isOpen = Boolean(openGroups[index]);
         const useLinkStyle = group.variant === "links" || group.linkStyle;
+        const previousGroup = groups[index - 1];
+        const isNextToAccordion =
+          group.collapsible || (previousGroup && previousGroup.collapsible);
+        const shouldShowDivider =
+          !isNextToAccordion && (hasSectionContent || index > 0);
 
         return (
           <React.Fragment key={groupKey}>
-            {(hasSectionContent || index > 0) && <Box className={classes.Divider} />}
+            {shouldShowDivider && <Box className={classes.Divider} />}
 
             <Box className={classes.RequestBottomSection}>
-              <Box className={classes.VerificationWrapper}>
-                <Box className={classes.VerificationSection}>
-                  {group.collapsible ? (
-                    <ToggleHeader
-                      classes={classes}
-                      title={group.title}
-                      titleClassName={classes.SubsectionTitle}
-                      titleStyle={{ marginTop: 0, marginBottom: 0 }}
-                      isOpen={isOpen}
-                      onToggle={() => onToggleGroup(index)}
-                      openIcon={arrowOpenIcon}
-                      closedIcon={arrowClosedIcon}
-                    />
-                  ) : group.title && (
-                    <Typography
-                      variant="h3"
-                      component="h3"
-                      className={classes.SubsectionTitle}
-                      style={{ marginTop: 0, marginBottom: 0 }}
-                    >
-                      {group.title}
-                    </Typography>
-                  )}
-
-                  {(!group.collapsible || isOpen) && hasContent(group) && (
-                    <LoginContentBlock
-                      classes={classes}
-                      item={group}
-                      externalLinkIcon={externalLinkIcon}
-                      className={useLinkStyle ? classes.Link : undefined}
-                    />
-                  )}
+              {group.collapsible ? (
+                <Box className={classes.AccordionList}>
+                  <LoginAccordionItem
+                    classes={classes}
+                    item={group}
+                    isOpen={isOpen}
+                    onToggle={() => onToggleGroup(index)}
+                    arrowOpenIcon={arrowOpenIcon}
+                    arrowClosedIcon={arrowClosedIcon}
+                    externalLinkIcon={externalLinkIcon}
+                    bodyClassName={useLinkStyle ? classes.Link : undefined}
+                  />
                 </Box>
-              </Box>
+              ) : (
+                <Box className={classes.VerificationWrapper}>
+                  <Box className={classes.VerificationSection}>
+                    {group.title && (
+                      <Typography
+                        variant="h3"
+                        component="h3"
+                        className={classes.SubsectionTitle}
+                        style={{ marginTop: 0, marginBottom: 0 }}
+                      >
+                        {group.title}
+                      </Typography>
+                    )}
+
+                    {hasContent(group) && (
+                      <LoginContentBlock
+                      classes={classes}
+                        item={group}
+                        externalLinkIcon={externalLinkIcon}
+                        className={useLinkStyle ? classes.Link : undefined}
+                      />
+                    )}
+                  </Box>
+                </Box>
+              )}
             </Box>
           </React.Fragment>
         );
