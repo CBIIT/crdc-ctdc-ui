@@ -117,6 +117,27 @@ function parseTokenAttributes(value) {
   return attributes;
 }
 
+function isInternalHref(href) {
+  if (!href) return false;
+
+  const normalizedHref = href.trim();
+
+  if (/^(mailto:|tel:)/i.test(normalizedHref)) return true;
+  if (/^(#|\/(?!\/)|\.{1,2}\/)/.test(normalizedHref)) return true;
+  if (!/^[a-z][a-z0-9+.-]*:/i.test(normalizedHref)) return true;
+
+  if (/^https?:/i.test(normalizedHref) && typeof window !== "undefined") {
+    try {
+      return new URL(normalizedHref, window.location.href).origin ===
+        window.location.origin;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  return false;
+}
+
 function parseContentLink(value) {
   const standardMatch = value.match(/^\[([^\]]+)\]\((.*)\)$/);
   const reversedMatch = value.match(/^\((.*)\)\[([^\]]+)\]$/);
@@ -136,7 +157,7 @@ function parseContentLink(value) {
     href,
     label,
     target,
-    hideIcon: Boolean(attributes.type) || target === "_self",
+    hideIcon: target === "_self" || isInternalHref(href),
   };
 }
 

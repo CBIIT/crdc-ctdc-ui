@@ -157,11 +157,18 @@ describe("LoginMarkdownContent", () => {
   });
 
   it("renders About-style links, same-tab links, mail links, and download links", () => {
+    const sameOriginUrl = `${window.location.origin}/same-origin`;
+    const hasOutboundIcon = (link) =>
+      Boolean(
+        link.nextElementSibling &&
+          link.nextElementSibling.className === "link-icon",
+      );
+
     renderContent({
       content: [
         {
           paragraph:
-            "$$[External](https://example.org)$$ $$[Same tab](target:_self url:/same-page)$$ $$[No icon](type:noIcon url:https://example.org/no-icon target:_blank)$$ $$[Configured](url:[https://example.org/configured] target:[_blank])$$ $$(person@example.org)[Email link]$$ " +
+            `$$[External](https://example.org)$$ $$[Same tab](target:_self url:/same-page)$$ $$[Internal route](/#/graphql)$$ $$[Same origin](${sameOriginUrl})$$ $$[Typed link](type:internal url:https://example.org/typed-link target:_blank)$$ $$[Configured](url:[https://example.org/configured] target:[_blank])$$ $$(person@example.org)[Email link]$$ ` +
             downloadToken,
         },
       ],
@@ -170,24 +177,44 @@ describe("LoginMarkdownContent", () => {
     const externalLink = container.querySelector('a[href="https://example.org"]');
     expect(externalLink.getAttribute("target")).toBe("_blank");
     expect(externalLink.getAttribute("rel")).toBe("noopener noreferrer");
+    expect(hasOutboundIcon(externalLink)).toBe(true);
 
     const sameTabLink = container.querySelector('a[href="/same-page"]');
     expect(sameTabLink.getAttribute("target")).toBe("_self");
     expect(sameTabLink.getAttribute("rel")).toBeNull();
+    expect(hasOutboundIcon(sameTabLink)).toBe(false);
 
-    expect(
-      container.querySelector('a[href="https://example.org/no-icon"]'),
-    ).not.toBeNull();
-    expect(
-      container.querySelector('a[href="https://example.org/configured"]'),
-    ).not.toBeNull();
-    expect(container.querySelector('a[href="mailto:person@example.org"]'))
-      .not.toBeNull();
+    const internalRouteLink = container.querySelector('a[href="/#/graphql"]');
+    expect(internalRouteLink).not.toBeNull();
+    expect(hasOutboundIcon(internalRouteLink)).toBe(false);
+
+    const sameOriginLink = container.querySelector(`a[href="${sameOriginUrl}"]`);
+    expect(sameOriginLink).not.toBeNull();
+    expect(hasOutboundIcon(sameOriginLink)).toBe(false);
+
+    const typedLink = container.querySelector(
+      'a[href="https://example.org/typed-link"]',
+    );
+    expect(typedLink).not.toBeNull();
+    expect(hasOutboundIcon(typedLink)).toBe(true);
+
+    const configuredLink = container.querySelector(
+      'a[href="https://example.org/configured"]',
+    );
+    expect(configuredLink).not.toBeNull();
+    expect(hasOutboundIcon(configuredLink)).toBe(true);
+
+    const mailLink = container.querySelector(
+      'a[href="mailto:person@example.org"]',
+    );
+    expect(mailLink).not.toBeNull();
+    expect(hasOutboundIcon(mailLink)).toBe(false);
 
     const downloadLink = container.querySelector(
       'a[href="https://example.org/download.pdf"]',
     );
     expect(downloadLink.textContent).toBe("Download Guide");
+    expect(hasOutboundIcon(downloadLink)).toBe(false);
 
     expect(container.querySelectorAll("img.link-icon")).toHaveLength(3);
   });
