@@ -224,6 +224,11 @@ const styles = (theme) => ({
       paddingLeft: "4px",
     },
   },
+  nestedListOnlyItem: {
+    listStyleType: "none",
+    paddingLeft: "0px !important",
+    marginBottom: "0px !important",
+  },
   nestedList: {
     margin: "2px 0",
     paddingLeft: "20px",
@@ -502,6 +507,78 @@ const styles = (theme) => ({
     "& li": {
       marginBottom: "4px",
     },
+  },
+  title: {
+    color: "inherit",
+    fontFamily: "Roboto",
+    fontSize: "16px",
+    fontWeight: 600,
+    lineHeight: "24px",
+  },
+  space: {
+    display: "block",
+    height: "15px",
+  },
+  head: {
+    display: "block",
+    color: "#18588E",
+    fontFamily: "Inter",
+    fontSize: "18px",
+    fontWeight: 600,
+    lineHeight: "150%",
+    margin: "14px 0 4px",
+  },
+  firstTitle: {
+    display: "block",
+    color: "#18588E",
+    fontFamily: "Inter",
+    fontSize: "20px",
+    fontWeight: 600,
+    lineHeight: "150%",
+    margin: "0 0 4px",
+  },
+  italicizeText: {
+    display: "inline-block",
+    marginLeft: "30px",
+    fontStyle: "italic",
+  },
+  email: {
+    color: "#18588E",
+    fontWeight: 700,
+  },
+  indentedText: {
+    display: "inline-block",
+    marginLeft: "30px",
+  },
+  tableDiv: {
+    width: "100%",
+    overflowX: "auto",
+    margin: "8px 0",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    fontFamily: "Roboto",
+    fontSize: "14px",
+    lineHeight: "150%",
+  },
+  tableHeader: {
+    backgroundColor: "#EAF3F8",
+  },
+  tableBodyRow: {
+    borderBottom: "1px solid #8A8A8A",
+  },
+  headerCell: {
+    padding: "8px",
+    textAlign: "left",
+    fontWeight: 700,
+    color: "#18588E",
+    border: "1px solid #8A8A8A",
+  },
+  tableCell: {
+    padding: "8px",
+    verticalAlign: "top",
+    border: "1px solid #8A8A8A",
   },
   Link: {
     color: "#990099",

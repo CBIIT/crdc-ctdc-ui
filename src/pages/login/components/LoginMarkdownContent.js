@@ -96,26 +96,74 @@ function parseMarkdownBlocks(markdown) {
   return blocks;
 }
 
-function parseEnhancedLink(value) {
-  const labelMatch = value.match(/^\[([^\]]+)\]\((.*)\)$/);
-  if (!labelMatch) return null;
+function getDelimitedValue(value, delimiter) {
+  const escapedDelimiter = delimiter.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const match = value.match(
+    new RegExp(`^${escapedDelimiter}([\\s\\S]*)${escapedDelimiter}$`),
+  );
 
-  const [, label, linkValue] = labelMatch;
-  const urlMatch = linkValue.match(/url:\s*(?:\[([^\]]+)\]|([^\s]+))/);
-  const targetMatch = linkValue.match(/target:\s*(?:\[([^\]]+)\]|([^\s]+))/);
+  return match ? match[1] : null;
+}
 
-  if (urlMatch) {
-    return {
-      href: urlMatch[1] || urlMatch[2],
-      label,
-      target: targetMatch ? targetMatch[1] || targetMatch[2] : "_blank",
-    };
+function parseTokenAttributes(value) {
+  const attributes = {};
+  const pattern = /([a-zA-Z]+):\s*(?:\[([^\]]+)\]|([^\s,]+))/g;
+  let match;
+
+  while ((match = pattern.exec(value)) !== null) {
+    attributes[match[1]] = match[2] || match[3];
   }
 
+  return attributes;
+}
+
+function parseContentLink(value) {
+  const standardMatch = value.match(/^\[([^\]]+)\]\((.*)\)$/);
+  const reversedMatch = value.match(/^\((.*)\)\[([^\]]+)\]$/);
+
+  if (!standardMatch && !reversedMatch) return null;
+
+  const label = standardMatch ? standardMatch[1] : reversedMatch[2];
+  const linkValue = standardMatch ? standardMatch[2] : reversedMatch[1];
+  const attributes = parseTokenAttributes(linkValue);
+  const rawHref = attributes.url || linkValue;
+  const href = !attributes.url && rawHref.includes("@") && !rawHref.startsWith("mailto:")
+    ? `mailto:${rawHref}`
+    : rawHref;
+  const target = attributes.target || "_blank";
+
   return {
-    href: linkValue,
+    href,
     label,
+    target,
+    hideIcon: Boolean(attributes.type) || target === "_self",
+  };
+}
+
+function parseDownloadLink(value) {
+  const downloadMatch = value.match(/^\{([\s\S]*)\}$/);
+  if (!downloadMatch) return null;
+
+  const attributes = downloadMatch[1].split(",").reduce((accumulator, item) => {
+    const separatorIndex = item.indexOf(":");
+    if (separatorIndex === -1) return accumulator;
+
+    const key = item.slice(0, separatorIndex).trim();
+    const attributeValue = item.slice(separatorIndex + 1).trim();
+
+    return {
+      ...accumulator,
+      [key]: attributeValue,
+    };
+  }, {});
+
+  if (!attributes.link && !attributes.title) return null;
+
+  return {
+    href: attributes.link || "",
+    label: attributes.title || "",
     target: "_blank",
+    hideIcon: true,
   };
 }
 
@@ -123,22 +171,23 @@ function renderLink({
   href,
   label,
   target,
+  hideIcon,
   linkIcon,
   classes,
   keyPrefix,
 }) {
-  const isExternalTarget = target !== "_self";
+  const showIcon = !hideIcon;
 
   return (
     <React.Fragment key={keyPrefix}>
       <a
         href={href}
         target={target}
-        rel={isExternalTarget ? "noopener noreferrer" : undefined}
+        rel={target !== "_self" ? "noopener noreferrer" : undefined}
       >
         {label}
       </a>
-      {isExternalTarget && (
+      {showIcon && (
         <ContentImage
           asset={linkIcon}
           fallbackAlt="outbound web site icon"
@@ -150,11 +199,11 @@ function renderLink({
 }
 
 function renderBentoToken(token, linkIcon, classes, keyPrefix) {
-  if (token === "%space%") {
+  if (getDelimitedValue(token, "%") !== null) {
     return <br key={keyPrefix} />;
   }
 
-  const link = parseEnhancedLink(token);
+  const link = parseContentLink(token) || parseDownloadLink(token);
   if (link) {
     return renderLink({
       ...link,
@@ -164,16 +213,58 @@ function renderBentoToken(token, linkIcon, classes, keyPrefix) {
     });
   }
 
-  if (/^\*.*\*$/.test(token)) {
-    return <strong key={keyPrefix}>{token.slice(1, -1)}</strong>;
+  const emailText = getDelimitedValue(token, "@");
+  if (emailText !== null) {
+    return (
+      <span key={keyPrefix} className={classes.email}>
+        {emailText}
+      </span>
+    );
   }
 
-  if (/^#.*#$/.test(token)) {
-    return <strong key={keyPrefix}>{token.slice(1, -1)}</strong>;
+  const subheadingText = getDelimitedValue(token, "#");
+  if (subheadingText !== null) {
+    return (
+      <span key={keyPrefix} className={classes.head}>
+        {subheadingText}
+      </span>
+    );
   }
 
-  if (/^~.*~$/.test(token)) {
-    return <strong key={keyPrefix}>{token.slice(1, -1)}</strong>;
+  const firstTitleText = getDelimitedValue(token, "~");
+  if (firstTitleText !== null) {
+    return (
+      <span key={keyPrefix} className={classes.firstTitle}>
+        {firstTitleText}
+      </span>
+    );
+  }
+
+  const italicText = getDelimitedValue(token, "!");
+  if (italicText !== null) {
+    return (
+      <span key={keyPrefix} className={classes.italicizeText}>
+        {italicText}
+      </span>
+    );
+  }
+
+  const boldText = getDelimitedValue(token, "*");
+  if (boldText !== null) {
+    return (
+      <strong key={keyPrefix} className={classes.title}>
+        {boldText}
+      </strong>
+    );
+  }
+
+  const indentedText = getDelimitedValue(token, ">");
+  if (indentedText !== null) {
+    return (
+      <span key={keyPrefix} className={classes.indentedText}>
+        {indentedText}
+      </span>
+    );
   }
 
   return token;
@@ -240,6 +331,7 @@ function getNestedListBlocks(item) {
   return [
     "listWithDots",
     "listWithNumbers",
+    "listWithAlphabets",
     "listWithLetters",
   ].reduce((blocks, key) => {
     if (item[key]) {
@@ -256,6 +348,30 @@ function getListItemText(item) {
   return item.text || item.paragraph || "";
 }
 
+function renderNestedListBlocks({
+  nestedBlocks,
+  itemIndex,
+  classes,
+  unorderedListClassName,
+  orderedListClassName,
+  alphaOrderedListClassName,
+  linkIcon,
+  keyPrefix,
+}) {
+  return nestedBlocks.map((block, nestedIndex) =>
+    renderStructuredBlock({
+      block,
+      blockIndex: `${itemIndex}-${nestedIndex}`,
+      classes,
+      paragraphClassName: classes.BodyText,
+      unorderedListClassName,
+      orderedListClassName,
+      alphaOrderedListClassName,
+      linkIcon,
+      keyPrefix: `${keyPrefix}-${itemIndex}`,
+    }));
+}
+
 function renderStructuredListItem({
   item,
   itemIndex,
@@ -267,28 +383,184 @@ function renderStructuredListItem({
   keyPrefix,
 }) {
   const nestedBlocks = getNestedListBlocks(item);
+  const itemText = getListItemText(item);
 
-  return (
-    <li key={`${keyPrefix}-${itemIndex}`}>
-      {renderInlineContent(
-        getListItemText(item),
-        linkIcon,
-        classes,
-        `${keyPrefix}-${itemIndex}`,
-      )}
-      {nestedBlocks.map((block, nestedIndex) =>
-        renderStructuredBlock({
-          block,
-          blockIndex: `${itemIndex}-${nestedIndex}`,
+  if (!itemText && nestedBlocks.length > 0) {
+    return (
+      <li
+        key={`${keyPrefix}-${itemIndex}`}
+        className={classes.nestedListOnlyItem}
+      >
+        {renderNestedListBlocks({
+          nestedBlocks,
+          itemIndex,
           classes,
-          paragraphClassName: classes.BodyText,
           unorderedListClassName,
           orderedListClassName,
           alphaOrderedListClassName,
           linkIcon,
-          keyPrefix: `${keyPrefix}-${itemIndex}`,
-        }))}
+          keyPrefix,
+        })}
+      </li>
+    );
+  }
+
+  return (
+    <li key={`${keyPrefix}-${itemIndex}`}>
+      {renderInlineContent(
+        itemText,
+        linkIcon,
+        classes,
+        `${keyPrefix}-${itemIndex}`,
+      )}
+      {renderNestedListBlocks({
+        nestedBlocks,
+        itemIndex,
+        classes,
+        unorderedListClassName,
+        orderedListClassName,
+        alphaOrderedListClassName,
+        linkIcon,
+        keyPrefix,
+      })}
     </li>
+  );
+}
+
+function parseInlineStyle(value) {
+  return value.replace(/'/g, "").split(",").reduce((styles, styleRule) => {
+    const separatorIndex = styleRule.indexOf(":");
+    if (separatorIndex === -1) return styles;
+
+    const property = styleRule.slice(0, separatorIndex).trim();
+    const styleValue = styleRule.slice(separatorIndex + 1).trim();
+
+    return {
+      ...styles,
+      [property]: styleValue,
+    };
+  }, {});
+}
+
+function parseStyledTableCell(value) {
+  if (typeof value !== "string") return { text: value, style: {} };
+
+  const styledCellMatch = value.match(/^\{([\s\S]*)\}$/);
+  if (!styledCellMatch) return { text: value, style: {} };
+
+  const attributes = styledCellMatch[1].split("$$");
+  const styleAttribute = attributes.find((attribute) =>
+    attribute.includes("style:"));
+  const textAttribute = attributes.find((attribute) =>
+    attribute.includes("text:"));
+
+  if (!styleAttribute && !textAttribute) {
+    return { text: value, style: {} };
+  }
+
+  return {
+    text: textAttribute ? textAttribute.replace("text:", "") : "",
+    style: styleAttribute
+      ? parseInlineStyle(styleAttribute.replace("style:", ""))
+      : {},
+  };
+}
+
+function renderTableCellContent({
+  value,
+  classes,
+  linkIcon,
+  keyPrefix,
+}) {
+  const text = value === undefined || value === null ? "" : String(value);
+  const link = parseContentLink(text);
+
+  if (link) {
+    return renderLink({
+      ...link,
+      linkIcon,
+      classes,
+      keyPrefix,
+    });
+  }
+
+  return renderInlineContent(text, linkIcon, classes, keyPrefix);
+}
+
+function renderStructuredTable({
+  table,
+  blockIndex,
+  classes,
+  linkIcon,
+  keyPrefix,
+}) {
+  const headerRows = table && table[0] && table[0].head ? table[0].head : [];
+  const bodyRows = table && table[1] && table[1].body ? table[1].body : [];
+
+  if (!headerRows.length && !bodyRows.length) return null;
+
+  return (
+    <Box key={`${keyPrefix}-table-${blockIndex}`} className={classes.tableDiv}>
+      <table className={classes.table}>
+        {headerRows.length > 0 && (
+          <thead className={classes.tableHeader}>
+            <tr className={classes.tableBodyRow}>
+              <th className={classes.headerCell} aria-label="Index" />
+              {headerRows.map((header, headerIndex) => {
+                const { text, style } = parseStyledTableCell(header);
+
+                return (
+                  <th
+                    key={`${keyPrefix}-table-${blockIndex}-head-${headerIndex}`}
+                    className={classes.headerCell}
+                    style={style}
+                  >
+                    {renderTableCellContent({
+                      value: text,
+                      classes,
+                      linkIcon,
+                      keyPrefix: `${keyPrefix}-table-${blockIndex}-head-${headerIndex}`,
+                    })}
+                  </th>
+                );
+              })}
+            </tr>
+          </thead>
+        )}
+        <tbody>
+          {bodyRows.map((row, rowIndex) => {
+            const rowValues = row && row.row ? row.row : [];
+
+            return (
+              <tr
+                key={`${keyPrefix}-table-${blockIndex}-row-${rowIndex}`}
+                className={classes.tableBodyRow}
+              >
+                <td className={classes.tableCell}>{rowIndex + 1}</td>
+                {rowValues.map((rowValue, cellIndex) => {
+                  const { text, style } = parseStyledTableCell(rowValue);
+
+                  return (
+                    <td
+                      key={`${keyPrefix}-table-${blockIndex}-row-${rowIndex}-${cellIndex}`}
+                      className={classes.tableCell}
+                      style={style}
+                    >
+                      {renderTableCellContent({
+                        value: text,
+                        classes,
+                        linkIcon,
+                        keyPrefix: `${keyPrefix}-table-${blockIndex}-row-${rowIndex}-${cellIndex}`,
+                      })}
+                    </td>
+                  );
+                })}
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </Box>
   );
 }
 
@@ -345,8 +617,13 @@ function renderStructuredBlock({
   }
 
   if (block.paragraph !== undefined) {
-    if (block.paragraph === "$$%space%$$") {
-      return <Box key={`${keyPrefix}-space-${blockIndex}`} height={16} />;
+    if (/^\$\$%[\s\S]*%\$\$$/.test(block.paragraph)) {
+      return (
+        <Box
+          key={`${keyPrefix}-space-${blockIndex}`}
+          className={classes.space}
+        />
+      );
     }
 
     return (
@@ -392,6 +669,20 @@ function renderStructuredBlock({
     });
   }
 
+  if (block.listWithAlphabets) {
+    return renderStructuredList({
+      items: block.listWithAlphabets,
+      listType: "ol",
+      listClassName: alphaOrderedListClassName,
+      classes,
+      unorderedListClassName,
+      orderedListClassName,
+      alphaOrderedListClassName,
+      linkIcon,
+      keyPrefix: `${keyPrefix}-alphabets-${blockIndex}`,
+    });
+  }
+
   if (block.listWithLetters) {
     return renderStructuredList({
       items: block.listWithLetters,
@@ -403,6 +694,16 @@ function renderStructuredBlock({
       alphaOrderedListClassName,
       linkIcon,
       keyPrefix: `${keyPrefix}-letters-${blockIndex}`,
+    });
+  }
+
+  if (block.table) {
+    return renderStructuredTable({
+      table: block.table,
+      blockIndex,
+      classes,
+      linkIcon,
+      keyPrefix,
     });
   }
 

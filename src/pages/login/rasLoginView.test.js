@@ -41,6 +41,10 @@ const loginContent = {
         paragraph:
           "If you already have a CTDC account, you must complete identity verification.",
       },
+      {
+        paragraph:
+          "$$~Overview~$$ $$#RAS details#$$ $$!Italic note!$$ $$@ctdc@example.org@$$ $$>Indented note>$$",
+      },
     ],
     buttonText: "Login with RAS",
     unavailableText:
@@ -65,7 +69,7 @@ const loginContent = {
               "The verification process typically takes up to 30 minutes and requires:",
           },
           {
-            listWithLetters: [
+            listWithAlphabets: [
               "A mobile phone with a working camera",
               "Your Social Security number",
               {
@@ -120,12 +124,15 @@ const loginContent = {
     documentation: {
       title: "Documentation",
       content: [
-        {
-          listWithDots: [
-            "$$[eRA Commons Account Creation](https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm)$$",
-          ],
-        },
-      ],
+          {
+            listWithDots: [
+              "$$[eRA Commons Account Creation](https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm)$$",
+              "$$[Same tab documentation](target:_self url:/documentation)$$",
+              "$$" +
+                "{link:https://example.org/download.pdf,title:Download Guide}$$",
+            ],
+          },
+        ],
     },
   },
   warning: {
@@ -146,6 +153,20 @@ const loginContent = {
         {
           paragraph:
             "This tutorial explains the steps involved in creating a Login.gov account.",
+        },
+        {
+          table: [
+            {
+              head: ["Resource", "Link"],
+            },
+            {
+              body: [
+                {
+                  row: ["RAS help", "[RAS Help](https://example.org/ras)"],
+                },
+              ],
+            },
+          ],
         },
       ],
       videoUrl: "https://example.org/tutorial.mp4",
@@ -208,6 +229,36 @@ describe("RASLoginPage", () => {
     lists.forEach((list) => {
       expect(list.parentElement.tagName).not.toBe("P");
     });
+  });
+
+  it("renders About-style structured content tokens", () => {
+    renderPage();
+
+    expect(container.textContent).toContain("Overview");
+    expect(container.textContent).toContain("RAS details");
+    expect(container.textContent).toContain("Italic note");
+    expect(container.textContent).toContain("ctdc@example.org");
+    expect(container.textContent).toContain("Indented note");
+
+    const toggles = container.querySelectorAll('[aria-expanded]');
+    pressKey(toggles[2], "Enter");
+
+    const sameTabLink = container.querySelector(
+      'a[href="/documentation"]',
+    );
+    expect(sameTabLink).not.toBeNull();
+    expect(sameTabLink.getAttribute("target")).toBe("_self");
+
+    const downloadLink = container.querySelector(
+      'a[href="https://example.org/download.pdf"]',
+    );
+    expect(downloadLink).not.toBeNull();
+    expect(downloadLink.textContent).toBe("Download Guide");
+
+    expect(container.querySelector("table")).not.toBeNull();
+    expect(
+      container.querySelector('a[href="https://example.org/ras"]'),
+    ).not.toBeNull();
   });
 
   it("supports Enter and Space for each collapsible section", () => {
