@@ -130,18 +130,17 @@ const loginContent = {
             },
           ],
         },
+      ],
+      content: [
         {
-          title: "Documentation",
-          variant: "links",
-          content: [
-            {
-              listWithDots: [
-                "$$[eRA Commons Account Creation](https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm)$$",
-                "$$[Same tab documentation](target:_self url:/documentation)$$",
-                "$$" +
-                  "{link:https://example.org/download.pdf,title:Download Guide}$$",
-              ],
-            },
+          paragraph: "$$*Documentation*$$",
+        },
+        {
+          listWithDots: [
+            "$$[eRA Commons Account Creation](https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm)$$",
+            "$$[Same tab documentation](target:_self url:/documentation)$$",
+            "$$" +
+              "{link:https://example.org/download.pdf,title:Download Guide}$$",
           ],
         },
       ],
@@ -265,9 +264,6 @@ describe("RASLoginPage", () => {
       "The verification process typically",
     );
 
-    const toggles = container.querySelectorAll('[aria-expanded]');
-    pressKey(toggles[2], "Enter");
-
     const sameTabLink = container.querySelector(
       'a[href="/documentation"]',
     );
@@ -295,6 +291,35 @@ describe("RASLoginPage", () => {
     );
   });
 
+  it("renders contentBox content in YAML key order", () => {
+    renderPage();
+
+    let renderedText = container.textContent;
+    expect(renderedText.indexOf("Instructions to Request Access"))
+      .toBeLessThan(renderedText.indexOf("Documentation"));
+
+    const contentBeforeAccordions = {
+      ...loginContent,
+      sections: loginContent.sections.map((section) => {
+        if (section.id !== "request-access") return section;
+
+        const { accordions, content, ...sectionMetadata } = section;
+
+        return {
+          ...sectionMetadata,
+          content,
+          accordions,
+        };
+      }),
+    };
+
+    renderPage(contentBeforeAccordions);
+
+    renderedText = container.textContent;
+    expect(renderedText.indexOf("Documentation"))
+      .toBeLessThan(renderedText.indexOf("Access Requirements"));
+  });
+
   it("uses the shared accordion styling for contentBox accordions", () => {
     renderPage();
 
@@ -314,7 +339,7 @@ describe("RASLoginPage", () => {
     );
 
     const toggles = container.querySelectorAll('[aria-expanded]');
-    expect(toggles).toHaveLength(4);
+    expect(toggles).toHaveLength(3);
     expect(Array.from(toggles).some((toggle) =>
       toggle.textContent.includes("Preparing your identity"))).toBe(false);
   });
@@ -337,7 +362,7 @@ describe("RASLoginPage", () => {
           return {
             ...section,
             accordions: section.accordions.map((accordion) =>
-              (accordion.title === "Documentation"
+              (accordion.title === "Instructions to Request Access"
                 ? { ...accordion, defaultOpen: true }
                 : accordion)),
           };
@@ -350,20 +375,22 @@ describe("RASLoginPage", () => {
     renderPage(contentWithDefaultOpenAccordions);
 
     expect(container.textContent).toContain("Begin from the CTDC login page");
-    expect(container.textContent).toContain("eRA Commons Account Creation");
+    expect(container.textContent).toContain(
+      "Create a Login.gov or ID.me account",
+    );
 
     const toggles = container.querySelectorAll('[aria-expanded]');
     expect(toggles[0].getAttribute("aria-expanded")).toBe("true");
-    expect(toggles[2].getAttribute("aria-expanded")).toBe("true");
+    expect(toggles[1].getAttribute("aria-expanded")).toBe("true");
 
     pressKey(toggles[0], " ");
-    pressKey(toggles[2], " ");
+    pressKey(toggles[1], " ");
 
     expect(container.textContent).not.toContain(
       "Begin from the CTDC login page",
     );
     expect(container.textContent).not.toContain(
-      "eRA Commons Account Creation",
+      "Create a Login.gov or ID.me account",
     );
   });
 
@@ -371,7 +398,7 @@ describe("RASLoginPage", () => {
     renderPage();
 
     const toggles = container.querySelectorAll('[aria-expanded]');
-    expect(toggles).toHaveLength(4);
+    expect(toggles).toHaveLength(3);
 
     pressKey(toggles[0], "Enter");
     expect(container.textContent).toContain(
@@ -393,18 +420,9 @@ describe("RASLoginPage", () => {
 
     pressKey(toggles[2], "Enter");
     expect(container.textContent).toContain(
-      "eRA Commons Account Creation",
-    );
-    pressKey(toggles[2], " ");
-    expect(container.textContent).not.toContain(
-      "eRA Commons Account Creation",
-    );
-
-    pressKey(toggles[3], "Enter");
-    expect(container.textContent).toContain(
       "This warning banner provides privacy",
     );
-    pressKey(toggles[3], " ");
+    pressKey(toggles[2], " ");
     expect(container.textContent).toContain(
       "This warning banner provides privacy",
     );

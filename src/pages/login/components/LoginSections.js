@@ -210,6 +210,40 @@ function hasContent(item) {
   );
 }
 
+function getContentOrder(section) {
+  const keys = Object.keys(section);
+  const contentIndex = keys.findIndex((key) =>
+    key === "content" || key === "bodyMarkdown");
+
+  return contentIndex === -1 ? Number.MAX_SAFE_INTEGER : contentIndex;
+}
+
+function getOrderedContentBoxComponents(section, accordions) {
+  const keys = Object.keys(section);
+  const components = [];
+
+  if (hasContent(section)) {
+    components.push({
+      type: "content",
+      order: getContentOrder(section),
+    });
+  }
+
+  if (accordions.length > 0) {
+    const accordionIndex = keys.indexOf("accordions");
+
+    components.push({
+      type: "accordions",
+      order: accordionIndex === -1
+        ? Number.MAX_SAFE_INTEGER
+        : accordionIndex,
+    });
+  }
+
+  return components.sort((firstComponent, secondComponent) =>
+    firstComponent.order - secondComponent.order);
+}
+
 export function ContentBoxSection({
   classes,
   section,
@@ -222,7 +256,10 @@ export function ContentBoxSection({
   const accordions = Array.isArray(section.accordions)
     ? section.accordions
     : [];
-  const hasSectionContent = hasContent(section);
+  const orderedComponents = getOrderedContentBoxComponents(
+    section,
+    accordions,
+  );
 
   return (
     <Box className={classes.RequestSection}>
@@ -236,81 +273,94 @@ export function ContentBoxSection({
             {section.title}
           </Typography>
         )}
-
-        {hasSectionContent && (
-          <Box className={classes.VerificationWrapper}>
-            <Box className={classes.VerificationSection}>
-              <LoginContentBlock
-                classes={classes}
-                item={section}
-                externalLinkIcon={externalLinkIcon}
-              />
-            </Box>
-          </Box>
-        )}
       </Box>
 
-      {accordions.map((accordion, index) => {
-        const accordionKey =
-          accordion.id || `${accordion.title || "accordion"}-${index}`;
-        const accordionIsCollapsible = isCollapsible(accordion);
-        const isOpen = Boolean(openAccordions[index]);
-        const useLinkStyle =
-          accordion.variant === "links" || accordion.linkStyle;
-        const previousAccordion = accordions[index - 1];
-        const previousAccordionIsCollapsible =
-          previousAccordion && isCollapsible(previousAccordion);
-        const isNextToAccordion =
-          accordionIsCollapsible || previousAccordionIsCollapsible;
-        const shouldShowDivider =
-          !isNextToAccordion && (hasSectionContent || index > 0);
-
-        return (
-          <React.Fragment key={accordionKey}>
-            {shouldShowDivider && <Box className={classes.Divider} />}
-
-            <Box className={classes.RequestBottomSection}>
-              {accordionIsCollapsible ? (
-                <Box className={classes.AccordionList}>
-                  <LoginAccordionItem
+      {orderedComponents.map((component, componentIndex) => {
+        if (component.type === "content") {
+          return (
+            <Box
+              key="content"
+              className={classes.RequestBottomSection}
+            >
+              <Box className={classes.VerificationWrapper}>
+                <Box className={classes.VerificationSection}>
+                  <LoginContentBlock
                     classes={classes}
-                    item={accordion}
-                    isOpen={isOpen}
-                    onToggle={() => onToggleAccordion(index)}
-                    arrowOpenIcon={arrowOpenIcon}
-                    arrowClosedIcon={arrowClosedIcon}
+                    item={section}
                     externalLinkIcon={externalLinkIcon}
-                    bodyClassName={useLinkStyle ? classes.Link : undefined}
                   />
                 </Box>
-              ) : (
-                <Box className={classes.VerificationWrapper}>
-                  <Box className={classes.VerificationSection}>
-                    {accordion.title && (
-                      <Typography
-                        variant="h3"
-                        component="h3"
-                        className={classes.SubsectionTitle}
-                        style={{ marginTop: 0, marginBottom: 0 }}
-                      >
-                        {accordion.title}
-                      </Typography>
-                    )}
-
-                    {hasContent(accordion) && (
-                      <LoginContentBlock
-                        classes={classes}
-                        item={accordion}
-                        externalLinkIcon={externalLinkIcon}
-                        className={useLinkStyle ? classes.Link : undefined}
-                      />
-                    )}
-                  </Box>
-                </Box>
-              )}
+              </Box>
             </Box>
-          </React.Fragment>
-        );
+          );
+        }
+
+        const hasPreviousContent = orderedComponents
+          .slice(0, componentIndex)
+          .some((orderedComponent) => orderedComponent.type === "content");
+
+        return accordions.map((accordion, index) => {
+          const accordionKey =
+            accordion.id || `${accordion.title || "accordion"}-${index}`;
+          const accordionIsCollapsible = isCollapsible(accordion);
+          const isOpen = Boolean(openAccordions[index]);
+          const useLinkStyle =
+            accordion.variant === "links" || accordion.linkStyle;
+          const previousAccordion = accordions[index - 1];
+          const previousAccordionIsCollapsible =
+            previousAccordion && isCollapsible(previousAccordion);
+          const isNextToAccordion =
+            accordionIsCollapsible || previousAccordionIsCollapsible;
+          const shouldShowDivider =
+            !isNextToAccordion && (hasPreviousContent || index > 0);
+
+          return (
+            <React.Fragment key={accordionKey}>
+              {shouldShowDivider && <Box className={classes.Divider} />}
+
+              <Box className={classes.RequestBottomSection}>
+                {accordionIsCollapsible ? (
+                  <Box className={classes.AccordionList}>
+                    <LoginAccordionItem
+                      classes={classes}
+                      item={accordion}
+                      isOpen={isOpen}
+                      onToggle={() => onToggleAccordion(index)}
+                      arrowOpenIcon={arrowOpenIcon}
+                      arrowClosedIcon={arrowClosedIcon}
+                      externalLinkIcon={externalLinkIcon}
+                      bodyClassName={useLinkStyle ? classes.Link : undefined}
+                    />
+                  </Box>
+                ) : (
+                  <Box className={classes.VerificationWrapper}>
+                    <Box className={classes.VerificationSection}>
+                      {accordion.title && (
+                        <Typography
+                          variant="h3"
+                          component="h3"
+                          className={classes.SubsectionTitle}
+                          style={{ marginTop: 0, marginBottom: 0 }}
+                        >
+                          {accordion.title}
+                        </Typography>
+                      )}
+
+                      {hasContent(accordion) && (
+                        <LoginContentBlock
+                          classes={classes}
+                          item={accordion}
+                          externalLinkIcon={externalLinkIcon}
+                          className={useLinkStyle ? classes.Link : undefined}
+                        />
+                      )}
+                    </Box>
+                  </Box>
+                )}
+              </Box>
+            </React.Fragment>
+          );
+        });
       })}
     </Box>
   );
