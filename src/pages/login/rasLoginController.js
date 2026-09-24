@@ -6,12 +6,29 @@ import RASLoginPage from "./rasLoginView";
 
 const LOGIN_CONTENT_URL = env.REACT_APP_LOGIN_CONTENT_URL;
 const RAS_AUTHORIZE_URL = env.REACT_APP_RAS_AUTHORIZE_URL;
+const LOCAL_LOGIN_CONTENT_URL = "/local-static-content/login/loginView.yaml";
+
+function isTemplateValue(value) {
+  return typeof value === "string" && /^\$\{[^}]+\}$/.test(value);
+}
+
+function getLoginContentUrl() {
+  if (env.NODE_ENV === "development") {
+    return LOCAL_LOGIN_CONTENT_URL;
+  }
+
+  return LOGIN_CONTENT_URL;
+}
 
 function resolveUrl(url, baseUrl) {
   if (!url || typeof url !== "string") return url;
 
   try {
-    return new URL(url, baseUrl).href;
+    const base = typeof window !== "undefined"
+      ? new URL(baseUrl, window.location.href).href
+      : baseUrl;
+
+    return new URL(url, base).href;
   } catch (error) {
     return url;
   }
@@ -63,15 +80,17 @@ const RASLoginController = () => {
 
   useEffect(() => {
     const fetchLoginContent = async () => {
-      if (!LOGIN_CONTENT_URL) {
+      const loginContentUrl = getLoginContentUrl();
+
+      if (!loginContentUrl || isTemplateValue(loginContentUrl)) {
         setError(true);
         return;
       }
 
       try {
-        const result = await axios.get(LOGIN_CONTENT_URL);
+        const result = await axios.get(loginContentUrl);
         setContent(
-          resolveLoginContent(yaml.safeLoad(result.data), LOGIN_CONTENT_URL),
+          resolveLoginContent(yaml.safeLoad(result.data), loginContentUrl),
         );
       } catch (fetchError) {
         console.error("Error loading loginView.yaml:", fetchError);
