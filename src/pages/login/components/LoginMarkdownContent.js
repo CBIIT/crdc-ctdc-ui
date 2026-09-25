@@ -268,7 +268,7 @@ function getNestedListBlocks(item) {
       return [...blocks, { [key]: item[key] }];
     }
     return blocks;
-  }, item.content || []);
+  }, item.blocks || []);
 }
 
 function getListItemText(item) {
@@ -533,7 +533,7 @@ function renderStructuredBlock({
   orderedListClassName,
   alphaOrderedListClassName,
   linkIcon,
-  keyPrefix = "content-block",
+  keyPrefix = "block",
 }) {
   if (typeof block === "string") {
     return (
@@ -641,7 +641,7 @@ function renderStructuredBlock({
 }
 
 function LoginMarkdownContent({
-  content,
+  blocks,
   classes,
   paragraphClassName,
   unorderedListClassName,
@@ -649,8 +649,8 @@ function LoginMarkdownContent({
   alphaOrderedListClassName,
   linkIcon,
 }) {
-  const hasStructuredContent = Array.isArray(content) && content.length > 0;
-  if (!hasStructuredContent) return null;
+  const hasStructuredBlocks = Array.isArray(blocks) && blocks.length > 0;
+  if (!hasStructuredBlocks) return null;
 
   const resolvedParagraphClassName = paragraphClassName || classes.BodyText;
   const resolvedUnorderedListClassName = unorderedListClassName || classes.unorderedList;
@@ -660,7 +660,7 @@ function LoginMarkdownContent({
 
   return (
     <Box className={classes.MarkdownContent}>
-      {content.map((block, blockIndex) =>
+      {blocks.map((block, blockIndex) =>
         renderStructuredBlock({
           block,
           blockIndex,

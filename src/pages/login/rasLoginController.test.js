@@ -16,14 +16,14 @@ jest.mock("../../utils/env", () => ({
 jest.mock("./rasLoginView", () => {
   const React = require("react");
 
-  return function MockRASLoginPage({ content, rasAuthorizeUrl }) {
+  return function MockRASLoginPage({ loginContent, rasAuthorizeUrl }) {
     return React.createElement(
       "div",
       {
         "data-testid": "ras-login-page",
         "data-ras-authorize-url": rasAuthorizeUrl,
       },
-      content.hero.title,
+      loginContent.hero.title,
     );
   };
 });

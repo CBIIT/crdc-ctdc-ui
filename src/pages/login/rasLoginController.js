@@ -55,8 +55,8 @@ function resolveAsset(asset, baseUrl) {
   };
 }
 
-function resolveLoginContent(content = {}, baseUrl) {
-  const assets = Object.entries(content.assets || {}).reduce(
+function resolveLoginContent(loginContent = {}, baseUrl) {
+  const assets = Object.entries(loginContent.assets || {}).reduce(
     (resolvedAssets, [key, asset]) => ({
       ...resolvedAssets,
       [key]: resolveAsset(asset, baseUrl),
@@ -65,14 +65,14 @@ function resolveLoginContent(content = {}, baseUrl) {
   );
 
   return {
-    ...content,
+    ...loginContent,
     assets,
     help: {
-      ...(content.help || {}),
+      ...(loginContent.help || {}),
       tutorial: {
-        ...((content.help || {}).tutorial || {}),
+        ...((loginContent.help || {}).tutorial || {}),
         videoUrl: resolveUrl(
-          ((content.help || {}).tutorial || {}).videoUrl,
+          ((loginContent.help || {}).tutorial || {}).videoUrl,
           baseUrl,
         ),
       },
@@ -166,7 +166,7 @@ function LoginContentError({ error }) {
 }
 
 const RASLoginController = () => {
-  const [content, setContent] = useState();
+  const [loginContent, setLoginContent] = useState();
   const [error, setError] = useState();
 
   useEffect(() => {
@@ -182,7 +182,7 @@ const RASLoginController = () => {
         const result = await axios.get(loginContentUrl);
         const parsedContent = yaml.safeLoad(result.data);
         validateLoginContent(parsedContent);
-        setContent(
+        setLoginContent(
           resolveLoginContent(parsedContent, loginContentUrl),
         );
       } catch (fetchError) {
@@ -201,13 +201,13 @@ const RASLoginController = () => {
     return <LoginContentError error={error} />;
   }
 
-  if (!content) {
+  if (!loginContent) {
     return null;
   }
 
   return (
     <RASLoginPage
-      content={content}
+      loginContent={loginContent}
       rasAuthorizeUrl={env.REACT_APP_RAS_AUTHORIZE_URL}
     />
   );

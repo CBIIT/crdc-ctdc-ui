@@ -12,8 +12,8 @@ import {
   WarningNotice,
 } from "./components/LoginSections";
 
-function getLoginSections(content) {
-  return Array.isArray(content.sections) ? content.sections : [];
+function getLoginSections(loginContent) {
+  return Array.isArray(loginContent.sections) ? loginContent.sections : [];
 }
 
 function getSectionKey(section, index) {
@@ -54,26 +54,38 @@ function getDefaultOpenSectionAccordions(sections) {
   }, {});
 }
 
+function getDefaultOpenWarning(warning) {
+  return Boolean(warning && warning.defaultOpen === true);
+}
+
 function RASLoginPage(props) {
-  const { classes, content = {}, rasAuthorizeUrl = "" } = props;
-  const assets = content.assets || {};
+  const { classes, loginContent = {}, rasAuthorizeUrl = "" } = props;
+  const assets = loginContent.assets || {};
   const arrowOpenIcon = getAsset(assets, "arrowOpen");
   const arrowClosedIcon = getAsset(assets, "arrowClosed");
   const externalLinkIcon = getAsset(assets, "externalLinkIcon");
-  const hero = content.hero || {};
-  const warning = content.warning || {};
-  const help = content.help || {};
+  const hero = loginContent.hero || {};
+  const warning = loginContent.warning || {};
+  const help = loginContent.help || {};
   const tutorial = help.tutorial || {};
   const contact = help.contact || {};
-  const sections = useMemo(() => getLoginSections(content), [content]);
+  const sections = useMemo(
+    () => getLoginSections(loginContent),
+    [loginContent],
+  );
   const [sectionAccordionsOpen, setSectionAccordionsOpen] = useState(() =>
     getDefaultOpenSectionAccordions(sections));
-  const [warningOpen, setWarningOpen] = useState(false);
+  const [warningOpen, setWarningOpen] = useState(() =>
+    getDefaultOpenWarning(warning));
   const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
     setSectionAccordionsOpen(getDefaultOpenSectionAccordions(sections));
   }, [sections]);
+
+  useEffect(() => {
+    setWarningOpen(getDefaultOpenWarning(warning));
+  }, [warning]);
 
   const toggleSectionAccordion = (sectionKey, index) => {
     setSectionAccordionsOpen((openAccordions) => ({

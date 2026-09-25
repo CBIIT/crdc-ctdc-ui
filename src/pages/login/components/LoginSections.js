@@ -117,7 +117,7 @@ function LoginAccordionItem({
       {itemIsOpen && (
         <Box className={classes.AccordionText}>
           <LoginMarkdownContent
-            content={item.content}
+            blocks={item.blocks}
             classes={classes}
             orderedListClassName={classes.orderedListNumeric}
             alphaOrderedListClassName={classes.orderedListAlpha}
@@ -148,7 +148,7 @@ function LoginContentBlock({
         </Typography>
       )}
       <LoginMarkdownContent
-        content={item.content}
+        blocks={item.blocks}
         classes={classes}
         orderedListClassName={classes.orderedListNumeric}
         alphaOrderedListClassName={classes.orderedListAlpha}
@@ -196,19 +196,19 @@ function LoginContentSection({
   );
 }
 
-function hasContent(item) {
+function hasBlocks(item) {
   return Boolean(
     item &&
-      Array.isArray(item.content) &&
-      item.content.length > 0,
+      Array.isArray(item.blocks) &&
+      item.blocks.length > 0,
   );
 }
 
-function createContentItem(content, extraFields = {}) {
+function createBlocksItem(blocks, extraFields = {}) {
   return {
-    type: "content",
+    type: "blocks",
     item: {
-      content,
+      blocks,
       ...extraFields,
     },
   };
@@ -221,58 +221,58 @@ function createAccordionGroup(accordions) {
   };
 }
 
-function isContentGroup(item) {
+function isBlockGroup(item) {
   return Boolean(
     item &&
       !Array.isArray(item.accordions) &&
-      Array.isArray(item.content),
+      Array.isArray(item.blocks),
   );
 }
 
-// Section content is the display sequence: plain blocks are batched together,
+// Section blocks are the display sequence: plain blocks are batched together,
 // titled content groups render as separate text sections, and accordion groups
 // render through the shared accordion list.
-function getContentItems(content = []) {
-  const contentItems = [];
-  let pendingContent = [];
+function getBlockItems(blocks = []) {
+  const blockItems = [];
+  let pendingBlocks = [];
 
-  const pushPendingContent = () => {
-    if (pendingContent.length === 0) return;
+  const pushPendingBlocks = () => {
+    if (pendingBlocks.length === 0) return;
 
-    const buttonBlock = pendingContent.find((item) =>
+    const buttonBlock = pendingBlocks.find((item) =>
       item && item.buttonText);
-    contentItems.push(createContentItem(pendingContent, {
+    blockItems.push(createBlocksItem(pendingBlocks, {
       buttonText: buttonBlock ? buttonBlock.buttonText : undefined,
     }));
-    pendingContent = [];
+    pendingBlocks = [];
   };
 
-  content.forEach((item) => {
+  blocks.forEach((item) => {
     if (item && Array.isArray(item.accordions)) {
-      pushPendingContent();
-      contentItems.push(createAccordionGroup(item.accordions));
+      pushPendingBlocks();
+      blockItems.push(createAccordionGroup(item.accordions));
       return;
     }
 
-    if (isContentGroup(item)) {
-      pushPendingContent();
-      contentItems.push(createContentItem(item.content || [], {
+    if (isBlockGroup(item)) {
+      pushPendingBlocks();
+      blockItems.push(createBlocksItem(item.blocks || [], {
         buttonText: item.buttonText,
         title: item.title,
       }));
       return;
     }
 
-    pendingContent.push(item);
+    pendingBlocks.push(item);
   });
 
-  pushPendingContent();
+  pushPendingBlocks();
 
-  return contentItems;
+  return blockItems;
 }
 
 function getSectionItems(section) {
-  return getContentItems(section.content);
+  return getBlockItems(section.blocks);
 }
 
 export function getSectionAccordions(section) {
@@ -328,7 +328,7 @@ export function LoginSectionBox({
       </Box>
 
       {sectionItems.map((sectionItem, sectionItemIndex) => {
-        if (sectionItem.type === "content") {
+        if (sectionItem.type === "blocks") {
           const action = section.type === "rasLogin" &&
             sectionItem.item.buttonText
             ? (
@@ -342,7 +342,7 @@ export function LoginSectionBox({
 
           return (
             <LoginContentSection
-              key={`content-${sectionItemIndex}`}
+              key={`blocks-${sectionItemIndex}`}
               classes={classes}
               item={sectionItem.item}
               action={action}
@@ -381,6 +381,21 @@ export function WarningNotice({
   arrowClosedIcon,
   externalLinkIcon,
 }) {
+  const warningIsCollapsible = warning.collapsible !== false;
+  const warningIsOpen = warningIsCollapsible ? warningOpen : true;
+  const warningTextClassName = `${classes.WarningText} ${
+    warningIsCollapsible && !warningIsOpen ? classes.WarningTextCollapsed : ""
+  }`;
+  const toggleProps = warningIsCollapsible
+    ? {
+      role: "button",
+      tabIndex: 0,
+      "aria-expanded": warningIsOpen,
+      onClick: onToggle,
+      onKeyDown: handleActivation(onToggle),
+    }
+    : {};
+
   return (
     <Box className={classes.WarningSection}>
       <Box className={classes.WarningContent}>
@@ -392,24 +407,24 @@ export function WarningNotice({
           {warning.title}
         </Typography>
         <Box
-          className={classes.WarningToggle}
-          role="button"
-          tabIndex={0}
-          aria-expanded={warningOpen}
-          onClick={onToggle}
-          onKeyDown={handleActivation(onToggle)}
+          className={`${classes.WarningToggle} ${
+            !warningIsCollapsible ? classes.WarningToggleStatic : ""
+          }`}
+          {...toggleProps}
         >
           <LoginMarkdownContent
-            content={warning.content}
+            blocks={warning.blocks}
             classes={classes}
-            paragraphClassName={`${classes.WarningText} ${!warningOpen ? classes.WarningTextCollapsed : ""}`}
+            paragraphClassName={warningTextClassName}
             linkIcon={externalLinkIcon}
           />
-          <ToggleArrow
-            isOpen={warningOpen}
-            openIcon={arrowOpenIcon}
-            closedIcon={arrowClosedIcon}
-          />
+          {warningIsCollapsible && (
+            <ToggleArrow
+              isOpen={warningIsOpen}
+              openIcon={arrowOpenIcon}
+              closedIcon={arrowClosedIcon}
+            />
+          )}
         </Box>
       </Box>
     </Box>
@@ -433,21 +448,21 @@ export function HelpSidebar({
       : undefined);
   const orderedComponents = getOrderedComponents(help, [
     {
-      type: "content",
-      enabled: hasContent(help),
-      keys: ["content"],
+      type: "blocks",
+      enabled: hasBlocks(help),
+      keys: ["blocks"],
     },
     {
       type: "tutorial",
       enabled: Boolean(
-        tutorial.title || hasContent(tutorial) || tutorial.videoUrl,
+        tutorial.title || hasBlocks(tutorial) || tutorial.videoUrl,
       ),
       keys: ["tutorial"],
     },
     {
       type: "contact",
       enabled: Boolean(
-        contact.title || hasContent(contact) || contact.buttonText,
+        contact.title || hasBlocks(contact) || contact.buttonText,
       ),
       keys: ["contact"],
     },
@@ -476,11 +491,11 @@ export function HelpSidebar({
         </Box>
 
         {orderedComponents.map((component) => {
-          if (component.type === "content") {
+          if (component.type === "blocks") {
             return (
-              <Box key="content" className={classes.HelpContentSection}>
+              <Box key="blocks" className={classes.HelpContentSection}>
                 <LoginMarkdownContent
-                  content={help.content}
+                  blocks={help.blocks}
                   classes={classes}
                   paragraphClassName={classes.SidebarText}
                   linkIcon={externalLinkIcon}
@@ -502,7 +517,7 @@ export function HelpSidebar({
                   </Typography>
                 )}
                 <LoginMarkdownContent
-                  content={tutorial.content}
+                  blocks={tutorial.blocks}
                   classes={classes}
                   paragraphClassName={classes.SidebarText}
                   linkIcon={externalLinkIcon}
@@ -560,7 +575,7 @@ export function HelpSidebar({
                 </Typography>
               )}
               <LoginMarkdownContent
-                content={contact.content}
+                blocks={contact.blocks}
                 classes={classes}
                 paragraphClassName={classes.SidebarText}
                 linkIcon={externalLinkIcon}

@@ -108,17 +108,9 @@ describe("LoginMarkdownContent", () => {
     expect(container.textContent).toBe("");
   });
 
-  it("ignores legacy markdown fallback content", () => {
-    renderContent({
-      markdown: "Markdown fallback should not render.",
-    });
-
-    expect(container.textContent).toBe("");
-  });
-
   it("renders About-style inline text tokens", () => {
     renderContent({
-      content: [
+      blocks: [
         {
           paragraph:
             "Tokens $$*bold text*$$ $$@support@example.org@$$ $$#Subheading#$$ $$~First title~$$ $$!italic text!$$ $$>Indented text>$$ line$$%space%$$break.",
@@ -160,7 +152,7 @@ describe("LoginMarkdownContent", () => {
       );
 
     renderContent({
-      content: [
+      blocks: [
         {
           paragraph:
             `$$[External](https://example.org)$$ $$[Same tab](target:_self url:/same-page)$$ $$[Internal route](/#/graphql)$$ $$[Same origin](${sameOriginUrl})$$ $$[Typed link](type:internal url:https://example.org/typed-link target:_blank)$$ $$[Configured](url:[https://example.org/configured] target:[_blank])$$ $$(person@example.org)[Email link]$$ ` +
@@ -217,7 +209,7 @@ describe("LoginMarkdownContent", () => {
 
   it("renders list variants, aliases, and nested list-only items", () => {
     renderContent({
-      content: [
+      blocks: [
         {
           listWithNumbers: [
             "Numeric item",
@@ -226,7 +218,7 @@ describe("LoginMarkdownContent", () => {
               listWithDots: ["Nested dot"],
             },
             {
-              content: [
+              blocks: [
                 {
                   listWithAlphabets: ["Nested alphabet item"],
                 },
@@ -261,7 +253,7 @@ describe("LoginMarkdownContent", () => {
 
   it("renders About-style tables with styled cells and cell links", () => {
     renderContent({
-      content: [
+      blocks: [
         {
           table: [
             {
@@ -304,7 +296,7 @@ describe("LoginMarkdownContent", () => {
 
   it("ignores unknown structured blocks and empty tables without crashing", () => {
     renderContent({
-      content: [
+      blocks: [
         {
           unsupportedBlock: "This should not render.",
         },
@@ -324,7 +316,7 @@ describe("LoginMarkdownContent", () => {
 
   it("renders representative CTDC About page content patterns", () => {
     renderContent({
-      content: representativeAboutPageContent,
+      blocks: representativeAboutPageContent,
     });
 
     expect(container.textContent).toContain("Data Access");
@@ -358,19 +350,4 @@ describe("LoginMarkdownContent", () => {
     expect(container.querySelectorAll("img.link-icon")).toHaveLength(1);
   });
 
-  it("renders only structured content when a markdown prop is also provided", () => {
-    renderContent({
-      content: [
-        {
-          paragraph: "Structured content renders.",
-        },
-      ],
-      markdown: "Markdown fallback should not render.",
-    });
-
-    expect(container.textContent).toContain("Structured content renders.");
-    expect(container.textContent).not.toContain(
-      "Markdown fallback should not render.",
-    );
-  });
 });

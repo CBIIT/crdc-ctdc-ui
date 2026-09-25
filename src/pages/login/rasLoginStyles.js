@@ -529,6 +529,9 @@ const styles = (theme) => ({
     alignItems: "flex-start",
     cursor: "pointer",
   },
+  WarningToggleStatic: {
+    cursor: "default",
+  },
   WarningTitle: {
     fontFamily: "Inter",
     fontSize: "20px",

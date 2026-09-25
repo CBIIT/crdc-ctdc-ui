@@ -29,7 +29,7 @@ const loginContent = {
       id: "ras-login",
       type: "rasLogin",
       title: "Log in with NIH Research Auth Service (RAS)",
-      content: [
+      blocks: [
         {
           paragraph:
             "Before accessing CTDC data, you may be required to verify your identity.",
@@ -47,7 +47,7 @@ const loginContent = {
           accordions: [
             {
               title: "How to sign in",
-              content: [
+              blocks: [
                 {
                   listWithNumbers: [
                     "Begin from the CTDC login page and select the RAS sign-in option.",
@@ -59,7 +59,7 @@ const loginContent = {
             {
               title: "Preparing your identity",
               collapsible: false,
-              content: [
+              blocks: [
                 {
                   paragraph:
                     "The verification process typically takes up to 30 minutes and requires:",
@@ -91,13 +91,13 @@ const loginContent = {
       id: "request-access",
       type: "contentBox",
       title: "Request Access",
-      content: [
+      blocks: [
         {
           accordions: [
             {
               title: "Access Requirements",
               collapsible: false,
-              content: [
+              blocks: [
                 {
                   paragraph: "CTDC contains controlled-access research data.",
                 },
@@ -114,7 +114,7 @@ const loginContent = {
             {
               title: "Instructions to Request Access",
               collapsible: true,
-              content: [
+              blocks: [
                 {
                   listWithNumbers: [
                     "Create a Login.gov or ID.me account. If you do not have an NIH account, also create an eRA Commons account.",
@@ -130,7 +130,7 @@ const loginContent = {
         },
         {
           title: "Documentation",
-          content: [
+          blocks: [
             {
               listWithDots: [
                 "$$[eRA Commons Account Creation](https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm)$$",
@@ -147,7 +147,7 @@ const loginContent = {
       id: "another-section",
       type: "contentBox",
       title: "Another Editable Box",
-      content: [
+      blocks: [
         {
           paragraph: "This can be added without frontend code changes.",
         },
@@ -156,7 +156,7 @@ const loginContent = {
   ],
   warning: {
     title: "Warning Notice",
-    content: [
+    blocks: [
       {
         paragraph:
           "This warning banner provides privacy and security notices consistent with applicable federal laws.",
@@ -166,7 +166,7 @@ const loginContent = {
   help: {
     ariaLabel: "Help and Support",
     headerText: "NEED HELP?",
-    content: [
+    blocks: [
       {
         paragraph:
           "For help signing in, review the resources below or contact CTDC support.",
@@ -174,7 +174,7 @@ const loginContent = {
     ],
     tutorial: {
       title: "Creating Accounts to Access CTDC data",
-      content: [
+      blocks: [
         {
           paragraph:
             "This tutorial explains the steps involved in creating a Login.gov account.",
@@ -199,7 +199,7 @@ const loginContent = {
     },
     contact: {
       title: "Let us assist you with your login or access issues",
-      content: [
+      blocks: [
         {
           paragraph:
             "If you experience any difficulties with logging in or accessing your account, please reach out to our support team for assistance.",
@@ -216,13 +216,13 @@ describe("RASLoginPage", () => {
   let container;
 
   const renderPage = (
-    content = loginContent,
+    pageContent = loginContent,
     rasAuthorizeUrl = "https://ras.example.org/authorize",
   ) => {
     act(() => {
       ReactDOM.render(
         <RASLoginPage
-          content={content}
+          loginContent={pageContent}
           rasAuthorizeUrl={rasAuthorizeUrl}
         />,
         container,
@@ -325,14 +325,14 @@ describe("RASLoginPage", () => {
       sections: loginContent.sections.map((section) => {
         if (section.id !== "ras-login") return section;
 
-        const accordionGroup = section.content.find((item) =>
+        const accordionGroup = section.blocks.find((item) =>
           item.accordions);
-        const contentBlocks = section.content.filter((item) =>
+        const contentBlocks = section.blocks.filter((item) =>
           !item.accordions);
 
         return {
           ...section,
-          content: [accordionGroup, ...contentBlocks],
+          blocks: [accordionGroup, ...contentBlocks],
         };
       }),
     };
@@ -348,14 +348,14 @@ describe("RASLoginPage", () => {
     const helpContentAfterContact = {
       ...loginContent,
       help: (() => {
-        const { content, tutorial, contact, ...helpMetadata } =
+        const { blocks, tutorial, contact, ...helpMetadata } =
           loginContent.help;
 
         return {
           ...helpMetadata,
           tutorial,
           contact,
-          content,
+          blocks,
         };
       })(),
     };
@@ -413,17 +413,17 @@ describe("RASLoginPage", () => {
       sections: loginContent.sections.map((section) => {
         if (section.id !== "request-access") return section;
 
-        const accordionGroup = section.content.find((item) =>
+        const accordionGroup = section.blocks.find((item) =>
           item.accordions);
-        const documentationGroup = section.content.find((item) =>
+        const documentationGroup = section.blocks.find((item) =>
           item.title === "Documentation");
 
         return {
           ...section,
-          content: [
+          blocks: [
             {
               title: "Before Accordions",
-              content: [
+              blocks: [
                 {
                   paragraph: "Before accordion text.",
                 },
@@ -476,7 +476,7 @@ describe("RASLoginPage", () => {
         if (section.id === "ras-login") {
           return {
             ...section,
-            content: section.content.map((item) =>
+            blocks: section.blocks.map((item) =>
               (item.accordions
                 ? {
                   ...item,
@@ -492,7 +492,7 @@ describe("RASLoginPage", () => {
         if (section.id === "request-access") {
           return {
             ...section,
-            content: section.content.map((item) =>
+            blocks: section.blocks.map((item) =>
               (item.accordions
                 ? {
                   ...item,
@@ -528,6 +528,43 @@ describe("RASLoginPage", () => {
     );
     expect(container.textContent).not.toContain(
       "Create a Login.gov or ID.me account",
+    );
+  });
+
+  it("supports defaultOpen for the warning notice", () => {
+    renderPage({
+      ...loginContent,
+      warning: {
+        ...loginContent.warning,
+        defaultOpen: true,
+      },
+    });
+
+    const toggles = container.querySelectorAll('[aria-expanded]');
+    const warningToggle = toggles[toggles.length - 1];
+
+    expect(warningToggle.textContent).toContain("privacy and security");
+    expect(warningToggle.getAttribute("aria-expanded")).toBe("true");
+    expect(warningToggle.querySelector("p").className)
+      .not.toMatch(/WarningTextCollapsed/);
+  });
+
+  it("renders the warning notice as always open when collapsible is false", () => {
+    renderPage({
+      ...loginContent,
+      warning: {
+        ...loginContent.warning,
+        collapsible: false,
+      },
+    });
+
+    const toggles = container.querySelectorAll('[aria-expanded]');
+
+    expect(toggles).toHaveLength(2);
+    expect(Array.from(toggles).some((toggle) =>
+      toggle.textContent.includes("privacy and security"))).toBe(false);
+    expect(container.textContent).toContain(
+      "This warning banner provides privacy",
     );
   });
 
