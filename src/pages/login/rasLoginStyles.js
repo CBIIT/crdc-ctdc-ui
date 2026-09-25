@@ -6,10 +6,10 @@ const styles = (theme) => ({
     padding: "0px 16px 80px",
     boxShadow: "0px 4px 20px 0px #00000040 inset",
     [theme.breakpoints.up("md")]: {
-      padding: "0px 32px 120px",
+      padding: "0px 32px 50px",
     },
     "@media (min-width: 1400px)": {
-      padding: "0px 92px 120px",
+      padding: "0px 92px 50px",
     },
   },
 

@@ -158,7 +158,7 @@ function LoginContentBlock({
   );
 }
 
-function RasLoginAction({ classes, section, rasAuthorizeUrl }) {
+function RasLoginAction({ classes, buttonText, rasAuthorizeUrl }) {
   return (
     <Box className={classes.LoginButtonContainer}>
       <Button
@@ -168,7 +168,7 @@ function RasLoginAction({ classes, section, rasAuthorizeUrl }) {
           window.location.href = rasAuthorizeUrl;
         }}
       >
-        {section.buttonText}
+        {buttonText}
       </Button>
     </Box>
   );
@@ -239,7 +239,11 @@ function getContentItems(content = []) {
   const pushPendingContent = () => {
     if (pendingContent.length === 0) return;
 
-    contentItems.push(createContentItem(pendingContent));
+    const buttonBlock = pendingContent.find((item) =>
+      item && item.buttonText);
+    contentItems.push(createContentItem(pendingContent, {
+      buttonText: buttonBlock ? buttonBlock.buttonText : undefined,
+    }));
     pendingContent = [];
   };
 
@@ -253,6 +257,7 @@ function getContentItems(content = []) {
     if (isContentGroup(item)) {
       pushPendingContent();
       contentItems.push(createContentItem(item.content || [], {
+        buttonText: item.buttonText,
         title: item.title,
       }));
       return;
@@ -306,7 +311,6 @@ export function LoginSectionBox({
   externalLinkIcon,
 }) {
   const sectionItems = getSectionItems(section);
-  let contentIndex = 0;
   let accordionStartIndex = 0;
 
   return (
@@ -325,16 +329,16 @@ export function LoginSectionBox({
 
       {sectionItems.map((sectionItem, sectionItemIndex) => {
         if (sectionItem.type === "content") {
-          const action = section.type === "rasLogin" && contentIndex === 0
+          const action = section.type === "rasLogin" &&
+            sectionItem.item.buttonText
             ? (
               <RasLoginAction
                 classes={classes}
-                section={section}
+                buttonText={sectionItem.item.buttonText}
                 rasAuthorizeUrl={rasAuthorizeUrl}
               />
             )
             : null;
-          contentIndex += 1;
 
           return (
             <LoginContentSection

@@ -33,6 +33,7 @@ const loginContent = {
         {
           paragraph:
             "Before accessing CTDC data, you may be required to verify your identity.",
+          buttonText: "Login with RAS",
         },
         {
           paragraph:
@@ -85,7 +86,6 @@ const loginContent = {
           ],
         },
       ],
-      buttonText: "Login with RAS",
     },
     {
       id: "request-access",
