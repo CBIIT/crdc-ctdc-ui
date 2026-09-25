@@ -6,6 +6,7 @@
  */
 import React from "react";
 import { Box, Button, Grid, Typography } from "@material-ui/core";
+import { RAS_LOGIN_UNAVAILABLE_MESSAGE } from "../../../bento/loginData";
 import ContentImage, { getAsset } from "./ContentImage";
 import LoginMarkdownContent from "./LoginMarkdownContent";
 import ToggleHeader, { ToggleArrow } from "./ToggleHeader";
@@ -165,9 +166,6 @@ function LoginContentBlock({
     </Box>
   );
 }
-
-const RAS_LOGIN_UNAVAILABLE_MESSAGE =
-  "RAS login is temporarily unavailable because it is not configured.";
 
 function getValidAuthorizeUrl(rasAuthorizeUrl) {
   if (typeof rasAuthorizeUrl !== "string") return "";

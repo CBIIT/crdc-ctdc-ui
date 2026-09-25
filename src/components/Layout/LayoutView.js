@@ -73,9 +73,6 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route exact path="/graphql" component={GraphqlClient} />
             <Route exact path="/data-model" component={DataModelNavigator} />
             <Route exact path="/sysinfo" component={SysInfo} />
-            {process.env.NODE_ENV !== 'production' && (
-              <Route exact path="/user/era-login" component={Login} />
-            )}
 
             {/* END: Private Routes */}
             {aboutPageRoutes.map(
