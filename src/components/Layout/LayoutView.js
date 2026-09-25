@@ -14,7 +14,6 @@ import StudyDetail from '../../pages/studyDetail/studyDetailController';
 import ParticipantDetail from '../../pages/participantDetail/participantDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import GlobalSearchController from '../../pages/search/searchViewController';
-import Login from '../../pages/login';
 // import ProfileController from '../../pages/profile/profileController';
 import OverlayWindow from '../OverlayWindow/OverlayWindow';
 import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';
@@ -30,7 +29,7 @@ import useVisitedPageSync from '../../utils/useVisitedPageSync';
 import StudiesContainer from '../../pages/studies/studiesController';
 import DataModelNavigator from '../../pages/dmn';
 import SysInfo from '../../pages/sysinfo/sysinfo';
-import rasLogin from '../../pages/login/rasLoginView';
+import rasLogin from '../../pages/login/rasLoginController';
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -73,9 +72,6 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route exact path="/graphql" component={GraphqlClient} />
             <Route exact path="/data-model" component={DataModelNavigator} />
             <Route exact path="/sysinfo" component={SysInfo} />
-            {process.env.NODE_ENV !== 'production' && (
-              <Route exact path="/user/era-login" component={Login} />
-            )}
 
             {/* END: Private Routes */}
             {aboutPageRoutes.map(
