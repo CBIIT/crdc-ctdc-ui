@@ -1,5 +1,6 @@
 # CTDC login page content for /user/login.
-# Asset paths are relative to this file.
+# Frontend fallback copy: assets/... paths mirror static content and are mapped
+# to bundled imports in src/bento/loginData.js.
 page: /user/login
 title: Login
 

@@ -6,7 +6,7 @@ import videoThumbnailAsset from "../assets/login/CTDC_Tutorial_Video_Placeholder
 import playIconAsset from "../assets/login/video_play_icon_large.svg";
 import arrowOpenAsset from "../assets/login/up_arrow.svg";
 import arrowClosedAsset from "../assets/login/down_arrow.svg";
-import externalLinkIconAsset from "../assets/login/externalLinkIcon.svg";
+import externalLinkIconAsset from "../assets/externalLinkIcon.svg";
 
 export const LOGIN_CONTENT_PATH = "/login/loginView.yaml";
 
