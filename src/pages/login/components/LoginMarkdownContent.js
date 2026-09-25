@@ -2,100 +2,6 @@ import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import ContentImage from "./ContentImage";
 
-function isBlankLine(line) {
-  return !line || line.trim() === "";
-}
-
-function getOrderedListMatch(line) {
-  return line.match(/^\s*(\d+|[a-zA-Z])\.\s+(.*)$/);
-}
-
-function getOrderedListStyle(marker) {
-  return /^\d+$/.test(marker) ? "numeric" : "alpha";
-}
-
-function isListLine(line) {
-  return /^\s*((\d+|[a-zA-Z])\.|-|\*)\s+/.test(line);
-}
-
-function parseMarkdownBlocks(markdown) {
-  const lines = markdown.split(/\r?\n/);
-  const blocks = [];
-  let index = 0;
-
-  while (index < lines.length) {
-    const line = lines[index];
-
-    if (isBlankLine(line)) {
-      index += 1;
-      continue;
-    }
-
-    const orderedListMatch = getOrderedListMatch(line);
-
-    if (orderedListMatch) {
-      const items = [];
-      const listStyle = getOrderedListStyle(orderedListMatch[1]);
-
-      while (index < lines.length) {
-        const match = getOrderedListMatch(lines[index]);
-        if (!match || getOrderedListStyle(match[1]) !== listStyle) {
-          break;
-        }
-
-        const [, , text] = match;
-        const item = { text, children: [] };
-        index += 1;
-
-        while (
-          index < lines.length &&
-          /^\s+[-*]\s+/.test(lines[index])
-        ) {
-          const [, childText] = lines[index].match(/^\s+[-*]\s+(.*)$/);
-          item.children.push(childText);
-          index += 1;
-        }
-
-        items.push(item);
-      }
-
-      blocks.push({ type: "ol", items, listStyle });
-      continue;
-    }
-
-    if (/^\s*[-*]\s+/.test(line)) {
-      const items = [];
-
-      while (index < lines.length && /^\s*[-*]\s+/.test(lines[index])) {
-        const [, text] = lines[index].match(/^\s*[-*]\s+(.*)$/);
-        items.push({ text, children: [] });
-        index += 1;
-      }
-
-      blocks.push({ type: "ul", items });
-      continue;
-    }
-
-    const paragraphLines = [];
-
-    while (
-      index < lines.length &&
-      !isBlankLine(lines[index]) &&
-      !isListLine(lines[index])
-    ) {
-      paragraphLines.push(lines[index].trim());
-      index += 1;
-    }
-
-    blocks.push({
-      type: "p",
-      text: paragraphLines.join(" "),
-    });
-  }
-
-  return blocks;
-}
-
 function getDelimitedValue(value, delimiter) {
   const escapedDelimiter = delimiter.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   const match = value.match(
@@ -205,6 +111,7 @@ function renderLink({
     <React.Fragment key={keyPrefix}>
       <a
         href={href}
+        className={classes.Link}
         target={target}
         rel={target !== "_self" ? "noopener noreferrer" : undefined}
       >
@@ -733,91 +640,8 @@ function renderStructuredBlock({
   return null;
 }
 
-function renderMarkdownListItem({
-  item,
-  itemIndex,
-  classes,
-  unorderedListClassName,
-  linkIcon,
-  keyPrefix,
-}) {
-  return (
-    <li key={`${keyPrefix}-${itemIndex}`}>
-      {renderInlineContent(item.text, linkIcon, classes, `${keyPrefix}-${itemIndex}`)}
-      {item.children.length > 0 && (
-        <ul className={unorderedListClassName}>
-          {item.children.map((child, childIndex) => (
-            <li key={`${keyPrefix}-${itemIndex}-${childIndex}`}>
-              {renderInlineContent(
-                child,
-                linkIcon,
-                classes,
-                `${keyPrefix}-${itemIndex}-${childIndex}`,
-              )}
-            </li>
-          ))}
-        </ul>
-      )}
-    </li>
-  );
-}
-
-function renderMarkdownBlock({
-  block,
-  blockIndex,
-  classes,
-  paragraphClassName,
-  unorderedListClassName,
-  orderedListClassName,
-  alphaOrderedListClassName,
-  linkIcon,
-}) {
-  if (block.type === "p") {
-    return (
-      <Typography key={`paragraph-${blockIndex}`} className={paragraphClassName}>
-        {renderInlineContent(block.text, linkIcon, classes, `paragraph-${blockIndex}`)}
-      </Typography>
-    );
-  }
-
-  if (block.type === "ol") {
-    const listClassName = block.listStyle === "alpha"
-      ? alphaOrderedListClassName
-      : orderedListClassName;
-
-    return (
-      <ol key={`ordered-list-${blockIndex}`} className={listClassName}>
-        {block.items.map((item, itemIndex) =>
-          renderMarkdownListItem({
-            item,
-            itemIndex,
-            classes,
-            unorderedListClassName,
-            linkIcon,
-            keyPrefix: `ordered-list-${blockIndex}`,
-          }))}
-      </ol>
-    );
-  }
-
-  return (
-    <ul key={`unordered-list-${blockIndex}`} className={unorderedListClassName}>
-      {block.items.map((item, itemIndex) =>
-        renderMarkdownListItem({
-          item,
-          itemIndex,
-          classes,
-          unorderedListClassName,
-          linkIcon,
-          keyPrefix: `unordered-list-${blockIndex}`,
-        }))}
-    </ul>
-  );
-}
-
 function LoginMarkdownContent({
   content,
-  markdown,
   classes,
   paragraphClassName,
   unorderedListClassName,
@@ -826,7 +650,7 @@ function LoginMarkdownContent({
   linkIcon,
 }) {
   const hasStructuredContent = Array.isArray(content) && content.length > 0;
-  if (!hasStructuredContent && !markdown) return null;
+  if (!hasStructuredContent) return null;
 
   const resolvedParagraphClassName = paragraphClassName || classes.BodyText;
   const resolvedUnorderedListClassName = unorderedListClassName || classes.unorderedList;
@@ -836,29 +660,17 @@ function LoginMarkdownContent({
 
   return (
     <Box className={classes.MarkdownContent}>
-      {hasStructuredContent
-        ? content.map((block, blockIndex) =>
-          renderStructuredBlock({
-            block,
-            blockIndex,
-            classes,
-            paragraphClassName: resolvedParagraphClassName,
-            unorderedListClassName: resolvedUnorderedListClassName,
-            orderedListClassName: resolvedOrderedListClassName,
-            alphaOrderedListClassName: resolvedAlphaOrderedListClassName,
-            linkIcon,
-          }))
-        : parseMarkdownBlocks(markdown).map((block, blockIndex) =>
-          renderMarkdownBlock({
-            block,
-            blockIndex,
-            classes,
-            paragraphClassName: resolvedParagraphClassName,
-            unorderedListClassName: resolvedUnorderedListClassName,
-            orderedListClassName: resolvedOrderedListClassName,
-            alphaOrderedListClassName: resolvedAlphaOrderedListClassName,
-            linkIcon,
-          }))}
+      {content.map((block, blockIndex) =>
+        renderStructuredBlock({
+          block,
+          blockIndex,
+          classes,
+          paragraphClassName: resolvedParagraphClassName,
+          unorderedListClassName: resolvedUnorderedListClassName,
+          orderedListClassName: resolvedOrderedListClassName,
+          alphaOrderedListClassName: resolvedAlphaOrderedListClassName,
+          linkIcon,
+        }))}
     </Box>
   );
 }

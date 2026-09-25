@@ -9,6 +9,7 @@ const classes = {
   unorderedList: "unordered-list",
   orderedListNumeric: "ordered-list-numeric",
   orderedListAlpha: "ordered-list-alpha",
+  Link: "login-link",
   linkIcon: "link-icon",
   title: "title-token",
   space: "space-token",
@@ -101,24 +102,18 @@ describe("LoginMarkdownContent", () => {
     container = null;
   });
 
-  it("renders nothing when structured content and markdown are both missing", () => {
+  it("renders nothing when structured content is missing", () => {
     renderContent({});
 
     expect(container.textContent).toBe("");
   });
 
-  it("prefers structured content over legacy markdown fallback", () => {
+  it("ignores legacy markdown fallback content", () => {
     renderContent({
-      content: [
-        {
-          paragraph: "Structured content wins.",
-        },
-      ],
-      markdown: "Markdown fallback loses.",
+      markdown: "Markdown fallback should not render.",
     });
 
-    expect(container.textContent).toContain("Structured content wins.");
-    expect(container.textContent).not.toContain("Markdown fallback loses.");
+    expect(container.textContent).toBe("");
   });
 
   it("renders About-style inline text tokens", () => {
@@ -175,6 +170,7 @@ describe("LoginMarkdownContent", () => {
     });
 
     const externalLink = container.querySelector('a[href="https://example.org"]');
+    expect(externalLink.className).toBe("login-link");
     expect(externalLink.getAttribute("target")).toBe("_blank");
     expect(externalLink.getAttribute("rel")).toBe("noopener noreferrer");
     expect(hasOutboundIcon(externalLink)).toBe(true);
@@ -362,31 +358,19 @@ describe("LoginMarkdownContent", () => {
     expect(container.querySelectorAll("img.link-icon")).toHaveLength(1);
   });
 
-  it("renders legacy markdown fallback blocks", () => {
+  it("renders only structured content when a markdown prop is also provided", () => {
     renderContent({
-      markdown:
-        "Intro **bold markdown** and *italic markdown* and [Legacy Link](https://legacy.example.org).\n\n" +
-        "1. First step\n" +
-        "   - Nested detail\n" +
-        "2. Second step\n\n" +
-        "a. Alpha step\n" +
-        "b. Beta step\n\n" +
-        "- Dot item\n" +
-        "* Star item",
+      content: [
+        {
+          paragraph: "Structured content renders.",
+        },
+      ],
+      markdown: "Markdown fallback should not render.",
     });
 
-    expect(container.textContent).toContain("Intro");
-    expect(container.querySelector("strong").textContent).toBe(
-      "bold markdown",
+    expect(container.textContent).toContain("Structured content renders.");
+    expect(container.textContent).not.toContain(
+      "Markdown fallback should not render.",
     );
-    expect(container.querySelector("em").textContent).toBe("italic markdown");
-    expect(
-      container.querySelector('a[href="https://legacy.example.org"]'),
-    ).not.toBeNull();
-    expect(container.textContent).toContain("Nested detail");
-    expect(container.textContent).toContain("Alpha step");
-    expect(container.textContent).toContain("Star item");
-    expect(container.querySelectorAll("ol")).toHaveLength(2);
-    expect(container.querySelectorAll("ul")).toHaveLength(2);
   });
 });

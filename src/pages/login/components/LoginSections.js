@@ -66,11 +66,6 @@ export function LoginAccordionList({
             arrowOpenIcon={arrowOpenIcon}
             arrowClosedIcon={arrowClosedIcon}
             externalLinkIcon={externalLinkIcon}
-            bodyClassName={
-              item.variant === "links" || item.linkStyle
-                ? classes.Link
-                : undefined
-            }
           />
         );
       })}
@@ -90,11 +85,7 @@ function LoginAccordionItem({
   arrowOpenIcon,
   arrowClosedIcon,
   externalLinkIcon,
-  bodyClassName,
 }) {
-  const accordionTextClassName = bodyClassName
-    ? `${classes.AccordionText} ${bodyClassName}`
-    : classes.AccordionText;
   const itemIsCollapsible = isCollapsible(item);
   const itemIsOpen = itemIsCollapsible ? isOpen : true;
 
@@ -124,10 +115,9 @@ function LoginAccordionItem({
       )}
 
       {itemIsOpen && (
-        <Box className={accordionTextClassName}>
+        <Box className={classes.AccordionText}>
           <LoginMarkdownContent
             content={item.content}
-            markdown={item.bodyMarkdown}
             classes={classes}
             orderedListClassName={classes.orderedListNumeric}
             alphaOrderedListClassName={classes.orderedListAlpha}
@@ -144,10 +134,9 @@ function LoginContentBlock({
   classes,
   item,
   externalLinkIcon,
-  className,
 }) {
   return (
-    <Box className={className}>
+    <Box>
       {item.title && (
         <Typography
           variant="h3"
@@ -160,7 +149,6 @@ function LoginContentBlock({
       )}
       <LoginMarkdownContent
         content={item.content}
-        markdown={item.bodyMarkdown}
         classes={classes}
         orderedListClassName={classes.orderedListNumeric}
         alphaOrderedListClassName={classes.orderedListAlpha}
@@ -192,8 +180,6 @@ function LoginContentSection({
   action,
   externalLinkIcon,
 }) {
-  const contentClassName = item.linkStyle ? classes.Link : undefined;
-
   return (
     <Box className={classes.LoginSectionBody}>
       <Box className={classes.SectionContentRow}>
@@ -202,7 +188,6 @@ function LoginContentSection({
             classes={classes}
             item={item}
             externalLinkIcon={externalLinkIcon}
-            className={contentClassName}
           />
         </Box>
         {action}
@@ -214,8 +199,8 @@ function LoginContentSection({
 function hasContent(item) {
   return Boolean(
     item &&
-      ((Array.isArray(item.content) && item.content.length > 0) ||
-        item.bodyMarkdown),
+      Array.isArray(item.content) &&
+      item.content.length > 0,
   );
 }
 
@@ -240,7 +225,7 @@ function isContentGroup(item) {
   return Boolean(
     item &&
       !Array.isArray(item.accordions) &&
-      (Array.isArray(item.content) || item.bodyMarkdown),
+      Array.isArray(item.content),
   );
 }
 
@@ -268,9 +253,7 @@ function getContentItems(content = []) {
     if (isContentGroup(item)) {
       pushPendingContent();
       contentItems.push(createContentItem(item.content || [], {
-        bodyMarkdown: item.bodyMarkdown,
         title: item.title,
-        linkStyle: item.variant === "links" || item.linkStyle,
       }));
       return;
     }
@@ -284,21 +267,7 @@ function getContentItems(content = []) {
 }
 
 function getSectionItems(section) {
-  const contentItems = getContentItems(section.content);
-
-  if (contentItems.length > 0) {
-    return contentItems;
-  }
-
-  if (section.bodyMarkdown) {
-    return [
-      createContentItem([], {
-        bodyMarkdown: section.bodyMarkdown,
-      }),
-    ];
-  }
-
-  return [];
+  return getContentItems(section.content);
 }
 
 export function getSectionAccordions(section) {
@@ -428,7 +397,6 @@ export function WarningNotice({
         >
           <LoginMarkdownContent
             content={warning.content}
-            markdown={warning.bodyMarkdown}
             classes={classes}
             paragraphClassName={`${classes.WarningText} ${!warningOpen ? classes.WarningTextCollapsed : ""}`}
             linkIcon={externalLinkIcon}
@@ -463,7 +431,7 @@ export function HelpSidebar({
     {
       type: "content",
       enabled: hasContent(help),
-      keys: ["content", "bodyMarkdown"],
+      keys: ["content"],
     },
     {
       type: "tutorial",
@@ -509,7 +477,6 @@ export function HelpSidebar({
               <Box key="content" className={classes.HelpContentSection}>
                 <LoginMarkdownContent
                   content={help.content}
-                  markdown={help.bodyMarkdown}
                   classes={classes}
                   paragraphClassName={classes.SidebarText}
                   linkIcon={externalLinkIcon}
@@ -532,7 +499,6 @@ export function HelpSidebar({
                 )}
                 <LoginMarkdownContent
                   content={tutorial.content}
-                  markdown={tutorial.bodyMarkdown}
                   classes={classes}
                   paragraphClassName={classes.SidebarText}
                   linkIcon={externalLinkIcon}
@@ -591,7 +557,6 @@ export function HelpSidebar({
               )}
               <LoginMarkdownContent
                 content={contact.content}
-                markdown={contact.bodyMarkdown}
                 classes={classes}
                 paragraphClassName={classes.SidebarText}
                 linkIcon={externalLinkIcon}
