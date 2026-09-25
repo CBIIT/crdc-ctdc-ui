@@ -1,4 +1,3 @@
-import eraIcons from "../assets/icons/era_commons.svg";
 import fallbackLoginContentUrl from "../assets/login/loginView.yaml";
 import lockBorderAsset from "../assets/login/lock-border.svg";
 import lockIconAsset from "../assets/login/lock-icon.svg";
@@ -8,18 +7,6 @@ import playIconAsset from "../assets/login/video_play_icon_large.svg";
 import arrowOpenAsset from "../assets/login/up_arrow.svg";
 import arrowClosedAsset from "../assets/login/down_arrow.svg";
 import externalLinkIconAsset from "../assets/login/externalLinkIcon.svg";
-
-export const pageTitle = "Login";
-
-export const loginProvidersData = {
-  nih: {
-    key: "auth_url",
-    icon: eraIcons,
-    loginButtonText: "eRA Commons",
-  },
-};
-
-export const bentoHelpEmail = "bento-help@nih.gov";
 
 export const LOGIN_CONTENT_PATH = "/login/loginView.yaml";
 

@@ -14,7 +14,6 @@ import StudyDetail from '../../pages/studyDetail/studyDetailController';
 import ParticipantDetail from '../../pages/participantDetail/participantDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import GlobalSearchController from '../../pages/search/searchViewController';
-import Login from '../../pages/login';
 // import ProfileController from '../../pages/profile/profileController';
 import OverlayWindow from '../OverlayWindow/OverlayWindow';
 import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';

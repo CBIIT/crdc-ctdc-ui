@@ -10,7 +10,7 @@ export default {
 
 
 
-export const loginPath = '/login';
+export const loginPath = '/user/login';
 export const requestAccessPath = '/request';
 export const adminPortalPath = '/admin';
 export const userProfilePath = '/profile';
