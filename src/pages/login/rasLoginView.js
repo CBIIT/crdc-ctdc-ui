@@ -107,9 +107,9 @@ function ContentLoadNotice({ classes, contentLoadError, onDismiss }) {
   if (!contentLoadError) return null;
 
   const notice = contentLoadError.notice ||
-    "Some login-page content could not be loaded.";
+    "Some content could not be loaded.";
   const message = contentLoadError.message ||
-    "We are showing a saved version of this login page so you can continue.";
+    "The page is showing a saved local version because the remote content could not be reached.";
 
   return (
     <Box className={classes.ContentLoadNotice} role="alert">

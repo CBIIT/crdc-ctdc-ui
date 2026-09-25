@@ -10,10 +10,9 @@ import externalLinkIconAsset from "../assets/externalLinkIcon.svg";
 
 export const LOGIN_CONTENT_PATH = "/login/loginView.yaml";
 
-export const CONTENT_LOAD_NOTICE =
-  "Some login-page content could not be loaded.";
+export const CONTENT_LOAD_NOTICE = "Some content could not be loaded.";
 export const CONTENT_LOAD_MESSAGE =
-  "We are showing a saved version of this login page so you can continue.";
+  "The page is showing a saved local version because the remote content could not be reached.";
 export const CONTENT_LOAD_DETAILS =
   "You can still use the login button. Some page details may not include the latest updates.";
 

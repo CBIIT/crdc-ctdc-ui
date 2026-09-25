@@ -116,9 +116,7 @@ const loginContent = {
                   paragraph: "To request CTDC access, you must have:",
                 },
                 {
-                  listWithDots: [
-                    "An $$*NIH account*$$",
-                  ],
+                  listWithDots: ["An $$*NIH account*$$"],
                 },
               ],
             },
@@ -158,9 +156,7 @@ const loginContent = {
               paragraph: "Untitled grouped request access copy.",
             },
             {
-              listWithDots: [
-                "Grouped request access bullet.",
-              ],
+              listWithDots: ["Grouped request access bullet."],
             },
           ],
         },
@@ -210,10 +206,7 @@ const loginContent = {
             {
               body: [
                 {
-                  row: [
-                    "RAS help",
-                    "$$[RAS Help](https://example.org/ras)$$",
-                  ],
+                  row: ["RAS help", "$$[RAS Help](https://example.org/ras)$$"],
                 },
               ],
             },
@@ -266,7 +259,8 @@ describe("RASLoginPage", () => {
 
   const getButtonByText = (text) =>
     Array.from(container.querySelectorAll("button")).find((button) =>
-      button.textContent.includes(text));
+      button.textContent.includes(text),
+    );
 
   beforeEach(() => {
     container = document.createElement("div");
@@ -304,9 +298,10 @@ describe("RASLoginPage", () => {
             return {
               ...blockGroup,
               blocks: blockGroup.blocks.map((block) =>
-                (block.rasButtonText
+                block.rasButtonText
                   ? { buttonText: block.rasButtonText }
-                  : block)),
+                  : block,
+              ),
             };
           }),
         };
@@ -320,17 +315,13 @@ describe("RASLoginPage", () => {
   });
 
   it("renders content load notices without blocking the login button", () => {
-    renderPage(
-      loginContent,
-      "https://ras.example.org/authorize",
-      {
-        notice: "Some login-page content could not be loaded.",
-        message:
-          "We are showing a saved version of this login page so you can continue.",
-        details:
-          "You can still use the login button. Some page details may not include the latest updates.",
-      },
-    );
+    renderPage(loginContent, "https://ras.example.org/authorize", {
+      notice: "Some content could not be loaded..",
+      message:
+        "The page is showing a saved local version because the remote content could not be reached.",
+      details:
+        "You can still use the login button. Some page details may not include the latest updates.",
+    });
 
     const loginButton = getButtonByText("Login with RAS");
     const notice = container.querySelector('[role="alert"]');
@@ -338,11 +329,9 @@ describe("RASLoginPage", () => {
     expect(loginButton).not.toBeUndefined();
     expect(loginButton.disabled).toBe(false);
     expect(notice).not.toBeNull();
+    expect(notice.textContent).toContain("Some content could not be loaded..");
     expect(notice.textContent).toContain(
-      "Some login-page content could not be loaded.",
-    );
-    expect(notice.textContent).toContain(
-      "We are showing a saved version of this login page so you can continue.",
+      "The page is showing a saved local version because the remote content could not be reached.",
     );
     expect(notice.textContent).not.toContain(
       "You can still use the login button. Some page details may not include the latest updates.",
@@ -350,9 +339,7 @@ describe("RASLoginPage", () => {
 
     act(() => {
       Simulate.click(
-        container.querySelector(
-          '[aria-label="Dismiss content load notice"]',
-        ),
+        container.querySelector('[aria-label="Dismiss content load notice"]'),
       );
     });
 
@@ -401,16 +388,11 @@ describe("RASLoginPage", () => {
     expect(loginButton).not.toBeUndefined();
     expect(loginButton.disabled).toBe(true);
     expect(alert).not.toBeNull();
-    expect(alert.textContent).toContain(
-      "RAS login is temporarily unavailable",
-    );
+    expect(alert.textContent).toContain("RAS login is temporarily unavailable");
   });
 
   it("disables the RAS login button when the authorize URL is unresolved", () => {
-    renderPage(loginContent, [
-      "$",
-      "{REACT_APP_RAS_AUTHORIZE_URL}",
-    ].join(""));
+    renderPage(loginContent, ["$", "{REACT_APP_RAS_AUTHORIZE_URL}"].join(""));
 
     const loginButton = getButtonByText("Login with RAS");
 
@@ -440,9 +422,7 @@ describe("RASLoginPage", () => {
       "The verification process typically",
     );
 
-    const sameTabLink = container.querySelector(
-      'a[href="/documentation"]',
-    );
+    const sameTabLink = container.querySelector('a[href="/documentation"]');
     expect(sameTabLink).not.toBeNull();
     expect(sameTabLink.getAttribute("target")).toBe("_self");
 
@@ -472,26 +452,28 @@ describe("RASLoginPage", () => {
 
     const renderedText = container.textContent;
     expect(renderedText).toContain("For help signing in");
-    expect(renderedText.indexOf("For help signing in"))
-      .toBeLessThan(renderedText.indexOf("Creating Accounts"));
+    expect(renderedText.indexOf("For help signing in")).toBeLessThan(
+      renderedText.indexOf("Creating Accounts"),
+    );
   });
 
   it("renders RAS blocks and accordions in block order", () => {
     renderPage();
 
     let renderedText = container.textContent;
-    expect(renderedText.indexOf("Before accessing CTDC data"))
-      .toBeLessThan(renderedText.indexOf("How to sign in"));
+    expect(renderedText.indexOf("Before accessing CTDC data")).toBeLessThan(
+      renderedText.indexOf("How to sign in"),
+    );
 
     const rasBlocksAfterAccordions = {
       ...loginContent,
       sections: loginContent.sections.map((section) => {
         if (section.id !== "ras-login") return section;
 
-        const accordionGroup = section.blocks.find((item) =>
-          item.accordions);
-        const nonAccordionBlocks = section.blocks.filter((item) =>
-          !item.accordions);
+        const accordionGroup = section.blocks.find((item) => item.accordions);
+        const nonAccordionBlocks = section.blocks.filter(
+          (item) => !item.accordions,
+        );
 
         return {
           ...section,
@@ -503,8 +485,9 @@ describe("RASLoginPage", () => {
     renderPage(rasBlocksAfterAccordions);
 
     renderedText = container.textContent;
-    expect(renderedText.indexOf("How to sign in"))
-      .toBeLessThan(renderedText.indexOf("Before accessing CTDC data"));
+    expect(renderedText.indexOf("How to sign in")).toBeLessThan(
+      renderedText.indexOf("Before accessing CTDC data"),
+    );
   });
 
   it("renders Help panel components in YAML key order", () => {
@@ -526,8 +509,9 @@ describe("RASLoginPage", () => {
     renderPage(helpBlocksAfterContact);
 
     const renderedText = container.textContent;
-    expect(renderedText.indexOf("Let us assist you"))
-      .toBeLessThan(renderedText.indexOf("For help signing in"));
+    expect(renderedText.indexOf("Let us assist you")).toBeLessThan(
+      renderedText.indexOf("For help signing in"),
+    );
   });
 
   it("renders the configured contact button link", () => {
@@ -560,43 +544,41 @@ describe("RASLoginPage", () => {
 
     expect(externalContactButton).not.toBeNull();
     expect(externalContactButton.getAttribute("target")).toBe("_blank");
-    expect(externalContactButton.getAttribute("rel"))
-      .toBe("noopener noreferrer");
+    expect(externalContactButton.getAttribute("rel")).toBe(
+      "noopener noreferrer",
+    );
   });
 
   it("renders nested block groups without requiring a group title", () => {
     renderPage();
 
-    expect(container.textContent).toContain(
-      "Before accessing CTDC data",
-    );
+    expect(container.textContent).toContain("Before accessing CTDC data");
     expect(container.textContent).toContain(
       "If you already have a CTDC account",
     );
     expect(container.textContent).toContain(
       "Untitled grouped request access copy.",
     );
-    expect(container.textContent).toContain(
-      "Grouped request access bullet.",
-    );
+    expect(container.textContent).toContain("Grouped request access bullet.");
   });
 
   it("renders contentBox block groups and accordions in block order", () => {
     renderPage();
 
     let renderedText = container.textContent;
-    expect(renderedText.indexOf("Instructions to Request Access"))
-      .toBeLessThan(renderedText.indexOf("Documentation"));
+    expect(renderedText.indexOf("Instructions to Request Access")).toBeLessThan(
+      renderedText.indexOf("Documentation"),
+    );
 
     const blockGroupBeforeAccordions = {
       ...loginContent,
       sections: loginContent.sections.map((section) => {
         if (section.id !== "request-access") return section;
 
-        const accordionGroup = section.blocks.find((item) =>
-          item.accordions);
-        const documentationGroup = section.blocks.find((item) =>
-          item.title === "Documentation");
+        const accordionGroup = section.blocks.find((item) => item.accordions);
+        const documentationGroup = section.blocks.find(
+          (item) => item.title === "Documentation",
+        );
 
         return {
           ...section,
@@ -619,16 +601,18 @@ describe("RASLoginPage", () => {
     renderPage(blockGroupBeforeAccordions);
 
     renderedText = container.textContent;
-    expect(renderedText.indexOf("Before accordion text."))
-      .toBeLessThan(renderedText.indexOf("Access Requirements"));
-    expect(renderedText.indexOf("Instructions to Request Access"))
-      .toBeLessThan(renderedText.indexOf("Documentation"));
+    expect(renderedText.indexOf("Before accordion text.")).toBeLessThan(
+      renderedText.indexOf("Access Requirements"),
+    );
+    expect(renderedText.indexOf("Instructions to Request Access")).toBeLessThan(
+      renderedText.indexOf("Documentation"),
+    );
   });
 
   it("uses the shared accordion styling for contentBox accordions", () => {
     renderPage();
 
-    const toggles = container.querySelectorAll('[aria-expanded]');
+    const toggles = container.querySelectorAll("[aria-expanded]");
     const contentBoxToggle = toggles[1];
     const contentBoxTitle = contentBoxToggle.querySelector("h3, h4, span, div");
 
@@ -643,10 +627,13 @@ describe("RASLoginPage", () => {
       "The verification process typically",
     );
 
-    const toggles = container.querySelectorAll('[aria-expanded]');
+    const toggles = container.querySelectorAll("[aria-expanded]");
     expect(toggles).toHaveLength(3);
-    expect(Array.from(toggles).some((toggle) =>
-      toggle.textContent.includes("Preparing your identity"))).toBe(false);
+    expect(
+      Array.from(toggles).some((toggle) =>
+        toggle.textContent.includes("Preparing your identity"),
+      ),
+    ).toBe(false);
   });
 
   it("supports defaultOpen for rasLogin and contentBox accordions", () => {
@@ -657,15 +644,17 @@ describe("RASLoginPage", () => {
           return {
             ...section,
             blocks: section.blocks.map((item) =>
-              (item.accordions
+              item.accordions
                 ? {
-                  ...item,
-                  accordions: item.accordions.map((accordion, index) =>
-                    (index === 0
-                      ? { ...accordion, defaultOpen: true }
-                      : accordion)),
-                }
-                : item)),
+                    ...item,
+                    accordions: item.accordions.map((accordion, index) =>
+                      index === 0
+                        ? { ...accordion, defaultOpen: true }
+                        : accordion,
+                    ),
+                  }
+                : item,
+            ),
           };
         }
 
@@ -673,15 +662,17 @@ describe("RASLoginPage", () => {
           return {
             ...section,
             blocks: section.blocks.map((item) =>
-              (item.accordions
+              item.accordions
                 ? {
-                  ...item,
-                  accordions: item.accordions.map((accordion) =>
-                    (accordion.title === "Instructions to Request Access"
-                      ? { ...accordion, defaultOpen: true }
-                      : accordion)),
-                }
-                : item)),
+                    ...item,
+                    accordions: item.accordions.map((accordion) =>
+                      accordion.title === "Instructions to Request Access"
+                        ? { ...accordion, defaultOpen: true }
+                        : accordion,
+                    ),
+                  }
+                : item,
+            ),
           };
         }
 
@@ -696,7 +687,7 @@ describe("RASLoginPage", () => {
       "Create a Login.gov or ID.me account",
     );
 
-    const toggles = container.querySelectorAll('[aria-expanded]');
+    const toggles = container.querySelectorAll("[aria-expanded]");
     expect(toggles[0].getAttribute("aria-expanded")).toBe("true");
     expect(toggles[1].getAttribute("aria-expanded")).toBe("true");
 
@@ -720,13 +711,14 @@ describe("RASLoginPage", () => {
       },
     });
 
-    const toggles = container.querySelectorAll('[aria-expanded]');
+    const toggles = container.querySelectorAll("[aria-expanded]");
     const warningToggle = toggles[toggles.length - 1];
 
     expect(warningToggle.textContent).toContain("privacy and security");
     expect(warningToggle.getAttribute("aria-expanded")).toBe("true");
-    expect(warningToggle.querySelector("p").className)
-      .not.toMatch(/WarningTextCollapsed/);
+    expect(warningToggle.querySelector("p").className).not.toMatch(
+      /WarningTextCollapsed/,
+    );
   });
 
   it("renders the warning notice as always open when collapsible is false", () => {
@@ -738,11 +730,14 @@ describe("RASLoginPage", () => {
       },
     });
 
-    const toggles = container.querySelectorAll('[aria-expanded]');
+    const toggles = container.querySelectorAll("[aria-expanded]");
 
     expect(toggles).toHaveLength(2);
-    expect(Array.from(toggles).some((toggle) =>
-      toggle.textContent.includes("privacy and security"))).toBe(false);
+    expect(
+      Array.from(toggles).some((toggle) =>
+        toggle.textContent.includes("privacy and security"),
+      ),
+    ).toBe(false);
     expect(container.textContent).toContain(
       "This warning banner provides privacy",
     );
@@ -751,13 +746,11 @@ describe("RASLoginPage", () => {
   it("supports Enter and Space for each collapsible section", () => {
     renderPage();
 
-    const toggles = container.querySelectorAll('[aria-expanded]');
+    const toggles = container.querySelectorAll("[aria-expanded]");
     expect(toggles).toHaveLength(3);
 
     pressKey(toggles[0], "Enter");
-    expect(container.textContent).toContain(
-      "Begin from the CTDC login page",
-    );
+    expect(container.textContent).toContain("Begin from the CTDC login page");
     pressKey(toggles[0], " ");
     expect(container.textContent).not.toContain(
       "Begin from the CTDC login page",

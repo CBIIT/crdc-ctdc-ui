@@ -22,18 +22,17 @@ jest.mock("./rasLoginView", () => {
 
   function getFirstRasButtonText(loginContent) {
     const rasSection = loginContent.sections && loginContent.sections[0];
-    const sectionBlocks = rasSection && Array.isArray(rasSection.blocks)
-      ? rasSection.blocks
-      : [];
+    const sectionBlocks =
+      rasSection && Array.isArray(rasSection.blocks) ? rasSection.blocks : [];
 
     return sectionBlocks.reduce((rasButtonText, blockGroup) => {
       if (rasButtonText) return rasButtonText;
 
-      const blocks = blockGroup && Array.isArray(blockGroup.blocks)
-        ? blockGroup.blocks
-        : [blockGroup];
-      const buttonBlock = blocks.find((block) =>
-        block && block.rasButtonText);
+      const blocks =
+        blockGroup && Array.isArray(blockGroup.blocks)
+          ? blockGroup.blocks
+          : [blockGroup];
+      const buttonBlock = blocks.find((block) => block && block.rasButtonText);
 
       return buttonBlock ? buttonBlock.rasButtonText : "";
     }, "");
@@ -65,7 +64,9 @@ jest.mock("./rasLoginView", () => {
           loginContent.sections[1].title,
         contentLoadError && contentLoadError.notice,
         contentLoadError && contentLoadError.message,
-      ].filter(Boolean).join(" "),
+      ]
+        .filter(Boolean)
+        .join(" "),
     );
   };
 });
@@ -130,14 +131,10 @@ describe("RASLoginController", () => {
   it("renders the login page when loginView.yaml loads", async () => {
     mockEnv.REACT_APP_STATIC_CONTENT_URL =
       "https://static.example.org/static-content/";
-    mockEnv.REACT_APP_RAS_AUTHORIZE_URL =
-      "https://ras.example.org/authorize";
+    mockEnv.REACT_APP_RAS_AUTHORIZE_URL = "https://ras.example.org/authorize";
 
     axios.get.mockResolvedValue({
-      data: [
-        "hero:",
-        "  title: Login to the CTDC",
-      ].join("\n"),
+      data: ["hero:", "  title: Login to the CTDC"].join("\n"),
     });
 
     await renderController();
@@ -145,18 +142,19 @@ describe("RASLoginController", () => {
     expect(axios.get).toHaveBeenCalledWith(
       "https://static.example.org/static-content/login/loginView.yaml",
     );
-    expect(container.querySelector('[data-testid="ras-login-page"]').textContent)
-      .toBe("Login to the CTDC");
     expect(
-      container.querySelector('[data-testid="ras-login-page"]')
+      container.querySelector('[data-testid="ras-login-page"]').textContent,
+    ).toBe("Login to the CTDC");
+    expect(
+      container
+        .querySelector('[data-testid="ras-login-page"]')
         .getAttribute("data-ras-authorize-url"),
     ).toBe("https://ras.example.org/authorize");
   });
 
   it("renders the bundled fallback when the static content URL is missing", async () => {
     mockEnv.REACT_APP_STATIC_CONTENT_URL = "";
-    mockEnv.REACT_APP_RAS_AUTHORIZE_URL =
-      "https://ras.example.org/authorize";
+    mockEnv.REACT_APP_RAS_AUTHORIZE_URL = "https://ras.example.org/authorize";
     mockBundledFallbackResponse();
 
     await renderController();
@@ -168,8 +166,7 @@ describe("RASLoginController", () => {
     expect(page.textContent).toContain("Login to the CTDC");
     expect(page.textContent).toContain("Login with RAS");
     expect(page.textContent).toContain("Request Access");
-    expect(page.getAttribute("data-lock-border-src"))
-      .toBe("lock-border.svg");
+    expect(page.getAttribute("data-lock-border-src")).toBe("lock-border.svg");
     expect(page.getAttribute("data-content-load-error")).toBe(
       "Login page content is not configured.",
     );
@@ -177,10 +174,10 @@ describe("RASLoginController", () => {
       "https://ras.example.org/authorize",
     );
     expect(container.textContent).toContain(
-      "Some login-page content could not be loaded.",
+      "Some content could not be loaded..",
     );
     expect(container.textContent).toContain(
-      "We are showing a saved version of this login page so you can continue.",
+      "The page is showing a saved local version because the remote content could not be reached.",
     );
     expect(container.textContent).not.toContain(
       "You can still use the login button. Some page details may not include the latest updates.",
@@ -213,15 +210,12 @@ describe("RASLoginController", () => {
       "Login page content could not be loaded.",
     );
     expect(container.textContent).toContain(
-      "Some login-page content could not be loaded.",
+      "Some content could not be loaded..",
     );
     expect(container.textContent).toContain(
-      "We are showing a saved version of this login page so you can continue.",
+      "The page is showing a saved local version because the remote content could not be reached.",
     );
-    expect(axios.get).toHaveBeenNthCalledWith(
-      2,
-      "loginView.yaml",
-    );
+    expect(axios.get).toHaveBeenNthCalledWith(2, "loginView.yaml");
   });
 
   it("renders the bundled fallback when the file cannot be parsed", async () => {
@@ -247,10 +241,10 @@ describe("RASLoginController", () => {
       "Login page content is not valid YAML.",
     );
     expect(container.textContent).toContain(
-      "Some login-page content could not be loaded.",
+      "Some content could not be loaded..",
     );
     expect(container.textContent).toContain(
-      "We are showing a saved version of this login page so you can continue.",
+      "The page is showing a saved local version because the remote content could not be reached.",
     );
     expect(container.textContent).not.toContain(
       "You can still use the login button. Some page details may not include the latest updates.",
@@ -280,7 +274,7 @@ describe("RASLoginController", () => {
       "Login page content could not be loaded.",
     );
     expect(container.textContent).toContain(
-      "Some login-page content could not be loaded.",
+      "Some content could not be loaded..",
     );
     expect(console.error).toHaveBeenCalled();
   });
