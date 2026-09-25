@@ -176,20 +176,12 @@ function RasLoginAction({ classes, section, rasAuthorizeUrl }) {
       <Button
         variant="outlined"
         className={classes.LoginButtonRas}
-        disabled={!rasAuthorizeUrl}
         onClick={() => {
-          if (rasAuthorizeUrl) {
-            window.location.href = rasAuthorizeUrl;
-          }
+          window.location.href = rasAuthorizeUrl;
         }}
       >
         {section.buttonText}
       </Button>
-      {!rasAuthorizeUrl && (
-        <Typography className={classes.BodyText} role="alert">
-          {section.unavailableText}
-        </Typography>
-      )}
     </Box>
   );
 }

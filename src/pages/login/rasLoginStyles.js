@@ -140,9 +140,6 @@ const styles = (theme) => ({
     alignItems: "flex-start",
     gap: "10px",
     minWidth: 0,
-    "& $BodyText": {
-      paddingRight: "50px",
-    },
   },
   orderedListAlpha: {
     margin: "2px 0",
@@ -203,13 +200,20 @@ const styles = (theme) => ({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    gap: "20px",
+    gap: "44px",
     paddingTop: "0px",
     width: "100%",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      gap: "25px",
+    },
   },
   LoginButtonContainer: {
     display: "flex",
     alignItems: "flex-start",
+    [theme.breakpoints.down("sm")]: {
+      alignSelf: "center",
+    },
   },
   BodyText: {
     fontFamily: "Roboto",
@@ -237,8 +241,8 @@ const styles = (theme) => ({
     },
   },
   LoginButtonRas: {
-    width: "215px",
-    height: "47px",
+    minWidth: "215px",
+    minHeight: "47px",
     fontFamily: "Roboto",
     fontSize: "16px",
     fontWeight: 500,
@@ -249,8 +253,10 @@ const styles = (theme) => ({
     padding: "11px 53px",
     gap: "10px",
     textTransform: "none",
+    textAlign: "center",
     lineHeight: "24.5px",
-    whiteSpace: "nowrap",
+    whiteSpace: "normal",
+    overflowWrap: "break-word",
 
     letterSpacing: "0%",
 
@@ -379,7 +385,6 @@ const styles = (theme) => ({
     gap: "15px",
   },
   SectionTitle: {
-    height: "37px",
     fontFamily: "Inter",
     fontSize: "24px",
     fontWeight: 700,

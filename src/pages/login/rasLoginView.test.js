@@ -2,12 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { act, Simulate } from "react-dom/test-utils";
 
-jest.mock("../../utils/env", () => ({
-  __esModule: true,
-  default: {},
-}));
-
-const env = require("../../utils/env").default;
 const RASLoginPage = require("./rasLoginView").default;
 
 const loginContent = {
@@ -92,8 +86,6 @@ const loginContent = {
         },
       ],
       buttonText: "Login with RAS",
-      unavailableText:
-        "RAS login is temporarily unavailable because it is not configured.",
     },
     {
       id: "request-access",
@@ -223,9 +215,18 @@ const loginContent = {
 describe("RASLoginPage", () => {
   let container;
 
-  const renderPage = (content = loginContent) => {
+  const renderPage = (
+    content = loginContent,
+    rasAuthorizeUrl = "https://ras.example.org/authorize",
+  ) => {
     act(() => {
-      ReactDOM.render(<RASLoginPage content={content} />, container);
+      ReactDOM.render(
+        <RASLoginPage
+          content={content}
+          rasAuthorizeUrl={rasAuthorizeUrl}
+        />,
+        container,
+      );
     });
   };
 
@@ -238,7 +239,6 @@ describe("RASLoginPage", () => {
   beforeEach(() => {
     container = document.createElement("div");
     document.body.appendChild(container);
-    env.REACT_APP_RAS_AUTHORIZE_URL = "";
   });
 
   afterEach(() => {
@@ -247,14 +247,13 @@ describe("RASLoginPage", () => {
     container = null;
   });
 
-  it("disables RAS login and shows a configuration error when the URL is missing", () => {
+  it("renders the configured RAS login button", () => {
     renderPage();
 
     const loginButton = container.querySelector("button");
-    expect(loginButton.disabled).toBe(true);
-    expect(container.textContent).toContain(
-      "RAS login is temporarily unavailable",
-    );
+    expect(loginButton.disabled).toBe(false);
+    expect(loginButton.textContent).toBe("Login with RAS");
+    expect(container.querySelector('[role="alert"]')).toBeNull();
   });
 
   it("renders list content without paragraph nesting", () => {
