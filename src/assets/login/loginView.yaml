@@ -1,0 +1,99 @@
+# CTDC login page content for /user/login.
+# Asset paths are relative to this file.
+page: /user/login
+title: Login
+
+assets:
+  lockBorder:
+    src: assets/lock-border.svg
+    alt: Lock Border
+  lockIcon:
+    src: assets/lock-icon.svg
+    alt: Lock Icon
+  helpIcon:
+    src: assets/help-icon.svg
+    alt: Help Icon
+  videoThumbnail:
+    src: assets/CTDC_Tutorial_Video_Placeholder.png
+    alt: Tutorial Video
+  playIcon:
+    src: assets/video_play_icon_large.svg
+    alt: Play
+  arrowOpen:
+    src: assets/up_arrow.svg
+    alt: Collapse
+  arrowClosed:
+    src: assets/down_arrow.svg
+    alt: Expand
+  externalLinkIcon:
+    src: assets/externalLinkIcon.svg
+    alt: outbound web site icon
+
+hero:
+  title: Login to the CTDC
+
+# Keep one blocks list per section. Add sibling content with "-".
+sections:
+  - id: ras-login
+    type: rasLogin
+    title: Log in with NIH Researcher Auth Service (RAS)
+    blocks:
+      - blocks:
+        - paragraph: "Before accessing CTDC data, you are required to verify your identity through NIH's secure Researcher Auth Service (RAS) using Login.gov or ID.me. This identity verification is required to comply with federal policies governing access to controlled-access data repositories (CADRs)."
+        - rasButtonText: Login with RAS
+      - paragraph: "$$%space%$$"
+      - paragraph: "$$%space%$$"
+      - accordions:
+          - title: How to sign in
+            blocks:
+              - listWithNumbers:
+                  - "Begin from the CTDC login page and select the RAS sign-in option. The CTDC will redirect you to RAS and the appropriate identity provider."
+                  - "Use Login.gov or ID.me for the CRDC controlled-access workflow. These are the IAL2 identity providers supported for this CRDC integration."
+                  - "Complete Identity Assurance Level 2 (IAL2) identity proofing if your Login.gov or ID.me identity has not already been verified at that level."
+                  - "Complete multi-factor authentication when prompted."
+                  - "If your dbGaP permissions are associated with an eRA Commons identity and RAS or the CRDC application prompts you to link that identity, complete the RAS identity-linking process."
+                  - "Review the RAS information-sharing consent screen. For non-NIH identities, you must grant the required consent for RAS to release identity and authorization information to the requesting application."
+                  - "Return to the CTDC application and confirm that the expected controlled-data authorization is available before beginning a long-running workflow or large data transfer."
+          - title: Preparing your identity
+            blocks:
+              - paragraph: "The verification process typically takes up to 30 minutes and requires:"
+              - listWithAlphabets:
+                  - "A mobile phone with a working camera"
+                  - "Your Social Security number"
+                  - "A phone number associated with a phone plan in your name"
+                  - text: "One of the following valid government-issued IDs:"
+                    listWithDots:
+                      - "U.S. driver's license"
+                      - "State-issued ID"
+                      - "U.S. passport"
+              - paragraph: "$$%space%$$"
+              - paragraph: "Before selecting Log in with NIH Research Auth Service (RAS), please gather the required information, identification, and devices. For more information, see the Login.gov Identity Verification Guidelines or the Login.gov Help Center."
+          - title: eRA linking note
+            blocks:
+              - paragraph: "Linking happens only on the RAS Linked Identities page during sign-in; the linking session is short and may require reauthentication; CTDC does not link accounts on its side."
+          - title: Consent and session note
+            blocks:
+              - paragraph: "RAS asks non-NIH users to grant information-sharing consent; consent can be managed or revoked in RAS Settings; sessions expire, so long-running downloads must not assume access stays valid."
+
+  - id: request-access
+    type: contentBox
+    title: Request Access
+    blocks:
+      - paragraph: "Access to controlled access data in the CTDC is governed by dbGaP. To learn more about requesting access to controlled access data please follow this link: $$[CTDC Request Access page](url:/#/request-access target:_self)$$."
+
+warning:
+  title: Warning Notice
+  blocks:
+    - paragraph: "This warning banner provides privacy and security notices consistent with applicable federal laws, directives, and other federal guidance for accessing this Government system, which includes all devices/storage media attached to this system. This system is provided for Government-authorized use only. Unauthorized or improper use of this system is prohibited and may result in disciplinary action and/or civil and criminal penalties. At any time, and for any lawful Government purpose, the government may monitor, record, and audit your system usage and/or intercept, search and seize any communication or data transiting or stored on this system. Therefore, you have no reasonable expectation of privacy. Any communication or data transiting or stored on this system may be disclosed or used for any lawful Government purpose."
+
+# Help panel sub-sections render in YAML order.
+help:
+  ariaLabel: Help and Support
+  headerText: NEED HELP?
+  contact:
+    title: Let us assist you with your login or access issues
+    blocks:
+      - paragraph: "If you experience any difficulties with logging in or accessing your account, please reach out to our support team for assistance."
+    buttonText: Contact Us
+    href: mailto:NCICRDC@mail.nih.gov
+    target: _self

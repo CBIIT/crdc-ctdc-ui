@@ -2,8 +2,7 @@
  * Layout components for the YAML-driven login page.
  * Purpose: translate top-level loginView.yaml areas into page regions.
  * Assumptions: each section has one blocks list; repeated sibling content uses
- * list items, rasLogin.buttonText is section-level, and contentBox shares the
- * same section rendering path without a RAS action button.
+ * list items, and the RAS button label uses block-level rasButtonText.
  */
 import React from "react";
 import { Box, Button, Grid, Typography } from "@material-ui/core";
@@ -167,18 +166,60 @@ function LoginContentBlock({
   );
 }
 
+const RAS_LOGIN_UNAVAILABLE_MESSAGE =
+  "RAS login is temporarily unavailable because it is not configured.";
+
+function getValidAuthorizeUrl(rasAuthorizeUrl) {
+  if (typeof rasAuthorizeUrl !== "string") return "";
+
+  const trimmedUrl = rasAuthorizeUrl.trim();
+
+  if (!trimmedUrl || /^\$\{[^}]+\}$/.test(trimmedUrl)) {
+    return "";
+  }
+
+  try {
+    const baseUrl = typeof window !== "undefined"
+      ? window.location.href
+      : "https://example.org";
+    const parsedUrl = new URL(trimmedUrl, baseUrl);
+
+    if (!/^https?:$/.test(parsedUrl.protocol)) {
+      return "";
+    }
+
+    return trimmedUrl;
+  } catch (error) {
+    return "";
+  }
+}
+
 function RasLoginAction({ classes, buttonText, rasAuthorizeUrl }) {
+  const validAuthorizeUrl = getValidAuthorizeUrl(rasAuthorizeUrl);
+  const isConfigured = Boolean(validAuthorizeUrl);
+
   return (
     <Box className={classes.LoginButtonContainer}>
       <Button
         variant="outlined"
         className={classes.LoginButtonRas}
+        disabled={!isConfigured}
         onClick={() => {
-          window.location.href = rasAuthorizeUrl;
+          if (validAuthorizeUrl) {
+            window.location.href = validAuthorizeUrl;
+          }
         }}
       >
         {buttonText}
       </Button>
+      {!isConfigured && (
+        <Typography
+          role="alert"
+          className={classes.LoginButtonAlert}
+        >
+          {RAS_LOGIN_UNAVAILABLE_MESSAGE}
+        </Typography>
+      )}
     </Box>
   );
 }
@@ -211,6 +252,22 @@ function hasBlocks(item) {
       Array.isArray(item.blocks) &&
       item.blocks.length > 0,
   );
+}
+
+function getRasButtonTextBlock(blocks = []) {
+  return (Array.isArray(blocks) ? blocks : []).find((block) =>
+    block &&
+      Object.prototype.hasOwnProperty.call(block, "rasButtonText") &&
+      typeof block.rasButtonText === "string" &&
+      block.rasButtonText.trim());
+}
+
+function removeRasButtonTextBlocks(blocks = []) {
+  return (Array.isArray(blocks) ? blocks : []).filter((block) =>
+    !(
+      block &&
+      Object.prototype.hasOwnProperty.call(block, "rasButtonText")
+    ));
 }
 
 function createBlocksItem(blocks, extraFields = {}) {
@@ -336,18 +393,30 @@ export function LoginSectionBox({
 
       {sectionItems.map((sectionItem, sectionItemIndex) => {
         if (sectionItem.type === "blocks") {
+          const rasButtonTextBlock = getRasButtonTextBlock(
+            sectionItem.item.blocks,
+          );
+          const rasButtonText = rasButtonTextBlock
+            ? rasButtonTextBlock.rasButtonText
+            : "";
           const shouldRenderAction = section.type === "rasLogin" &&
-            section.buttonText &&
+            rasButtonText &&
             !actionRendered;
           const action = shouldRenderAction
             ? (
               <RasLoginAction
                 classes={classes}
-                buttonText={section.buttonText}
+                buttonText={rasButtonText}
                 rasAuthorizeUrl={rasAuthorizeUrl}
               />
             )
             : null;
+          const contentItem = section.type === "rasLogin"
+            ? {
+              ...sectionItem.item,
+              blocks: removeRasButtonTextBlocks(sectionItem.item.blocks),
+            }
+            : sectionItem.item;
 
           if (shouldRenderAction) {
             actionRendered = true;
@@ -357,7 +426,7 @@ export function LoginSectionBox({
             <LoginContentSection
               key={`blocks-${sectionItemIndex}`}
               classes={classes}
-              item={sectionItem.item}
+              item={contentItem}
               action={action}
               externalLinkIcon={externalLinkIcon}
             />

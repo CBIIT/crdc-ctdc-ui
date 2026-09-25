@@ -3,11 +3,12 @@
  * Purpose: hold UI state for YAML-driven sections, warning disclosure, and
  * tutorial playback while keeping editable copy in loginView.yaml.
  * Assumptions: section order, accordion order, and Help panel order come from
- * the YAML; this file should not hard-code page copy.
+ * the YAML. The controller may pass a bundled fallback payload if YAML loading
+ * fails, and this shell displays that fallback without blocking authentication.
  */
 import React, { useEffect, useMemo, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { Box, Grid, Typography } from "@material-ui/core";
 import styles from "./rasLoginStyles";
 import { getAsset } from "./components/ContentImage";
 import {
@@ -66,8 +67,43 @@ function getDefaultOpenWarning(warning) {
   return Boolean(warning && warning.defaultOpen === true);
 }
 
+function hasBlocks(item) {
+  return Boolean(
+    item &&
+      Array.isArray(item.blocks) &&
+      item.blocks.length > 0,
+  );
+}
+
+function hasWarningContent(warning) {
+  return Boolean(warning && (warning.title || hasBlocks(warning)));
+}
+
+function hasHelpContent(help) {
+  const tutorial = (help && help.tutorial) || {};
+  const contact = (help && help.contact) || {};
+
+  return Boolean(
+    help && (
+      help.headerText ||
+      hasBlocks(help) ||
+      tutorial.title ||
+      hasBlocks(tutorial) ||
+      tutorial.videoUrl ||
+      contact.title ||
+      hasBlocks(contact) ||
+      contact.buttonText
+    ),
+  );
+}
+
 function RASLoginPage(props) {
-  const { classes, loginContent = {}, rasAuthorizeUrl = "" } = props;
+  const {
+    classes,
+    loginContent = {},
+    rasAuthorizeUrl = "",
+    contentLoadError,
+  } = props;
   const assets = loginContent.assets || {};
   const arrowOpenIcon = getAsset(assets, "arrowOpen");
   const arrowClosedIcon = getAsset(assets, "arrowClosed");
@@ -111,6 +147,34 @@ function RASLoginPage(props) {
     <div className={classes.Container}>
       <LoginHero classes={classes} assets={assets} hero={hero} />
 
+      {contentLoadError && (
+        <Box className={classes.ContentLoadNotice} role="alert">
+          <Typography
+            component="p"
+            className={classes.ContentLoadNoticeTitle}
+          >
+            {contentLoadError.notice ||
+              "Some login-page content could not be loaded."}
+          </Typography>
+          {contentLoadError.message && (
+            <Typography
+              component="p"
+              className={classes.ContentLoadNoticeText}
+            >
+              {contentLoadError.message}
+            </Typography>
+          )}
+          {contentLoadError.details && (
+            <Typography
+              component="p"
+              className={classes.ContentLoadNoticeText}
+            >
+              {contentLoadError.details}
+            </Typography>
+          )}
+        </Box>
+      )}
+
       <Grid container className={classes.ContentWrapper}>
         <Grid container className={classes.ColumnContainer}>
           <Grid item xs={12} md className={classes.LeftColumn}>
@@ -140,27 +204,31 @@ function RASLoginPage(props) {
               return null;
             })}
 
-            <WarningNotice
-              classes={classes}
-              warning={warning}
-              warningOpen={warningOpen}
-              onToggle={() => setWarningOpen((value) => !value)}
-              arrowOpenIcon={arrowOpenIcon}
-              arrowClosedIcon={arrowClosedIcon}
-              externalLinkIcon={externalLinkIcon}
-            />
+            {hasWarningContent(warning) && (
+              <WarningNotice
+                classes={classes}
+                warning={warning}
+                warningOpen={warningOpen}
+                onToggle={() => setWarningOpen((value) => !value)}
+                arrowOpenIcon={arrowOpenIcon}
+                arrowClosedIcon={arrowClosedIcon}
+                externalLinkIcon={externalLinkIcon}
+              />
+            )}
           </Grid>
 
-          <HelpSidebar
-            classes={classes}
-            assets={assets}
-            help={help}
-            tutorial={tutorial}
-            contact={contact}
-            videoPlaying={videoPlaying}
-            onPlayVideo={() => setVideoPlaying(true)}
-            externalLinkIcon={externalLinkIcon}
-          />
+          {hasHelpContent(help) && (
+            <HelpSidebar
+              classes={classes}
+              assets={assets}
+              help={help}
+              tutorial={tutorial}
+              contact={contact}
+              videoPlaying={videoPlaying}
+              onPlayVideo={() => setVideoPlaying(true)}
+              externalLinkIcon={externalLinkIcon}
+            />
+          )}
         </Grid>
       </Grid>
     </div>

@@ -1,6 +1,6 @@
 /**
  * Integration coverage for rendering the normalized loginView.yaml payload.
- * These tests document ordering, section-level RAS button behavior, accordions,
+ * These tests document ordering, block-level RAS button behavior, accordions,
  * warning disclosure behavior, Help panel order, and contact links.
  */
 import React from "react";
@@ -34,13 +34,15 @@ const loginContent = {
       id: "ras-login",
       type: "rasLogin",
       title: "Log in with NIH Research Auth Service (RAS)",
-      buttonText: "Login with RAS",
       blocks: [
         {
           blocks: [
             {
               paragraph:
                 "Before accessing CTDC data, you may be required to verify your identity.",
+            },
+            {
+              rasButtonText: "Login with RAS",
             },
             {
               paragraph:
@@ -239,12 +241,14 @@ describe("RASLoginPage", () => {
   const renderPage = (
     pageContent = loginContent,
     rasAuthorizeUrl = "https://ras.example.org/authorize",
+    contentLoadError,
   ) => {
     act(() => {
       ReactDOM.render(
         <RASLoginPage
           loginContent={pageContent}
           rasAuthorizeUrl={rasAuthorizeUrl}
+          contentLoadError={contentLoadError}
         />,
         container,
       );
@@ -275,6 +279,118 @@ describe("RASLoginPage", () => {
     expect(loginButton.disabled).toBe(false);
     expect(loginButton.textContent).toBe("Login with RAS");
     expect(container.querySelector('[role="alert"]')).toBeNull();
+  });
+
+  it("requires rasButtonText for the RAS login action", () => {
+    const genericButtonTextContent = {
+      ...loginContent,
+      sections: loginContent.sections.map((section) => {
+        if (section.id !== "ras-login") return section;
+
+        return {
+          ...section,
+          blocks: section.blocks.map((blockGroup) => {
+            if (!Array.isArray(blockGroup.blocks)) return blockGroup;
+
+            return {
+              ...blockGroup,
+              blocks: blockGroup.blocks.map((block) =>
+                (block.rasButtonText
+                  ? { buttonText: block.rasButtonText }
+                  : block)),
+            };
+          }),
+        };
+      }),
+    };
+
+    renderPage(genericButtonTextContent);
+
+    expect(container.querySelector("button")).toBeNull();
+    expect(container.textContent).not.toContain("Login with RAS");
+  });
+
+  it("renders content load notices without blocking the login button", () => {
+    renderPage(
+      loginContent,
+      "https://ras.example.org/authorize",
+      {
+        notice: "Some login-page content could not be loaded.",
+        message:
+          "We are showing a saved version of this login page so you can continue.",
+        details:
+          "You can still use the login button. Some page details may not include the latest updates.",
+      },
+    );
+
+    const loginButton = container.querySelector("button");
+    const notice = container.querySelector('[role="alert"]');
+
+    expect(loginButton.disabled).toBe(false);
+    expect(notice).not.toBeNull();
+    expect(notice.textContent).toContain(
+      "Some login-page content could not be loaded.",
+    );
+    expect(notice.textContent).toContain(
+      "We are showing a saved version of this login page so you can continue.",
+    );
+  });
+
+  it("does not render empty optional areas for minimal fallback content", () => {
+    renderPage({
+      hero: {
+        title: "Login to the CTDC",
+      },
+      sections: [
+        {
+          id: "ras-login",
+          type: "rasLogin",
+          title: "Log in with NIH Researcher Auth Service (RAS)",
+          blocks: [
+            {
+              blocks: [
+                {
+                  paragraph:
+                    "Before accessing CTDC data, you are required to verify your identity.",
+                },
+                {
+                  rasButtonText: "Login with RAS",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(container.textContent).toContain("Login with RAS");
+    expect(container.querySelector("aside")).toBeNull();
+    expect(container.textContent).not.toContain("Warning Notice");
+  });
+
+  it("disables the RAS login button when the authorize URL is missing", () => {
+    renderPage(loginContent, "   ");
+
+    const loginButton = container.querySelector("button");
+    const alert = container.querySelector('[role="alert"]');
+
+    expect(loginButton.disabled).toBe(true);
+    expect(alert).not.toBeNull();
+    expect(alert.textContent).toContain(
+      "RAS login is temporarily unavailable",
+    );
+  });
+
+  it("disables the RAS login button when the authorize URL is unresolved", () => {
+    renderPage(loginContent, [
+      "$",
+      "{REACT_APP_RAS_AUTHORIZE_URL}",
+    ].join(""));
+
+    const loginButton = container.querySelector("button");
+
+    expect(loginButton.disabled).toBe(true);
+    expect(container.querySelector('[role="alert"]')).not.toBeNull();
   });
 
   it("renders list content without paragraph nesting", () => {

@@ -66,6 +66,34 @@ const styles = (theme) => ({
     margin: "auto",
     padding: "0px",
   },
+  ContentLoadNotice: {
+    maxWidth: "876px",
+    margin: "0 auto 32px",
+    padding: "16px 20px",
+    backgroundColor: "#FFF7E6",
+    border: "1px solid #B86B00",
+    borderRadius: "8px",
+    color: "#000",
+    fontFamily: "Roboto",
+    lineHeight: "150%",
+  },
+  ContentLoadNoticeTitle: {
+    margin: "0 0 6px",
+    fontFamily: "Roboto",
+    fontSize: "16px",
+    fontWeight: 700,
+    lineHeight: "150%",
+  },
+  ContentLoadNoticeText: {
+    margin: "0",
+    fontFamily: "Roboto",
+    fontSize: "14px",
+    fontWeight: 400,
+    lineHeight: "150%",
+    "&:not(:last-child)": {
+      marginBottom: "4px",
+    },
+  },
   ColumnContainer: {
     gap: "60px",
     justifyContent: "center",
@@ -214,7 +242,8 @@ const styles = (theme) => ({
   },
   LoginButtonContainer: {
     display: "flex",
-    alignItems: "flex-start",
+    flexDirection: "column",
+    alignItems: "center",
     [theme.breakpoints.down("sm")]: {
       alignSelf: "center",
     },
@@ -268,6 +297,21 @@ const styles = (theme) => ({
       backgroundColor: "#F0F9F7",
       border: "1.25px solid #3795A9",
     },
+    "&.Mui-disabled": {
+      color: "#5F6368",
+      backgroundColor: "#F5F5F5",
+      border: "1.25px solid #9AA0A6",
+    },
+  },
+  LoginButtonAlert: {
+    maxWidth: "260px",
+    marginTop: "10px",
+    fontFamily: "Roboto",
+    fontSize: "14px",
+    fontWeight: 500,
+    color: "#8A1C1C",
+    lineHeight: "18px",
+    textAlign: "center",
   },
 
   // Help Sidebar Styles

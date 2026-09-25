@@ -1,16 +1,71 @@
 /**
  * Loads login/loginView.yaml, resolves relative media URLs, and passes the
- * normalized static-content payload to the RAS login page.
+ * normalized static-content payload to the RAS login page. If external content
+ * cannot load, the page reads the bundled frontend loginView.yaml copy so
+ * authentication remains available with stable local content.
  * The content source is REACT_APP_STATIC_CONTENT_URL + /login/loginView.yaml.
  */
 import React, { useEffect, useState } from "react";
 import yaml from "js-yaml";
 import axios from "axios";
 import env from "../../utils/env";
+import fallbackLoginContentUrl from "../../assets/login/loginView.yaml";
+import lockBorderAsset from "../../assets/login/lock-border.svg";
+import lockIconAsset from "../../assets/login/lock-icon.svg";
+import helpIconAsset from "../../assets/login/help-icon.svg";
+import videoThumbnailAsset from "../../assets/login/CTDC_Tutorial_Video_Placeholder.png";
+import playIconAsset from "../../assets/login/video_play_icon_large.svg";
+import arrowOpenAsset from "../../assets/login/up_arrow.svg";
+import arrowClosedAsset from "../../assets/login/down_arrow.svg";
+import externalLinkIconAsset from "../../assets/login/externalLinkIcon.svg";
 import RASLoginPage from "./rasLoginView";
 
-const LOGIN_CONTENT_FILE = "loginView.yaml";
 const LOGIN_CONTENT_PATH = "/login/loginView.yaml";
+const CONTENT_LOAD_NOTICE =
+  "Some login-page content could not be loaded.";
+const CONTENT_LOAD_MESSAGE =
+  "We are showing a saved version of this login page so you can continue.";
+const CONTENT_LOAD_DETAILS =
+  "You can still use the login button. Some page details may not include the latest updates.";
+
+const EMERGENCY_LOGIN_CONTENT = {
+  page: "/user/login",
+  title: "Login",
+  hero: {
+    title: "Login to the CTDC",
+  },
+  sections: [
+    {
+      id: "ras-login",
+      type: "rasLogin",
+      title: "Log in with NIH Researcher Auth Service (RAS)",
+      blocks: [
+        {
+          blocks: [
+            {
+              paragraph:
+                "Before accessing CTDC data, you are required to verify your identity through NIH's secure Researcher Auth Service (RAS).",
+            },
+            {
+              rasButtonText: "Login with RAS",
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+const BUNDLED_LOGIN_ASSETS = {
+  "assets/lock-border.svg": lockBorderAsset,
+  "assets/lock-icon.svg": lockIconAsset,
+  "assets/help-icon.svg": helpIconAsset,
+  "assets/CTDC_Tutorial_Video_Placeholder.png": videoThumbnailAsset,
+  "assets/video_play_icon_large.svg": playIconAsset,
+  "assets/up_arrow.svg": arrowOpenAsset,
+  "assets/down_arrow.svg": arrowClosedAsset,
+  "assets/externalLinkIcon.svg": externalLinkIconAsset,
+};
 
 function isTemplateValue(value) {
   return typeof value === "string" && /^\$\{[^}]+\}$/.test(value);
@@ -40,9 +95,27 @@ function resolveUrl(url, baseUrl) {
   }
 }
 
-function resolveAsset(asset, baseUrl) {
+function normalizeAssetPath(assetPath) {
+  if (typeof assetPath !== "string") return assetPath;
+
+  return assetPath
+    .replace(/^\.?\//, "")
+    .replace(/^login\/assets\//, "assets/");
+}
+
+function resolveAssetPath(assetPath, baseUrl, assetOverrides = {}) {
+  if (!assetPath || typeof assetPath !== "string") return assetPath;
+
+  const normalizedPath = normalizeAssetPath(assetPath);
+
+  return assetOverrides[assetPath] ||
+    assetOverrides[normalizedPath] ||
+    resolveUrl(assetPath, baseUrl);
+}
+
+function resolveAsset(asset, baseUrl, assetOverrides = {}) {
   if (typeof asset === "string") {
-    return resolveUrl(asset, baseUrl);
+    return resolveAssetPath(asset, baseUrl, assetOverrides);
   }
 
   if (!asset || typeof asset !== "object") {
@@ -51,17 +124,17 @@ function resolveAsset(asset, baseUrl) {
 
   return {
     ...asset,
-    src: resolveUrl(asset.src, baseUrl),
+    src: resolveAssetPath(asset.src, baseUrl, assetOverrides),
   };
 }
 
-function resolveLoginContent(loginContent = {}, baseUrl) {
+function resolveLoginContent(loginContent = {}, baseUrl, assetOverrides = {}) {
   // loginView.yaml keeps asset paths relative to the YAML file so content can
   // move between static-content branches without frontend code changes.
   const assets = Object.entries(loginContent.assets || {}).reduce(
     (resolvedAssets, [key, asset]) => ({
       ...resolvedAssets,
-      [key]: resolveAsset(asset, baseUrl),
+      [key]: resolveAsset(asset, baseUrl, assetOverrides),
     }),
     {},
   );
@@ -86,39 +159,35 @@ function getContentLoadError(fetchError, loginContentUrl) {
   if (!loginContentUrl || isTemplateValue(loginContentUrl)) {
     return {
       title: "Login page content is not configured.",
-      message:
-        "The login page cannot load because the static content URL is missing or unresolved.",
-      details:
-        "Set REACT_APP_STATIC_CONTENT_URL to the static-content repository base URL. The frontend will load login content from /login/loginView.yaml.",
+      notice: CONTENT_LOAD_NOTICE,
+      message: CONTENT_LOAD_MESSAGE,
+      details: CONTENT_LOAD_DETAILS,
     };
   }
 
   if (fetchError && fetchError.response) {
     return {
       title: "Login page content could not be loaded.",
-      message:
-        `The request for ${LOGIN_CONTENT_FILE} failed with HTTP status ${fetchError.response.status}.`,
-      details:
-        "Confirm the content file exists, the URL is reachable, and the static-content branch is deployed.",
+      notice: CONTENT_LOAD_NOTICE,
+      message: CONTENT_LOAD_MESSAGE,
+      details: CONTENT_LOAD_DETAILS,
     };
   }
 
   if (fetchError && fetchError.name === "YAMLException") {
     return {
       title: "Login page content is not valid YAML.",
-      message:
-        `The ${LOGIN_CONTENT_FILE} file was found, but the frontend could not parse it.`,
-      details:
-        "Check the YAML indentation, list formatting, and quoted values in the login content file.",
+      notice: CONTENT_LOAD_NOTICE,
+      message: CONTENT_LOAD_MESSAGE,
+      details: CONTENT_LOAD_DETAILS,
     };
   }
 
   return {
     title: "Login page content could not be loaded.",
-    message:
-      `The frontend could not load ${LOGIN_CONTENT_FILE} from the configured content source.`,
-    details:
-      "Refresh the page. If the problem continues, confirm the content URL is reachable and the YAML file is valid.",
+    notice: CONTENT_LOAD_NOTICE,
+    message: CONTENT_LOAD_MESSAGE,
+    details: CONTENT_LOAD_DETAILS,
   };
 }
 
@@ -130,80 +199,67 @@ function validateLoginContent(content) {
   }
 }
 
-function LoginContentError({ error }) {
-  if (!error) return null;
+async function loadLoginContent(loginContentUrl, assetOverrides = {}) {
+  const result = await axios.get(loginContentUrl);
+  const parsedContent = yaml.safeLoad(result.data);
 
-  return (
-    <div
-      role="alert"
-      style={{
-        margin: "48px auto",
-        maxWidth: "760px",
-        padding: "24px",
-        border: "2px solid #BA1F40",
-        borderRadius: "8px",
-        backgroundColor: "#FFF7F8",
-        color: "#000",
-        fontFamily: "Roboto, Arial, sans-serif",
-        lineHeight: 1.5,
-      }}
-    >
-      <h1
-        style={{
-          margin: "0 0 12px",
-          color: "#BA1F40",
-          fontSize: "24px",
-          lineHeight: 1.25,
-        }}
-      >
-        {error.title}
-      </h1>
-      <p style={{ margin: "0 0 8px" }}>{error.message}</p>
-      <p style={{ margin: "0 0 8px" }}>{error.details}</p>
-      {error.url && (
-        <p style={{ margin: 0 }}>
-          Attempted content URL: <code>{error.url}</code>
-        </p>
-      )}
-    </div>
+  validateLoginContent(parsedContent);
+
+  return resolveLoginContent(
+    parsedContent,
+    loginContentUrl,
+    assetOverrides,
   );
+}
+
+async function loadBundledFallbackContent() {
+  try {
+    return await loadLoginContent(
+      fallbackLoginContentUrl,
+      BUNDLED_LOGIN_ASSETS,
+    );
+  } catch (fallbackError) {
+    console.error("Error loading bundled loginView.yaml:", fallbackError);
+    return EMERGENCY_LOGIN_CONTENT;
+  }
 }
 
 const RASLoginController = () => {
   const [loginContent, setLoginContent] = useState();
-  const [error, setError] = useState();
+  const [contentLoadError, setContentLoadError] = useState();
 
   useEffect(() => {
     const fetchLoginContent = async () => {
       const loginContentUrl = getLoginContentUrl();
 
       if (!loginContentUrl || isTemplateValue(loginContentUrl)) {
-        setError(getContentLoadError(null, loginContentUrl));
+        const loadError = getContentLoadError(null, loginContentUrl);
+        const fallbackContent = await loadBundledFallbackContent();
+
+        console.error("Error loading loginView.yaml:", loadError);
+        setLoginContent(fallbackContent);
+        setContentLoadError(loadError);
         return;
       }
 
       try {
-        const result = await axios.get(loginContentUrl);
-        const parsedContent = yaml.safeLoad(result.data);
-        validateLoginContent(parsedContent);
-        setLoginContent(
-          resolveLoginContent(parsedContent, loginContentUrl),
-        );
+        setLoginContent(await loadLoginContent(loginContentUrl));
+        setContentLoadError();
       } catch (fetchError) {
-        console.error("Error loading loginView.yaml:", fetchError);
-        setError({
+        const loadError = {
           ...getContentLoadError(fetchError, loginContentUrl),
           url: loginContentUrl,
-        });
+        };
+        const fallbackContent = await loadBundledFallbackContent();
+
+        console.error("Error loading loginView.yaml:", fetchError);
+        setLoginContent(fallbackContent);
+        setContentLoadError(loadError);
       }
     };
 
     fetchLoginContent();
   }, []);
-
-  if (error) {
-    return <LoginContentError error={error} />;
-  }
 
   if (!loginContent) {
     return null;
@@ -213,6 +269,7 @@ const RASLoginController = () => {
     <RASLoginPage
       loginContent={loginContent}
       rasAuthorizeUrl={env.REACT_APP_RAS_AUTHORIZE_URL}
+      contentLoadError={contentLoadError}
     />
   );
 };
