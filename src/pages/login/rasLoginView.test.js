@@ -401,6 +401,16 @@ describe("RASLoginPage", () => {
     expect(container.querySelector('[role="alert"]')).not.toBeNull();
   });
 
+  it("disables the RAS login button for relative authorize URLs", () => {
+    renderPage(loginContent, "/auth/authorize");
+
+    const loginButton = getButtonByText("Login with RAS");
+
+    expect(loginButton).not.toBeUndefined();
+    expect(loginButton.disabled).toBe(true);
+    expect(container.querySelector('[role="alert"]')).not.toBeNull();
+  });
+
   it("renders list content without paragraph nesting", () => {
     renderPage();
 
@@ -547,6 +557,43 @@ describe("RASLoginPage", () => {
     expect(externalContactButton.getAttribute("rel")).toBe(
       "noopener noreferrer",
     );
+
+    renderPage({
+      ...loginContent,
+      help: {
+        ...loginContent.help,
+        contact: {
+          ...loginContent.help.contact,
+          href: "javascript:alert(1)",
+        },
+      },
+    });
+
+    const unsafeContactButton = container.querySelector(
+      'a[href^="javascript:"]',
+    );
+
+    expect(unsafeContactButton).toBeNull();
+  });
+
+  it("uses accessible defaults when Help labels are omitted", () => {
+    renderPage({
+      ...loginContent,
+      help: {
+        ...loginContent.help,
+        ariaLabel: undefined,
+        tutorial: {
+          ...loginContent.help.tutorial,
+          playButtonAriaLabel: undefined,
+        },
+      },
+    });
+
+    expect(container.querySelector("aside").getAttribute("aria-label"))
+      .toBe("Help and Support");
+    expect(container.querySelector(
+      '[role="button"][aria-label="Play tutorial video"]',
+    )).not.toBeNull();
   });
 
   it("renders nested block groups without requiring a group title", () => {
@@ -713,10 +760,11 @@ describe("RASLoginPage", () => {
 
     const toggles = container.querySelectorAll("[aria-expanded]");
     const warningToggle = toggles[toggles.length - 1];
+    const warningText = container.querySelector('[class*="WarningText"]');
 
-    expect(warningToggle.textContent).toContain("privacy and security");
+    expect(warningToggle.textContent).toContain("Warning Notice");
     expect(warningToggle.getAttribute("aria-expanded")).toBe("true");
-    expect(warningToggle.querySelector("p").className).not.toMatch(
+    expect(warningText.className).not.toMatch(
       /WarningTextCollapsed/,
     );
   });

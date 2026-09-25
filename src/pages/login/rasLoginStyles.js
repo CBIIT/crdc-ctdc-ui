@@ -592,10 +592,13 @@ const styles = (theme) => ({
     gap: "15px",
   },
   WarningToggle: {
+    alignSelf: "stretch",
+    width: "100%",
+    boxSizing: "border-box",
     paddingRight: "10px",
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "center",
     cursor: "pointer",
   },
   WarningToggleStatic: {
@@ -610,6 +613,9 @@ const styles = (theme) => ({
     letterSpacing: "0%",
   },
   WarningText: {
+    alignSelf: "stretch",
+    width: "100%",
+    boxSizing: "border-box",
     flex: 1,
     fontFamily: "Roboto",
     fontSize: "16px",

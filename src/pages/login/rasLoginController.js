@@ -20,6 +20,8 @@ import {
 } from "../../bento/loginData";
 import RASLoginPage from "./rasLoginView";
 
+const LOGIN_CONTENT_REQUEST_TIMEOUT = 10000;
+
 function isTemplateValue(value) {
   return typeof value === "string" && /^\$\{[^}]+\}$/.test(value);
 }
@@ -153,7 +155,9 @@ function validateLoginContent(content) {
 }
 
 async function loadLoginContent(loginContentUrl, assetOverrides = {}) {
-  const result = await axios.get(loginContentUrl);
+  const result = await axios.get(loginContentUrl, {
+    timeout: LOGIN_CONTENT_REQUEST_TIMEOUT,
+  });
   const parsedContent = yaml.safeLoad(result.data);
 
   validateLoginContent(parsedContent);

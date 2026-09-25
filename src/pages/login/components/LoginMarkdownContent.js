@@ -29,6 +29,25 @@ function parseTokenAttributes(value) {
   return attributes;
 }
 
+function isAllowedHref(href) {
+  if (typeof href !== "string") return false;
+
+  const normalizedHref = href.trim();
+
+  if (!normalizedHref || /^\/\//.test(normalizedHref)) return false;
+  if (/^(mailto:|tel:)/i.test(normalizedHref)) return true;
+  if (/^(https?:\/\/|#|\/|\.\.?\/)/i.test(normalizedHref)) {
+    return !/^(javascript:|data:|file:|blob:)/i.test(normalizedHref);
+  }
+  if (!/^[a-z][a-z0-9+.-]*:/i.test(normalizedHref)) return true;
+
+  return false;
+}
+
+function isEmailAddress(value) {
+  return /^[^\s@/:]+@[^\s@]+\.[^\s@]+$/.test(value);
+}
+
 function isInternalHref(href) {
   if (!href) return false;
 
@@ -62,10 +81,12 @@ function parseContentLink(value) {
   const linkValue = standardMatch ? standardMatch[2] : reversedMatch[1];
   const attributes = parseTokenAttributes(linkValue);
   const rawHref = attributes.url || linkValue;
-  const href = !attributes.url && rawHref.includes("@") && !rawHref.startsWith("mailto:")
+  const href = !attributes.url && isEmailAddress(rawHref)
     ? `mailto:${rawHref}`
     : rawHref;
   const target = attributes.target || "_blank";
+
+  if (!isAllowedHref(href)) return null;
 
   return {
     href,
@@ -95,6 +116,8 @@ function parseDownloadLink(value) {
   }, {});
 
   if (!attributes.link && !attributes.title) return null;
+
+  if (!isAllowedHref(attributes.link || "")) return null;
 
   return {
     href: attributes.link || "",
@@ -519,6 +542,10 @@ function renderStructuredBlock({
         {renderInlineContent(block, linkIcon, classes, `${keyPrefix}-${blockIndex}`)}
       </Typography>
     );
+  }
+
+  if (!block || typeof block !== "object" || Array.isArray(block)) {
+    return null;
   }
 
   if (block.paragraph !== undefined) {

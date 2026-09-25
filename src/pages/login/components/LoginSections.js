@@ -9,7 +9,7 @@ import { Box, Button, Grid, Typography } from "@material-ui/core";
 import { RAS_LOGIN_UNAVAILABLE_MESSAGE } from "../../../bento/loginData";
 import ContentImage, { getAsset } from "./ContentImage";
 import LoginMarkdownContent from "./LoginMarkdownContent";
-import ToggleHeader, { ToggleArrow } from "./ToggleHeader";
+import ToggleHeader from "./ToggleHeader";
 
 function handleActivation(callback) {
   return (event) => {
@@ -197,16 +197,9 @@ function getValidAuthorizeUrl(rasAuthorizeUrl) {
   }
 
   try {
-    if (/^https?:\/\/\S+/i.test(trimmedUrl)) {
-      return trimmedUrl;
-    }
+    const parsedUrl = new URL(trimmedUrl);
 
-    const baseUrl = typeof window !== "undefined"
-      ? window.location.href
-      : "https://example.org";
-    const parsedUrl = new URL(trimmedUrl, baseUrl);
-
-    if (!/^https?:$/.test(parsedUrl.protocol)) {
+    if (!["http:", "https:"].includes(parsedUrl.protocol)) {
       return "";
     }
 
@@ -490,45 +483,42 @@ export function WarningNotice({
   const warningTextClassName = `${classes.WarningText} ${
     warningIsCollapsible && !warningIsOpen ? classes.WarningTextCollapsed : ""
   }`;
-  const toggleProps = warningIsCollapsible
-    ? {
-      role: "button",
-      tabIndex: 0,
-      "aria-expanded": warningIsOpen,
-      onClick: onToggle,
-      onKeyDown: handleActivation(onToggle),
-    }
-    : {};
 
   return (
     <Box className={classes.WarningSection}>
       <Box className={classes.WarningContent}>
-        <Typography
-          variant="h2"
-          component="h2"
-          className={classes.WarningTitle}
-        >
-          {warning.title}
-        </Typography>
-        <Box
-          className={`${classes.WarningToggle} ${
-            !warningIsCollapsible ? classes.WarningToggleStatic : ""
-          }`}
-          {...toggleProps}
-        >
+        {warningIsCollapsible ? (
+          <ToggleHeader
+            classes={classes}
+            headerClassName={classes.WarningToggle}
+            title={warning.title}
+            titleClassName={classes.WarningTitle}
+            titleVariant="h2"
+            titleComponent="h2"
+            isOpen={warningIsOpen}
+            onToggle={onToggle}
+            openIcon={arrowOpenIcon}
+            closedIcon={arrowClosedIcon}
+          />
+        ) : (
+          <Box
+            className={`${classes.WarningToggle} ${classes.WarningToggleStatic}`}
+          >
+            <Typography
+              variant="h2"
+              component="h2"
+              className={classes.WarningTitle}
+            >
+              {warning.title}
+            </Typography>
+          </Box>
+        )}
+        <Box className={warningTextClassName}>
           <LoginBlocks
             blocks={warning.blocks}
             classes={classes}
-            paragraphClassName={warningTextClassName}
             externalLinkIcon={externalLinkIcon}
           />
-          {warningIsCollapsible && (
-            <ToggleArrow
-              isOpen={warningIsOpen}
-              openIcon={arrowOpenIcon}
-              closedIcon={arrowClosedIcon}
-            />
-          )}
         </Box>
       </Box>
     </Box>
@@ -577,9 +567,7 @@ function TutorialVideo({
           className={classes.VideoImage}
           controls
           autoPlay
-        >
-          <track kind="captions" />
-        </video>
+        />
       ) : (
         <>
           <ContentImage
@@ -591,7 +579,7 @@ function TutorialVideo({
             className={classes.PlayOverlay}
             role="button"
             tabIndex={0}
-            aria-label={tutorial.playButtonAriaLabel}
+            aria-label={tutorial.playButtonAriaLabel || "Play tutorial video"}
             onClick={onPlayVideo}
             onKeyDown={handleActivation(onPlayVideo)}
           >
@@ -640,6 +628,21 @@ function getContactButtonRel(contact, target) {
   return target && target !== "_self" ? "noopener noreferrer" : undefined;
 }
 
+function isAllowedHref(href) {
+  if (typeof href !== "string") return false;
+
+  const normalizedHref = href.trim();
+
+  if (!normalizedHref || /^\/\//.test(normalizedHref)) return false;
+  if (/^(mailto:|tel:)/i.test(normalizedHref)) return true;
+  if (/^(https?:\/\/|#|\/|\.\.?\/)/i.test(normalizedHref)) {
+    return !/^(javascript:|data:|file:|blob:)/i.test(normalizedHref);
+  }
+  if (!/^[a-z][a-z0-9+.-]*:/i.test(normalizedHref)) return true;
+
+  return false;
+}
+
 function HelpContactSection({
   classes,
   contact,
@@ -647,6 +650,9 @@ function HelpContactSection({
 }) {
   const contactButtonTarget = contact.target || undefined;
   const contactButtonRel = getContactButtonRel(contact, contactButtonTarget);
+  const contactButtonHref = isAllowedHref(contact.href)
+    ? contact.href.trim()
+    : undefined;
 
   return (
     <Box className={classes.ContactSection}>
@@ -660,7 +666,7 @@ function HelpContactSection({
         <Button
           variant="outlined"
           className={classes.ContactButton}
-          href={contact.href || undefined}
+          href={contactButtonHref}
           target={contactButtonTarget}
           rel={contactButtonRel}
         >
@@ -710,7 +716,7 @@ export function HelpSidebar({
       <Box
         component="aside"
         className={classes.HelpSidebar}
-        aria-label={help.ariaLabel}
+        aria-label={help.ariaLabel || "Help and Support"}
       >
         <Box className={classes.HelpHeader}>
           <ContentImage

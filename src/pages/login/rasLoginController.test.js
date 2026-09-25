@@ -141,6 +141,7 @@ describe("RASLoginController", () => {
 
     expect(axios.get).toHaveBeenCalledWith(
       "https://static.example.org/static-content/login/loginView.yaml",
+      { timeout: 10000 },
     );
     expect(
       container.querySelector('[data-testid="ras-login-page"]').textContent,
@@ -161,7 +162,9 @@ describe("RASLoginController", () => {
 
     const page = container.querySelector('[data-testid="ras-login-page"]');
 
-    expect(axios.get).toHaveBeenCalledWith("loginView.yaml");
+    expect(axios.get).toHaveBeenCalledWith("loginView.yaml", {
+      timeout: 10000,
+    });
     expect(page).not.toBeNull();
     expect(page.textContent).toContain("Login to the CTDC");
     expect(page.textContent).toContain("Login with RAS");
@@ -215,7 +218,9 @@ describe("RASLoginController", () => {
     expect(container.textContent).toContain(
       "A saved local version is being shown while the remote content is unavailable.",
     );
-    expect(axios.get).toHaveBeenNthCalledWith(2, "loginView.yaml");
+    expect(axios.get).toHaveBeenNthCalledWith(2, "loginView.yaml", {
+      timeout: 10000,
+    });
   });
 
   it("renders the bundled fallback when the file cannot be parsed", async () => {

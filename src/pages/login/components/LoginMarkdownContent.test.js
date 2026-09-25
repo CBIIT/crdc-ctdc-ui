@@ -159,7 +159,7 @@ describe("LoginMarkdownContent", () => {
       blocks: [
         {
           paragraph:
-            `$$[External](https://example.org)$$ $$[Same tab](target:_self url:/same-page)$$ $$[Internal route](/#/graphql)$$ $$[Same origin](${sameOriginUrl})$$ $$[Typed link](type:internal url:https://example.org/typed-link target:_blank)$$ $$[Configured](url:[https://example.org/configured] target:[_blank])$$ $$(person@example.org)[Email link]$$ ` +
+            `$$[External](https://example.org)$$ $$[Same tab](target:_self url:/same-page)$$ $$[Internal route](/#/graphql)$$ $$[Same origin](${sameOriginUrl})$$ $$[Typed link](type:internal url:https://example.org/typed-link target:_blank)$$ $$[Configured](url:[https://example.org/configured] target:[_blank])$$ $$(person@example.org)[Email link]$$ $$(https://example.org/user@example.org)[At URL]$$ ` +
             downloadToken,
         },
       ],
@@ -202,13 +202,44 @@ describe("LoginMarkdownContent", () => {
     expect(mailLink).not.toBeNull();
     expect(hasOutboundIcon(mailLink)).toBe(false);
 
+    expect(container.querySelector(
+      'a[href="https://example.org/user@example.org"]',
+    )).not.toBeNull();
+    expect(container.querySelector('a[href^="mailto:"]')).toBe(mailLink);
+
     const downloadLink = container.querySelector(
       'a[href="https://example.org/download.pdf"]',
     );
     expect(downloadLink.textContent).toBe("Download Guide");
     expect(hasOutboundIcon(downloadLink)).toBe(false);
 
-    expect(container.querySelectorAll("img.link-icon")).toHaveLength(3);
+    expect(container.querySelectorAll("img.link-icon")).toHaveLength(4);
+  });
+
+  it("does not render unsafe or protocol-relative links", () => {
+    renderContent({
+      blocks: [
+        {
+          paragraph:
+            "$$[Unsafe](javascript:alert(1))$$ $$[Data](data:text/plain,test)$$ $$[Protocol relative](//other.example/path)$$",
+        },
+        {
+          paragraph: "$$[Request access](/request-access)$$",
+        },
+        {
+          paragraph: [
+            "$$",
+            "{link:javascript:alert(1),title:Unsafe download}",
+            "$$",
+          ].join(""),
+        },
+      ],
+    });
+
+    expect(container.querySelector('a[href^="javascript:"]')).toBeNull();
+    expect(container.querySelector('a[href^="data:"]')).toBeNull();
+    expect(container.querySelector('a[href^="//"]')).toBeNull();
+    expect(container.querySelector('a[href="/request-access"]')).not.toBeNull();
   });
 
   it("leaves Markdown-style links and emphasis as literal text", () => {
@@ -319,6 +350,10 @@ describe("LoginMarkdownContent", () => {
   it("ignores unknown structured blocks and empty tables without crashing", () => {
     renderContent({
       blocks: [
+        null,
+        42,
+        true,
+        ["invalid", "array", "block"],
         {
           unsupportedBlock: "This should not render.",
         },
