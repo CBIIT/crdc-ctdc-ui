@@ -35,128 +35,10 @@ export function LoginHero({ classes, assets, hero }) {
   );
 }
 
-export function RasLoginContent({
-  classes,
-  ras,
-  rasAuthorizeUrl,
-  externalLinkIcon,
-  showTitle = true,
-}) {
-  return (
-    <Box className={classes.RasSection}>
-      {showTitle && (
-        <Typography
-          variant="h2"
-          component="h2"
-          className={classes.BoxTitle}
-        >
-          {ras.title}
-        </Typography>
-      )}
-
-      <Box className={classes.LoginContentRow}>
-        <Box className={classes.RasTextWrapper}>
-          <LoginMarkdownContent
-            content={ras.content}
-            markdown={ras.bodyMarkdown}
-            classes={classes}
-            linkIcon={externalLinkIcon}
-          />
-        </Box>
-        <Box className={classes.LoginButtonContainer}>
-          <Button
-            variant="outlined"
-            className={classes.LoginButtonRas}
-            disabled={!rasAuthorizeUrl}
-            onClick={() => {
-              if (rasAuthorizeUrl) {
-                window.location.href = rasAuthorizeUrl;
-              }
-            }}
-          >
-            {ras.buttonText}
-          </Button>
-          {!rasAuthorizeUrl && (
-            <Typography className={classes.BodyText} role="alert">
-              {ras.unavailableText}
-            </Typography>
-          )}
-        </Box>
-      </Box>
-    </Box>
-  );
-}
-
-export function RasLoginBox({
-  classes,
-  ras,
-  rasAuthorizeUrl,
-  openAccordions = {},
-  onToggleAccordion = () => {},
-  arrowOpenIcon,
-  arrowClosedIcon,
-  externalLinkIcon,
-}) {
-  const accordions = Array.isArray(ras.accordions) ? ras.accordions : [];
-  const orderedComponents = getOrderedComponents(ras, [
-    {
-      type: "content",
-      enabled: hasContent(ras),
-      keys: ["content", "bodyMarkdown"],
-    },
-    {
-      type: "accordions",
-      enabled: accordions.length > 0,
-      keys: ["accordions"],
-    },
-  ]);
-
-  return (
-    <Box className={classes.CombinedLoginBox}>
-      {ras.title && (
-        <Typography
-          variant="h2"
-          component="h2"
-          className={classes.BoxTitle}
-        >
-          {ras.title}
-        </Typography>
-      )}
-
-      {orderedComponents.map((component) => {
-        if (component.type === "content") {
-          return (
-            <RasLoginContent
-              key="content"
-              classes={classes}
-              ras={ras}
-              rasAuthorizeUrl={rasAuthorizeUrl}
-              externalLinkIcon={externalLinkIcon}
-              showTitle={false}
-            />
-          );
-        }
-
-        return (
-          <LoginAccordionList
-            key="accordions"
-            classes={classes}
-            accordions={accordions}
-            openAccordions={openAccordions}
-            onToggleAccordion={onToggleAccordion}
-            arrowOpenIcon={arrowOpenIcon}
-            arrowClosedIcon={arrowClosedIcon}
-            externalLinkIcon={externalLinkIcon}
-          />
-        );
-      })}
-    </Box>
-  );
-}
-
 export function LoginAccordionList({
   classes,
   accordions,
+  accordionStartIndex = 0,
   openAccordions = {},
   onToggleAccordion = () => {},
   arrowOpenIcon,
@@ -170,7 +52,8 @@ export function LoginAccordionList({
   return (
     <Box className={classes.AccordionList}>
       {accordionItems.map((item, index) => {
-        const isOpen = Boolean(openAccordions[index]);
+        const accordionIndex = accordionStartIndex + index;
+        const isOpen = Boolean(openAccordions[accordionIndex]);
         const key = item.id || `${item.title || "item"}-${index}`;
 
         return (
@@ -179,10 +62,15 @@ export function LoginAccordionList({
             classes={classes}
             item={item}
             isOpen={isOpen}
-            onToggle={() => onToggleAccordion(index)}
+            onToggle={() => onToggleAccordion(accordionIndex)}
             arrowOpenIcon={arrowOpenIcon}
             arrowClosedIcon={arrowClosedIcon}
             externalLinkIcon={externalLinkIcon}
+            bodyClassName={
+              item.variant === "links" || item.linkStyle
+                ? classes.Link
+                : undefined
+            }
           />
         );
       })}
@@ -260,6 +148,16 @@ function LoginContentBlock({
 }) {
   return (
     <Box className={className}>
+      {item.title && (
+        <Typography
+          variant="h3"
+          component="h3"
+          className={classes.SubsectionTitle}
+          style={{ marginTop: 0, marginBottom: 0 }}
+        >
+          {item.title}
+        </Typography>
+      )}
       <LoginMarkdownContent
         content={item.content}
         markdown={item.bodyMarkdown}
@@ -272,12 +170,148 @@ function LoginContentBlock({
   );
 }
 
+function RasLoginAction({ classes, section, rasAuthorizeUrl }) {
+  return (
+    <Box className={classes.LoginButtonContainer}>
+      <Button
+        variant="outlined"
+        className={classes.LoginButtonRas}
+        disabled={!rasAuthorizeUrl}
+        onClick={() => {
+          if (rasAuthorizeUrl) {
+            window.location.href = rasAuthorizeUrl;
+          }
+        }}
+      >
+        {section.buttonText}
+      </Button>
+      {!rasAuthorizeUrl && (
+        <Typography className={classes.BodyText} role="alert">
+          {section.unavailableText}
+        </Typography>
+      )}
+    </Box>
+  );
+}
+
+function LoginContentSection({
+  classes,
+  item,
+  action,
+  externalLinkIcon,
+}) {
+  const contentClassName = item.linkStyle ? classes.Link : undefined;
+
+  return (
+    <Box className={classes.LoginSectionBody}>
+      <Box className={classes.SectionContentRow}>
+        <Box className={classes.SectionTextWrapper}>
+          <LoginContentBlock
+            classes={classes}
+            item={item}
+            externalLinkIcon={externalLinkIcon}
+            className={contentClassName}
+          />
+        </Box>
+        {action}
+      </Box>
+    </Box>
+  );
+}
+
 function hasContent(item) {
   return Boolean(
     item &&
       ((Array.isArray(item.content) && item.content.length > 0) ||
         item.bodyMarkdown),
   );
+}
+
+function createContentItem(content, extraFields = {}) {
+  return {
+    type: "content",
+    item: {
+      content,
+      ...extraFields,
+    },
+  };
+}
+
+function createAccordionGroup(accordions) {
+  return {
+    type: "accordions",
+    accordions: Array.isArray(accordions) ? accordions : [],
+  };
+}
+
+function isContentGroup(item) {
+  return Boolean(
+    item &&
+      !Array.isArray(item.accordions) &&
+      (Array.isArray(item.content) || item.bodyMarkdown),
+  );
+}
+
+// Section content is the display sequence: plain blocks are batched together,
+// titled content groups render as separate text sections, and accordion groups
+// render through the shared accordion list.
+function getContentItems(content = []) {
+  const contentItems = [];
+  let pendingContent = [];
+
+  const pushPendingContent = () => {
+    if (pendingContent.length === 0) return;
+
+    contentItems.push(createContentItem(pendingContent));
+    pendingContent = [];
+  };
+
+  content.forEach((item) => {
+    if (item && Array.isArray(item.accordions)) {
+      pushPendingContent();
+      contentItems.push(createAccordionGroup(item.accordions));
+      return;
+    }
+
+    if (isContentGroup(item)) {
+      pushPendingContent();
+      contentItems.push(createContentItem(item.content || [], {
+        bodyMarkdown: item.bodyMarkdown,
+        title: item.title,
+        linkStyle: item.variant === "links" || item.linkStyle,
+      }));
+      return;
+    }
+
+    pendingContent.push(item);
+  });
+
+  pushPendingContent();
+
+  return contentItems;
+}
+
+function getSectionItems(section) {
+  const contentItems = getContentItems(section.content);
+
+  if (contentItems.length > 0) {
+    return contentItems;
+  }
+
+  if (section.bodyMarkdown) {
+    return [
+      createContentItem([], {
+        bodyMarkdown: section.bodyMarkdown,
+      }),
+    ];
+  }
+
+  return [];
+}
+
+export function getSectionAccordions(section) {
+  return getSectionItems(section).flatMap((item) =>
+    (item.type === "accordions" ? item.accordions : []));
 }
 
 function getFieldOrder(section, fieldNames) {
@@ -288,8 +322,8 @@ function getFieldOrder(section, fieldNames) {
 }
 
 function getOrderedComponents(section, components) {
-  // Preserve YAML key order so content editors can move flexible blocks
-  // before or after accordions/help sections without frontend changes.
+  // Preserve YAML key order so content editors can move Help panel blocks
+  // without frontend changes.
   return components
     .filter((component) => component.enabled)
     .map((component) => ({
@@ -300,34 +334,23 @@ function getOrderedComponents(section, components) {
       firstComponent.order - secondComponent.order);
 }
 
-export function ContentBoxSection({
+export function LoginSectionBox({
   classes,
   section,
+  rasAuthorizeUrl,
   openAccordions = {},
   onToggleAccordion = () => {},
   arrowOpenIcon,
   arrowClosedIcon,
   externalLinkIcon,
 }) {
-  const accordions = Array.isArray(section.accordions)
-    ? section.accordions
-    : [];
-  const orderedComponents = getOrderedComponents(section, [
-    {
-      type: "content",
-      enabled: hasContent(section),
-      keys: ["content", "bodyMarkdown"],
-    },
-    {
-      type: "accordions",
-      enabled: accordions.length > 0,
-      keys: ["accordions"],
-    },
-  ]);
+  const sectionItems = getSectionItems(section);
+  let contentIndex = 0;
+  let accordionStartIndex = 0;
 
   return (
-    <Box className={classes.ContentBoxSection}>
-      <Box className={classes.ContentBoxHeader}>
+    <Box className={classes.LoginSectionBox}>
+      <Box className={classes.LoginSectionHeader}>
         {section.title && (
           <Typography
             variant="h2"
@@ -339,92 +362,46 @@ export function ContentBoxSection({
         )}
       </Box>
 
-      {orderedComponents.map((component, componentIndex) => {
-        if (component.type === "content") {
+      {sectionItems.map((sectionItem, sectionItemIndex) => {
+        if (sectionItem.type === "content") {
+          const action = section.type === "rasLogin" && contentIndex === 0
+            ? (
+              <RasLoginAction
+                classes={classes}
+                section={section}
+                rasAuthorizeUrl={rasAuthorizeUrl}
+              />
+            )
+            : null;
+          contentIndex += 1;
+
           return (
-            <Box
-              key="content"
-              className={classes.ContentBoxBody}
-            >
-              <Box className={classes.ContentBlockWrapper}>
-                <Box className={classes.ContentBlock}>
-                  <LoginContentBlock
-                    classes={classes}
-                    item={section}
-                    externalLinkIcon={externalLinkIcon}
-                  />
-                </Box>
-              </Box>
-            </Box>
+            <LoginContentSection
+              key={`content-${sectionItemIndex}`}
+              classes={classes}
+              item={sectionItem.item}
+              action={action}
+              externalLinkIcon={externalLinkIcon}
+            />
           );
         }
 
-        const hasPreviousContent = orderedComponents
-          .slice(0, componentIndex)
-          .some((orderedComponent) => orderedComponent.type === "content");
+        const currentAccordionStartIndex = accordionStartIndex;
+        accordionStartIndex += sectionItem.accordions.length;
 
-        return accordions.map((accordion, index) => {
-          const accordionKey =
-            accordion.id || `${accordion.title || "accordion"}-${index}`;
-          const accordionIsCollapsible = isCollapsible(accordion);
-          const isOpen = Boolean(openAccordions[index]);
-          const useLinkStyle =
-            accordion.variant === "links" || accordion.linkStyle;
-          const previousAccordion = accordions[index - 1];
-          const previousAccordionIsCollapsible =
-            previousAccordion && isCollapsible(previousAccordion);
-          const isNextToAccordion =
-            accordionIsCollapsible || previousAccordionIsCollapsible;
-          const shouldShowDivider =
-            !isNextToAccordion && (hasPreviousContent || index > 0);
-
-          return (
-            <React.Fragment key={accordionKey}>
-              {shouldShowDivider && <Box className={classes.Divider} />}
-
-              <Box className={classes.ContentBoxBody}>
-                {accordionIsCollapsible ? (
-                  <Box className={classes.AccordionList}>
-                    <LoginAccordionItem
-                      classes={classes}
-                      item={accordion}
-                      isOpen={isOpen}
-                      onToggle={() => onToggleAccordion(index)}
-                      arrowOpenIcon={arrowOpenIcon}
-                      arrowClosedIcon={arrowClosedIcon}
-                      externalLinkIcon={externalLinkIcon}
-                      bodyClassName={useLinkStyle ? classes.Link : undefined}
-                    />
-                  </Box>
-                ) : (
-                  <Box className={classes.ContentBlockWrapper}>
-                    <Box className={classes.ContentBlock}>
-                      {accordion.title && (
-                        <Typography
-                          variant="h3"
-                          component="h3"
-                          className={classes.SubsectionTitle}
-                          style={{ marginTop: 0, marginBottom: 0 }}
-                        >
-                          {accordion.title}
-                        </Typography>
-                      )}
-
-                      {hasContent(accordion) && (
-                        <LoginContentBlock
-                          classes={classes}
-                          item={accordion}
-                          externalLinkIcon={externalLinkIcon}
-                          className={useLinkStyle ? classes.Link : undefined}
-                        />
-                      )}
-                    </Box>
-                  </Box>
-                )}
-              </Box>
-            </React.Fragment>
-          );
-        });
+        return (
+          <LoginAccordionList
+            key={`accordions-${sectionItemIndex}`}
+            classes={classes}
+            accordions={sectionItem.accordions}
+            accordionStartIndex={currentAccordionStartIndex}
+            openAccordions={openAccordions}
+            onToggleAccordion={onToggleAccordion}
+            arrowOpenIcon={arrowOpenIcon}
+            arrowClosedIcon={arrowClosedIcon}
+            externalLinkIcon={externalLinkIcon}
+          />
+        );
       })}
     </Box>
   );

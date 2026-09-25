@@ -69,18 +69,20 @@ const styles = (theme) => ({
     },
   },
 
-  // Combined Login Box Styles
-  CombinedLoginBox: {
+  // Login Section Box Styles
+  LoginSectionBox: {
     backgroundColor: "#F0F8FA",
     borderRadius: "35px",
     padding: "30px 40px 50px",
-    marginBottom: "40px",
     boxShadow: "0px 2px 10px 0px #00000040",
     border: "3px solid #F4FBFE",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     gap: "0px",
+    "&:not(:first-child)": {
+      marginTop: "40px",
+    },
   },
   AccordionList: {
     alignSelf: "stretch",
@@ -131,43 +133,16 @@ const styles = (theme) => ({
       maxWidth: "876px",
     },
   },
-  RasSection: {
-    alignSelf: "stretch",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-  },
-  RasTextWrapper: {
+  SectionTextWrapper: {
     flex: 1,
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
-    gap: "25px",
-    minWidth: 0,
-  },
-  ContentBlockWrapper: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    gap: "100px",
-  },
-  ContentBlock: {
-    width: "100%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
     gap: "10px",
+    minWidth: 0,
     "& $BodyText": {
       paddingRight: "50px",
     },
-  },
-  Divider: {
-    alignSelf: "stretch",
-    width: "100%",
-    height: "0px",
-    borderTop: "1px solid #8A8A8A",
-    margin: "25px 0",
   },
   orderedListAlpha: {
     margin: "2px 0",
@@ -224,29 +199,17 @@ const styles = (theme) => ({
       paddingLeft: "4px",
     },
   },
-  LoginContentRow: {
+  SectionContentRow: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
     gap: "20px",
     paddingTop: "0px",
+    width: "100%",
   },
   LoginButtonContainer: {
     display: "flex",
     alignItems: "flex-start",
-  },
-  BoxTitle: {
-    alignSelf: "stretch",
-    height: "37px",
-    fontFamily: "Inter",
-    fontSize: "24px",
-    fontWeight: 700,
-    color: "#18588E",
-    letterSpacing: "-0.02em",
-    lineHeight: "106.52%",
-    display: "flex",
-    justifyContent: "flex-start",
-    paddingBottom: "15px",
   },
   BodyText: {
     fontFamily: "Roboto",
@@ -401,26 +364,14 @@ const styles = (theme) => ({
     margin: "26px auto 0",
   },
 
-  // Content Box Section
-  ContentBoxSection: {
-    padding: "30px 40px 40px 40px",
-    marginTop: "40px",
-    backgroundColor: "#F0F8FA",
-    borderRadius: "35px",
-    boxShadow: "0px 2px 10px 0px #00000040",
-    border: "3px #F4FBFE solid",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  ContentBoxHeader: {
+  LoginSectionHeader: {
     alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
     gap: "15px",
   },
-  ContentBoxBody: {
+  LoginSectionBody: {
     alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",

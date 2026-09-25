@@ -5,10 +5,10 @@ import { Grid } from "@material-ui/core";
 import styles from "./rasLoginStyles";
 import { getAsset } from "./components/ContentImage";
 import {
-  ContentBoxSection,
+  getSectionAccordions,
   HelpSidebar,
   LoginHero,
-  RasLoginBox,
+  LoginSectionBox,
   WarningNotice,
 } from "./components/LoginSections";
 
@@ -39,14 +39,16 @@ function getDefaultOpenAccordions(accordions = []) {
   }, {});
 }
 
-function getDefaultOpenSectionAccordions(sections, sectionType) {
+function getDefaultOpenSectionAccordions(sections) {
   return sections.reduce((openSections, section, index) => {
-    if (section.type !== sectionType) return openSections;
+    if (section.type !== "rasLogin" && section.type !== "contentBox") {
+      return openSections;
+    }
 
     return {
       ...openSections,
       [getSectionKey(section, index)]: getDefaultOpenAccordions(
-        section.accordions,
+        getSectionAccordions(section),
       ),
     };
   }, {});
@@ -64,35 +66,17 @@ function RASLoginPage(props) {
   const tutorial = help.tutorial || {};
   const contact = help.contact || {};
   const sections = useMemo(() => getLoginSections(content), [content]);
-  const [loginAccordionsOpen, setLoginAccordionsOpen] = useState(() =>
-    getDefaultOpenSectionAccordions(sections, "rasLogin"));
-  const [contentAccordionsOpen, setContentAccordionsOpen] = useState(() =>
-    getDefaultOpenSectionAccordions(sections, "contentBox"));
+  const [sectionAccordionsOpen, setSectionAccordionsOpen] = useState(() =>
+    getDefaultOpenSectionAccordions(sections));
   const [warningOpen, setWarningOpen] = useState(false);
   const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
-    setLoginAccordionsOpen(
-      getDefaultOpenSectionAccordions(sections, "rasLogin"),
-    );
-    setContentAccordionsOpen(
-      getDefaultOpenSectionAccordions(sections, "contentBox"),
-    );
+    setSectionAccordionsOpen(getDefaultOpenSectionAccordions(sections));
   }, [sections]);
 
-  const toggleLoginAccordion = (sectionKey, index) => {
-    setLoginAccordionsOpen((openAccordions) => ({
-      ...openAccordions,
-      [sectionKey]: {
-        ...openAccordions[sectionKey],
-        [index]: !(
-          openAccordions[sectionKey] && openAccordions[sectionKey][index]
-        ),
-      },
-    }));
-  };
-  const toggleContentAccordion = (sectionKey, index) => {
-    setContentAccordionsOpen((openAccordions) => ({
+  const toggleSectionAccordion = (sectionKey, index) => {
+    setSectionAccordionsOpen((openAccordions) => ({
       ...openAccordions,
       [sectionKey]: {
         ...openAccordions[sectionKey],
@@ -113,34 +97,19 @@ function RASLoginPage(props) {
             {sections.map((section, index) => {
               const sectionKey = getSectionKey(section, index);
 
-              if (section.type === "rasLogin") {
+              if (
+                section.type === "rasLogin" ||
+                section.type === "contentBox"
+              ) {
                 return (
-                  <RasLoginBox
-                    key={sectionKey}
-                    classes={classes}
-                    ras={section}
-                    rasAuthorizeUrl={rasAuthorizeUrl}
-                    openAccordions={loginAccordionsOpen[sectionKey] || {}}
-                    onToggleAccordion={(accordionIndex) =>
-                      toggleLoginAccordion(sectionKey, accordionIndex)}
-                    arrowOpenIcon={arrowOpenIcon}
-                    arrowClosedIcon={arrowClosedIcon}
-                    externalLinkIcon={externalLinkIcon}
-                  />
-                );
-              }
-
-              if (section.type === "contentBox") {
-                return (
-                  <ContentBoxSection
+                  <LoginSectionBox
                     key={sectionKey}
                     classes={classes}
                     section={section}
-                    openAccordions={
-                      contentAccordionsOpen[sectionKey] || {}
-                    }
+                    rasAuthorizeUrl={rasAuthorizeUrl}
+                    openAccordions={sectionAccordionsOpen[sectionKey] || {}}
                     onToggleAccordion={(accordionIndex) =>
-                      toggleContentAccordion(sectionKey, accordionIndex)}
+                      toggleSectionAccordion(sectionKey, accordionIndex)}
                     arrowOpenIcon={arrowOpenIcon}
                     arrowClosedIcon={arrowClosedIcon}
                     externalLinkIcon={externalLinkIcon}

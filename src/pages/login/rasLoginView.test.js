@@ -48,99 +48,105 @@ const loginContent = {
           paragraph:
             "$$~Overview~$$ $$#RAS details#$$ $$!Italic note!$$ $$@ctdc@example.org@$$ $$>Indented note>$$",
         },
-      ],
-      buttonText: "Login with RAS",
-      unavailableText:
-        "RAS login is temporarily unavailable because it is not configured.",
-      accordions: [
         {
-          title: "How to sign in",
-          content: [
+          accordions: [
             {
-              listWithNumbers: [
-                "Begin from the CTDC login page and select the RAS sign-in option.",
-                "Complete the required identity proofing steps.",
-              ],
-            },
-          ],
-        },
-        {
-          title: "Preparing your identity",
-          collapsible: false,
-          content: [
-            {
-              paragraph:
-                "The verification process typically takes up to 30 minutes and requires:",
-            },
-            {
-              listWithAlphabets: [
-                "A mobile phone with a working camera",
-                "Your Social Security number",
+              title: "How to sign in",
+              content: [
                 {
-                  text: "One of the following valid government-issued IDs:",
-                  listWithDots: [
-                    "U.S. driver's license",
-                    "State-issued ID",
+                  listWithNumbers: [
+                    "Begin from the CTDC login page and select the RAS sign-in option.",
+                    "Complete the required identity proofing steps.",
                   ],
                 },
               ],
             },
             {
-              paragraph:
-                "Before selecting $$*Log in with NIH Research Auth Service (RAS)*$$, please gather the required information.",
+              title: "Preparing your identity",
+              collapsible: false,
+              content: [
+                {
+                  paragraph:
+                    "The verification process typically takes up to 30 minutes and requires:",
+                },
+                {
+                  listWithAlphabets: [
+                    "A mobile phone with a working camera",
+                    "Your Social Security number",
+                    {
+                      text: "One of the following valid government-issued IDs:",
+                      listWithDots: [
+                        "U.S. driver's license",
+                        "State-issued ID",
+                      ],
+                    },
+                  ],
+                },
+                {
+                  paragraph:
+                    "Before selecting $$*Log in with NIH Research Auth Service (RAS)*$$, please gather the required information.",
+                },
+              ],
             },
           ],
         },
       ],
+      buttonText: "Login with RAS",
+      unavailableText:
+        "RAS login is temporarily unavailable because it is not configured.",
     },
     {
       id: "request-access",
       type: "contentBox",
       title: "Request Access",
-      accordions: [
-        {
-          title: "Access Requirements",
-          collapsible: false,
-          content: [
-            {
-              paragraph: "CTDC contains controlled-access research data.",
-            },
-            {
-              paragraph: "To request CTDC access, you must have:",
-            },
-            {
-              listWithDots: [
-                "An $$*NIH account*$$",
-              ],
-            },
-          ],
-        },
-        {
-          title: "Instructions to Request Access",
-          collapsible: true,
-          content: [
-            {
-              listWithNumbers: [
-                "Create a Login.gov or ID.me account. If you do not have an NIH account, also create an eRA Commons account.",
-              ],
-            },
-            {
-              paragraph:
-                "Access requests are typically processed within two business days.",
-            },
-          ],
-        },
-      ],
       content: [
         {
-          paragraph: "$$*Documentation*$$",
+          accordions: [
+            {
+              title: "Access Requirements",
+              collapsible: false,
+              content: [
+                {
+                  paragraph: "CTDC contains controlled-access research data.",
+                },
+                {
+                  paragraph: "To request CTDC access, you must have:",
+                },
+                {
+                  listWithDots: [
+                    "An $$*NIH account*$$",
+                  ],
+                },
+              ],
+            },
+            {
+              title: "Instructions to Request Access",
+              collapsible: true,
+              content: [
+                {
+                  listWithNumbers: [
+                    "Create a Login.gov or ID.me account. If you do not have an NIH account, also create an eRA Commons account.",
+                  ],
+                },
+                {
+                  paragraph:
+                    "Access requests are typically processed within two business days.",
+                },
+              ],
+            },
+          ],
         },
         {
-          listWithDots: [
-            "$$[eRA Commons Account Creation](https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm)$$",
-            "$$[Same tab documentation](target:_self url:/documentation)$$",
-            "$$" +
-              "{link:https://example.org/download.pdf,title:Download Guide}$$",
+          title: "Documentation",
+          content: [
+            {
+              listWithDots: [
+                "$$[eRA Commons Account Creation](https://www.era.nih.gov/register-accounts/create-and-edit-an-account.htm)$$",
+                "$$[Same tab documentation](target:_self url:/documentation)$$",
+                "$$" +
+                  "{link:https://example.org/download.pdf,title:Download Guide}$$",
+              ],
+            },
           ],
         },
       ],
@@ -308,7 +314,7 @@ describe("RASLoginPage", () => {
       .toBeLessThan(renderedText.indexOf("Creating Accounts"));
   });
 
-  it("renders RAS content and accordions in YAML key order", () => {
+  it("renders RAS content and accordions in content order", () => {
     renderPage();
 
     let renderedText = container.textContent;
@@ -320,12 +326,14 @@ describe("RASLoginPage", () => {
       sections: loginContent.sections.map((section) => {
         if (section.id !== "ras-login") return section;
 
-        const { content, accordions, ...sectionMetadata } = section;
+        const accordionGroup = section.content.find((item) =>
+          item.accordions);
+        const contentBlocks = section.content.filter((item) =>
+          !item.accordions);
 
         return {
-          ...sectionMetadata,
-          accordions,
-          content,
+          ...section,
+          content: [accordionGroup, ...contentBlocks],
         };
       }),
     };
@@ -394,7 +402,7 @@ describe("RASLoginPage", () => {
       .toBe("noopener noreferrer");
   });
 
-  it("renders contentBox content in YAML key order", () => {
+  it("renders contentBox content groups and accordions in content order", () => {
     renderPage();
 
     let renderedText = container.textContent;
@@ -406,12 +414,25 @@ describe("RASLoginPage", () => {
       sections: loginContent.sections.map((section) => {
         if (section.id !== "request-access") return section;
 
-        const { accordions, content, ...sectionMetadata } = section;
+        const accordionGroup = section.content.find((item) =>
+          item.accordions);
+        const documentationGroup = section.content.find((item) =>
+          item.title === "Documentation");
 
         return {
-          ...sectionMetadata,
-          content,
-          accordions,
+          ...section,
+          content: [
+            {
+              title: "Before Accordions",
+              content: [
+                {
+                  paragraph: "Before accordion text.",
+                },
+              ],
+            },
+            accordionGroup,
+            documentationGroup,
+          ],
         };
       }),
     };
@@ -419,8 +440,10 @@ describe("RASLoginPage", () => {
     renderPage(contentBeforeAccordions);
 
     renderedText = container.textContent;
-    expect(renderedText.indexOf("Documentation"))
+    expect(renderedText.indexOf("Before accordion text."))
       .toBeLessThan(renderedText.indexOf("Access Requirements"));
+    expect(renderedText.indexOf("Instructions to Request Access"))
+      .toBeLessThan(renderedText.indexOf("Documentation"));
   });
 
   it("uses the shared accordion styling for contentBox accordions", () => {
@@ -454,20 +477,32 @@ describe("RASLoginPage", () => {
         if (section.id === "ras-login") {
           return {
             ...section,
-            accordions: section.accordions.map((accordion, index) =>
-              (index === 0
-                ? { ...accordion, defaultOpen: true }
-                : accordion)),
+            content: section.content.map((item) =>
+              (item.accordions
+                ? {
+                  ...item,
+                  accordions: item.accordions.map((accordion, index) =>
+                    (index === 0
+                      ? { ...accordion, defaultOpen: true }
+                      : accordion)),
+                }
+                : item)),
           };
         }
 
         if (section.id === "request-access") {
           return {
             ...section,
-            accordions: section.accordions.map((accordion) =>
-              (accordion.title === "Instructions to Request Access"
-                ? { ...accordion, defaultOpen: true }
-                : accordion)),
+            content: section.content.map((item) =>
+              (item.accordions
+                ? {
+                  ...item,
+                  accordions: item.accordions.map((accordion) =>
+                    (accordion.title === "Instructions to Request Access"
+                      ? { ...accordion, defaultOpen: true }
+                      : accordion)),
+                }
+                : item)),
           };
         }
 
