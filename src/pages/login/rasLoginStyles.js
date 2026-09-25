@@ -119,7 +119,7 @@ const styles = (theme) => ({
     lineHeight: "150%",
     padding: "0 50px 18px 0",
     [theme.breakpoints.down("sm")]: {
-      paddingRight: 0,
+      paddingRight: 25,
     },
   },
   RightColumn: {
@@ -366,7 +366,7 @@ const styles = (theme) => ({
     maxWidth: "213px",
     height: "47px",
     display: "block",
-    margin: "57px auto 0",
+    margin: "43px auto 0",
   },
 
   LoginSectionHeader: {
