@@ -12,9 +12,9 @@ export const LOGIN_CONTENT_PATH = "/login/loginView.yaml";
 
 export const CONTENT_LOAD_NOTICE = "Some content could not be loaded.";
 export const CONTENT_LOAD_MESSAGE =
-  "The page is showing a saved local version because the remote content could not be reached.";
+  "A saved local version is being shown while the remote content is unavailable.";
 export const CONTENT_LOAD_DETAILS =
-  "You can still use the login button. Some page details may not include the latest updates.";
+  "You can still continue with login. Some details may be temporarily outdated.";
 
 export const RAS_LOGIN_UNAVAILABLE_MESSAGE =
   "RAS login is temporarily unavailable because it is not configured.";

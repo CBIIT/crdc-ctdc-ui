@@ -68,7 +68,7 @@ sections:
                       - "State-issued ID"
                       - "U.S. passport"
               - paragraph: "$$%space%$$"
-              - paragraph: "Before selecting Log in with NIH Research Auth Service (RAS), please gather the required information, identification, and devices. For more information, see the Login.gov Identity Verification Guidelines or the Login.gov Help Center."
+              - paragraph: "Before selecting Log in with NIH Researcher Auth Service (RAS), please gather the required information, identification, and devices. For more information, see the Login.gov Identity Verification Guidelines or the Login.gov Help Center."
           - title: eRA linking note
             blocks:
               - paragraph: "Linking happens only on the RAS Linked Identities page during sign-in; the linking session is short and may require reauthentication; CTDC does not link accounts on its side."

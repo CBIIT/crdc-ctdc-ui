@@ -316,9 +316,9 @@ describe("RASLoginPage", () => {
 
   it("renders content load notices without blocking the login button", () => {
     renderPage(loginContent, "https://ras.example.org/authorize", {
-      notice: "Some content could not be loaded..",
+      notice: "Some content could not be loaded.",
       message:
-        "The page is showing a saved local version because the remote content could not be reached.",
+        "A saved local version is being shown while the remote content is unavailable.",
       details:
         "You can still use the login button. Some page details may not include the latest updates.",
     });
@@ -329,9 +329,9 @@ describe("RASLoginPage", () => {
     expect(loginButton).not.toBeUndefined();
     expect(loginButton.disabled).toBe(false);
     expect(notice).not.toBeNull();
-    expect(notice.textContent).toContain("Some content could not be loaded..");
+    expect(notice.textContent).toContain("Some content could not be loaded.");
     expect(notice.textContent).toContain(
-      "The page is showing a saved local version because the remote content could not be reached.",
+      "A saved local version is being shown while the remote content is unavailable.",
     );
     expect(notice.textContent).not.toContain(
       "You can still use the login button. Some page details may not include the latest updates.",

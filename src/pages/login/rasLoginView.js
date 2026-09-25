@@ -109,7 +109,7 @@ function ContentLoadNotice({ classes, contentLoadError, onDismiss }) {
   const notice = contentLoadError.notice ||
     "Some content could not be loaded.";
   const message = contentLoadError.message ||
-    "The page is showing a saved local version because the remote content could not be reached.";
+    "A saved local version is being shown while the remote content is unavailable.";
 
   return (
     <Box className={classes.ContentLoadNotice} role="alert">
