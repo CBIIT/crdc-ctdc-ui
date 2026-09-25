@@ -4,9 +4,9 @@ import axios from "axios";
 import env from "../../utils/env";
 import RASLoginPage from "./rasLoginView";
 
-const LOGIN_CONTENT_URL = env.REACT_APP_LOGIN_CONTENT_URL;
-const RAS_AUTHORIZE_URL = env.REACT_APP_RAS_AUTHORIZE_URL;
 const LOCAL_LOGIN_CONTENT_URL = "/local-static-content/login/loginView.yaml";
+const LOGIN_CONTENT_FILE = "loginView.yaml";
+const LOGIN_CONTENT_PATH = "/login/loginView.yaml";
 
 function isTemplateValue(value) {
   return typeof value === "string" && /^\$\{[^}]+\}$/.test(value);
@@ -17,7 +17,13 @@ function getLoginContentUrl() {
     return LOCAL_LOGIN_CONTENT_URL;
   }
 
-  return LOGIN_CONTENT_URL;
+  const staticContentUrl = env.REACT_APP_STATIC_CONTENT_URL;
+
+  if (!staticContentUrl || isTemplateValue(staticContentUrl)) {
+    return staticContentUrl;
+  }
+
+  return `${staticContentUrl.replace(/\/+$/, "")}${LOGIN_CONTENT_PATH}`;
 }
 
 function resolveUrl(url, baseUrl) {
@@ -74,27 +80,117 @@ function resolveLoginContent(content = {}, baseUrl) {
   };
 }
 
+function getContentLoadError(fetchError, loginContentUrl) {
+  if (!loginContentUrl || isTemplateValue(loginContentUrl)) {
+    return {
+      title: "Login page content is not configured.",
+      message:
+        "The login page cannot load because the static content URL is missing or unresolved.",
+      details:
+        "Set REACT_APP_STATIC_CONTENT_URL to the static-content repository base URL. The frontend will load login content from /login/loginView.yaml. In local development, confirm the local static-content proxy is serving login/loginView.yaml.",
+    };
+  }
+
+  if (fetchError && fetchError.response) {
+    return {
+      title: "Login page content could not be loaded.",
+      message:
+        `The request for ${LOGIN_CONTENT_FILE} failed with HTTP status ${fetchError.response.status}.`,
+      details:
+        "Confirm the content file exists, the URL is reachable, and the static-content branch is deployed.",
+    };
+  }
+
+  if (fetchError && fetchError.name === "YAMLException") {
+    return {
+      title: "Login page content is not valid YAML.",
+      message:
+        `The ${LOGIN_CONTENT_FILE} file was found, but the frontend could not parse it.`,
+      details:
+        "Check the YAML indentation, list formatting, and quoted values in the login content file.",
+    };
+  }
+
+  return {
+    title: "Login page content could not be loaded.",
+    message:
+      `The frontend could not load ${LOGIN_CONTENT_FILE} from the configured content source.`,
+    details:
+      "Refresh the page. If the problem continues, confirm the content URL is reachable and the YAML file is valid.",
+  };
+}
+
+function validateLoginContent(content) {
+  if (!content || typeof content !== "object" || Array.isArray(content)) {
+    throw new Error("loginView.yaml must contain a YAML object.");
+  }
+}
+
+function LoginContentError({ error }) {
+  if (!error) return null;
+
+  return (
+    <div
+      role="alert"
+      style={{
+        margin: "48px auto",
+        maxWidth: "760px",
+        padding: "24px",
+        border: "2px solid #BA1F40",
+        borderRadius: "8px",
+        backgroundColor: "#FFF7F8",
+        color: "#000",
+        fontFamily: "Roboto, Arial, sans-serif",
+        lineHeight: 1.5,
+      }}
+    >
+      <h1
+        style={{
+          margin: "0 0 12px",
+          color: "#BA1F40",
+          fontSize: "24px",
+          lineHeight: 1.25,
+        }}
+      >
+        {error.title}
+      </h1>
+      <p style={{ margin: "0 0 8px" }}>{error.message}</p>
+      <p style={{ margin: "0 0 8px" }}>{error.details}</p>
+      {error.url && (
+        <p style={{ margin: 0 }}>
+          Attempted content URL: <code>{error.url}</code>
+        </p>
+      )}
+    </div>
+  );
+}
+
 const RASLoginController = () => {
   const [content, setContent] = useState();
-  const [error, setError] = useState(false);
+  const [error, setError] = useState();
 
   useEffect(() => {
     const fetchLoginContent = async () => {
       const loginContentUrl = getLoginContentUrl();
 
       if (!loginContentUrl || isTemplateValue(loginContentUrl)) {
-        setError(true);
+        setError(getContentLoadError(null, loginContentUrl));
         return;
       }
 
       try {
         const result = await axios.get(loginContentUrl);
+        const parsedContent = yaml.safeLoad(result.data);
+        validateLoginContent(parsedContent);
         setContent(
-          resolveLoginContent(yaml.safeLoad(result.data), loginContentUrl),
+          resolveLoginContent(parsedContent, loginContentUrl),
         );
       } catch (fetchError) {
         console.error("Error loading loginView.yaml:", fetchError);
-        setError(true);
+        setError({
+          ...getContentLoadError(fetchError, loginContentUrl),
+          url: loginContentUrl,
+        });
       }
     };
 
@@ -102,7 +198,7 @@ const RASLoginController = () => {
   }, []);
 
   if (error) {
-    return <div>Error in Loading loginView.yaml.</div>;
+    return <LoginContentError error={error} />;
   }
 
   if (!content) {
@@ -112,7 +208,7 @@ const RASLoginController = () => {
   return (
     <RASLoginPage
       content={content}
-      rasAuthorizeUrl={RAS_AUTHORIZE_URL}
+      rasAuthorizeUrl={env.REACT_APP_RAS_AUTHORIZE_URL}
     />
   );
 };

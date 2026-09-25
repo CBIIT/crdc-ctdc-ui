@@ -306,7 +306,7 @@ const styles = (theme) => ({
     fontSize: "24px",
     fontWeight: 700,
     color: "#8BEAFB",
-    marginBottom: "5px",
+    marginBottom: "20px",
     lineHeight: "112%",
     letterSpacing: "-2%",
   },
@@ -345,7 +345,6 @@ const styles = (theme) => ({
     height: "auto",
   },
   ContactSection: {
-    marginTop: "40px",
     padding: "0px 10px",
   },
   ContactButton: {
@@ -367,7 +366,7 @@ const styles = (theme) => ({
     maxWidth: "213px",
     height: "47px",
     display: "block",
-    margin: "26px auto 0",
+    margin: "57px auto 0",
   },
 
   LoginSectionHeader: {
