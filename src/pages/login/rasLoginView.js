@@ -19,15 +19,21 @@ import {
   WarningNotice,
 } from "./components/LoginSections";
 
+const RENDERABLE_SECTION_TYPES = ["rasLogin", "contentBox"];
+
 function getLoginSections(loginContent) {
   return Array.isArray(loginContent.sections) ? loginContent.sections : [];
 }
 
-function getSectionKey(section, index) {
+function getSectionKey(section = {}, index) {
   return section.id || `${section.type || "section"}-${index}`;
 }
 
-function getDefaultOpenAccordions(accordions = []) {
+function isRenderableSection(section) {
+  return Boolean(section && RENDERABLE_SECTION_TYPES.includes(section.type));
+}
+
+function getInitiallyOpenAccordions(accordions = []) {
   // Accordions are closed by default unless the YAML explicitly sets
   // defaultOpen: true. Non-collapsible rows render open outside this map.
   const accordionList = Array.isArray(accordions) ? accordions : [];
@@ -48,22 +54,22 @@ function getDefaultOpenAccordions(accordions = []) {
   }, {});
 }
 
-function getDefaultOpenSectionAccordions(sections) {
+function getInitiallyOpenSectionAccordions(sections) {
   return sections.reduce((openSections, section, index) => {
-    if (section.type !== "rasLogin" && section.type !== "contentBox") {
+    if (!isRenderableSection(section)) {
       return openSections;
     }
 
     return {
       ...openSections,
-      [getSectionKey(section, index)]: getDefaultOpenAccordions(
+      [getSectionKey(section, index)]: getInitiallyOpenAccordions(
         getSectionAccordions(section),
       ),
     };
   }, {});
 }
 
-function getDefaultOpenWarning(warning) {
+function getInitiallyOpenWarning(warning) {
   return Boolean(warning && warning.defaultOpen === true);
 }
 
@@ -97,6 +103,34 @@ function hasHelpContent(help) {
   );
 }
 
+function ContentLoadNotice({ classes, contentLoadError, onDismiss }) {
+  if (!contentLoadError) return null;
+
+  const notice = contentLoadError.notice ||
+    "Some login-page content could not be loaded.";
+  const message = contentLoadError.message ||
+    "We are showing a saved version of this login page so you can continue.";
+
+  return (
+    <Box className={classes.ContentLoadNotice} role="alert">
+      <Typography
+        component="p"
+        className={classes.ContentLoadNoticeText}
+      >
+        <strong>{notice}</strong> {message}
+      </Typography>
+      <button
+        type="button"
+        className={classes.ContentLoadNoticeDismiss}
+        aria-label="Dismiss content load notice"
+        onClick={onDismiss}
+      >
+        ×
+      </button>
+    </Box>
+  );
+}
+
 function RASLoginPage(props) {
   const {
     classes,
@@ -118,18 +152,24 @@ function RASLoginPage(props) {
     [loginContent],
   );
   const [sectionAccordionsOpen, setSectionAccordionsOpen] = useState(() =>
-    getDefaultOpenSectionAccordions(sections));
+    getInitiallyOpenSectionAccordions(sections));
   const [warningOpen, setWarningOpen] = useState(() =>
-    getDefaultOpenWarning(warning));
+    getInitiallyOpenWarning(warning));
   const [videoPlaying, setVideoPlaying] = useState(false);
+  const [contentNoticeDismissed, setContentNoticeDismissed] =
+    useState(false);
 
   useEffect(() => {
-    setSectionAccordionsOpen(getDefaultOpenSectionAccordions(sections));
+    setSectionAccordionsOpen(getInitiallyOpenSectionAccordions(sections));
   }, [sections]);
 
   useEffect(() => {
-    setWarningOpen(getDefaultOpenWarning(warning));
+    setWarningOpen(getInitiallyOpenWarning(warning));
   }, [warning]);
+
+  useEffect(() => {
+    setContentNoticeDismissed(false);
+  }, [contentLoadError]);
 
   const toggleSectionAccordion = (sectionKey, index) => {
     setSectionAccordionsOpen((openAccordions) => ({
@@ -145,35 +185,15 @@ function RASLoginPage(props) {
 
   return (
     <div className={classes.Container}>
-      <LoginHero classes={classes} assets={assets} hero={hero} />
-
-      {contentLoadError && (
-        <Box className={classes.ContentLoadNotice} role="alert">
-          <Typography
-            component="p"
-            className={classes.ContentLoadNoticeTitle}
-          >
-            {contentLoadError.notice ||
-              "Some login-page content could not be loaded."}
-          </Typography>
-          {contentLoadError.message && (
-            <Typography
-              component="p"
-              className={classes.ContentLoadNoticeText}
-            >
-              {contentLoadError.message}
-            </Typography>
-          )}
-          {contentLoadError.details && (
-            <Typography
-              component="p"
-              className={classes.ContentLoadNoticeText}
-            >
-              {contentLoadError.details}
-            </Typography>
-          )}
-        </Box>
+      {!contentNoticeDismissed && (
+        <ContentLoadNotice
+          classes={classes}
+          contentLoadError={contentLoadError}
+          onDismiss={() => setContentNoticeDismissed(true)}
+        />
       )}
+
+      <LoginHero classes={classes} assets={assets} hero={hero} />
 
       <Grid container className={classes.ContentWrapper}>
         <Grid container className={classes.ColumnContainer}>
@@ -181,10 +201,7 @@ function RASLoginPage(props) {
             {sections.map((section, index) => {
               const sectionKey = getSectionKey(section, index);
 
-              if (
-                section.type === "rasLogin" ||
-                section.type === "contentBox"
-              ) {
+              if (isRenderableSection(section)) {
                 return (
                   <LoginSectionBox
                     key={sectionKey}

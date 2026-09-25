@@ -209,7 +209,7 @@ function renderBentoToken(token, linkIcon, classes, keyPrefix) {
 }
 
 function renderInlineContent(text, linkIcon, classes, keyPrefix) {
-  const pattern = /(\$\$([\s\S]*?)\$\$|\[([^\]]+)\]\(([^)]+)\)|\*\*([^*]+)\*\*|\*([^*]+)\*)/g;
+  const pattern = /\$\$([\s\S]*?)\$\$/g;
   const nodes = [];
   let lastIndex = 0;
   let match;
@@ -219,39 +219,14 @@ function renderInlineContent(text, linkIcon, classes, keyPrefix) {
       nodes.push(text.slice(lastIndex, match.index));
     }
 
-    if (match[2]) {
-      nodes.push(
-        renderBentoToken(
-          match[2],
-          linkIcon,
-          classes,
-          `${keyPrefix}-bento-${match.index}`,
-        ),
-      );
-    } else if (match[3] && match[4]) {
-      nodes.push(
-        renderLink({
-          href: match[4],
-          label: match[3],
-          target: "_blank",
-          linkIcon,
-          classes,
-          keyPrefix: `${keyPrefix}-link-${match.index}`,
-        }),
-      );
-    } else if (match[5]) {
-      nodes.push(
-        <strong key={`${keyPrefix}-strong-${match.index}`}>
-          {match[5]}
-        </strong>,
-      );
-    } else if (match[6]) {
-      nodes.push(
-        <em key={`${keyPrefix}-em-${match.index}`}>
-          {match[6]}
-        </em>,
-      );
-    }
+    nodes.push(
+      renderBentoToken(
+        match[1],
+        linkIcon,
+        classes,
+        `${keyPrefix}-bento-${match.index}`,
+      ),
+    );
 
     lastIndex = pattern.lastIndex;
   }
@@ -411,16 +386,6 @@ function renderTableCellContent({
   keyPrefix,
 }) {
   const text = value === undefined || value === null ? "" : String(value);
-  const link = parseContentLink(text);
-
-  if (link) {
-    return renderLink({
-      ...link,
-      linkIcon,
-      classes,
-      keyPrefix,
-    });
-  }
 
   return renderInlineContent(text, linkIcon, classes, keyPrefix);
 }

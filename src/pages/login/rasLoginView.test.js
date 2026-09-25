@@ -210,7 +210,10 @@ const loginContent = {
             {
               body: [
                 {
-                  row: ["RAS help", "[RAS Help](https://example.org/ras)"],
+                  row: [
+                    "RAS help",
+                    "$$[RAS Help](https://example.org/ras)$$",
+                  ],
                 },
               ],
             },
@@ -261,6 +264,10 @@ describe("RASLoginPage", () => {
     });
   };
 
+  const getButtonByText = (text) =>
+    Array.from(container.querySelectorAll("button")).find((button) =>
+      button.textContent.includes(text));
+
   beforeEach(() => {
     container = document.createElement("div");
     document.body.appendChild(container);
@@ -275,7 +282,9 @@ describe("RASLoginPage", () => {
   it("renders the configured RAS login button", () => {
     renderPage();
 
-    const loginButton = container.querySelector("button");
+    const loginButton = getButtonByText("Login with RAS");
+
+    expect(loginButton).not.toBeUndefined();
     expect(loginButton.disabled).toBe(false);
     expect(loginButton.textContent).toBe("Login with RAS");
     expect(container.querySelector('[role="alert"]')).toBeNull();
@@ -323,9 +332,10 @@ describe("RASLoginPage", () => {
       },
     );
 
-    const loginButton = container.querySelector("button");
+    const loginButton = getButtonByText("Login with RAS");
     const notice = container.querySelector('[role="alert"]');
 
+    expect(loginButton).not.toBeUndefined();
     expect(loginButton.disabled).toBe(false);
     expect(notice).not.toBeNull();
     expect(notice.textContent).toContain(
@@ -334,6 +344,20 @@ describe("RASLoginPage", () => {
     expect(notice.textContent).toContain(
       "We are showing a saved version of this login page so you can continue.",
     );
+    expect(notice.textContent).not.toContain(
+      "You can still use the login button. Some page details may not include the latest updates.",
+    );
+
+    act(() => {
+      Simulate.click(
+        container.querySelector(
+          '[aria-label="Dismiss content load notice"]',
+        ),
+      );
+    });
+
+    expect(container.querySelector('[role="alert"]')).toBeNull();
+    expect(getButtonByText("Login with RAS").disabled).toBe(false);
   });
 
   it("does not render empty optional areas for minimal fallback content", () => {
@@ -371,9 +395,10 @@ describe("RASLoginPage", () => {
   it("disables the RAS login button when the authorize URL is missing", () => {
     renderPage(loginContent, "   ");
 
-    const loginButton = container.querySelector("button");
+    const loginButton = getButtonByText("Login with RAS");
     const alert = container.querySelector('[role="alert"]');
 
+    expect(loginButton).not.toBeUndefined();
     expect(loginButton.disabled).toBe(true);
     expect(alert).not.toBeNull();
     expect(alert.textContent).toContain(
@@ -387,8 +412,9 @@ describe("RASLoginPage", () => {
       "{REACT_APP_RAS_AUTHORIZE_URL}",
     ].join(""));
 
-    const loginButton = container.querySelector("button");
+    const loginButton = getButtonByText("Login with RAS");
 
+    expect(loginButton).not.toBeUndefined();
     expect(loginButton.disabled).toBe(true);
     expect(container.querySelector('[role="alert"]')).not.toBeNull();
   });

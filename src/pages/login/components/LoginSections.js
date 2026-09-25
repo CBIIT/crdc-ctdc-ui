@@ -42,6 +42,30 @@ export function LoginHero({ classes, assets, hero }) {
   );
 }
 
+function LoginBlocks({
+  blocks,
+  classes,
+  externalLinkIcon,
+  paragraphClassName,
+  orderedListClassName,
+  alphaOrderedListClassName,
+  unorderedListClassName,
+}) {
+  return (
+    <LoginMarkdownContent
+      blocks={blocks}
+      classes={classes}
+      paragraphClassName={paragraphClassName}
+      orderedListClassName={orderedListClassName || classes.orderedListNumeric}
+      alphaOrderedListClassName={
+        alphaOrderedListClassName || classes.orderedListAlpha
+      }
+      unorderedListClassName={unorderedListClassName}
+      linkIcon={externalLinkIcon}
+    />
+  );
+}
+
 export function LoginAccordionList({
   classes,
   accordions,
@@ -125,13 +149,11 @@ function LoginAccordionItem({
 
       {itemIsOpen && (
         <Box className={classes.AccordionText}>
-          <LoginMarkdownContent
+          <LoginBlocks
             blocks={item.blocks}
             classes={classes}
-            orderedListClassName={classes.orderedListNumeric}
-            alphaOrderedListClassName={classes.orderedListAlpha}
             unorderedListClassName={classes.nestedList}
-            linkIcon={externalLinkIcon}
+            externalLinkIcon={externalLinkIcon}
           />
         </Box>
       )}
@@ -156,12 +178,10 @@ function LoginContentBlock({
           {item.title}
         </Typography>
       )}
-      <LoginMarkdownContent
+      <LoginBlocks
         blocks={item.blocks}
         classes={classes}
-        orderedListClassName={classes.orderedListNumeric}
-        alphaOrderedListClassName={classes.orderedListAlpha}
-        linkIcon={externalLinkIcon}
+        externalLinkIcon={externalLinkIcon}
       />
     </Box>
   );
@@ -177,6 +197,10 @@ function getValidAuthorizeUrl(rasAuthorizeUrl) {
   }
 
   try {
+    if (/^https?:\/\/\S+/i.test(trimmedUrl)) {
+      return trimmedUrl;
+    }
+
     const baseUrl = typeof window !== "undefined"
       ? window.location.href
       : "https://example.org";
@@ -192,7 +216,7 @@ function getValidAuthorizeUrl(rasAuthorizeUrl) {
   }
 }
 
-function RasLoginAction({ classes, buttonText, rasAuthorizeUrl }) {
+function RasLoginButton({ classes, buttonText, rasAuthorizeUrl }) {
   const validAuthorizeUrl = getValidAuthorizeUrl(rasAuthorizeUrl);
   const isConfigured = Boolean(validAuthorizeUrl);
 
@@ -222,7 +246,7 @@ function RasLoginAction({ classes, buttonText, rasAuthorizeUrl }) {
   );
 }
 
-function LoginContentSection({
+function LoginSectionContentRow({
   classes,
   item,
   action,
@@ -268,7 +292,7 @@ function removeRasButtonTextBlocks(blocks = []) {
     ));
 }
 
-function createBlocksItem(blocks, extraFields = {}) {
+function createBlocksRenderItem(blocks, extraFields = {}) {
   return {
     type: "blocks",
     item: {
@@ -278,14 +302,14 @@ function createBlocksItem(blocks, extraFields = {}) {
   };
 }
 
-function createAccordionGroup(accordions) {
+function createAccordionRenderItem(accordions) {
   return {
     type: "accordions",
     accordions: Array.isArray(accordions) ? accordions : [],
   };
 }
 
-function isBlockGroup(item) {
+function isNestedBlockGroup(item) {
   return Boolean(
     item &&
       !Array.isArray(item.accordions) &&
@@ -296,27 +320,27 @@ function isBlockGroup(item) {
 // Section blocks are the display sequence: plain blocks are batched together,
 // nested block groups render as separate text sections, and accordion groups
 // render through the shared accordion list.
-function getBlockItems(blocks = []) {
-  const blockItems = [];
+function getSectionRenderItemsFromBlocks(blocks = []) {
+  const renderItems = [];
   let pendingBlocks = [];
 
   const pushPendingBlocks = () => {
     if (pendingBlocks.length === 0) return;
 
-    blockItems.push(createBlocksItem(pendingBlocks));
+    renderItems.push(createBlocksRenderItem(pendingBlocks));
     pendingBlocks = [];
   };
 
   blocks.forEach((item) => {
     if (item && Array.isArray(item.accordions)) {
       pushPendingBlocks();
-      blockItems.push(createAccordionGroup(item.accordions));
+      renderItems.push(createAccordionRenderItem(item.accordions));
       return;
     }
 
-    if (isBlockGroup(item)) {
+    if (isNestedBlockGroup(item)) {
       pushPendingBlocks();
-      blockItems.push(createBlocksItem(item.blocks || [], {
+      renderItems.push(createBlocksRenderItem(item.blocks || [], {
         title: item.title,
       }));
       return;
@@ -327,17 +351,17 @@ function getBlockItems(blocks = []) {
 
   pushPendingBlocks();
 
-  return blockItems;
+  return renderItems;
 }
 
-function getSectionItems(section) {
+function getSectionRenderItems(section) {
   // Section.blocks is the only editable display sequence for a section.
   // Duplicate sibling blocks keys are invalid YAML and are rejected upstream.
-  return getBlockItems(section.blocks);
+  return getSectionRenderItemsFromBlocks(section.blocks);
 }
 
 export function getSectionAccordions(section) {
-  return getSectionItems(section).flatMap((item) =>
+  return getSectionRenderItems(section).flatMap((item) =>
     (item.type === "accordions" ? item.accordions : []));
 }
 
@@ -371,7 +395,7 @@ export function LoginSectionBox({
   arrowClosedIcon,
   externalLinkIcon,
 }) {
-  const sectionItems = getSectionItems(section);
+  const sectionItems = getSectionRenderItems(section);
   let actionRendered = false;
   let accordionStartIndex = 0;
 
@@ -402,7 +426,7 @@ export function LoginSectionBox({
             !actionRendered;
           const action = shouldRenderAction
             ? (
-              <RasLoginAction
+              <RasLoginButton
                 classes={classes}
                 buttonText={rasButtonText}
                 rasAuthorizeUrl={rasAuthorizeUrl}
@@ -421,7 +445,7 @@ export function LoginSectionBox({
           }
 
           return (
-            <LoginContentSection
+            <LoginSectionContentRow
               key={`blocks-${sectionItemIndex}`}
               classes={classes}
               item={contentItem}
@@ -492,11 +516,11 @@ export function WarningNotice({
           }`}
           {...toggleProps}
         >
-          <LoginMarkdownContent
+          <LoginBlocks
             blocks={warning.blocks}
             classes={classes}
             paragraphClassName={warningTextClassName}
-            linkIcon={externalLinkIcon}
+            externalLinkIcon={externalLinkIcon}
           />
           {warningIsCollapsible && (
             <ToggleArrow
@@ -511,6 +535,142 @@ export function WarningNotice({
   );
 }
 
+function SidebarTitle({ classes, title }) {
+  if (!title) return null;
+
+  return (
+    <Typography
+      variant="h3"
+      component="h3"
+      className={classes.SidebarTitle}
+    >
+      {title}
+    </Typography>
+  );
+}
+
+function HelpBlocksSection({ classes, blocks, externalLinkIcon }) {
+  return (
+    <LoginBlocks
+      blocks={blocks}
+      classes={classes}
+      paragraphClassName={classes.SidebarText}
+      externalLinkIcon={externalLinkIcon}
+    />
+  );
+}
+
+function TutorialVideo({
+  classes,
+  assets,
+  tutorial,
+  videoPlaying,
+  onPlayVideo,
+}) {
+  if (!tutorial.videoUrl) return null;
+
+  return (
+    <Box className={classes.VideoThumbnail}>
+      {videoPlaying ? (
+        <video
+          src={tutorial.videoUrl}
+          className={classes.VideoImage}
+          controls
+          autoPlay
+        >
+          <track kind="captions" />
+        </video>
+      ) : (
+        <>
+          <ContentImage
+            asset={getAsset(assets, "videoThumbnail")}
+            fallbackAlt="Tutorial Video"
+            className={classes.VideoImage}
+          />
+          <Box
+            className={classes.PlayOverlay}
+            role="button"
+            tabIndex={0}
+            aria-label={tutorial.playButtonAriaLabel}
+            onClick={onPlayVideo}
+            onKeyDown={handleActivation(onPlayVideo)}
+          >
+            <ContentImage
+              asset={getAsset(assets, "playIcon")}
+              fallbackAlt="Play"
+              className={classes.PlayIcon}
+            />
+          </Box>
+        </>
+      )}
+    </Box>
+  );
+}
+
+function HelpTutorialSection({
+  classes,
+  assets,
+  tutorial,
+  videoPlaying,
+  onPlayVideo,
+  externalLinkIcon,
+}) {
+  return (
+    <Box className={classes.TutorialSection}>
+      <SidebarTitle classes={classes} title={tutorial.title} />
+      <HelpBlocksSection
+        classes={classes}
+        blocks={tutorial.blocks}
+        externalLinkIcon={externalLinkIcon}
+      />
+      <TutorialVideo
+        classes={classes}
+        assets={assets}
+        tutorial={tutorial}
+        videoPlaying={videoPlaying}
+        onPlayVideo={onPlayVideo}
+      />
+    </Box>
+  );
+}
+
+function getContactButtonRel(contact, target) {
+  if (contact.rel) return contact.rel;
+
+  return target && target !== "_self" ? "noopener noreferrer" : undefined;
+}
+
+function HelpContactSection({
+  classes,
+  contact,
+  externalLinkIcon,
+}) {
+  const contactButtonTarget = contact.target || undefined;
+  const contactButtonRel = getContactButtonRel(contact, contactButtonTarget);
+
+  return (
+    <Box className={classes.ContactSection}>
+      <SidebarTitle classes={classes} title={contact.title} />
+      <HelpBlocksSection
+        classes={classes}
+        blocks={contact.blocks}
+        externalLinkIcon={externalLinkIcon}
+      />
+      {contact.buttonText && (
+        <Button
+          variant="outlined"
+          className={classes.ContactButton}
+          href={contact.href || undefined}
+          target={contactButtonTarget}
+          rel={contactButtonRel}
+        >
+          {contact.buttonText}
+        </Button>
+      )}
+    </Box>
+  );
+}
+
 export function HelpSidebar({
   classes,
   assets,
@@ -521,11 +681,6 @@ export function HelpSidebar({
   onPlayVideo,
   externalLinkIcon,
 }) {
-  const contactButtonTarget = contact.target || undefined;
-  const contactButtonRel = contact.rel ||
-    (contactButtonTarget && contactButtonTarget !== "_self"
-      ? "noopener noreferrer"
-      : undefined);
   const orderedComponents = getOrderedComponents(help, [
     // Help subareas intentionally follow YAML key order so editors can move
     // generic blocks above or below tutorial/contact without new components.
@@ -576,11 +731,10 @@ export function HelpSidebar({
           if (component.type === "blocks") {
             return (
               <Box key="blocks" className={classes.HelpContentSection}>
-                <LoginMarkdownContent
-                  blocks={help.blocks}
+                <HelpBlocksSection
                   classes={classes}
-                  paragraphClassName={classes.SidebarText}
-                  linkIcon={externalLinkIcon}
+                  blocks={help.blocks}
+                  externalLinkIcon={externalLinkIcon}
                 />
               </Box>
             );
@@ -588,92 +742,25 @@ export function HelpSidebar({
 
           if (component.type === "tutorial") {
             return (
-              <Box key="tutorial" className={classes.TutorialSection}>
-                {tutorial.title && (
-                  <Typography
-                    variant="h3"
-                    component="h3"
-                    className={classes.SidebarTitle}
-                  >
-                    {tutorial.title}
-                  </Typography>
-                )}
-                <LoginMarkdownContent
-                  blocks={tutorial.blocks}
-                  classes={classes}
-                  paragraphClassName={classes.SidebarText}
-                  linkIcon={externalLinkIcon}
-                />
-
-                {tutorial.videoUrl && (
-                  <Box className={classes.VideoThumbnail}>
-                    {videoPlaying ? (
-                      <video
-                        src={tutorial.videoUrl}
-                        className={classes.VideoImage}
-                        controls
-                        autoPlay
-                      >
-                        <track kind="captions" />
-                      </video>
-                    ) : (
-                      <>
-                        <ContentImage
-                          asset={getAsset(assets, "videoThumbnail")}
-                          fallbackAlt="Tutorial Video"
-                          className={classes.VideoImage}
-                        />
-                        <Box
-                          className={classes.PlayOverlay}
-                          role="button"
-                          tabIndex={0}
-                          aria-label={tutorial.playButtonAriaLabel}
-                          onClick={onPlayVideo}
-                          onKeyDown={handleActivation(onPlayVideo)}
-                        >
-                          <ContentImage
-                            asset={getAsset(assets, "playIcon")}
-                            fallbackAlt="Play"
-                            className={classes.PlayIcon}
-                          />
-                        </Box>
-                      </>
-                    )}
-                  </Box>
-                )}
-              </Box>
+              <HelpTutorialSection
+                key="tutorial"
+                classes={classes}
+                assets={assets}
+                tutorial={tutorial}
+                videoPlaying={videoPlaying}
+                onPlayVideo={onPlayVideo}
+                externalLinkIcon={externalLinkIcon}
+              />
             );
           }
 
           return (
-            <Box key="contact" className={classes.ContactSection}>
-              {contact.title && (
-                <Typography
-                  variant="h3"
-                  component="h3"
-                  className={classes.SidebarTitle}
-                >
-                  {contact.title}
-                </Typography>
-              )}
-              <LoginMarkdownContent
-                blocks={contact.blocks}
-                classes={classes}
-                paragraphClassName={classes.SidebarText}
-                linkIcon={externalLinkIcon}
-              />
-              {contact.buttonText && (
-                <Button
-                  variant="outlined"
-                  className={classes.ContactButton}
-                  href={contact.href || undefined}
-                  target={contactButtonTarget}
-                  rel={contactButtonRel}
-                >
-                  {contact.buttonText}
-                </Button>
-              )}
-            </Box>
+            <HelpContactSection
+              key="contact"
+              classes={classes}
+              contact={contact}
+              externalLinkIcon={externalLinkIcon}
+            />
           );
         })}
       </Box>

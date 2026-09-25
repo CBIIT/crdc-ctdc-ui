@@ -211,6 +211,24 @@ describe("LoginMarkdownContent", () => {
     expect(container.querySelectorAll("img.link-icon")).toHaveLength(3);
   });
 
+  it("leaves Markdown-style links and emphasis as literal text", () => {
+    renderContent({
+      blocks: [
+        {
+          paragraph:
+            "[Plain link](https://example.org) **plain bold** *plain italic*",
+        },
+      ],
+    });
+
+    expect(container.textContent).toContain(
+      "[Plain link](https://example.org) **plain bold** *plain italic*",
+    );
+    expect(container.querySelector("a")).toBeNull();
+    expect(container.querySelector("strong")).toBeNull();
+    expect(container.querySelector("em")).toBeNull();
+  });
+
   it("renders list variants, aliases, and nested list-only items", () => {
     renderContent({
       blocks: [
@@ -271,7 +289,7 @@ describe("LoginMarkdownContent", () => {
                 {
                   row: [
                     "RAS Help",
-                    "[RAS Help](https://example.org/ras-help)",
+                    "$$[RAS Help](https://example.org/ras-help)$$",
                   ],
                 },
                 {

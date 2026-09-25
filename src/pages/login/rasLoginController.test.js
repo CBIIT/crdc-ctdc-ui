@@ -65,8 +65,6 @@ jest.mock("./rasLoginView", () => {
           loginContent.sections[1].title,
         contentLoadError && contentLoadError.notice,
         contentLoadError && contentLoadError.message,
-        contentLoadError && contentLoadError.details,
-        contentLoadError && contentLoadError.url,
       ].filter(Boolean).join(" "),
     );
   };
@@ -184,7 +182,7 @@ describe("RASLoginController", () => {
     expect(container.textContent).toContain(
       "We are showing a saved version of this login page so you can continue.",
     );
-    expect(container.textContent).toContain(
+    expect(container.textContent).not.toContain(
       "You can still use the login button. Some page details may not include the latest updates.",
     );
     expect(console.error).toHaveBeenCalled();
@@ -252,6 +250,9 @@ describe("RASLoginController", () => {
       "Some login-page content could not be loaded.",
     );
     expect(container.textContent).toContain(
+      "We are showing a saved version of this login page so you can continue.",
+    );
+    expect(container.textContent).not.toContain(
       "You can still use the login button. Some page details may not include the latest updates.",
     );
   });

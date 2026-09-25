@@ -108,7 +108,7 @@ function resolveLoginContent(loginContent = {}, baseUrl, assetOverrides = {}) {
   };
 }
 
-function getContentLoadError(fetchError, loginContentUrl) {
+function createContentLoadError(fetchError, loginContentUrl) {
   if (!loginContentUrl || isTemplateValue(loginContentUrl)) {
     return {
       title: "Login page content is not configured.",
@@ -165,7 +165,7 @@ async function loadLoginContent(loginContentUrl, assetOverrides = {}) {
   );
 }
 
-async function loadBundledFallbackContent() {
+async function loadFallbackLoginContent() {
   try {
     return await loadLoginContent(
       FALLBACK_LOGIN_CONTENT_URL,
@@ -182,36 +182,48 @@ const RASLoginController = () => {
   const [contentLoadError, setContentLoadError] = useState();
 
   useEffect(() => {
+    let isMounted = true;
+
+    const updateLoginPage = (content, loadError) => {
+      if (!isMounted) return;
+
+      setLoginContent(content);
+      setContentLoadError(loadError || null);
+    };
+
     const fetchLoginContent = async () => {
       const loginContentUrl = getLoginContentUrl();
 
       if (!loginContentUrl || isTemplateValue(loginContentUrl)) {
-        const loadError = getContentLoadError(null, loginContentUrl);
-        const fallbackContent = await loadBundledFallbackContent();
+        const loadError = createContentLoadError(null, loginContentUrl);
+        const fallbackContent = await loadFallbackLoginContent();
 
         console.error("Error loading loginView.yaml:", loadError);
-        setLoginContent(fallbackContent);
-        setContentLoadError(loadError);
+        updateLoginPage(fallbackContent, loadError);
         return;
       }
 
       try {
-        setLoginContent(await loadLoginContent(loginContentUrl));
-        setContentLoadError();
+        const loadedContent = await loadLoginContent(loginContentUrl);
+
+        updateLoginPage(loadedContent);
       } catch (fetchError) {
         const loadError = {
-          ...getContentLoadError(fetchError, loginContentUrl),
+          ...createContentLoadError(fetchError, loginContentUrl),
           url: loginContentUrl,
         };
-        const fallbackContent = await loadBundledFallbackContent();
+        const fallbackContent = await loadFallbackLoginContent();
 
         console.error("Error loading loginView.yaml:", fetchError);
-        setLoginContent(fallbackContent);
-        setContentLoadError(loadError);
+        updateLoginPage(fallbackContent, loadError);
       }
     };
 
     fetchLoginContent();
+
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   if (!loginContent) {
