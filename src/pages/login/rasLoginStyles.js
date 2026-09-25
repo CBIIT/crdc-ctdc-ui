@@ -1,3 +1,8 @@
+/**
+ * Presentation styles for the YAML-driven RAS login page.
+ * Keep content/schema decisions in the renderer files; this file only controls
+ * responsive layout, typography, spacing, and shared visual treatment.
+ */
 const styles = (theme) => ({
   Container: {
     background:
@@ -88,7 +93,6 @@ const styles = (theme) => ({
     alignSelf: "stretch",
     width: "100%",
     borderTop: "1px solid #8A8A8A",
-    margin: "25px 0",
   },
   AccordionItem: {
     width: "100%",

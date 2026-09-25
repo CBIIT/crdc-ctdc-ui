@@ -1,3 +1,9 @@
+/**
+ * Structured block renderer for loginView.yaml copy.
+ * Purpose: support the CTDC About-page block vocabulary on the login page
+ * without requiring Markdown or HTML in content fields.
+ * Assumption: callers pass the blocks arrays defined in loginView.yaml.
+ */
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import ContentImage from "./ContentImage";
@@ -45,6 +51,8 @@ function isInternalHref(href) {
 }
 
 function parseContentLink(value) {
+  // Links use Bento-style tokens such as $$[Label](url:/#/path target:_self)$$
+  // so editors can control same-tab behavior and outbound icons declaratively.
   const standardMatch = value.match(/^\[([^\]]+)\]\((.*)\)$/);
   const reversedMatch = value.match(/^\((.*)\)\[([^\]]+)\]$/);
 
@@ -535,6 +543,8 @@ function renderStructuredBlock({
   linkIcon,
   keyPrefix = "block",
 }) {
+  // Keep block support aligned with the existing About-page content format.
+  // Unknown block keys are ignored so a typo does not crash the login page.
   if (typeof block === "string") {
     return (
       <Typography

@@ -1,3 +1,8 @@
+/**
+ * Shared keyboard-accessible toggle header for login accordions and notices.
+ * Assumption: open/closed icon assets come from loginView.yaml and may be
+ * omitted; ContentImage handles missing assets safely.
+ */
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
 import ContentImage from "./ContentImage";

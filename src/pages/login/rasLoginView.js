@@ -1,4 +1,10 @@
-// RAS (NIH Researcher Auth Service) login page
+/**
+ * RAS (NIH Researcher Auth Service) login page shell.
+ * Purpose: hold UI state for YAML-driven sections, warning disclosure, and
+ * tutorial playback while keeping editable copy in loginView.yaml.
+ * Assumptions: section order, accordion order, and Help panel order come from
+ * the YAML; this file should not hard-code page copy.
+ */
 import React, { useEffect, useMemo, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Grid } from "@material-ui/core";
@@ -21,6 +27,8 @@ function getSectionKey(section, index) {
 }
 
 function getDefaultOpenAccordions(accordions = []) {
+  // Accordions are closed by default unless the YAML explicitly sets
+  // defaultOpen: true. Non-collapsible rows render open outside this map.
   const accordionList = Array.isArray(accordions) ? accordions : [];
 
   return accordionList.reduce((openAccordions, accordion, index) => {

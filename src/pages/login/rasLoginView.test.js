@@ -1,3 +1,8 @@
+/**
+ * Integration coverage for rendering the normalized loginView.yaml payload.
+ * These tests document ordering, section-level RAS button behavior, accordions,
+ * warning disclosure behavior, Help panel order, and contact links.
+ */
 import React from "react";
 import ReactDOM from "react-dom";
 import { act, Simulate } from "react-dom/test-utils";
@@ -29,15 +34,19 @@ const loginContent = {
       id: "ras-login",
       type: "rasLogin",
       title: "Log in with NIH Research Auth Service (RAS)",
+      buttonText: "Login with RAS",
       blocks: [
         {
-          paragraph:
-            "Before accessing CTDC data, you may be required to verify your identity.",
-          buttonText: "Login with RAS",
-        },
-        {
-          paragraph:
-            "If you already have a CTDC account, you must complete identity verification.",
+          blocks: [
+            {
+              paragraph:
+                "Before accessing CTDC data, you may be required to verify your identity.",
+            },
+            {
+              paragraph:
+                "If you already have a CTDC account, you must complete identity verification.",
+            },
+          ],
         },
         {
           paragraph:
@@ -137,6 +146,18 @@ const loginContent = {
                 "$$[Same tab documentation](target:_self url:/documentation)$$",
                 "$$" +
                   "{link:https://example.org/download.pdf,title:Download Guide}$$",
+              ],
+            },
+          ],
+        },
+        {
+          blocks: [
+            {
+              paragraph: "Untitled grouped request access copy.",
+            },
+            {
+              listWithDots: [
+                "Grouped request access bullet.",
               ],
             },
           ],
@@ -313,31 +334,31 @@ describe("RASLoginPage", () => {
       .toBeLessThan(renderedText.indexOf("Creating Accounts"));
   });
 
-  it("renders RAS content and accordions in content order", () => {
+  it("renders RAS blocks and accordions in block order", () => {
     renderPage();
 
     let renderedText = container.textContent;
     expect(renderedText.indexOf("Before accessing CTDC data"))
       .toBeLessThan(renderedText.indexOf("How to sign in"));
 
-    const rasContentAfterAccordions = {
+    const rasBlocksAfterAccordions = {
       ...loginContent,
       sections: loginContent.sections.map((section) => {
         if (section.id !== "ras-login") return section;
 
         const accordionGroup = section.blocks.find((item) =>
           item.accordions);
-        const contentBlocks = section.blocks.filter((item) =>
+        const nonAccordionBlocks = section.blocks.filter((item) =>
           !item.accordions);
 
         return {
           ...section,
-          blocks: [accordionGroup, ...contentBlocks],
+          blocks: [accordionGroup, ...nonAccordionBlocks],
         };
       }),
     };
 
-    renderPage(rasContentAfterAccordions);
+    renderPage(rasBlocksAfterAccordions);
 
     renderedText = container.textContent;
     expect(renderedText.indexOf("How to sign in"))
@@ -345,7 +366,7 @@ describe("RASLoginPage", () => {
   });
 
   it("renders Help panel components in YAML key order", () => {
-    const helpContentAfterContact = {
+    const helpBlocksAfterContact = {
       ...loginContent,
       help: (() => {
         const { blocks, tutorial, contact, ...helpMetadata } =
@@ -360,7 +381,7 @@ describe("RASLoginPage", () => {
       })(),
     };
 
-    renderPage(helpContentAfterContact);
+    renderPage(helpBlocksAfterContact);
 
     const renderedText = container.textContent;
     expect(renderedText.indexOf("Let us assist you"))
@@ -401,14 +422,31 @@ describe("RASLoginPage", () => {
       .toBe("noopener noreferrer");
   });
 
-  it("renders contentBox content groups and accordions in content order", () => {
+  it("renders nested block groups without requiring a group title", () => {
+    renderPage();
+
+    expect(container.textContent).toContain(
+      "Before accessing CTDC data",
+    );
+    expect(container.textContent).toContain(
+      "If you already have a CTDC account",
+    );
+    expect(container.textContent).toContain(
+      "Untitled grouped request access copy.",
+    );
+    expect(container.textContent).toContain(
+      "Grouped request access bullet.",
+    );
+  });
+
+  it("renders contentBox block groups and accordions in block order", () => {
     renderPage();
 
     let renderedText = container.textContent;
     expect(renderedText.indexOf("Instructions to Request Access"))
       .toBeLessThan(renderedText.indexOf("Documentation"));
 
-    const contentBeforeAccordions = {
+    const blockGroupBeforeAccordions = {
       ...loginContent,
       sections: loginContent.sections.map((section) => {
         if (section.id !== "request-access") return section;
@@ -436,7 +474,7 @@ describe("RASLoginPage", () => {
       }),
     };
 
-    renderPage(contentBeforeAccordions);
+    renderPage(blockGroupBeforeAccordions);
 
     renderedText = container.textContent;
     expect(renderedText.indexOf("Before accordion text."))

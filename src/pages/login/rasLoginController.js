@@ -1,3 +1,9 @@
+/**
+ * Loads login/loginView.yaml, resolves relative media URLs, and passes the
+ * normalized static-content payload to the RAS login page.
+ * Assumptions: development uses /local-static-content/login/loginView.yaml;
+ * deployed environments use REACT_APP_STATIC_CONTENT_URL + /login/loginView.yaml.
+ */
 import React, { useEffect, useState } from "react";
 import yaml from "js-yaml";
 import axios from "axios";
@@ -56,6 +62,8 @@ function resolveAsset(asset, baseUrl) {
 }
 
 function resolveLoginContent(loginContent = {}, baseUrl) {
+  // loginView.yaml keeps asset paths relative to the YAML file so content can
+  // move between static-content branches without frontend code changes.
   const assets = Object.entries(loginContent.assets || {}).reduce(
     (resolvedAssets, [key, asset]) => ({
       ...resolvedAssets,
@@ -121,6 +129,8 @@ function getContentLoadError(fetchError, loginContentUrl) {
 }
 
 function validateLoginContent(content) {
+  // The renderer tolerates missing optional sections, but the loaded file must
+  // be a YAML object so duplicate keys and invalid lists fail early.
   if (!content || typeof content !== "object" || Array.isArray(content)) {
     throw new Error("loginView.yaml must contain a YAML object.");
   }

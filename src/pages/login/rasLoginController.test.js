@@ -1,3 +1,7 @@
+/**
+ * Tests the loginView.yaml loading contract: URL construction, YAML parsing,
+ * static asset normalization, and user-facing load errors.
+ */
 import React from "react";
 import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";

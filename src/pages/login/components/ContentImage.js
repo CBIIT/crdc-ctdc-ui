@@ -1,3 +1,8 @@
+/**
+ * Small adapter for image assets loaded from loginView.yaml.
+ * Assumptions: assets may be either a string path or an object with src/alt,
+ * and missing assets should simply not render instead of breaking the page.
+ */
 import React from "react";
 
 export function getAsset(assets, key) {

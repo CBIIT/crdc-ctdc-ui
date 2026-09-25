@@ -1,3 +1,10 @@
+/**
+ * Layout components for the YAML-driven login page.
+ * Purpose: translate top-level loginView.yaml areas into page regions.
+ * Assumptions: each section has one blocks list; repeated sibling content uses
+ * list items, rasLogin.buttonText is section-level, and contentBox shares the
+ * same section rendering path without a RAS action button.
+ */
 import React from "react";
 import { Box, Button, Grid, Typography } from "@material-ui/core";
 import ContentImage, { getAsset } from "./ContentImage";
@@ -45,6 +52,8 @@ export function LoginAccordionList({
   arrowClosedIcon,
   externalLinkIcon,
 }) {
+  // Accordion indexes are section-scoped so YAML rows can be reordered without
+  // changing state keys outside the current section.
   const accordionItems = Array.isArray(accordions) ? accordions : [];
 
   if (accordionItems.length === 0) return null;
@@ -230,7 +239,7 @@ function isBlockGroup(item) {
 }
 
 // Section blocks are the display sequence: plain blocks are batched together,
-// titled content groups render as separate text sections, and accordion groups
+// nested block groups render as separate text sections, and accordion groups
 // render through the shared accordion list.
 function getBlockItems(blocks = []) {
   const blockItems = [];
@@ -239,11 +248,7 @@ function getBlockItems(blocks = []) {
   const pushPendingBlocks = () => {
     if (pendingBlocks.length === 0) return;
 
-    const buttonBlock = pendingBlocks.find((item) =>
-      item && item.buttonText);
-    blockItems.push(createBlocksItem(pendingBlocks, {
-      buttonText: buttonBlock ? buttonBlock.buttonText : undefined,
-    }));
+    blockItems.push(createBlocksItem(pendingBlocks));
     pendingBlocks = [];
   };
 
@@ -257,7 +262,6 @@ function getBlockItems(blocks = []) {
     if (isBlockGroup(item)) {
       pushPendingBlocks();
       blockItems.push(createBlocksItem(item.blocks || [], {
-        buttonText: item.buttonText,
         title: item.title,
       }));
       return;
@@ -272,6 +276,8 @@ function getBlockItems(blocks = []) {
 }
 
 function getSectionItems(section) {
+  // Section.blocks is the only editable display sequence for a section.
+  // Duplicate sibling blocks keys are invalid YAML and are rejected upstream.
   return getBlockItems(section.blocks);
 }
 
@@ -311,6 +317,7 @@ export function LoginSectionBox({
   externalLinkIcon,
 }) {
   const sectionItems = getSectionItems(section);
+  let actionRendered = false;
   let accordionStartIndex = 0;
 
   return (
@@ -329,16 +336,22 @@ export function LoginSectionBox({
 
       {sectionItems.map((sectionItem, sectionItemIndex) => {
         if (sectionItem.type === "blocks") {
-          const action = section.type === "rasLogin" &&
-            sectionItem.item.buttonText
+          const shouldRenderAction = section.type === "rasLogin" &&
+            section.buttonText &&
+            !actionRendered;
+          const action = shouldRenderAction
             ? (
               <RasLoginAction
                 classes={classes}
-                buttonText={sectionItem.item.buttonText}
+                buttonText={section.buttonText}
                 rasAuthorizeUrl={rasAuthorizeUrl}
               />
             )
             : null;
+
+          if (shouldRenderAction) {
+            actionRendered = true;
+          }
 
           return (
             <LoginContentSection
@@ -447,6 +460,8 @@ export function HelpSidebar({
       ? "noopener noreferrer"
       : undefined);
   const orderedComponents = getOrderedComponents(help, [
+    // Help subareas intentionally follow YAML key order so editors can move
+    // generic blocks above or below tutorial/contact without new components.
     {
       type: "blocks",
       enabled: hasBlocks(help),

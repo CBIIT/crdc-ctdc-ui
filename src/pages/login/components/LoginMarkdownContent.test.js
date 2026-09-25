@@ -1,3 +1,7 @@
+/**
+ * Unit coverage for the login block renderer and supported About-style tokens.
+ * This protects the editable YAML schema without depending on the full page.
+ */
 import React from "react";
 import ReactDOM from "react-dom";
 import { act } from "react-dom/test-utils";
