@@ -1,8 +1,7 @@
 /**
  * Loads login/loginView.yaml, resolves relative media URLs, and passes the
  * normalized static-content payload to the RAS login page.
- * Assumptions: development uses /local-static-content/login/loginView.yaml;
- * deployed environments use REACT_APP_STATIC_CONTENT_URL + /login/loginView.yaml.
+ * The content source is REACT_APP_STATIC_CONTENT_URL + /login/loginView.yaml.
  */
 import React, { useEffect, useState } from "react";
 import yaml from "js-yaml";
@@ -10,7 +9,6 @@ import axios from "axios";
 import env from "../../utils/env";
 import RASLoginPage from "./rasLoginView";
 
-const LOCAL_LOGIN_CONTENT_URL = "/local-static-content/login/loginView.yaml";
 const LOGIN_CONTENT_FILE = "loginView.yaml";
 const LOGIN_CONTENT_PATH = "/login/loginView.yaml";
 
@@ -19,10 +17,6 @@ function isTemplateValue(value) {
 }
 
 function getLoginContentUrl() {
-  if (env.NODE_ENV === "development") {
-    return LOCAL_LOGIN_CONTENT_URL;
-  }
-
   const staticContentUrl = env.REACT_APP_STATIC_CONTENT_URL;
 
   if (!staticContentUrl || isTemplateValue(staticContentUrl)) {
@@ -95,7 +89,7 @@ function getContentLoadError(fetchError, loginContentUrl) {
       message:
         "The login page cannot load because the static content URL is missing or unresolved.",
       details:
-        "Set REACT_APP_STATIC_CONTENT_URL to the static-content repository base URL. The frontend will load login content from /login/loginView.yaml. In local development, confirm the local static-content proxy is serving login/loginView.yaml.",
+        "Set REACT_APP_STATIC_CONTENT_URL to the static-content repository base URL. The frontend will load login content from /login/loginView.yaml.",
     };
   }
 

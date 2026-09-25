@@ -47,7 +47,6 @@ describe("RASLoginController", () => {
   };
 
   beforeEach(() => {
-    mockEnv.NODE_ENV = "test";
     mockEnv.REACT_APP_STATIC_CONTENT_URL = undefined;
     mockEnv.REACT_APP_RAS_AUTHORIZE_URL = undefined;
     container = document.createElement("div");
