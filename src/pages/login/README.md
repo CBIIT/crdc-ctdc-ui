@@ -18,7 +18,7 @@ interpreted by the UI.
 
 | File | Purpose |
 | --- | --- |
-| `rasLoginController.js` | Loads `login/loginView.yaml`, parses YAML, resolves assets, and provides fallback content when loading fails. |
+| `rasLoginController.js` | Loads `login/loginView.yaml`, parses YAML, resolves assets, applies the request timeout, and provides fallback content when loading fails. |
 | `rasLoginView.js` | Page shell. Owns UI state for section accordions, warning notice open state, and tutorial video playback. |
 | `rasLoginStyles.js` | Material UI style object for layout, typography, accordions, warning/help panels, buttons, and responsive behavior. |
 | `components/LoginSections.js` | Renders hero, section boxes, RAS button, accordions, warning notice, and Help sidebar. |
@@ -42,16 +42,16 @@ Load flow:
 
 1. `RASLoginController` builds the remote YAML URL from
    `REACT_APP_STATIC_CONTENT_URL`.
-2. It fetches the YAML with `axios`.
+2. It fetches the YAML with `axios` and a 10-second timeout.
 3. It parses the response with `js-yaml`.
 4. It validates that the parsed result is a YAML object.
 5. It resolves asset paths and tutorial video URLs.
 6. It passes the normalized payload to `RASLoginPage`.
 
-If the static-content URL is missing, unresolved, unavailable, invalid YAML, or
-not a YAML object, the controller loads the bundled fallback YAML from
-`src/assets/login/loginView.yaml`. If that also fails, it renders
-`EMERGENCY_LOGIN_CONTENT`.
+If the static-content URL is missing, unresolved, unavailable, times out,
+returns invalid YAML, or does not parse to a YAML object, the controller loads
+the bundled fallback YAML from `src/assets/login/loginView.yaml`. If that also
+fails, it renders `EMERGENCY_LOGIN_CONTENT`.
 
 The page displays a full-width, dismissible one-line banner at the top when
 fallback content is used. Login can still work as long as
@@ -166,8 +166,9 @@ The RAS button URL is not stored in YAML. It comes from:
 REACT_APP_RAS_AUTHORIZE_URL
 ```
 
-If the URL is missing, empty, unresolved, or not HTTP/HTTPS, the button is
-disabled and the user sees the configured unavailable message.
+The URL must be an absolute `http://` or `https://` URL. If the URL is missing,
+empty, an unresolved template value, relative, or any other scheme, the button
+is disabled and the user sees the configured unavailable message.
 
 ## Accordions
 
@@ -240,8 +241,11 @@ Contact support includes:
 - `contact.target`
 - `contact.rel`
 
-New-tab contact buttons default to `rel="noopener noreferrer"` unless `rel` is
-provided.
+`help.ariaLabel` defaults to `Help and Support`, and
+`tutorial.playButtonAriaLabel` defaults to `Play tutorial video` when those
+fields are omitted. Contact button hrefs use the same safe-link allowlist as
+inline content; invalid or unsafe hrefs are not applied. New-tab contact
+buttons default to `rel="noopener noreferrer"` unless `rel` is provided.
 
 ## Block Parser
 
@@ -330,6 +334,13 @@ Supported forms:
 - paragraph: "$${link:https://example.org/file.pdf,title:Download}$$"
 ```
 
+Allowed hrefs include absolute `http://` and `https://` URLs, `mailto:`,
+`tel:`, hash links, root-relative app links, dot-relative links, and simple
+relative paths without a scheme. Raw email addresses are converted to `mailto:`
+links. Protocol-relative URLs such as `//example.org` and explicit unsupported
+schemes such as `javascript:`, `data:`, `file:`, `blob:`, or `ftp:` are not
+rendered as links. Download links use the same href validation.
+
 Outbound icon rules:
 
 - External HTTP/HTTPS links show the outbound icon by default.
@@ -347,6 +358,7 @@ Handled failure cases:
 - Missing `REACT_APP_STATIC_CONTENT_URL`.
 - Unresolved template value such as `${REACT_APP_STATIC_CONTENT_URL}`.
 - Failed remote request.
+- Timed-out remote request.
 - YAML parse error.
 - Parsed YAML is not an object.
 - Bundled fallback YAML fails to load.
