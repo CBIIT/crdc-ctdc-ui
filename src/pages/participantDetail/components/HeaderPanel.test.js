@@ -5,7 +5,7 @@ import HeaderPanel from './HeaderPanel';
 
 /**
  * Purpose: Unit tests for the HeaderPanel component on the participant detail page.
- * Validates rendering of participant demographics, diagnosis, and targeted therapy sections,
+ * Validates rendering of participant demographics, diagnosis, and therapy sections,
  * with special focus on the N/A fallback logic for missing or empty values.
  *
  * Reviewed by [Name] on [Date]
@@ -100,8 +100,11 @@ describe('HeaderPanel', () => {
         primary_diagnosis_disease_group: 'Lymphoma',
         primary_disease_site: 'Chest',
         stage_of_disease: 'Stage II',
-        targeted_therapy: 'Drug X',
-        best_response_to_targeted_therapy: 'Partial Response',
+        therapy_name: 'Drug X',
+        therapy_type: 'Targeted Therapy',
+        therapy_category: 'Systemic',
+        current_response_to_therapy: 'Partial Response',
+        best_response_to_therapy: 'Partial Response',
       };
 
       // Act
@@ -145,8 +148,11 @@ describe('HeaderPanel', () => {
         primary_diagnosis_disease_group: 'Sarcoma',
         primary_disease_site: 'Bone',
         stage_of_disease: 'Stage I',
-        targeted_therapy: null,
-        best_response_to_targeted_therapy: null,
+        therapy_name: null,
+        therapy_type: null,
+        therapy_category: null,
+        current_response_to_therapy: null,
+        best_response_to_therapy: null,
       };
 
       // Act
@@ -175,8 +181,11 @@ describe('HeaderPanel', () => {
         primary_diagnosis_disease_group: 'CML',
         primary_disease_site: 'Blood',
         stage_of_disease: 'Stage II',
-        targeted_therapy: null,
-        best_response_to_targeted_therapy: null,
+        therapy_name: null,
+        therapy_type: null,
+        therapy_category: null,
+        current_response_to_therapy: null,
+        best_response_to_therapy: null,
       };
 
       // Act
@@ -202,8 +211,9 @@ describe('HeaderPanel', () => {
         age_at_enrollment: null, race: null, ethnicity: null, sex: null,
         survival_status: null,
         primary_diagnosis_disease_group: null, primary_disease_site: null,
-        stage_of_disease: null, targeted_therapy: null,
-        best_response_to_targeted_therapy: null,
+        stage_of_disease: null, therapy_name: null, therapy_type: null,
+        therapy_category: null, current_response_to_therapy: null,
+        best_response_to_therapy: null,
       };
 
       // Act
@@ -222,8 +232,9 @@ describe('HeaderPanel', () => {
         age_at_enrollment: 10, race: 'Asian', ethnicity: 'Hispanic', sex: 'Female',
         survival_status: 'Alive',
         primary_diagnosis_disease_group: 'Leukemia', primary_disease_site: 'Blood',
-        stage_of_disease: 'Stage I', targeted_therapy: 'Drug A',
-        best_response_to_targeted_therapy: 'Complete Response',
+        stage_of_disease: 'Stage I', therapy_name: 'Drug A', therapy_type: 'Targeted Therapy',
+        therapy_category: 'Systemic', current_response_to_therapy: 'Complete Response',
+        best_response_to_therapy: 'Complete Response',
       };
 
       // Act
@@ -252,8 +263,11 @@ describe('HeaderPanel', () => {
         primary_diagnosis_disease_group: null,
         primary_disease_site: 'Lung',
         stage_of_disease: null,
-        targeted_therapy: null,
-        best_response_to_targeted_therapy: 'Stable',
+        therapy_name: null,
+        therapy_type: 'Targeted Therapy',
+        therapy_category: 'Systemic',
+        current_response_to_therapy: 'Response A',
+        best_response_to_therapy: 'Stable',
       };
 
       // Act
@@ -275,15 +289,18 @@ describe('HeaderPanel', () => {
         primary_diagnosis_disease_group: '',
         primary_disease_site: '',
         stage_of_disease: '',
-        targeted_therapy: '',
-        best_response_to_targeted_therapy: '',
+        therapy_name: '',
+        therapy_type: '',
+        therapy_category: '',
+        current_response_to_therapy: '',
+        best_response_to_therapy: '',
       };
 
       // Act
       renderComponent(participant);
 
-      // Assert – all 10 info fields should show N/A
-      expect(countText('N/A')).toBe(10);
+      // Assert – all 13 info fields should show N/A
+      expect(countText('N/A')).toBe(13);
     });
 
     it('should show actual values and zero N/A when all fields are populated', () => {
@@ -298,8 +315,11 @@ describe('HeaderPanel', () => {
         primary_diagnosis_disease_group: 'Sarcoma',
         primary_disease_site: 'Bone',
         stage_of_disease: 'Stage III',
-        targeted_therapy: 'Imatinib',
-        best_response_to_targeted_therapy: 'Complete Response',
+        therapy_name: 'Imatinib',
+        therapy_type: 'Targeted Therapy',
+        therapy_category: 'Systemic',
+        current_response_to_therapy: 'Partial Response',
+        best_response_to_therapy: 'Complete Response',
       };
 
       // Act
@@ -326,8 +346,11 @@ describe('HeaderPanel', () => {
         primary_diagnosis_disease_group: 'CML',
         primary_disease_site: 'Blood',
         stage_of_disease: 'Stage I',
-        targeted_therapy: 'Drug B',
-        best_response_to_targeted_therapy: 'Partial',
+        therapy_name: 'Drug B',
+        therapy_type: 'Targeted Therapy',
+        therapy_category: 'Systemic',
+        current_response_to_therapy: 'Partial',
+        best_response_to_therapy: 'Partial',
       };
 
       // Act
@@ -350,15 +373,18 @@ describe('HeaderPanel', () => {
         primary_diagnosis_disease_group: 'Leukemia',
         primary_disease_site: '',
         stage_of_disease: null,
-        targeted_therapy: 'Drug A',
-        best_response_to_targeted_therapy: '',
+        therapy_name: 'Drug A',
+        therapy_type: 'Targeted Therapy',
+        therapy_category: 'Systemic',
+        current_response_to_therapy: 'Response A',
+        best_response_to_therapy: '',
       };
 
       // Act
       renderComponent(participant);
 
       // Assert – race(''), ethnicity(null), survival_status(null), primary_disease_site(''),
-      // stage_of_disease(null), best_response('') = 6 N/A
+      // stage_of_disease(null), best_response_to_therapy('') = 6 N/A
       expect(countText('N/A')).toBe(6);
     });
   });
@@ -367,15 +393,16 @@ describe('HeaderPanel', () => {
   // Section titles
   // ────────────────────────────────────────────────────
   describe('Info panel section titles', () => {
-    it('should render Demographics, Diagnosis, and Targeted Therapy sections', () => {
+    it('should render Demographics, Diagnosis, and THERAPY sections', () => {
       // Arrange
       const participant = {
         participant_id: 'P-SEC',
         age_at_enrollment: 20, race: 'Asian', ethnicity: 'Not Hispanic', sex: 'Female',
         survival_status: 'Alive',
         primary_diagnosis_disease_group: 'ALL', primary_disease_site: 'Blood',
-        stage_of_disease: 'Stage IV', targeted_therapy: 'Drug C',
-        best_response_to_targeted_therapy: 'No Response',
+        stage_of_disease: 'Stage IV', therapy_name: 'Drug C', therapy_type: 'Targeted Therapy',
+        therapy_category: 'Systemic', current_response_to_therapy: 'No Response',
+        best_response_to_therapy: 'No Response',
       };
 
       // Act
@@ -385,7 +412,7 @@ describe('HeaderPanel', () => {
       const sectionTitles = Array.from(
         container.querySelectorAll('.infoPanelSectionTitle'),
       ).map((el) => el.textContent);
-      expect(sectionTitles).toEqual(['Demographics', 'Diagnosis', 'Targeted Therapy']);
+      expect(sectionTitles).toEqual(['Demographics', 'Diagnosis', 'THERAPY']);
     });
   });
 
@@ -400,8 +427,9 @@ describe('HeaderPanel', () => {
         age_at_enrollment: 10, race: 'White', ethnicity: 'Hispanic', sex: 'Male',
         survival_status: 'Alive',
         primary_diagnosis_disease_group: 'AML', primary_disease_site: 'Bone Marrow',
-        stage_of_disease: 'Stage II', targeted_therapy: 'Drug D',
-        best_response_to_targeted_therapy: 'Stable Disease',
+        stage_of_disease: 'Stage II', therapy_name: 'Drug D', therapy_type: 'Targeted Therapy',
+        therapy_category: 'Systemic', current_response_to_therapy: 'Stable Disease',
+        best_response_to_therapy: 'Stable Disease',
       };
 
       // Act
@@ -417,8 +445,11 @@ describe('HeaderPanel', () => {
         'Primary Diagnosis:',
         'Primary Disease Site:',
         'Stage of Disease:',
-        'Targeted Therapy:',
-        'Response to Targeted Therapy:',
+        'Therapy Name:',
+        'Therapy Type:',
+        'Therapy Category:',
+        'Current Response:',
+        'Best Response:',
       ];
       const renderedLabels = Array.from(
         container.querySelectorAll('.infoPanelLabel'),
@@ -446,8 +477,11 @@ describe('HeaderPanel', () => {
         primary_diagnosis_disease_group: 'Cancer',
         primary_disease_site: 'Lung',
         stage_of_disease: 'Stage IV',
-        targeted_therapy: 'Drug A',
-        best_response_to_targeted_therapy: 'Progressive Disease',
+        therapy_name: 'Drug A',
+        therapy_type: 'Targeted Therapy',
+        therapy_category: 'Systemic',
+        current_response_to_therapy: 'Progressive Disease',
+        best_response_to_therapy: 'Progressive Disease',
       };
 
       // Act
@@ -477,8 +511,11 @@ describe('HeaderPanel', () => {
         primary_diagnosis_disease_group: 'Lymphoma',
         primary_disease_site: 'Lymph Node',
         stage_of_disease: 'Stage III',
-        targeted_therapy: 'Drug D',
-        best_response_to_targeted_therapy: 'Complete Response',
+        therapy_name: 'Drug D',
+        therapy_type: 'Targeted Therapy',
+        therapy_category: 'Systemic',
+        current_response_to_therapy: 'Complete Response',
+        best_response_to_therapy: 'Complete Response',
       };
 
       // Act
