@@ -44,6 +44,9 @@ const styles = {
     textAlign: "center",
     verticalAlign: "middle",
     textTransform: "uppercase",
+    '&:hover': {
+      background: "#006597",
+    },
   },
   tooltipText: {
 
