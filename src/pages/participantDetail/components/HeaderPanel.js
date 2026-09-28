@@ -52,7 +52,7 @@ const HeaderPanel = ({ classes, participant }) => {
         </div>
       </div>
 
-      {/* ---- Info panel: Demographics | Diagnosis | Targeted Therapy ---- */}
+      {/* ---- Info panel: Demographics | Diagnosis | Therapy ---- */}
       <div className={classes.infoPanelContainer}>
         {/* Demographics */}
         <div className={classes.infoPanelSection}>
@@ -72,11 +72,14 @@ const HeaderPanel = ({ classes, participant }) => {
           <InfoRow classes={classes} label="Stage of Disease" value={participant.stage_of_disease} />
         </div>
 
-        {/* Targeted Therapy */}
+        {/* Therapy */}
         <div className={classes.infoPanelSection}>
-          <div className={classes.infoPanelSectionTitle}>Targeted Therapy</div>
-          <InfoRow classes={classes} label="Targeted Therapy" value={participant.targeted_therapy} />
-          <InfoRow classes={classes} label="Response to Targeted Therapy" value={participant.best_response_to_targeted_therapy} />
+          <div className={classes.infoPanelSectionTitle}>THERAPY</div>
+          <InfoRow classes={classes} label="Therapy Name" value={participant.therapy_name} />
+          <InfoRow classes={classes} label="Therapy Type" value={participant.therapy_type} />
+          <InfoRow classes={classes} label="Therapy Category" value={participant.therapy_category} />
+          <InfoRow classes={classes} label="Current Response" value={participant.current_response_to_therapy} />
+          <InfoRow classes={classes} label="Best Response" value={participant.best_response_to_therapy} />
         </div>
       </div>
     </>
