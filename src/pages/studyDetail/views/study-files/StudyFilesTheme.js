@@ -154,6 +154,7 @@ export const extendedView = {
       textAlign: "right",
       minHeight: "44px !important",
       "&.downloadAndColumnView": {
+        marginTop: "36px",
         padding: "0 32px 5px 0",
 
         "& button": {
