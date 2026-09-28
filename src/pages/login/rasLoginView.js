@@ -1,443 +1,251 @@
-// RAS (NIH Researcher Auth Service) login page
-import React, { useState } from "react";
+/**
+ * RAS (NIH Researcher Auth Service) login page shell.
+ * Purpose: hold UI state for YAML-driven sections, warning disclosure, and
+ * tutorial playback while keeping editable copy in loginView.yaml.
+ * Assumptions: section order, accordion order, and Help panel order come from
+ * the YAML. The controller may pass a bundled fallback payload if YAML loading
+ * fails, and this shell displays that fallback without blocking authentication.
+ */
+import React, { useEffect, useMemo, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Grid, Typography, Button, Box } from "@material-ui/core";
-import LockIconSvg from "../../assets/login/lock-icon.svg";
-import LockBorderSvg from "../../assets/login/lock-border.svg";
-import HelpIconSvg from "../../assets/login/help-icon.svg";
-import VideoThumbnailImg from "../../assets/login/CTDC_Tutorial_Video_Placeholder.png";
-import PlayIconSvg from "../../assets/login/video_play_icon_large.svg";
-import UpArrowSvg from "../../assets/login/up_arrow.svg";
-import DownArrowSvg from "../../assets/login/down_arrow.svg";
-import env from "../../utils/env";
+import { Box, Grid, Typography } from "@material-ui/core";
 import styles from "./rasLoginStyles";
+import { getAsset } from "./components/ContentImage";
+import {
+  getSectionAccordions,
+  HelpSidebar,
+  LoginHero,
+  LoginSectionBox,
+  WarningNotice,
+} from "./components/LoginSections";
 
-function ToggleArrow({ isOpen }) {
+const RENDERABLE_SECTION_TYPES = ["rasLogin", "contentBox"];
+
+function getLoginSections(loginContent) {
+  return Array.isArray(loginContent.sections) ? loginContent.sections : [];
+}
+
+function getSectionKey(section = {}, index) {
+  return section.id || `${section.type || "section"}-${index}`;
+}
+
+function isRenderableSection(section) {
+  return Boolean(section && RENDERABLE_SECTION_TYPES.includes(section.type));
+}
+
+function getInitiallyOpenAccordions(accordions = []) {
+  // Accordions are closed by default unless the YAML explicitly sets
+  // defaultOpen: true. Non-collapsible rows render open outside this map.
+  const accordionList = Array.isArray(accordions) ? accordions : [];
+
+  return accordionList.reduce((openAccordions, accordion, index) => {
+    if (
+      accordion &&
+      accordion.collapsible !== false &&
+      accordion.defaultOpen === true
+    ) {
+      return {
+        ...openAccordions,
+        [index]: true,
+      };
+    }
+
+    return openAccordions;
+  }, {});
+}
+
+function getInitiallyOpenSectionAccordions(sections) {
+  return sections.reduce((openSections, section, index) => {
+    if (!isRenderableSection(section)) {
+      return openSections;
+    }
+
+    return {
+      ...openSections,
+      [getSectionKey(section, index)]: getInitiallyOpenAccordions(
+        getSectionAccordions(section),
+      ),
+    };
+  }, {});
+}
+
+function getInitiallyOpenWarning(warning) {
+  return Boolean(warning && warning.defaultOpen === true);
+}
+
+function hasBlocks(item) {
+  return Boolean(
+    item &&
+      Array.isArray(item.blocks) &&
+      item.blocks.length > 0,
+  );
+}
+
+function hasWarningContent(warning) {
+  return Boolean(warning && (warning.title || hasBlocks(warning)));
+}
+
+function hasHelpContent(help) {
+  const tutorial = (help && help.tutorial) || {};
+  const contact = (help && help.contact) || {};
+
+  return Boolean(
+    help && (
+      help.headerText ||
+      hasBlocks(help) ||
+      tutorial.title ||
+      hasBlocks(tutorial) ||
+      tutorial.videoUrl ||
+      contact.title ||
+      hasBlocks(contact) ||
+      contact.buttonText
+    ),
+  );
+}
+
+function ContentLoadNotice({ classes, contentLoadError, onDismiss }) {
+  if (!contentLoadError) return null;
+
+  const notice = contentLoadError.notice ||
+    "Some content could not be loaded.";
+  const message = contentLoadError.message ||
+    "A saved local version is being shown while the remote content is unavailable.";
+
   return (
-    <img
-      src={isOpen ? UpArrowSvg : DownArrowSvg}
-      alt={isOpen ? "Collapse" : "Expand"}
-      style={{
-        cursor: "pointer",
-        flexShrink: 0,
-      }}
-    />
+    <Box className={classes.ContentLoadNotice} role="alert">
+      <Typography
+        component="p"
+        className={classes.ContentLoadNoticeText}
+      >
+        <strong>{notice}</strong> {message}
+      </Typography>
+      <button
+        type="button"
+        className={classes.ContentLoadNoticeDismiss}
+        aria-label="Dismiss content load notice"
+        onClick={onDismiss}
+      >
+        ×
+      </button>
+    </Box>
   );
 }
 
 function RASLoginPage(props) {
-  const { classes } = props;
-  const [verificationOpen, setVerificationOpen] = useState(false);
-  const [requestAccessOpen, setRequestAccessOpen] = useState(false);
-  const [warningOpen, setWarningOpen] = useState(false);
-  const rasAuthorizeUrl =
-    typeof env.REACT_APP_RAS_AUTHORIZE_URL === "string"
-      ? env.REACT_APP_RAS_AUTHORIZE_URL.trim()
-      : "";
+  const {
+    classes,
+    loginContent = {},
+    rasAuthorizeUrl = "",
+    contentLoadError,
+  } = props;
+  const assets = loginContent.assets || {};
+  const arrowOpenIcon = getAsset(assets, "arrowOpen");
+  const arrowClosedIcon = getAsset(assets, "arrowClosed");
+  const externalLinkIcon = getAsset(assets, "externalLinkIcon");
+  const hero = loginContent.hero || {};
+  const warning = loginContent.warning || {};
+  const help = loginContent.help || {};
+  const tutorial = help.tutorial || {};
+  const contact = help.contact || {};
+  const sections = useMemo(
+    () => getLoginSections(loginContent),
+    [loginContent],
+  );
+  const [sectionAccordionsOpen, setSectionAccordionsOpen] = useState(() =>
+    getInitiallyOpenSectionAccordions(sections));
+  const [warningOpen, setWarningOpen] = useState(() =>
+    getInitiallyOpenWarning(warning));
+  const [videoPlaying, setVideoPlaying] = useState(false);
+  const [contentNoticeDismissed, setContentNoticeDismissed] =
+    useState(false);
+
+  useEffect(() => {
+    setSectionAccordionsOpen(getInitiallyOpenSectionAccordions(sections));
+  }, [sections]);
+
+  useEffect(() => {
+    setWarningOpen(getInitiallyOpenWarning(warning));
+  }, [warning]);
+
+  useEffect(() => {
+    setContentNoticeDismissed(false);
+  }, [contentLoadError]);
+
+  const toggleSectionAccordion = (sectionKey, index) => {
+    setSectionAccordionsOpen((openAccordions) => ({
+      ...openAccordions,
+      [sectionKey]: {
+        ...openAccordions[sectionKey],
+        [index]: !(
+          openAccordions[sectionKey] && openAccordions[sectionKey][index]
+        ),
+      },
+    }));
+  };
 
   return (
     <div className={classes.Container}>
-      {/* Hero Section */}
-      <Box className={classes.HeroSection}>
-        <div className={classes.HeroIconWrapper}>
-          <img
-            src={LockBorderSvg}
-            alt="Lock Border"
-            className={classes.LockBorder}
-          />
-          <img src={LockIconSvg} alt="Lock Icon" className={classes.HeroIcon} />
-        </div>
-        <Typography variant="h1" component="h1" className={classes.HeroTitle}>
-          Login to the CTDC
-        </Typography>
-      </Box>
+      {!contentNoticeDismissed && (
+        <ContentLoadNotice
+          classes={classes}
+          contentLoadError={contentLoadError}
+          onDismiss={() => setContentNoticeDismissed(true)}
+        />
+      )}
 
-      {/* Main Content - Two Column Layout */}
+      <LoginHero classes={classes} assets={assets} hero={hero} />
+
       <Grid container className={classes.ContentWrapper}>
         <Grid container className={classes.ColumnContainer}>
-          {/* Left Column - Combined Login Box */}
           <Grid item xs={12} md className={classes.LeftColumn}>
-            <Box className={classes.CombinedLoginBox}>
-              {/* RAS Section */}
-              <Box className={classes.RasSection}>
-                <Typography
-                  variant="h2"
-                  component="h2"
-                  className={classes.BoxTitle}
-                >
-                  Log in with NIH Research Auth Service (RAS)
-                </Typography>
+            {sections.map((section, index) => {
+              const sectionKey = getSectionKey(section, index);
 
-                {/* Text + Button row */}
-                <Box className={classes.LoginContentRow}>
-                  <Box className={classes.RasTextWrapper}>
-                    <Typography className={classes.BodyText}>
-                      Before accessing CTDC data, you may be required to verify
-                      your identity through NIH&apos;s secure Researcher Auth
-                      Service (RAS) using Login.gov. This identity verification
-                      is required to comply with federal policies governing
-                      access to controlled-access data repositories (CADRs).
-                      <br />
-                      <br />
-                      If you already have a CTDC account, you must complete
-                      identity verification to continue accessing
-                      controlled-access data unless you sign in with an NIH
-                      account, which does not require this additional
-                      verification. Identity verification must be renewed
-                      annually.
-                    </Typography>
-                  </Box>
-                  <Box className={classes.LoginButtonContainer}>
-                    <Button
-                      variant="outlined"
-                      className={classes.LoginButtonRas}
-                      disabled={!rasAuthorizeUrl}
-                      onClick={() => {
-                        if (rasAuthorizeUrl) {
-                          window.location.href = rasAuthorizeUrl;
-                        }
-                      }}
-                    >
-                      Login with RAS
-                    </Button>
-                    {!rasAuthorizeUrl && (
-                      <Typography className={classes.BodyText} role="alert">
-                        RAS login is temporarily unavailable because it is not
-                        configured.
-                      </Typography>
-                    )}
-                  </Box>
-                </Box>
-
-                {/* Divider */}
-                <Box className={classes.Divider} />
-
-                {/* Collapsible CTDC Verification Process */}
-                <Box className={classes.VerificationWrapper}>
-                  <Box className={classes.VerificationSection}>
-                    <Box
-                      className={classes.VerificationHeader}
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => setVerificationOpen((v) => !v)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" || e.key === " ") {
-                          e.preventDefault();
-                          setVerificationOpen((v) => !v);
-                        }
-                      }}
-                    >
-                      <Typography
-                        variant="h3"
-                        component="h3"
-                        className={classes.VerificationTitle}
-                      >
-                        CTDC Verification Process
-                      </Typography>
-                      <ToggleArrow isOpen={verificationOpen} />
-                    </Box>
-
-                    {verificationOpen && (
-                      <Box className={classes.VerificationText}>
-                        <Typography className={classes.BodyText}>
-                          The verification process typically takes up to 30
-                          minutes and requires:
-                        </Typography>
-                        <ol className={classes.orderedListAlpha}>
-                          <li>A mobile phone with a working camera</li>
-                          <li>Your Social Security number</li>
-                          <li>
-                            A phone number associated with a phone plan in your
-                            name
-                          </li>
-                          <li>
-                            One of the following valid government-issued IDs:
-                            <ul className={classes.nestedList}>
-                              <li>U.S. driver&apos;s license</li>
-                              <li>State-issued ID</li>
-                              <li>U.S. passport</li>
-                            </ul>
-                          </li>
-                        </ol>
-                        <Typography className={classes.BodyText}>
-                          Before selecting Log in with NIH Research Auth Service
-                          (RAS), please gather the required information,
-                          identification, and devices. For more information, see
-                          the Login.gov Identity Verification Guidelines or the
-                          Login.gov Help Center.
-                        </Typography>
-                      </Box>
-                    )}
-                  </Box>
-                </Box>
-              </Box>
-            </Box>
-
-            {/* Request Access Section */}
-            <Box className={classes.RequestSection}>
-              {/* Top section: Title + Access Requirements */}
-              <Box className={classes.RequestTopSection}>
-                <Typography
-                  variant="h2"
-                  component="h2"
-                  className={classes.SectionTitle}
-                >
-                  Request Access
-                </Typography>
-                <Box className={classes.VerificationWrapper}>
-                  <Box className={classes.VerificationSection}>
-                    <Typography
-                      variant="h3"
-                      component="h3"
-                      className={classes.SubsectionTitle}
-                      style={{ marginTop: 0, marginBottom: 0 }}
-                    >
-                      Access Requirements
-                    </Typography>
-                    <Typography className={classes.BodyText} component="div">
-                      CTDC contains controlled-access research data. To comply
-                      with federal security requirements, users must verify
-                      their identity and affiliation before they can access the
-                      platform.
-                      <br />
-                      <br />
-                      To request CTDC access, you must have:
-                      <br />
-                      <ul className={classes.unorderedList}>
-                        <li>
-                          An <strong>NIH account</strong> linked to a{" "}
-                          <strong>Login.gov</strong> account with{" "}
-                          <strong>NIH Researcher Auth Service (RAS)</strong>{" "}
-                          identity verification
-                        </li>
-                        <li>
-                          An <strong>ORCID iD</strong>
-                        </li>
-                      </ul>
-                    </Typography>
-                  </Box>
-                </Box>
-              </Box>
-
-              {/* Divider */}
-              <Box className={classes.Divider} />
-
-              {/* Collapsible: Instructions to Request Access */}
-              <Box className={classes.RequestBottomSection}>
-                <Box className={classes.VerificationSection}>
-                  <Box
-                    className={classes.VerificationHeader}
-                    role="button"
-                    tabIndex={0}
-                    onClick={() => setRequestAccessOpen(!requestAccessOpen)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Enter" || e.key === " ") {
-                        e.preventDefault();
-                        setRequestAccessOpen(!requestAccessOpen);
-                      }
-                    }}
-                  >
-                    <Typography
-                      variant="h3"
-                      component="h3"
-                      className={classes.SubsectionTitle}
-                      style={{ marginTop: 0, marginBottom: 0 }}
-                    >
-                      Instructions to Request Access
-                    </Typography>
-                    <ToggleArrow isOpen={requestAccessOpen} />
-                  </Box>
-                </Box>
-
-                {requestAccessOpen && (
-                  <>
-                    <Box className={classes.VerificationWrapper}>
-                      <Box className={classes.VerificationSection}>
-                        <Typography
-                          className={classes.BodyText}
-                          component="div"
-                        >
-                          <ol className={classes.orderedListNumeric}>
-                            <li>
-                              Create a Login.gov or ID.me account. If you do not
-                              have an NIH account, also create an eRA Commons
-                              account.
-                            </li>
-                            <li>
-                              Complete NIH RAS identity verification. Verify
-                              your identity through Login.gov using NIH RAS.
-                            </li>
-                            <li>
-                              Link your accounts. Link your Login.gov account to
-                              your eRA Commons account. If you are not an NIH
-                              user, create an ORCID iD, link it to your eRA
-                              Commons account, and allow up to two business days
-                              for processing.
-                            </li>
-                            <li>
-                              Request CTDC access. On the Request SEER Incidence
-                              Data page, sign in with your NIH or Login.gov
-                              account and complete the Research Plus request
-                              application. Review and accept the required data
-                              use agreements, then submit your request.
-                            </li>
-                          </ol>
-                          <br />
-                          Access requests are typically processed within two
-                          business days. Once approved, you can sign in to CTDC
-                          using your NIH or Login.gov account.
-                        </Typography>
-                      </Box>
-                    </Box>
-
-                    <Box className={classes.VerificationWrapper}>
-                      <Box className={classes.VerificationSection}>
-                        <Typography
-                          variant="h3"
-                          component="h3"
-                          className={classes.SubsectionTitle}
-                          style={{ marginTop: 0, marginBottom: 0 }}
-                        >
-                          Documentation
-                        </Typography>
-                        <Typography className={classes.Link} component="div">
-                          <ul className={classes.unorderedList}>
-                            <li>eRA Commons Account Creation</li>
-                            <li>Request SEER Incidence Data</li>
-                            <li>SEER Research Data Use Agreement</li>
-                            <li>SEER Treatment Data Limitations</li>
-                            <li>CTDC Use Agreement</li>
-                          </ul>
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </>
-                )}
-              </Box>
-            </Box>
-
-            {/* Warning Notice Section */}
-            <Box className={classes.WarningSection}>
-              <Box className={classes.WarningContent}>
-                <Typography
-                  variant="h2"
-                  component="h2"
-                  className={classes.WarningTitle}
-                >
-                  Warning Notice
-                </Typography>
-                <Box
-                  className={classes.WarningToggle}
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => setWarningOpen(!warningOpen)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      setWarningOpen(!warningOpen);
-                    }
-                  }}
-                >
-                  <Typography
-                    className={`${classes.WarningText} ${!warningOpen ? classes.WarningTextCollapsed : ""}`}
-                  >
-                    This warning banner provides privacy and security notices
-                    consistent with applicable federal laws, directives, and
-                    other federal guidance for accessing this Government system,
-                    which includes all devices/storage media attached to this
-                    system. This system is provided for Government-authorized
-                    use only. Unauthorized or improper use of this system is
-                    prohibited and may result in disciplinary action and/or
-                    civil and criminal penalties. At any time, and for any
-                    lawful Government purpose, the government may monitor,
-                    record, and audit your system usage and/or intercept, search
-                    and seize any communication or data transiting or stored on
-                    this system. Therefore, you have no reasonable expectation
-                    of privacy. Any communication or data transiting or stored
-                    on this system may be disclosed or used for any lawful
-                    Government purpose.
-                  </Typography>
-                  <ToggleArrow isOpen={warningOpen} />
-                </Box>
-              </Box>
-            </Box>
-          </Grid>
-
-          {/* Right Column - Help Sidebar */}
-          <Grid item xs={12} md className={classes.RightColumn}>
-            <Box
-              component="aside"
-              className={classes.HelpSidebar}
-              aria-label="Help and Support"
-            >
-              {/* Need Help Section */}
-              <Box className={classes.HelpHeader}>
-                <img
-                  src={HelpIconSvg}
-                  alt="Help Icon"
-                  className={classes.HelpIcon}
-                />
-                <Typography
-                  variant="h2"
-                  component="h2"
-                  className={classes.HelpHeaderText}
-                >
-                  NEED HELP?
-                </Typography>
-              </Box>
-
-              {/* Tutorial Section */}
-              <Box className={classes.TutorialSection}>
-                <Typography
-                  variant="h3"
-                  component="h3"
-                  className={classes.SidebarTitle}
-                >
-                  Creating Accounts to Access CTDC data
-                </Typography>
-                <Typography className={classes.SidebarText}>
-                  This tutorial explains the steps involved in creating a
-                  Login.gov account, linking those accounts together, and
-                  registering for Research Plus.
-                </Typography>
-
-                {/* Video Thumbnail */}
-                <Box className={classes.VideoThumbnail}>
-                  <img
-                    src={VideoThumbnailImg}
-                    alt="Tutorial Video"
-                    className={classes.VideoImage}
+              if (isRenderableSection(section)) {
+                return (
+                  <LoginSectionBox
+                    key={sectionKey}
+                    classes={classes}
+                    section={section}
+                    rasAuthorizeUrl={rasAuthorizeUrl}
+                    openAccordions={sectionAccordionsOpen[sectionKey] || {}}
+                    onToggleAccordion={(accordionIndex) =>
+                      toggleSectionAccordion(sectionKey, accordionIndex)}
+                    arrowOpenIcon={arrowOpenIcon}
+                    arrowClosedIcon={arrowClosedIcon}
+                    externalLinkIcon={externalLinkIcon}
                   />
-                  <Box className={classes.PlayOverlay}>
-                    <img
-                      src={PlayIconSvg}
-                      alt="Play"
-                      className={classes.PlayIcon}
-                    />
-                  </Box>
-                </Box>
-              </Box>
+                );
+              }
 
-              {/* Contact Section */}
-              <Box className={classes.ContactSection}>
-                <Typography
-                  variant="h3"
-                  component="h3"
-                  className={classes.SidebarTitle}
-                >
-                  Let us assist you with your login or access issues
-                </Typography>
-                <Typography className={classes.SidebarText}>
-                  If you experience any difficulties with logging in or
-                  accessing your account, please reach out to our support team
-                  for assistance.
-                </Typography>
-                <Button variant="outlined" className={classes.ContactButton}>
-                  Contact Us
-                </Button>
-              </Box>
-            </Box>
+              return null;
+            })}
+
+            {hasWarningContent(warning) && (
+              <WarningNotice
+                classes={classes}
+                warning={warning}
+                warningOpen={warningOpen}
+                onToggle={() => setWarningOpen((value) => !value)}
+                arrowOpenIcon={arrowOpenIcon}
+                arrowClosedIcon={arrowClosedIcon}
+                externalLinkIcon={externalLinkIcon}
+              />
+            )}
           </Grid>
+
+          {hasHelpContent(help) && (
+            <HelpSidebar
+              classes={classes}
+              assets={assets}
+              help={help}
+              tutorial={tutorial}
+              contact={contact}
+              videoPlaying={videoPlaying}
+              onPlayVideo={() => setVideoPlaying(true)}
+              externalLinkIcon={externalLinkIcon}
+            />
+          )}
         </Grid>
       </Grid>
     </div>

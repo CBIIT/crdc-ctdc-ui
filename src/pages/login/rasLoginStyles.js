@@ -1,3 +1,8 @@
+/**
+ * Presentation styles for the YAML-driven RAS login page.
+ * Keep content/schema decisions in the renderer files; this file only controls
+ * responsive layout, typography, spacing, and shared visual treatment.
+ */
 const styles = (theme) => ({
   Container: {
     background:
@@ -6,10 +11,10 @@ const styles = (theme) => ({
     padding: "0px 16px 80px",
     boxShadow: "0px 4px 20px 0px #00000040 inset",
     [theme.breakpoints.up("md")]: {
-      padding: "0px 32px 120px",
+      padding: "0px 32px 50px",
     },
     "@media (min-width: 1400px)": {
-      padding: "0px 92px 120px",
+      padding: "0px 92px 50px",
     },
   },
 
@@ -61,6 +66,55 @@ const styles = (theme) => ({
     margin: "auto",
     padding: "0px",
   },
+  ContentLoadNotice: {
+    position: "relative",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "12px",
+    boxSizing: "border-box",
+    width: "calc(100% + 32px)",
+    maxWidth: "none",
+    margin: "0 -16px 32px",
+    padding: "10px 56px 10px 24px",
+    backgroundColor: "#FFF7E6",
+    borderTop: "1px solid #B86B00",
+    borderBottom: "1px solid #B86B00",
+    color: "#000",
+    fontFamily: "Roboto",
+    lineHeight: "150%",
+    textAlign: "center",
+    [theme.breakpoints.up("md")]: {
+      width: "calc(100% + 64px)",
+      margin: "0 -32px 32px",
+    },
+    "@media (min-width: 1400px)": {
+      width: "calc(100% + 184px)",
+      margin: "0 -92px 32px",
+    },
+  },
+  ContentLoadNoticeText: {
+    margin: "0",
+    fontFamily: "Roboto",
+    fontSize: "14px",
+    fontWeight: 400,
+    lineHeight: "150%",
+  },
+  ContentLoadNoticeDismiss: {
+    position: "absolute",
+    right: "20px",
+    top: "50%",
+    transform: "translateY(-50%)",
+    border: 0,
+    backgroundColor: "transparent",
+    color: "#000",
+    cursor: "pointer",
+    fontFamily: "Roboto",
+    fontSize: "22px",
+    fontWeight: 700,
+    lineHeight: 1,
+    padding: "2px 6px",
+  },
   ColumnContainer: {
     gap: "60px",
     justifyContent: "center",
@@ -69,18 +123,57 @@ const styles = (theme) => ({
     },
   },
 
-  // Combined Login Box Styles
-  CombinedLoginBox: {
+  // Login Section Box Styles
+  LoginSectionBox: {
     backgroundColor: "#F0F8FA",
     borderRadius: "35px",
     padding: "30px 40px 50px",
-    marginBottom: "40px",
     boxShadow: "0px 2px 10px 0px #00000040",
     border: "3px solid #F4FBFE",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    gap: "40px",
+    gap: "0px",
+    "&:not(:first-child)": {
+      marginTop: "40px",
+    },
+  },
+  AccordionList: {
+    alignSelf: "stretch",
+    width: "100%",
+    borderTop: "1px solid #8A8A8A",
+  },
+  AccordionItem: {
+    width: "100%",
+    borderBottom: "1px solid #8A8A8A",
+  },
+  AccordionHeader: {
+    minHeight: "52px",
+    padding: "14px 10px 14px 0",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    cursor: "pointer",
+  },
+  AccordionTitle: {
+    flex: 1,
+    fontFamily: "Inter",
+    fontSize: "20px",
+    fontWeight: 600,
+    color: "#000",
+    lineHeight: "26px",
+  },
+  AccordionText: {
+    width: "100%",
+    fontFamily: "Roboto",
+    fontSize: "16px",
+    fontWeight: 400,
+    color: "#000",
+    lineHeight: "150%",
+    padding: "0 50px 18px 0",
+    [theme.breakpoints.down("sm")]: {
+      paddingRight: 25,
+    },
   },
   RightColumn: {
     [theme.breakpoints.up("md")]: {
@@ -93,80 +186,18 @@ const styles = (theme) => ({
       maxWidth: "876px",
     },
   },
-  LoginSection: {
-    alignSelf: "stretch",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: "25px",
-  },
-  RasSection: {
-    alignSelf: "stretch",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-  },
-  RasTextWrapper: {
+  SectionTextWrapper: {
     flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: "25px",
-    minWidth: 0,
-  },
-  VerificationWrapper: {
-    width: "100%",
-    display: "flex",
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    gap: "100px",
-  },
-  VerificationSection: {
-    width: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
     gap: "10px",
-    "& $BodyText": {
-      paddingRight: "50px",
-    },
-  },
-  VerificationHeader: {
-    alignSelf: "stretch",
-    paddingRight: "10px",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    cursor: "pointer",
-  },
-  VerificationTitle: {
-    flex: 1,
-    fontFamily: "Inter",
-    fontSize: "20px",
-    fontWeight: 600,
-    color: "#000",
-    lineHeight: "26px",
-  },
-  VerificationText: {
-    width: "100%",
-    fontFamily: "Roboto",
-    fontSize: "16px",
-    fontWeight: 400,
-    color: "#000",
-    lineHeight: "150%",
-    paddingRight: "50px",
-  },
-  Divider: {
-    alignSelf: "stretch",
-    width: "100%",
-    height: "0px",
-    borderTop: "1px solid #8A8A8A",
-    margin: "25px 0",
+    minWidth: 0,
   },
   orderedListAlpha: {
-    margin: "2px 0px 30px 0px",
+    margin: "2px 0",
     paddingLeft: "48px",
-
+    listStyleType: "lower-alpha",
     fontFamily: "Roboto",
     fontWeight: 400,
     fontSize: "16px",
@@ -204,6 +235,11 @@ const styles = (theme) => ({
       paddingLeft: "4px",
     },
   },
+  nestedListOnlyItem: {
+    listStyleType: "none",
+    paddingLeft: "0px !important",
+    marginBottom: "0px !important",
+  },
   nestedList: {
     margin: "2px 0",
     paddingLeft: "20px",
@@ -213,33 +249,25 @@ const styles = (theme) => ({
       paddingLeft: "4px",
     },
   },
-  LoginContentRow: {
+  SectionContentRow: {
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-start",
-    gap: "20px",
-    paddingTop: "20px",
-  },
-  LoginTextContent: {
-    width: "537px",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "flex-start",
-    gap: "17px",
+    gap: "44px",
+    paddingTop: "0px",
+    width: "100%",
+    [theme.breakpoints.down("sm")]: {
+      flexDirection: "column",
+      gap: "25px",
+    },
   },
   LoginButtonContainer: {
     display: "flex",
-    alignItems: "flex-start",
-  },
-  BoxTitle: {
-    height: "37px",
-    fontFamily: "Inter",
-    fontSize: "24px",
-    fontWeight: 700,
-    color: "#18588E",
-    letterSpacing: "-0.02em",
-    lineHeight: "106.52%",
-    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    [theme.breakpoints.down("sm")]: {
+      alignSelf: "center",
+    },
   },
   BodyText: {
     fontFamily: "Roboto",
@@ -250,46 +278,25 @@ const styles = (theme) => ({
     lineHeight: "150%",
     marginBottom: "0px",
   },
-  NoteText: {
-    fontFamily: "Roboto",
-    fontSize: "16px",
-    fontWeight: 700,
-    color: "#000",
-    letterSpacing: "0.2px",
-    lineHeight: "150%",
-  },
-  FooterNote: {
-    fontFamily: "Roboto",
-    fontSize: "16px",
-    fontWeight: 400,
-    color: "#000",
-    letterSpacing: "0.2px",
-    lineHeight: "150%",
-  },
-  LoginButtonEra: {
-    width: "213px",
-    height: "47px",
-    fontFamily: "Roboto",
-    fontSize: "16px",
-    fontWeight: 500,
-    color: "#000000",
-    backgroundColor: "#FFFFFF",
-    border: "1.25px solid #3795A9",
-    borderRadius: "10px",
-    padding: "11px 14px",
-    gap: "10px",
-    textTransform: "none",
-    textAlign: "center",
-    lineHeight: "24.5px",
-    whiteSpace: "nowrap",
-    "&:hover": {
-      backgroundColor: "#F0F9F7",
-      border: "1.25px solid #3795A9",
+  MarkdownContent: {
+    width: "100%",
+    "& p": {
+      marginTop: 0,
+    },
+    "& p:not(:last-child)": {
+      marginBottom: "0px",
+    },
+    "& li p": {
+      display: "inline",
+      margin: 0,
+    },
+    "& li ul, & li ol": {
+      marginTop: "2px",
     },
   },
   LoginButtonRas: {
-    width: "215px",
-    height: "47px",
+    minWidth: "215px",
+    minHeight: "47px",
     fontFamily: "Roboto",
     fontSize: "16px",
     fontWeight: 500,
@@ -300,8 +307,10 @@ const styles = (theme) => ({
     padding: "11px 53px",
     gap: "10px",
     textTransform: "none",
+    textAlign: "center",
     lineHeight: "24.5px",
-    whiteSpace: "nowrap",
+    whiteSpace: "normal",
+    overflowWrap: "break-word",
 
     letterSpacing: "0%",
 
@@ -309,6 +318,21 @@ const styles = (theme) => ({
       backgroundColor: "#F0F9F7",
       border: "1.25px solid #3795A9",
     },
+    "&.Mui-disabled": {
+      color: "#5F6368",
+      backgroundColor: "#F5F5F5",
+      border: "1.25px solid #9AA0A6",
+    },
+  },
+  LoginButtonAlert: {
+    maxWidth: "260px",
+    marginTop: "10px",
+    fontFamily: "Roboto",
+    fontSize: "14px",
+    fontWeight: 500,
+    color: "#8A1C1C",
+    lineHeight: "18px",
+    textAlign: "center",
   },
 
   // Help Sidebar Styles
@@ -342,12 +366,16 @@ const styles = (theme) => ({
     marginBottom: "60px",
     padding: "0px 10px",
   },
+  HelpContentSection: {
+    marginBottom: "30px",
+    padding: "0px 10px",
+  },
   SidebarTitle: {
     fontFamily: "Inter",
     fontSize: "24px",
     fontWeight: 700,
     color: "#8BEAFB",
-    marginBottom: "5px",
+    marginBottom: "20px",
     lineHeight: "112%",
     letterSpacing: "-2%",
   },
@@ -386,7 +414,6 @@ const styles = (theme) => ({
     height: "auto",
   },
   ContactSection: {
-    marginTop: "40px",
     padding: "0px 10px",
   },
   ContactButton: {
@@ -408,29 +435,17 @@ const styles = (theme) => ({
     maxWidth: "213px",
     height: "47px",
     display: "block",
-    margin: "26px auto 0",
+    margin: "43px auto 0",
   },
 
-  // Request Access Section
-  RequestSection: {
-    padding: "30px 40px 40px 40px",
-    marginTop: "40px",
-    backgroundColor: "#F0F8FA",
-    borderRadius: "35px",
-    boxShadow: "0px 2px 10px 0px #00000040",
-    border: "3px #F4FBFE solid",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  RequestTopSection: {
+  LoginSectionHeader: {
     alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",
     alignItems: "flex-start",
     gap: "15px",
   },
-  RequestBottomSection: {
+  LoginSectionBody: {
     alignSelf: "stretch",
     display: "flex",
     flexDirection: "column",
@@ -438,7 +453,6 @@ const styles = (theme) => ({
     gap: "15px",
   },
   SectionTitle: {
-    height: "37px",
     fontFamily: "Inter",
     fontSize: "24px",
     fontWeight: 700,
@@ -447,6 +461,7 @@ const styles = (theme) => ({
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
+    paddingBottom: "15px",
   },
   SubsectionTitle: {
     fontFamily: "Inter",
@@ -458,14 +473,77 @@ const styles = (theme) => ({
     lineHeight: "130%",
     letterSpacing: "0%",
   },
-  DocumentationList: {
+  title: {
+    color: "inherit",
     fontFamily: "Roboto",
     fontSize: "16px",
-    listStyleType: "none",
-    paddingLeft: "0px",
-    "& li": {
-      marginBottom: "4px",
-    },
+    fontWeight: 600,
+    lineHeight: "24px",
+  },
+  space: {
+    display: "block",
+    height: "15px",
+  },
+  head: {
+    display: "block",
+    color: "#18588E",
+    fontFamily: "Inter",
+    fontSize: "18px",
+    fontWeight: 600,
+    lineHeight: "150%",
+    margin: "14px 0 4px",
+  },
+  firstTitle: {
+    display: "block",
+    color: "#18588E",
+    fontFamily: "Inter",
+    fontSize: "20px",
+    fontWeight: 600,
+    lineHeight: "150%",
+    margin: "0 0 4px",
+  },
+  italicizeText: {
+    display: "inline-block",
+    marginLeft: "30px",
+    fontStyle: "italic",
+  },
+  email: {
+    color: "#18588E",
+    fontWeight: 700,
+  },
+  indentedText: {
+    display: "inline-block",
+    marginLeft: "30px",
+  },
+  tableDiv: {
+    width: "100%",
+    overflowX: "auto",
+    margin: "8px 0",
+  },
+  table: {
+    width: "100%",
+    borderCollapse: "collapse",
+    fontFamily: "Roboto",
+    fontSize: "14px",
+    lineHeight: "150%",
+  },
+  tableHeader: {
+    backgroundColor: "#EAF3F8",
+  },
+  tableBodyRow: {
+    borderBottom: "1px solid #8A8A8A",
+  },
+  headerCell: {
+    padding: "8px",
+    textAlign: "left",
+    fontWeight: 700,
+    color: "#18588E",
+    border: "1px solid #8A8A8A",
+  },
+  tableCell: {
+    padding: "8px",
+    verticalAlign: "top",
+    border: "1px solid #8A8A8A",
   },
   Link: {
     color: "#990099",
@@ -477,11 +555,21 @@ const styles = (theme) => ({
     "&:hover": {
       textDecoration: "underline",
     },
+    "& a": {
+      color: "inherit",
+    },
+    "& a:visited": {
+      color: "inherit",
+    },
     fontFamily: "Roboto",
     fontSize: "16px",
     "& $unorderedList": {
       color: "#990099",
     },
+  },
+  linkIcon: {
+    marginLeft: "4px",
+    verticalAlign: "middle",
   },
 
   // Warning Section
@@ -504,11 +592,17 @@ const styles = (theme) => ({
     gap: "15px",
   },
   WarningToggle: {
+    alignSelf: "stretch",
+    width: "100%",
+    boxSizing: "border-box",
     paddingRight: "10px",
     display: "flex",
     justifyContent: "space-between",
-    alignItems: "flex-start",
+    alignItems: "center",
     cursor: "pointer",
+  },
+  WarningToggleStatic: {
+    cursor: "default",
   },
   WarningTitle: {
     fontFamily: "Inter",
@@ -519,6 +613,9 @@ const styles = (theme) => ({
     letterSpacing: "0%",
   },
   WarningText: {
+    alignSelf: "stretch",
+    width: "100%",
+    boxSizing: "border-box",
     flex: 1,
     fontFamily: "Roboto",
     fontSize: "16px",
