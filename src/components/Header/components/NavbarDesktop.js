@@ -392,6 +392,10 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     setClickedTitle("");
+    const logoutFrame = document.createElement("iframe");
+    logoutFrame.hidden = true;
+    logoutFrame.src = "https://authtest.nih.gov/siteminderagent/smlogoutiframe.asp";
+    document.body.appendChild(logoutFrame);
     const idp = getAuthenticatedIdp(authData);
     signOut(history, "/", idp);
     onShowNotification("You have been logged out.", 2000)

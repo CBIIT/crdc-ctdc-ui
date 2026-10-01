@@ -25,7 +25,11 @@ export default function ProfileMenu() {
   function signout() {
     localStorage.removeItem('username');
     localStorage.setItem('isAuthorized', 'false');
-    window.location.assign(USER_LOGOUT_URL);
+    const logoutFrame = document.createElement('iframe');
+    logoutFrame.hidden = true;
+    logoutFrame.onload = () => window.location.assign(USER_LOGOUT_URL);
+    logoutFrame.src = 'https://authtest.nih.gov/siteminderagent/smlogoutiframe.asp';
+    document.body.appendChild(logoutFrame);
   }
 
   return (
