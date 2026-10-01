@@ -477,7 +477,7 @@ const NavBar = () => {
             })
           }
         </UlContainer>
- {!isSignedIn || !authData.name
+{isSignedIn && authData.name
             ? (
                <CartSpan>
                <div
