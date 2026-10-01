@@ -392,21 +392,22 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     setClickedTitle("");
+    const logoutWindow = window.open("about:blank", "_blank");
+    if (logoutWindow) {
+      logoutWindow.opener = null;
+    }
 
     const idp = getAuthenticatedIdp(authData);
     signOut(history, "/", idp);
     onShowNotification("You have been logged out.", 2000)
 
-    await new Promise((resolve) => setTimeout(resolve, 2000));
 
-
-    const logoutFrame = document.createElement("iframe");
-    logoutFrame.hidden = true;
-    logoutFrame.src = "https://authtest.nih.gov/siteminderagent/smlogoutiframe.asp";
-    document.body.appendChild(logoutFrame);
-
-
-    // history.push('/');
+    const logoutUrl = "https://authtest.nih.gov/siteminderagent/smlogout.asp";
+    if (logoutWindow) {
+      logoutWindow.location.assign(logoutUrl);
+    } else {
+      window.location.assign(logoutUrl);
+    }
   };
 
   function shouldBeUnderlined(item) {
@@ -477,7 +478,7 @@ const NavBar = () => {
             })
           }
         </UlContainer>
-{isSignedIn && authData.name
+{!isSignedIn || !authData.name
             ? (
                <CartSpan>
                <div
