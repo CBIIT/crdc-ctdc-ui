@@ -392,14 +392,21 @@ const NavBar = () => {
 
   const handleLogout = async () => {
     setClickedTitle("");
+
+    const idp = getAuthenticatedIdp(authData);
+    signOut(history, "/", idp);
+    onShowNotification("You have been logged out.", 2000)
+
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+
     const logoutFrame = document.createElement("iframe");
     logoutFrame.hidden = true;
     logoutFrame.src = "https://authtest.nih.gov/siteminderagent/smlogoutiframe.asp";
     document.body.appendChild(logoutFrame);
-    const idp = getAuthenticatedIdp(authData);
-    signOut(history, "/", idp);
-    onShowNotification("You have been logged out.", 2000)
-    history.push('/');
+
+
+    // history.push('/');
   };
 
   function shouldBeUnderlined(item) {
@@ -470,7 +477,7 @@ const NavBar = () => {
             })
           }
         </UlContainer>
- {isSignedIn && authData.name
+ {!isSignedIn || !authData.name
             ? (
                <CartSpan>
                <div
@@ -536,7 +543,7 @@ const NavBar = () => {
                   }
                 }}
             >
-              Logout
+              Logout-2
             </div>
           </div>
         </NameDropdownContainer>
