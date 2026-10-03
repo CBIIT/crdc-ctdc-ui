@@ -401,8 +401,7 @@ const NavBar = () => {
     signOut(history, "/", idp);
     onShowNotification("You have been logged out.", 2000)
 
-
-    const logoutUrl = "https://authtest.nih.gov/siteminderagent/smlogout.asp";
+    const logoutUrl = "https://authtest.nih.gov/siteminderagent/raslogout.asp";
     if (logoutWindow) {
       logoutWindow.location.assign(logoutUrl);
     } else {
