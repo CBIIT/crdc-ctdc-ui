@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withStyles, CssBaseline } from '@material-ui/core';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import aboutPageRoutes from '../../bento/aboutPagesRoutes';
@@ -30,6 +30,9 @@ import StudiesContainer from '../../pages/studies/studiesController';
 import DataModelNavigator from '../../pages/dmn';
 import SysInfo from '../../pages/sysinfo/sysinfo';
 import rasLogin from '../../pages/login/rasLoginController';
+import { useGlobal } from '../Global/GlobalProvider';
+
+const LOGOUT_SUCCESS_STORAGE_KEY = 'showLogoutSuccess';
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -40,8 +43,33 @@ const ScrollToTopComponent = () => {
 const Layout = ({ classes, isSidebarOpened }) => {
   // Access control imports
   const { LoginRoute } = AuthenticationMiddlewareGenerator(AUTH_MIDDLEWARE_CONFIG);
+  const { Notification } = useGlobal();
   
   useVisitedPageSync();
+
+  useEffect(() => {
+    let shouldShowLogoutSuccess = false;
+
+    try {
+      shouldShowLogoutSuccess =
+        sessionStorage.getItem(LOGOUT_SUCCESS_STORAGE_KEY) === 'true';
+    } catch (error) {
+      console.warn('[Auth logout] Unable to read logout notification', {
+        message: error && error.message,
+      });
+    }
+
+    if (shouldShowLogoutSuccess) {
+      try {
+        sessionStorage.removeItem(LOGOUT_SUCCESS_STORAGE_KEY);
+      } catch (error) {
+        console.warn('[Auth logout] Unable to clear logout notification', {
+          message: error && error.message,
+        });
+      }
+      Notification.show('You have been logged out.', 2000);
+    }
+  }, [Notification]);
 
   return (
   <>

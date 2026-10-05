@@ -16,6 +16,7 @@ jest.mock("./config", () => ({
       NIH_CLIENT_ID: "",
       NIH_AUTH_URL: "https://example.test/authorize",
       AUTH_API: "https://example.test/api/",
+      RAS_LOGOUT: "",
     },
     functions: {
       redirect: jest.fn(),
@@ -30,12 +31,35 @@ jest.mock("../store/actions/Actions", () => ({
   signOutRed: jest.fn(),
 }));
 
-const { AuthProviderGenerator, useAuth } = require("./AuthProviderGenerator");
+const {
+  AuthProviderGenerator,
+  getRasLogoutRedirectUrl,
+  useAuth,
+} = require("./AuthProviderGenerator");
 
 const AuthProbe = ({ onAuth }) => {
   onAuth(useAuth());
   return null;
 };
+
+describe("getRasLogoutRedirectUrl", () => {
+  it("returns the configured full RAS logout URL", () => {
+    const logoutUrl =
+      "https://authtest.nih.gov/siteminderagent/raslogout.asp?target=https://clinical-dev.datacommons.cancer.gov";
+
+    expect(getRasLogoutRedirectUrl(logoutUrl)).toBe(logoutUrl);
+  });
+
+  it("returns an empty URL when configuration still has a placeholder", () => {
+    expect(getRasLogoutRedirectUrl(
+      ["$", "{RAS_LOGOUT}"].join(""),
+    )).toBe("");
+  });
+
+  it("returns an empty URL when the RAS logout URL is relative", () => {
+    expect(getRasLogoutRedirectUrl("/siteminderagent/raslogout.asp")).toBe("");
+  });
+});
 
 describe("AuthProviderGenerator authServiceLogin", () => {
   let container;

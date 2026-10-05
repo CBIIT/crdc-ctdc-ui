@@ -2,6 +2,7 @@ window.injectedEnv = {
     REACT_APP_BACKEND_GETUSERINFO_API: '${REACT_APP_BACKEND_GETUSERINFO_API}',
     REACT_APP_LOGIN_URL: '${REACT_APP_LOGIN_URL}',
     REACT_APP_RAS_AUTHORIZE_URL: '${REACT_APP_RAS_AUTHORIZE_URL}',
+    REACT_APP_RAS_LOGOUT: 'https://authtest.nih.gov/siteminderagent/raslogout.asp?target=https://clinical-dev.datacommons.cancer.gov',
 
     REACT_APP_USER_LOGOUT_URL: '${REACT_APP_USER_LOGOUT_URL}',
     REACT_APP_BACKEND_API: '${REACT_APP_BACKEND_API}',

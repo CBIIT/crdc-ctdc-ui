@@ -393,9 +393,10 @@ const NavBar = () => {
   const handleLogout = async () => {
     setClickedTitle("");
     const idp = getAuthenticatedIdp(authData);
-    signOut(history, "/", idp);
-    onShowNotification("You have been logged out.", 2000)
-    history.push('/');
+    if (idp !== "ras") {
+      onShowNotification("You have been logged out.", 2000)
+    }
+    await signOut(history, "/", idp);
   };
 
   function shouldBeUnderlined(item) {

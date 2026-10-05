@@ -136,6 +136,11 @@ The RAS button URL is never read from YAML. It comes from
 URL. Missing, unresolved, relative, or invalid values disable the button and
 show the configured unavailable message.
 
+RAS logout is currently hardcoded in `injectEnv.js` through
+`conf/inject.template.js`:
+`https://authtest.nih.gov/siteminderagent/raslogout.asp?target=https://clinical-dev.datacommons.cancer.gov`.
+The target CTDC return URL must be whitelisted by RAS.
+
 ## Warning And Help
 
 Warning content uses the same `blocks` parser as sections. `collapsible`

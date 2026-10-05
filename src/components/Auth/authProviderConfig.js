@@ -14,6 +14,7 @@ export const AUTHPROVIDER_CONFIG = {
     NIH_CLIENT_ID: env.REACT_APP_NIH_CLIENT_ID || '',
     NIH_AUTH_URL: env.REACT_APP_NIH_AUTH_URL || 'https://stsstg.nih.gov/auth/oauth/v2/authorize',
     AUTH_API: env.REACT_APP_AUTH_SERVICE_API || '',
+    RAS_LOGOUT: env.REACT_APP_RAS_LOGOUT || '',
     GET_USER_DETAILS,
   },
 

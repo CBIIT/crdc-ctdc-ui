@@ -42,6 +42,29 @@ const GoogleLoginState = ({ clientId, children }) => {
 const googleNotConfigured = () =>
   Promise.reject(new Error("Google login is not configured."));
 
+const PLACEHOLDER_ENV_PATTERN = /^\$\{[^}]+\}$/;
+
+const isUsableAbsoluteUrl = (value) => {
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  const trimmedValue = value.trim();
+  if (!trimmedValue || PLACEHOLDER_ENV_PATTERN.test(trimmedValue)) {
+    return false;
+  }
+
+  return /^https?:\/\//i.test(trimmedValue);
+};
+
+export const getRasLogoutRedirectUrl = (logoutUrl = "") =>
+  isUsableAbsoluteUrl(logoutUrl) ? logoutUrl.trim() : "";
+
+const isRasIdp = (IDP) =>
+  typeof IDP === "string" && IDP.trim().toLowerCase() === "ras";
+
+const LOGOUT_SUCCESS_STORAGE_KEY = "showLogoutSuccess";
+
 /**
  * Generate a Authentication Provider component with the custom configuration applied
  *
@@ -90,6 +113,11 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
     config && typeof config.AUTH_URL === "string"
       ? config.AUTH_URL
       : DEFAULT_CONFIG.config.AUTH_URL;
+
+  const RAS_LOGOUT =
+    config && typeof config.RAS_LOGOUT === "string"
+      ? config.RAS_LOGOUT
+      : DEFAULT_CONFIG.config.RAS_LOGOUT;
 
   const stateProps = () => ({
     // autocomplete: state.login.autocomplete,
@@ -204,8 +232,8 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
           window.location.href = `${AUTH_URL}`;
         };
 
-        const onSignOut = (history, redirectPath, IDP) => {
-          (async () => {
+        const onSignOut = async (history, redirectPath = "/", IDP) => {
+          try {
             await fetch(`${AUTH_API}logout`, {
               method: "POST",
               headers: {
@@ -213,17 +241,36 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({ IDP }),
-            })
-              .then(() => {
-                deleteFromLocalStorage("userDetails");
-                signOut();
-                dispatchProps("signOut");
-                //googleSignOut();
-                redirect(history, redirectPath);
-              })
-              .catch(() => {});
-          })();
-          // this.auth.signIn();
+            });
+          } catch (error) {
+            console.warn("[Auth logout] Unable to call Auth service logout", {
+              message: error && error.message,
+            });
+            return;
+          }
+
+          deleteFromLocalStorage("userDetails");
+          signOut();
+          dispatchProps("signOut");
+
+          const rasLogoutRedirectUrl = isRasIdp(IDP)
+            ? getRasLogoutRedirectUrl(RAS_LOGOUT)
+            : "";
+
+          if (rasLogoutRedirectUrl) {
+            try {
+              sessionStorage.setItem(LOGOUT_SUCCESS_STORAGE_KEY, "true");
+            } catch (error) {
+              console.warn("[Auth logout] Unable to save logout notification", {
+                message: error && error.message,
+              });
+            }
+            // Browser navigation is required so RAS can clear its SSO cookies.
+            window.location.assign(rasLogoutRedirectUrl);
+            return;
+          }
+
+          redirect(history, redirectPath);
         };
 
         return (

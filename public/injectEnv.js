@@ -21,7 +21,7 @@ window.injectedEnv = {
   REACT_APP_LOGIN_URL: 'https://nci-crdc-staging.datacommons.io/user/oauth2/authorize?client_id=HADoUzN9BWzbzwxdu0soRvRHSnegiWaoShVhB09O&response_type=code&redirect_uri=http://localhost:3000/login&scope=openid%20user',
 
   REACT_APP_RAS_AUTHORIZE_URL: 'https://stsstg.nih.gov/auth/oauth/v2/authorize?client_id=b0714287-43ee-479f-b151-8e58f3622899&response_type=code&redirect_uri=https%3A%2F%2Fclinical-dev.datacommons.cancer.gov%2Fapi%2Fauth%2Fcallback&scope=openid%20profile%20email%20ga4gh_passport_v1%20researcher_role%20federated_identities_ial2%20federated_identities%20federated_sources%20source',
-  
+  REACT_APP_RAS_LOGOUT: 'https://authtest.nih.gov/siteminderagent/raslogout.asp?target=https://clinical-dev.datacommons.cancer.gov',
   // About Content API:
   REACT_APP_ABOUT_CONTENT_URL: 'https://raw.githubusercontent.com/CBIIT/bento-ctdc-static-content/refs/heads/develop/aboutPagesContent.yaml',
   REACT_APP_STATIC_CONTENT_URL: 'https://raw.githubusercontent.com/CBIIT/bento-ctdc-static-content/refs/heads/develop/',

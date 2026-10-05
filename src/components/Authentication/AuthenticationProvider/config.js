@@ -38,6 +38,7 @@ export const DEFAULT_CONFIG_AUTHPROVIDER = {
     NIH_CLIENT_ID: '',
     NIH_AUTH_URL: 'https://stsstg.nih.gov/auth/oauth/v2/authorize',
     AUTH_API: '',
+    RAS_LOGOUT: '',
     GET_USER_DETAILS,
   },
 
