@@ -53,8 +53,12 @@ const Layout = ({ classes, isSidebarOpened }) => {
     try {
       shouldShowLogoutSuccess =
         sessionStorage.getItem(LOGOUT_SUCCESS_STORAGE_KEY) === 'true';
+      console.log('RAS_Logout return notification flag checked', {
+        key: LOGOUT_SUCCESS_STORAGE_KEY,
+        shouldShowLogoutSuccess,
+      });
     } catch (error) {
-      console.warn('[Auth logout] Unable to read logout notification', {
+      console.warn('RAS_Logout unable to read return notification flag', {
         message: error && error.message,
       });
     }
@@ -62,11 +66,15 @@ const Layout = ({ classes, isSidebarOpened }) => {
     if (shouldShowLogoutSuccess) {
       try {
         sessionStorage.removeItem(LOGOUT_SUCCESS_STORAGE_KEY);
+        console.log('RAS_Logout return notification flag cleared', {
+          key: LOGOUT_SUCCESS_STORAGE_KEY,
+        });
       } catch (error) {
-        console.warn('[Auth logout] Unable to clear logout notification', {
+        console.warn('RAS_Logout unable to clear return notification flag', {
           message: error && error.message,
         });
       }
+      console.log('RAS_Logout showing logout success notification');
       Notification.show('You have been logged out.', 2000);
     }
   }, [Notification]);
