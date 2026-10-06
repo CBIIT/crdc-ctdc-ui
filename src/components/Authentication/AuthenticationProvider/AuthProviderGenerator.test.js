@@ -45,7 +45,7 @@ const AuthProbe = ({ onAuth }) => {
 describe("getRasLogoutRedirectUrl", () => {
   it("returns the configured full RAS logout URL", () => {
     const logoutUrl =
-      "https://authtest.nih.gov/siteminderagent/raslogout.asp?target=https://clinical-dev.datacommons.cancer.gov";
+      "https://authtest.nih.gov/siteminderagent/smlogoutredirector.asp?target=https://clinical-dev.datacommons.cancer.gov/";
 
     expect(getRasLogoutRedirectUrl(logoutUrl)).toBe(logoutUrl);
   });
@@ -57,7 +57,7 @@ describe("getRasLogoutRedirectUrl", () => {
   });
 
   it("returns an empty URL when the RAS logout URL is relative", () => {
-    expect(getRasLogoutRedirectUrl("/siteminderagent/raslogout.asp")).toBe("");
+    expect(getRasLogoutRedirectUrl("/siteminderagent/smlogoutredirector.asp")).toBe("");
   });
 });
 

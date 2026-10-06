@@ -64,7 +64,7 @@ const isRasIdp = (IDP) =>
   typeof IDP === "string" && IDP.trim().toLowerCase() === "ras";
 
 const LOGOUT_SUCCESS_STORAGE_KEY = "showLogoutSuccess";
-const RAS_LOGOUT_REDIRECT_DELAY_MS = 10000;
+const RAS_LOGOUT_REDIRECT_DELAY_MS = 3000;
 
 const logRasLogout = (message, data) => {
   console.log(`RAS_Logout ${message}`, data || "");
@@ -302,22 +302,22 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
           }
 
           if (rasLogoutRedirectUrl) {
-            try {
-              sessionStorage.setItem(LOGOUT_SUCCESS_STORAGE_KEY, "true");
-              logRasLogout("saved return notification flag", {
-                key: LOGOUT_SUCCESS_STORAGE_KEY,
-              });
-            } catch (error) {
-              warnRasLogout("unable to save return notification flag", {
-                message: error && error.message,
-              });
-            }
             logRasLogout("redirect scheduled", {
               delayMs: RAS_LOGOUT_REDIRECT_DELAY_MS,
               rasLogoutRedirectUrl,
             });
 
             window.setTimeout(() => {
+              try {
+                sessionStorage.setItem(LOGOUT_SUCCESS_STORAGE_KEY, "true");
+                logRasLogout("saved return notification flag", {
+                  key: LOGOUT_SUCCESS_STORAGE_KEY,
+                });
+              } catch (error) {
+                warnRasLogout("unable to save return notification flag", {
+                  message: error && error.message,
+                });
+              }
               logRasLogout("redirecting browser to RAS logout", {
                 rasLogoutRedirectUrl,
               });

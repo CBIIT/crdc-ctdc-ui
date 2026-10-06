@@ -138,7 +138,7 @@ show the configured unavailable message.
 
 RAS logout is currently hardcoded in `injectEnv.js` through
 `conf/inject.template.js`:
-`https://authtest.nih.gov/siteminderagent/raslogout.asp?target=https://clinical-dev.datacommons.cancer.gov`.
+`https://authtest.nih.gov/siteminderagent/smlogoutredirector.asp?target=https://clinical-dev.datacommons.cancer.gov/`.
 The target CTDC return URL must be whitelisted by RAS.
 
 ## Warning And Help
