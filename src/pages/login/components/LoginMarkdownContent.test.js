@@ -9,6 +9,7 @@ import LoginMarkdownContent from "./LoginMarkdownContent";
 
 const classes = {
   BodyText: "body-text",
+  inlineText: "inline-text",
   MarkdownContent: "markdown-content",
   unorderedList: "unordered-list",
   orderedListNumeric: "ordered-list-numeric",
@@ -213,7 +214,7 @@ describe("LoginMarkdownContent", () => {
     expect(downloadLink.textContent).toBe("Download Guide");
     expect(hasOutboundIcon(downloadLink)).toBe(false);
 
-    expect(container.querySelectorAll("img.link-icon")).toHaveLength(4);
+    expect(container.querySelectorAll(".link-icon")).toHaveLength(4);
   });
 
   it("does not render unsafe or protocol-relative links", () => {
@@ -240,6 +241,157 @@ describe("LoginMarkdownContent", () => {
     expect(container.querySelector('a[href^="data:"]')).toBeNull();
     expect(container.querySelector('a[href^="//"]')).toBeNull();
     expect(container.querySelector('a[href="/request-access"]')).not.toBeNull();
+  });
+
+  it("applies content style presets to spans, blocks, links, lists, and tables", () => {
+    renderContent({
+      stylePresets: {
+        paragraphBase: {
+          marginBottom: "10px",
+        },
+        paragraphStyle: {
+          fontWeight: 700,
+          position: "absolute",
+        },
+        spanStyle: {
+          color: "purple",
+          fontWeight: 600,
+        },
+        emphasisLink: {
+          color: "blue",
+          textDecoration: "underline",
+          fontWeight: 700,
+        },
+        externalIcon: {
+          color: "green",
+        },
+        groupStyle: {
+          paddingTop: "9px",
+          backgroundColor: "rgb(240, 248, 250)",
+        },
+        listStyle: {
+          marginTop: "12px",
+        },
+        listItemStyle: {
+          fontStyle: "italic",
+        },
+        tableStyle: {
+          paddingTop: "4px",
+        },
+        cellStyle: {
+          fontWeight: 700,
+        },
+      },
+      blocks: [
+        {
+          paragraph: {
+            text:
+              "Styled $$[Help](url:https://help.id.me/hc/en-us style:emphasisLink externalIconStyle:externalIcon)$$ " +
+              "$$[Docs](url:https://example.org/docs style:emphasisLink)$$ $$" +
+              "{link:https://example.org/download.pdf,title:Download,style:emphasisLink}$$",
+            style: ["paragraphBase", "paragraphStyle"],
+          },
+        },
+        {
+          span: {
+            text: "Inline $$*span*$$ text ",
+            style: "spanStyle",
+          },
+        },
+        {
+          span: "after span",
+        },
+        {
+          style: "groupStyle",
+          blocks: [
+            {
+              paragraph: {
+                text: "Grouped paragraph",
+                style: "paragraphStyle",
+              },
+            },
+            {
+              span: " grouped span",
+            },
+          ],
+        },
+        {
+          listWithDots: [
+            {
+              text: "Styled list item",
+              style: "listItemStyle",
+            },
+          ],
+          style: "listStyle",
+        },
+        {
+          table: [
+            {
+              head: [
+                {
+                  text: "Styled Header",
+                  style: "cellStyle",
+                },
+              ],
+            },
+            {
+              body: [
+                {
+                  row: [
+                    {
+                      text: "Styled Cell",
+                      style: "cellStyle",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          style: "tableStyle",
+        },
+      ],
+    });
+
+    const paragraph = container.querySelector("p.body-text");
+    expect(paragraph.style.fontWeight).toBe("700");
+    expect(paragraph.style.marginBottom).toBe("10px");
+    expect(paragraph.style.position).toBe("absolute");
+    expect(container.querySelector(".inline-text").style.color).toBe("purple");
+    expect(container.querySelector(".inline-text").style.fontWeight).toBe("600");
+    expect(container.textContent).toContain("Inline span text after span");
+
+    const styledGroup = Array.from(container.querySelectorAll("div")).find(
+      (element) => element.style.paddingTop === "9px",
+    );
+    expect(styledGroup).not.toBeUndefined();
+    expect(styledGroup.style.backgroundColor).toBe("rgb(240, 248, 250)");
+    expect(styledGroup.textContent).toContain("Grouped paragraph grouped span");
+
+    const helpLink = container.querySelector(
+      'a[href="https://help.id.me/hc/en-us"]',
+    );
+    expect(helpLink.style.textDecoration).toBe("underline");
+    expect(helpLink.style.fontWeight).toBe("700");
+    expect(helpLink.style.color).toBe("blue");
+    expect(helpLink.nextElementSibling.style.backgroundColor).toBe("green");
+
+    const docsLink = container.querySelector(
+      'a[href="https://example.org/docs"]',
+    );
+    expect(docsLink.nextElementSibling.style.backgroundColor).toBe("blue");
+
+    const downloadLink = container.querySelector(
+      'a[href="https://example.org/download.pdf"]',
+    );
+    expect(downloadLink.style.textDecoration).toBe("underline");
+
+    expect(container.querySelector("ul").style.marginTop).toBe("12px");
+    expect(container.querySelector("li").style.fontStyle).toBe("italic");
+    expect(container.querySelector(".table-div").style.paddingTop).toBe("4px");
+    expect(container.querySelectorAll("th.header-cell")[1].style.fontWeight)
+      .toBe("700");
+    expect(container.querySelectorAll("td.table-cell")[1].style.fontWeight)
+      .toBe("700");
   });
 
   it("leaves Markdown-style links and emphasis as literal text", () => {
@@ -404,7 +556,34 @@ describe("LoginMarkdownContent", () => {
     expect(
       container.querySelector('a[href="https://www.go-fair.org/fair-principles/"]'),
     ).not.toBeNull();
-    expect(container.querySelectorAll("img.link-icon")).toHaveLength(1);
+    expect(container.querySelectorAll(".link-icon")).toHaveLength(1);
+  });
+
+  it("styles paragraph text only from the paragraph value", () => {
+    renderContent({
+      stylePresets: {
+        paragraphStyle: {
+          fontWeight: 700,
+        },
+      },
+      blocks: [
+        {
+          paragraph: "Block-level style is ignored for paragraph text.",
+          style: "paragraphStyle",
+        },
+        {
+          paragraph: {
+            text: "Paragraph-level style is applied.",
+            style: "paragraphStyle",
+          },
+        },
+      ],
+    });
+
+    const paragraphs = container.querySelectorAll("p.body-text");
+
+    expect(paragraphs[0].style.fontWeight).toBe("");
+    expect(paragraphs[1].style.fontWeight).toBe("700");
   });
 
 });

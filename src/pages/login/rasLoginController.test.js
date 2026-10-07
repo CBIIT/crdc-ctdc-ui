@@ -20,21 +20,21 @@ jest.mock("../../utils/env", () => ({
 jest.mock("./rasLoginView", () => {
   const React = require("react");
 
-  function getFirstRasButtonText(loginContent) {
+  function getFirstRasButtonLabel(loginContent) {
     const rasSection = loginContent.sections && loginContent.sections[0];
     const sectionBlocks =
       rasSection && Array.isArray(rasSection.blocks) ? rasSection.blocks : [];
 
-    return sectionBlocks.reduce((rasButtonText, blockGroup) => {
-      if (rasButtonText) return rasButtonText;
+    return sectionBlocks.reduce((rasButtonLabel, blockGroup) => {
+      if (rasButtonLabel) return rasButtonLabel;
 
       const blocks =
         blockGroup && Array.isArray(blockGroup.blocks)
           ? blockGroup.blocks
           : [blockGroup];
-      const buttonBlock = blocks.find((block) => block && block.rasButtonText);
+      const buttonBlock = blocks.find((block) => block && block.rasButton);
 
-      return buttonBlock ? buttonBlock.rasButtonText : "";
+      return buttonBlock ? buttonBlock.rasButton : "";
     }, "");
   }
 
@@ -58,7 +58,7 @@ jest.mock("./rasLoginView", () => {
       },
       [
         loginContent.hero.title,
-        getFirstRasButtonText(loginContent),
+        getFirstRasButtonLabel(loginContent),
         loginContent.sections &&
           loginContent.sections[1] &&
           loginContent.sections[1].title,
@@ -91,7 +91,7 @@ describe("RASLoginController", () => {
     "    blocks:",
     "      - blocks:",
     "          - paragraph: Bundled RAS fallback copy.",
-    "          - rasButtonText: Login with RAS",
+    "          - rasButton: Login with RAS",
     "  - id: request-access",
     "    type: contentBox",
     "    title: Request Access",

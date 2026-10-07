@@ -38,7 +38,7 @@ export const EMERGENCY_LOGIN_CONTENT = {
                 "Before accessing CTDC data, you are required to verify your identity through NIH's secure Researcher Auth Service (RAS).",
             },
             {
-              rasButtonText: "Login with RAS",
+              rasButton: "Login with RAS",
             },
           ],
         },
