@@ -42,7 +42,7 @@ const loginContent = {
                 "Before accessing CTDC data, you may be required to verify your identity.",
             },
             {
-              rasButtonText: "Login with RAS",
+              rasButton: "Login with RAS",
             },
             {
               paragraph:
@@ -73,7 +73,7 @@ const loginContent = {
               blocks: [
                 {
                   paragraph:
-                    "The verification process typically takes up to 30 minutes and requires:",
+                    "Login.gov and ID.me both support identity proofing that can meet the IAL2 requirement.",
                 },
                 {
                   listWithAlphabets: [
@@ -116,7 +116,7 @@ const loginContent = {
                   paragraph: "To request CTDC access, you must have:",
                 },
                 {
-                  listWithDots: ["An $$*NIH account*$$"],
+                  listWithDots: ["A $$*dbGaP authorization*$$"],
                 },
               ],
             },
@@ -126,7 +126,7 @@ const loginContent = {
               blocks: [
                 {
                   listWithNumbers: [
-                    "Create a Login.gov or ID.me account. If you do not have an NIH account, also create an eRA Commons account.",
+                    "Use Login.gov or ID.me to complete the RAS-controlled access flow.",
                   ],
                 },
                 {
@@ -224,9 +224,11 @@ const loginContent = {
             "If you experience any difficulties with logging in or accessing your account, please reach out to our support team for assistance.",
         },
       ],
-      buttonText: "Contact Us",
-      href: "mailto:NCICRDC@mail.nih.gov",
-      target: "_self",
+      button: {
+        text: "Contact Us",
+        href: "mailto:NCICRDC@mail.nih.gov",
+        target: "_self",
+      },
     },
   },
 };
@@ -284,7 +286,7 @@ describe("RASLoginPage", () => {
     expect(container.querySelector('[role="alert"]')).toBeNull();
   });
 
-  it("requires rasButtonText for the RAS login action", () => {
+  it("requires rasButton for the RAS login action", () => {
     const genericButtonTextContent = {
       ...loginContent,
       sections: loginContent.sections.map((section) => {
@@ -298,8 +300,8 @@ describe("RASLoginPage", () => {
             return {
               ...blockGroup,
               blocks: blockGroup.blocks.map((block) =>
-                block.rasButtonText
-                  ? { buttonText: block.rasButtonText }
+                block.rasButton
+                  ? { button: { text: block.rasButton } }
                   : block,
               ),
             };
@@ -312,6 +314,41 @@ describe("RASLoginPage", () => {
 
     expect(container.querySelector("button")).toBeNull();
     expect(container.textContent).not.toContain("Login with RAS");
+  });
+
+  it("ignores malformed rasButton values without crashing", () => {
+    const malformedRasButtonContent = {
+      ...loginContent,
+      sections: loginContent.sections.map((section) => {
+        if (section.id !== "ras-login") return section;
+
+        return {
+          ...section,
+          blocks: [
+            {
+              blocks: [
+                {
+                  paragraph: "RAS login content remains visible.",
+                },
+                {
+                  rasButton: 1,
+                },
+                {
+                  rasButton: {
+                    text: 1,
+                    style: "rasButton",
+                  },
+                },
+              ],
+            },
+          ],
+        };
+      }),
+    };
+
+    expect(() => renderPage(malformedRasButtonContent)).not.toThrow();
+    expect(container.textContent).toContain("RAS login content remains visible.");
+    expect(container.querySelector("button")).toBeNull();
   });
 
   it("renders content load notices without blocking the login button", () => {
@@ -365,7 +402,7 @@ describe("RASLoginPage", () => {
                     "Before accessing CTDC data, you are required to verify your identity.",
                 },
                 {
-                  rasButtonText: "Login with RAS",
+                  rasButton: "Login with RAS",
                 },
               ],
             },
@@ -429,7 +466,7 @@ describe("RASLoginPage", () => {
     expect(container.textContent).toContain("ctdc@example.org");
     expect(container.textContent).toContain("Indented note");
     expect(container.textContent).toContain(
-      "The verification process typically",
+      "Login.gov and ID.me both support identity proofing",
     );
 
     const sameTabLink = container.querySelector('a[href="/documentation"]');
@@ -542,8 +579,11 @@ describe("RASLoginPage", () => {
         ...loginContent.help,
         contact: {
           ...loginContent.help.contact,
-          href: "https://example.org/support",
-          target: "_blank",
+          button: {
+            ...loginContent.help.contact.button,
+            href: "https://example.org/support",
+            target: "_blank",
+          },
         },
       },
     });
@@ -564,7 +604,10 @@ describe("RASLoginPage", () => {
         ...loginContent.help,
         contact: {
           ...loginContent.help.contact,
-          href: "javascript:alert(1)",
+          button: {
+            ...loginContent.help.contact.button,
+            href: ["java", "script:alert(1)"].join(""),
+          },
         },
       },
     });
@@ -574,6 +617,153 @@ describe("RASLoginPage", () => {
     );
 
     expect(unsafeContactButton).toBeNull();
+  });
+
+  it("applies content style presets to page regions and controls", () => {
+    const styledContent = {
+      ...loginContent,
+      styles: {
+        sectionBox: {
+          paddingTop: "3px",
+          position: "absolute",
+        },
+        sectionTitle: {
+          fontWeight: 700,
+        },
+        rasButton: {
+          fontWeight: 700,
+        },
+        accordionTitle: {
+          textDecoration: "underline",
+        },
+        warningText: {
+          fontStyle: "italic",
+        },
+        helpPanel: {
+          paddingBottom: "7px",
+        },
+        helpHeaderText: {
+          fontWeight: 700,
+        },
+        contactButton: {
+          borderStyle: "solid",
+        },
+      },
+      hero: {
+        ...loginContent.hero,
+        title: {
+          text: loginContent.hero.title,
+          style: "sectionTitle",
+        },
+      },
+      sections: loginContent.sections.map((section) => {
+        if (section.id === "ras-login") {
+          return {
+            ...section,
+            style: "sectionBox",
+            title: {
+              text: section.title,
+              style: "sectionTitle",
+            },
+            blocks: section.blocks.map((blockGroup) => {
+              if (Array.isArray(blockGroup.blocks)) {
+                return {
+                  ...blockGroup,
+                  blocks: blockGroup.blocks.map((block) =>
+                    block.rasButton
+                      ? {
+                          ...block,
+                          rasButton: {
+                            text: block.rasButton,
+                            style: "rasButton",
+                          },
+                        }
+                      : block),
+                };
+              }
+
+              if (Array.isArray(blockGroup.accordions)) {
+                return {
+                  ...blockGroup,
+                  accordions: blockGroup.accordions.map((accordion) => ({
+                    ...accordion,
+                    title: {
+                      text: accordion.title,
+                      style: "accordionTitle",
+                    },
+                  })),
+                };
+              }
+
+              return blockGroup;
+            }),
+          };
+        }
+
+        return section;
+      }),
+      warning: {
+        ...loginContent.warning,
+        blocks: loginContent.warning.blocks.map((block) =>
+          block.paragraph
+            ? {
+                paragraph: {
+                  text: block.paragraph,
+                  style: "warningText",
+                },
+              }
+            : block),
+      },
+      help: {
+        ...loginContent.help,
+        style: "helpPanel",
+        headerText: {
+          text: loginContent.help.headerText,
+          style: "helpHeaderText",
+        },
+        contact: {
+          ...loginContent.help.contact,
+          button: {
+            ...loginContent.help.contact.button,
+            style: "contactButton",
+          },
+        },
+      },
+    };
+
+    renderPage(styledContent);
+
+    const heroTitle = container.querySelector("h1");
+    expect(heroTitle.style.fontWeight).toBe("700");
+
+    const sectionBox = container.querySelector('[class*="LoginSectionBox"]');
+    expect(sectionBox.style.paddingTop).toBe("3px");
+    expect(sectionBox.style.position).toBe("absolute");
+
+    const sectionTitle = container.querySelector('[class*="SectionTitle"]');
+    expect(sectionTitle.style.fontWeight).toBe("700");
+
+    const loginButton = getButtonByText("Login with RAS");
+    expect(loginButton.style.fontWeight).toBe("700");
+
+    const accordionTitle = container
+      .querySelector("[aria-expanded]")
+      .querySelector("h3");
+    expect(accordionTitle.style.textDecoration).toBe("underline");
+
+    const warningText = container.querySelector('[class*="WarningText"] p');
+    expect(warningText.style.fontStyle).toBe("italic");
+
+    const helpPanel = container.querySelector("aside");
+    expect(helpPanel.style.paddingBottom).toBe("7px");
+
+    const helpHeaderText = container.querySelector('[class*="HelpHeaderText"]');
+    expect(helpHeaderText.style.fontWeight).toBe("700");
+
+    const contactButton = container.querySelector(
+      'a[href="mailto:NCICRDC@mail.nih.gov"]',
+    );
+    expect(contactButton.style.borderStyle).toBe("solid");
   });
 
   it("uses accessible defaults when Help labels are omitted", () => {
@@ -671,7 +861,7 @@ describe("RASLoginPage", () => {
     renderPage();
 
     expect(container.textContent).toContain(
-      "The verification process typically",
+      "Login.gov and ID.me both support identity proofing",
     );
 
     const toggles = container.querySelectorAll("[aria-expanded]");
@@ -731,7 +921,7 @@ describe("RASLoginPage", () => {
 
     expect(container.textContent).toContain("Begin from the CTDC login page");
     expect(container.textContent).toContain(
-      "Create a Login.gov or ID.me account",
+      "Use Login.gov or ID.me to complete the RAS-controlled access flow",
     );
 
     const toggles = container.querySelectorAll("[aria-expanded]");
@@ -745,7 +935,7 @@ describe("RASLoginPage", () => {
       "Begin from the CTDC login page",
     );
     expect(container.textContent).not.toContain(
-      "Create a Login.gov or ID.me account",
+      "Use Login.gov or ID.me to complete the RAS-controlled access flow",
     );
   });
 
@@ -806,11 +996,11 @@ describe("RASLoginPage", () => {
 
     pressKey(toggles[1], "Enter");
     expect(container.textContent).toContain(
-      "Create a Login.gov or ID.me account",
+      "Use Login.gov or ID.me to complete the RAS-controlled access flow",
     );
     pressKey(toggles[1], " ");
     expect(container.textContent).not.toContain(
-      "Create a Login.gov or ID.me account",
+      "Use Login.gov or ID.me to complete the RAS-controlled access flow",
     );
 
     pressKey(toggles[2], "Enter");

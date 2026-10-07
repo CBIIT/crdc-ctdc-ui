@@ -6,7 +6,29 @@
  */
 import React from "react";
 import { Box, Typography } from "@material-ui/core";
-import ContentImage from "./ContentImage";
+import { resolveContentStyle } from "./contentStyles";
+
+function isPlainObject(value) {
+  return Boolean(
+    value &&
+      typeof value === "object" &&
+      !Array.isArray(value),
+  );
+}
+
+function getTextConfig(value) {
+  if (isPlainObject(value)) {
+    return {
+      text: value.text || value.paragraph || "",
+      style: value.style,
+    };
+  }
+
+  return {
+    text: value || "",
+    style: null,
+  };
+}
 
 function getDelimitedValue(value, delimiter) {
   const escapedDelimiter = delimiter.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
@@ -92,6 +114,8 @@ function parseContentLink(value) {
     href,
     label,
     target,
+    style: attributes.style,
+    externalIconStyle: attributes.externalIconStyle,
     // Outbound icons are based on URL behavior and target, not the optional
     // Bento `type:` attribute used by older About page content.
     hideIcon: target === "_self" || isInternalHref(href),
@@ -122,6 +146,7 @@ function parseDownloadLink(value) {
   return {
     href: attributes.link || "",
     label: attributes.title || "",
+    style: attributes.style,
     target: "_blank",
     hideIcon: true,
   };
@@ -132,11 +157,32 @@ function renderLink({
   label,
   target,
   hideIcon,
+  style,
+  externalIconStyle,
+  stylePresets,
   linkIcon,
   classes,
   keyPrefix,
 }) {
   const showIcon = !hideIcon;
+  const linkStyle = resolveContentStyle(stylePresets, style);
+  const resolvedIconStyle = resolveContentStyle(
+    stylePresets,
+    externalIconStyle,
+  );
+  const iconColor = resolvedIconStyle && resolvedIconStyle.color
+    ? resolvedIconStyle.color
+    : linkStyle && linkStyle.color;
+  const iconBackgroundStyle = iconColor &&
+    !(resolvedIconStyle && resolvedIconStyle.backgroundColor)
+    ? { backgroundColor: iconColor }
+    : {};
+  const iconMaskStyle = linkIcon && linkIcon.src
+    ? {
+      WebkitMask: `url(${linkIcon.src}) center / contain no-repeat`,
+      mask: `url(${linkIcon.src}) center / contain no-repeat`,
+    }
+    : null;
 
   return (
     <React.Fragment key={keyPrefix}>
@@ -145,21 +191,27 @@ function renderLink({
         className={classes.Link}
         target={target}
         rel={target !== "_self" ? "noopener noreferrer" : undefined}
+        style={linkStyle}
       >
         {label}
       </a>
-      {showIcon && (
-        <ContentImage
-          asset={linkIcon}
-          fallbackAlt="outbound web site icon"
+      {showIcon && iconMaskStyle && (
+        <span
+          role="img"
+          aria-label={linkIcon.alt || "outbound web site icon"}
           className={classes.linkIcon}
+          style={{
+            ...iconMaskStyle,
+            ...iconBackgroundStyle,
+            ...resolvedIconStyle,
+          }}
         />
       )}
     </React.Fragment>
   );
 }
 
-function renderBentoToken(token, linkIcon, classes, keyPrefix) {
+function renderBentoToken(token, linkIcon, classes, stylePresets, keyPrefix) {
   if (getDelimitedValue(token, "%") !== null) {
     return <br key={keyPrefix} />;
   }
@@ -168,6 +220,7 @@ function renderBentoToken(token, linkIcon, classes, keyPrefix) {
   if (link) {
     return renderLink({
       ...link,
+      stylePresets,
       linkIcon,
       classes,
       keyPrefix,
@@ -231,7 +284,7 @@ function renderBentoToken(token, linkIcon, classes, keyPrefix) {
   return token;
 }
 
-function renderInlineContent(text, linkIcon, classes, keyPrefix) {
+function renderInlineContent(text, linkIcon, classes, stylePresets, keyPrefix) {
   const pattern = /\$\$([\s\S]*?)\$\$/g;
   const nodes = [];
   let lastIndex = 0;
@@ -247,6 +300,7 @@ function renderInlineContent(text, linkIcon, classes, keyPrefix) {
         match[1],
         linkIcon,
         classes,
+        stylePresets,
         `${keyPrefix}-bento-${match.index}`,
       ),
     );
@@ -281,7 +335,7 @@ function getListItemText(item) {
   if (typeof item === "string") return item;
   if (!item || typeof item !== "object") return "";
 
-  return item.text || item.paragraph || "";
+  return getTextConfig(item.text || item.paragraph).text;
 }
 
 function renderNestedListBlocks({
@@ -292,6 +346,7 @@ function renderNestedListBlocks({
   orderedListClassName,
   alphaOrderedListClassName,
   linkIcon,
+  stylePresets,
   keyPrefix,
 }) {
   return nestedBlocks.map((block, nestedIndex) =>
@@ -304,6 +359,7 @@ function renderNestedListBlocks({
       orderedListClassName,
       alphaOrderedListClassName,
       linkIcon,
+      stylePresets,
       keyPrefix: `${keyPrefix}-${itemIndex}`,
     }));
 }
@@ -316,16 +372,22 @@ function renderStructuredListItem({
   orderedListClassName,
   alphaOrderedListClassName,
   linkIcon,
+  stylePresets,
   keyPrefix,
 }) {
   const nestedBlocks = getNestedListBlocks(item);
   const itemText = getListItemText(item);
+  const listItemStyle = resolveContentStyle(
+    stylePresets,
+    item && typeof item === "object" ? item.style : null,
+  );
 
   if (!itemText && nestedBlocks.length > 0) {
     return (
       <li
         key={`${keyPrefix}-${itemIndex}`}
         className={classes.nestedListOnlyItem}
+        style={listItemStyle}
       >
         {renderNestedListBlocks({
           nestedBlocks,
@@ -335,6 +397,7 @@ function renderStructuredListItem({
           orderedListClassName,
           alphaOrderedListClassName,
           linkIcon,
+          stylePresets,
           keyPrefix,
         })}
       </li>
@@ -342,11 +405,12 @@ function renderStructuredListItem({
   }
 
   return (
-    <li key={`${keyPrefix}-${itemIndex}`}>
+    <li key={`${keyPrefix}-${itemIndex}`} style={listItemStyle}>
       {renderInlineContent(
         itemText,
         linkIcon,
         classes,
+        stylePresets,
         `${keyPrefix}-${itemIndex}`,
       )}
       {renderNestedListBlocks({
@@ -357,6 +421,7 @@ function renderStructuredListItem({
         orderedListClassName,
         alphaOrderedListClassName,
         linkIcon,
+        stylePresets,
         keyPrefix,
       })}
     </li>
@@ -378,7 +443,14 @@ function parseInlineStyle(value) {
   }, {});
 }
 
-function parseStyledTableCell(value) {
+function parseStyledTableCell(value, stylePresets) {
+  if (value && typeof value === "object" && !Array.isArray(value)) {
+    return {
+      text: value.text || value.paragraph || "",
+      style: resolveContentStyle(stylePresets, value.style) || {},
+    };
+  }
+
   if (typeof value !== "string") return { text: value, style: {} };
 
   const styledCellMatch = value.match(/^\{([\s\S]*)\}$/);
@@ -406,18 +478,21 @@ function renderTableCellContent({
   value,
   classes,
   linkIcon,
+  stylePresets,
   keyPrefix,
 }) {
   const text = value === undefined || value === null ? "" : String(value);
 
-  return renderInlineContent(text, linkIcon, classes, keyPrefix);
+  return renderInlineContent(text, linkIcon, classes, stylePresets, keyPrefix);
 }
 
 function renderStructuredTable({
   table,
+  tableStyle,
   blockIndex,
   classes,
   linkIcon,
+  stylePresets,
   keyPrefix,
 }) {
   const headerRows = table && table[0] && table[0].head ? table[0].head : [];
@@ -426,14 +501,21 @@ function renderStructuredTable({
   if (!headerRows.length && !bodyRows.length) return null;
 
   return (
-    <Box key={`${keyPrefix}-table-${blockIndex}`} className={classes.tableDiv}>
+    <Box
+      key={`${keyPrefix}-table-${blockIndex}`}
+      className={classes.tableDiv}
+      style={resolveContentStyle(stylePresets, tableStyle)}
+    >
       <table className={classes.table}>
         {headerRows.length > 0 && (
           <thead className={classes.tableHeader}>
             <tr className={classes.tableBodyRow}>
               <th className={classes.headerCell} aria-label="Index" />
               {headerRows.map((header, headerIndex) => {
-                const { text, style } = parseStyledTableCell(header);
+                const { text, style } = parseStyledTableCell(
+                  header,
+                  stylePresets,
+                );
 
                 return (
                   <th
@@ -445,6 +527,7 @@ function renderStructuredTable({
                       value: text,
                       classes,
                       linkIcon,
+                      stylePresets,
                       keyPrefix: `${keyPrefix}-table-${blockIndex}-head-${headerIndex}`,
                     })}
                   </th>
@@ -464,7 +547,10 @@ function renderStructuredTable({
               >
                 <td className={classes.tableCell}>{rowIndex + 1}</td>
                 {rowValues.map((rowValue, cellIndex) => {
-                  const { text, style } = parseStyledTableCell(rowValue);
+                  const { text, style } = parseStyledTableCell(
+                    rowValue,
+                    stylePresets,
+                  );
 
                   return (
                     <td
@@ -476,6 +562,7 @@ function renderStructuredTable({
                         value: text,
                         classes,
                         linkIcon,
+                        stylePresets,
                         keyPrefix: `${keyPrefix}-table-${blockIndex}-row-${rowIndex}-${cellIndex}`,
                       })}
                     </td>
@@ -494,17 +581,23 @@ function renderStructuredList({
   items,
   listType,
   listClassName,
+  listStyle,
   classes,
   unorderedListClassName,
   orderedListClassName,
   alphaOrderedListClassName,
   linkIcon,
+  stylePresets,
   keyPrefix,
 }) {
   const ListTag = listType;
 
   return (
-    <ListTag className={listClassName} key={keyPrefix}>
+    <ListTag
+      className={listClassName}
+      key={keyPrefix}
+      style={resolveContentStyle(stylePresets, listStyle)}
+    >
       {(items || []).map((item, itemIndex) =>
         renderStructuredListItem({
           item,
@@ -514,6 +607,7 @@ function renderStructuredList({
           orderedListClassName,
           alphaOrderedListClassName,
           linkIcon,
+          stylePresets,
           keyPrefix,
         }))}
     </ListTag>
@@ -529,6 +623,7 @@ function renderStructuredBlock({
   orderedListClassName,
   alphaOrderedListClassName,
   linkIcon,
+  stylePresets,
   keyPrefix = "block",
 }) {
   // Keep block support aligned with the existing About-page content format.
@@ -539,7 +634,13 @@ function renderStructuredBlock({
         key={`${keyPrefix}-paragraph-${blockIndex}`}
         className={paragraphClassName}
       >
-        {renderInlineContent(block, linkIcon, classes, `${keyPrefix}-${blockIndex}`)}
+        {renderInlineContent(
+          block,
+          linkIcon,
+          classes,
+          stylePresets,
+          `${keyPrefix}-${blockIndex}`,
+        )}
       </Typography>
     );
   }
@@ -548,12 +649,63 @@ function renderStructuredBlock({
     return null;
   }
 
+  if (Array.isArray(block.blocks)) {
+    return (
+      <Box
+        key={`${keyPrefix}-group-${blockIndex}`}
+        style={resolveContentStyle(stylePresets, block.style)}
+      >
+        {block.blocks.map((nestedBlock, nestedIndex) =>
+          renderStructuredBlock({
+            block: nestedBlock,
+            blockIndex: `${blockIndex}-${nestedIndex}`,
+            classes,
+            paragraphClassName,
+            unorderedListClassName,
+            orderedListClassName,
+            alphaOrderedListClassName,
+            linkIcon,
+            stylePresets,
+            keyPrefix: `${keyPrefix}-group-${blockIndex}`,
+          }))}
+      </Box>
+    );
+  }
+
+  if (block.span !== undefined) {
+    const span = getTextConfig(block.span);
+
+    if (!span.text) return null;
+
+    return (
+      <span
+        key={`${keyPrefix}-span-${blockIndex}`}
+        className={[classes.inlineText, paragraphClassName]
+          .filter(Boolean)
+          .join(" ")}
+        style={resolveContentStyle(stylePresets, span.style)}
+      >
+        {renderInlineContent(
+          span.text,
+          linkIcon,
+          classes,
+          stylePresets,
+          `${keyPrefix}-${blockIndex}`,
+        )}
+      </span>
+    );
+  }
+
   if (block.paragraph !== undefined) {
-    if (/^\$\$%[\s\S]*%\$\$$/.test(block.paragraph)) {
+    const paragraph = getTextConfig(block.paragraph);
+    const paragraphStyle = paragraph.style;
+
+    if (/^\$\$%[\s\S]*%\$\$$/.test(paragraph.text)) {
       return (
         <Box
           key={`${keyPrefix}-space-${blockIndex}`}
           className={classes.space}
+          style={resolveContentStyle(stylePresets, paragraphStyle)}
         />
       );
     }
@@ -562,11 +714,13 @@ function renderStructuredBlock({
       <Typography
         key={`${keyPrefix}-paragraph-${blockIndex}`}
         className={paragraphClassName}
+        style={resolveContentStyle(stylePresets, paragraphStyle)}
       >
         {renderInlineContent(
-          block.paragraph,
+          paragraph.text,
           linkIcon,
           classes,
+          stylePresets,
           `${keyPrefix}-${blockIndex}`,
         )}
       </Typography>
@@ -578,11 +732,13 @@ function renderStructuredBlock({
       items: block.listWithDots,
       listType: "ul",
       listClassName: unorderedListClassName,
+      listStyle: block.style,
       classes,
       unorderedListClassName,
       orderedListClassName,
       alphaOrderedListClassName,
       linkIcon,
+      stylePresets,
       keyPrefix: `${keyPrefix}-dots-${blockIndex}`,
     });
   }
@@ -592,11 +748,13 @@ function renderStructuredBlock({
       items: block.listWithNumbers,
       listType: "ol",
       listClassName: orderedListClassName,
+      listStyle: block.style,
       classes,
       unorderedListClassName,
       orderedListClassName,
       alphaOrderedListClassName,
       linkIcon,
+      stylePresets,
       keyPrefix: `${keyPrefix}-numbers-${blockIndex}`,
     });
   }
@@ -606,11 +764,13 @@ function renderStructuredBlock({
       items: block.listWithAlphabets,
       listType: "ol",
       listClassName: alphaOrderedListClassName,
+      listStyle: block.style,
       classes,
       unorderedListClassName,
       orderedListClassName,
       alphaOrderedListClassName,
       linkIcon,
+      stylePresets,
       keyPrefix: `${keyPrefix}-alphabets-${blockIndex}`,
     });
   }
@@ -620,11 +780,13 @@ function renderStructuredBlock({
       items: block.listWithLetters,
       listType: "ol",
       listClassName: alphaOrderedListClassName,
+      listStyle: block.style,
       classes,
       unorderedListClassName,
       orderedListClassName,
       alphaOrderedListClassName,
       linkIcon,
+      stylePresets,
       keyPrefix: `${keyPrefix}-letters-${blockIndex}`,
     });
   }
@@ -632,9 +794,11 @@ function renderStructuredBlock({
   if (block.table) {
     return renderStructuredTable({
       table: block.table,
+      tableStyle: block.style,
       blockIndex,
       classes,
       linkIcon,
+      stylePresets,
       keyPrefix,
     });
   }
@@ -650,6 +814,7 @@ function LoginMarkdownContent({
   orderedListClassName,
   alphaOrderedListClassName,
   linkIcon,
+  stylePresets,
 }) {
   const hasStructuredBlocks = Array.isArray(blocks) && blocks.length > 0;
   if (!hasStructuredBlocks) return null;
@@ -672,6 +837,7 @@ function LoginMarkdownContent({
           orderedListClassName: resolvedOrderedListClassName,
           alphaOrderedListClassName: resolvedAlphaOrderedListClassName,
           linkIcon,
+          stylePresets,
         }))}
     </Box>
   );

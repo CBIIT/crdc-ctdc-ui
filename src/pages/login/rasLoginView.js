@@ -10,6 +10,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Box, Grid, Typography } from "@material-ui/core";
 import styles from "./rasLoginStyles";
+import { getContentStylePresets } from "./components/contentStyles";
 import { getAsset } from "./components/ContentImage";
 import {
   getSectionAccordions,
@@ -98,7 +99,7 @@ function hasHelpContent(help) {
       tutorial.videoUrl ||
       contact.title ||
       hasBlocks(contact) ||
-      contact.buttonText
+      contact.button
     ),
   );
 }
@@ -147,6 +148,7 @@ function RASLoginPage(props) {
   const help = loginContent.help || {};
   const tutorial = help.tutorial || {};
   const contact = help.contact || {};
+  const stylePresets = getContentStylePresets(loginContent);
   const sections = useMemo(
     () => getLoginSections(loginContent),
     [loginContent],
@@ -193,7 +195,12 @@ function RASLoginPage(props) {
         />
       )}
 
-      <LoginHero classes={classes} assets={assets} hero={hero} />
+      <LoginHero
+        classes={classes}
+        assets={assets}
+        hero={hero}
+        stylePresets={stylePresets}
+      />
 
       <Grid container className={classes.ContentWrapper}>
         <Grid container className={classes.ColumnContainer}>
@@ -214,6 +221,7 @@ function RASLoginPage(props) {
                     arrowOpenIcon={arrowOpenIcon}
                     arrowClosedIcon={arrowClosedIcon}
                     externalLinkIcon={externalLinkIcon}
+                    stylePresets={stylePresets}
                   />
                 );
               }
@@ -230,6 +238,7 @@ function RASLoginPage(props) {
                 arrowOpenIcon={arrowOpenIcon}
                 arrowClosedIcon={arrowClosedIcon}
                 externalLinkIcon={externalLinkIcon}
+                stylePresets={stylePresets}
               />
             )}
           </Grid>
@@ -244,6 +253,7 @@ function RASLoginPage(props) {
               videoPlaying={videoPlaying}
               onPlayVideo={() => setVideoPlaying(true)}
               externalLinkIcon={externalLinkIcon}
+              stylePresets={stylePresets}
             />
           )}
         </Grid>

@@ -2,12 +2,13 @@
  * Layout components for the YAML-driven login page.
  * Purpose: translate top-level loginView.yaml areas into page regions.
  * Assumptions: each section has one blocks list; repeated sibling content uses
- * list items, and the RAS button label uses block-level rasButtonText.
+ * list items, and the RAS login action uses a block-level rasButton object.
  */
 import React from "react";
 import { Box, Button, Grid, Typography } from "@material-ui/core";
 import { RAS_LOGIN_UNAVAILABLE_MESSAGE } from "../../../bento/loginData";
 import ContentImage, { getAsset } from "./ContentImage";
+import { resolveContentStyle } from "./contentStyles";
 import LoginMarkdownContent from "./LoginMarkdownContent";
 import ToggleHeader from "./ToggleHeader";
 
@@ -20,9 +21,50 @@ function handleActivation(callback) {
   };
 }
 
-export function LoginHero({ classes, assets, hero }) {
+function isPlainObject(value) {
+  return Boolean(
+    value &&
+      typeof value === "object" &&
+      !Array.isArray(value),
+  );
+}
+
+function getTextConfig(value) {
+  if (isPlainObject(value)) {
+    const text = typeof value.text === "string"
+      ? value.text
+      : typeof value.label === "string"
+        ? value.label
+        : "";
+
+    return {
+      text,
+      style: value.style,
+    };
+  }
+
+  return {
+    text: typeof value === "string" ? value : "",
+    style: null,
+  };
+}
+
+function getText(value) {
+  return getTextConfig(value).text;
+}
+
+function getTextStyle(stylePresets, value) {
+  return resolveContentStyle(stylePresets, getTextConfig(value).style);
+}
+
+export function LoginHero({ classes, assets, hero, stylePresets }) {
+  const heroTitle = getTextConfig(hero.title);
+
   return (
-    <Box className={classes.HeroSection}>
+    <Box
+      className={classes.HeroSection}
+      style={resolveContentStyle(stylePresets, hero.style)}
+    >
       <div className={classes.HeroIconWrapper}>
         <ContentImage
           asset={getAsset(assets, "lockBorder")}
@@ -35,8 +77,13 @@ export function LoginHero({ classes, assets, hero }) {
           className={classes.HeroIcon}
         />
       </div>
-      <Typography variant="h1" component="h1" className={classes.HeroTitle}>
-        {hero.title}
+      <Typography
+        variant="h1"
+        component="h1"
+        className={classes.HeroTitle}
+        style={getTextStyle(stylePresets, hero.title)}
+      >
+        {heroTitle.text}
       </Typography>
     </Box>
   );
@@ -50,6 +97,7 @@ function LoginBlocks({
   orderedListClassName,
   alphaOrderedListClassName,
   unorderedListClassName,
+  stylePresets,
 }) {
   return (
     <LoginMarkdownContent
@@ -62,6 +110,7 @@ function LoginBlocks({
       }
       unorderedListClassName={unorderedListClassName}
       linkIcon={externalLinkIcon}
+      stylePresets={stylePresets}
     />
   );
 }
@@ -75,6 +124,7 @@ export function LoginAccordionList({
   arrowOpenIcon,
   arrowClosedIcon,
   externalLinkIcon,
+  stylePresets,
 }) {
   // Accordion indexes are section-scoped so YAML rows can be reordered without
   // changing state keys outside the current section.
@@ -87,7 +137,7 @@ export function LoginAccordionList({
       {accordionItems.map((item, index) => {
         const accordionIndex = accordionStartIndex + index;
         const isOpen = Boolean(openAccordions[accordionIndex]);
-        const key = item.id || `${item.title || "item"}-${index}`;
+        const key = item.id || `${getText(item.title) || "item"}-${index}`;
 
         return (
           <LoginAccordionItem
@@ -99,6 +149,7 @@ export function LoginAccordionList({
             arrowOpenIcon={arrowOpenIcon}
             arrowClosedIcon={arrowClosedIcon}
             externalLinkIcon={externalLinkIcon}
+            stylePresets={stylePresets}
           />
         );
       })}
@@ -118,31 +169,38 @@ function LoginAccordionItem({
   arrowOpenIcon,
   arrowClosedIcon,
   externalLinkIcon,
+  stylePresets,
 }) {
   const itemIsCollapsible = isCollapsible(item);
   const itemIsOpen = itemIsCollapsible ? isOpen : true;
+  const itemTitle = getTextConfig(item.title);
 
   return (
-    <Box className={classes.AccordionItem}>
+    <Box
+      className={classes.AccordionItem}
+      style={resolveContentStyle(stylePresets, item.style)}
+    >
       {itemIsCollapsible ? (
         <ToggleHeader
           classes={classes}
           headerClassName={classes.AccordionHeader}
-          title={item.title}
+          title={itemTitle.text}
           titleClassName={classes.AccordionTitle}
+          labelStyle={getTextStyle(stylePresets, item.title)}
           isOpen={itemIsOpen}
           onToggle={onToggle}
           openIcon={arrowOpenIcon}
           closedIcon={arrowClosedIcon}
         />
-      ) : item.title && (
+      ) : itemTitle.text && (
         <Box className={classes.AccordionHeader}>
           <Typography
             variant="h3"
             component="h3"
             className={classes.AccordionTitle}
+            style={getTextStyle(stylePresets, item.title)}
           >
-            {item.title}
+            {itemTitle.text}
           </Typography>
         </Box>
       )}
@@ -154,6 +212,7 @@ function LoginAccordionItem({
             classes={classes}
             unorderedListClassName={classes.nestedList}
             externalLinkIcon={externalLinkIcon}
+            stylePresets={stylePresets}
           />
         </Box>
       )}
@@ -165,23 +224,31 @@ function LoginContentBlock({
   classes,
   item,
   externalLinkIcon,
+  stylePresets,
 }) {
+  const itemTitle = getTextConfig(item.title);
+
   return (
-    <Box>
-      {item.title && (
+    <Box style={resolveContentStyle(stylePresets, item.style)}>
+      {itemTitle.text && (
         <Typography
           variant="h3"
           component="h3"
           className={classes.SubsectionTitle}
-          style={{ marginTop: 0, marginBottom: 0 }}
+          style={{
+            marginTop: 0,
+            marginBottom: 0,
+            ...getTextStyle(stylePresets, item.title),
+          }}
         >
-          {item.title}
+          {itemTitle.text}
         </Typography>
       )}
       <LoginBlocks
         blocks={item.blocks}
         classes={classes}
         externalLinkIcon={externalLinkIcon}
+        stylePresets={stylePresets}
       />
     </Box>
   );
@@ -209,7 +276,12 @@ function getValidAuthorizeUrl(rasAuthorizeUrl) {
   }
 }
 
-function RasLoginButton({ classes, buttonText, rasAuthorizeUrl }) {
+function RasLoginButton({
+  classes,
+  label,
+  rasAuthorizeUrl,
+  style,
+}) {
   const validAuthorizeUrl = getValidAuthorizeUrl(rasAuthorizeUrl);
   const isConfigured = Boolean(validAuthorizeUrl);
 
@@ -219,13 +291,14 @@ function RasLoginButton({ classes, buttonText, rasAuthorizeUrl }) {
         variant="outlined"
         className={classes.LoginButtonRas}
         disabled={!isConfigured}
+        style={style}
         onClick={() => {
           if (validAuthorizeUrl) {
             window.location.href = validAuthorizeUrl;
           }
         }}
       >
-        {buttonText}
+        {label}
       </Button>
       {!isConfigured && (
         <Typography
@@ -244,6 +317,7 @@ function LoginSectionContentRow({
   item,
   action,
   externalLinkIcon,
+  stylePresets,
 }) {
   return (
     <Box className={classes.LoginSectionBody}>
@@ -253,6 +327,7 @@ function LoginSectionContentRow({
             classes={classes}
             item={item}
             externalLinkIcon={externalLinkIcon}
+            stylePresets={stylePresets}
           />
         </Box>
         {action}
@@ -269,19 +344,18 @@ function hasBlocks(item) {
   );
 }
 
-function getRasButtonTextBlock(blocks = []) {
+function getRasButtonBlock(blocks = []) {
   return (Array.isArray(blocks) ? blocks : []).find((block) =>
     block &&
-      Object.prototype.hasOwnProperty.call(block, "rasButtonText") &&
-      typeof block.rasButtonText === "string" &&
-      block.rasButtonText.trim());
+      Object.prototype.hasOwnProperty.call(block, "rasButton") &&
+      getText(block.rasButton).trim());
 }
 
-function removeRasButtonTextBlocks(blocks = []) {
+function removeRasButtonBlocks(blocks = []) {
   return (Array.isArray(blocks) ? blocks : []).filter((block) =>
     !(
       block &&
-      Object.prototype.hasOwnProperty.call(block, "rasButtonText")
+      Object.prototype.hasOwnProperty.call(block, "rasButton")
     ));
 }
 
@@ -335,6 +409,7 @@ function getSectionRenderItemsFromBlocks(blocks = []) {
       pushPendingBlocks();
       renderItems.push(createBlocksRenderItem(item.blocks || [], {
         title: item.title,
+        style: item.style,
       }));
       return;
     }
@@ -387,49 +462,59 @@ export function LoginSectionBox({
   arrowOpenIcon,
   arrowClosedIcon,
   externalLinkIcon,
+  stylePresets,
 }) {
   const sectionItems = getSectionRenderItems(section);
+  const sectionTitle = getTextConfig(section.title);
   let actionRendered = false;
   let accordionStartIndex = 0;
 
   return (
-    <Box className={classes.LoginSectionBox}>
+    <Box
+      className={classes.LoginSectionBox}
+      style={resolveContentStyle(stylePresets, section.style)}
+    >
       <Box className={classes.LoginSectionHeader}>
-        {section.title && (
+        {sectionTitle.text && (
           <Typography
             variant="h2"
             component="h2"
             className={classes.SectionTitle}
+            style={getTextStyle(stylePresets, section.title)}
           >
-            {section.title}
+            {sectionTitle.text}
           </Typography>
         )}
       </Box>
 
       {sectionItems.map((sectionItem, sectionItemIndex) => {
         if (sectionItem.type === "blocks") {
-          const rasButtonTextBlock = getRasButtonTextBlock(
+          const rasButtonBlock = getRasButtonBlock(
             sectionItem.item.blocks,
           );
-          const rasButtonText = rasButtonTextBlock
-            ? rasButtonTextBlock.rasButtonText
+          const rasButtonLabel = rasButtonBlock
+            ? getText(rasButtonBlock.rasButton)
             : "";
           const shouldRenderAction = section.type === "rasLogin" &&
-            rasButtonText &&
+            rasButtonLabel &&
             !actionRendered;
           const action = shouldRenderAction
             ? (
               <RasLoginButton
                 classes={classes}
-                buttonText={rasButtonText}
+                label={rasButtonLabel}
                 rasAuthorizeUrl={rasAuthorizeUrl}
+                style={resolveContentStyle(
+                  stylePresets,
+                  getTextConfig(rasButtonBlock.rasButton).style,
+                )}
               />
             )
             : null;
           const contentItem = section.type === "rasLogin"
             ? {
               ...sectionItem.item,
-              blocks: removeRasButtonTextBlocks(sectionItem.item.blocks),
+              blocks: removeRasButtonBlocks(sectionItem.item.blocks),
             }
             : sectionItem.item;
 
@@ -444,6 +529,7 @@ export function LoginSectionBox({
               item={contentItem}
               action={action}
               externalLinkIcon={externalLinkIcon}
+              stylePresets={stylePresets}
             />
           );
         }
@@ -462,6 +548,7 @@ export function LoginSectionBox({
             arrowOpenIcon={arrowOpenIcon}
             arrowClosedIcon={arrowClosedIcon}
             externalLinkIcon={externalLinkIcon}
+            stylePresets={stylePresets}
           />
         );
       })}
@@ -477,22 +564,28 @@ export function WarningNotice({
   arrowOpenIcon,
   arrowClosedIcon,
   externalLinkIcon,
+  stylePresets,
 }) {
   const warningIsCollapsible = warning.collapsible !== false;
   const warningIsOpen = warningIsCollapsible ? warningOpen : true;
+  const warningTitle = getTextConfig(warning.title);
   const warningTextClassName = `${classes.WarningText} ${
     warningIsCollapsible && !warningIsOpen ? classes.WarningTextCollapsed : ""
   }`;
 
   return (
-    <Box className={classes.WarningSection}>
+    <Box
+      className={classes.WarningSection}
+      style={resolveContentStyle(stylePresets, warning.style)}
+    >
       <Box className={classes.WarningContent}>
         {warningIsCollapsible ? (
           <ToggleHeader
             classes={classes}
             headerClassName={classes.WarningToggle}
-            title={warning.title}
+            title={warningTitle.text}
             titleClassName={classes.WarningTitle}
+            labelStyle={getTextStyle(stylePresets, warning.title)}
             titleVariant="h2"
             titleComponent="h2"
             isOpen={warningIsOpen}
@@ -508,8 +601,9 @@ export function WarningNotice({
               variant="h2"
               component="h2"
               className={classes.WarningTitle}
+              style={getTextStyle(stylePresets, warning.title)}
             >
-              {warning.title}
+              {warningTitle.text}
             </Typography>
           </Box>
         )}
@@ -518,6 +612,7 @@ export function WarningNotice({
             blocks={warning.blocks}
             classes={classes}
             externalLinkIcon={externalLinkIcon}
+            stylePresets={stylePresets}
           />
         </Box>
       </Box>
@@ -525,27 +620,36 @@ export function WarningNotice({
   );
 }
 
-function SidebarTitle({ classes, title }) {
-  if (!title) return null;
+function SidebarTitle({ classes, title, stylePresets }) {
+  const titleConfig = getTextConfig(title);
+
+  if (!titleConfig.text) return null;
 
   return (
     <Typography
       variant="h3"
       component="h3"
       className={classes.SidebarTitle}
+      style={getTextStyle(stylePresets, title)}
     >
-      {title}
+      {titleConfig.text}
     </Typography>
   );
 }
 
-function HelpBlocksSection({ classes, blocks, externalLinkIcon }) {
+function HelpBlocksSection({
+  classes,
+  blocks,
+  externalLinkIcon,
+  stylePresets,
+}) {
   return (
     <LoginBlocks
       blocks={blocks}
       classes={classes}
       paragraphClassName={classes.SidebarText}
       externalLinkIcon={externalLinkIcon}
+      stylePresets={stylePresets}
     />
   );
 }
@@ -602,14 +706,23 @@ function HelpTutorialSection({
   videoPlaying,
   onPlayVideo,
   externalLinkIcon,
+  stylePresets,
 }) {
   return (
-    <Box className={classes.TutorialSection}>
-      <SidebarTitle classes={classes} title={tutorial.title} />
+    <Box
+      className={classes.TutorialSection}
+      style={resolveContentStyle(stylePresets, tutorial.style)}
+    >
+      <SidebarTitle
+        classes={classes}
+        title={tutorial.title}
+        stylePresets={stylePresets}
+      />
       <HelpBlocksSection
         classes={classes}
         blocks={tutorial.blocks}
         externalLinkIcon={externalLinkIcon}
+        stylePresets={stylePresets}
       />
       <TutorialVideo
         classes={classes}
@@ -622,8 +735,8 @@ function HelpTutorialSection({
   );
 }
 
-function getContactButtonRel(contact, target) {
-  if (contact.rel) return contact.rel;
+function getContactButtonRel(button, target) {
+  if (button.rel) return button.rel;
 
   return target && target !== "_self" ? "noopener noreferrer" : undefined;
 }
@@ -647,30 +760,45 @@ function HelpContactSection({
   classes,
   contact,
   externalLinkIcon,
+  stylePresets,
 }) {
-  const contactButtonTarget = contact.target || undefined;
-  const contactButtonRel = getContactButtonRel(contact, contactButtonTarget);
-  const contactButtonHref = isAllowedHref(contact.href)
-    ? contact.href.trim()
+  const contactButtonConfig = contact.button || {};
+  const contactButton = getTextConfig(contactButtonConfig);
+  const contactButtonTarget = contactButtonConfig.target || undefined;
+  const contactButtonRel = getContactButtonRel(
+    contactButtonConfig,
+    contactButtonTarget,
+  );
+  const contactButtonHref = isAllowedHref(contactButtonConfig.href)
+    ? contactButtonConfig.href.trim()
     : undefined;
 
   return (
-    <Box className={classes.ContactSection}>
-      <SidebarTitle classes={classes} title={contact.title} />
+    <Box
+      className={classes.ContactSection}
+      style={resolveContentStyle(stylePresets, contact.style)}
+    >
+      <SidebarTitle
+        classes={classes}
+        title={contact.title}
+        stylePresets={stylePresets}
+      />
       <HelpBlocksSection
         classes={classes}
         blocks={contact.blocks}
         externalLinkIcon={externalLinkIcon}
+        stylePresets={stylePresets}
       />
-      {contact.buttonText && (
+      {contactButton.text && (
         <Button
           variant="outlined"
           className={classes.ContactButton}
           href={contactButtonHref}
           target={contactButtonTarget}
           rel={contactButtonRel}
+          style={getTextStyle(stylePresets, contactButtonConfig)}
         >
-          {contact.buttonText}
+          {contactButton.text}
         </Button>
       )}
     </Box>
@@ -686,7 +814,9 @@ export function HelpSidebar({
   videoPlaying,
   onPlayVideo,
   externalLinkIcon,
+  stylePresets,
 }) {
+  const helpHeaderText = getTextConfig(help.headerText);
   const orderedComponents = getOrderedComponents(help, [
     // Help subareas intentionally follow YAML key order so editors can move
     // generic blocks above or below tutorial/contact without new components.
@@ -698,14 +828,15 @@ export function HelpSidebar({
     {
       type: "tutorial",
       enabled: Boolean(
-        tutorial.title || hasBlocks(tutorial) || tutorial.videoUrl,
+        getText(tutorial.title) || hasBlocks(tutorial) || tutorial.videoUrl,
       ),
       keys: ["tutorial"],
     },
     {
       type: "contact",
       enabled: Boolean(
-        contact.title || hasBlocks(contact) || contact.buttonText,
+        getText(contact.title) || hasBlocks(contact) ||
+          getText(contact.button),
       ),
       keys: ["contact"],
     },
@@ -717,6 +848,7 @@ export function HelpSidebar({
         component="aside"
         className={classes.HelpSidebar}
         aria-label={help.ariaLabel || "Help and Support"}
+        style={resolveContentStyle(stylePresets, help.style)}
       >
         <Box className={classes.HelpHeader}>
           <ContentImage
@@ -728,8 +860,9 @@ export function HelpSidebar({
             variant="h2"
             component="h2"
             className={classes.HelpHeaderText}
+            style={getTextStyle(stylePresets, help.headerText)}
           >
-            {help.headerText}
+            {helpHeaderText.text}
           </Typography>
         </Box>
 
@@ -741,6 +874,7 @@ export function HelpSidebar({
                   classes={classes}
                   blocks={help.blocks}
                   externalLinkIcon={externalLinkIcon}
+                  stylePresets={stylePresets}
                 />
               </Box>
             );
@@ -756,6 +890,7 @@ export function HelpSidebar({
                 videoPlaying={videoPlaying}
                 onPlayVideo={onPlayVideo}
                 externalLinkIcon={externalLinkIcon}
+                stylePresets={stylePresets}
               />
             );
           }
@@ -766,6 +901,7 @@ export function HelpSidebar({
               classes={classes}
               contact={contact}
               externalLinkIcon={externalLinkIcon}
+              stylePresets={stylePresets}
             />
           );
         })}

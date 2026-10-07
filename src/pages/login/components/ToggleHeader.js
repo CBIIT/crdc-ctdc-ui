@@ -29,7 +29,7 @@ function ToggleHeader({
   titleClassName,
   titleVariant = "h3",
   titleComponent = "h3",
-  titleStyle,
+  labelStyle,
   isOpen,
   onToggle,
   openIcon,
@@ -55,7 +55,7 @@ function ToggleHeader({
         variant={titleVariant}
         component={titleComponent}
         className={titleClassName}
-        style={titleStyle}
+        style={labelStyle}
       >
         {title}
       </Typography>

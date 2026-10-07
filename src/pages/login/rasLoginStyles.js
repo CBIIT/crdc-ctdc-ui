@@ -278,6 +278,9 @@ const styles = (theme) => ({
     lineHeight: "150%",
     marginBottom: "0px",
   },
+  inlineText: {
+    display: "inline",
+  },
   MarkdownContent: {
     width: "100%",
     "& p": {
@@ -367,7 +370,6 @@ const styles = (theme) => ({
     padding: "0px 10px",
   },
   HelpContentSection: {
-    marginBottom: "30px",
     padding: "0px 10px",
   },
   SidebarTitle: {
@@ -546,7 +548,7 @@ const styles = (theme) => ({
     border: "1px solid #8A8A8A",
   },
   Link: {
-    color: "#990099",
+    color: "#18588E",
     textDecoration: "underline",
     fontWeight: 400,
     cursor: "pointer",
@@ -564,12 +566,16 @@ const styles = (theme) => ({
     fontFamily: "Roboto",
     fontSize: "16px",
     "& $unorderedList": {
-      color: "#990099",
+      color: "#18588E",
     },
   },
   linkIcon: {
+    display: "inline-block",
+    width: "17px",
+    height: "17px",
     marginLeft: "4px",
     verticalAlign: "middle",
+    backgroundColor: "#18588E",
   },
 
   // Warning Section
