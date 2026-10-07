@@ -31,14 +31,20 @@ function isPlainObject(value) {
 
 function getTextConfig(value) {
   if (isPlainObject(value)) {
+    const text = typeof value.text === "string"
+      ? value.text
+      : typeof value.label === "string"
+        ? value.label
+        : "";
+
     return {
-      text: value.text || value.label || "",
+      text,
       style: value.style,
     };
   }
 
   return {
-    text: value || "",
+    text: typeof value === "string" ? value : "",
     style: null,
   };
 }

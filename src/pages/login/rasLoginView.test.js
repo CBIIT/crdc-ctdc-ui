@@ -316,6 +316,41 @@ describe("RASLoginPage", () => {
     expect(container.textContent).not.toContain("Login with RAS");
   });
 
+  it("ignores malformed rasButton values without crashing", () => {
+    const malformedRasButtonContent = {
+      ...loginContent,
+      sections: loginContent.sections.map((section) => {
+        if (section.id !== "ras-login") return section;
+
+        return {
+          ...section,
+          blocks: [
+            {
+              blocks: [
+                {
+                  paragraph: "RAS login content remains visible.",
+                },
+                {
+                  rasButton: 1,
+                },
+                {
+                  rasButton: {
+                    text: 1,
+                    style: "rasButton",
+                  },
+                },
+              ],
+            },
+          ],
+        };
+      }),
+    };
+
+    expect(() => renderPage(malformedRasButtonContent)).not.toThrow();
+    expect(container.textContent).toContain("RAS login content remains visible.");
+    expect(container.querySelector("button")).toBeNull();
+  });
+
   it("renders content load notices without blocking the login button", () => {
     renderPage(loginContent, "https://ras.example.org/authorize", {
       notice: "Some content could not be loaded.",
