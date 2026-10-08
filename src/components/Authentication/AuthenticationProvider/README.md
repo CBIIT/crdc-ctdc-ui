@@ -141,6 +141,9 @@ started. The values mean:
   - `false` means the browser stayed in CTDC and used the local fallback
     redirect.
 
+If `signOut` is called without a `history` object, it still clears auth state but
+skips the local React redirect.
+
 ## RAS Logout URL Validation
 
 `getRasLogoutRedirectUrl` only accepts configured absolute `http://` or

@@ -75,6 +75,9 @@ const createLogoutResult = (externalLogoutStarted = false) => ({
   externalLogoutStarted,
 });
 
+const canRedirectLocally = (history) =>
+  history && typeof history.push === "function";
+
 /**
  * Generate a Authentication Provider component with the custom configuration applied
  *
@@ -284,7 +287,9 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
             return createLogoutResult(true);
           }
 
-          redirect(history, redirectPath);
+          if (canRedirectLocally(history)) {
+            redirect(history, redirectPath);
+          }
           return createLogoutResult(false);
         };
 

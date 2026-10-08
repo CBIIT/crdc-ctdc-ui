@@ -133,7 +133,7 @@ describe('fetchFileToDownload', () => {
     expect(consoleErrorSpy).toHaveBeenCalledWith('Error:', 'Missing File URL');
   });
 
-  it('signs out and opens the timeout modal for forbidden responses', async () => {
+  it('shows the unauthorized notification for forbidden responses', async () => {
     const options = createDownloadOptions();
     mockFetchResponse({
       status: 403,
@@ -142,9 +142,9 @@ describe('fetchFileToDownload', () => {
 
     await fetchFileToDownload(options);
 
-    expect(options.signOut).toHaveBeenCalledTimes(1);
-    expect(options.setShowModal).toHaveBeenCalledWith(true);
-    expect(options.showUnauthorizedNotification).not.toHaveBeenCalled();
+    expect(options.showUnauthorizedNotification).toHaveBeenCalledTimes(1);
+    expect(options.signOut).not.toHaveBeenCalled();
+    expect(options.setShowModal).not.toHaveBeenCalled();
     expect(clickMock).not.toHaveBeenCalled();
   });
 

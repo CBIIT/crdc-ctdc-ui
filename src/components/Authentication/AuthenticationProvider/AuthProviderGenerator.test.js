@@ -288,13 +288,14 @@ describe("AuthProviderGenerator authServiceLogin", () => {
       });
 
       let logoutResult;
+      const history = { push: jest.fn() };
       await act(async () => {
-        logoutResult = await auth.signOut({}, "/", "ras");
+        logoutResult = await auth.signOut(history, "/", "ras");
       });
 
       expect(assign).not.toHaveBeenCalled();
       expect(sessionStorage.getItem("showLogoutSuccess")).toBeNull();
-      expect(redirect).toHaveBeenCalledWith({}, "/");
+      expect(redirect).toHaveBeenCalledWith(history, "/");
       expect(logoutResult).toEqual({
         logoutCompleted: true,
         externalLogoutStarted: false,
@@ -306,5 +307,38 @@ describe("AuthProviderGenerator authServiceLogin", () => {
         value: originalLocation,
       });
     }
+  });
+
+  it("skips local redirect when logout is called without history", async () => {
+    const redirect = jest.fn();
+    global.fetch.mockResolvedValue({
+      status: 200,
+      ok: true,
+    });
+    renderProvider({
+      config: {
+        GOOGLE_CLIENT_ID: "",
+        NIH_CLIENT_ID: "",
+        NIH_AUTH_URL: "https://example.test/authorize",
+        AUTH_API: "https://example.test/api/auth/",
+        RAS_BROWSER_LOGOUT_URL: "",
+      },
+      functions: {
+        redirect,
+        storeInLocalStorage: jest.fn(),
+        deleteFromLocalStorage: jest.fn(),
+      },
+    });
+
+    let logoutResult;
+    await act(async () => {
+      logoutResult = await auth.signOut();
+    });
+
+    expect(redirect).not.toHaveBeenCalled();
+    expect(logoutResult).toEqual({
+      logoutCompleted: true,
+      externalLogoutStarted: false,
+    });
   });
 });
