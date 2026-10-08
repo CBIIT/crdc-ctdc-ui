@@ -17,6 +17,7 @@ const LOGOUT_SUCCESS_MESSAGE = 'You have been logged out.';
 export const useHeaderLogout = ({
   authData,
   redirectPath = '/',
+} = {}) => {
   const history = useHistory();
   const { signOut } = useAuth();
   const { Notification } = useGlobal();
