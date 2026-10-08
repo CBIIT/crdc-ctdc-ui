@@ -54,7 +54,12 @@ const isUsableAbsoluteUrl = (value) => {
     return false;
   }
 
-  return /^https?:\/\//i.test(trimmedValue);
+  try {
+    const parsedUrl = new URL(trimmedValue);
+    return parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:";
+  } catch {
+    return false;
+  }
 };
 
 export const getRasLogoutRedirectUrl = (logoutUrl = "") =>

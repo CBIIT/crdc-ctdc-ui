@@ -59,6 +59,11 @@ describe("getRasLogoutRedirectUrl", () => {
   it("returns an empty URL when the RAS logout URL is relative", () => {
     expect(getRasLogoutRedirectUrl("/siteminderagent/smlogoutredirector.asp")).toBe("");
   });
+
+  it("returns an empty URL when the RAS logout URL cannot be parsed", () => {
+    expect(getRasLogoutRedirectUrl("https://")).toBe("");
+    expect(getRasLogoutRedirectUrl("https://[")).toBe("");
+  });
 });
 
 describe("AuthProviderGenerator authServiceLogin", () => {
