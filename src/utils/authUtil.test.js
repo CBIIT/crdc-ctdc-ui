@@ -5,8 +5,8 @@ describe('getAuthenticatedIdp', () => {
     expect(getAuthenticatedIdp({ IDP: ' RAS ' })).toBe('ras');
   });
 
-  it('supports the lowercase IdP field', () => {
-    expect(getAuthenticatedIdp({ idp: 'DCF' })).toBe('dcf');
+  it('uses RAS when stale legacy IdP data is present', () => {
+    expect(getAuthenticatedIdp({ idp: 'DCF' })).toBe('ras');
   });
 
   it('falls back to ras when no IdP is available', () => {

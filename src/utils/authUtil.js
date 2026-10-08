@@ -1,9 +1,7 @@
-export const getAuthenticatedIdp = (authData = {}) => {
-  const idp = authData.IDP || authData.idp;
-
-  return typeof idp === "string" && idp.trim() !== ""
-    ? idp.trim().toLowerCase()
-    : "ras";
+export const getAuthenticatedIdp = () => {
+  // CTDC currently uses RAS only. Treat missing or stale legacy IDP values as RAS
+  // so logout/session flows do not skip the RAS browser logout step.
+  return "ras";
 };
 
 export const getFileDownloadIdp = (authData = {}) => {

@@ -43,8 +43,6 @@ export const buildFileServiceUrl = ({
 // Function to fetch and download a file
 export const fetchFileToDownload = async ({
   fileId = "",
-  signOut,
-  setShowModal,
   showUnauthorizedNotification,
   studyAccession = "",
   idp = "",
@@ -57,13 +55,6 @@ export const fetchFileToDownload = async ({
     });
 
     const response = await fetch(requestUrl, { method: "GET" });
-
-    // Check if response status is 403 (Forbidden)
-    if (response.status === 403) {
-      signOut();
-      setShowModal(true);
-      throw new Error("Forbidden");
-    }
 
     // Check if response status is not 401 (Unauthorized)
     if (response.status === 401) {

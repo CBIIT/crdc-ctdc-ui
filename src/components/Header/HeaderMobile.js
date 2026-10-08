@@ -2,16 +2,13 @@ import React, { useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router';
-import { useAuth } from '../Authentication';
-import { useGlobal } from '../Global/GlobalProvider';
 import Logo from "./components/LogoMobile";
 import SearchBar from "./components/SearchBarMobile";
 import menuClearIcon from '../../assets/header/Menu_Cancel_Icon.svg';
 import rightArrowIcon from '../../assets/header/Right_Arrow.svg';
 import leftArrowIcon from '../../assets/header/Left_Arrow.svg';
 import { navMobileList, navbarSublists } from '../../config/globalHeaderData';
-import { getAuthenticatedIdp } from '../../utils/authUtil';
+import { useHeaderLogout } from './hooks/useHeaderLogout';
 
 const HeaderBanner = styled.div`
   width: 100%;
@@ -179,11 +176,6 @@ const Header = () => {
     }
   };
 
-  const history = useHistory();
-   const {
-    signOut,
-  } = useAuth();
-
    const authData = useSelector((state) => {
     console.log(state);
     return state.login;
@@ -192,18 +184,12 @@ const Header = () => {
   const [isSignedIn, setIsSignedIn] = useState(authData.name?authData.isSignedIn:false);
 
   const displayName = authData.name || "N/A";
+  const logout = useHeaderLogout({ authData });
 
   const handleLogout = async () => {
-    const idp = getAuthenticatedIdp(authData);
-    signOut(history, "/", idp);
-    onShowNotification("You have been logged out.", 2000)
-    history.push('/');
+    await logout();
     setNavMobileDisplay('none');
   };
-
-  const { Notification } = useGlobal();
-  const onShowNotification = (content, duration) => Notification.show(content, duration);
-
 
  const SubMenu = () =>{
     return navbarMobileList.map((navMobileItem, idx) => {
