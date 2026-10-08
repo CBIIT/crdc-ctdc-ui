@@ -175,11 +175,21 @@ const DocumentDownload = ({
 
   const { Notification } = useGlobal();
   const showUnauthorizedNotification = () => {
+    const requestAccessLinkStyle = {
+      color: "#FFFFFF",
+      fontWeight: 600,
+      textDecoration: "underline",
+      fontSize: "16px",
+    };
     const customElem = (
       <span>
         You must be logged in and must already have been granted access to
         download a copy of this file.{" "}
-        <a className={classes.requestAccessLink} href="/#/request-access">
+        <a
+          className={classes.requestAccessLink}
+          href="/#/request-access"
+          style={requestAccessLinkStyle}
+        >
           Request access
         </a>{" "}
         through dbGaP to download this file.
