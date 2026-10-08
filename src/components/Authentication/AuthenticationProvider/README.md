@@ -150,7 +150,9 @@ when logout fails. The values mean:
   - `false` means the browser stayed in CTDC and used the local fallback
     redirect.
 - `errorMessage`
-  - Present only when logout fails. It includes the Auth service HTTP status.
+  - Present only when logout fails. For non-2xx Auth service responses, it
+    includes the HTTP status; for network failures, it uses the native error
+    message or a fallback message.
 
 If `signOut` is called without a `history` object, it still clears auth state but
 skips the local React redirect.
