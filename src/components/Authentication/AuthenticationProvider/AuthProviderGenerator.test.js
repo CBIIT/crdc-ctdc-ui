@@ -226,8 +226,9 @@ describe("AuthProviderGenerator authServiceLogin", () => {
         },
       });
 
+      let logoutResult;
       await act(async () => {
-        await auth.signOut({}, "/", "ras");
+        logoutResult = await auth.signOut({}, "/", "ras");
       });
 
       expect(global.fetch).toHaveBeenCalledWith(
@@ -240,6 +241,64 @@ describe("AuthProviderGenerator authServiceLogin", () => {
       expect(sessionStorage.getItem("showLogoutSuccess")).toBe("true");
       expect(assign).toHaveBeenCalledWith(logoutUrl);
       expect(redirect).not.toHaveBeenCalled();
+      expect(logoutResult).toEqual({
+        logoutCompleted: true,
+        externalLogoutStarted: true,
+      });
+    } finally {
+      sessionStorage.removeItem("showLogoutSuccess");
+      Object.defineProperty(window, "location", {
+        configurable: true,
+        value: originalLocation,
+      });
+    }
+  });
+
+  it("reports local fallback when RAS logout URL is unusable", async () => {
+    const redirect = jest.fn();
+    const assign = jest.fn();
+    const originalLocation = window.location;
+
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      value: {
+        origin: "https://ctdc.example.test",
+        assign,
+      },
+    });
+
+    try {
+      global.fetch.mockResolvedValue({
+        status: 200,
+        ok: true,
+      });
+      renderProvider({
+        config: {
+          GOOGLE_CLIENT_ID: "",
+          NIH_CLIENT_ID: "",
+          NIH_AUTH_URL: "https://example.test/authorize",
+          AUTH_API: "https://example.test/api/auth/",
+          RAS_BROWSER_LOGOUT_URL: "https://",
+        },
+        functions: {
+          redirect,
+          storeInLocalStorage: jest.fn(),
+          deleteFromLocalStorage: jest.fn(),
+        },
+      });
+
+      let logoutResult;
+      await act(async () => {
+        logoutResult = await auth.signOut({}, "/", "ras");
+      });
+
+      expect(assign).not.toHaveBeenCalled();
+      expect(sessionStorage.getItem("showLogoutSuccess")).toBeNull();
+      expect(redirect).toHaveBeenCalledWith({}, "/");
+      expect(logoutResult).toEqual({
+        logoutCompleted: true,
+        externalLogoutStarted: false,
+      });
     } finally {
       sessionStorage.removeItem("showLogoutSuccess");
       Object.defineProperty(window, "location", {

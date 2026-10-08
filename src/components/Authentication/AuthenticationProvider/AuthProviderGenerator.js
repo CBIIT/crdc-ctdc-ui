@@ -70,6 +70,11 @@ const isRasIdp = (IDP) =>
 
 const LOGOUT_SUCCESS_STORAGE_KEY = "showLogoutSuccess";
 
+const createLogoutResult = (externalLogoutStarted = false) => ({
+  logoutCompleted: true,
+  externalLogoutStarted,
+});
+
 /**
  * Generate a Authentication Provider component with the custom configuration applied
  *
@@ -252,7 +257,10 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
             console.warn("[Auth logout] Unable to call Auth service logout", {
               message: error && error.message,
             });
-            return;
+            return {
+              logoutCompleted: false,
+              externalLogoutStarted: false,
+            };
           }
 
           deleteFromLocalStorage("userDetails");
@@ -273,10 +281,11 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
             }
             // Browser navigation is required so RAS can clear its SSO cookies.
             window.location.assign(rasLogoutRedirectUrl);
-            return;
+            return createLogoutResult(true);
           }
 
           redirect(history, redirectPath);
+          return createLogoutResult(false);
         };
 
         return (

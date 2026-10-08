@@ -128,6 +128,19 @@ logout falls back to local CTDC redirect after Auth service logout. In that
 case, the CTDC session is cleared, but the external RAS SSO session may still be
 reusable by the browser.
 
+`signOut` returns `{ logoutCompleted, externalLogoutStarted }` so callers can
+show the local logout success message when RAS browser navigation was not
+started. The values mean:
+
+- `logoutCompleted`
+  - `true` means CTDC Auth logout completed and frontend auth state was cleared.
+  - `false` means logout did not complete, usually because the Auth service
+    logout request failed.
+- `externalLogoutStarted`
+  - `true` means the browser was redirected to the RAS logout URL.
+  - `false` means the browser stayed in CTDC and used the local fallback
+    redirect.
+
 ## RAS Logout URL Validation
 
 `getRasLogoutRedirectUrl` only accepts configured absolute `http://` or

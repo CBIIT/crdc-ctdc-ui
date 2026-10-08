@@ -195,10 +195,10 @@ const Header = () => {
 
   const handleLogout = async () => {
     const idp = getAuthenticatedIdp(authData);
-    if (idp !== "ras") {
-      onShowNotification("You have been logged out.", 2000)
+    const logoutResult = await signOut(history, "/", idp);
+    if (logoutResult && logoutResult.logoutCompleted && !logoutResult.externalLogoutStarted) {
+      onShowNotification("You have been logged out.", 2000);
     }
-    await signOut(history, "/", idp);
     setNavMobileDisplay('none');
   };
 
