@@ -112,6 +112,11 @@ Auth service `/api/auth/*` rule. Other Auth endpoints, such as
    body: { IDP }
    ```
 
+   If the Auth service returns a non-2xx response or the request fails,
+   `signOut` stops here and returns the failure details. Frontend state is not
+   cleared, the logout success flag is not set, and the browser is not redirected
+   to RAS logout.
+
 2. Removes `userDetails` from local storage.
 3. Dispatches Redux sign-out state.
 4. If `IDP` is not `ras`, redirects locally to `redirectPath`.
@@ -132,9 +137,9 @@ logout falls back to local CTDC redirect after Auth service logout. In that
 case, the CTDC session is cleared, but the external RAS SSO session may still be
 reusable by the browser.
 
-`signOut` returns `{ logoutCompleted, externalLogoutStarted }` so callers can
-show the local logout success message when RAS browser navigation was not
-started. The values mean:
+`signOut` returns `{ logoutCompleted, externalLogoutStarted, errorMessage }` so
+callers can show success only after Auth logout succeeds, or show the Auth error
+when logout fails. The values mean:
 
 - `logoutCompleted`
   - `true` means CTDC Auth logout completed and frontend auth state was cleared.
@@ -144,6 +149,8 @@ started. The values mean:
   - `true` means the browser was redirected to the RAS logout URL.
   - `false` means the browser stayed in CTDC and used the local fallback
     redirect.
+- `errorMessage`
+  - Present only when logout fails. It includes the Auth service HTTP status.
 
 If `signOut` is called without a `history` object, it still clears auth state but
 skips the local React redirect.

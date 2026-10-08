@@ -288,6 +288,73 @@ describe("AuthProviderGenerator authServiceLogin", () => {
     }
   });
 
+  it("does not clear state or redirect when Auth logout returns an HTTP error", async () => {
+    const logoutUrl =
+      "https://ras.example.test/siteminderagent/smlogoutredirector.asp?target=https://ctdc.example.test/";
+    const redirect = jest.fn();
+    const deleteFromLocalStorage = jest.fn();
+    const assign = jest.fn();
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const originalLocation = window.location;
+
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      value: {
+        origin: "https://ctdc.example.test",
+        assign,
+      },
+    });
+
+    try {
+      global.fetch.mockResolvedValue({
+        status: 500,
+        ok: false,
+      });
+      renderProvider({
+        config: {
+          GOOGLE_CLIENT_ID: "",
+          NIH_CLIENT_ID: "",
+          NIH_AUTH_URL: "https://example.test/authorize",
+          AUTH_API: "https://example.test/api/auth/",
+          RAS_BROWSER_LOGOUT_URL: logoutUrl,
+        },
+        functions: {
+          redirect,
+          storeInLocalStorage: jest.fn(),
+          deleteFromLocalStorage,
+        },
+      });
+
+      let logoutResult;
+      await act(async () => {
+        logoutResult = await auth.signOut({}, "/", "ras");
+      });
+
+      expect(deleteFromLocalStorage).not.toHaveBeenCalled();
+      expect(sessionStorage.getItem("showLogoutSuccess")).toBeNull();
+      expect(assign).not.toHaveBeenCalled();
+      expect(redirect).not.toHaveBeenCalled();
+      expect(logoutResult).toEqual({
+        logoutCompleted: false,
+        externalLogoutStarted: false,
+        errorMessage: "Unable to complete logout. Auth service returned status code 500.",
+      });
+      expect(warn).toHaveBeenCalledWith(
+        "[Auth logout] Unable to call Auth service logout",
+        {
+          message: "Unable to complete logout. Auth service returned status code 500.",
+        },
+      );
+    } finally {
+      sessionStorage.removeItem("showLogoutSuccess");
+      warn.mockRestore();
+      Object.defineProperty(window, "location", {
+        configurable: true,
+        value: originalLocation,
+      });
+    }
+  });
+
   it("reports local fallback when RAS logout URL is unusable", async () => {
     const redirect = jest.fn();
     const assign = jest.fn();

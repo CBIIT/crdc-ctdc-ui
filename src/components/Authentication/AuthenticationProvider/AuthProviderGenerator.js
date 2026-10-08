@@ -81,8 +81,22 @@ const createLogoutResult = (externalLogoutStarted = false) => ({
   externalLogoutStarted,
 });
 
+const createLogoutFailureResult = (error) => ({
+  logoutCompleted: false,
+  externalLogoutStarted: false,
+  errorMessage:
+    error && error.message
+      ? error.message
+      : "Unable to complete logout. Please try again.",
+});
+
 const canRedirectLocally = (history) =>
   history && typeof history.push === "function";
+
+const createLogoutResponseError = (logoutResponse) => {
+  const statusCode = logoutResponse ? logoutResponse.status : "unknown";
+  return new Error(`Unable to complete logout. Auth service returned status code ${statusCode}.`);
+};
 
 /**
  * Generate a Authentication Provider component with the custom configuration applied
@@ -256,7 +270,7 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
           const requestedIdp = getRequestedIdp(IDP);
           const isRasLogout = isRasIdp(requestedIdp);
           try {
-            await fetch(`${AUTH_API}logout`, {
+            const logoutResponse = await fetch(`${AUTH_API}logout`, {
               method: "POST",
               headers: {
                 Accept: "application/json",
@@ -264,14 +278,15 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
               },
               body: JSON.stringify({ IDP: requestedIdp }),
             });
+
+            if (!logoutResponse || !logoutResponse.ok) {
+              throw createLogoutResponseError(logoutResponse);
+            }
           } catch (error) {
             console.warn("[Auth logout] Unable to call Auth service logout", {
               message: error && error.message,
             });
-            return {
-              logoutCompleted: false,
-              externalLogoutStarted: false,
-            };
+            return createLogoutFailureResult(error);
           }
 
           deleteFromLocalStorage("userDetails");

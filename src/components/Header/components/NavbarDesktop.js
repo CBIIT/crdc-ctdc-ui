@@ -2,13 +2,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { NavLink, Link, withRouter } from 'react-router-dom';
 import styled from 'styled-components';
-import { useHistory } from 'react-router';
 import { useSelector } from 'react-redux';
-import { useGlobal } from '../../Global/GlobalProvider';
-import { useAuth } from '../../Authentication';
 import CartContainer from '../../Cart/CartController';
 import { navMobileList, navbarSublists } from '../../../config/globalHeaderData';
-import { getAuthenticatedIdp } from '../../../utils/authUtil';
+import { useHeaderLogout } from '../hooks/useHeaderLogout';
 import { Box } from '@material-ui/core';
 
 
@@ -357,10 +354,6 @@ const NavBar = () => {
     return state.login;
   } );
 
-  const {
-    signOut,
-  } = useAuth();
-  const history = useHistory();
   const [clickedTitle, setClickedTitle] = useState("");
   const dropdownSelection = useRef(null);
   const nameDropdownSelection = useRef(null);
@@ -387,16 +380,11 @@ const NavBar = () => {
     }
   };
 
-  const { Notification } = useGlobal();
-  const onShowNotification = (content, duration) => Notification.show(content, duration);
+  const logout = useHeaderLogout({ authData });
 
   const handleLogout = async () => {
     setClickedTitle("");
-    const idp = getAuthenticatedIdp(authData);
-    const logoutResult = await signOut(history, "/", idp);
-    if (logoutResult && logoutResult.logoutCompleted && !logoutResult.externalLogoutStarted) {
-      onShowNotification("You have been logged out.", 2000);
-    }
+    await logout();
   };
 
   function shouldBeUnderlined(item) {
