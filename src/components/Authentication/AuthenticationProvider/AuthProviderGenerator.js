@@ -64,15 +64,6 @@ const isRasIdp = (IDP) =>
   typeof IDP === "string" && IDP.trim().toLowerCase() === "ras";
 
 const LOGOUT_SUCCESS_STORAGE_KEY = "showLogoutSuccess";
-const RAS_LOGOUT_REDIRECT_DELAY_MS = 3000;
-
-const logRasLogout = (message, data) => {
-  console.log(`RAS_Logout ${message}`, data || "");
-};
-
-const warnRasLogout = (message, data) => {
-  console.warn(`RAS_Logout ${message}`, data || "");
-};
 
 /**
  * Generate a Authentication Provider component with the custom configuration applied
@@ -123,10 +114,10 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
       ? config.AUTH_URL
       : DEFAULT_CONFIG.config.AUTH_URL;
 
-  const RAS_LOGOUT =
-    config && typeof config.RAS_LOGOUT === "string"
-      ? config.RAS_LOGOUT
-      : DEFAULT_CONFIG.config.RAS_LOGOUT;
+  const RAS_BROWSER_LOGOUT_URL =
+    config && typeof config.RAS_BROWSER_LOGOUT_URL === "string"
+      ? config.RAS_BROWSER_LOGOUT_URL
+      : DEFAULT_CONFIG.config.RAS_BROWSER_LOGOUT_URL;
 
   const stateProps = () => ({
     // autocomplete: state.login.autocomplete,
@@ -243,21 +234,8 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
 
         const onSignOut = async (history, redirectPath = "/", IDP) => {
           const isRasLogout = isRasIdp(IDP);
-          if (isRasLogout) {
-            logRasLogout("started", {
-              IDP,
-              redirectPath,
-              authLogoutUrl: `${AUTH_API}logout`,
-              configuredRasLogoutUrl: RAS_LOGOUT,
-            });
-          }
-
-          let logoutResponse;
           try {
-            if (isRasLogout) {
-              logRasLogout("calling Auth service logout");
-            }
-            logoutResponse = await fetch(`${AUTH_API}logout`, {
+            await fetch(`${AUTH_API}logout`, {
               method: "POST",
               headers: {
                 Accept: "application/json",
@@ -265,65 +243,31 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
               },
               body: JSON.stringify({ IDP }),
             });
-            if (isRasLogout) {
-              logRasLogout("Auth service logout response received", {
-                status: logoutResponse && logoutResponse.status,
-                ok: logoutResponse && logoutResponse.ok,
-              });
-            }
           } catch (error) {
-            if (isRasLogout) {
-              warnRasLogout("Auth service logout request failed", {
-                message: error && error.message,
-              });
-            } else {
-              console.warn("[Auth logout] Unable to call Auth service logout", {
-                message: error && error.message,
-              });
-            }
+            console.warn("[Auth logout] Unable to call Auth service logout", {
+              message: error && error.message,
+            });
             return;
           }
 
           deleteFromLocalStorage("userDetails");
           signOut();
           dispatchProps("signOut");
-          if (isRasLogout) {
-            logRasLogout("local CTDC auth state cleared");
-          }
 
           const rasLogoutRedirectUrl = isRasLogout
-            ? getRasLogoutRedirectUrl(RAS_LOGOUT)
+            ? getRasLogoutRedirectUrl(RAS_BROWSER_LOGOUT_URL)
             : "";
-          if (isRasLogout) {
-            logRasLogout("validated RAS logout URL", {
-              rasLogoutRedirectUrl,
-              isValid: Boolean(rasLogoutRedirectUrl),
-            });
-          }
 
           if (rasLogoutRedirectUrl) {
-            logRasLogout("redirect scheduled", {
-              delayMs: RAS_LOGOUT_REDIRECT_DELAY_MS,
-              rasLogoutRedirectUrl,
-            });
-
-            window.setTimeout(() => {
-              try {
-                sessionStorage.setItem(LOGOUT_SUCCESS_STORAGE_KEY, "true");
-                logRasLogout("saved return notification flag", {
-                  key: LOGOUT_SUCCESS_STORAGE_KEY,
-                });
-              } catch (error) {
-                warnRasLogout("unable to save return notification flag", {
-                  message: error && error.message,
-                });
-              }
-              logRasLogout("redirecting browser to RAS logout", {
-                rasLogoutRedirectUrl,
+            try {
+              sessionStorage.setItem(LOGOUT_SUCCESS_STORAGE_KEY, "true");
+            } catch (error) {
+              console.warn("[RAS logout] Unable to save return notification flag", {
+                message: error && error.message,
               });
-              // Browser navigation is required so RAS can clear its SSO cookies.
-              window.location.assign(rasLogoutRedirectUrl);
-            }, RAS_LOGOUT_REDIRECT_DELAY_MS);
+            }
+            // Browser navigation is required so RAS can clear its SSO cookies.
+            window.location.assign(rasLogoutRedirectUrl);
             return;
           }
 

@@ -16,7 +16,7 @@ jest.mock("./config", () => ({
       NIH_CLIENT_ID: "",
       NIH_AUTH_URL: "https://example.test/authorize",
       AUTH_API: "https://example.test/api/",
-      RAS_LOGOUT: "",
+      RAS_BROWSER_LOGOUT_URL: "",
     },
     functions: {
       redirect: jest.fn(),
@@ -45,14 +45,14 @@ const AuthProbe = ({ onAuth }) => {
 describe("getRasLogoutRedirectUrl", () => {
   it("returns the configured full RAS logout URL", () => {
     const logoutUrl =
-      "https://authtest.nih.gov/siteminderagent/smlogoutredirector.asp?target=https://clinical-dev.datacommons.cancer.gov/";
+      "https://ras.example.test/siteminderagent/smlogoutredirector.asp?target=https://ctdc.example.test/";
 
     expect(getRasLogoutRedirectUrl(logoutUrl)).toBe(logoutUrl);
   });
 
   it("returns an empty URL when configuration still has a placeholder", () => {
     expect(getRasLogoutRedirectUrl(
-      ["$", "{RAS_LOGOUT}"].join(""),
+      ["$", "{REACT_APP_RAS_BROWSER_LOGOUT_URL}"].join(""),
     )).toBe("");
   });
 
@@ -65,8 +65,8 @@ describe("AuthProviderGenerator authServiceLogin", () => {
   let container;
   let auth;
 
-  const renderProvider = () => {
-    const { AuthProvider } = AuthProviderGenerator();
+  const renderProvider = (uiConfig) => {
+    const { AuthProvider } = AuthProviderGenerator(uiConfig);
     act(() => {
       ReactDOM.render(
         <AuthProvider>
@@ -183,5 +183,64 @@ describe("AuthProviderGenerator authServiceLogin", () => {
     expect(onError).toHaveBeenCalledTimes(2);
     expect(onError).toHaveBeenNthCalledWith(1, "Error fetching user data.");
     expect(onError).toHaveBeenNthCalledWith(2, "Error fetching user data.");
+  });
+
+  it("redirects to RAS logout after clearing the CTDC session", async () => {
+    const logoutUrl =
+      "https://ras.example.test/siteminderagent/smlogoutredirector.asp?target=https://ctdc.example.test/";
+    const redirect = jest.fn();
+    const deleteFromLocalStorage = jest.fn();
+    const assign = jest.fn();
+    const originalLocation = window.location;
+
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      value: {
+        origin: "https://ctdc.example.test",
+        assign,
+      },
+    });
+
+    try {
+      global.fetch.mockResolvedValue({
+        status: 200,
+        ok: true,
+      });
+      renderProvider({
+        config: {
+          GOOGLE_CLIENT_ID: "",
+          NIH_CLIENT_ID: "",
+          NIH_AUTH_URL: "https://example.test/authorize",
+          AUTH_API: "https://example.test/api/auth/",
+          RAS_BROWSER_LOGOUT_URL: logoutUrl,
+        },
+        functions: {
+          redirect,
+          storeInLocalStorage: jest.fn(),
+          deleteFromLocalStorage,
+        },
+      });
+
+      await act(async () => {
+        await auth.signOut({}, "/", "ras");
+      });
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://example.test/api/auth/logout",
+        expect.objectContaining({
+          body: JSON.stringify({ IDP: "ras" }),
+        }),
+      );
+      expect(deleteFromLocalStorage).toHaveBeenCalledWith("userDetails");
+      expect(sessionStorage.getItem("showLogoutSuccess")).toBe("true");
+      expect(assign).toHaveBeenCalledWith(logoutUrl);
+      expect(redirect).not.toHaveBeenCalled();
+    } finally {
+      sessionStorage.removeItem("showLogoutSuccess");
+      Object.defineProperty(window, "location", {
+        configurable: true,
+        value: originalLocation,
+      });
+    }
   });
 });
