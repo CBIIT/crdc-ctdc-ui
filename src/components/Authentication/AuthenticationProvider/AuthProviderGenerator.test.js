@@ -156,6 +156,40 @@ describe("AuthProviderGenerator authServiceLogin", () => {
     );
   });
 
+  it("defaults authServiceLogin to RAS when IDP is omitted", async () => {
+    const onSuccess = jest.fn();
+    global.fetch.mockResolvedValue({
+      status: 200,
+      json: () => Promise.resolve({ name: "Researcher" }),
+    });
+    renderProvider();
+
+    await act(async () => {
+      await auth.authServiceLogin(
+        "code",
+        undefined,
+        "/callback",
+        onSuccess,
+        jest.fn(),
+      );
+    });
+
+    expect(onSuccess).toHaveBeenCalledWith({
+      name: "Researcher",
+      IDP: "ras",
+    });
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://example.test/api/login",
+      expect.objectContaining({
+        body: JSON.stringify({
+          code: "code",
+          IDP: "ras",
+          redirectUri: "/callback",
+        }),
+      }),
+    );
+  });
+
   it("reports network and JSON parsing failures without rejecting", async () => {
     const onError = jest.fn();
     renderProvider();
@@ -336,6 +370,46 @@ describe("AuthProviderGenerator authServiceLogin", () => {
     });
 
     expect(redirect).not.toHaveBeenCalled();
+    expect(logoutResult).toEqual({
+      logoutCompleted: true,
+      externalLogoutStarted: false,
+    });
+  });
+
+  it("defaults logout to RAS when IDP is omitted", async () => {
+    const redirect = jest.fn();
+    const history = { push: jest.fn() };
+    global.fetch.mockResolvedValue({
+      status: 200,
+      ok: true,
+    });
+    renderProvider({
+      config: {
+        GOOGLE_CLIENT_ID: "",
+        NIH_CLIENT_ID: "",
+        NIH_AUTH_URL: "https://example.test/authorize",
+        AUTH_API: "https://example.test/api/auth/",
+        RAS_BROWSER_LOGOUT_URL: "",
+      },
+      functions: {
+        redirect,
+        storeInLocalStorage: jest.fn(),
+        deleteFromLocalStorage: jest.fn(),
+      },
+    });
+
+    let logoutResult;
+    await act(async () => {
+      logoutResult = await auth.signOut(history, "/");
+    });
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://example.test/api/auth/logout",
+      expect.objectContaining({
+        body: JSON.stringify({ IDP: "ras" }),
+      }),
+    );
+    expect(redirect).toHaveBeenCalledWith(history, "/");
     expect(logoutResult).toEqual({
       logoutCompleted: true,
       externalLogoutStarted: false,

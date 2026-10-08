@@ -45,6 +45,10 @@ Components call `useAuth()` to access:
 | `signInWithAuthURL(state)` | Redirects the browser to the configured `AUTH_URL`, if provided. |
 | `signOut(history, redirectPath, IDP)` | Calls Auth service logout, clears frontend auth state, and handles optional RAS logout redirect. |
 
+CTDC currently uses RAS as the active IDP. Missing frontend IDP values default
+to `ras`, and stale legacy stored IDP values are treated as `ras` for logout
+and session flows.
+
 ## Auth Service Login
 
 `authServiceLogin` is the shared code-exchange path used after an external

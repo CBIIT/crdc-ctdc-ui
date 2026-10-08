@@ -24,6 +24,7 @@ const createContext = () => {
 const [useAuth, Auth] = createContext();
 
 const SAMPLE_GOOGLE_CLIENT_ID = "Sample Id";
+const DEFAULT_IDP = "ras";
 
 const isConfiguredGoogleClientId = (clientId) =>
   typeof clientId === "string" &&
@@ -67,6 +68,11 @@ export const getRasLogoutRedirectUrl = (logoutUrl = "") =>
 
 const isRasIdp = (IDP) =>
   typeof IDP === "string" && IDP.trim().toLowerCase() === "ras";
+
+const getRequestedIdp = (IDP) =>
+  typeof IDP === "string" && IDP.trim() !== ""
+    ? IDP.trim().toLowerCase()
+    : DEFAULT_IDP;
 
 const LOGOUT_SUCCESS_STORAGE_KEY = "showLogoutSuccess";
 
@@ -160,19 +166,20 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
       } = {}) => {
         async function authServiceLogin(
           code,
-          IDP,
+          IDP = DEFAULT_IDP,
           redirectUri,
           signInSuccess = () => {},
           signInError = () => {},
         ) {
           try {
+            const requestedIdp = getRequestedIdp(IDP);
             const rawResponse = await fetch(`${AUTH_API}login`, {
               method: "POST",
               headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ code, IDP, redirectUri }),
+              body: JSON.stringify({ code, IDP: requestedIdp, redirectUri }),
             });
 
             if (!rawResponse || typeof rawResponse.json !== "function") {
@@ -191,7 +198,7 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
             if (rawResponse.status === 200) {
               const userDetails = {
                 ...responseData,
-                IDP: responseData.IDP || responseData.idp || IDP,
+                IDP: responseData.IDP || responseData.idp || requestedIdp,
               };
               signIn(userDetails);
               storeInLocalStorage("userDetails", userDetails);
@@ -245,8 +252,9 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
           window.location.href = `${AUTH_URL}`;
         };
 
-        const onSignOut = async (history, redirectPath = "/", IDP) => {
-          const isRasLogout = isRasIdp(IDP);
+        const onSignOut = async (history, redirectPath = "/", IDP = DEFAULT_IDP) => {
+          const requestedIdp = getRequestedIdp(IDP);
+          const isRasLogout = isRasIdp(requestedIdp);
           try {
             await fetch(`${AUTH_API}logout`, {
               method: "POST",
@@ -254,7 +262,7 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
                 Accept: "application/json",
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ IDP }),
+              body: JSON.stringify({ IDP: requestedIdp }),
             });
           } catch (error) {
             console.warn("[Auth logout] Unable to call Auth service logout", {
