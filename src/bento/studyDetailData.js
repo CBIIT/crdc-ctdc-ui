@@ -44,8 +44,7 @@ export const tab = {
   ],
 };
 
-export const STUDY_FILES_BUTTON_TOOLTIP =
-  "Add filtered files associated with all participants in the current results set to My Files";
+export const STUDY_FILES_BUTTON_TOOLTIP = "Add selected files to My Files";
 
 // Tooltip configuration for Study Files wrapper buttons
 export const studyFilesTooltipContent = {

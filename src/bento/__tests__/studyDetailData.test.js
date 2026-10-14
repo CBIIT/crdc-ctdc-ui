@@ -166,7 +166,7 @@ describe("studyFilesTooltipContent", () => {
       STUDY_FILES_BUTTON_TOOLTIP,
     );
     expect(studyFilesTooltipContent["Study_Files"]).toBe(
-      "Add selected file(s) to cart",
+      "Add selected files to My Files",
     );
   });
 
