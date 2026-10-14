@@ -74,9 +74,24 @@ const ParticipantDetailController = ({ match }) => {
   const overviewRecord = participantOverviewData.participantOverview[0];
   const biospecimenRecord = biospecimensData?.biospecimenOverview?.[0] || {};
 
-  const formatPipeList = (val) => (val && val !== '[]'
-    ? val.split('|').map((t) => t.trim()).join(', ')
-    : null);
+  // Therapy fields come back as arrays from the backend; fall back to pipe-delimited strings for safety.
+  const formatPipeList = (val) => {
+    if (Array.isArray(val)) {
+      const items = val.filter((t) => t !== null && t !== undefined && t !== '');
+      return items.length > 0 ? items.map((t) => String(t).trim()).join(', ') : null;
+    }
+    return val && val !== '[]'
+      ? val.split('|').map((t) => t.trim()).join(', ')
+      : null;
+  };
+
+  const therapyData = {
+    therapy_name: formatPipeList(overviewRecord.therapy_name),
+    therapy_type: formatPipeList(overviewRecord.therapy_type),
+    therapy_category: formatPipeList(overviewRecord.therapy_category),
+    current_response_to_therapy: formatPipeList(overviewRecord.current_response_to_therapy),
+    best_response_to_therapy: formatPipeList(overviewRecord.best_response_to_therapy),
+  };
 
   const participantData = {
     participant_id,
@@ -87,8 +102,7 @@ const ParticipantDetailController = ({ match }) => {
     ethnicity: overviewRecord.ethnicity,
     stage_of_disease: overviewRecord.stage_of_disease,
     primary_diagnosis_disease_group: overviewRecord.ctep_disease_term,
-    targeted_therapy: formatPipeList(overviewRecord.targeted_therapy_string),
-    best_response_to_targeted_therapy: formatPipeList(overviewRecord.best_response_to_targeted_therapy),
+    ...therapyData,
     primary_disease_site: biospecimenRecord.primary_disease_site,
     study_short_name: overviewRecord.study_short_name,
     study_id: overviewRecord.study_id,
@@ -99,7 +113,7 @@ const ParticipantDetailController = ({ match }) => {
     age_at_enrollment: overviewRecord.age_at_enrollment,
     sex: overviewRecord.sex,
     race: overviewRecord.race,
-    targeted_therapy: formatPipeList(overviewRecord.targeted_therapy_string),
+    therapy_name: therapyData.therapy_name,
   }));
 
   return (
