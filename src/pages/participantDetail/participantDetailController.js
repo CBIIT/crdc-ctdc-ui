@@ -74,9 +74,16 @@ const ParticipantDetailController = ({ match }) => {
   const overviewRecord = participantOverviewData.participantOverview[0];
   const biospecimenRecord = biospecimensData?.biospecimenOverview?.[0] || {};
 
-  const formatPipeList = (val) => (val && val !== '[]'
-    ? val.split('|').map((t) => t.trim()).join(', ')
-    : null);
+  // Therapy fields come back as arrays from the backend; fall back to pipe-delimited strings for safety.
+  const formatPipeList = (val) => {
+    if (Array.isArray(val)) {
+      const items = val.filter((t) => t !== null && t !== undefined && t !== '');
+      return items.length > 0 ? items.map((t) => String(t).trim()).join(', ') : null;
+    }
+    return val && val !== '[]'
+      ? val.split('|').map((t) => t.trim()).join(', ')
+      : null;
+  };
 
   const therapyData = {
     therapy_name: formatPipeList(overviewRecord.therapy_name),
