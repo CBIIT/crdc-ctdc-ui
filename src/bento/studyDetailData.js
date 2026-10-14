@@ -44,7 +44,7 @@ export const tab = {
   ],
 };
 
-export const STUDY_FILES_BUTTON_TOOLTIP = "Add selected file(s) to cart";
+export const STUDY_FILES_BUTTON_TOOLTIP = "Add selected files to My Files";
 
 // Tooltip configuration for Study Files wrapper buttons
 export const studyFilesTooltipContent = {
@@ -204,7 +204,7 @@ export const studyFilesTableConfig = {
         fileLocationColumn: "data_file_uuid",
         fileFormatColumn: "data_file_format",
         fileName: "data_file_name",
-        toolTipTextFileDownload: "Click to download a copy of this file if you have been approved by dbGaP",
+        toolTipTextFileDownload: "Download a copy of this file",
         iconFileDownload: downloadSuccess,
         iconUnauthenticated: downloadLock,
         toolTipTextUnauthenticated:
