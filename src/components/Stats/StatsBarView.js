@@ -32,7 +32,7 @@ const StatsBar = ({
     alt, src,
   }) => (
     <div className={iconClasses}>
-      <img src={src} alt={alt} />
+      <img src={src} alt={alt} style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
     </div>
   );
 
@@ -200,6 +200,7 @@ const styles = () => ({
   statsIcon: (props) => ({
     position: 'absolute',
     float: 'left',
+    overflow: 'hidden',
     width: props.styles.statsIcon ? props.styles.statsIcon.width ? props.styles.statsIcon.width : '28px' : '28px',
     height: props.styles.statsIcon ? props.styles.statsIcon.height ? props.styles.statsIcon.height : '28px' : '28px',
     margin: props.styles.statsIcon ? props.styles.statsIcon.margin ? props.styles.statsIcon.margin : '8px 0px 0px -35px' : '8px 0px 0px -35px',

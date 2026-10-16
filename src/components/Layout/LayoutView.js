@@ -28,6 +28,7 @@ import RAView from '../../pages/about/requestAccess';
 import ActivitiesController from '../ActivitiesController'; 
 import useVisitedPageSync from '../../utils/useVisitedPageSync';
 import StudiesContainer from '../../pages/studies/studiesController';
+import PortfolioContainer from '../../pages/portfolio/portfolioController';
 import DataModelNavigator from '../../pages/dmn';
 import SysInfo from '../../pages/sysinfo/sysinfo';
 
@@ -58,6 +59,7 @@ const Layout = ({ classes, isSidebarOpened }) => {
           <Switch>
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
+            <Route exact path="/portfolio" component={PortfolioContainer} />
             <Route exact path="/studies" component={StudiesContainer} />
             <Route exact path="/study/:id" component={StudyDetail} />
             <Route exact path="/participant/:id" component={ParticipantDetail} />

@@ -30,6 +30,12 @@ export const navMobileList = [
     className: 'navMobileItem',
   },
   {
+    name: 'Portfolio',
+    link: '/portfolio',
+    id: 'navbar-link-portfolio',
+    className: 'navMobileItem',
+  },
+  {
     name: 'Studies',
     link: '/studies',
     id: 'navbar-link-study',
