@@ -56,6 +56,9 @@ const PortfolioCard = ({
       <div className={classes.body}>
         <div className={classes.descriptionActions}>
           <p className={classes.description}>{description || 'No description available.'}</p>
+          {isInitiatives && (
+            <p className={classes.description}>Program affiliation: Not Applicable (NA)</p>
+          )}
           <div className={classes.actions}>
             <button
               type="button"
