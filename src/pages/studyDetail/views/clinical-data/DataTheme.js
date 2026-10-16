@@ -179,6 +179,14 @@ const tblBody = {
       overflow: 'scroll',
     },
   },
+  MuiTableRow: {
+    root: {
+      // inactive (striped) rows only
+      '&:nth-child(even)': {
+        background: '#EEF6FA',
+      },
+    },
+  },
   MuiTooltip: {
     tooltip: {
       backgroundColor: '#ffffff',
