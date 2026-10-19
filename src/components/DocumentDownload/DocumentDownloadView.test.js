@@ -121,6 +121,105 @@ describe('fetchFileToDownload', () => {
     expect(consoleErrorSpy).not.toHaveBeenCalled();
   });
 
+  it.each([
+    'pdf', 'txt', 'png', 'jpg', 'jpeg', 'svg', 'gif', 'html', 'xml', 'json',
+  ])('opens %s files in a separate tab without changing the signed URL', async (fileFormat) => {
+    const signedUrl = 'https://signed-url.example/object?X-Amz-Signature=abc%2F123&X-Amz-Expires=60';
+    mockFetchResponse({ body: signedUrl });
+
+    await fetchFileToDownload(createDownloadOptions({
+      fileFormat,
+      fileName: 'opaque-file-name',
+    }));
+
+    expect(createdLink.getAttribute('href')).toBe(signedUrl);
+    expect(createdLink.target).toBe('_blank');
+    expect(createdLink.rel).toBe('noopener noreferrer');
+    expect(clickMock).toHaveBeenCalledTimes(1);
+    expect(document.body.contains(createdLink)).toBe(false);
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it.each(['PDF', '.pdf', ' .PDF ', ' TXT '])('normalizes format metadata: %s', async (fileFormat) => {
+    mockFetchResponse({ body: 'https://signed-url.example/opaque-object' });
+
+    await fetchFileToDownload(createDownloadOptions({ fileFormat, fileName: 'archive.zip' }));
+
+    expect(createdLink.target).toBe('_blank');
+    expect(createdLink.rel).toBe('noopener noreferrer');
+    expect(clickMock).toHaveBeenCalledTimes(1);
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it.each(['', '   ', undefined, null, 123, false, {}, ['pdf']])(
+    'handles missing or non-string formats without using the filename or URL: %j',
+    async (fileFormat) => {
+      const signedUrl = 'https://signed-url.example/report.pdf?X-Amz-Signature=abc%2F123';
+      mockFetchResponse({ body: JSON.stringify({ url: signedUrl }) });
+
+      await fetchFileToDownload(createDownloadOptions({ fileFormat, fileName: 'report.pdf' }));
+
+      expect(createdLink.getAttribute('href')).toBe(signedUrl);
+      expect(createdLink.target).toBe('');
+      expect(createdLink.rel).toBe('');
+      expect(clickMock).toHaveBeenCalledTimes(1);
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each(['.', '..pdf', '. pdf', 'application/pdf', 'unknown', 'pdf/zip'])(
+    'keeps normal navigation for an unrecognized format: %s',
+    async (fileFormat) => {
+      mockFetchResponse({ body: 'https://signed-url.example/report.pdf' });
+
+      await fetchFileToDownload(createDownloadOptions({ fileFormat, fileName: 'report.pdf' }));
+
+      expect(createdLink.target).toBe('');
+      expect(clickMock).toHaveBeenCalledTimes(1);
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
+    },
+  );
+
+  it.each(['zip', 'csv', 'bam', 'gz'])('keeps normal download handling for %s files', async (fileFormat) => {
+    mockFetchResponse({ body: 'https://signed-url.example/object?name=report.pdf' });
+
+    await fetchFileToDownload(createDownloadOptions({
+      fileFormat,
+      fileName: `data.${fileFormat}`,
+    }));
+
+    expect(createdLink.target).toBe('');
+    expect(createdLink.rel).toBe('');
+    expect(clickMock).toHaveBeenCalledTimes(1);
+    expect(document.body.contains(createdLink)).toBe(false);
+  });
+
+  it('uses only fileFormat when the filename and URL suggest a different format', async () => {
+    mockFetchResponse({ body: 'https://signed-url.example/report.pdf' });
+
+    await fetchFileToDownload(createDownloadOptions({
+      fileFormat: 'zip',
+      fileName: 'report.pdf',
+    }));
+
+    expect(createdLink.target).toBe('');
+    expect(clickMock).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    'https://signed-url.example/folder.pdf/opaque-object?filename=report.pdf',
+    'https://signed-url.example/opaque-object#report.pdf',
+    'https://signed-url.example/report.pdf',
+  ])('does not use signed URL paths, queries, or fragments to detect the format: %s', async (signedUrl) => {
+    mockFetchResponse({ body: signedUrl });
+
+    await fetchFileToDownload(createDownloadOptions({ fileName: '', fileFormat: '' }));
+
+    expect(createdLink.target).toBe('');
+    expect(clickMock).toHaveBeenCalledTimes(1);
+    expect(consoleErrorSpy).not.toHaveBeenCalled();
+  });
+
   it('does not download an invalid response body', async () => {
     mockFetchResponse({
       body: 'not-a-url',

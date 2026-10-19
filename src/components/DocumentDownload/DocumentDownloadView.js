@@ -46,6 +46,7 @@ export const fetchFileToDownload = async ({
   showUnauthorizedNotification,
   studyAccession = "",
   idp = "",
+  fileFormat,
 } = {}) => {
   try {
     const requestUrl = buildFileServiceUrl({
@@ -98,16 +99,40 @@ export const fetchFileToDownload = async ({
     }
 
     // Download the file
-    await downloadFile(fileURL);
+    downloadFile(fileURL, fileFormat);
   } catch (error) {
     console.error("Error:", error.message);
   }
 };
 
+// A centralized list of extensions that modern browsers natively try to render inline
+const VIEWABLE_EXTENSIONS = new Set([
+  'pdf',
+  'txt',
+  'png',
+  'jpg',
+  'jpeg',
+  'svg',
+  'gif',
+  'html',
+  'xml',
+  'json',
+]);
+
 // Direct navigation avoids CORS and avoids buffering large files into memory as a blob.
-const downloadFile = (signedUrl) => {
+const downloadFile = (signedUrl, fileFormat = "") => {
   const link = document.createElement("a");
   link.href = signedUrl;
+
+  const extension = typeof fileFormat === "string"
+    ? fileFormat.trim().toLowerCase().replace(/^\./, "")
+    : "";
+  // Protect the app tab for viewable formats; other files retain normal browser handling.
+  if (VIEWABLE_EXTENSIONS.has(extension)) {
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+  }
+
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);
@@ -199,30 +224,9 @@ const DocumentDownload = ({
     Notification.show(customElem, 6000, classes.alertStyles);
   };
 
-  /*
-  // Related to hasAccess()
-  const approvedACLs = currentUserACL.reduce(
-    (results, acl) => {
-      if (acl.accessStatus.toLowerCase() === 'approved') results.push(acl.armID);
-      return results;
-    },
-    [],
-  );
-*/
   const closeModal = () => {
     setShowModal(false);
   };
-
-  // const hasAccess = () => {
-  /*
-    if (role === 'admin') return true;
-
-    return requiredACLs.reduce(
-      (status, rACL) => approvedACLs.includes(rACL) || status, false,
-    );
-    */
-  //   return isSignedIn;
-  // };
 
   return (
     <>
