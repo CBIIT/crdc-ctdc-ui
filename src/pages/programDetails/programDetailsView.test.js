@@ -1,7 +1,8 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import ProgramDetailsView from './programDetailsView';
+import { curatedProgramDetailContent, programDetailsColors } from '../../bento/programDetailsData';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -73,5 +74,50 @@ describe('ProgramDetailsView', () => {
   it('does not render a Program Metadata section for the Initiatives variant', () => {
     render(<ProgramDetailsView isInitiatives unaffiliatedStudies={[]} />);
     expect(screen.queryByText('PROGRAM METADATA')).not.toBeInTheDocument();
+  });
+
+  it('renders a configured Host Video with a playable thumbnail and a title link to the source (UT5)', () => {
+    const ncVideo = curatedProgramDetailContent.NCTN.hostVideos[0];
+    render(<ProgramDetailsView program={{ ...program, program_short_name: 'NCTN' }} />);
+    const titleLink = screen.getByText(ncVideo.title).closest('a');
+    expect(titleLink).toHaveAttribute('href', ncVideo.videoUrl);
+    expect(screen.getByAltText(ncVideo.title)).toHaveAttribute('src', ncVideo.thumbnail);
+  });
+
+  it('plays a configured Host Video inline when its thumbnail is clicked', () => {
+    const ncVideo = curatedProgramDetailContent.NCTN.hostVideos[0];
+    render(<ProgramDetailsView program={{ ...program, program_short_name: 'NCTN' }} />);
+    fireEvent.click(screen.getByAltText(ncVideo.title).closest('button'));
+    const iframe = screen.getByTitle(ncVideo.title);
+    expect(iframe.tagName).toBe('IFRAME');
+    expect(iframe).toHaveAttribute('src', expect.stringContaining('youtube.com/embed/'));
+  });
+
+  it('renders configured Program-related Materials with a link to the source (UT7)', () => {
+    const ncMaterial = curatedProgramDetailContent.NCTN.materials[0];
+    render(<ProgramDetailsView program={{ ...program, program_short_name: 'NCTN' }} />);
+    const materialLink = screen.getByText(ncMaterial.title).closest('a');
+    expect(materialLink).toHaveAttribute('href', ncMaterial.url);
+  });
+
+  it('design system conformance: header and section title colors match the shared design tokens', () => {
+    const { container } = render(<ProgramDetailsView program={program} />);
+    const headerMainTitle = container.querySelector('[class*="headerMainTitle-"]');
+    const sectionTitle = container.querySelector('[class*="sectionTitle-"]');
+    expect(getComputedStyle(headerMainTitle).color).toBe('rgb(13, 111, 148)'); // #0D6F94
+    expect(getComputedStyle(sectionTitle).color).toBe('rgb(6, 109, 147)'); // programDetailsColors.sectionTitle
+    expect(programDetailsColors.sectionTitle).toBe('#066D93');
+  });
+
+  it('renders correctly with a large studies list without errors (realistic data volume check)', () => {
+    const manyStudies = Array.from({ length: 200 }, (_, i) => ({
+      study_short_name: `STUDY-${i}`,
+      study_name: `Study Number ${i}`,
+    }));
+    const start = performance.now();
+    render(<ProgramDetailsView program={{ ...program, studies: manyStudies }} />);
+    const duration = performance.now() - start;
+    expect(screen.getAllByText(/Study Number/)).toHaveLength(200);
+    expect(duration).toBeLessThan(2000);
   });
 });

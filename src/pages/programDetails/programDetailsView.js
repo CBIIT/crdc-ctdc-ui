@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withStyles, Grid } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Stats from '../../components/Stats/AllStatsController';
@@ -13,9 +13,22 @@ import {
   noMaterialsText,
 } from '../../bento/programDetailsData';
 
+// Extracts a YouTube video ID from a standard watch URL so it can be embedded inline via an iframe. CTDC
+// doesn't host the video file itself here - YouTube still serves it, this just displays their player inline
+// instead of linking out (per AC8/9 + Manual QA #2 "embedded or linked-out" - both are in scope).
+const getYouTubeEmbedUrl = (url) => {
+  try {
+    const videoId = new URL(url).searchParams.get('v');
+    return videoId ? `https://www.youtube.com/embed/${videoId}` : null;
+  } catch {
+    return null;
+  }
+};
+
 const ProgramDetailsView = ({
   classes, isInitiatives, program, unaffiliatedStudies, notFound,
 }) => {
+  const [playingVideoTitle, setPlayingVideoTitle] = useState(null);
   const label = isInitiatives ? 'Initiative' : 'Program';
   const displayShortName = isInitiatives ? initiativesDetailContent.name : program?.program_short_name;
   const displayFullName = isInitiatives ? '' : program?.program_name;
@@ -111,32 +124,48 @@ const ProgramDetailsView = ({
                       {noVideosText(label.toLowerCase())}
                     </p>
                   ) : (
-                    curated.hostVideos.map((video) => (
-                      <div key={video.title} className={classes.videoItem}>
-                        <a
-                          href={video.videoUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={classes.videoThumbnailButton}
-                        >
-                          {video.thumbnail && (
-                            <img src={video.thumbnail} alt={video.title} className={classes.videoThumbnail} />
+                    curated.hostVideos.map((video) => {
+                      const embedUrl = getYouTubeEmbedUrl(video.videoUrl);
+                      const isPlaying = playingVideoTitle === video.title && embedUrl;
+
+                      return (
+                        <div key={video.title} className={classes.videoItem}>
+                          {isPlaying ? (
+                            <iframe
+                              className={classes.videoThumbnail}
+                              src={embedUrl}
+                              title={video.title}
+                              frameBorder="0"
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                            />
+                          ) : (
+                            <button
+                              type="button"
+                              className={classes.videoThumbnailButton}
+                              onClick={() => setPlayingVideoTitle(video.title)}
+                              disabled={!embedUrl}
+                            >
+                              {video.thumbnail && (
+                                <img src={video.thumbnail} alt={video.title} className={classes.videoThumbnail} />
+                              )}
+                              {embedUrl && <span className={classes.playButton} />}
+                            </button>
                           )}
-                          <span className={classes.playButton} />
-                        </a>
-                        <div className={classes.videoCopy}>
-                          <a
-                            href={video.videoUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className={classes.videoTitle}
-                          >
-                            {video.title}
-                          </a>
-                          <span className={classes.videoDescription}>{video.description}</span>
+                          <div className={classes.videoCopy}>
+                            <a
+                              href={video.videoUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className={classes.videoTitle}
+                            >
+                              {video.title}
+                            </a>
+                            <span className={classes.videoDescription}>{video.description}</span>
+                          </div>
                         </div>
-                      </div>
-                    ))
+                      );
+                    })
                   )}
                 </section>
               </Grid>
@@ -336,10 +365,16 @@ const styles = (theme) => ({
   },
   videoThumbnailButton: {
     position: 'relative',
-    display: 'block',
     width: '310px',
     height: '176px',
     flexShrink: 0,
+    padding: 0,
+    border: 'none',
+    background: 'none',
+    cursor: 'pointer',
+    '&:disabled': {
+      cursor: 'default',
+    },
   },
   playButton: {
     position: 'absolute',

@@ -44,8 +44,21 @@ export const curatedProgramDetailContent = {
         thumbnail: 'https://img.youtube.com/vi/m0xp_cCO7kA/hqdefault.jpg',
         videoUrl: 'https://www.youtube.com/watch?v=m0xp_cCO7kA',
       },
+      {
+        // TEMPORARY second entry (same source video) to QA multi-video rendering/independent play state -
+        // remove once a second real curated video is supplied.
+        title: 'dbGaP: Apply for Controlled Access Data (test video 2)',
+        description: 'Duplicate of the first video, used only to verify multiple Host Videos render and play independently.',
+        thumbnail: 'https://img.youtube.com/vi/m0xp_cCO7kA/hqdefault.jpg',
+        videoUrl: 'https://www.youtube.com/watch?v=m0xp_cCO7kA',
+      },
     ],
-    materials: [],
+    materials: [
+      {
+        title: 'NCTN Program Overview (NCI)',
+        url: 'https://www.cancer.gov/research/infrastructure/clinical-trials/nctn',
+      },
+    ],
   },
 };
 
