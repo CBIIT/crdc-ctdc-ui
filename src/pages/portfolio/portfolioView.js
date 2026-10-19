@@ -4,7 +4,7 @@ import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import PortfolioCard from './components/PortfolioCard';
 import {
-  pageData, portfolioHeaderIcon, curatedProgramContent, initiativesCardContent,
+  pageData, portfolioHeaderIcon, curatedProgramContent, initiativesCardContent, initiativesCardPosition,
 } from '../../bento/portfolioData';
 
 const PortfolioView = ({ classes, programs, unaffiliatedStudies }) => {
@@ -32,8 +32,8 @@ const PortfolioView = ({ classes, programs, unaffiliatedStudies }) => {
               No programs are currently registered.
             </Typography>
           ) : (
-            <>
-              {sortedPrograms.map((program) => (
+            (() => {
+              const programCards = sortedPrograms.map((program) => (
                 <PortfolioCard
                   key={program.program_short_name}
                   name={program.program_name}
@@ -47,20 +47,28 @@ const PortfolioView = ({ classes, programs, unaffiliatedStudies }) => {
                     || `${program.program_name} program image`
                   }
                 />
-              ))}
-              {unaffiliatedStudies.length > 0 && (
-                <PortfolioCard
-                  isInitiatives
-                  name={initiativesCardContent.name}
-                  identifier={null}
-                  description={initiativesCardContent.description}
-                  externalUrl={initiativesCardContent.externalUrl}
-                  studies={unaffiliatedStudies}
-                  image={initiativesCardContent.primaryImage}
-                  imageAlt={initiativesCardContent.primaryImageAlt}
-                />
-              )}
-            </>
+              ));
+
+              if (unaffiliatedStudies.length > 0) {
+                const initiativesCard = (
+                  <PortfolioCard
+                    key="initiatives"
+                    isInitiatives
+                    name={initiativesCardContent.name}
+                    identifier={null}
+                    description={initiativesCardContent.description}
+                    externalUrl={initiativesCardContent.externalUrl}
+                    studies={unaffiliatedStudies}
+                    image={initiativesCardContent.primaryImage}
+                    imageAlt={initiativesCardContent.primaryImageAlt}
+                  />
+                );
+                // Position configured via initiativesCardPosition (src/bento/portfolioData.js).
+                programCards.splice(initiativesCardPosition, 0, initiativesCard);
+              }
+
+              return programCards;
+            })()
           )}
         </div>
       </div>
@@ -87,13 +95,18 @@ const styles = (theme) => ({
   },
   logo: {
     position: 'absolute',
-    marginTop: '-76px',
-    marginLeft: '-68px',
+    width: '140px',
+    height: '140px',
+    objectFit: 'contain',
+    marginLeft: '-65px',
+    marginTop: '-65px',
+    pointerEvents: 'none',
   },
   headerMainTitle: {
     position: 'absolute',
-    top: '23px',
+    top: '50%',
     left: '96px',
+    transform: 'translateY(-50%)',
     fontFamily: 'Inter',
     fontWeight: 600,
     letterSpacing: '-0.52px',
@@ -108,6 +121,7 @@ const styles = (theme) => ({
     gap: '34px',
     paddingTop: '30px',
     paddingBottom: '30px',
+    margin: 'auto',
   },
   emptyState: {
     padding: '40px 0',

@@ -3,9 +3,8 @@ import { withStyles } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { externalLinkIcon, portfolioColors } from '../../../bento/portfolioData';
 
-// CTDC-2065 (Program Details page) is not yet delivered - per CTDC-2064's documented fallback, the program
-// name and study count render as non-clickable text until that sibling story ships. Flip this on when ready.
-const PROGRAM_DETAILS_PAGE_READY = false;
+// CTDC-2065 (Program Details page) is now live - program name/study count navigate there.
+const PROGRAM_DETAILS_PAGE_READY = true;
 
 const PortfolioCard = ({
   classes,
@@ -24,7 +23,7 @@ const PortfolioCard = ({
 
   const handleNavigateToDetails = () => {
     if (!PROGRAM_DETAILS_PAGE_READY) return;
-    history.push(isInitiatives ? '/program' : `/program/${identifier}`);
+    history.push(isInitiatives ? '/program-details' : `/program-details/${identifier}`);
   };
 
   const handleAssociatedStudies = () => {

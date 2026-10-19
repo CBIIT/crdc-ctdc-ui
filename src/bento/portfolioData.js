@@ -39,12 +39,16 @@ export const curatedProgramContent = {
 // Initiatives is not a graph entity (CTDC-2067/2069 only provide the orphan-study list/count for it), so every
 // display field below is curated here rather than coming from a query.
 export const initiativesCardContent = {
-  name: 'Initiatives',
-  description: '',
+  name: 'Cancer Moonshot Biobank',
+  description: '"Cancer Moonshot Biobank" is a longitudinal study. This means it collects and stores samples and information over time, throughout the course of a patient\'s cancer treatment. By looking at samples and information collected from the same people over time, researchers hope to better understand how cancer changes over time and over the course of medical treatments.',
   primaryImage: '',
   primaryImageAlt: 'Initiatives',
   externalUrl: '',
 };
+
+// Where the Initiatives card renders among the program cards (0 = first, 1 = second, etc). Change this single
+// value to reposition it - portfolioView.js splices it into the card list at this index.
+export const initiativesCardPosition = 1;
 
 // --------------- GraphQL query - Retrieve program list (CTDC-2067) --------------
 // PLACEHOLDER shape modeled on the agreed CTDC-2067 contract (see /memories/repo/portfolio-page-ctdc-2064.md):
