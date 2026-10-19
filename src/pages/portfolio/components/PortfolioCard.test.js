@@ -81,6 +81,18 @@ describe('PortfolioCard', () => {
     expect(mockHistoryPush).toHaveBeenCalledWith('/studies?studyIds=STUDY-1%2CSTUDY-2');
   });
 
+  it('navigates to the Program Details page when the program title is clicked', () => {
+    render(<PortfolioCard {...baseProps} />);
+    fireEvent.click(screen.getByText('Test Program'));
+    expect(mockHistoryPush).toHaveBeenCalledWith('/program-details/TP');
+  });
+
+  it('navigates to the Program Details page when the study count is clicked', () => {
+    render(<PortfolioCard {...baseProps} />);
+    fireEvent.click(screen.getByText('2 STUDIES'));
+    expect(mockHistoryPush).toHaveBeenCalledWith('/program-details/TP');
+  });
+
   it('renders the Initiatives card with its fixed heading and the unaffiliated study count', () => {
     render(
       <PortfolioCard
@@ -96,5 +108,22 @@ describe('PortfolioCard', () => {
     );
     expect(screen.getByText('Initiatives')).toBeInTheDocument();
     expect(screen.getByText('1 STUDIES')).toBeInTheDocument();
+  });
+
+  it('navigates to the no-program Program Details route when the Initiatives title is clicked', () => {
+    render(
+      <PortfolioCard
+        isInitiatives
+        name="Initiatives"
+        identifier={null}
+        description="Studies not affiliated with a program."
+        externalUrl=""
+        studies={[{ study_short_name: 'STUDY-3', study_name: 'Study Three' }]}
+        image=""
+        imageAlt="Initiatives"
+      />,
+    );
+    fireEvent.click(screen.getByText('Initiatives'));
+    expect(mockHistoryPush).toHaveBeenCalledWith('/program-details');
   });
 });
