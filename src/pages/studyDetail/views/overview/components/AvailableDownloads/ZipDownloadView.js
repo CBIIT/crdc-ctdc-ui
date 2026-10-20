@@ -7,13 +7,14 @@ import ToolTip from "@bento-core/tool-tip";
 import { enableAuthentication } from "../../../../../../bento/siteWideConfig";
 import SessionTimeOutModal from "../../../../../../components/sessionTimeOutModal";
 import { useAuth } from "../../../../../../components/Authentication";
-import { fetchFileToDownload } from "../../../../../../components/DocumentDownload/DocumentDownloadView";
+import { fetchFileToDownload } from "../../../../../../components/DocumentDownload/downloadUtils";
 import { useGlobal } from "../../../../../../components/Global/GlobalProvider";
 import { getFileDownloadIdp } from "../../../../../../utils/authUtil";
 
 const DocumentDownload = ({
   classes,
   fileFormat = "",
+  fileSize,
   toolTipTextUnauthenticated = "You must be logged in and must already have been granted access to download a copy of this file",
   toolTipTextFileDownload = "Click to download a copy of this file if you have been approved by dbGaP",
   iconFileDownload = "",
@@ -62,6 +63,17 @@ const DocumentDownload = ({
           Request access
         </a>{" "}
         through dbGaP to download this file.
+      </span>
+    );
+
+    Notification.show(customElem, 6000, classes.alertStyles);
+  };
+
+  const showDownloadErrorNotification = () => {
+    const customElem = (
+      <span>
+        Unable to download this file. Please try again.
+        If the problem continues, contact support.
       </span>
     );
 
@@ -122,7 +134,9 @@ const DocumentDownload = ({
                 setShowModal,
                 fileName,
                 fileFormat,
+                fileSize,
                 showUnauthorizedNotification,
+                showDownloadErrorNotification,
                 studyAccession,
                 idp,
               })

@@ -44,3 +44,6 @@ export const DEFAULT_VALUE = "No value";
 
 // Constant for last visited hash key in localStorage
 export const LAST_VISITED_HASH_KEY = "lastVisitedHash";
+
+// Maximum file size in bytes for Blob downloads (50 MiB; displayed as 50 MB in tables).
+export const MAX_BLOB_SIZE = 50 * 1024 * 1024;
