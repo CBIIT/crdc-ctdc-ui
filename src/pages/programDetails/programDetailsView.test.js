@@ -59,6 +59,11 @@ describe('ProgramDetailsView', () => {
     expect(screen.getByText(/No program matches this identifier/)).toBeInTheDocument();
   });
 
+  it('renders a breadcrumb link back to the Portfolio page (UT12)', () => {
+    render(<ProgramDetailsView program={program} />);
+    expect(screen.getByText('PORTFOLIO').closest('a')).toHaveAttribute('href', '/portfolio');
+  });
+
   it('renders the Initiatives variant with the generic heading and unaffiliated studies', () => {
     render(
       <ProgramDetailsView

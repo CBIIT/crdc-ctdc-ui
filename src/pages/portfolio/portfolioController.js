@@ -7,24 +7,14 @@ import {
   GET_PORTFOLIO_PROGRAMS_QUERY,
   GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY,
 } from '../../bento/portfolioData';
-import { mockPrograms, mockUnaffiliatedStudies } from '../../bento/portfolioMockData';
-
-// TEMPORARY scaffolding-preview flag - the live queries 404 until crdc-ctdc-backend PR #204 (CTDC-2066/2067)
-// merges and deploys. Flip to false (and delete portfolioMockData.js) once it's live - query shapes below
-// already match that PR's contract, see /memories/repo/portfolio-page-ctdc-2064.md.
-const USE_PORTFOLIO_MOCK_DATA = true;
 
 const PortfolioController = () => {
   const {
     loading: isProgramsLoading, error: programsError, data: programsData,
-  } = useQuery(GET_PORTFOLIO_PROGRAMS_QUERY, { skip: USE_PORTFOLIO_MOCK_DATA });
+  } = useQuery(GET_PORTFOLIO_PROGRAMS_QUERY);
   const {
     loading: isUnaffiliatedLoading, error: unaffiliatedError, data: unaffiliatedData,
-  } = useQuery(GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY, { skip: USE_PORTFOLIO_MOCK_DATA });
-
-  if (USE_PORTFOLIO_MOCK_DATA) {
-    return <PortfolioView programs={mockPrograms} unaffiliatedStudies={mockUnaffiliatedStudies} />;
-  }
+  } = useQuery(GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY);
 
   if (isProgramsLoading || isUnaffiliatedLoading) {
     return <CircularProgress />;

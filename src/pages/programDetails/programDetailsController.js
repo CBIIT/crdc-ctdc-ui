@@ -5,12 +5,6 @@ import ProgramDetailsView from './programDetailsView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { GET_PROGRAM_DETAIL_QUERY } from '../../bento/programDetailsData';
 import { GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY } from '../../bento/portfolioData';
-import { mockPrograms, mockUnaffiliatedStudies } from '../../bento/portfolioMockData';
-
-// TEMPORARY scaffolding-preview flag - mirrors Portfolio's (CTDC-2064) approach while crdc-ctdc-backend PR #204
-// (CTDC-2069) hasn't merged/deployed yet. Flip to false (and drop the portfolioMockData import) once it's live -
-// query shapes below already match that PR's contract, see /memories/repo/program-details-ctdc-2065.md.
-const USE_PROGRAM_DETAILS_MOCK_DATA = true;
 
 const ProgramDetailsController = ({ match }) => {
   const { programShortName } = match.params;
@@ -20,21 +14,13 @@ const ProgramDetailsController = ({ match }) => {
     loading: isProgramLoading, error: programError, data: programData,
   } = useQuery(GET_PROGRAM_DETAIL_QUERY, {
     variables: { programShortName: programShortName ? [programShortName] : [] },
-    skip: USE_PROGRAM_DETAILS_MOCK_DATA || isInitiatives,
+    skip: isInitiatives,
   });
   const {
     loading: isUnaffiliatedLoading, error: unaffiliatedError, data: unaffiliatedData,
   } = useQuery(GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY, {
-    skip: USE_PROGRAM_DETAILS_MOCK_DATA || !isInitiatives,
+    skip: !isInitiatives,
   });
-
-  if (USE_PROGRAM_DETAILS_MOCK_DATA) {
-    if (isInitiatives) {
-      return <ProgramDetailsView isInitiatives unaffiliatedStudies={mockUnaffiliatedStudies} />;
-    }
-    const program = mockPrograms.find((p) => p.program_short_name === programShortName);
-    return <ProgramDetailsView program={program} notFound={!program} />;
-  }
 
   if (isProgramLoading || isUnaffiliatedLoading) {
     return <CircularProgress />;
