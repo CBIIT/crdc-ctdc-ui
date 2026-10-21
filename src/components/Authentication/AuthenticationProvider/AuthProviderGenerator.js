@@ -24,6 +24,7 @@ const createContext = () => {
 const [useAuth, Auth] = createContext();
 
 const SAMPLE_GOOGLE_CLIENT_ID = "Sample Id";
+const DEFAULT_IDP = "ras";
 
 const isConfiguredGoogleClientId = (clientId) =>
   typeof clientId === "string" &&
@@ -41,6 +42,61 @@ const GoogleLoginState = ({ clientId, children }) => {
 
 const googleNotConfigured = () =>
   Promise.reject(new Error("Google login is not configured."));
+
+const PLACEHOLDER_ENV_PATTERN = /^\$\{[^}]+\}$/;
+
+const isUsableAbsoluteUrl = (value) => {
+  if (typeof value !== "string") {
+    return false;
+  }
+
+  const trimmedValue = value.trim();
+  if (!trimmedValue || PLACEHOLDER_ENV_PATTERN.test(trimmedValue)) {
+    return false;
+  }
+
+  try {
+    const parsedUrl = new URL(trimmedValue);
+    return parsedUrl.protocol === "http:" || parsedUrl.protocol === "https:";
+  } catch {
+    return false;
+  }
+};
+
+export const getRasLogoutRedirectUrl = (logoutUrl = "") =>
+  isUsableAbsoluteUrl(logoutUrl) ? logoutUrl.trim() : "";
+
+const isRasIdp = (IDP) =>
+  typeof IDP === "string" && IDP.trim().toLowerCase() === "ras";
+
+const getRequestedIdp = (IDP) =>
+  typeof IDP === "string" && IDP.trim() !== ""
+    ? IDP.trim().toLowerCase()
+    : DEFAULT_IDP;
+
+const LOGOUT_SUCCESS_STORAGE_KEY = "showLogoutSuccess";
+
+const createLogoutResult = (externalLogoutStarted = false) => ({
+  logoutCompleted: true,
+  externalLogoutStarted,
+});
+
+const createLogoutFailureResult = (error) => ({
+  logoutCompleted: false,
+  externalLogoutStarted: false,
+  errorMessage:
+    error && error.message
+      ? error.message
+      : "Unable to complete logout. Please try again.",
+});
+
+const canRedirectLocally = (history) =>
+  history && typeof history.push === "function";
+
+const createLogoutResponseError = (logoutResponse) => {
+  const statusCode = logoutResponse ? logoutResponse.status : "unknown";
+  return new Error(`Unable to complete logout. Auth service returned status code ${statusCode}.`);
+};
 
 /**
  * Generate a Authentication Provider component with the custom configuration applied
@@ -91,6 +147,11 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
       ? config.AUTH_URL
       : DEFAULT_CONFIG.config.AUTH_URL;
 
+  const RAS_BROWSER_LOGOUT_URL =
+    config && typeof config.RAS_BROWSER_LOGOUT_URL === "string"
+      ? config.RAS_BROWSER_LOGOUT_URL
+      : DEFAULT_CONFIG.config.RAS_BROWSER_LOGOUT_URL;
+
   const stateProps = () => ({
     // autocomplete: state.login.autocomplete,
   });
@@ -119,19 +180,20 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
       } = {}) => {
         async function authServiceLogin(
           code,
-          IDP,
+          IDP = DEFAULT_IDP,
           redirectUri,
           signInSuccess = () => {},
           signInError = () => {},
         ) {
           try {
+            const requestedIdp = getRequestedIdp(IDP);
             const rawResponse = await fetch(`${AUTH_API}login`, {
               method: "POST",
               headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ code, IDP, redirectUri }),
+              body: JSON.stringify({ code, IDP: requestedIdp, redirectUri }),
             });
 
             if (!rawResponse || typeof rawResponse.json !== "function") {
@@ -150,7 +212,7 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
             if (rawResponse.status === 200) {
               const userDetails = {
                 ...responseData,
-                IDP: responseData.IDP || responseData.idp || IDP,
+                IDP: responseData.IDP || responseData.idp || requestedIdp,
               };
               signIn(userDetails);
               storeInLocalStorage("userDetails", userDetails);
@@ -204,26 +266,54 @@ export const AuthProviderGenerator = (uiConfig = DEFAULT_CONFIG) => {
           window.location.href = `${AUTH_URL}`;
         };
 
-        const onSignOut = (history, redirectPath, IDP) => {
-          (async () => {
-            await fetch(`${AUTH_API}logout`, {
+        const onSignOut = async (history, redirectPath = "/", IDP = DEFAULT_IDP) => {
+          const requestedIdp = getRequestedIdp(IDP);
+          const isRasLogout = isRasIdp(requestedIdp);
+          try {
+            const logoutResponse = await fetch(`${AUTH_API}logout`, {
               method: "POST",
               headers: {
                 Accept: "application/json",
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ IDP }),
-            })
-              .then(() => {
-                deleteFromLocalStorage("userDetails");
-                signOut();
-                dispatchProps("signOut");
-                //googleSignOut();
-                redirect(history, redirectPath);
-              })
-              .catch(() => {});
-          })();
-          // this.auth.signIn();
+              body: JSON.stringify({ IDP: requestedIdp }),
+            });
+
+            if (!logoutResponse || !logoutResponse.ok) {
+              throw createLogoutResponseError(logoutResponse);
+            }
+          } catch (error) {
+            console.warn("[Auth logout] Unable to call Auth service logout", {
+              message: error && error.message,
+            });
+            return createLogoutFailureResult(error);
+          }
+
+          deleteFromLocalStorage("userDetails");
+          signOut();
+          dispatchProps("signOut");
+
+          const rasLogoutRedirectUrl = isRasLogout
+            ? getRasLogoutRedirectUrl(RAS_BROWSER_LOGOUT_URL)
+            : "";
+
+          if (rasLogoutRedirectUrl) {
+            try {
+              sessionStorage.setItem(LOGOUT_SUCCESS_STORAGE_KEY, "true");
+            } catch (error) {
+              console.warn("[RAS logout] Unable to save return notification flag", {
+                message: error && error.message,
+              });
+            }
+            // Browser navigation is required so RAS can clear its SSO cookies.
+            window.location.assign(rasLogoutRedirectUrl);
+            return createLogoutResult(true);
+          }
+
+          if (canRedirectLocally(history)) {
+            redirect(history, redirectPath);
+          }
+          return createLogoutResult(false);
         };
 
         return (

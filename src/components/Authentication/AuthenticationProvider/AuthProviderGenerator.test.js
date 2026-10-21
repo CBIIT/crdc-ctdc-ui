@@ -16,6 +16,7 @@ jest.mock("./config", () => ({
       NIH_CLIENT_ID: "",
       NIH_AUTH_URL: "https://example.test/authorize",
       AUTH_API: "https://example.test/api/",
+      RAS_BROWSER_LOGOUT_URL: "",
     },
     functions: {
       redirect: jest.fn(),
@@ -30,19 +31,47 @@ jest.mock("../store/actions/Actions", () => ({
   signOutRed: jest.fn(),
 }));
 
-const { AuthProviderGenerator, useAuth } = require("./AuthProviderGenerator");
+const {
+  AuthProviderGenerator,
+  getRasLogoutRedirectUrl,
+  useAuth,
+} = require("./AuthProviderGenerator");
 
 const AuthProbe = ({ onAuth }) => {
   onAuth(useAuth());
   return null;
 };
 
+describe("getRasLogoutRedirectUrl", () => {
+  it("returns the configured full RAS logout URL", () => {
+    const logoutUrl =
+      "https://ras.example.test/siteminderagent/smlogoutredirector.asp?target=https://ctdc.example.test/";
+
+    expect(getRasLogoutRedirectUrl(logoutUrl)).toBe(logoutUrl);
+  });
+
+  it("returns an empty URL when configuration still has a placeholder", () => {
+    expect(getRasLogoutRedirectUrl(
+      ["$", "{REACT_APP_RAS_BROWSER_LOGOUT_URL}"].join(""),
+    )).toBe("");
+  });
+
+  it("returns an empty URL when the RAS logout URL is relative", () => {
+    expect(getRasLogoutRedirectUrl("/siteminderagent/smlogoutredirector.asp")).toBe("");
+  });
+
+  it("returns an empty URL when the RAS logout URL cannot be parsed", () => {
+    expect(getRasLogoutRedirectUrl("https://")).toBe("");
+    expect(getRasLogoutRedirectUrl("https://[")).toBe("");
+  });
+});
+
 describe("AuthProviderGenerator authServiceLogin", () => {
   let container;
   let auth;
 
-  const renderProvider = () => {
-    const { AuthProvider } = AuthProviderGenerator();
+  const renderProvider = (uiConfig) => {
+    const { AuthProvider } = AuthProviderGenerator(uiConfig);
     act(() => {
       ReactDOM.render(
         <AuthProvider>
@@ -127,6 +156,40 @@ describe("AuthProviderGenerator authServiceLogin", () => {
     );
   });
 
+  it("defaults authServiceLogin to RAS when IDP is omitted", async () => {
+    const onSuccess = jest.fn();
+    global.fetch.mockResolvedValue({
+      status: 200,
+      json: () => Promise.resolve({ name: "Researcher" }),
+    });
+    renderProvider();
+
+    await act(async () => {
+      await auth.authServiceLogin(
+        "code",
+        undefined,
+        "/callback",
+        onSuccess,
+        jest.fn(),
+      );
+    });
+
+    expect(onSuccess).toHaveBeenCalledWith({
+      name: "Researcher",
+      IDP: "ras",
+    });
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://example.test/api/login",
+      expect.objectContaining({
+        body: JSON.stringify({
+          code: "code",
+          IDP: "ras",
+          redirectUri: "/callback",
+        }),
+      }),
+    );
+  });
+
   it("reports network and JSON parsing failures without rejecting", async () => {
     const onError = jest.fn();
     renderProvider();
@@ -159,5 +222,264 @@ describe("AuthProviderGenerator authServiceLogin", () => {
     expect(onError).toHaveBeenCalledTimes(2);
     expect(onError).toHaveBeenNthCalledWith(1, "Error fetching user data.");
     expect(onError).toHaveBeenNthCalledWith(2, "Error fetching user data.");
+  });
+
+  it("redirects to RAS logout after clearing the CTDC session", async () => {
+    const logoutUrl =
+      "https://ras.example.test/siteminderagent/smlogoutredirector.asp?target=https://ctdc.example.test/";
+    const redirect = jest.fn();
+    const deleteFromLocalStorage = jest.fn();
+    const assign = jest.fn();
+    const originalLocation = window.location;
+
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      value: {
+        origin: "https://ctdc.example.test",
+        assign,
+      },
+    });
+
+    try {
+      global.fetch.mockResolvedValue({
+        status: 200,
+        ok: true,
+      });
+      renderProvider({
+        config: {
+          GOOGLE_CLIENT_ID: "",
+          NIH_CLIENT_ID: "",
+          NIH_AUTH_URL: "https://example.test/authorize",
+          AUTH_API: "https://example.test/api/auth/",
+          RAS_BROWSER_LOGOUT_URL: logoutUrl,
+        },
+        functions: {
+          redirect,
+          storeInLocalStorage: jest.fn(),
+          deleteFromLocalStorage,
+        },
+      });
+
+      let logoutResult;
+      await act(async () => {
+        logoutResult = await auth.signOut({}, "/", "ras");
+      });
+
+      expect(global.fetch).toHaveBeenCalledWith(
+        "https://example.test/api/auth/logout",
+        expect.objectContaining({
+          body: JSON.stringify({ IDP: "ras" }),
+        }),
+      );
+      expect(deleteFromLocalStorage).toHaveBeenCalledWith("userDetails");
+      expect(sessionStorage.getItem("showLogoutSuccess")).toBe("true");
+      expect(assign).toHaveBeenCalledWith(logoutUrl);
+      expect(redirect).not.toHaveBeenCalled();
+      expect(logoutResult).toEqual({
+        logoutCompleted: true,
+        externalLogoutStarted: true,
+      });
+    } finally {
+      sessionStorage.removeItem("showLogoutSuccess");
+      Object.defineProperty(window, "location", {
+        configurable: true,
+        value: originalLocation,
+      });
+    }
+  });
+
+  it("does not clear state or redirect when Auth logout returns an HTTP error", async () => {
+    const logoutUrl =
+      "https://ras.example.test/siteminderagent/smlogoutredirector.asp?target=https://ctdc.example.test/";
+    const redirect = jest.fn();
+    const deleteFromLocalStorage = jest.fn();
+    const assign = jest.fn();
+    const warn = jest.spyOn(console, "warn").mockImplementation(() => {});
+    const originalLocation = window.location;
+
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      value: {
+        origin: "https://ctdc.example.test",
+        assign,
+      },
+    });
+
+    try {
+      global.fetch.mockResolvedValue({
+        status: 500,
+        ok: false,
+      });
+      renderProvider({
+        config: {
+          GOOGLE_CLIENT_ID: "",
+          NIH_CLIENT_ID: "",
+          NIH_AUTH_URL: "https://example.test/authorize",
+          AUTH_API: "https://example.test/api/auth/",
+          RAS_BROWSER_LOGOUT_URL: logoutUrl,
+        },
+        functions: {
+          redirect,
+          storeInLocalStorage: jest.fn(),
+          deleteFromLocalStorage,
+        },
+      });
+
+      let logoutResult;
+      await act(async () => {
+        logoutResult = await auth.signOut({}, "/", "ras");
+      });
+
+      expect(deleteFromLocalStorage).not.toHaveBeenCalled();
+      expect(sessionStorage.getItem("showLogoutSuccess")).toBeNull();
+      expect(assign).not.toHaveBeenCalled();
+      expect(redirect).not.toHaveBeenCalled();
+      expect(logoutResult).toEqual({
+        logoutCompleted: false,
+        externalLogoutStarted: false,
+        errorMessage: "Unable to complete logout. Auth service returned status code 500.",
+      });
+      expect(warn).toHaveBeenCalledWith(
+        "[Auth logout] Unable to call Auth service logout",
+        {
+          message: "Unable to complete logout. Auth service returned status code 500.",
+        },
+      );
+    } finally {
+      sessionStorage.removeItem("showLogoutSuccess");
+      warn.mockRestore();
+      Object.defineProperty(window, "location", {
+        configurable: true,
+        value: originalLocation,
+      });
+    }
+  });
+
+  it("reports local fallback when RAS logout URL is unusable", async () => {
+    const redirect = jest.fn();
+    const assign = jest.fn();
+    const originalLocation = window.location;
+
+    Object.defineProperty(window, "location", {
+      configurable: true,
+      value: {
+        origin: "https://ctdc.example.test",
+        assign,
+      },
+    });
+
+    try {
+      global.fetch.mockResolvedValue({
+        status: 200,
+        ok: true,
+      });
+      renderProvider({
+        config: {
+          GOOGLE_CLIENT_ID: "",
+          NIH_CLIENT_ID: "",
+          NIH_AUTH_URL: "https://example.test/authorize",
+          AUTH_API: "https://example.test/api/auth/",
+          RAS_BROWSER_LOGOUT_URL: "https://",
+        },
+        functions: {
+          redirect,
+          storeInLocalStorage: jest.fn(),
+          deleteFromLocalStorage: jest.fn(),
+        },
+      });
+
+      let logoutResult;
+      const history = { push: jest.fn() };
+      await act(async () => {
+        logoutResult = await auth.signOut(history, "/", "ras");
+      });
+
+      expect(assign).not.toHaveBeenCalled();
+      expect(sessionStorage.getItem("showLogoutSuccess")).toBeNull();
+      expect(redirect).toHaveBeenCalledWith(history, "/");
+      expect(logoutResult).toEqual({
+        logoutCompleted: true,
+        externalLogoutStarted: false,
+      });
+    } finally {
+      sessionStorage.removeItem("showLogoutSuccess");
+      Object.defineProperty(window, "location", {
+        configurable: true,
+        value: originalLocation,
+      });
+    }
+  });
+
+  it("skips local redirect when logout is called without history", async () => {
+    const redirect = jest.fn();
+    global.fetch.mockResolvedValue({
+      status: 200,
+      ok: true,
+    });
+    renderProvider({
+      config: {
+        GOOGLE_CLIENT_ID: "",
+        NIH_CLIENT_ID: "",
+        NIH_AUTH_URL: "https://example.test/authorize",
+        AUTH_API: "https://example.test/api/auth/",
+        RAS_BROWSER_LOGOUT_URL: "",
+      },
+      functions: {
+        redirect,
+        storeInLocalStorage: jest.fn(),
+        deleteFromLocalStorage: jest.fn(),
+      },
+    });
+
+    let logoutResult;
+    await act(async () => {
+      logoutResult = await auth.signOut();
+    });
+
+    expect(redirect).not.toHaveBeenCalled();
+    expect(logoutResult).toEqual({
+      logoutCompleted: true,
+      externalLogoutStarted: false,
+    });
+  });
+
+  it("defaults logout to RAS when IDP is omitted", async () => {
+    const redirect = jest.fn();
+    const history = { push: jest.fn() };
+    global.fetch.mockResolvedValue({
+      status: 200,
+      ok: true,
+    });
+    renderProvider({
+      config: {
+        GOOGLE_CLIENT_ID: "",
+        NIH_CLIENT_ID: "",
+        NIH_AUTH_URL: "https://example.test/authorize",
+        AUTH_API: "https://example.test/api/auth/",
+        RAS_BROWSER_LOGOUT_URL: "",
+      },
+      functions: {
+        redirect,
+        storeInLocalStorage: jest.fn(),
+        deleteFromLocalStorage: jest.fn(),
+      },
+    });
+
+    let logoutResult;
+    await act(async () => {
+      logoutResult = await auth.signOut(history, "/");
+    });
+
+    expect(global.fetch).toHaveBeenCalledWith(
+      "https://example.test/api/auth/logout",
+      expect.objectContaining({
+        body: JSON.stringify({ IDP: "ras" }),
+      }),
+    );
+    expect(redirect).toHaveBeenCalledWith(history, "/");
+    expect(logoutResult).toEqual({
+      logoutCompleted: true,
+      externalLogoutStarted: false,
+    });
   });
 });

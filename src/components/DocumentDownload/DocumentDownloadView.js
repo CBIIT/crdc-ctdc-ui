@@ -3,164 +3,19 @@ import { useSelector } from "react-redux";
 import { withStyles } from "@material-ui/core";
 import ToolTip from "@bento-core/tool-tip";
 import { useHistory } from "react-router-dom";
-import axios from "axios";
 
-import env from "../../utils/env";
 import CustomIcon from "../CustomIcon/CustomIconView";
 import { enableAuthentication } from "../../bento/siteWideConfig";
 import SessionTimeOutModal from "../sessionTimeOutModal";
 import { useAuth } from "../Authentication";
 import { useGlobal } from "../Global/GlobalProvider";
 import { getFileDownloadIdp } from "../../utils/authUtil";
+import { fetchFileToDownload } from "./downloadUtils";
 
-export const buildFileServiceUrl = ({
-  fileId = "",
-  studyAccession = "",
-  idp = "",
-} = {}) => {
-  const baseApi = (env.REACT_APP_FILE_SERVICE_API || "").replace(/\/+$/, "");
-  const cleanIdp = String(idp || "").replace(/^\/+|\/+$/g, "");
-  const cleanStudyAccession = String(studyAccession || "").replace(
-    /^\/+|\/+$/g,
-    "",
-  );
-  const cleanFileId = String(fileId || "")
-    .replace(/^drs:\/\//i, "")
-    .replace(/^\/+|\/+$/g, "");
-
-  const fileIdParts = cleanFileId.split("/").filter(Boolean);
-  const pathParts = cleanIdp ? [cleanIdp] : [];
-
-  if (cleanIdp && cleanStudyAccession) {
-    pathParts.push(cleanStudyAccession);
-  }
-
-  pathParts.push(...fileIdParts);
-
-  return `${baseApi}/${pathParts.map(encodeURIComponent).join("/")}`;
-};
-
-// Function to fetch and download a file
-export const fetchFileToDownload = async ({
-  fileId = "",
-  signOut,
-  setShowModal,
-  showUnauthorizedNotification,
-  studyAccession = "",
-  idp = "",
-} = {}) => {
-  try {
-    const requestUrl = buildFileServiceUrl({
-      fileId,
-      studyAccession,
-      idp,
-    });
-
-    const response = await fetch(requestUrl, { method: "GET" });
-
-    // Check if response status is 403 (Forbidden)
-    if (response.status === 403) {
-      signOut();
-      setShowModal(true);
-      throw new Error("Forbidden");
-    }
-
-    // Check if response status is not 401 (Unauthorized)
-    if (response.status === 401) {
-      showUnauthorizedNotification();
-      throw new Error(
-        `Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`,
-      );
-    }
-    // Check if response status is not 200 (Not OK)
-    if (response.status !== 200) {
-      showUnauthorizedNotification();
-      throw new Error(
-        `Failed to fetch the file from "${fileId}". Server responded with: ${response.status} (${response.statusText})`,
-      );
-    }
-
-    // RAS returns a raw signed URL string; DCF wraps it as { url: ... }
-    const responseText = await response.text();
-    let fileURL = '';
-
-    try {
-      const parsed = JSON.parse(responseText);
-      if (typeof parsed === 'string') {
-        fileURL = parsed;
-      } else if (parsed && typeof parsed === 'object') {
-        fileURL = parsed.url || parsed.presigned_url || parsed.fileURL || '';
-      }
-    } catch (e) {
-      fileURL = responseText;
-    }
-
-    fileURL = typeof fileURL === 'string' ? fileURL.trim() : '';
-    if (fileURL.startsWith('"') && fileURL.endsWith('"')) {
-      fileURL = fileURL.slice(1, -1);
-    }
-
-    // Guard against non-URL bodies (e.g. HTML error pages) being treated as a download link
-    if (!fileURL || !/^https?:\/\//i.test(fileURL)) {
-      console.error(`No valid file URL found in response for "${fileId}":`, responseText);
-      throw new Error('Missing File URL');
-    }
-
-    // Download the file
-    await downloadFile(fileURL);
-  } catch (error) {
-    console.error("Error:", error.message);
-  }
-};
-
-// Direct navigation avoids CORS and avoids buffering large files into memory as a blob.
-const downloadFile = (signedUrl) => {
-  const link = document.createElement("a");
-  link.href = signedUrl;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
-
-// Kept for future use if CORS is enabled and blob-based naming/progress is needed again.
-// eslint-disable-next-line no-unused-vars
-const downloadFileViaBlob = async (signedUrl, fileName, fileFormat) => {
-  try {
-    const response = await axios({
-      url: signedUrl,
-      method: "GET",
-      responseType: "blob",
-    });
-
-    // Optionally append fileFormat to fileName
-    let downloadName = fileName;
-    if (fileFormat && !fileName.endsWith(`.${fileFormat}`)) {
-      downloadName += `.${fileFormat}`;
-    }
-
-    // Create a URL for the blob
-    const url = window.URL.createObjectURL(response.data);
-    const link = document.createElement("a");
-    link.href = url;
-
-    link.setAttribute("download", downloadName);
-    document.body.appendChild(link);
-
-    // Trigger the download
-    link.click();
-
-    // Clean up
-    document.body.removeChild(link);
-    window.URL.revokeObjectURL(url);
-  } catch (error) {
-    console.error("Failed to download file:", error);
-  }
-};
-
-// NOTE: This component is getting more complex, will need to refactor at some point.
 const DocumentDownload = ({
   classes,
   fileFormat = "",
+  fileSize,
   toolTipTextUnauthenticated = "Login to access this file",
   toolTipTextFileDownload = "Click to download a copy of this file if you have been approved by dbGaP",
   iconFileDownload = "",
@@ -184,11 +39,21 @@ const DocumentDownload = ({
 
   const { Notification } = useGlobal();
   const showUnauthorizedNotification = () => {
+    const requestAccessLinkStyle = {
+      color: "#FFFFFF",
+      fontWeight: 600,
+      textDecoration: "underline",
+      fontSize: "16px",
+    };
     const customElem = (
       <span>
         You must be logged in and must already have been granted access to
         download a copy of this file.{" "}
-        <a className={classes.requestAccessLink} href="/#/request-access">
+        <a
+          className={classes.requestAccessLink}
+          href="/#/request-access"
+          style={requestAccessLinkStyle}
+        >
           Request access
         </a>{" "}
         through dbGaP to download this file.
@@ -198,30 +63,20 @@ const DocumentDownload = ({
     Notification.show(customElem, 6000, classes.alertStyles);
   };
 
-  /*
-  // Related to hasAccess()
-  const approvedACLs = currentUserACL.reduce(
-    (results, acl) => {
-      if (acl.accessStatus.toLowerCase() === 'approved') results.push(acl.armID);
-      return results;
-    },
-    [],
-  );
-*/
+  const showDownloadErrorNotification = () => {
+    const customElem = (
+      <span>
+        Unable to download this file. Please try again.
+        If the problem continues, contact support.
+      </span>
+    );
+
+    Notification.show(customElem, 6000, classes.alertStyles);
+  };
+
   const closeModal = () => {
     setShowModal(false);
   };
-
-  // const hasAccess = () => {
-  /*
-    if (role === 'admin') return true;
-
-    return requiredACLs.reduce(
-      (status, rACL) => approvedACLs.includes(rACL) || status, false,
-    );
-    */
-  //   return isSignedIn;
-  // };
 
   return (
     <>
@@ -244,7 +99,9 @@ const DocumentDownload = ({
                   setShowModal,
                   fileName,
                   fileFormat,
+                  fileSize,
                   showUnauthorizedNotification,
+                  showDownloadErrorNotification,
                   studyAccession,
                   idp,
                 })

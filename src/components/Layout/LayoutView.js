@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { withStyles, CssBaseline } from '@material-ui/core';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 import aboutPageRoutes from '../../bento/aboutPagesRoutes';
@@ -14,7 +14,6 @@ import StudyDetail from '../../pages/studyDetail/studyDetailController';
 import ParticipantDetail from '../../pages/participantDetail/participantDetailController';
 import GraphqlClient from '../GraphqlClient/GraphqlView';
 import GlobalSearchController from '../../pages/search/searchViewController';
-import Login from '../../pages/login';
 // import ProfileController from '../../pages/profile/profileController';
 import OverlayWindow from '../OverlayWindow/OverlayWindow';
 import AUTH_MIDDLEWARE_CONFIG from '../Auth/authMiddlewareConfig';
@@ -30,8 +29,11 @@ import useVisitedPageSync from '../../utils/useVisitedPageSync';
 import StudiesContainer from '../../pages/studies/studiesController';
 import DataModelNavigator from '../../pages/dmn';
 import SysInfo from '../../pages/sysinfo/sysinfo';
-import rasLogin from '../../pages/login/rasLoginView';
 import RasTestFilesView from '../../pages/rasTestFiles/RasTestFilesView';
+import rasLogin from '../../pages/login/rasLoginController';
+import { useGlobal } from '../Global/GlobalProvider';
+
+const LOGOUT_SUCCESS_STORAGE_KEY = 'showLogoutSuccess';
 
 const ScrollToTopComponent = () => {
   window.scrollTo(0, 0);
@@ -42,8 +44,33 @@ const ScrollToTopComponent = () => {
 const Layout = ({ classes, isSidebarOpened }) => {
   // Access control imports
   const { LoginRoute } = AuthenticationMiddlewareGenerator(AUTH_MIDDLEWARE_CONFIG);
+  const { Notification } = useGlobal();
   
   useVisitedPageSync();
+
+  useEffect(() => {
+    let shouldShowLogoutSuccess = false;
+
+    try {
+      shouldShowLogoutSuccess =
+        sessionStorage.getItem(LOGOUT_SUCCESS_STORAGE_KEY) === 'true';
+    } catch (error) {
+      console.warn('[RAS logout] Unable to read return notification flag', {
+        message: error && error.message,
+      });
+    }
+
+    if (shouldShowLogoutSuccess) {
+      try {
+        sessionStorage.removeItem(LOGOUT_SUCCESS_STORAGE_KEY);
+      } catch (error) {
+        console.warn('[RAS logout] Unable to clear return notification flag', {
+          message: error && error.message,
+        });
+      }
+      Notification.show('You have been logged out.', 2000);
+    }
+  }, [Notification]);
 
   return (
   <>

@@ -26,12 +26,6 @@ const App = () => {
                 return <NihLoginSuccess {...props} idp="ras" callbackPath="/api/auth/callback" />;
               }}
             />
-            <Route
-              path="/login"
-              render={(props) => {
-                return <NihLoginSuccess {...props} idp="dcf" callbackPath="/login" />;
-              }}
-            />
             <Route path="/" component={Layout} />
           </Switch>
         </BrowserRouter>

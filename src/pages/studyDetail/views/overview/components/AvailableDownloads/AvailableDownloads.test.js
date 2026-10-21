@@ -20,13 +20,14 @@ jest.mock("@material-ui/core", () => ({
 
 // Mock ZipDownloadView component
 jest.mock("./ZipDownloadView", () => {
-  return ({ buttonText, disabled, toolTipTextFileDownload, studyAccession }) => (
+  return ({ buttonText, disabled, toolTipTextFileDownload, studyAccession, fileSize }) => (
     <div
       data-testid="zip-download-view"
       data-button-text={buttonText}
       data-disabled={disabled}
       data-tooltip={toolTipTextFileDownload}
       data-study-accession={studyAccession}
+      data-file-size={fileSize}
     >
       {buttonText} {disabled ? "(disabled)" : "(enabled)"}{" "}
       {toolTipTextFileDownload}
@@ -92,6 +93,21 @@ describe("AvailableDownloads Component", () => {
   // Basic Rendering Tests
   // ========================================
   describe("Basic rendering", () => {
+    it("passes the raw byte size from ZIP metadata to the download button", () => {
+      const entry = createZipData("Variant Report");
+      entry.zip_files[0].data_file_size = 52428801;
+
+      renderComponent(["Variant Report"], [entry]);
+
+      expect(getButtons()[0].getAttribute("data-file-size")).toBe("52428801");
+    });
+
+    it("keeps missing ZIP size metadata unknown instead of defaulting to zero", () => {
+      renderComponent(["Variant Report"], [createZipData("Variant Report")]);
+
+      expect(getButtons()[0].hasAttribute("data-file-size")).toBe(false);
+    });
+
     it("should render all three buttons with Collection suffix", () => {
       const types = [
         "Variant Call File",
