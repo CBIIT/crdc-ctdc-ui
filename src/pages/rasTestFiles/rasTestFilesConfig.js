@@ -28,7 +28,7 @@ export const rasTestFilesTableConfig = {
       downloadDocument: true,
       documentDownloadProps: {
         fileSizeColumn: "data_file_size",
-        fileLocationColumn: "guid",
+        fileLocationColumn: "data_file_uuid",
         fileFormatColumn: "data_file_format",
         fileName: "file_name",
         studyAccessionColumn: "phs_consent",
