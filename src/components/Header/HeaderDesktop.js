@@ -33,7 +33,7 @@ const Header = () => {
   const path = useLocation().pathname;
   
   return (
-    <HeaderBanner role="banner">
+    <HeaderBanner>
       <HeaderContainer>
         <Logo />
         <div className="headerLowerContainer">

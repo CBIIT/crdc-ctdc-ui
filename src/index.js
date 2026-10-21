@@ -7,6 +7,8 @@ import { Provider } from 'react-redux';
 import store from './store';
 import client from './utils/graphqlClient';
 
+import 'devextreme/dist/css/dx.light.css';
+
 ReactDOM.render(
   <ApolloProvider client={client}>
       <Provider store={store}>

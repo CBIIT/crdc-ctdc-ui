@@ -19,6 +19,7 @@ export const CustomCellView = (props) => {
         caseId={props[documentDownloadProps.caseIdColumn]}
         fileFormat={props[documentDownloadProps.fileFormatColumn]}
         fileLocation={props[documentDownloadProps.fileLocationColumn]}
+        studyAccession={props[documentDownloadProps.studyAccessionColumn] || props.study_accession}
         {...documentDownloadProps}
         {...props}
         requiredACLs={props[dataField]}

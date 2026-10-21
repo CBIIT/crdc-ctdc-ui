@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import FooterData from '../../config/globalFooterData';
 import { Link } from 'react-router-dom';
 
-const FooterStyled = styled.footer`
+const FooterStyled = styled.div`
   background-color: #1B496E;
   border-top: 1px solid #6C727B;
   bottom: 0;
@@ -287,7 +287,7 @@ const FooterTablet = () => {
   };
   return (
     <>
-      <FooterStyled role="contentinfo">
+      <FooterStyled>
         <FooterContainer>
           <FooterLinksContainer>
             {
@@ -295,7 +295,7 @@ const FooterTablet = () => {
                 const linkkey = `link_${linkidx}`;
                 return (
                   <div className="footItem" key={linkkey}>
-                    <div className="footItemTitle">{linkItem.title}</div>
+                    <h2 className="footItemTitle">{linkItem.title}</h2>
                     {
                       linkItem.items.map((item, itemidx) => {
                         const itemkey = `item_${itemidx}`;
@@ -319,9 +319,9 @@ const FooterTablet = () => {
           </FooterLinksContainer>
           <FooterEmailSignupContainer onSubmit={handleSubmit} ref={emailForm} action="https://public.govdelivery.com/accounts/USNIHNCI/subscribers/qualify" method="post" target="_blank" id="signup" noValidate>
             <input type="hidden" name="topic_id" id="topic_id" value="USNIHNCI_223" aria-label="topic_id"/>
-            <div className="signUpTitle">
+            <h2 className="signUpTitle">
               Sign up for email updates
-            </div>
+            </h2>
             <div className={errorClass !== "" ? 'ErrorBorder' : null}>
               <div className="enterTitle">
                
