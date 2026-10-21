@@ -9,14 +9,14 @@ export const programDetailsColors = {
 };
 
 // --------------- GraphQL query - Retrieve a single program's details (CTDC-2069) --------------
-// PLACEHOLDER shape modeled on the agreed CTDC-2069 contract (see
-// /memories/repo/program-details-ctdc-2065.md): program_name (full descriptive name), program_short_name
-// (short code used in the route and as the bold header text), crdc_id, program_full_description,
-// program_external_url, plus the per-program studies list (each row links to Study Details). Returns a null
-// `program` for an unknown program_short_name (not an error) so the page can render a not-found state.
+// Shape matches the backend contract delivered in crdc-ctdc-backend PR #204 (not yet merged - see
+// /memories/repo/program-details-ctdc-2065.md): there is no singular by-name lookup field, only the list field
+// `getAllPrograms(program_short_name: [String])` - pass a 1-element array and read index 0 client-side. An
+// unknown program_short_name returns an empty array (not an error), which the controller still surfaces as
+// its existing not-found state.
 export const GET_PROGRAM_DETAIL_QUERY = gql`
-  query getProgramDetailQuery($programShortName: String!) {
-    program(program_short_name: $programShortName) {
+  query getProgramDetailQuery($programShortName: [String!]) {
+    getAllPrograms(program_short_name: $programShortName) {
       program_name
       program_short_name
       crdc_id

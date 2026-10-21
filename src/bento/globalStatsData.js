@@ -124,8 +124,6 @@ export const globalStatsData = [
     statIconAlt: 'Data Volume Stats Bar Icon',
   },
   {
-    // NOTE: statAPI 'numberOfPrograms' is not yet returned by GET_GLOBAL_STATS_DATA_QUERY below (depends on
-    // CTDC-2067); StatsView defaults missing values to 0 until the query is updated to request this field.
     statTitle: 'PROGRAM',
     type: 'field',
     statAPI: 'numberOfPrograms',
@@ -209,6 +207,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       data_file_type: $data_file_type
       data_file_format: $data_file_format
     ) {
+        numberOfPrograms
         numberOfStudies
         numberOfParticipants
         numberOfDiagnoses

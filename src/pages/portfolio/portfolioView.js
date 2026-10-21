@@ -8,9 +8,9 @@ import {
 } from '../../bento/portfolioData';
 
 const PortfolioView = ({ classes, programs, unaffiliatedStudies }) => {
-  const sortedPrograms = [...(programs || [])].sort(
-    (a, b) => (a.program_sort_order ?? 0) - (b.program_sort_order ?? 0),
-  );
+  // Order comes from the backend query (getAllPrograms order_by/sort_direction, see portfolioData.js) -
+  // there is no program_sort_order field to sort by client-side.
+  const sortedPrograms = programs || [];
   const isEmpty = sortedPrograms.length === 0 && unaffiliatedStudies.length === 0;
 
   return (

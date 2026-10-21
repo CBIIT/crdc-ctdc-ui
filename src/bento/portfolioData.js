@@ -51,20 +51,20 @@ export const initiativesCardContent = {
 export const initiativesCardPosition = 1;
 
 // --------------- GraphQL query - Retrieve program list (CTDC-2067) --------------
-// PLACEHOLDER shape modeled on the agreed CTDC-2067 contract (see /memories/repo/portfolio-page-ctdc-2064.md):
-// program_name, program_short_name, crdc_id, program_short_description, program_sort_order,
-// program_external_url, plus the per-program studies list (used for both the study count and the
-// identifiers needed by the Associated Studies filter). Field/root-name confirmed against CTDC-2067 AC#8's
-// published query contract once backend delivers it.
+// Shape matches the backend contract delivered in crdc-ctdc-backend PR #204 (not yet merged - see
+// /memories/repo/portfolio-page-ctdc-2064.md): root field is `getAllPrograms`, not `program`. There is no
+// program_sort_order field - server-side order comes from order_by/sort_direction (defaults to alphabetical
+// by program_short_name). study_count is also available directly if the `studies` sub-list ever becomes
+// unnecessary to fetch in full.
 export const GET_PORTFOLIO_PROGRAMS_QUERY = gql`
   query getPortfolioProgramsQuery {
-    program {
+    getAllPrograms {
       program_name
       program_short_name
       crdc_id
       program_short_description
-      program_sort_order
       program_external_url
+      study_count
       studies {
         study_short_name
         study_name
@@ -74,10 +74,12 @@ export const GET_PORTFOLIO_PROGRAMS_QUERY = gql`
 `;
 
 // --------------- GraphQL query - Retrieve unaffiliated studies (CTDC-2067 orphan-study query) --------------
-// PLACEHOLDER shape - reuses the same orphan-study query CTDC-2069 reuses for the no-program detail variant.
+// Shape matches PR #204: there is no dedicated `unaffiliatedStudies` query - orphan studies are the existing
+// `getAllStudies` query filtered by the new `study_has_program` arg. Reused verbatim by CTDC-2069's no-program
+// detail variant.
 export const GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY = gql`
   query getPortfolioUnaffiliatedStudiesQuery {
-    unaffiliatedStudies {
+    getAllStudies(study_has_program: ["has no program"]) {
       study_short_name
       study_name
     }

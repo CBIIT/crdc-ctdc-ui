@@ -7,9 +7,9 @@ import { GET_PROGRAM_DETAIL_QUERY } from '../../bento/programDetailsData';
 import { GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY } from '../../bento/portfolioData';
 import { mockPrograms, mockUnaffiliatedStudies } from '../../bento/portfolioMockData';
 
-// TEMPORARY scaffolding-preview flag - mirrors Portfolio's (CTDC-2064) approach while the live CTDC-2069
-// program-detail query 404s. Flip to false (and drop the portfolioMockData import) once the backend ships -
-// see /memories/repo/program-details-ctdc-2065.md.
+// TEMPORARY scaffolding-preview flag - mirrors Portfolio's (CTDC-2064) approach while crdc-ctdc-backend PR #204
+// (CTDC-2069) hasn't merged/deployed yet. Flip to false (and drop the portfolioMockData import) once it's live -
+// query shapes below already match that PR's contract, see /memories/repo/program-details-ctdc-2065.md.
 const USE_PROGRAM_DETAILS_MOCK_DATA = true;
 
 const ProgramDetailsController = ({ match }) => {
@@ -19,7 +19,7 @@ const ProgramDetailsController = ({ match }) => {
   const {
     loading: isProgramLoading, error: programError, data: programData,
   } = useQuery(GET_PROGRAM_DETAIL_QUERY, {
-    variables: { programShortName },
+    variables: { programShortName: programShortName ? [programShortName] : [] },
     skip: USE_PROGRAM_DETAILS_MOCK_DATA || isInitiatives,
   });
   const {
@@ -51,12 +51,13 @@ const ProgramDetailsController = ({ match }) => {
 
   if (isInitiatives) {
     return (
-      <ProgramDetailsView isInitiatives unaffiliatedStudies={unaffiliatedData?.unaffiliatedStudies || []} />
+      <ProgramDetailsView isInitiatives unaffiliatedStudies={unaffiliatedData?.getAllStudies || []} />
     );
   }
 
+  const program = programData?.getAllPrograms?.[0];
   return (
-    <ProgramDetailsView program={programData?.program} notFound={!programData?.program} />
+    <ProgramDetailsView program={program} notFound={!program} />
   );
 };
 

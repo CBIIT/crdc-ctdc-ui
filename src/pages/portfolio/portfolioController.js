@@ -9,8 +9,9 @@ import {
 } from '../../bento/portfolioData';
 import { mockPrograms, mockUnaffiliatedStudies } from '../../bento/portfolioMockData';
 
-// TEMPORARY scaffolding-preview flag - the live queries 404 until CTDC-2066/2067 ship. Flip to false (and
-// delete portfolioMockData.js) once the backend program/Initiatives queries are live.
+// TEMPORARY scaffolding-preview flag - the live queries 404 until crdc-ctdc-backend PR #204 (CTDC-2066/2067)
+// merges and deploys. Flip to false (and delete portfolioMockData.js) once it's live - query shapes below
+// already match that PR's contract, see /memories/repo/portfolio-page-ctdc-2064.md.
 const USE_PORTFOLIO_MOCK_DATA = true;
 
 const PortfolioController = () => {
@@ -40,8 +41,8 @@ const PortfolioController = () => {
 
   return (
     <PortfolioView
-      programs={programsData?.program || []}
-      unaffiliatedStudies={unaffiliatedData?.unaffiliatedStudies || []}
+      programs={programsData?.getAllPrograms || []}
+      unaffiliatedStudies={unaffiliatedData?.getAllStudies || []}
     />
   );
 };
