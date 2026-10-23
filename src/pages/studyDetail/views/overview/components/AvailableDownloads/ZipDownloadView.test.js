@@ -1,13 +1,15 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import { renderToStaticMarkup } from "react-dom/server";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { createStore } from "redux";
 import { MemoryRouter } from "react-router-dom";
 import ZipDownloadView from "./ZipDownloadView";
-import { fetchFileToDownload } from "../../../../../../components/DocumentDownload/DocumentDownloadView";
+import { fetchFileToDownload } from "../../../../../../components/DocumentDownload/downloadUtils";
 
 const mockHistoryPush = jest.fn();
+const mockNotificationShow = jest.fn();
 jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useHistory: () => ({ push: mockHistoryPush }),
@@ -35,7 +37,7 @@ jest.mock("../../../../../../components/Authentication", () => ({
 }));
 
 jest.mock(
-  "../../../../../../components/DocumentDownload/DocumentDownloadView",
+  "../../../../../../components/DocumentDownload/downloadUtils",
   () => ({
     fetchFileToDownload: jest.fn(),
   }),
@@ -43,18 +45,19 @@ jest.mock(
 
 jest.mock("../../../../../../components/Global/GlobalProvider", () => ({
   useGlobal: () => ({
-    Notification: { show: jest.fn() },
+    Notification: { show: mockNotificationShow },
   }),
 }));
 
 // Minimal Redux store
-const createMockStore = (isSignedIn = false) =>
+const createMockStore = (isSignedIn = false, loginOverrides = {}) =>
   createStore(() => ({
-    login: { isSignedIn },
+    login: { isSignedIn, ...loginOverrides },
   }));
 
 const defaultProps = {
   fileFormat: "zip",
+  fileSize: 52428801,
   fileLocation: "file-uuid-123",
   fileName: "test_file.zip",
   toolTipTextFileDownload: "Click to download",
@@ -80,8 +83,8 @@ afterEach(() => {
   container = null;
 });
 
-const renderComponent = (props = {}, isSignedIn = false) => {
-  const store = createMockStore(isSignedIn);
+const renderComponent = (props = {}, isSignedIn = false, loginOverrides = {}) => {
+  const store = createMockStore(isSignedIn, loginOverrides);
   act(() => {
     ReactDOM.render(
       <Provider store={store}>
@@ -144,25 +147,81 @@ describe("ZipDownloadView", () => {
 
   describe("when user is signed in and has access", () => {
     it("renders the button as enabled", () => {
-      renderComponent({ disabled: false }, true);
+      renderComponent({ disabled: false }, true, { IDP: "ras" });
       const button = container.querySelector("button");
       expect(button.disabled).toBe(false);
     });
 
     it("calls fetchFileToDownload on click", () => {
-      renderComponent({ disabled: false }, true);
+      renderComponent({ disabled: false }, true, { IDP: "ras" });
       const button = container.querySelector("button");
       act(() => {
         button.click();
       });
+      expect(fetchFileToDownload).toHaveBeenCalledWith({
+        fileId: "file-uuid-123",
+        signOut: expect.any(Function),
+        setShowModal: expect.any(Function),
+        fileName: "test_file.zip",
+        fileFormat: "zip",
+        fileSize: 52428801,
+        showUnauthorizedNotification: expect.any(Function),
+        showDownloadErrorNotification: expect.any(Function),
+        studyAccession: "",
+        idp: "ras",
+      });
+    });
+
+    it("passes a missing file size to the helper without defaulting to zero", () => {
+      renderComponent({ fileSize: undefined }, true, { IDP: "ras" });
+      act(() => {
+        container.querySelector("button").click();
+      });
+
       expect(fetchFileToDownload).toHaveBeenCalledWith(
-        "file-uuid-123",
-        expect.any(Function),
-        expect.any(Function),
-        "test_file.zip",
-        "zip",
-        expect.any(Function),
+        expect.objectContaining({ fileSize: undefined }),
       );
+    });
+
+    it("uses the default file path for non-RAS logins", () => {
+      renderComponent({ disabled: false }, true, { IDP: "dcf" });
+      const button = container.querySelector("button");
+      act(() => {
+        button.click();
+      });
+      expect(fetchFileToDownload).toHaveBeenCalledWith({
+        fileId: "file-uuid-123",
+        signOut: expect.any(Function),
+        setShowModal: expect.any(Function),
+        fileName: "test_file.zip",
+        fileFormat: "zip",
+        fileSize: 52428801,
+        showUnauthorizedNotification: expect.any(Function),
+        showDownloadErrorNotification: expect.any(Function),
+        studyAccession: "",
+        idp: "",
+      });
+    });
+
+    it("shows the general download message using the access notification style and duration", () => {
+      renderComponent({ disabled: false }, true, { IDP: "ras" });
+      act(() => {
+        container.querySelector("button").click();
+      });
+      const { showUnauthorizedNotification, showDownloadErrorNotification } =
+        fetchFileToDownload.mock.calls[0][0];
+
+      showUnauthorizedNotification();
+      showDownloadErrorNotification();
+
+      expect(mockNotificationShow).toHaveBeenCalledTimes(2);
+      const [message, duration, alertClass] = mockNotificationShow.mock.calls[1];
+      expect(renderToStaticMarkup(message)).toBe(
+        "<span>Unable to download this file. Please try again. If the problem continues, contact support.</span>",
+      );
+      expect(duration).toBe(6000);
+      expect(alertClass).toEqual(expect.any(String));
+      expect(alertClass).toBe(mockNotificationShow.mock.calls[0][2]);
     });
 
     it("displays the correct buttonText", () => {

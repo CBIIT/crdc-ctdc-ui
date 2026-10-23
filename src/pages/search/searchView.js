@@ -101,7 +101,7 @@ function searchView(props) {
         history.push(`/request?redirect=/search/${searchText}`);
         return;
       }
-      history.push(`/login?redirect=/search/${searchText}`);
+      history.push(`/user/login?redirect=/search/${searchText}`);
     }
   };
 

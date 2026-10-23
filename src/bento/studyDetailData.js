@@ -92,6 +92,7 @@ export const GET_STUDY_FILES_QUERY = gql`
       data_file_format
       data_file_size
       data_file_uuid
+      study_accession
     }
   }
 `;
@@ -204,6 +205,7 @@ export const studyFilesTableConfig = {
         fileLocationColumn: "data_file_uuid",
         fileFormatColumn: "data_file_format",
         fileName: "data_file_name",
+        studyAccessionColumn: "study_accession",
         toolTipTextFileDownload: "Click to download a copy of this file if you have been approved by dbGaP",
         iconFileDownload: downloadSuccess,
         iconUnauthenticated: downloadLock,
