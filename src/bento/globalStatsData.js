@@ -138,11 +138,11 @@ export const globalStatsData = [
     statIconAlt: 'Diagnoses Stats Bar Icon',
   },
   {
-    statTitle: 'TARGETED THERAPIES',
+    statTitle: 'THERAPIES',
     type: 'field',
-    statAPI: 'numberOfTargetedTherapies',
+    statAPI: 'numberOfTherapies',
     statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExploreStatsBarTargetedTherapiesIcon.svg',
-    statIconAlt: 'Targeted Therapies Stats Bar Icon',
+    statIconAlt: 'Therapies Stats Bar Icon',
   },
   {
     statTitle: 'BIOSPECIMENS',
@@ -173,7 +173,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
-    $targeted_therapy_string: [String], # $targeted_therapy: [String],
+    $therapy_string: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -196,7 +196,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy_string: $targeted_therapy_string # targeted_therapy: $targeted_therapy
+      therapy_string: $therapy_string
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -208,7 +208,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
         numberOfStudies
         numberOfParticipants
         numberOfDiagnoses
-        numberOfTargetedTherapies
+        numberOfTherapies
         numberOfSpecimens
         numberOfFiles
         numberOfStudyFiles
@@ -224,7 +224,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy_string: $targeted_therapy_string
+      therapy_string: $therapy_string
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -247,7 +247,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy_string: $targeted_therapy_string
+      therapy_string: $therapy_string
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category

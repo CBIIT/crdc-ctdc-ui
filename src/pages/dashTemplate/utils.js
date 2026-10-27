@@ -6,9 +6,9 @@
 const extractGroupValues = (data) => data.map(item => item.group);
 
 /**
- * Updates filter state based on targeted therapy combinations.
+ * Updates filter state based on therapy name combinations.
  *
- * Generates valid combinations for active filters in a specific category (targeted_therapy), 
+ * Generates valid combinations for active filters in a specific category (therapy_string),
  * based on allowed combinations from possible combinations.
  * 
  * @param {Object} activeFilters - Object of current filters with keys representing categories.
@@ -74,7 +74,7 @@ function generateValidCombinations(strings, validCombinations, joinByChar = '|')
   });
 
   // Sort the input strings alphabetically for consistency
-  strings.sort();
+  strings = [...strings].sort();
 
   // Recursive helper to generate and validate combinations
   function combine(current, remaining) {
@@ -124,7 +124,7 @@ function generateValidCombinations(strings, validCombinations, joinByChar = '|')
  *   { "group": "Encorafenib + Cetuximab", "subjects": 1 }
  * ]
  */
-const updateTargetedTherapyFacetData = (searchParticipants, dataApiKey) => {
+const updateTherapyFacetData = (searchParticipants, dataApiKey) => {
   const facetItemData = searchParticipants[dataApiKey];
   const therapyCounts = new Map();
 
@@ -151,6 +151,6 @@ const applySubstitutions = (str, substitutionRules) => {
 
 export {
   generateValidTherapyCombinations,
-  updateTargetedTherapyFacetData,
+  updateTherapyFacetData,
   applySubstitutions
 }

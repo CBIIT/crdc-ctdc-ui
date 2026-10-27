@@ -1,132 +1,128 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { useApolloClient } from '@apollo/client';
 import { connect } from 'react-redux';
-import { CircularProgress } from '@material-ui/core';
+import { Button, CircularProgress, LinearProgress } from '@material-ui/core';
 import { getFilters } from '@bento-core/facet-filter';
 import DashTemplateView from './DashTemplateView';
-import { DASHBOARD_QUERY_NEW, TARGETED_THERAPY_QUERY } from '../../bento/dashboardTabData';
-import { generateValidTherapyCombinations, updateTargetedTherapyFacetData } from './utils';
+import { DASHBOARD_QUERY_NEW, THERAPY_QUERY } from '../../bento/dashboardTabData';
+import { generateValidTherapyCombinations, updateTherapyFacetData } from './utils';
 
 export const buildParticipantIdFilter = (localFindUpload, localFindAutocomplete) => [...new Set([
   ...(localFindUpload || []).map((obj) => obj.subject_id),
   ...(localFindAutocomplete || []).map((obj) => obj.title),
 ])];
 
-const getDashData = (states) => {
-  const {
-    filterState,
-    localFindUpload, localFindAutocomplete,
-  } = states;
+const THERAPY_FILTER = 'therapy_string';
+const VOCABULARY_FIELD = 'filterParticipantCountBySingleTherapyCombinationForFacet';
 
+const useDashData = ({ filterState, localFindUpload, localFindAutocomplete }) => {
   const client = useApolloClient();
+  const [vocabulary, setVocabulary] = useState(null);
+  const [dashboard, setDashboard] = useState(null);
+  const [error, setError] = useState(null);
+  const [retryCount, setRetryCount] = useState(0);
 
-  const [dashData, setDashData] = useState(null)
-  const [initialDashData, setInitialDashData] = useState(null);
-  const [hasLoadedInitialData, setHasLoadedInitialData] = useState(false);
+  const baseFilters = useMemo(() => ({
+    ...getFilters(filterState),
+    participant_id: buildParticipantIdFilter(localFindUpload, localFindAutocomplete),
+  }), [filterState, localFindUpload, localFindAutocomplete]);
+  const requestKey = JSON.stringify(baseFilters);
+  // This aggregation excludes the name filter itself. Other filters change its vocabulary.
+  const vocabularyKey = JSON.stringify(Object.fromEntries(
+    Object.entries(baseFilters).filter(([key]) => key !== THERAPY_FILTER),
+  ));
+  const vocabularyReady = vocabulary?.key === vocabularyKey;
 
-  const targeted_therapy_datafield = "targeted_therapy_string";
+  useEffect(() => {
+    if (vocabularyReady) return undefined;
+    let active = true;
+    setError(null);
+    client.query({ query: THERAPY_QUERY, variables: baseFilters })
+      .then(({ data }) => {
+        const buckets = data?.searchParticipants?.[VOCABULARY_FIELD];
+        if (!Array.isArray(buckets)) throw new Error('Missing Therapy combination vocabulary');
+        if (active) setVocabulary({ key: vocabularyKey, buckets });
+      })
+      .catch(() => {
+        if (active) setError({ key: requestKey, message: 'Unable to load Therapy filters.' });
+      });
+    return () => { active = false; };
+  }, [client, baseFilters, vocabularyKey, vocabularyReady, requestKey, retryCount]);
 
-  // Compute activeFilters, ensuring it updates only when dependencies change
   const activeFilters = useMemo(() => {
-    const baseFilters = {
-      ...getFilters(filterState),
-      // Local find: merge uploaded participant IDs and autocomplete selections
-      participant_id: buildParticipantIdFilter(localFindUpload, localFindAutocomplete),
+    if (!vocabularyReady || !baseFilters[THERAPY_FILTER]) return baseFilters;
+    return {
+      ...baseFilters,
+      [THERAPY_FILTER]: generateValidTherapyCombinations(
+        baseFilters, THERAPY_FILTER, vocabulary.buckets,
+      ),
     };
+  }, [baseFilters, vocabulary, vocabularyReady]);
 
-    const sourceData = dashData
-      ? dashData.filterParticipantCountBySingleTargetedTherapyCombinationForFacet
-      : initialDashData && initialDashData.filterParticipantCountBySingleTargetedTherapyCombinationForFacet;
-
-    if (baseFilters[targeted_therapy_datafield] && sourceData) {
-      baseFilters[targeted_therapy_datafield] = generateValidTherapyCombinations(
-        baseFilters,
-        targeted_therapy_datafield,
-        sourceData
-      );
-    }
-
-    return baseFilters;
-  }, [filterState, localFindUpload, localFindAutocomplete, initialDashData, dashData]);
-
-  // Fetch initial targeted therapy data only once
+  // Restored names are expanded only after the current vocabulary is available.
   useEffect(() => {
-    // if targeted theray is empty skip this call and go strail to the second query: activeFilters[targeted_therapy_datafield]
-    if (!hasLoadedInitialData) {
-      const fetchInitialData = async () => {
-        try {
-          const result = await client.query({
-            query: TARGETED_THERAPY_QUERY,
-            variables: activeFilters,
-          });
-          if (result.data && result.data.searchParticipants) {
-            setInitialDashData(result.data.searchParticipants);
-            setHasLoadedInitialData(true);
-          }
-        } catch (error) {
-          console.error("Error fetching initial targeted therapy data:", error);
-        }
-      };
-
-      fetchInitialData();
-    }
-  }, [filterState, localFindUpload, localFindAutocomplete]);
-
-  // Load dashboard data after initial targeted therapy data is loaded and activeFilters is generated
-  useEffect(() => {
-    if (!hasLoadedInitialData) return;
-
-    const fetchDashData = async () => {
-      try {
-        const result = await client.query({
-          query: DASHBOARD_QUERY_NEW,
-          variables: {
-            ...activeFilters,
-            files_association: ['biospecimen', 'participant'],
-            study_association: ['study'],
+    if (!vocabularyReady) return undefined;
+    let active = true;
+    setError(null);
+    client.query({
+      query: DASHBOARD_QUERY_NEW,
+      variables: {
+        ...activeFilters,
+        files_association: ['biospecimen', 'participant'],
+        study_association: ['study'],
+      },
+    }).then(({ data }) => {
+      const search = data?.searchParticipants;
+      if (!search || !Array.isArray(search.participantCountBySingleTherapyCombination)
+        || !Array.isArray(search.filterParticipantCountBySingleTherapyCombination)) {
+        throw new Error('Missing Therapy dashboard data');
+      }
+      if (active) {
+        setDashboard({
+          key: requestKey,
+          filters: activeFilters,
+          data: {
+            ...search,
+            numberOfFiles: data.filesTabCount?.numberOfFiles ?? search.numberOfFiles,
+            numberOfStudyFiles: data.studyFilesTabCount?.numberOfStudyFiles ?? search.numberOfStudyFiles,
+            ...updateTherapyFacetData(search, 'participantCountBySingleTherapyCombination'),
+            ...updateTherapyFacetData(search, 'filterParticipantCountBySingleTherapyCombination'),
           },
         });
-
-        if (result.data && result.data.searchParticipants) {
-          const transformData = (key) => updateTargetedTherapyFacetData(result.data.searchParticipants, key);
-          
-          const targetedTherapyCombination = transformData("participantCountBySingleTargetedTherapyCombination");
-          const filterTargetedTherapyCombination = transformData("filterParticipantCountBySingleTargetedTherapyCombination");
-
-          setDashData({
-            ...result.data.searchParticipants,
-            numberOfFiles: result.data?.filesTabCount?.numberOfFiles ?? result.data.searchParticipants.numberOfFiles,
-            numberOfStudyFiles: result.data?.studyFilesTabCount?.numberOfStudyFiles ?? result.data.searchParticipants.numberOfStudyFiles,
-            ...targetedTherapyCombination,
-            ...filterTargetedTherapyCombination,
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching dashboard data:", error);
       }
-    };
+    }).catch(() => {
+      if (active) setError({ key: requestKey, message: 'Unable to load Explore results.' });
+    });
+    return () => { active = false; };
+  }, [client, activeFilters, vocabularyReady, requestKey, retryCount]);
 
-    fetchDashData();
-  }, [hasLoadedInitialData, filterState, localFindUpload, localFindAutocomplete]);
-
-return { dashData, activeFilters };
-
+  return {
+    dashData: dashboard?.data,
+    // Keep table requests and counts on the last completed cohort during refresh.
+    activeFilters: dashboard?.filters || activeFilters,
+    loading: !vocabularyReady || dashboard?.key !== requestKey,
+    error: error?.key === requestKey ? error.message : null,
+    retry: () => setRetryCount((count) => count + 1),
+  };
 };
 
-const DashTemplateController = ((props) => {
-  const { dashData, activeFilters } = getDashData(props);
-  if (!dashData) {
-    return (<CircularProgress />);
-  }
-
-  return (
-    <DashTemplateView
-      {...props}
-      dashData={dashData}
-      activeFilters={activeFilters}
-    />
+const DashTemplateController = (props) => {
+  const { dashData, activeFilters, loading, error, retry } = useDashData(props);
+  const errorBanner = error && (
+    <div role="alert">
+      <p>{error}</p>
+      <Button onClick={retry}>Retry</Button>
+    </div>
   );
-});
+  if (!dashData) return errorBanner || <CircularProgress />;
+  return (
+    <>
+      {errorBanner}
+      {loading && !error && <LinearProgress aria-label="Updating Explore results" />}
+      <DashTemplateView {...props} dashData={dashData} activeFilters={activeFilters} />
+    </>
+  );
+};
 
 const mapStateToProps = (state) => ({
   filterState: state.statusReducer.filterState,

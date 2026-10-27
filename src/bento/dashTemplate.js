@@ -140,10 +140,10 @@ export const facetsConfig = [
   },
   {
     section: CASES,
-    label: 'Targeted Therapy',
-    apiPath: 'participantCountBySingleTargetedTherapyCombination',
-    apiForFiltering: 'filterParticipantCountBySingleTargetedTherapyCombination',
-    datafield: 'targeted_therapy_string',
+    label: 'Therapy',
+    apiPath: 'participantCountBySingleTherapyCombination',
+    apiForFiltering: 'filterParticipantCountBySingleTherapyCombination',
+    datafield: 'therapy_string',
     field: GROUP,
     count: COUNT,
     type: InputTypes.CHECKBOX,
@@ -275,9 +275,9 @@ export const widgetConfig = [
   },
   {
     type: 'donut',
-    title: 'Targeted Therapy',
+    title: 'Therapy',
     sliceTitle: "Participants",
-    dataName: 'participantCountByTargetedTherapy',
+    dataName: 'participantCountByTherapy',
   },
   {
     type: 'sunburst',
