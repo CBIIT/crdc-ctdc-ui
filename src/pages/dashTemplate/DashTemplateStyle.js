@@ -9,7 +9,7 @@ export default () => ({
     padding: '0 32px',
   },
   sideBar: {
-    width: '250px',
+    width: '300px',
     maxHeight: '1300px',
     overflowX: 'hidden',
     backgroundColor: 'transparent',
@@ -18,7 +18,7 @@ export default () => ({
     zIndex: '99',
   },
   rightContent: {
-    width: 'calc(100% - 250px)',
+    width: 'calc(100% - 300px)',
     position: 'relative',
     borderRight: 'thin solid #B1B1B1',
     borderLeft: 'thin solid #B1B1B1',
