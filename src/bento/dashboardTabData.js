@@ -467,8 +467,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
-    # $targeted_therapy: [String],
-    $targeted_therapy_string: [String],
+    $therapy_name: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -492,8 +491,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      # targeted_therapy: $targeted_therapy
-      targeted_therapy_string: $targeted_therapy_string
+      therapy_name: $therapy_name
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -517,9 +515,12 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       race,
       ethnicity,
       carcinogen_exposure,
-      # targeted_therapy
-      targeted_therapy_string
-      best_response_to_targeted_therapy
+      therapy_name
+      therapy_type
+      therapy_category
+      therapy_string
+      current_response_to_therapy
+      best_response_to_therapy
 
       study_short_name
       study_id
@@ -1338,8 +1339,8 @@ export const tabContainers = [
         removeSquareBrackets: true, // Flag to indicate if square brackets should be removed
       },
       {
-        dataField: 'targeted_therapy_string',
-        header: 'Targeted Therapy',
+        dataField: 'therapy_string',
+        header: 'Therapy',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
