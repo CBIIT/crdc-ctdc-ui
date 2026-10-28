@@ -1,14 +1,36 @@
 import { THERAPY_COMBINATION_SEPARATOR } from '../../bento/siteWideConfig';
 
 /**
- * Extracts the `group` values from an array of data objects.
- * @param {Object[]} data - Array of objects containing `group` property.
- * @return {string[]} - Array of group values.
+ * Extracts the backend combination strings from aggregation buckets.
+ * Keeps the original order and empty-string values; counts are not needed here.
+ *
+ * Parameters:
+ * @param {Object[]} data - Aggregation buckets with a `group` string.
+ *
+ * Returns:
+ * @return {string[]} - The `group` values used as the combination vocabulary.
+ *
+ * Example:
+ *   Input: [{ group: 'A|B', subjects: 3 }, { group: '', subjects: 2 }]
+ *   Output: ['A|B', '']
  */
 const extractGroupValues = (data) => data.map(item => item.group);
 
-// Reject an invalid separator rather than splitting a name into characters or
-// silently changing the encoding. Keep nonblank separators literal (no trimming).
+/**
+ * Validates the separator before generating or splitting combination strings.
+ * A valid separator is used literally, including any surrounding spaces.
+ *
+ * Parameters:
+ * @param {string} separator - Separator agreed with the backend/index encoding.
+ *
+ * Returns:
+ * @return {void} - Returns normally when the separator is valid.
+ * @throws {Error} - If the separator is empty, whitespace-only, or not a string.
+ *
+ * Example:
+ *   validateSeparator('~');  // Valid; combinations may use 'A~B'.
+ *   validateSeparator('');   // Throws instead of splitting names into characters.
+ */
 const validateSeparator = (separator) => {
   if (typeof separator !== 'string' || separator.trim().length === 0) {
     throw new Error('THERAPY_COMBINATION_SEPARATOR must be a non-empty, non-whitespace string.');
@@ -16,15 +38,34 @@ const validateSeparator = (separator) => {
 };
 
 /**
- * Expands selected individual names into backend-supported complete combinations.
- * A alone must not match A+B. Selecting A and B admits A, B, and their combination
- * only if that combination exists in the current backend vocabulary.
+ * Converts selected individual therapy names into terms for `therapy_string`.
+ * Uses the backend vocabulary to include only supported complete combinations.
  *
- * Both this helper and facet reconstruction default to siteWideConfig's separator.
- * An explicit separator lets tests exercise a different backend encoding.
- * Example with '~': selected ['A', 'B'] and vocabulary [{ group: 'A~B' }]
- * produces ['A', 'A~B', 'B']; stored selections remain ['A', 'B'].
- * A selected empty string [''] remains ['']; no selection [] remains [].
+ * This function:
+ *   - Keeps selected names as singleton terms, even if absent from the vocabulary.
+ *   - Adds a combination only when all its names are selected and it exists in
+ *     the vocabulary. Selecting A alone does not include the A+B combination.
+ *   - Preserves [''] (the selected "No value" option) separately from [] (no filter).
+ *   - Leaves Redux/saved selections unchanged; only API request terms are expanded.
+ *
+ * Parameters:
+ * @param {Object} activeFilters - API filters containing arrays of selected values.
+ * @param {string} filterApiKey - Selected-name field, normally 'therapy_string'.
+ * @param {Object[]} possibleCombinations - Backend buckets containing `group` strings.
+ * @param {string} [separator=THERAPY_COMBINATION_SEPARATOR] - Literal separator from
+ *   siteWideConfig by default; must match the backend vocabulary encoding.
+ *
+ * Returns:
+ * @return {string[]} - Sorted request terms, including an explicitly selected ''.
+ *   Existing duplicate singleton terms may remain; the backend terms filter treats
+ *   them equivalently. Therapy Type/Category values are not processed by this helper.
+ * @throws {Error} - If the configured or explicitly supplied separator is invalid.
+ *
+ * Example (separator '~'):
+ *   activeFilters: { therapy_string: ['B', 'A'] }
+ *   possibleCombinations: [{ group: 'A~B', subjects: 3 }]
+ *   Output: ['A', 'A~B', 'B']
+ *   Saved selections remain ['B', 'A'].
  */
 const generateValidTherapyCombinations = (
   activeFilters, filterApiKey, possibleCombinations, separator = THERAPY_COMBINATION_SEPARATOR,
@@ -35,12 +76,31 @@ const generateValidTherapyCombinations = (
 };
 
 /**
- * Keeps selected singleton names and adds only supported complete combinations.
- * Prefix checking, splitting, and joining must all use the same literal separator.
- * For ['A', 'B', ''] and vocabulary ['A|B'], using '|' returns
- * ['', 'A', 'A|B', 'B']. Names outside that vocabulary are still retained as
- * singletons, preserving the existing filtering behavior. Existing duplicate
- * terms are left unchanged by this separator refactor.
+ * Builds supported combinations from the selected therapy names.
+ *
+ * This function:
+ *   - Copies and sorts selected names to match the backend combination order.
+ *   - Builds vocabulary prefixes so recursion can stop exploring unsupported paths.
+ *   - Splits prefixes and joins selected names using the same literal separator.
+ *   - Keeps selected singleton names and adds complete vocabulary matches.
+ *   - Restores an explicitly selected empty string at the start of the result.
+ *
+ * Parameters:
+ * @param {string[]} strings - Selected individual names; may include ''.
+ * @param {string[]} validCombinations - Supported strings extracted from the backend.
+ * @param {string} joinByChar - Separator already validated by the calling helper.
+ *
+ * Returns:
+ * @return {string[]} - Sorted request terms without changing either input array.
+ *   Singleton terms may appear twice when also found in the vocabulary; this keeps
+ *   the existing request behavior. Unsupported combinations are never added.
+ *
+ * Example:
+ *   strings: ['B', 'A', '']
+ *   validCombinations: ['A|B', 'A|B|C']
+ *   joinByChar: '|'
+ *   Output: ['', 'A', 'A|B', 'B']
+ *   'A|B|C' is excluded because C was not selected.
  */
 function generateValidCombinations(strings, validCombinations, joinByChar) {
   let result = [];
@@ -102,23 +162,34 @@ function generateValidCombinations(strings, validCombinations, joinByChar) {
 }
 
 /**
- * Aggregates therapy data by combining entries with multiple values in `group`
- * and summing the `subjects` count for each therapy.
- * 
- * @param {Object} searchParticipants - Data object containing facet data by `dataApiKey`.
- * @param {string} dataApiKey - Key for accessing the combination buckets.
- * @param {string} separator - Literal backend separator; defaults to siteWideConfig.
- * @return {Object} - Object with `dataApiKey` and aggregated therapy data.
- * 
- * Example:
- * Input: [
- *   { "group": "Atezolizumab", "subjects": 13 },
- *   { "group": "Atezolizumab|Encorafenib + Cetuximab", "subjects": 1 }
- * ]
- * Output: [
- *   { "group": "Atezolizumab", "subjects": 14 },
- *   { "group": "Encorafenib + Cetuximab", "subjects": 1 }
- * ]
+ * Reconstructs individual Therapy facet options from backend combination buckets.
+ * Each name in a combination receives that bucket's `subjects` count. Counts for
+ * the same name across buckets are summed, while the original buckets stay unchanged.
+ * An empty `group` remains an empty option for the facet's "No value" label.
+ *
+ * Parameters:
+ * @param {Object} searchParticipants - API data containing combination buckets.
+ * @param {string} dataApiKey - Property holding the bucket array to reconstruct.
+ * @param {string} [separator=THERAPY_COMBINATION_SEPARATOR] - Literal backend separator;
+ *   defaults to the same siteWideConfig setting used for request combinations.
+ *
+ * Returns:
+ * @return {Object} - An object containing only `dataApiKey`, with per-name buckets.
+ *   An empty input array produces an empty output array. Names are not deduplicated
+ *   within a raw combination; each occurrence contributes the bucket count.
+ * @throws {Error} - If the configured or explicitly supplied separator is invalid.
+ *
+ * Example (dataApiKey 'buckets', separator '|'):
+ *   Input: { buckets: [
+ *     { group: 'Atezolizumab', subjects: 13 },
+ *     { group: 'Atezolizumab|Encorafenib + Cetuximab', subjects: 1 },
+ *     { group: '', subjects: 2 }
+ *   ] }
+ *   Output: { buckets: [
+ *     { group: 'Atezolizumab', subjects: 14 },
+ *     { group: 'Encorafenib + Cetuximab', subjects: 1 },
+ *     { group: '', subjects: 2 }
+ *   ] }
  */
 const updateTherapyFacetData = (
   searchParticipants, dataApiKey, separator = THERAPY_COMBINATION_SEPARATOR,
@@ -139,6 +210,23 @@ const updateTherapyFacetData = (
   return { [dataApiKey]: newResult };
 };
 
+/**
+ * Applies text replacement rules in order, replacing every match for each rule.
+ * Later rules operate on the result of earlier rules.
+ *
+ * Parameters:
+ * @param {string} str - Original text to format.
+ * @param {Object[]} substitutionRules - Rules with `replace` and `with` values
+ *   accepted by String.replaceAll (a RegExp must use the global flag).
+ *
+ * Returns:
+ * @return {string} - Text after all replacements; the original string is unchanged.
+ *
+ * Example:
+ *   str: 'A_B_C'
+ *   substitutionRules: [{ replace: '_', with: ', ' }]
+ *   Output: 'A, B, C'
+ */
 const applySubstitutions = (str, substitutionRules) => {
   substitutionRules.forEach(rule => {
     const { replace, with: replaceWith } = rule;
