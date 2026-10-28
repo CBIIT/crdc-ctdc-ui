@@ -45,7 +45,7 @@ const defaultQuery = `
     $race: [String], 
     $ethnicity: [String],
     $carcinogen_exposure: [String], 
-    # Therapy uses exact combination strings supplied by the backend, e.g. "A|B".
+    # Therapy uses exact combination strings supplied by the backend.
     # Explore generates these combinations from individual name selections.
     # Type and Category each match any selected value.
     $therapy_string: [String],

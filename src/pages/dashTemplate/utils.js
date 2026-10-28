@@ -1,3 +1,5 @@
+import { THERAPY_COMBINATION_SEPARATOR } from '../../bento/siteWideConfig';
+
 /**
  * Extracts the `group` values from an array of data objects.
  * @param {Object[]} data - Array of objects containing `group` property.
@@ -5,49 +7,42 @@
  */
 const extractGroupValues = (data) => data.map(item => item.group);
 
-/**
- * Updates filter state based on therapy name combinations.
- *
- * Generates valid combinations for active filters in a specific category (therapy_string),
- * based on allowed combinations from possible combinations.
- * 
- * @param {Object} activeFilters - Object of current filters with keys representing categories.
- * @param {string} filterApiKey - Key to access the specific filter category within `activeFilters`.
- * @param {Object[]} possibleCombinations - List of valid combinations, each with a `group` property.
- * @return {string[]} - Array of valid therapy combinations.
- */
-const generateValidTherapyCombinations = (activeFilters, filterApiKey, possibleCombinations) => {
-  const validCombinations = extractGroupValues(possibleCombinations)
-
-  if (validCombinations) return generateValidCombinations(activeFilters[filterApiKey], validCombinations,  "|")
-
-  return [];
-}
+// Reject an invalid separator rather than splitting a name into characters or
+// silently changing the encoding. Keep nonblank separators literal (no trimming).
+const validateSeparator = (separator) => {
+  if (typeof separator !== 'string' || separator.trim().length === 0) {
+    throw new Error('THERAPY_COMBINATION_SEPARATOR must be a non-empty, non-whitespace string.');
+  }
+};
 
 /**
- * Generates valid combinations of input strings based on specified valid combinations.
+ * Expands selected individual names into backend-supported complete combinations.
+ * A alone must not match A+B. Selecting A and B admits A, B, and their combination
+ * only if that combination exists in the current backend vocabulary.
  *
- * This function:
- *   - Generates combinations of input strings.
- *   - Validates each combination against a predefined list of allowed combinations.
- *   - Includes an empty string ("") in the result if it was present in the input list.
- *
- * Parameters:
- * @param {string[]} strings - The input strings to combine, e.g., ["A", "B", "C"].
- * @param {string[]} validCombinations - The allowed combinations to match against, e.g., ["A|B", "B|C"].
- * @param {string} joinByChar - Separator for combining elements (default is '|').
- *
- * Returns:
- * @return {string[]} - Sorted array of unique, valid combinations based on input strings and allowed combinations.
- *                      Includes an empty string at the start if it was in the input.
- *
- * Example:
- *    const inputStrings = ["A", "B", "C", ""];
- *    const validCombinations = ["A|B", "B|C", ""];
- *    generateValidCombinations(inputStrings, validCombinations); 
- *    Output: ["", "A|B", "B|C"]
+ * Both this helper and facet reconstruction default to siteWideConfig's separator.
+ * An explicit separator lets tests exercise a different backend encoding.
+ * Example with '~': selected ['A', 'B'] and vocabulary [{ group: 'A~B' }]
+ * produces ['A', 'A~B', 'B']; stored selections remain ['A', 'B'].
+ * A selected empty string [''] remains ['']; no selection [] remains [].
  */
-function generateValidCombinations(strings, validCombinations, joinByChar = '|') {
+const generateValidTherapyCombinations = (
+  activeFilters, filterApiKey, possibleCombinations, separator = THERAPY_COMBINATION_SEPARATOR,
+) => {
+  validateSeparator(separator);
+  const validCombinations = extractGroupValues(possibleCombinations);
+  return generateValidCombinations(activeFilters[filterApiKey], validCombinations, separator);
+};
+
+/**
+ * Keeps selected singleton names and adds only supported complete combinations.
+ * Prefix checking, splitting, and joining must all use the same literal separator.
+ * For ['A', 'B', ''] and vocabulary ['A|B'], using '|' returns
+ * ['', 'A', 'A|B', 'B']. Names outside that vocabulary are still retained as
+ * singletons, preserving the existing filtering behavior. Existing duplicate
+ * terms are left unchanged by this separator refactor.
+ */
+function generateValidCombinations(strings, validCombinations, joinByChar) {
   let result = [];
   const validSet = new Set(validCombinations);
   const validPrefixes = new Set();
@@ -60,7 +55,7 @@ function generateValidCombinations(strings, validCombinations, joinByChar = '|')
   
   validSet.delete(''); // Remove the empty string(No value) from validSet
 
-  // Add initial selected strings to result. Will include target therapy that are not inside valid combination. Ex. Lenalidomide
+  // Preserve selected singleton names even when absent from the combination vocabulary.
   result = [...strings]
 
   // Generate prefixes from `validCombinations` to identify valid partial matches
@@ -111,7 +106,8 @@ function generateValidCombinations(strings, validCombinations, joinByChar = '|')
  * and summing the `subjects` count for each therapy.
  * 
  * @param {Object} searchParticipants - Data object containing facet data by `dataApiKey`.
- * @param {string} dataApiKey - Key for accessing targeted data.
+ * @param {string} dataApiKey - Key for accessing the combination buckets.
+ * @param {string} separator - Literal backend separator; defaults to siteWideConfig.
  * @return {Object} - Object with `dataApiKey` and aggregated therapy data.
  * 
  * Example:
@@ -124,12 +120,15 @@ function generateValidCombinations(strings, validCombinations, joinByChar = '|')
  *   { "group": "Encorafenib + Cetuximab", "subjects": 1 }
  * ]
  */
-const updateTherapyFacetData = (searchParticipants, dataApiKey) => {
+const updateTherapyFacetData = (
+  searchParticipants, dataApiKey, separator = THERAPY_COMBINATION_SEPARATOR,
+) => {
+  validateSeparator(separator);
   const facetItemData = searchParticipants[dataApiKey];
   const therapyCounts = new Map();
 
   facetItemData.forEach(({ group, subjects }) => {
-    group.split('|').forEach(therapy => { 
+    group.split(separator).forEach(therapy => {
       therapyCounts.set(therapy, (therapyCounts.get(therapy) || 0) + subjects);
     });
   });
