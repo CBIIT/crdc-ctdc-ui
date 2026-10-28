@@ -100,7 +100,7 @@ export const tabIndex = [
   },
 ];
 
-// Initial Therapy combination vocabulary query
+// Bootstrap only when selected names need vocabulary for the current other filters.
 export const THERAPY_QUERY = gql`
 query search_for_therapy (
   $participant_id: [String],
@@ -144,46 +144,8 @@ query search_for_therapy (
     data_file_type: $data_file_type
     data_file_format: $data_file_format
   ) {
-    # Used to help create/compare valid Therapy combinations under generateValidCombinations()
+    # Excludes the name filter itself so A and B can expand to A|B when supported.
     filterParticipantCountBySingleTherapyCombinationForFacet {
-      group
-      subjects
-    }
-    participantCountBySingleTherapyCombinationForFacet {
-      group
-      subjects
-    }
-
-    participantCountByTherapy {
-      group
-      subjects
-    }
-    filterParticipantCountByTherapy {
-        group
-  subjects
-    }
-    participantCountByTherapyType {
-      group
-      subjects
-    }
-    filterParticipantCountByTherapyType {
-      group
-      subjects
-    }
-    participantCountByTherapyCategory {
-      group
-      subjects
-    }
-    filterParticipantCountByTherapyCategory {
-      group
-      subjects
-    }
-
-    participantCountBySingleTherapyCombination  {
-      group
-      subjects
-    }
-    filterParticipantCountBySingleTherapyCombination  {
       group
       subjects
     }

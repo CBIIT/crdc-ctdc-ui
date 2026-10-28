@@ -310,8 +310,8 @@ describe('Saved selections and dashboard initialization', () => {
       numberOfTherapies: 3, numberOfParticipants: 15,
       numberOfFiles: 9, numberOfStudyFiles: 3,
     });
-    expect(mockClient.query.mock.calls[0][0].query).toBe(queries.THERAPY_QUERY);
-    expect(mockClient.query).toHaveBeenCalledTimes(2);
+    expect(mockClient.query.mock.calls[0][0].query).toBe(queries.DASHBOARD_QUERY_NEW);
+    expect(mockClient.query).toHaveBeenCalledTimes(1);
   });
 
   it('recovers from invalid persisted JSON with an unfiltered initial load', async () => {
@@ -320,6 +320,104 @@ describe('Saved selections and dashboard initialization', () => {
     mockClient.query.mockResolvedValue(response());
     mountDashboard(makeStore({}, loadState()));
     await waitForDashboard(1, []);
+  });
+});
+
+describe('Therapy vocabulary request scheduling', () => {
+  it.each([
+    ['study_short_name', 'test-study'],
+    ['sex', 'Female'],
+    ['therapy_type', 'Chemotherapy'],
+    ['therapy_category', 'Targeted'],
+    ['therapy_type', ''],
+    ['therapy_category', ''],
+  ])('loads %s=%j directly without selected names and reuses the dashboard vocabulary', async (field, value) => {
+    mockClient.query.mockResolvedValue(response());
+    const store = makeStore({ [THERAPY_FILTER]: {} });
+    mountDashboard(store);
+    expect(mockClient.query).toHaveBeenCalledTimes(1);
+    expect(mockClient.query.mock.calls[0][0].query).toBe(queries.DASHBOARD_QUERY_NEW);
+    await waitForDashboard(1, []);
+
+    act(() => { store.dispatch(toggleCheckBox({ datafield: field, name: value, isChecked: true })); });
+    expect(dashboardRequests()).toHaveLength(2);
+    await waitForDashboard(2, []);
+    expect(dashboardRequests()[1].variables[field]).toEqual([value]);
+    expect(mockClient.query).toHaveBeenCalledTimes(2);
+
+    act(() => { store.dispatch(toggleCheckBox({ datafield: THERAPY_FILTER, name: 'A', isChecked: true })); });
+    await waitForDashboard(3, ['A']);
+    act(() => { store.dispatch(toggleCheckBox({ datafield: THERAPY_FILTER, name: 'B', isChecked: true })); });
+    await waitForDashboard(4, ['A', 'A|B', 'B']);
+    expect(dashboardRequests()[3].variables[field]).toEqual([value]);
+    expect(mockClient.query).toHaveBeenCalledTimes(4);
+  });
+
+  it('still waits for vocabulary when the selected name is an empty string', async () => {
+    let finishVocabulary;
+    mockClient.query.mockImplementation(({ query }) => (query === queries.THERAPY_QUERY
+      ? new Promise((resolve) => { finishVocabulary = resolve; }) : Promise.resolve(response())));
+    mountDashboard(makeStore({ [THERAPY_FILTER]: { '': true } }));
+    expect(mockClient.query).toHaveBeenCalledTimes(1);
+    expect(dashboardRequests()).toHaveLength(0);
+    await act(async () => { finishVocabulary(response()); });
+    await waitForDashboard(1, ['']);
+    expect(mockClient.query).toHaveBeenCalledTimes(2);
+  });
+
+  it.each(['rejection', 'missing vocabulary'])('retries a direct dashboard after %s without a bootstrap', async (failure) => {
+    const malformed = response();
+    delete malformed.data.searchParticipants[OPTION_VOCABULARY];
+    mockClient.query.mockImplementationOnce(() => (failure === 'rejection'
+      ? Promise.reject(new Error('Network failure')) : Promise.resolve(malformed)))
+      .mockResolvedValue(response());
+    const { container } = mountDashboard(makeStore());
+    await act(async () => {});
+    expect(container.querySelector('[role="alert"]').textContent).toContain('Unable to load Explore results.');
+    expect(TabsView).not.toHaveBeenCalled();
+    await act(async () => { container.querySelector('button').click(); });
+    await waitForDashboard(2, []);
+    expect(mockClient.query).toHaveBeenCalledTimes(2);
+    expect(container.querySelector('[role="alert"]')).toBeNull();
+  });
+
+  it('ignores both results and vocabulary from an older direct dashboard response', async () => {
+    const pending = [];
+    mockClient.query.mockImplementation(() => new Promise((resolve) => { pending.push(resolve); }));
+    const store = makeStore();
+    mountDashboard(store);
+    act(() => { store.dispatch(toggleCheckBox({ datafield: 'sex', name: 'Female', isChecked: true })); });
+    expect(dashboardRequests()).toHaveLength(2);
+    const newest = response();
+    newest.data.searchParticipants.numberOfParticipants = 99;
+    newest.data.searchParticipants[OPTION_VOCABULARY] = [{ group: 'A|C', subjects: 1 }];
+    await act(async () => { pending[1](newest); });
+    await act(async () => { pending[0](response()); });
+    expect(mockClient.query).toHaveBeenCalledTimes(2);
+    expect(lastProps(StatsView).data.numberOfParticipants).toBe(99);
+
+    mockClient.query.mockResolvedValue(response());
+    act(() => { store.dispatch(toggleCheckBox({ datafield: THERAPY_FILTER, name: 'A', isChecked: true })); });
+    await waitForDashboard(3, ['A']);
+    act(() => { store.dispatch(toggleCheckBox({ datafield: THERAPY_FILTER, name: 'B', isChecked: true })); });
+    await waitForDashboard(4, ['A', 'B']);
+    expect(mockClient.query).toHaveBeenCalledTimes(4);
+  });
+
+  it.each(['resolve', 'reject'])('loads directly after clearing names and ignores a late bootstrap %s', async (completion) => {
+    let finishVocabulary;
+    mockClient.query.mockImplementation(({ query }) => (query === queries.THERAPY_QUERY
+      ? new Promise((resolve, reject) => { finishVocabulary = completion === 'resolve' ? resolve : reject; })
+      : Promise.resolve(response())));
+    const store = makeStore({ [THERAPY_FILTER]: { A: true, B: true } });
+    const { container } = mountDashboard(store);
+    expect(dashboardRequests()).toHaveLength(0);
+    act(() => { store.dispatch(clearFacetSection({ datafield: THERAPY_FILTER })); });
+    await waitForDashboard(1, []);
+    await act(async () => { finishVocabulary(completion === 'resolve' ? response() : new Error('Late failure')); });
+    await waitForDashboard(1, []);
+    expect(mockClient.query).toHaveBeenCalledTimes(2);
+    expect(container.querySelector('[role="alert"]')).toBeNull();
   });
 });
 
@@ -344,14 +442,14 @@ describe('Selecting, deselecting and clearing therapy filters', () => {
     await waitForDashboard(5, []);
     expect(dashboardRequests()[4].variables.study_short_name).toEqual(['test-study']);
     expect(mockClient.query.mock.calls.filter(([request]) => request.query === queries.THERAPY_QUERY))
-      .toHaveLength(1);
+      .toHaveLength(0);
 
     act(() => { store.dispatch(clearAllFilters()); });
     await waitForDashboard(6, []);
     expect(dashboardRequests()[5].variables.study_short_name).toBeUndefined();
     expect(store.getState().statusReducer.filterState).toEqual({});
     expect(mockClient.query.mock.calls.filter(([request]) => request.query === queries.THERAPY_QUERY))
-      .toHaveLength(2); // Clearing the Study filter requires a new vocabulary.
+      .toHaveLength(0); // With no names selected, the dashboard also supplies the new vocabulary.
   });
 });
 
@@ -387,11 +485,14 @@ describe('Therapy filter propagation through GraphQL documents', () => {
     });
   });
 
-  it.each([
-    ['initial vocabulary', queries.THERAPY_QUERY],
-    ['dashboard', queries.DASHBOARD_QUERY_NEW],
-  ])('%s requests both display buckets and raw combination vocabulary', (_label, document) => {
-    const operation = document.definitions.find(({ kind }) => kind === 'OperationDefinition');
+  it('requests only the required self-excluding vocabulary during bootstrap', () => {
+    const operation = queries.THERAPY_QUERY.definitions.find(({ kind }) => kind === 'OperationDefinition');
+    const main = operation.selectionSet.selections.find(({ name }) => name.value === 'searchParticipants');
+    expect(main.selectionSet.selections.map(({ name }) => name.value)).toEqual([OPTION_VOCABULARY]);
+  });
+
+  it('requests both display buckets and raw combination vocabulary in the dashboard', () => {
+    const operation = queries.DASHBOARD_QUERY_NEW.definitions.find(({ kind }) => kind === 'OperationDefinition');
     const main = operation.selectionSet.selections.find(({ name }) => name.value === 'searchParticipants');
     const fields = main.selectionSet.selections.map(({ name }) => name.value);
     expect(fields).toEqual(expect.arrayContaining([
