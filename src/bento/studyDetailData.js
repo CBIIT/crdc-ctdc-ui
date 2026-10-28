@@ -365,27 +365,33 @@ export const studyClinicalDataQuery = gql`
     clinicalTrialData(study_id: $study_id) {
       study_short_name
 
-      # Clinical Trial: targeted_therapy
-      targetedTherapyParticipantCount
-      targetedTherapyNodeCount
-      targetedTherapyNodeData {
+      # Clinical Trial: therapy (unified targeted and non-targeted records)
+      therapyParticipantCount
+      therapyNodeCount
+      therapyNodeData {
         participant_ids
-        targeted_therapy
-        targeted_therapy_dose
-        targeted_therapy_frequency
-        targeted_therapy_record_id
-      }
-
-      # Clinical Trial:non_targeted_therapy
-      nonTargetedTherapyParticipantCount
-      nonTargetedTherapyNodeCount
-      nonTargetedTherapyNodeData {
-        participant_ids
-        non_targeted_therapy_record_id
-        best_response_to_non_targeted_therapy
-        non_targeted_therapy
-        non_targeted_therapy_dose
-        non_targeted_therapy_frequency
+        therapy_record_id
+        therapy_name
+        therapy_type
+        therapy_category
+        current_response_to_therapy
+        best_response_to_therapy
+        therapy_description
+        therapy_start_date
+        therapy_end_date
+        off_treatment
+        off_treatment_reason
+        course_number
+        number_of_doses
+        planned_dose
+        planned_dose_units
+        therapy_dose
+        therapy_dose_units
+        therapy_frequency
+        date_of_current_response_to_therapy
+        date_of_best_response_to_therapy
+        dose_changes_delays
+        dose_changes_delays_description
       }
 
       # Clinical Trial: surgery
@@ -427,8 +433,7 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
       participant_status: participantStatusNodeCount
     }
     clinicalTrialDataNodeCounts: clinicalTrialData(study_id: $study_id) {
-      targeted_therapy: targetedTherapyNodeCount
-      non_targeted_therapy: nonTargetedTherapyNodeCount
+      therapy: therapyNodeCount
       surgery: surgeryNodeCount
       radiotherapy: radiotherapyNodeCount
     }
@@ -439,8 +444,7 @@ export const GET_STUDY_DETAIL_DATA_QUERY = gql`
       participant_status: participantStatusParticipantCount
     }
     clinicalTrialDataParticipantCounts: clinicalTrialData(study_id: $study_id) {
-      targeted_therapy: targetedTherapyParticipantCount
-      non_targeted_therapy: nonTargetedTherapyParticipantCount
+      therapy: therapyParticipantCount
       surgery: surgeryParticipantCount
       radiotherapy: radiotherapyParticipantCount
     }
@@ -544,21 +548,30 @@ export const participantStatusNodeMetadata = makeManifest([
   "survival_status",
 ]);
 
-export const targetedTherapyNodeMetadata = makeManifest([
+export const therapyNodeMetadata = makeManifest([
   "participant_ids",
-  "targeted_therapy",
-  "targeted_therapy_dose",
-  "targeted_therapy_frequency",
-  "targeted_therapy_record_id",
-]);
-
-export const nonTargetedTherapyNodeMetadata = makeManifest([
-  "participant_ids",
-  "non_targeted_therapy_record_id",
-  "best_response_to_non_targeted_therapy",
-  "non_targeted_therapy",
-  "non_targeted_therapy_dose",
-  "non_targeted_therapy_frequency",
+  "therapy_record_id",
+  "therapy_name",
+  "therapy_type",
+  "therapy_category",
+  "current_response_to_therapy",
+  "best_response_to_therapy",
+  "therapy_description",
+  "therapy_start_date",
+  "therapy_end_date",
+  "off_treatment",
+  "off_treatment_reason",
+  "course_number",
+  "number_of_doses",
+  "planned_dose",
+  "planned_dose_units",
+  "therapy_dose",
+  "therapy_dose_units",
+  "therapy_frequency",
+  "date_of_current_response_to_therapy",
+  "date_of_best_response_to_therapy",
+  "dose_changes_delays",
+  "dose_changes_delays_description",
 ]);
 
 export const surgeryNodeMetadata = makeManifest([
@@ -643,16 +656,10 @@ export const table = {
       manifest: participantStatusNodeMetadata,
     },
     {
-      title: "Targeted Therapy",
-      countKey: "targeted_therapy",
-      csvDownload: "targetedTherapyNodeData",
-      manifest: targetedTherapyNodeMetadata,
-    },
-    {
-      title: "Non Targeted Therapy",
-      countKey: "non_targeted_therapy",
-      csvDownload: "nonTargetedTherapyNodeData",
-      manifest: nonTargetedTherapyNodeMetadata,
+      title: "Therapy",
+      countKey: "therapy",
+      csvDownload: "therapyNodeData",
+      manifest: therapyNodeMetadata,
     },
     {
       title: "Surgery",
