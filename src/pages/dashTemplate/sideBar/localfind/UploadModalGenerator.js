@@ -40,7 +40,7 @@ const MODAL_STYLES = (theme) => ({
   },
   helpIcon: {
     color: '#1F344F !important',
-    fontSize: '18px !important',
+    fontSize: '14px !important',
   },
 });
 

@@ -239,6 +239,7 @@ export default () => ({
     fontStyle: 'normal',
     fontWeight: 600,
     lineHeight: '19px',
+    resize: 'none',
     '&::placeholder': {
       color: '#026551',
       fontFamily: 'Lato',
@@ -250,6 +251,20 @@ export default () => ({
     '&:focus': {
       outline: 'none',
       border: '1.5px solid #026551',
+    },
+    scrollbarWidth: 'thin',
+    scrollbarColor: '#B1B1B1 transparent',
+    '&::-webkit-scrollbar': {
+      width: 8,
+    },
+    '&::-webkit-scrollbar-track': {
+      margin: '8px 0',
+      backgroundColor: 'transparent',
+    },
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: '#B1B1B1',
+      borderRadius: 8,
+      border: '2px solid #fff',
     },
   },
   uploadModalTitle: {
