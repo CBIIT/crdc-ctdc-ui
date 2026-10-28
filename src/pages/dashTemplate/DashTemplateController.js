@@ -49,6 +49,8 @@ const useDashData = ({ filterState, localFindUpload, localFindAutocomplete }) =>
     return () => { active = false; };
   }, [client, baseFilters, vocabularyKey, vocabularyReady, requestKey, retryCount]);
 
+  // Type/Category use backend any-value matching and pass through unchanged.
+  // Only selected names need expansion into complete therapy_string combinations.
   const activeFilters = useMemo(() => {
     if (!vocabularyReady || !baseFilters[THERAPY_FILTER]) return baseFilters;
     return {

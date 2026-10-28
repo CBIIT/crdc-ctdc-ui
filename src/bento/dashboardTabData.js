@@ -113,6 +113,8 @@ query search_for_therapy (
   $ethnicity: [String],
   $carcinogen_exposure: [String], 
   $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -132,6 +134,8 @@ query search_for_therapy (
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
     therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
     
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -157,6 +161,22 @@ query search_for_therapy (
     filterParticipantCountByTherapy {
         group
   subjects
+    }
+    participantCountByTherapyType {
+      group
+      subjects
+    }
+    filterParticipantCountByTherapyType {
+      group
+      subjects
+    }
+    participantCountByTherapyCategory {
+      group
+      subjects
+    }
+    filterParticipantCountByTherapyCategory {
+      group
+      subjects
     }
 
     participantCountBySingleTherapyCombination  {
@@ -184,6 +204,8 @@ query search(
   $ethnicity: [String],
   $carcinogen_exposure: [String],
   $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -205,6 +227,8 @@ query search(
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
     therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -337,6 +361,22 @@ query search(
       group
       subjects
     }
+    participantCountByTherapyType {
+      group
+      subjects
+    }
+    filterParticipantCountByTherapyType {
+      group
+      subjects
+    }
+    participantCountByTherapyCategory {
+      group
+      subjects
+    }
+    filterParticipantCountByTherapyCategory {
+      group
+      subjects
+    }
     participantCountBySingleTherapyCombination {
       group
       subjects
@@ -414,6 +454,8 @@ query search(
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
     therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -437,6 +479,8 @@ query search(
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
     therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -464,6 +508,8 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $ethnicity: [String],
     $carcinogen_exposure: [String],
     $therapy_string: [String],
+    $therapy_type: [String],
+    $therapy_category: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -488,6 +534,8 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
       therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -536,6 +584,8 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     $ethnicity: [String],
     $carcinogen_exposure: [String],
     $therapy_string: [String],
+    $therapy_type: [String],
+    $therapy_category: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -560,6 +610,8 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
       therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -604,6 +656,8 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     $ethnicity: [String],
     $carcinogen_exposure: [String],
     $therapy_string: [String],
+    $therapy_type: [String],
+    $therapy_category: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -629,6 +683,8 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
       therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -672,6 +728,8 @@ query participant_data_files(
   $ethnicity: [String],
   $carcinogen_exposure: [String],
   $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -696,6 +754,8 @@ query participant_data_files(
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
       therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -730,6 +790,8 @@ query biospecimenAddAllToCart(
   $ethnicity: [String],
   $carcinogen_exposure: [String],
   $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -756,6 +818,8 @@ query biospecimenAddAllToCart(
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
     therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -789,6 +853,8 @@ query fileAddSelectedToCart(
   $ethnicity: [String],
   $carcinogen_exposure: [String],
   $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -816,6 +882,8 @@ query fileAddSelectedToCart(
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
     therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -848,6 +916,8 @@ query participant_data_files(
   $ethnicity: [String],
   $carcinogen_exposure: [String],
   $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -872,6 +942,8 @@ query participant_data_files(
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
       therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -903,6 +975,8 @@ export const GET_ALL_FILE_IDS_FOR_BIOSPECIMENS = gql`
     $ethnicity: [String],
     $carcinogen_exposure: [String],
     $therapy_string: [String],
+    $therapy_type: [String],
+    $therapy_category: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -927,6 +1001,8 @@ export const GET_ALL_FILE_IDS_FOR_BIOSPECIMENS = gql`
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
       therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -958,6 +1034,8 @@ query fileAddAllToCart(
   $ethnicity: [String],
   $carcinogen_exposure: [String],
   $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -983,6 +1061,8 @@ query fileAddAllToCart(
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
     therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -1320,6 +1400,15 @@ export const tabContainers = [
       {
         dataField: 'therapy_name',
         header: 'Therapy',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+        cellType: cellTypes.CUSTOM_ELEM,
+        formatTherapyList: true,
+      },
+      {
+        dataField: 'therapy_category',
+        header: 'Therapy Category',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,

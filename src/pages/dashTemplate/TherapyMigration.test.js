@@ -59,8 +59,8 @@ jest.mock('@bento-core/paginated-table', () => ({
  * filtering/indexing. Retains the cohort, hydration and propagation expectations.
  *
  * Deliberately do not require duplicate generated terms, stale-request behavior,
- * or the Study Files operation's unsupported therapy filter. New Type/Category
- * acceptance tests belong with implementation of those currently absent facets.
+ * or the Study Files operation's unsupported therapy filter. Type/Category use
+ * the user-approved backend any-value contract; only names expand combinations.
  */
 const THERAPY_FILTER = 'therapy_string';
 const COMBINATIONS = 'participantCountBySingleTherapyCombination';
@@ -104,6 +104,12 @@ const response = () => ({
       numberOfTherapies: 3,
       numberOfFiles: 12,
       numberOfStudyFiles: 3,
+      participantCountByTherapyType: [{ group: 'Chemotherapy', subjects: 15 }],
+      filterParticipantCountByTherapyType: [{ group: 'Chemotherapy', subjects: 15 }],
+      participantCountByTherapyCategory: [{ group: 'Targeted', subjects: 15 }],
+      filterParticipantCountByTherapyCategory: [
+        { group: 'Targeted', subjects: 15 }, { group: 'Non-Targeted', subjects: 8 },
+      ],
       [NAME_COUNTS]: nameCounts.map((bucket) => ({ ...bucket })),
       filterParticipantCountByTherapy: nameCounts.map((bucket) => ({ ...bucket })),
       [COMBINATIONS]: buckets.map((bucket) => ({ ...bucket })),
@@ -367,15 +373,17 @@ describe('Therapy filter propagation through GraphQL documents', () => {
 
   it.each(cases)('%s declares and forwards the combination list to every expected root', (_label, document, expectedRoots) => {
     const operation = document.definitions.find(({ kind }) => kind === 'OperationDefinition');
-    const declaration = operation.variableDefinitions
-      .find(({ variable }) => variable.name.value === THERAPY_FILTER);
-    expect(declaration).toBeDefined();
-    expect(declaration.type).toMatchObject({ kind: 'ListType', type: { name: { value: 'String' } } });
     const roots = operation.selectionSet.selections;
     expect(roots.map((field) => (field.alias || field.name).value)).toEqual(expectedRoots);
-    roots.forEach((field) => {
-      const argument = field.arguments.find(({ name }) => name.value === THERAPY_FILTER);
-      expect(argument).toMatchObject({ value: { kind: 'Variable', name: { value: THERAPY_FILTER } } });
+    [THERAPY_FILTER, 'therapy_type', 'therapy_category'].forEach((filterKey) => {
+      const declaration = operation.variableDefinitions
+        .find(({ variable }) => variable.name.value === filterKey);
+      expect(declaration).toBeDefined();
+      expect(declaration.type).toMatchObject({ kind: 'ListType', type: { name: { value: 'String' } } });
+      roots.forEach((field) => {
+        const argument = field.arguments.find(({ name }) => name.value === filterKey);
+        expect(argument).toMatchObject({ value: { kind: 'Variable', name: { value: filterKey } } });
+      });
     });
   });
 
@@ -388,6 +396,8 @@ describe('Therapy filter propagation through GraphQL documents', () => {
     const fields = main.selectionSet.selections.map(({ name }) => name.value);
     expect(fields).toEqual(expect.arrayContaining([
       COMBINATIONS, OPTION_COMBINATIONS, RAW_COMBINATIONS, OPTION_VOCABULARY, NAME_COUNTS,
+      'participantCountByTherapyType', 'filterParticipantCountByTherapyType',
+      'participantCountByTherapyCategory', 'filterParticipantCountByTherapyCategory',
     ]));
   });
 });
@@ -424,7 +434,7 @@ describe('Table, file-action and scoped-stat boundaries', () => {
   });
 
   it('forwards expanded filters unchanged to scoped stats with association defaults', () => {
-    const variables = { [THERAPY_FILTER]: ['A', 'A|B', 'B'], study_short_name: ['test-study'] };
+    const variables = { [THERAPY_FILTER]: ['A', 'A|B', 'B'], therapy_type: ['Chemotherapy'], therapy_category: ['Targeted', 'Non-Targeted'], study_short_name: ['test-study'] };
     useQuery.mockReturnValue({ loading: false, data: response().data });
     render(<ScopedStatsController variables={variables} />);
     expect(useQuery).toHaveBeenCalledWith(GET_GLOBAL_STATS_DATA_QUERY, {
@@ -457,6 +467,21 @@ describe('Therapy display formatting', () => {
     const { container } = render(<CustomCellView {...therapyColumn} {...row} />);
     expect(container.textContent).toBe(expected);
     expect(row.therapy_name).toBe(value);
+  });
+
+  it.each([
+    [['Targeted'], 'Targeted'],
+    [['Targeted', 'Non-Targeted'], 'Targeted, Non-Targeted'],
+    [[], ''],
+    [[''], ''],
+    [null, ''],
+  ])('renders the participant Category column %j as %j without changing its values', (value, expected) => {
+    const categoryColumn = participantTab.columns.find(({ dataField }) => dataField === 'therapy_category');
+    expect(categoryColumn).toBeDefined();
+    const row = { therapy_category: value, therapy_name: ['different therapy field'] };
+    const { container } = render(<CustomCellView {...categoryColumn} {...row} />);
+    expect(container.textContent).toBe(expected);
+    expect(row.therapy_category).toBe(value);
   });
 
   const renderParticipant = (therapy, bestResponse) => {
@@ -670,5 +695,171 @@ describe('Explore Therapy CSV compatibility', () => {
     const csv = convertToCSV(rows, [column.dataField], [column.header]);
     expect(csv).toBe('Therapy\r\n"drug, regimen,B"\r\n""\r\n');
     expect(rows[0].therapy_name).toEqual(['drug, regimen', 'B']);
+  });
+});
+
+
+// C4: Type/Category are ordinary backend terms, distinct from name combinations.
+// Populated Type fixtures below are synthetic because local source Type data is blank.
+describe('Therapy Type and Category facets', () => {
+  it.each([
+    ['Therapy Type', 'therapy_type', 'TherapyType'],
+    ['Therapy Category', 'therapy_category', 'TherapyCategory'],
+  ])('%s uses its own current and self-excluding server buckets', (label, datafield, suffix) => {
+    expect(facetsConfig.find((facet) => facet.datafield === datafield)).toMatchObject({
+      label,
+      apiPath: `participantCountBy${suffix}`,
+      apiForFiltering: `filterParticipantCountBy${suffix}`,
+      show: true,
+      defaultValue: 'No value',
+    });
+  });
+
+  it.each([
+    [[], ['Targeted']],
+    [['Chemotherapy', 'Immunotherapy'], ['Targeted', 'Non-Targeted']],
+    [[''], ['']],
+  ])('restores Type %j and Category %j before expanding saved names', async (types, categories) => {
+    saveState({ statusReducer: { filterState: {
+      targeted_therapy_string: { A: true, B: true },
+      therapy_type: selectedNames(types),
+      therapy_category: selectedNames(categories),
+    } } });
+    const store = makeStore({}, loadState());
+    mockClient.query.mockResolvedValue(response());
+    mountDashboard(store);
+    await waitForDashboard(1, ['A', 'A|B', 'B']);
+    const expected = { therapy_type: types, therapy_category: categories };
+    expect(mockClient.query.mock.calls[0][0]).toMatchObject({
+      query: queries.THERAPY_QUERY, variables: { ...expected, therapy_string: ['A', 'B'] },
+    });
+    expect(dashboardRequests()[0].variables).toMatchObject(expected);
+    expect(lastProps(TabsView).activeFilters).toMatchObject(expected);
+    saveState(store.getState());
+    expect(loadState().statusReducer.filterState).toMatchObject({
+      therapy_type: selectedNames(types), therapy_category: selectedNames(categories),
+    });
+  });
+
+  it('uses server options without combining Type/Category values or inventing relationships', async () => {
+    const data = response();
+    mockClient.query.mockResolvedValue(data);
+    mountDashboard(makeStore({ therapy_string: { A: true } }));
+    await waitForDashboard(1, ['A']);
+    const sidebar = lastProps(BentoFacetFilter).searchData;
+    expect(sidebar.filterParticipantCountByTherapyType).toEqual([{ group: 'Chemotherapy', subjects: 15 }]);
+    expect(sidebar.filterParticipantCountByTherapyType.some(({ group }) => group === 'Immunotherapy')).toBe(false);
+    expect(sidebar.filterParticipantCountByTherapyCategory)
+      .toEqual(data.data.searchParticipants.filterParticipantCountByTherapyCategory);
+  });
+
+  it('accepts valid empty Type buckets without creating a synthetic No value option', async () => {
+    const data = response();
+    data.data.searchParticipants.participantCountByTherapyType = [];
+    data.data.searchParticipants.filterParticipantCountByTherapyType = [];
+    mockClient.query.mockResolvedValue(data);
+    mountDashboard(makeStore());
+    await waitForDashboard(1, []);
+    expect(lastProps(BentoFacetFilter).searchData.filterParticipantCountByTherapyType).toEqual([]);
+  });
+
+  it.each([
+    ['therapy_type', ['Chemotherapy', 'Immunotherapy']],
+    ['therapy_category', ['Targeted', 'Non-Targeted']],
+  ])('refreshes name vocabulary before applying a changed %s filter', async (field, values) => {
+    mockClient.query.mockResolvedValue(response());
+    const store = makeStore({ therapy_string: { A: true, B: true }, [field]: selectedNames(values) });
+    mountDashboard(store);
+    await waitForDashboard(1, ['A', 'A|B', 'B']);
+    let finishVocabulary;
+    const pending = new Promise((resolve) => { finishVocabulary = resolve; });
+    mockClient.query.mockImplementation(({ query }) => (
+      query === queries.THERAPY_QUERY ? pending : Promise.resolve(response())
+    ));
+    act(() => { store.dispatch(toggleCheckBox({ datafield: field, name: values[1], isChecked: false })); });
+    expect(mockClient.query.mock.calls[2][0]).toMatchObject({
+      query: queries.THERAPY_QUERY, variables: { [field]: [values[0]] },
+    });
+    expect(dashboardRequests()).toHaveLength(1);
+    expect(lastProps(TabsView).activeFilters[field]).toEqual(values);
+    const updated = response();
+    updated.data.searchParticipants[OPTION_VOCABULARY] = buckets.filter(({ group }) => !group.includes('|'));
+    await act(async () => { finishVocabulary(updated); });
+    await waitForDashboard(2, ['A', 'B']);
+    expect(dashboardRequests()[1].variables[field]).toEqual([values[0]]);
+    expect(lastProps(TabsView).activeFilters[field]).toEqual([values[0]]);
+  });
+
+  it('keeps incompatible selections active without adding them to server options', async () => {
+    const noMatches = response();
+    noMatches.data.searchParticipants.numberOfParticipants = 0;
+    noMatches.data.searchParticipants[COMBINATIONS] = [];
+    noMatches.data.searchParticipants.participantCountByTherapyType = [];
+    noMatches.data.searchParticipants.filterParticipantCountByTherapyType = [];
+    noMatches.data.searchParticipants.participantCountByTherapyCategory = [];
+    noMatches.data.searchParticipants.filterParticipantCountByTherapyCategory = [{ group: 'Targeted', subjects: 4 }];
+    mockClient.query.mockResolvedValue(noMatches);
+    const store = makeStore({
+      therapy_string: { A: true }, therapy_type: { Chemotherapy: true },
+      therapy_category: { 'Non-Targeted': true },
+    });
+    mountDashboard(store);
+    await waitForDashboard(1, ['A']);
+    expect(lastProps(StatsView).data.numberOfParticipants).toBe(0);
+    expect(lastProps(TabsView).activeFilters.therapy_category).toEqual(['Non-Targeted']);
+    expect(lastProps(TabsView).activeFilters.therapy_type).toEqual(['Chemotherapy']);
+    expect(lastProps(BentoFacetFilter).searchData.filterParticipantCountByTherapyType).toEqual([]);
+    expect(lastProps(BentoFacetFilter).searchData.filterParticipantCountByTherapyCategory)
+      .toEqual([{ group: 'Targeted', subjects: 4 }]);
+    act(() => { store.dispatch(clearFacetSection({ datafield: 'therapy_category' })); });
+    await waitForDashboard(2, ['A']);
+    expect(lastProps(TabsView).activeFilters.therapy_type).toEqual(['Chemotherapy']);
+    expect(getFilters(store.getState().statusReducer.filterState).therapy_category || []).toEqual([]);
+    act(() => { store.dispatch(clearAllFilters()); });
+    await waitForDashboard(3, []);
+    expect(lastProps(TabsView).activeFilters.therapy_type).toBeUndefined();
+    expect(lastProps(TabsView).activeFilters.therapy_category).toBeUndefined();
+    expect(lastProps(BentoFacetFilter).searchData.filterParticipantCountByTherapyCategory)
+      .not.toContainEqual({ group: 'Non-Targeted', subjects: 0 });
+  });
+
+  it.each([
+    ['therapy_type', 'Chemotherapy', 'Therapy Type'],
+    ['therapy_category', 'Non-Targeted', 'Therapy Category'],
+    ['therapy_type', '', 'Therapy Type'],
+    ['therapy_category', '', 'Therapy Category'],
+  ])('removes unavailable %s selection %j through the real query bar', async (field, value, label) => {
+    // Exercise the existing recovery UI even when the sidebar has no option to
+    // uncheck. Empty values use the facet-label reset; named values use the item.
+    const ActualQueryBarView = jest.requireActual('./filterQueryBar/QueryBarView').default;
+    const noMatches = response();
+    noMatches.data.searchParticipants.numberOfParticipants = 0;
+    noMatches.data.searchParticipants[COMBINATIONS] = [];
+    noMatches.data.searchParticipants.filterParticipantCountByTherapyType = [];
+    noMatches.data.searchParticipants.filterParticipantCountByTherapyCategory = [];
+    mockClient.query.mockImplementation(({ variables }) => Promise.resolve(
+      variables[field]?.length ? noMatches : response(),
+    ));
+    const store = makeStore({ therapy_string: { A: true }, sex: { Male: true }, [field]: { [value]: true } });
+    mountDashboard(store);
+    await waitForDashboard(1, ['A']);
+    expect(dashboardRequests()[0].variables[field]).toEqual([value]);
+    expect(lastProps(StatsView).data.numberOfParticipants).toBe(0);
+    const sidebar = lastProps(BentoFacetFilter).searchData;
+    expect(sidebar.filterParticipantCountByTherapyType).toEqual([]);
+    expect(sidebar.filterParticipantCountByTherapyCategory).toEqual([]);
+
+    const { container } = render(
+      <Provider store={store}><ActualQueryBarView data={sidebar} /></Provider>,
+    );
+    const resetControl = [...container.querySelectorAll('span')]
+      .find((element) => element.children.length === 0 && element.textContent === (value || label));
+    expect(resetControl).toBeDefined();
+    act(() => { resetControl.click(); });
+    await waitForDashboard(2, ['A']);
+    expect(dashboardRequests()[1].variables[field]).toEqual([]);
+    expect(dashboardRequests()[1].variables.sex).toEqual(['Male']);
+    expect(getFilters(store.getState().statusReducer.filterState)[field]).toEqual([]);
+    expect(lastProps(StatsView).data.numberOfParticipants).toBe(15);
   });
 });

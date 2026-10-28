@@ -37,6 +37,8 @@ const participants = tabs.find(({ name }) => name === 'Participants');
 const containers = [];
 const filters = (therapy = ['A', 'A|B', 'B']) => ({
   therapy_string: therapy,
+  therapy_type: ['Chemotherapy', 'Immunotherapy'],
+  therapy_category: ['Targeted', 'Non-Targeted'],
   study_short_name: ['test-study'],
   participant_id: ['test-participant'],
 });
@@ -108,13 +110,13 @@ describe('Explore Therapy table requests', () => {
     expect(activeFilters.therapy_string).toEqual(['A', 'A|B', 'B']);
   });
 
-  it('sorts by therapy_name while continuing to filter by therapy_string', async () => {
+  it.each(['therapy_name', 'therapy_category'])('sorts by %s while retaining the current therapy filters', async (sortBy) => {
     client.query.mockResolvedValue({ data: { participantOverview: [] } });
-    render(<TableProbe tab={participants} activeFilters={filters()} sortBy="therapy_name" sortOrder="desc" />);
+    render(<TableProbe tab={participants} activeFilters={filters()} sortBy={sortBy} sortOrder="desc" />);
     await act(async () => {});
     expect(client.query).toHaveBeenCalledWith({
       query: participants.api,
-      variables: { ...filters(), first: 10, offset: 0, order_by: 'therapy_name', sort_direction: 'desc' },
+      variables: { ...filters(), first: 10, offset: 0, order_by: sortBy, sort_direction: 'desc' },
     });
   });
 });
@@ -182,8 +184,14 @@ describe('Explore Therapy file actions', () => {
 });
 
 describe('Explore Therapy CSV request', () => {
-  it('exports the full current cohort after a filter change, using name arrays as data', async () => {
-    const rows = [{ participant_id: 'test-participant', therapy_name: ['drug, regimen', 'B'] }];
+  it('exports the full current cohort after a filter change, including name and category arrays', async () => {
+    const rows = [{
+      participant_id: 'test-participant',
+      therapy_name: ['drug, regimen', 'B'],
+      therapy_category: ['Targeted', 'Non-Targeted'],
+    }, {
+      participant_id: 'empty-therapy', therapy_name: [], therapy_category: [],
+    }];
     client.query.mockResolvedValue({ data: { participantOverview: rows } });
     const table = {
       query: participants.api,
@@ -211,8 +219,13 @@ describe('Explore Therapy CSV request', () => {
     expect(downloadJson).toHaveBeenCalledWith(rows, table, 'CTDC_Participants_download');
     const therapyColumn = table.columns.find(({ dataField }) => dataField === 'therapy_name');
     expect(therapyColumn.header).toBe('Therapy');
-    expect(convertToCSV(rows, ['participant_id', 'therapy_name'], ['Participant ID', 'Therapy']))
-      .toBe('Participant ID,Therapy\r\n"test-participant","drug, regimen,B"\r\n');
+    const categoryColumn = table.columns.find(({ dataField }) => dataField === 'therapy_category');
+    expect(categoryColumn.header).toBe('Therapy Category');
+    expect(table.columns.indexOf(categoryColumn)).toBe(table.columns.indexOf(therapyColumn) + 1);
+    expect(convertToCSV(rows,
+      ['participant_id', therapyColumn.dataField, categoryColumn.dataField],
+      ['Participant ID', therapyColumn.header, categoryColumn.header]))
+      .toBe('Participant ID,Therapy,Therapy Category\r\n"test-participant","drug, regimen,B","Targeted,Non-Targeted"\r\n"empty-therapy","",""\r\n');
     expect(currentFilters.therapy_string).toEqual(['', 'A', 'A|B', 'B']);
   });
 });

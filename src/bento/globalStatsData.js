@@ -174,6 +174,8 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
     $ethnicity: [String],
     $carcinogen_exposure: [String],
     $therapy_string: [String],
+    $therapy_type: [String],
+    $therapy_category: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -197,6 +199,8 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
       therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -225,6 +229,8 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
       therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -248,6 +254,8 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
       therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
