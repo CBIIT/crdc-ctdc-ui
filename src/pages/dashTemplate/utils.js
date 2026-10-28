@@ -46,6 +46,8 @@ const validateSeparator = (separator) => {
  *   - Adds a combination only when all its names are selected and it exists in
  *     the vocabulary. Selecting A alone does not include the A+B combination.
  *   - Preserves [''] (the selected "No value" option) separately from [] (no filter).
+ *   - Sends each complete request term once, even when a selected name also
+ *     appears as a singleton in the backend vocabulary.
  *   - Leaves Redux/saved selections unchanged; only API request terms are expanded.
  *
  * Parameters:
@@ -56,9 +58,9 @@ const validateSeparator = (separator) => {
  *   siteWideConfig by default; must match the backend vocabulary encoding.
  *
  * Returns:
- * @return {string[]} - Sorted request terms, including an explicitly selected ''.
- *   Existing duplicate singleton terms may remain; the backend terms filter treats
- *   them equivalently. Therapy Type/Category values are not processed by this helper.
+ * @return {string[]} - Sorted, unique request terms, including an explicitly selected ''.
+ *   Deduplication preserves literal names and complete-combination matching.
+ *   Therapy Type/Category values are not processed by this helper.
  * @throws {Error} - If the configured or explicitly supplied separator is invalid.
  *
  * Example (separator '~'):
@@ -83,6 +85,7 @@ const generateValidTherapyCombinations = (
  *   - Builds vocabulary prefixes so recursion can stop exploring unsupported paths.
  *   - Splits prefixes and joins selected names using the same literal separator.
  *   - Keeps selected singleton names and adds complete vocabulary matches.
+ *   - Removes repeated complete terms from the final request array.
  *   - Restores an explicitly selected empty string at the start of the result.
  *
  * Parameters:
@@ -91,15 +94,16 @@ const generateValidTherapyCombinations = (
  * @param {string} joinByChar - Separator already validated by the calling helper.
  *
  * Returns:
- * @return {string[]} - Sorted request terms without changing either input array.
- *   Singleton terms may appear twice when also found in the vocabulary; this keeps
- *   the existing request behavior. Unsupported combinations are never added.
+ * @return {string[]} - Sorted, unique request terms without changing either input array.
+ *   Selected singletons remain present even when missing from the vocabulary.
+ *   Unsupported combinations are never added.
  *
  * Example:
  *   strings: ['B', 'A', '']
- *   validCombinations: ['A|B', 'A|B|C']
+ *   validCombinations: ['A', 'A|B', 'A|B|C', 'B']
  *   joinByChar: '|'
  *   Output: ['', 'A', 'A|B', 'B']
+ *   A and B occur once, although each is both selected and in the vocabulary.
  *   'A|B|C' is excluded because C was not selected.
  */
 function generateValidCombinations(strings, validCombinations, joinByChar) {
@@ -158,7 +162,9 @@ function generateValidCombinations(strings, validCombinations, joinByChar) {
   // Add empty string at the start if it was in the original input
   if (includeNoValue && !result.includes('')) result.unshift('');
 
-  return result;
+  // Selected singletons can also be found during traversal. Keep one copy of
+  // each complete term, preserving the sorted order and selected empty string.
+  return [...new Set(result)];
 }
 
 /**

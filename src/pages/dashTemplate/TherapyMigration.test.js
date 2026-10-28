@@ -58,9 +58,9 @@ jest.mock('@bento-core/paginated-table', () => ({
  * Tests exercise frontend behavior; they do not emulate or validate server-side
  * filtering/indexing. Retains the cohort, hydration and propagation expectations.
  *
- * Deliberately do not require duplicate generated terms, stale-request behavior,
- * or the Study Files operation's unsupported therapy filter. Type/Category use
- * the user-approved backend any-value contract; only names expand combinations.
+ * Require unique generated terms while preserving the existing matching rules.
+ * Do not lock in stale-request behavior or unsupported Study Files filters.
+ * Type/Category use the user-approved any-value contract; only names expand combinations.
  */
 const THERAPY_FILTER = 'therapy_string';
 const COMBINATIONS = 'participantCountBySingleTherapyCombination';
@@ -139,9 +139,9 @@ const waitForDashboard = async (callCount, expectedTerms) => {
   // All API promises are controlled by this file; act flushes their updates/effects.
   await act(async () => {});
   expect(dashboardRequests()).toHaveLength(callCount);
-  expect(distinct(dashboardRequests()[callCount - 1].variables[THERAPY_FILTER]))
+  expect(dashboardRequests()[callCount - 1].variables[THERAPY_FILTER] || [])
     .toEqual(expectedTerms);
-  expect(distinct(lastProps(TabsView).activeFilters[THERAPY_FILTER]))
+  expect(lastProps(TabsView).activeFilters[THERAPY_FILTER] || [])
     .toEqual(expectedTerms);
 };
 
@@ -173,15 +173,28 @@ describe('Therapy combination filtering baseline', () => {
   ])('%s', (_description, selection, expected) => {
     const filters = getFilters({ [THERAPY_FILTER]: selectedNames(selection) });
     const terms = generateValidTherapyCombinations(filters, THERAPY_FILTER, buckets);
-    // A terms filter is insensitive to duplicates; do not lock in that legacy quirk.
-    expect(distinct(terms)).toEqual(expected);
+    // Assert the actual request array so repeated terms cannot be hidden by the test.
+    expect(terms).toEqual(expected);
+  });
+
+  it.each([
+    ['repeated selections', ['B', 'A', 'B', 'A'], ['A', 'A|B', 'B'], ['A', 'A|B', 'B']],
+    ['repeated vocabulary buckets', ['B', 'A'], ['A', 'A', 'A|B', 'A|B', 'B'], ['A', 'A|B', 'B']],
+    ['repeated empty selections', ['', 'B', '', 'A'], ['', 'A', 'A|B', 'B'], ['', 'A', 'A|B', 'B']],
+  ])('sends unique terms with %s without changing input values', (_name, selected, groups, expected) => {
+    const filters = Object.freeze({ [THERAPY_FILTER]: Object.freeze([...selected]) });
+    const vocabulary = Object.freeze(groups.map((group) => Object.freeze({ group, subjects: 1 })));
+    const terms = generateValidTherapyCombinations(filters, THERAPY_FILTER, vocabulary);
+    expect(terms).toEqual(expected);
+    expect(filters[THERAPY_FILTER]).toEqual(selected);
+    expect(vocabulary.map(({ group }) => group)).toEqual(groups);
   });
 
   it('retains a selected singleton even when it occurs only in a compound bucket', () => {
     const terms = generateValidTherapyCombinations(
       { [THERAPY_FILTER]: ['A'] }, THERAPY_FILTER, [{ group: 'A|B', subjects: 1 }],
     );
-    expect(distinct(terms)).toEqual(['A']);
+    expect(terms).toEqual(['A']);
     expect(terms).not.toContain('A|B');
   });
 
@@ -190,7 +203,7 @@ describe('Therapy combination filtering baseline', () => {
       { [THERAPY_FILTER]: ['A + B', 'C'] }, THERAPY_FILTER,
       [{ group: 'A + B|C', subjects: 1 }],
     );
-    expect(distinct(terms)).toEqual(['A + B', 'A + B|C', 'C']);
+    expect(terms).toEqual(['A + B', 'A + B|C', 'C']);
   });
 
   it('distinguishes a selected empty string from an empty filter list', () => {
@@ -204,7 +217,7 @@ describe('Therapy combination filtering baseline', () => {
     const terms = generateValidTherapyCombinations(
       { [THERAPY_FILTER]: ['', 'A'] }, THERAPY_FILTER, buckets,
     );
-    expect(distinct(terms)).toEqual(['', 'A']);
+    expect(terms).toEqual(['', 'A']);
   });
 });
 

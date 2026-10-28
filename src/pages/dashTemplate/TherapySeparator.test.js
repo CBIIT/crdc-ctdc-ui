@@ -186,8 +186,8 @@ describe.each(ENCODINGS)('Therapy separator %j from site-wide configuration', (s
     const filters = { therapy_string: selection, ...TYPE_CATEGORY };
     const before = JSON.stringify({ filters, vocabulary });
     const terms = generateValidTherapyCombinations(filters, 'therapy_string', vocabulary);
-    // Duplicated singleton terms are an existing quirk, not part of the contract.
-    expect(distinct(terms)).toEqual(distinct(expected));
+    // Compare exact terms for every separator; duplicate request values must fail.
+    expect(terms).toEqual([...expected].sort());
     if (count !== null) {
       expect(vocabulary.filter(({ group }) => terms.includes(group))
         .reduce((sum, { subjects }) => sum + subjects, 0)).toBe(count);
@@ -224,7 +224,7 @@ describe.each(ENCODINGS)('Therapy separator %j from site-wide configuration', (s
     await act(async () => { finishVocabulary(response(vocabulary)); });
     expect(requests(queries.DASHBOARD_QUERY_NEW)).toHaveLength(1);
     const { variables } = requests(queries.DASHBOARD_QUERY_NEW)[0];
-    expect(distinct(variables.therapy_string)).toEqual(distinct(['', 'A', ab, 'B']));
+    expect(variables.therapy_string).toEqual(['', 'A', ab, 'B'].sort());
     expect(variables).toMatchObject({
       ...TYPE_CATEGORY, study_short_name: ['test-study'], participant_id: ['test-participant'],
       files_association: ['biospecimen', 'participant'], study_association: ['study'],
@@ -283,7 +283,7 @@ describe.each(ENCODINGS)('Therapy separator %j from site-wide configuration', (s
     mountDashboard(makeStore(['', 'A', 'B']));
     await act(async () => {});
     const { activeFilters, dashboardStats } = lastProps(TabsView);
-    expect(distinct(activeFilters.therapy_string)).toEqual(distinct(['', 'A', ab, 'B']));
+    expect(activeFilters.therapy_string).toEqual(['', 'A', ab, 'B'].sort());
     const config = queries.tabContainers.find((tab) => tab.name === name);
     render(<TabPanel config={config} activeFilters={activeFilters} dashboardStats={dashboardStats} activeTab />);
     const { queryVariables, initState } = lastProps(TableView);
