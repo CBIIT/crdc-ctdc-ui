@@ -14,10 +14,13 @@ const ParticipantCard = ({ data = {}, index })=> {
     sex,
     race,
     ethnicity,
-    targeted_therapy: therapy,
+    therapy_name: therapy,
     // stage_of_disease: stageOfDisease,
   } = data;
   const classes = useStyles();
+
+  // Search returns a scalar list string (e.g. "[A, B]"); missing names display blank.
+  const therapyLabel = typeof therapy === 'string' ? removeSquareBracketsFromString(therapy) : '';
 
   const renderInfo = (label, value='') => (
     <div className={classes.keyAndValueRow}>
@@ -54,7 +57,7 @@ const ParticipantCard = ({ data = {}, index })=> {
           <div className={cn(classes.column, classes.leftColumn)}>
             
             {renderInfo('Ethnicity:', ethnicity)}
-            {renderInfo('Therapy:', removeSquareBracketsFromString(therapy))}
+            {renderInfo('Therapy:', therapyLabel)}
             {/* {renderInfo('Stage of Disease:', stageOfDisease)} */}
 
           </div>
