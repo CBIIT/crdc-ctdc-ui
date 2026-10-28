@@ -73,21 +73,35 @@ export default (theme) => ({
 
   // ---- Info panel: outer wrapper ----
   infoPanelContainer: {
-    display: 'flex',
-    flexDirection: 'row',
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
     marginTop: '28px',
     marginBottom: '10px',
+    [theme.breakpoints.down('md')]: {
+      gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+    },
+    [theme.breakpoints.down('sm')]: {
+      gridTemplateColumns: 'minmax(0, 1fr)',
+    },
   },
 
-  // ---- Info panel: each third-width section ----
+  // On tablets, Therapy occupies the left column below Demographics.
   infoPanelSection: {
-    flex: '1 1 0',
     minWidth: 0,
-    padding: '0px 45px 60px',
+    padding: '0px 24px 32px',
     background: '#FFFFFF',
     borderRight: '1px solid #AEAEAE',
     '&:last-child': {
       borderRight: 'none',
+    },
+    [theme.breakpoints.down('md')]: {
+      '&:nth-child(2)': {
+        borderRight: 'none',
+      },
+    },
+    [theme.breakpoints.down('sm')]: {
+      borderRight: 'none',
+      padding: '0px 16px 32px',
     },
   },
   infoPanelSectionTitle: {
@@ -103,11 +117,18 @@ export default (theme) => ({
 
   // ---- Info panel: each field row ----
   infoPanelRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    display: 'grid',
+    gridTemplateColumns: 'minmax(0, 1fr) minmax(0, 1.2fr)',
+    columnGap: '12px',
+    alignItems: 'start',
     marginBottom: '6px',
     paddingLeft: '10px',
+    [theme.breakpoints.down('xs')]: {
+      gridTemplateColumns: 'minmax(0, 1fr)',
+      rowGap: '2px',
+      marginBottom: '12px',
+      paddingLeft: '10px',
+    },
   },
   infoPanelLabel: {
     fontFamily: 'Roboto',
@@ -117,20 +138,23 @@ export default (theme) => ({
     textTransform: 'uppercase',
     letterSpacing: '-0.01em',
     lineHeight: '22px',
-    width: '200px',
-    flexShrink: 0,
+    minWidth: 0,
     whiteSpace: 'normal',
     wordBreak: 'break-word',
   },
   infoPanelValue: {
-    marginLeft: 'auto',
     fontFamily: 'Roboto',
     fontWeight: 400,
     fontSize: '16px',
     lineHeight: '22px',
     color: '#4B4B4B',
-    width: '216px',
+    minWidth: 0,
+    // Long names (including a single unbroken name) must stay inside the panel.
+    overflowWrap: 'anywhere',
     textAlign: 'left',
+    [theme.breakpoints.down('xs')]: {
+      paddingLeft: '10px',
+    },
   },
 
   // ---- Table sections ----
