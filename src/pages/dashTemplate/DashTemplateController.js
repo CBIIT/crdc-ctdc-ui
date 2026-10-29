@@ -26,7 +26,7 @@ const DashTemplateController = (props) => {
   return (
     <>
       {loading && <LinearProgress aria-label="Updating Explore results" />}
-      <DashTemplateView {...props} dashData={dashData} activeFilters={activeFilters} />
+      <DashTemplateView dashData={dashData} activeFilters={activeFilters} />
     </>
   );
 };
