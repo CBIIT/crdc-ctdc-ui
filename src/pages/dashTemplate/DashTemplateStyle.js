@@ -1,4 +1,18 @@
 export default () => ({
+  // Match the centered error presentation used by Study Details.
+  errorContainer: {
+    padding: '40px',
+    margin: '20px auto',
+    maxWidth: '1000px',
+    textAlign: 'center',
+    fontFamily: 'Nunito',
+    fontSize: '16px',
+    color: '#000',
+  },
+  errorTitle: {
+    color: '#d32f2f',
+    marginBottom: '16px',
+  },
   dashboardContainer: {
     backgroundColor: '#FFFFFF',
   },

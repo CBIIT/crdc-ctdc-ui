@@ -33,7 +33,6 @@ const useDashData = ({
   const [vocabulary, setVocabulary] = useState(null);
   const [dashboard, setDashboard] = useState(null);
   const [error, setError] = useState(null);
-  const [retryCount, setRetryCount] = useState(0);
 
   const baseFilters = useMemo(
     () => ({
@@ -65,15 +64,22 @@ const useDashData = ({
       .query({ query: THERAPY_QUERY, variables: baseFilters })
       .then(({ data }) => {
         const buckets = data?.searchParticipants?.[VOCABULARY_FIELD];
-        if (!Array.isArray(buckets))
-          throw new Error("Missing Therapy combination vocabulary");
+        if (!Array.isArray(buckets)) {
+          const receivedType = buckets === null ? "null" : typeof buckets;
+          throw new Error(
+            `The Therapy filter response does not contain the expected combination list at "searchParticipants.${VOCABULARY_FIELD}" `
+            + `(expected an array, received ${receivedType}). `
+            + "Explore cannot apply the selected Therapy names without this list.",
+          );
+        }
         if (active) setVocabulary({ key: vocabularyKey, buckets });
       })
-      .catch(() => {
+      .catch((queryError) => {
+        console.error("[Explore] THERAPY_QUERY failed:", queryError);
         if (active)
           setError({
             key: requestKey,
-            message: "Unable to load Therapy filters.",
+            message: queryError?.message || String(queryError),
           });
       });
     return () => {
@@ -86,7 +92,6 @@ const useDashData = ({
     vocabularyKey,
     vocabularyReady,
     requestKey,
-    retryCount,
   ]);
 
   // Type/Category use backend any-value matching and pass through unchanged.
@@ -128,15 +133,21 @@ const useDashData = ({
       })
       .then(({ data }) => {
         const search = data?.searchParticipants;
-        if (
-          !search ||
-          !Array.isArray(search.participantCountBySingleTherapyCombination) ||
-          !Array.isArray(
-            search.filterParticipantCountBySingleTherapyCombination,
-          ) ||
-          !Array.isArray(search[VOCABULARY_FIELD])
-        ) {
-          throw new Error("Missing Therapy dashboard data");
+        const invalidFields = [
+          "participantCountBySingleTherapyCombination",
+          "filterParticipantCountBySingleTherapyCombination",
+          VOCABULARY_FIELD,
+        ].filter((field) => !Array.isArray(search?.[field]));
+        if (invalidFields.length) {
+          const details = invalidFields.map((field) => {
+            const value = search?.[field];
+            const receivedType = value === null ? "null" : typeof value;
+            return `"searchParticipants.${field}" (received ${receivedType})`;
+          }).join(", ");
+          throw new Error(
+            `The Explore dashboard response contains missing or invalid Therapy lists: ${details}. `
+            + "Each field must be an array so Explore can display the Therapy filters and charts.",
+          );
         }
         if (active) {
           // A name-filtered request already used the matching bootstrap/cached vocabulary.
@@ -168,11 +179,12 @@ const useDashData = ({
           });
         }
       })
-      .catch(() => {
+      .catch((queryError) => {
+        console.error("[Explore] DASHBOARD_QUERY_NEW failed:", queryError);
         if (active)
           setError({
             key: requestKey,
-            message: "Unable to load Explore results.",
+            message: queryError?.message || String(queryError),
           });
       });
     return () => {
@@ -185,7 +197,6 @@ const useDashData = ({
     hasSelectedNames,
     vocabularyKey,
     requestKey,
-    retryCount,
   ]);
 
   return {
@@ -194,7 +205,6 @@ const useDashData = ({
     activeFilters: dashboard?.filters || activeFilters,
     loading: !filtersReady || dashboard?.key !== requestKey,
     error: error?.key === requestKey ? error.message : null,
-    retry: () => setRetryCount((count) => count + 1),
   };
 };
 

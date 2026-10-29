@@ -160,6 +160,7 @@ afterEach(() => {
   });
   containers.clear();
   localStorage.removeItem('ctdcReduxState');
+  jest.restoreAllMocks();
 });
 
 describe('Therapy combination filtering baseline', () => {
@@ -378,20 +379,35 @@ describe('Therapy vocabulary request scheduling', () => {
     expect(mockClient.query).toHaveBeenCalledTimes(2);
   });
 
-  it.each(['rejection', 'missing vocabulary'])('retries a direct dashboard after %s without a bootstrap', async (failure) => {
+  it.each(['rejection', 'missing vocabulary'])('reports a direct dashboard %s without Retry and loads after remount', async (failure) => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     const malformed = response();
     delete malformed.data.searchParticipants[OPTION_VOCABULARY];
     mockClient.query.mockImplementationOnce(() => (failure === 'rejection'
       ? Promise.reject(new Error('Network failure')) : Promise.resolve(malformed)))
       .mockResolvedValue(response());
-    const { container } = mountDashboard(makeStore());
+    const store = makeStore();
+    const { container } = mountDashboard(store);
     await act(async () => {});
-    expect(container.querySelector('[role="alert"]').textContent).toContain('Unable to load Explore results.');
+    const expectedMessage = failure === 'rejection' ? 'Network failure'
+      : `The Explore dashboard response contains missing or invalid Therapy lists: "searchParticipants.${OPTION_VOCABULARY}" (received undefined). `
+        + 'Each field must be an array so Explore can display the Therapy filters and charts.';
+    expect(container.querySelector('[role="alert"] p').textContent).toBe(
+      expectedMessage,
+    );
+    expect(container.querySelector('h2').textContent).toBe('Unable to Load Explore');
+    expect(container.querySelector('button')).toBeNull();
+    expect(container.querySelector('[role="progressbar"]')).toBeNull();
     expect(TabsView).not.toHaveBeenCalled();
-    await act(async () => { container.querySelector('button').click(); });
+    expect(mockClient.query).toHaveBeenCalledTimes(1);
+    expect(consoleError).toHaveBeenCalledWith('[Explore] DASHBOARD_QUERY_NEW failed:', expect.objectContaining({
+      message: expectedMessage,
+    }));
+    act(() => { ReactDOM.unmountComponentAtNode(container); });
+    const reloaded = mountDashboard(store);
     await waitForDashboard(2, []);
     expect(mockClient.query).toHaveBeenCalledTimes(2);
-    expect(container.querySelector('[role="alert"]')).toBeNull();
+    expect(reloaded.container.querySelector('[role="alert"]')).toBeNull();
   });
 
   it('ignores both results and vocabulary from an older direct dashboard response', async () => {
@@ -418,6 +434,7 @@ describe('Therapy vocabulary request scheduling', () => {
   });
 
   it.each(['resolve', 'reject'])('loads directly after clearing names and ignores a late bootstrap %s', async (completion) => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     let finishVocabulary;
     mockClient.query.mockImplementation(({ query }) => (query === queries.THERAPY_QUERY
       ? new Promise((resolve, reject) => { finishVocabulary = completion === 'resolve' ? resolve : reject; })
@@ -431,6 +448,11 @@ describe('Therapy vocabulary request scheduling', () => {
     await waitForDashboard(1, []);
     expect(mockClient.query).toHaveBeenCalledTimes(2);
     expect(container.querySelector('[role="alert"]')).toBeNull();
+    if (completion === 'reject') {
+      expect(consoleError).toHaveBeenCalledWith('[Explore] THERAPY_QUERY failed:', expect.objectContaining({ message: 'Late failure' }));
+    } else {
+      expect(consoleError).not.toHaveBeenCalled();
+    }
   });
 });
 
@@ -704,6 +726,35 @@ describe('Persisted Therapy key migration', () => {
 });
 
 describe('Therapy request lifecycle', () => {
+  it('explains why a missing Therapy combination list prevents filtering', async () => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    mockClient.query.mockResolvedValue({ data: { searchParticipants: {} } });
+    const { container } = mountDashboard(makeStore({ [THERAPY_FILTER]: { A: true } }));
+    await act(async () => {});
+    expect(container.querySelector('[role="alert"] p').textContent).toBe(
+      `The Therapy filter response does not contain the expected combination list at "searchParticipants.${OPTION_VOCABULARY}" `
+      + '(expected an array, received undefined). Explore cannot apply the selected Therapy names without this list.',
+    );
+    expect(dashboardRequests()).toHaveLength(0);
+  });
+
+  it.each([
+    [null, 'null'],
+    [{}, 'object'],
+    ['A|B', 'string'],
+  ])('identifies the dashboard field and received %s value when an array is required', async (value, receivedType) => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    const malformed = response();
+    malformed.data.searchParticipants[COMBINATIONS] = value;
+    mockClient.query.mockResolvedValue(malformed);
+    const { container } = mountDashboard(makeStore());
+    await act(async () => {});
+    const message = container.querySelector('[role="alert"] p').textContent;
+    expect(message).toContain(`"searchParticipants.${COMBINATIONS}" (received ${receivedType})`);
+    expect(message).toContain('Each field must be an array');
+    expect(message).toContain('display the Therapy filters and charts');
+  });
+
   it('keeps the existing table mounted and on its completed cohort during refresh', async () => {
     TabsView.mockImplementation(() => <input aria-label="Table state" defaultValue="initial" />);
     try {
@@ -734,20 +785,94 @@ describe('Therapy request lifecycle', () => {
     ['bootstrap missing vocabulary', 'bootstrap', () => Promise.resolve({ data: { searchParticipants: {} } })],
     ['dashboard rejection', 'dashboard', () => Promise.reject(new Error('Network failure'))],
     ['dashboard missing buckets', 'dashboard', () => Promise.resolve({ data: { searchParticipants: {} } })],
-  ])('shows a retryable error after %s and recovers', async (_name, phase, failure) => {
+  ])('shows only an error after %s and preserves saved names on remount', async (_name, phase, failure) => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     let failed = false;
     mockClient.query.mockImplementation(({ query }) => {
       const target = phase === 'bootstrap' ? queries.THERAPY_QUERY : queries.DASHBOARD_QUERY_NEW;
       if (query === target && !failed) { failed = true; return failure(); }
       return Promise.resolve(response());
     });
-    const { container } = mountDashboard(makeStore({ [THERAPY_FILTER]: { A: true, B: true } }));
+    const store = makeStore({ [THERAPY_FILTER]: { A: true, B: true } });
+    const { container } = mountDashboard(store);
     await act(async () => {});
     expect(container.querySelector('[role="alert"]')).not.toBeNull();
     expect(container.querySelector('[role="progressbar"]')).toBeNull();
-    await act(async () => { container.querySelector('button').click(); });
-    expect(container.querySelector('[role="alert"]')).toBeNull();
+    expect(container.querySelector('button')).toBeNull();
+    expect(TabsView).not.toHaveBeenCalled();
+    expect(consoleError).toHaveBeenCalledWith(
+      `[Explore] ${phase === 'bootstrap' ? 'THERAPY_QUERY' : 'DASHBOARD_QUERY_NEW'} failed:`,
+      expect.any(Error),
+    );
+    expect(consoleError).toHaveBeenCalledTimes(1);
+    expect(container.querySelector('[role="alert"] p').textContent)
+      .toBe(consoleError.mock.calls[0][1].message);
+    const requestCount = mockClient.query.mock.calls.length;
+    await act(async () => {});
+    expect(mockClient.query).toHaveBeenCalledTimes(requestCount);
+    act(() => { ReactDOM.unmountComponentAtNode(container); });
+    const reloaded = mountDashboard(store);
+    await act(async () => {});
+    expect(reloaded.container.querySelector('[role="alert"]')).toBeNull();
     expect(distinct(lastProps(TabsView).activeFilters[THERAPY_FILTER])).toEqual(['A', 'A|B', 'B']);
+    expect(store.getState().statusReducer.filterState[THERAPY_FILTER]).toEqual({ A: true, B: true });
+  });
+
+  it.each(['bootstrap', 'dashboard'])('logs the original query error and displays its message for %s', async (phase) => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const requestError = Object.assign(new Error('Invalid Therapy query'), {
+      graphQLErrors: [{ message: 'Invalid Therapy query', extensions: { code: 'GRAPHQL_VALIDATION_FAILED' } }],
+      networkError: Object.assign(new Error('Service unavailable'), { statusCode: 503 }),
+    });
+    const target = phase === 'bootstrap' ? queries.THERAPY_QUERY : queries.DASHBOARD_QUERY_NEW;
+    mockClient.query.mockImplementation(({ query }) => (query === target
+      ? Promise.reject(requestError) : Promise.resolve(response())));
+    const { container } = mountDashboard(makeStore({ [THERAPY_FILTER]: { A: true } }));
+    await act(async () => {});
+    expect(consoleError).toHaveBeenCalledWith(
+      `[Explore] ${phase === 'bootstrap' ? 'THERAPY_QUERY' : 'DASHBOARD_QUERY_NEW'} failed:`, requestError,
+    );
+    expect(container.querySelector('[role="alert"] p').textContent).toBe(requestError.message);
+    expect(container.querySelector('h2').textContent).toBe('Unable to Load Explore');
+    expect(container.querySelector('button')).toBeNull();
+  });
+
+  it.each(['bootstrap', 'dashboard'])('displays a string rejection from %s without replacing its message', async (phase) => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    const target = phase === 'bootstrap' ? queries.THERAPY_QUERY : queries.DASHBOARD_QUERY_NEW;
+    const message = 'The backend connection was interrupted';
+    mockClient.query.mockImplementation(({ query }) => (query === target
+      ? Promise.reject(message) : Promise.resolve(response())));
+    const { container } = mountDashboard(makeStore({ [THERAPY_FILTER]: { A: true } }));
+    await act(async () => {});
+    expect(container.querySelector('[role="alert"] p').textContent).toBe(message);
+    expect(container.querySelector('button')).toBeNull();
+  });
+
+  it.each(['bootstrap', 'dashboard'])('replaces completed results with an error when a %s refresh fails', async (phase) => {
+    jest.spyOn(console, 'error').mockImplementation(() => {});
+    TabsView.mockImplementation(() => <div data-testid="completed-results" />);
+    try {
+      mockClient.query.mockResolvedValue(response());
+      const store = makeStore({ [THERAPY_FILTER]: { A: true } });
+      const { container } = mountDashboard(store);
+      await waitForDashboard(1, ['A']);
+      expect(container.querySelector('[data-testid="completed-results"]')).not.toBeNull();
+      mockClient.query.mockRejectedValueOnce(new Error('Refresh failed'));
+      act(() => { store.dispatch(toggleCheckBox({
+        datafield: phase === 'bootstrap' ? 'sex' : THERAPY_FILTER,
+        name: phase === 'bootstrap' ? 'Female' : 'B',
+        isChecked: true,
+      })); });
+      await act(async () => {});
+      expect(container.querySelector('[role="alert"]')).not.toBeNull();
+      expect(container.querySelector('[role="alert"] p').textContent).toBe('Refresh failed');
+      expect(container.querySelector('[data-testid="completed-results"]')).toBeNull();
+      expect(container.querySelector('[role="progressbar"]')).toBeNull();
+      expect(container.querySelector('button')).toBeNull();
+    } finally {
+      TabsView.mockImplementation(() => null);
+    }
   });
 
   it('refreshes vocabulary before using a changed non-therapy filter', async () => {
@@ -783,21 +908,29 @@ describe('Therapy request lifecycle', () => {
     await waitForDashboard(1, ['A', 'B']);
   });
 
-  it('does not overwrite newer dashboard results with an older response', async () => {
+  it.each(['resolve', 'reject'])('does not overwrite newer dashboard results when an older request completes with %s', async (completion) => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     mockClient.query.mockResolvedValue(response());
     const store = makeStore();
     mountDashboard(store);
     await waitForDashboard(1, []);
     const pending = [];
-    mockClient.query.mockImplementation(() => new Promise((resolve) => { pending.push(resolve); }));
+    mockClient.query.mockImplementation(() => new Promise((resolve, reject) => { pending.push({ resolve, reject }); }));
     act(() => { store.dispatch(toggleCheckBox({ datafield: THERAPY_FILTER, name: 'A', isChecked: true })); });
     act(() => { store.dispatch(toggleCheckBox({ datafield: THERAPY_FILTER, name: 'B', isChecked: true })); });
     const newest = response();
     newest.data.searchParticipants.numberOfParticipants = 99;
-    await act(async () => { pending[1](newest); });
-    await act(async () => { pending[0](response()); });
+    await act(async () => { pending[1].resolve(newest); });
+    await act(async () => {
+      if (completion === 'resolve') pending[0].resolve(response());
+      else pending[0].reject(new Error('Obsolete dashboard failure'));
+    });
     expect(lastProps(StatsView).data.numberOfParticipants).toBe(99);
     expect(distinct(lastProps(TabsView).activeFilters[THERAPY_FILTER])).toEqual(['A', 'A|B', 'B']);
+    expect(document.querySelector('[role="alert"]')).toBeNull();
+    if (completion === 'reject') {
+      expect(consoleError).toHaveBeenCalledWith('[Explore] DASHBOARD_QUERY_NEW failed:', expect.objectContaining({ message: 'Obsolete dashboard failure' }));
+    }
   });
 });
 
