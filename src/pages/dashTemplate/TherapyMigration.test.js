@@ -21,6 +21,7 @@ import ParticipantDetailView from '../participantDetail/participantDetailView';
 import StatsView from '../../components/Stats/StatsView';
 import ScopedStatsController from '../../components/Stats/ScopedStatsController';
 import { facetsConfig } from '../../bento/dashTemplate';
+import { DEFAULT_VALUE } from '../../bento/siteWideConfig';
 import * as queries from '../../bento/dashboardTabData';
 import { GET_GLOBAL_STATS_DATA_QUERY } from '../../bento/globalStatsData';
 import { loadState, saveState, migrateTherapyFilters } from '../../store/utils';
@@ -220,6 +221,19 @@ describe('Therapy combination filtering baseline', () => {
     );
     expect(terms).toEqual(['', 'A']);
   });
+
+  it('logs malformed vocabulary entries and expands the remaining names', () => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const invalidGroup = { group: null, subjects: 3 };
+    const terms = generateValidTherapyCombinations(
+      { [THERAPY_FILTER]: ['', 'A', 'B'] }, THERAPY_FILTER,
+      [invalidGroup, { group: '', subjects: 2 }, { group: 'A|B', subjects: 1 }],
+    );
+    expect(terms).toEqual(['', 'A', 'A|B', 'B']);
+    expect(consoleError).toHaveBeenCalledWith(
+      expect.stringContaining(`Expected text, including an empty string for “${DEFAULT_VALUE}”.`), invalidGroup,
+    );
+  });
 });
 
 describe('Therapy facet reconstruction', () => {
@@ -238,13 +252,36 @@ describe('Therapy facet reconstruction', () => {
       { group: '', subjects: 2 }, { group: 'A', subjects: 3 }, { group: 'B', subjects: 3 },
     ]);
     const facet = facetsConfig.find(({ datafield }) => datafield === THERAPY_FILTER);
-    expect(facet.defaultValue).toBe('No value');
+    expect(facet.defaultValue).toBe(DEFAULT_VALUE);
     expect(getFilters({ [THERAPY_FILTER]: { '': true } })[THERAPY_FILTER]).toEqual(['']);
   });
 
   it('handles a valid empty aggregation', () => {
     expect(updateTherapyFacetData({ [COMBINATIONS]: [] }, COMBINATIONS))
       .toEqual({ [COMBINATIONS]: [] });
+  });
+
+  it.each([
+    ['null group', { group: null, subjects: 3 }],
+    ['missing group', { subjects: 3 }],
+    ['numeric group', { group: 42, subjects: 3 }],
+    ['null group entry', null],
+  ])('logs and skips a %s while retaining valid counts', (_description, invalidGroup) => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const source = {
+      [COMBINATIONS]: [
+        { group: 'A', subjects: 2 }, invalidGroup,
+        { group: 'A|B', subjects: 1 }, { group: '', subjects: 4 },
+      ],
+    };
+    expect(updateTherapyFacetData(source, COMBINATIONS)).toEqual({
+      [COMBINATIONS]: [
+        { group: 'A', subjects: 3 }, { group: 'B', subjects: 1 }, { group: '', subjects: 4 },
+      ],
+    });
+    expect(consoleError).toHaveBeenCalledWith(
+      expect.stringContaining('Skipping this group.'), invalidGroup,
+    );
   });
 });
 
@@ -818,6 +855,23 @@ describe('Therapy request lifecycle', () => {
     expect(store.getState().statusReducer.filterState[THERAPY_FILTER]).toEqual({ A: true, B: true });
   });
 
+  it.each([COMBINATIONS, OPTION_COMBINATIONS, OPTION_VOCABULARY])('keeps Explore available when %s contains an invalid group', async (field) => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const malformed = response();
+    const invalidGroup = { group: null, subjects: 3 };
+    malformed.data.searchParticipants[field].push(invalidGroup);
+    mockClient.query.mockResolvedValue(malformed);
+    const { container } = mountDashboard(makeStore({ [THERAPY_FILTER]: { A: true, B: true } }));
+    await waitForDashboard(1, ['A', 'A|B', 'B']);
+
+    expect(container.querySelector('[role="alert"]')).toBeNull();
+    expect(lastProps(TabsView).dashboardStats[COMBINATIONS]).toEqual(nameCounts);
+    expect(lastProps(TabsView).dashboardStats[OPTION_COMBINATIONS]).toEqual(nameCounts);
+    expect(consoleError).toHaveBeenCalledWith(
+      expect.stringContaining('Skipping this group.'), invalidGroup,
+    );
+  });
+
   it.each(['bootstrap', 'dashboard'])('logs the original query error and displays its message for %s', async (phase) => {
     const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     const requestError = Object.assign(new Error('Invalid Therapy query'), {
@@ -958,7 +1012,7 @@ describe('Therapy Type and Category facets', () => {
       apiPath: `participantCountBy${suffix}`,
       apiForFiltering: `filterParticipantCountBy${suffix}`,
       show: true,
-      defaultValue: 'No value',
+      defaultValue: DEFAULT_VALUE,
     });
   });
 
@@ -1000,7 +1054,7 @@ describe('Therapy Type and Category facets', () => {
       .toEqual(data.data.searchParticipants.filterParticipantCountByTherapyCategory);
   });
 
-  it('accepts valid empty Type buckets without creating a synthetic No value option', async () => {
+  it('accepts valid empty Type buckets without creating a synthetic missing-value option', async () => {
     const data = response();
     data.data.searchParticipants.participantCountByTherapyType = [];
     data.data.searchParticipants.filterParticipantCountByTherapyType = [];

@@ -1,11 +1,41 @@
-import { THERAPY_COMBINATION_SEPARATOR } from '../../bento/siteWideConfig';
+import { DEFAULT_VALUE, THERAPY_COMBINATION_SEPARATOR } from '../../bento/siteWideConfig';
 
 /**
- * Extracts the backend combination strings from aggregation buckets.
- * Keeps the original order and empty-string values; counts are not needed here.
+ * Checks whether a Therapy group has a usable combination name.
+ * Logs malformed groups so Explore can continue processing the valid entries.
+ * Used for both selected-name expansion and facet counts; invalid names are not
+ * converted to empty strings, which would incorrectly count them under DEFAULT_VALUE.
  *
  * Parameters:
- * @param {Object[]} data - Aggregation buckets with a `group` string.
+ * @param {*} therapyGroup - One aggregation item returned by the backend.
+ *
+ * Returns:
+ * @return {boolean} - True for string groups, including ''; false otherwise.
+ *
+ * Example:
+ *   { group: 'A|B', subjects: 3 } // Accepted for splitting or expansion.
+ *   { group: '', subjects: 2 }    // Accepted as the option labeled DEFAULT_VALUE.
+ *   { group: null, subjects: 1 }  // Logged and skipped, without failing Explore.
+ */
+const hasValidTherapyGroup = (therapyGroup) => {
+  if (typeof therapyGroup?.group !== 'string') {
+    console.error(
+      '[Explore] The Therapy response contains an invalid combination name. '
+      + `Expected text, including an empty string for “${DEFAULT_VALUE}”. Skipping this group.`,
+      therapyGroup,
+    );
+    return false;
+  }
+  return true;
+};
+
+/**
+ * Extracts the backend combination strings from aggregation groups.
+ * Keeps the original order and empty-string values; counts are not needed here.
+ * Malformed names are logged and skipped so they cannot break filter expansion.
+ *
+ * Parameters:
+ * @param {Object[]} data - Aggregation groups with a `group` string.
  *
  * Returns:
  * @return {string[]} - The `group` values used as the combination vocabulary.
@@ -14,7 +44,7 @@ import { THERAPY_COMBINATION_SEPARATOR } from '../../bento/siteWideConfig';
  *   Input: [{ group: 'A|B', subjects: 3 }, { group: '', subjects: 2 }]
  *   Output: ['A|B', '']
  */
-const extractGroupValues = (data) => data.map(item => item.group);
+const extractGroupValues = (data) => data.filter(hasValidTherapyGroup).map(item => item.group);
 
 /**
  * Validates the separator before generating or splitting combination strings.
@@ -45,15 +75,16 @@ const validateSeparator = (separator) => {
  *   - Keeps selected names as singleton terms, even if absent from the vocabulary.
  *   - Adds a combination only when all its names are selected and it exists in
  *     the vocabulary. Selecting A alone does not include the A+B combination.
- *   - Preserves [''] (the selected "No value" option) separately from [] (no filter).
+ *   - Preserves [''] (the option labeled DEFAULT_VALUE) separately from [] (no filter).
  *   - Sends each complete request term once, even when a selected name also
  *     appears as a singleton in the backend vocabulary.
  *   - Leaves Redux/saved selections unchanged; only API request terms are expanded.
+ *   - Logs and skips malformed vocabulary names while retaining selected singletons.
  *
  * Parameters:
  * @param {Object} activeFilters - API filters containing arrays of selected values.
  * @param {string} filterApiKey - Selected-name field, normally 'therapy_string'.
- * @param {Object[]} possibleCombinations - Backend buckets containing `group` strings.
+ * @param {Object[]} possibleCombinations - Backend groups containing `group` strings.
  * @param {string} [separator=THERAPY_COMBINATION_SEPARATOR] - Literal separator from
  *   siteWideConfig by default; must match the backend vocabulary encoding.
  *
@@ -117,7 +148,7 @@ function generateValidCombinations(strings, validCombinations, joinByChar) {
     strings = strings.filter(str => str !== '');
   }
   
-  validSet.delete(''); // Remove the empty string(No value) from validSet
+  validSet.delete(''); // Handle the empty-string option labeled DEFAULT_VALUE separately.
 
   // Preserve selected singleton names even when absent from the combination vocabulary.
   result = [...strings]
@@ -168,30 +199,32 @@ function generateValidCombinations(strings, validCombinations, joinByChar) {
 }
 
 /**
- * Reconstructs individual Therapy facet options from backend combination buckets.
- * Each name in a combination receives that bucket's `subjects` count. Counts for
- * the same name across buckets are summed, while the original buckets stay unchanged.
- * An empty `group` remains an empty option for the facet's "No value" label.
+ * Reconstructs individual Therapy facet options from backend combination groups.
+ * Each name in a combination receives that group's `subjects` count. Counts for
+ * the same name across groups are summed, while the original groups stay unchanged.
+ * An empty `group` remains an empty option displayed with the DEFAULT_VALUE label.
  *
  * Parameters:
- * @param {Object} searchParticipants - API data containing combination buckets.
- * @param {string} dataApiKey - Property holding the bucket array to reconstruct.
+ * @param {Object} searchParticipants - API data containing combination groups.
+ * @param {string} dataApiKey - Property holding the group array to reconstruct.
  * @param {string} [separator=THERAPY_COMBINATION_SEPARATOR] - Literal backend separator;
  *   defaults to the same siteWideConfig setting used for request combinations.
  *
  * Returns:
- * @return {Object} - An object containing only `dataApiKey`, with per-name buckets.
+ * @return {Object} - An object containing only `dataApiKey`, with per-name groups.
  *   An empty input array produces an empty output array. Names are not deduplicated
- *   within a raw combination; each occurrence contributes the bucket count.
+ *   within a raw combination; each occurrence contributes the group count.
+ *   Malformed names are logged and skipped; counts include only valid groups.
+ *   An empty string remains valid and represents the option labeled DEFAULT_VALUE.
  * @throws {Error} - If the configured or explicitly supplied separator is invalid.
  *
- * Example (dataApiKey 'buckets', separator '|'):
- *   Input: { buckets: [
+ * Example (dataApiKey 'groups', separator '|'):
+ *   Input: { groups: [
  *     { group: 'Atezolizumab', subjects: 13 },
  *     { group: 'Atezolizumab|Encorafenib + Cetuximab', subjects: 1 },
  *     { group: '', subjects: 2 }
  *   ] }
- *   Output: { buckets: [
+ *   Output: { groups: [
  *     { group: 'Atezolizumab', subjects: 14 },
  *     { group: 'Encorafenib + Cetuximab', subjects: 1 },
  *     { group: '', subjects: 2 }
@@ -204,7 +237,7 @@ const updateTherapyFacetData = (
   const facetItemData = searchParticipants[dataApiKey];
   const therapyCounts = new Map();
 
-  facetItemData.forEach(({ group, subjects }) => {
+  facetItemData.filter(hasValidTherapyGroup).forEach(({ group, subjects }) => {
     group.split(separator).forEach(therapy => {
       therapyCounts.set(therapy, (therapyCounts.get(therapy) || 0) + subjects);
     });
