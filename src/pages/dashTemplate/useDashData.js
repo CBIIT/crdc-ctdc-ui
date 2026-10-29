@@ -9,6 +9,7 @@ import {
   generateValidTherapyCombinations,
   updateTherapyFacetData,
 } from "./utils";
+import { ExploreResponseError, getExploreErrorMessage } from "./exploreErrors";
 
 export const buildParticipantIdFilter = (
   localFindUpload,
@@ -66,10 +67,11 @@ const useDashData = ({
         const buckets = data?.searchParticipants?.[VOCABULARY_FIELD];
         if (!Array.isArray(buckets)) {
           const receivedType = buckets === null ? "null" : typeof buckets;
-          throw new Error(
+          throw new ExploreResponseError(
             `The Therapy filter response does not contain the expected combination list at "searchParticipants.${VOCABULARY_FIELD}" `
             + `(expected an array, received ${receivedType}). `
             + "Explore cannot apply the selected Therapy names without this list.",
+            "The Backend Service returned missing or invalid Therapy information needed to apply your selected names.",
           );
         }
         if (active) setVocabulary({ key: vocabularyKey, buckets });
@@ -79,7 +81,7 @@ const useDashData = ({
         if (active)
           setError({
             key: requestKey,
-            message: queryError?.message || String(queryError),
+            message: getExploreErrorMessage(queryError),
           });
       });
     return () => {
@@ -144,9 +146,10 @@ const useDashData = ({
             const receivedType = value === null ? "null" : typeof value;
             return `"searchParticipants.${field}" (received ${receivedType})`;
           }).join(", ");
-          throw new Error(
+          throw new ExploreResponseError(
             `The Explore dashboard response contains missing or invalid Therapy lists: ${details}. `
             + "Each field must be an array so Explore can display the Therapy filters and charts.",
+            "The Backend Service returned missing or invalid Therapy information needed to display the filters and charts.",
           );
         }
         if (active) {
@@ -184,7 +187,7 @@ const useDashData = ({
         if (active)
           setError({
             key: requestKey,
-            message: queryError?.message || String(queryError),
+            message: getExploreErrorMessage(queryError),
           });
       });
     return () => {

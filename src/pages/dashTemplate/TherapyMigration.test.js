@@ -86,6 +86,9 @@ const distinct = (values = []) => [...new Set(values)].sort();
 const selectedNames = (names) => Object.fromEntries(names.map((name) => [name, true]));
 const lastProps = (component) => component.mock.calls[component.mock.calls.length - 1][0];
 const mockClient = { query: jest.fn() };
+const connectionFailure = () => Object.assign(new Error('Network failure'), {
+  networkError: new Error('Failed to fetch'),
+});
 const containers = new Set();
 const render = (element) => {
   const container = document.createElement('div');
@@ -421,14 +424,14 @@ describe('Therapy vocabulary request scheduling', () => {
     const malformed = response();
     delete malformed.data.searchParticipants[OPTION_VOCABULARY];
     mockClient.query.mockImplementationOnce(() => (failure === 'rejection'
-      ? Promise.reject(new Error('Network failure')) : Promise.resolve(malformed)))
+      ? Promise.reject(connectionFailure()) : Promise.resolve(malformed)))
       .mockResolvedValue(response());
     const store = makeStore();
     const { container } = mountDashboard(store);
     await act(async () => {});
-    const expectedMessage = failure === 'rejection' ? 'Network failure'
-      : `The Explore dashboard response contains missing or invalid Therapy lists: "searchParticipants.${OPTION_VOCABULARY}" (received undefined). `
-        + 'Each field must be an array so Explore can display the Therapy filters and charts.';
+    const expectedMessage = failure === 'rejection'
+      ? 'Explore could not connect to the Backend Service.'
+      : 'The Backend Service returned missing or invalid Therapy information needed to display the filters and charts.';
     expect(container.querySelector('[role="alert"] p').textContent).toBe(
       expectedMessage,
     );
@@ -438,7 +441,7 @@ describe('Therapy vocabulary request scheduling', () => {
     expect(TabsView).not.toHaveBeenCalled();
     expect(mockClient.query).toHaveBeenCalledTimes(1);
     expect(consoleError).toHaveBeenCalledWith('[Explore] DASHBOARD_QUERY_NEW failed:', expect.objectContaining({
-      message: expectedMessage,
+      message: failure === 'rejection' ? 'Network failure' : expect.stringContaining(OPTION_VOCABULARY),
     }));
     act(() => { ReactDOM.unmountComponentAtNode(container); });
     const reloaded = mountDashboard(store);
@@ -764,14 +767,16 @@ describe('Persisted Therapy key migration', () => {
 
 describe('Therapy request lifecycle', () => {
   it('explains why a missing Therapy combination list prevents filtering', async () => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     mockClient.query.mockResolvedValue({ data: { searchParticipants: {} } });
     const { container } = mountDashboard(makeStore({ [THERAPY_FILTER]: { A: true } }));
     await act(async () => {});
     expect(container.querySelector('[role="alert"] p').textContent).toBe(
-      `The Therapy filter response does not contain the expected combination list at "searchParticipants.${OPTION_VOCABULARY}" `
-      + '(expected an array, received undefined). Explore cannot apply the selected Therapy names without this list.',
+      'The Backend Service returned missing or invalid Therapy information needed to apply your selected names.',
     );
+    expect(consoleError).toHaveBeenCalledWith('[Explore] THERAPY_QUERY failed:', expect.objectContaining({
+      message: expect.stringContaining(`"searchParticipants.${OPTION_VOCABULARY}" (expected an array, received undefined)`),
+    }));
     expect(dashboardRequests()).toHaveLength(0);
   });
 
@@ -779,17 +784,18 @@ describe('Therapy request lifecycle', () => {
     [null, 'null'],
     [{}, 'object'],
     ['A|B', 'string'],
-  ])('identifies the dashboard field and received %s value when an array is required', async (value, receivedType) => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+  ])('keeps the field and received %s type in diagnostics while explaining missing Therapy data', async (value, receivedType) => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     const malformed = response();
     malformed.data.searchParticipants[COMBINATIONS] = value;
     mockClient.query.mockResolvedValue(malformed);
     const { container } = mountDashboard(makeStore());
     await act(async () => {});
     const message = container.querySelector('[role="alert"] p').textContent;
-    expect(message).toContain(`"searchParticipants.${COMBINATIONS}" (received ${receivedType})`);
-    expect(message).toContain('Each field must be an array');
-    expect(message).toContain('display the Therapy filters and charts');
+    expect(message).toBe('The Backend Service returned missing or invalid Therapy information needed to display the filters and charts.');
+    expect(consoleError).toHaveBeenCalledWith('[Explore] DASHBOARD_QUERY_NEW failed:', expect.objectContaining({
+      message: expect.stringContaining(`"searchParticipants.${COMBINATIONS}" (received ${receivedType})`),
+    }));
   });
 
   it('keeps the existing table mounted and on its completed cohort during refresh', async () => {
@@ -818,9 +824,9 @@ describe('Therapy request lifecycle', () => {
   });
 
   it.each([
-    ['bootstrap rejection', 'bootstrap', () => Promise.reject(new Error('Network failure'))],
+    ['bootstrap rejection', 'bootstrap', () => Promise.reject(connectionFailure())],
     ['bootstrap missing vocabulary', 'bootstrap', () => Promise.resolve({ data: { searchParticipants: {} } })],
-    ['dashboard rejection', 'dashboard', () => Promise.reject(new Error('Network failure'))],
+    ['dashboard rejection', 'dashboard', () => Promise.reject(connectionFailure())],
     ['dashboard missing buckets', 'dashboard', () => Promise.resolve({ data: { searchParticipants: {} } })],
   ])('shows only an error after %s and preserves saved names on remount', async (_name, phase, failure) => {
     const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
@@ -843,7 +849,7 @@ describe('Therapy request lifecycle', () => {
     );
     expect(consoleError).toHaveBeenCalledTimes(1);
     expect(container.querySelector('[role="alert"] p').textContent)
-      .toBe(consoleError.mock.calls[0][1].message);
+      .not.toBe(consoleError.mock.calls[0][1].message);
     const requestCount = mockClient.query.mock.calls.length;
     await act(async () => {});
     expect(mockClient.query).toHaveBeenCalledTimes(requestCount);
@@ -872,7 +878,7 @@ describe('Therapy request lifecycle', () => {
     );
   });
 
-  it.each(['bootstrap', 'dashboard'])('logs the original query error and displays its message for %s', async (phase) => {
+  it.each(['bootstrap', 'dashboard'])('logs the original query error and displays its HTTP cause for %s', async (phase) => {
     const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     const requestError = Object.assign(new Error('Invalid Therapy query'), {
       graphQLErrors: [{ message: 'Invalid Therapy query', extensions: { code: 'GRAPHQL_VALIDATION_FAILED' } }],
@@ -886,20 +892,25 @@ describe('Therapy request lifecycle', () => {
     expect(consoleError).toHaveBeenCalledWith(
       `[Explore] ${phase === 'bootstrap' ? 'THERAPY_QUERY' : 'DASHBOARD_QUERY_NEW'} failed:`, requestError,
     );
-    expect(container.querySelector('[role="alert"] p').textContent).toBe(requestError.message);
+    expect(container.querySelector('[role="alert"] p').textContent)
+      .toBe('The Backend Service could not complete the Explore request (HTTP 503).');
     expect(container.querySelector('h2').textContent).toBe('Unable to Load Explore');
     expect(container.querySelector('button')).toBeNull();
   });
 
-  it.each(['bootstrap', 'dashboard'])('displays a string rejection from %s without replacing its message', async (phase) => {
-    jest.spyOn(console, 'error').mockImplementation(() => {});
+  it.each(['bootstrap', 'dashboard'])('logs an unclassified string rejection from %s without displaying raw diagnostics', async (phase) => {
+    const consoleError = jest.spyOn(console, 'error').mockImplementation(() => {});
     const target = phase === 'bootstrap' ? queries.THERAPY_QUERY : queries.DASHBOARD_QUERY_NEW;
-    const message = 'The backend connection was interrupted';
+    const message = 'Unexpected response from https://internal.example/graphql';
     mockClient.query.mockImplementation(({ query }) => (query === target
       ? Promise.reject(message) : Promise.resolve(response())));
     const { container } = mountDashboard(makeStore({ [THERAPY_FILTER]: { A: true } }));
     await act(async () => {});
-    expect(container.querySelector('[role="alert"] p').textContent).toBe(message);
+    expect(container.querySelector('[role="alert"] p').textContent)
+      .toBe('An unexpected error interrupted the Explore request.');
+    expect(consoleError).toHaveBeenCalledWith(
+      `[Explore] ${phase === 'bootstrap' ? 'THERAPY_QUERY' : 'DASHBOARD_QUERY_NEW'} failed:`, message,
+    );
     expect(container.querySelector('button')).toBeNull();
   });
 
@@ -920,7 +931,8 @@ describe('Therapy request lifecycle', () => {
       })); });
       await act(async () => {});
       expect(container.querySelector('[role="alert"]')).not.toBeNull();
-      expect(container.querySelector('[role="alert"] p').textContent).toBe('Refresh failed');
+      expect(container.querySelector('[role="alert"] p').textContent)
+        .toBe('An unexpected error interrupted the Explore request.');
       expect(container.querySelector('[data-testid="completed-results"]')).toBeNull();
       expect(container.querySelector('[role="progressbar"]')).toBeNull();
       expect(container.querySelector('button')).toBeNull();
