@@ -100,9 +100,9 @@ export const tabIndex = [
   },
 ];
 
-// First Dash Query used for Targeted Therapy
-export const TARGETED_THERAPY_QUERY = gql`
-query search_for_targeted_therapy (
+// Bootstrap only when selected names need vocabulary for the current other filters.
+export const THERAPY_QUERY = gql`
+query search_for_therapy (
   $participant_id: [String],
   $study_short_name: [String],
   $ctep_disease_term: [String],
@@ -112,8 +112,9 @@ query search_for_targeted_therapy (
   $race: [String], 
   $ethnicity: [String],
   $carcinogen_exposure: [String], 
-  # $targeted_therapy: [String],
-  $targeted_therapy_string: [String],
+  $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -132,8 +133,9 @@ query search_for_targeted_therapy (
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
-    # targeted_therapy: $targeted_therapy
-    targeted_therapy_string: $targeted_therapy_string
+    therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
     
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -142,30 +144,8 @@ query search_for_targeted_therapy (
     data_file_type: $data_file_type
     data_file_format: $data_file_format
   ) {
-    # Used to help create/compare valid TargetedTherapy combinations under generateValidCombinations()
-    filterParticipantCountBySingleTargetedTherapyCombinationForFacet {
-      group
-      subjects
-    }
-    participantCountBySingleTargetedTherapyCombinationForFacet {
-      group
-      subjects
-    }
-
-    participantCountByTargetedTherapy {
-      group
-      subjects
-    }
-    filterParticipantCountByTargetedTherapy {
-        group
-  subjects
-    }
-
-    participantCountBySingleTargetedTherapyCombination  {
-      group
-      subjects
-    }
-    filterParticipantCountBySingleTargetedTherapyCombination  {
+    # Excludes the name filter itself so A and B can expand to A|B when supported.
+    filterParticipantCountBySingleTherapyCombinationForFacet {
       group
       subjects
     }
@@ -185,8 +165,9 @@ query search(
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
-  # $targeted_therapy: [String],
-  $targeted_therapy_string: [String],
+  $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -207,8 +188,9 @@ query search(
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
-    # targeted_therapy: $targeted_therapy
-    targeted_therapy_string: $targeted_therapy_string
+    therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -220,7 +202,7 @@ query search(
     numberOfStudies
     numberOfParticipants
     numberOfDiagnoses
-    numberOfTargetedTherapies
+    numberOfTherapies
     numberOfSpecimens
     numberOfFiles
     numberOfStudyFiles
@@ -333,27 +315,43 @@ query search(
       group
       subjects
     }
-    participantCountByTargetedTherapy {
+    participantCountByTherapy {
       group
       subjects
     }
-    filterParticipantCountByTargetedTherapy {
+    filterParticipantCountByTherapy {
       group
       subjects
     }
-    participantCountBySingleTargetedTherapyCombination {
+    participantCountByTherapyType {
       group
       subjects
     }
-    participantCountBySingleTargetedTherapyCombinationForFacet {
+    filterParticipantCountByTherapyType {
       group
       subjects
     }
-    filterParticipantCountBySingleTargetedTherapyCombinationForFacet {
+    participantCountByTherapyCategory {
       group
       subjects
     }
-    filterParticipantCountBySingleTargetedTherapyCombination {
+    filterParticipantCountByTherapyCategory {
+      group
+      subjects
+    }
+    participantCountBySingleTherapyCombination {
+      group
+      subjects
+    }
+    participantCountBySingleTherapyCombinationForFacet {
+      group
+      subjects
+    }
+    filterParticipantCountBySingleTherapyCombinationForFacet {
+      group
+      subjects
+    }
+    filterParticipantCountBySingleTherapyCombination {
       group
       subjects
     }
@@ -417,7 +415,9 @@ query search(
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
-    targeted_therapy_string: $targeted_therapy_string
+    therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -440,7 +440,9 @@ query search(
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
-    targeted_therapy_string: $targeted_therapy_string
+    therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -467,8 +469,9 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
-    # $targeted_therapy: [String],
-    $targeted_therapy_string: [String],
+    $therapy_string: [String],
+    $therapy_type: [String],
+    $therapy_category: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -492,8 +495,9 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      # targeted_therapy: $targeted_therapy
-      targeted_therapy_string: $targeted_therapy_string
+      therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -517,9 +521,11 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       race,
       ethnicity,
       carcinogen_exposure,
-      # targeted_therapy
-      targeted_therapy_string
-      best_response_to_targeted_therapy
+      therapy_name
+      therapy_type
+      therapy_category
+      current_response_to_therapy
+      best_response_to_therapy
 
       study_short_name
       study_id
@@ -539,8 +545,9 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
-    # $targeted_therapy: [String],
-    $targeted_therapy_string: [String],
+    $therapy_string: [String],
+    $therapy_type: [String],
+    $therapy_category: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -564,8 +571,9 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      # targeted_therapy: $targeted_therapy
-      targeted_therapy_string: $targeted_therapy_string
+      therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -609,8 +617,9 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
-    # $targeted_therapy: [String],
-    $targeted_therapy_string: [String],
+    $therapy_string: [String],
+    $therapy_type: [String],
+    $therapy_category: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -635,8 +644,9 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      # targeted_therapy: $targeted_therapy
-      targeted_therapy_string: $targeted_therapy_string
+      therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -679,8 +689,9 @@ query participant_data_files(
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
-  # $targeted_therapy: [String],
-  $targeted_therapy_string: [String],
+  $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -704,8 +715,9 @@ query participant_data_files(
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      # targeted_therapy: $targeted_therapy
-      targeted_therapy_string: $targeted_therapy_string
+      therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -739,8 +751,9 @@ query biospecimenAddAllToCart(
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
-  # $targeted_therapy: [String],
-  $targeted_therapy_string: [String],
+  $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -766,8 +779,9 @@ query biospecimenAddAllToCart(
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
-    # targeted_therapy: $targeted_therapy
-    targeted_therapy_string: $targeted_therapy_string
+    therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -800,8 +814,9 @@ query fileAddSelectedToCart(
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
-  # $targeted_therapy: [String],
-  $targeted_therapy_string: [String],
+  $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -828,8 +843,9 @@ query fileAddSelectedToCart(
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
-    # targeted_therapy: $targeted_therapy
-    targeted_therapy_string: $targeted_therapy_string
+    therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -861,8 +877,9 @@ query participant_data_files(
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
-  # $targeted_therapy: [String],
-  $targeted_therapy_string: [String],
+  $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -886,8 +903,9 @@ query participant_data_files(
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      # targeted_therapy: $targeted_therapy
-      targeted_therapy_string: $targeted_therapy_string
+      therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -918,8 +936,9 @@ export const GET_ALL_FILE_IDS_FOR_BIOSPECIMENS = gql`
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
-    # $targeted_therapy: [String],
-    $targeted_therapy_string: [String],
+    $therapy_string: [String],
+    $therapy_type: [String],
+    $therapy_category: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -943,8 +962,9 @@ export const GET_ALL_FILE_IDS_FOR_BIOSPECIMENS = gql`
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      # targeted_therapy: $targeted_therapy
-      targeted_therapy_string: $targeted_therapy_string
+      therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -975,8 +995,9 @@ query fileAddAllToCart(
   $race: [String],
   $ethnicity: [String],
   $carcinogen_exposure: [String],
-  # $targeted_therapy: [String],
-  $targeted_therapy_string: [String],
+  $therapy_string: [String],
+  $therapy_type: [String],
+  $therapy_category: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -1001,8 +1022,9 @@ query fileAddAllToCart(
     race: $race
     ethnicity: $ethnicity
     carcinogen_exposure: $carcinogen_exposure
-    # targeted_therapy: $targeted_therapy
-    targeted_therapy_string: $targeted_therapy_string
+    therapy_string: $therapy_string
+    therapy_type: $therapy_type
+    therapy_category: $therapy_category
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -1066,7 +1088,7 @@ export const GET_STUDY_FILES_OVERVIEW_QUERY = gql`
     # $race: [String],
     # $ethnicity: [String],
     # $carcinogen_exposure: [String],
-    # $targeted_therapy_string: [String], ## Replace: $targeted_therapy: [String],
+    # $therapy_string: [String], ## Replace: $targeted_therapy: [String],
 
     # $anatomical_collection_site: [String],
     # $tissue_category: [String],
@@ -1092,7 +1114,7 @@ export const GET_STUDY_FILES_OVERVIEW_QUERY = gql`
       # race: $race
       # ethnicity: $ethnicity
       # carcinogen_exposure: $carcinogen_exposure
-      # targeted_therapy_string: $targeted_therapy_string ## Replace: targeted_therapy: $targeted_therapy
+      # therapy_string: $therapy_string ## Replace: targeted_therapy: $targeted_therapy
 
       # anatomical_collection_site: $anatomical_collection_site
       # tissue_category: $tissue_category
@@ -1131,7 +1153,7 @@ query studyFileAddSelectedToCart(
   # $race: [String],
   # $ethnicity: [String],
   # $carcinogen_exposure: [String],
-  # $targeted_therapy_string: [String], ## Replace: $targeted_therapy: [String],
+  # $therapy_string: [String], ## Replace: $targeted_therapy: [String],
 
   # $anatomical_collection_site: [String],
   # $tissue_category: [String],
@@ -1158,7 +1180,7 @@ query studyFileAddSelectedToCart(
     # race: $race
     # ethnicity: $ethnicity
     # carcinogen_exposure: $carcinogen_exposure
-    # targeted_therapy_string: $targeted_therapy_string ## Replace: targeted_therapy: $targeted_therapy
+    # therapy_string: $therapy_string ## Replace: targeted_therapy: $targeted_therapy
 
     # anatomical_collection_site: $anatomical_collection_site
     # tissue_category: $tissue_category
@@ -1192,7 +1214,7 @@ query studyFileAddAllToCart(
   # $race: [String],
   # $ethnicity: [String],
   # $carcinogen_exposure: [String],
-  # $targeted_therapy_string: [String], ## Replace: $targeted_therapy: [String],
+  # $therapy_string: [String], ## Replace: $targeted_therapy: [String],
 
   # $anatomical_collection_site: [String],
   # $tissue_category: [String],
@@ -1218,7 +1240,7 @@ query studyFileAddAllToCart(
     # race: $race
     # ethnicity: $ethnicity
     # carcinogen_exposure: $carcinogen_exposure
-    # targeted_therapy_string: $targeted_therapy_string ## Replace: targeted_therapy: $targeted_therapy
+    # therapy_string: $therapy_string ## Replace: targeted_therapy: $targeted_therapy
 
     # anatomical_collection_site: $anatomical_collection_site
     # tissue_category: $tissue_category
@@ -1338,13 +1360,22 @@ export const tabContainers = [
         removeSquareBrackets: true, // Flag to indicate if square brackets should be removed
       },
       {
-        dataField: 'targeted_therapy_string',
-        header: 'Targeted Therapy',
+        dataField: 'therapy_name',
+        header: 'Therapy',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         cellType: cellTypes.CUSTOM_ELEM,
-        substitutionRules: [ { replace: "|", with: ", " }] // Defines character replacements
+        formatTherapyList: true,
+      },
+      {
+        dataField: 'therapy_category',
+        header: 'Therapy Category',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+        cellType: cellTypes.CUSTOM_ELEM,
+        formatTherapyList: true,
       },
     ],
     id: 'participants_tab',

@@ -1,8 +1,8 @@
+import { tabContainers, tabs } from "./dashboardTabData";
+
 jest.mock("../utils/graphqlClient", () => ({
   client: { query: jest.fn(), mutate: jest.fn() },
 }));
-
-import { tabContainers, tabs } from "./dashboardTabData";
 
 describe("Study Files tab configuration", () => {
   const studyFilesTab = tabs.find((t) => t.id === "study_file_tab");

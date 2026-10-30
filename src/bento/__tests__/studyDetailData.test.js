@@ -1,3 +1,10 @@
+import {
+  studyFilesTableConfig,
+  studyFilesTooltipContent,
+  STUDY_FILES_BUTTON_TOOLTIP,
+} from "../studyDetailData";
+import { cellTypes } from "@bento-core/table";
+
 /**
  * Mock graphqlClient to prevent Apollo Client initialization errors
  */
@@ -7,13 +14,6 @@ jest.mock("../../utils/graphqlClient", () => ({
     mutate: jest.fn(),
   },
 }));
-
-import {
-  studyFilesTableConfig,
-  studyFilesTooltipContent,
-  STUDY_FILES_BUTTON_TOOLTIP,
-} from "../studyDetailData";
-import { cellTypes } from "@bento-core/table";
 
 describe("studyFilesTableConfig", () => {
   it("is defined and has correct structure", () => {

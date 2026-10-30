@@ -42,6 +42,12 @@ export const SHOW_WARNING_BEFORE = 300;
 // DEFAULT_VALUE serves as a fallback when facet or widget items are empty
 export const DEFAULT_VALUE = "No value";
 
+// Must match the backend/index encoding of therapy_string combinations.
+// Example: selecting A and B can send "A|B" with '|', or "A~B" with '~'.
+// Change this value only with a coordinated backend/index update and frontend rebuild.
+// It does not change displayed names, Type/Category values, or stored individual selections.
+export const THERAPY_COMBINATION_SEPARATOR = '|';
+
 // Constant for last visited hash key in localStorage
 export const LAST_VISITED_HASH_KEY = "lastVisitedHash";
 

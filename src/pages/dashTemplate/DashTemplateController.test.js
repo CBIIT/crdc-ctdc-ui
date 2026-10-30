@@ -1,8 +1,8 @@
+import { buildParticipantIdFilter } from './DashTemplateController';
+
 jest.mock('../../utils/graphqlClient', () => ({
   client: { query: jest.fn(), mutate: jest.fn() },
 }));
-
-import { buildParticipantIdFilter } from './DashTemplateController';
 
 describe('buildParticipantIdFilter', () => {
   it('returns autocomplete selections only', () => {
