@@ -1302,7 +1302,7 @@ export const tabContainers = [
       },
       {
         dataField: 'age_at_enrollment',
-        header: 'Age',
+        header: 'Age at Enrollment',
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,

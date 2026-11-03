@@ -46,7 +46,7 @@ const ParticipantCard = ({ data = {}, index })=> {
         <div className={classes.row}>
           <div className={classes.column}>
             {renderInfo('Diagnosis:', ctepDiseaseTerm)}
-            {renderInfo('Age:', age)}
+            {renderInfo('Age at Enrollment:', age)}
             {renderInfo('Sex:', sex)}
             {renderInfo('Race:', race)}
           </div>

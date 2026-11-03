@@ -1,10 +1,21 @@
 import React from 'react';
+import { Tooltip } from '@material-ui/core';
+import HelpIcon from '@material-ui/icons/Help';
 import CustomBreadcrumb from '../../../components/Breadcrumb/BreadcrumbView';
 import { headerIcon } from '../../../bento/participantDetailData';
 
-const InfoRow = ({ classes, label, value }) => (
+const InfoRow = ({ classes, label, value, tooltip }) => (
   <div className={classes.infoPanelRow}>
-    <span className={classes.infoPanelLabel}>{label}:</span>
+    {tooltip ? (
+      <Tooltip title={tooltip} classes={{ tooltip: classes.tooltipBody }} placement="top">
+        <span className={`${classes.infoPanelLabel} ${classes.infoPanelTooltipLabel}`} tabIndex={0}>
+          {label}:
+          <HelpIcon className={classes.infoPanelTooltipIcon} />
+        </span>
+      </Tooltip>
+    ) : (
+      <span className={classes.infoPanelLabel}>{label}:</span>
+    )}
     <span className={classes.infoPanelValue}>{value != null && value !== '' ? value : 'N/A'}</span>
   </div>
 );
@@ -57,7 +68,12 @@ const HeaderPanel = ({ classes, participant }) => {
         {/* Demographics */}
         <div className={classes.infoPanelSection}>
           <div className={classes.infoPanelSectionTitle}>Demographics</div>
-          <InfoRow classes={classes} label="Age at Enrollment" value={participant.age_at_enrollment} />
+          <InfoRow
+            classes={classes}
+            label="Age at Enrollment"
+            value={participant.age_at_enrollment}
+            tooltip="The age of the participant as of enrollment, measured in days."
+          />
           <InfoRow classes={classes} label="Race" value={participant.race} />
           <InfoRow classes={classes} label="Ethnicity" value={participant.ethnicity} />
           <InfoRow classes={classes} label="Sex" value={participant.sex} />

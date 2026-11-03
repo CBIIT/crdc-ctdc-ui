@@ -103,7 +103,7 @@ export const manifestData = {
     'Histology',
     // 'Stage of Disease',
     // 'Tumor Grade',
-    'Age',
+    'Age at Enrollment',
     'Sex',
     'Race',
     'Ethnicity',
