@@ -7,7 +7,7 @@ import { headerIcon } from '../../../bento/participantDetailData';
 const InfoRow = ({ classes, label, value, tooltip }) => (
   <div className={classes.infoPanelRow}>
     {tooltip ? (
-      <Tooltip title={tooltip} classes={{ tooltip: classes.tooltipBody }} placement="top">
+      <Tooltip title={tooltip} classes={{ tooltip: classes.tooltipBody }} placement="top" interactive>
         <span className={`${classes.infoPanelLabel} ${classes.infoPanelTooltipLabel}`} tabIndex={0}>
           {label}:
           <HelpIcon className={classes.infoPanelTooltipIcon} />
