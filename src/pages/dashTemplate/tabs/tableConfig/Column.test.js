@@ -1,3 +1,4 @@
+import { renderToStaticMarkup } from 'react-dom/server';
 import { configColumn, CustomCellView } from './Column';
 import { cellTypes, headerTypes } from '@bento-core/table';
 
@@ -6,6 +7,30 @@ jest.mock("../../../../utils/graphqlClient", () => ({
 }));
 
 describe('configColumn', () => {
+  it('formats an arbitrary string-list field with the shared column option', () => {
+    const values = Object.freeze([' Label, with comma|pipe ', '', null, 'Second label']);
+    const [column] = configColumn([{
+      dataField: 'custom_labels', header: 'Labels', display: true,
+      cellType: cellTypes.CUSTOM_ELEM, formatList: true,
+    }]);
+    const cell = column.customCellRender({ ...column, custom_labels: values });
+    expect(renderToStaticMarkup(cell)).toContain('Label, with comma|pipe, Second label');
+  });
+
+  it.each([
+    [[0, 42, -3.5], '0, 42, -3.5'],
+    [[' Label ', 42, null, '', {}, ['nested'], false], 'Label, 42, {}, ["nested"], false'],
+    [0, '0'],
+    [[false, true], 'false, true'],
+    [false, 'false'],
+    [true, 'true'],
+    [[{}, ['nested'], null, undefined], '{}, ["nested"]'],
+    [{}, '{}'],
+  ])('formats primitive and mixed list values %j without discarding structured entries', (value, expected) => {
+    const cell = CustomCellView({ dataField: 'custom_labels', formatList: true, custom_labels: value });
+    expect(cell.props.children).toBe(expected);
+  });
+
   it('should include columns with display: true', () => {
     const columns = [
       { dataField: 'name', header: 'Name', display: true, role: cellTypes.DISPLAY },

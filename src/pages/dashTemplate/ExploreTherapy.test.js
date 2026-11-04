@@ -8,9 +8,10 @@ import { getTableData } from '@bento-core/paginated-table/dist/table/TableServic
 import AddSelectedFiles from '@bento-core/paginated-table/dist/wrapper/components/AddSelectedFiles/AddSelectedFilesController';
 import AddAllFiles from '@bento-core/paginated-table/dist/wrapper/components/AddAllFiles/AddAllView';
 import DownloadButton from '@bento-core/paginated-table/node_modules/@bento-core/table/dist/toolbar/DownloadButtonView';
-import { downloadJson, convertToCSV } from '@bento-core/paginated-table/node_modules/@bento-core/table/dist/util/downloadTable';
+import { csv2json } from 'json-2-csv';
+import { downloadCsvString } from '../fileCentricCart/utils';
+import { useExtendedViewConfig } from './tabs/Customize/ExtendedView';
 import { tabContainers } from '../../bento/dashboardTabData';
-import { configColumn } from './tabs/tableConfig/Column';
 import { configWrapper, wrapperConfig } from './tabs/wrapperConfig/Wrapper';
 
 // C3 integration coverage: use the installed runtime components, not replacement
@@ -26,9 +27,8 @@ jest.mock('../../utils/graphqlClient', () => ({
 }));
 jest.mock('../../components/DocumentDownload/DocumentDownloadView', () => () => null);
 jest.mock('./tabs/Customize/TableView', () => ({ DisplayCustomText: () => null }));
-jest.mock('@bento-core/paginated-table/node_modules/@bento-core/table/dist/util/downloadTable', () => ({
-  ...jest.requireActual('@bento-core/paginated-table/node_modules/@bento-core/table/dist/util/downloadTable'),
-  downloadJson: jest.fn(),
+jest.mock('../fileCentricCart/utils', () => ({
+  ...jest.requireActual('../fileCentricCart/utils'), downloadCsvString: jest.fn(),
 }));
 
 const client = { query: jest.fn() };
@@ -41,6 +41,7 @@ const filters = (therapy = ['A', 'A|B', 'B']) => ({
   therapy_category: ['Targeted', 'Non-Targeted'],
   study_short_name: ['test-study'],
   participant_id: ['test-participant'],
+  race: ['Asian', 'White'],
 });
 const render = (element) => {
   const container = document.createElement('div');
@@ -110,7 +111,7 @@ describe('Explore Therapy table requests', () => {
     expect(activeFilters.therapy_string).toEqual(['A', 'A|B', 'B']);
   });
 
-  it.each(['therapy_name', 'therapy_category'])('sorts by %s while retaining the current therapy filters', async (sortBy) => {
+  it.each(['therapy_name', 'therapy_category', 'race'])('sorts by %s while retaining the current therapy filters', async (sortBy) => {
     client.query.mockResolvedValue({ data: { participantOverview: [] } });
     render(<TableProbe tab={participants} activeFilters={filters()} sortBy={sortBy} sortOrder="desc" />);
     await act(async () => {});
@@ -184,48 +185,88 @@ describe('Explore Therapy file actions', () => {
 });
 
 describe('Explore Therapy CSV request', () => {
-  it('exports the full current cohort after a filter change, including name and category arrays', async () => {
-    const rows = [{
-      participant_id: 'test-participant',
-      therapy_name: ['drug, regimen', 'B'],
-      therapy_category: ['Targeted', 'Non-Targeted'],
-    }, {
-      participant_id: 'empty-therapy', therapy_name: [], therapy_category: [],
-    }];
+  it.each(tabContainers.flatMap((tab) => [false, true, undefined].map((flag) => [tab.name, flag, tab])))(
+    '%s honors applyActiveFilters=%s while keeping its table scope', async (_name, applyActiveFilters, tab) => {
+      const config = {
+        ...tab,
+        extendedViewConfig: {
+          ...tab.extendedViewConfig,
+          download: { ...tab.extendedViewConfig.download, applyActiveFilters },
+        },
+      };
+      client.query.mockResolvedValue({ data: { [tab.paginationAPIField]: [{ participant_id: 'test-row' }] } });
+      const DownloadProbe = ({ queryVariables }) => {
+        const { extendedViewConfig } = useExtendedViewConfig(config, queryVariables);
+        return <DownloadButton download={extendedViewConfig.download} queryVariables={queryVariables} server />;
+      };
+      const { container, rerender } = render(<DownloadProbe queryVariables={filters(['A'])} />);
+      expect(client.query).not.toHaveBeenCalled();
+      const currentFilters = Object.freeze({ ...filters(['', 'A|B']), offset: 20, first: 10 });
+      rerender(<DownloadProbe queryVariables={currentFilters} />);
+      await act(async () => { container.querySelector('button').click(); });
+      expect(client.query).toHaveBeenCalledTimes(1);
+      expect(client.query).toHaveBeenCalledWith({
+        query: tab.api,
+        variables: {
+          ...(applyActiveFilters ? currentFilters : {}), ...tab.defaultFilters, offset: 0, first: 10000,
+        },
+      });
+      expect(downloadCsvString).toHaveBeenCalledTimes(1);
+      expect(currentFilters).toEqual({ ...filters(['', 'A|B']), offset: 20, first: 10 });
+    },
+  );
+
+  it('exports the current cohort with blank empty lists, readable labels and intact CSV columns', async () => {
+    const rows = [
+      { participant_id: 'multi', race: ['Asian', 'White'],
+        therapy_name: ['drug, regimen', 'Name "quoted"'], therapy_category: ['Targeted', 'Non-Targeted'] },
+      { participant_id: 'empty', race: [], therapy_name: '[]', carcinogen_exposure: '[]' },
+      { participant_id: 'legacy', race: '[White]', therapy_name: '[Drug [detail], Other]', carcinogen_exposure: '[Unknown]' },
+    ];
     client.query.mockResolvedValue({ data: { participantOverview: rows } });
-    const table = {
-      query: participants.api,
-      paginationAPIField: participants.paginationAPIField,
-      columns: configColumn(participants.columns),
-      page: 1,
-      rowsPerPage: 10,
+    const table = { query: participants.api, paginationAPIField: participants.paginationAPIField };
+    const DownloadProbe = ({ queryVariables }) => {
+      const config = {
+        ...participants,
+        extendedViewConfig: {
+          ...participants.extendedViewConfig,
+          download: { ...participants.extendedViewConfig.download, applyActiveFilters: true },
+        },
+      };
+      const { extendedViewConfig } = useExtendedViewConfig(config, queryVariables);
+      return <DownloadButton download={extendedViewConfig.download} table={table} queryVariables={queryVariables} server />;
     };
-    const view = (queryVariables) => (
-      <DownloadButton
-        download={participants.extendedViewConfig.download}
-        table={table}
-        queryVariables={queryVariables}
-        server
-      />
-    );
-    const { container, rerender } = render(view(filters(['A'])));
+    const { container, rerender } = render(<DownloadProbe queryVariables={filters(['A'])} />);
     const currentFilters = filters(['', 'A', 'A|B', 'B']);
-    rerender(view(currentFilters));
+    rerender(<DownloadProbe queryVariables={currentFilters} />);
     await act(async () => { container.querySelector('button').click(); });
     expect(client.query).toHaveBeenCalledWith({
-      query: participants.api,
-      variables: { ...currentFilters, page: 0, first: 10000 },
+      query: participants.api, variables: { ...currentFilters, offset: 0, first: 10000 },
     });
-    expect(downloadJson).toHaveBeenCalledWith(rows, table, 'CTDC_Participants_download');
-    const therapyColumn = table.columns.find(({ dataField }) => dataField === 'therapy_name');
-    expect(therapyColumn.header).toBe('Therapy');
-    const categoryColumn = table.columns.find(({ dataField }) => dataField === 'therapy_category');
-    expect(categoryColumn.header).toBe('Therapy Category');
-    expect(table.columns.indexOf(categoryColumn)).toBe(table.columns.indexOf(therapyColumn) + 1);
-    expect(convertToCSV(rows,
-      ['participant_id', therapyColumn.dataField, categoryColumn.dataField],
-      ['Participant ID', therapyColumn.header, categoryColumn.header]))
-      .toBe('Participant ID,Therapy,Therapy Category\r\n"test-participant","drug, regimen,B","Targeted,Non-Targeted"\r\n"empty-therapy","",""\r\n');
+    const [csv, filename] = downloadCsvString.mock.calls[0];
+    expect(filename).toMatch(/^CTDC_Participants_download .*\.csv$/);
+    const exported = csv2json(csv.replace(/\r\n$/, ''), {
+      delimiter: { eol: '\r\n' }, parseValue: (value) => value,
+    });
+    expect(exported).toEqual([
+      expect.objectContaining({ 'Participant ID': 'multi', Race: 'Asian, White', Therapy: 'drug, regimen, Name "quoted"', 'Therapy Category': 'Targeted, Non-Targeted' }),
+      expect.objectContaining({ 'Participant ID': 'empty', Race: '', Therapy: '', 'Carcinogen Exposure': '' }),
+      expect.objectContaining({ 'Participant ID': 'legacy', Race: 'White', Therapy: 'Drug [detail], Other', 'Carcinogen Exposure': 'Unknown' }),
+    ]);
     expect(currentFilters.therapy_string).toEqual(['', 'A', 'A|B', 'B']);
+    expect(rows[0].race).toEqual(['Asian', 'White']);
+  });
+
+  it('does not download a file when the export query fails', async () => {
+    const errorLog = jest.spyOn(console, 'error').mockImplementation(() => {});
+    client.query.mockRejectedValue(new Error('Backend unavailable'));
+    const DownloadProbe = () => {
+      const { extendedViewConfig } = useExtendedViewConfig(participants, filters());
+      return <DownloadButton download={extendedViewConfig.download} queryVariables={{}} server />;
+    };
+    const { container } = render(<DownloadProbe />);
+    await act(async () => { container.querySelector('button').click(); });
+    expect(downloadCsvString).not.toHaveBeenCalled();
+    errorLog.mockRestore();
   });
 });

@@ -61,6 +61,7 @@ export const myFilesPageData = {
 export const USER_COMMENT = "User_Comment";
 
 export const manifestData = {
+  formatListFields: ['race', 'therapy_name', 'carcinogen_exposure'],
   keysToInclude: [
     'data_file_name',   // ('name' - 1/4 required fields)
     'drs_uri',          // ('drs_uri' - 2/4 required fields)

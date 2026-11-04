@@ -39,13 +39,13 @@ jest.mock('isomorphic-fetch', () => jest.fn());
 jest.mock('../components/Stats/AllStatsController', () => () => null);
 jest.mock('./about/aboutHeader', () => () => null);
 
-// These are synthetic scalar search/cart responses, not Participant Overview arrays.
+// Synthetic search/cart responses: Therapy remains scalar; race is now an array.
 const files = [
   { data_file_uuid: 'test-file-1', data_file_name: 'one.vcf', drs_uri: 'drs://test/one',
     study_short_name: 'TEST', participant_id: 'test-participant', therapy_name: '[A|B, Name "quoted"]',
-    therapy_string: 'must not be exported' },
+    carcinogen_exposure: '[Unknown]', therapy_string: 'must not be exported', race: ['Asian', 'White'], ethnicity: 'Not Hispanic or Latino' },
   { data_file_uuid: 'test-file-2', data_file_name: 'two.pdf', drs_uri: 'drs://test/two',
-    study_short_name: 'TEST', participant_id: 'test-participant', therapy_name: '[]' },
+    study_short_name: 'TEST', participant_id: 'test-participant', therapy_name: '[]', carcinogen_exposure: '[]', race: [], ethnicity: 'Unknown' },
 ];
 const names = (query) => {
   const fields = [];
@@ -101,7 +101,10 @@ describe('Remaining Therapy consumers (C7)', () => {
   it.each([
     ['[A, B]', 'A, B'], ['A|B', 'A|B'], ['[Name "quoted", B]', 'Name "quoted", B'],
     ['[]', ''], ['', ''], [null, ''], [undefined, ''],
-  ])('renders scalar search Therapy %j as %j without throwing', async (value, expected) => {
+    [['A', 'B'], 'A, B'], [[], ''], ['[Drug [detail], Other]', 'Drug [detail], Other'],
+    [{ name: 'A' }, '{"name":"A"}'],
+    [['A', { name: 'B' }, ['C'], 0, false], 'A, {"name":"B"}, ["C"], 0, false'],
+  ])('renders search Therapy %j as %j without throwing', async (value, expected) => {
     await render(<ParticipantCard index={0} data={{ participant_id: 'test-participant', therapy_name: value, targeted_therapy: 'obsolete' }} />);
     const label = [...container.querySelectorAll('h6')].find((element) => element.textContent === 'Therapy:');
     expect(label.nextElementSibling.textContent).toBe(expected);
@@ -145,9 +148,12 @@ describe('Remaining Therapy consumers (C7)', () => {
     expect(manifestData.header).not.toContain('Targeted Therapy');
     expect(exported[0]).toEqual(expect.objectContaining({
       name: 'one.vcf', drs_uri: 'drs://test/one', study_short_name: 'TEST', participant_id: 'test-participant',
-      Therapy: files[0].therapy_name, 'User Comment': 'Review "A", then B\nSecond line',
+      Race: 'Asian, White', Ethnicity: 'Not Hispanic or Latino',
+      Therapy: 'A|B, Name "quoted"', 'Carcinogen Exposure': 'Unknown', 'User Comment': 'Review "A", then B\nSecond line',
     }));
-    expect(exported[1].Therapy).toBe('[]');
+    expect(exported[1].Therapy).toBe('');
+    expect(exported[1]['Carcinogen Exposure']).toBe('');
+    expect(exported[1]).toMatchObject({ Race: '', Ethnicity: 'Unknown' });
     expect(csv).not.toContain('must not be exported');
     expect(useQuery.mock.calls[0][1].variables).toEqual({ data_file_uuid: ['test-file-1', 'test-file-2'], first: 2 });
   });

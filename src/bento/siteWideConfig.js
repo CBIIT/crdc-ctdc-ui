@@ -39,6 +39,10 @@ export const PING_INTERVAL = 10; // DEFAULT is 5 Seconds.
 // Value is required to be in Seconds format. DEFAULT is 300 Seconds (5 Minutes).
 export const SHOW_WARNING_BEFORE = 300;
 
+// Enable Explore participant ID search and participant-set uploads.
+// When disabled, saved Local Find selections are cleared at startup.
+export const ENABLE_LOCAL_FIND = false;
+
 // DEFAULT_VALUE serves as a fallback when facet or widget items are empty
 export const DEFAULT_VALUE = "No value";
 

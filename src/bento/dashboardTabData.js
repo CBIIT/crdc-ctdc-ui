@@ -1281,6 +1281,7 @@ export const tabContainers = [
       },
       download: {
         downloadCsv: "Download Table Contents As CSV",
+        applyActiveFilters: false, // Set true to export only the current filtered results.
         downloadFileName: "CTDC_Participants_download",
       },
     },
@@ -1342,6 +1343,8 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        cellType: cellTypes.CUSTOM_ELEM,
+        formatList: true,
       },
       {
         dataField: 'ethnicity',
@@ -1357,7 +1360,7 @@ export const tabContainers = [
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         cellType: cellTypes.CUSTOM_ELEM,
-        removeSquareBrackets: true, // Flag to indicate if square brackets should be removed
+        formatList: true,
       },
       {
         dataField: 'therapy_name',
@@ -1366,7 +1369,7 @@ export const tabContainers = [
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         cellType: cellTypes.CUSTOM_ELEM,
-        formatTherapyList: true,
+        formatList: true,
       },
       {
         dataField: 'therapy_category',
@@ -1375,7 +1378,7 @@ export const tabContainers = [
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         cellType: cellTypes.CUSTOM_ELEM,
-        formatTherapyList: true,
+        formatList: true,
       },
     ],
     id: 'participants_tab',
@@ -1411,6 +1414,7 @@ export const tabContainers = [
       },
       download: {
         downloadCsv: "Download Table Contents As CSV",
+        applyActiveFilters: false, // Set true to export only the current filtered results.
         downloadFileName: "CTDC_Biospecimens_download",
       },
     },
@@ -1544,6 +1548,7 @@ export const tabContainers = [
       },
       download: {
         downloadCsv: "Download Table Contents As CSV",
+        applyActiveFilters: false, // Set true to export only the current filtered results.
         downloadFileName: "CTDC_Data_Files_download",
       },
     },
@@ -1704,6 +1709,7 @@ export const tabContainers = [
       },
       download: {
         downloadCsv: "Download Table Contents As CSV",
+        applyActiveFilters: false, // Set true to export only the current filtered results.
         downloadFileName: "CTDC_Study_Files_download",
       },
     },

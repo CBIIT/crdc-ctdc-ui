@@ -4,7 +4,7 @@ import {
 } from '@material-ui/core';
 import useStyles from './style';
 import { cn } from 'bento-components';
-import { removeSquareBracketsFromString } from '../../../../utils/utils';
+import { formatListValues } from '../../../../utils/formatListValues';
 
 const ParticipantCard = ({ data = {}, index })=> {
   const {
@@ -19,8 +19,7 @@ const ParticipantCard = ({ data = {}, index })=> {
   } = data;
   const classes = useStyles();
 
-  // Search returns a scalar list string (e.g. "[A, B]"); missing names display blank.
-  const therapyLabel = typeof therapy === 'string' ? removeSquareBracketsFromString(therapy) : '';
+  const therapyLabel = formatListValues(therapy) || '';
 
   const renderInfo = (label, value='') => (
     <div className={classes.keyAndValueRow}>
@@ -51,7 +50,7 @@ const ParticipantCard = ({ data = {}, index })=> {
             {renderInfo('Diagnosis:', ctepDiseaseTerm)}
             {renderInfo('Age at Enrollment:', age)}
             {renderInfo('Sex:', sex)}
-            {renderInfo('Race:', race)}
+            {renderInfo('Race:', formatListValues(race) || '')}
           </div>
 
           <div className={cn(classes.column, classes.leftColumn)}>
