@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { act } from 'react-dom/test-utils';
+import { fireEvent, waitFor } from '@testing-library/react';
 import HeaderPanel from './HeaderPanel';
 
 /**
@@ -54,7 +55,10 @@ describe('HeaderPanel', () => {
     infoPanelSectionTitle: 'infoPanelSectionTitle',
     infoPanelRow: 'infoPanelRow',
     infoPanelLabel: 'infoPanelLabel',
+    infoPanelTooltipLabel: 'infoPanelTooltipLabel',
+    infoPanelTooltipIcon: 'infoPanelTooltipIcon',
     infoPanelValue: 'infoPanelValue',
+    tooltipBody: 'tooltipBody',
   };
 
   beforeEach(() => {
@@ -425,6 +429,55 @@ describe('HeaderPanel', () => {
   // ────────────────────────────────────────────────────
   // Label rendering
   // ────────────────────────────────────────────────────
+  describe('Age at Enrollment tooltip', () => {
+    it.each(['label', 'icon'])('explains days on %s hover and closes when the pointer moves to the value', async (target) => {
+      renderComponent({ participant_id: 'TEST-PARTICIPANT', age_at_enrollment: 12345 });
+      const label = container.querySelector('.infoPanelLabel');
+      const value = container.querySelector('.infoPanelValue');
+      expect(value.textContent).toBe('12345');
+      expect(document.querySelector('[role="tooltip"]')).toBeNull();
+
+      const trigger = target === 'icon' ? label.querySelector('.infoPanelTooltipIcon') : label;
+      expect(trigger).not.toBeNull();
+      fireEvent.mouseOver(trigger);
+      await waitFor(() => {
+        const tooltip = document.querySelector('[role="tooltip"]');
+        expect(tooltip).not.toBeNull();
+        expect(tooltip.textContent).toBe(
+          'The age of the participant as of enrollment, measured in days.',
+        );
+      });
+
+      fireEvent.mouseOut(trigger, { relatedTarget: value });
+      fireEvent.mouseOver(value);
+      await waitFor(() => {
+        expect(document.querySelector('[role="tooltip"]')).toBeNull();
+      });
+    });
+
+    it('supports keyboard focus on the age label without adding tooltips to other labels', async () => {
+      renderComponent({ participant_id: 'TEST-PARTICIPANT', age_at_enrollment: 0 });
+      const labels = Array.from(container.querySelectorAll('.infoPanelLabel'));
+      const ageLabel = labels[0];
+      expect(container.querySelector('.infoPanelValue').textContent).toBe('0');
+      expect(ageLabel.tabIndex).toBe(0);
+      labels.slice(1).forEach((label) => {
+        expect(label.hasAttribute('tabindex')).toBe(false);
+        expect(label.hasAttribute('title')).toBe(false);
+        expect(label.hasAttribute('aria-describedby')).toBe(false);
+      });
+
+      act(() => { ageLabel.focus(); });
+      await waitFor(() => {
+        expect(document.querySelector('[role="tooltip"]')).not.toBeNull();
+      });
+      act(() => { ageLabel.blur(); });
+      await waitFor(() => {
+        expect(document.querySelector('[role="tooltip"]')).toBeNull();
+      });
+    });
+  });
+
   describe('Info panel labels', () => {
     it('should render all expected field labels in order', () => {
       // Arrange

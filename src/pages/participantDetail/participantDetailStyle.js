@@ -142,6 +142,15 @@ export default (theme) => ({
     whiteSpace: 'normal',
     wordBreak: 'break-word',
   },
+  infoPanelTooltipLabel: {
+    cursor: 'pointer',
+  },
+  infoPanelTooltipIcon: {
+    verticalAlign: 'super',
+    margin: '0 2px 0 4px',
+    fontSize: '14px',
+    color: '#1F344F',
+  },
   infoPanelValue: {
     fontFamily: 'Roboto',
     fontWeight: 400,
