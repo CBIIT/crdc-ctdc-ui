@@ -6,10 +6,11 @@ import { sideBarReducerGenerator } from '@bento-core/facet-filter';
 import layout from '../components/Layout/LayoutState';
 import stats from '../components/Stats/StatsState';
 import { cartReducerGenerator } from '@bento-core/cart';
-import { LocalFindReducerGenerator } from '@bento-core/local-find';
+import { LocalFindReducerGenerator, resetAllData as resetLocalFind } from '@bento-core/local-find';
 import { LoginReducerGenerator } from '@bento-core/authentication';
 import { getFromLocalStorage } from '../utils/localStorage';
 import { loadState, saveState } from './utils';
+import { ENABLE_LOCAL_FIND } from '../bento/siteWideConfig';
 
 const { localFind } = LocalFindReducerGenerator();
 const { statusReducer } = sideBarReducerGenerator();
@@ -39,6 +40,11 @@ const store = createStore(
 store.subscribe(() => {
   saveState(store.getState());
 });
+
+// Clear saved Local Find selections before Explore builds its initial requests.
+if (!ENABLE_LOCAL_FIND) {
+  store.dispatch(resetLocalFind());
+}
 
 store.injectReducer = (key, reducer) => {
   reducers[key] = reducer;

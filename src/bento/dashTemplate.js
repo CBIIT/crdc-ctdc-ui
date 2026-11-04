@@ -1,5 +1,5 @@
 import { sortType, InputTypes } from '@bento-core/facet-filter';
-import { DEFAULT_VALUE } from './siteWideConfig';
+import { DEFAULT_VALUE, ENABLE_LOCAL_FIND } from './siteWideConfig';
 
 const CASES = 'Filter by Participants';
 const SAMPLES = 'Filter by Biospecimens';
@@ -19,7 +19,7 @@ export const resetIcon = {
 export const facetSectionVariables = {
   'Filter by Participants': {
     isExpanded: true,
-    hasSearch: true,
+    hasSearch: ENABLE_LOCAL_FIND,
     hasArrowDropDownIcon: false,
   },
   'Filter by Biospecimens': {
