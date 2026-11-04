@@ -10,6 +10,7 @@ import ParticipantDetailController from './participantDetail/participantDetailCo
 import ParticipantCard from './search/Cards/participant/ParticipantCard';
 import useDashData from './dashTemplate/useDashData';
 import { convertToCSV } from './fileCentricCart/utils';
+import { manifestData } from '../bento/fileCentricCartWorkflowData';
 import { loadState, saveState } from '../store/utils';
 
 jest.mock('@apollo/client', () => ({
@@ -59,6 +60,14 @@ describe('Race array API compatibility (CTDC-2307)', () => {
     [[' Asian ', null, '', '   ', 'White'], 'Asian, White'],
     [[], ''], [null, ''], [undefined, ''],
     [['', '   ', null], ''], ['White', 'White'],
+    ['[White]', 'White'], [' [Asian, White] ', 'Asian, White'],
+    ['[]', ''], ['[   ]', ''],
+    ['[Label [detail], Other]', 'Label [detail], Other'],
+    [['[Literal label]', 'Other'], '[Literal label], Other'],
+    [{ label: 'White' }, '{"label":"White"}'],
+    [['White', { label: 'Asian' }, ['Other'], 0, false], 'White, {"label":"Asian"}, ["Other"], 0, false'],
+    [[{ label: 'Asian' }], '{"label":"Asian"}'],
+    [[['White', 'Asian']], '["White","Asian"]'],
   ])('renders race %j consistently across Explore, Participant and search', (race, expected) => {
     if (Array.isArray(race)) Object.freeze(race);
     render(raceColumn.customCellRender({ ...raceColumn, race }));
@@ -86,7 +95,10 @@ describe('Race array API compatibility (CTDC-2307)', () => {
       { id: 'empty', [field]: [], ethnicity: 'Unknown' },
       { id: 'null', [field]: null, ethnicity: 'Unknown' },
       { id: 'legacy', [field]: 'White', ethnicity: 'Unknown' },
-      { id: 'numeric', [field]: [0, 42], ethnicity: 'Unknown' },
+      { id: 'numeric', [field]: [0, 42, -3.5], ethnicity: 'Unknown' },
+      { id: 'boolean', [field]: [false, true], ethnicity: 'Unknown' },
+      { id: 'mixed', [field]: [' Label, quoted ', 0, {}, ['nested'], null, '', false], ethnicity: 'Other' },
+      { id: 'objects', [field]: [{}, ['nested']], ethnicity: 'Other' },
     ];
     const csv = convertToCSV(rows, '', ['id', field, 'ethnicity'], ['ID', 'Values', 'Ethnicity']);
     const parsed = csv2json(csv.replace(/\r\n$/, ''), {
@@ -98,9 +110,30 @@ describe('Race array API compatibility (CTDC-2307)', () => {
       { ID: 'empty', Values: '', Ethnicity: 'Unknown' },
       { ID: 'null', Values: '', Ethnicity: 'Unknown' },
       { ID: 'legacy', Values: 'White', Ethnicity: 'Unknown' },
-      { ID: 'numeric', Values: '0, 42', Ethnicity: 'Unknown' },
+      { ID: 'numeric', Values: '0, 42, -3.5', Ethnicity: 'Unknown' },
+      { ID: 'boolean', Values: 'false, true', Ethnicity: 'Unknown' },
+      { ID: 'mixed', Values: 'Label, quoted, 0, {}, ["nested"], false', Ethnicity: 'Other' },
+      { ID: 'objects', Values: '{}, ["nested"]', Ethnicity: 'Other' },
     ]);
     expect(rows[0][field]).toEqual(['Asian', 'White']);
+  });
+
+  it.each([
+    [[], ''], ['[]', ''], [' [   ] ', ''], [null, ''], [undefined, ''],
+    ['White', 'White'], ['[White]', 'White'], [['White'], 'White'],
+    [['Asian', 'White'], 'Asian, White'], ['[Asian, White]', 'Asian, White'],
+    [{ label: 'A, "quoted"' }, '{"label":"A, \\"quoted\\""}'],
+    [['White', { label: 'Asian' }], 'White, {"label":"Asian"}'],
+    [[['White', 'Asian']], '["White","Asian"]'],
+  ])('formats manifest list fields %j without altering filenames or comments', (value, expected) => {
+    const fields = ['data_file_name', 'race', 'therapy_name', 'carcinogen_exposure', 'User_Comment'];
+    const rows = [{ data_file_name: '[README]', race: value, therapy_name: value, carcinogen_exposure: value }];
+    const csv = convertToCSV(rows, '[keep this]', fields, fields, manifestData.formatListFields);
+    const parsed = csv2json(csv.replace(/\r\n$/, ''), {
+      delimiter: { eol: '\r\n' }, parseValue: (value) => value,
+    });
+    expect(parsed).toEqual([{ data_file_name: '[README]', race: expected, therapy_name: expected,
+      carcinogen_exposure: expected, User_Comment: '[keep this]' }]);
   });
 
   it('restores race selections, passes them unchanged, and retains overlapping facet counts', async () => {

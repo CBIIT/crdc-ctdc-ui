@@ -99,6 +99,16 @@ describe('Participant Therapy panel (C5)', () => {
     },
   );
 
+  it.each([
+    [{ label: 'A' }, '{"label":"A"}'],
+    [['A', { label: 'B' }, ['C'], 0, false], 'A, {"label":"B"}, ["C"], 0, false'],
+    [0, '0'], [false, 'false'],
+  ])('preserves nonempty API values in every Therapy field: %j', (value, expected) => {
+    records.first = Object.fromEntries(fields.map(([, field]) => [field, value]));
+    render();
+    expect(therapyRows()).toEqual(Array(5).fill(expected));
+  });
+
   it('keeps literal commas and pipes in names while displaying a missing Type as N/A', () => {
     records.first = { ...populated, therapy_name: [' name, with comma|pipe '], therapy_type: [] };
     render();

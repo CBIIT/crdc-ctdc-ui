@@ -85,7 +85,8 @@ const DropDownView = ({ classes, filesId = [], allFiles }) => {
           manifestData,
           comment,
           manifestDataConfig.keysToInclude,
-          manifestDataConfig.header
+          manifestDataConfig.header,
+          manifestDataConfig.formatListFields
         );
         setManifestString(generatedManifest);
       } catch (error) {

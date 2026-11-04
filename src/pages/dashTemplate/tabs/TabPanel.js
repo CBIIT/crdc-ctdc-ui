@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, withStyles } from '@material-ui/core';
+import { Grid, Typography, withStyles } from '@material-ui/core';
 import { 
   TableContextProvider,
   TableView,
@@ -10,6 +10,7 @@ import { themeConfig } from './tableConfig/Theme';
 import { configColumn } from './tableConfig/Column';
 import { configWrapper, wrapperConfig } from './wrapperConfig/Wrapper';
 import { customTheme } from './wrapperConfig/Theme';
+import { useExtendedViewConfig } from './Customize/ExtendedView';
 
 const TabView = (props) => {
   /**
@@ -28,6 +29,7 @@ const TabView = (props) => {
     ...activeFilters,
     ...config.defaultFilters,
   };
+  const { extendedViewConfig, downloadError } = useExtendedViewConfig(config, mergedActiveFilters);
   /*
   * useReducer table state
   * paginated table update data when state change
@@ -64,7 +66,7 @@ const TabView = (props) => {
     tableMsg: config.tableMsg,
     sortBy: config.defaultSortField,
     sortOrder: config.defaultSortDirection,
-    extendedViewConfig: config.extendedViewConfig,
+    extendedViewConfig,
     rowsPerPage: 10,
     page: 0,
   });
@@ -80,6 +82,7 @@ const TabView = (props) => {
       >
         <Grid container>
           <Grid item xs={12} id={config.tableID}>
+            {downloadError && <Typography role="alert" color="error">Unable to download table contents. Please try again.</Typography>}
             <TableView
               initState={initTblState}
               themeConfig={themeConfig}

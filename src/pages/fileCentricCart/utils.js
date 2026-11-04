@@ -40,7 +40,7 @@ export const downloadCsvString = (csvString, fileName) => {
     URL.revokeObjectURL(url); 
 }
 
-export function convertToCSV(jsonse, comments="", keysToInclude, header) {
+export function convertToCSV(jsonse, comments="", keysToInclude, header, formatListFields = []) {
   const objArray = typeof jsonse !== "object" ? JSON.parse(jsonse) : jsonse;
 
   // Validate header and keysToInclude
@@ -61,16 +61,14 @@ export function convertToCSV(jsonse, comments="", keysToInclude, header) {
       .map((keyName) => {
         let fieldValue = entry[keyName];
         // Format list values before escaping so every array stays in one CSV cell.
-        if (Array.isArray(fieldValue)) {
-          fieldValue = fieldValue.every((value) => value == null || typeof value === 'string')
-            ? formatListValues(fieldValue)
-            : fieldValue.join(', ');
+        if (Array.isArray(fieldValue) || formatListFields.includes(keyName)) {
+          fieldValue = formatListValues(fieldValue);
         }
 
           // Add comments to the first data row
         if (index === 0 && keyName === USER_COMMENT && hasValidComments) {
           let formattedComments = comments.replace(/"/g, '""');
-          if (formattedComments.search(/("|,|\n)/g) >= 0) {
+          if (formattedComments.search(/("|,|\r|\n)/g) >= 0) {
             formattedComments = `"${formattedComments}"`;
           }
           return formattedComments;
@@ -80,7 +78,7 @@ export function convertToCSV(jsonse, comments="", keysToInclude, header) {
         if (typeof fieldValue === "string") {
           fieldValue = fieldValue.replace(/"/g, '""'); // Escape double quotes
           // Enclose the field value in double quotes if it contains commas, newlines, or double quotes
-          if (fieldValue.search(/("|,|\n)/g) >= 0) {
+          if (fieldValue.search(/("|,|\r|\n)/g) >= 0) {
             fieldValue = `"${fieldValue}"`;
           }
         }
@@ -99,7 +97,7 @@ export function convertToCSV(jsonse, comments="", keysToInclude, header) {
 
 export function downloadJson(tableData, comments, fileName, manifestData) {
   const jsonse = JSON.stringify(tableData);
-  const csv = convertToCSV(jsonse, comments, manifestData.keysToInclude, manifestData.header);
+  const csv = convertToCSV(jsonse, comments, manifestData.keysToInclude, manifestData.header, manifestData.formatListFields);
   const exportData = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8' });
   const JsonURL = window.URL.createObjectURL(exportData);
   let tempLink = '';
@@ -146,7 +144,7 @@ export const downloadAndZipJson = (dataArray, setLoading, studyCode) => {
     const jsonse = JSON.stringify(dataObj.node);
     const csv = convertToCSV(jsonse,
       dataObj.comments,
-      dataObj.metadata.keysToInclude, dataObj.metadata.header);
+      dataObj.metadata.keysToInclude, dataObj.metadata.header, dataObj.metadata.formatListFields);
     processedFiles.push({
       name: createFileName(`${dataObj.fileName}`),
       content: csv,
