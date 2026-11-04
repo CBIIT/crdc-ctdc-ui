@@ -97,8 +97,10 @@ const useStyles = makeStyles((theme) => {
       lineHeight: '21px',
       letterSpacing: '0px',
       textAlign: 'left',
-      width: '135px',
-      minWidth: '135px',
+      width: '160px',
+      minWidth: '160px',
+      flexShrink: 0,
+      whiteSpace: 'nowrap',
       margin: '0px 0px 0px 3px',
       padding: '0px',
       textTransform: 'uppercase'
