@@ -41,6 +41,7 @@ const filters = (therapy = ['A', 'A|B', 'B']) => ({
   therapy_category: ['Targeted', 'Non-Targeted'],
   study_short_name: ['test-study'],
   participant_id: ['test-participant'],
+  race: ['Asian', 'White'],
 });
 const render = (element) => {
   const container = document.createElement('div');
@@ -110,7 +111,7 @@ describe('Explore Therapy table requests', () => {
     expect(activeFilters.therapy_string).toEqual(['A', 'A|B', 'B']);
   });
 
-  it.each(['therapy_name', 'therapy_category'])('sorts by %s while retaining the current therapy filters', async (sortBy) => {
+  it.each(['therapy_name', 'therapy_category', 'race'])('sorts by %s while retaining the current therapy filters', async (sortBy) => {
     client.query.mockResolvedValue({ data: { participantOverview: [] } });
     render(<TableProbe tab={participants} activeFilters={filters()} sortBy={sortBy} sortOrder="desc" />);
     await act(async () => {});
@@ -187,10 +188,11 @@ describe('Explore Therapy CSV request', () => {
   it('exports the full current cohort after a filter change, including name and category arrays', async () => {
     const rows = [{
       participant_id: 'test-participant',
+      race: ['Asian', 'White'],
       therapy_name: ['drug, regimen', 'B'],
       therapy_category: ['Targeted', 'Non-Targeted'],
     }, {
-      participant_id: 'empty-therapy', therapy_name: [], therapy_category: [],
+      participant_id: 'empty-therapy', therapy_name: [], therapy_category: [], race: [],
     }];
     client.query.mockResolvedValue({ data: { participantOverview: rows } });
     const table = {
@@ -217,6 +219,9 @@ describe('Explore Therapy CSV request', () => {
       variables: { ...currentFilters, page: 0, first: 10000 },
     });
     expect(downloadJson).toHaveBeenCalledWith(rows, table, 'CTDC_Participants_download');
+    // The installed Explore exporter already quotes the entire array cell.
+    expect(convertToCSV(rows, ['participant_id', 'race'], ['Participant ID', 'Race']))
+      .toBe('Participant ID,Race\r\n"test-participant","Asian,White"\r\n"empty-therapy",""\r\n');
     const therapyColumn = table.columns.find(({ dataField }) => dataField === 'therapy_name');
     expect(therapyColumn.header).toBe('Therapy');
     const categoryColumn = table.columns.find(({ dataField }) => dataField === 'therapy_category');

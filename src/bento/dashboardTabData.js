@@ -1342,6 +1342,8 @@ export const tabContainers = [
         display: true,
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
+        cellType: cellTypes.CUSTOM_ELEM,
+        formatList: true,
       },
       {
         dataField: 'ethnicity',
@@ -1366,7 +1368,7 @@ export const tabContainers = [
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         cellType: cellTypes.CUSTOM_ELEM,
-        formatTherapyList: true,
+        formatList: true,
       },
       {
         dataField: 'therapy_category',
@@ -1375,7 +1377,7 @@ export const tabContainers = [
         tooltipText: 'sort',
         role: cellTypes.DISPLAY,
         cellType: cellTypes.CUSTOM_ELEM,
-        formatTherapyList: true,
+        formatList: true,
       },
     ],
     id: 'participants_tab',

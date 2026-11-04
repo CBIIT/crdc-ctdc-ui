@@ -1,3 +1,4 @@
+import { renderToStaticMarkup } from 'react-dom/server';
 import { configColumn, CustomCellView } from './Column';
 import { cellTypes, headerTypes } from '@bento-core/table';
 
@@ -6,6 +7,16 @@ jest.mock("../../../../utils/graphqlClient", () => ({
 }));
 
 describe('configColumn', () => {
+  it('formats an arbitrary string-list field with the shared column option', () => {
+    const values = Object.freeze([' Label, with comma|pipe ', '', null, 'Second label']);
+    const [column] = configColumn([{
+      dataField: 'custom_labels', header: 'Labels', display: true,
+      cellType: cellTypes.CUSTOM_ELEM, formatList: true,
+    }]);
+    const cell = column.customCellRender({ ...column, custom_labels: values });
+    expect(renderToStaticMarkup(cell)).toContain('Label, with comma|pipe, Second label');
+  });
+
   it('should include columns with display: true', () => {
     const columns = [
       { dataField: 'name', header: 'Name', display: true, role: cellTypes.DISPLAY },

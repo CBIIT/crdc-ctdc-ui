@@ -4,12 +4,12 @@ import { cellTypes, headerTypes } from '@bento-core/table';
 import DocumentDownloadView from '../../../../components/DocumentDownload/DocumentDownloadView';
 import { removeSquareBracketsFromString } from '../../../../utils/utils';
 import { applySubstitutions } from '../../utils';
-import { formatTherapyValues } from '../../../../utils/therapy';
+import { formatListValues } from '../../../../utils/formatListValues';
 
 export const CustomCellView = (props) => {
   const {
     downloadDocument, documentDownloadProps, substitutionRules,
-    displayEmpty, dataField, removeSquareBrackets, formatTherapyList
+    displayEmpty, dataField, removeSquareBrackets, formatList
   } = props;
   if (downloadDocument) {
     return (
@@ -27,8 +27,8 @@ export const CustomCellView = (props) => {
         fileName={props[documentDownloadProps.fileName]}
       />
     );
-  } else if (formatTherapyList) {
-    return (<Typography>{formatTherapyValues(props[dataField]) || ''}</Typography>);
+  } else if (formatList) {
+    return (<Typography>{formatListValues(props[dataField]) || ''}</Typography>);
   } else if (removeSquareBrackets) { 
     return (
       // If removeSquareBrackets flag is true, remove square brackets

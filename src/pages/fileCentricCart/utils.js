@@ -1,6 +1,7 @@
 /*eslint-disable*/
 import JSZip from 'jszip';
 import { USER_COMMENT } from '../../bento/fileCentricCartWorkflowData';
+import { formatListValues } from '../../utils/formatListValues';
 
 import { saveAs } from 'file-saver';
 import { json2csv } from 'json-2-csv';
@@ -59,6 +60,12 @@ export function convertToCSV(jsonse, comments="", keysToInclude, header) {
     let line = keysToInclude
       .map((keyName) => {
         let fieldValue = entry[keyName];
+        // Format list values before escaping so every array stays in one CSV cell.
+        if (Array.isArray(fieldValue)) {
+          fieldValue = fieldValue.every((value) => value == null || typeof value === 'string')
+            ? formatListValues(fieldValue)
+            : fieldValue.join(', ');
+        }
 
           // Add comments to the first data row
         if (index === 0 && keyName === USER_COMMENT && hasValidComments) {

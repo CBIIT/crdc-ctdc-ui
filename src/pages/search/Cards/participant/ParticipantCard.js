@@ -5,6 +5,7 @@ import {
 import useStyles from './style';
 import { cn } from 'bento-components';
 import { removeSquareBracketsFromString } from '../../../../utils/utils';
+import { formatListValues } from '../../../../utils/formatListValues';
 
 const ParticipantCard = ({ data = {}, index })=> {
   const {
@@ -51,7 +52,7 @@ const ParticipantCard = ({ data = {}, index })=> {
             {renderInfo('Diagnosis:', ctepDiseaseTerm)}
             {renderInfo('Age:', age)}
             {renderInfo('Sex:', sex)}
-            {renderInfo('Race:', race)}
+            {renderInfo('Race:', formatListValues(race) || '')}
           </div>
 
           <div className={cn(classes.column, classes.leftColumn)}>
