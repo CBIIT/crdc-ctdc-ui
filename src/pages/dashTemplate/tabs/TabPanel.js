@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Typography, withStyles } from '@material-ui/core';
+import { Grid, withStyles } from '@material-ui/core';
 import { 
   TableContextProvider,
   TableView,
@@ -29,7 +29,7 @@ const TabView = (props) => {
     ...activeFilters,
     ...config.defaultFilters,
   };
-  const { extendedViewConfig, downloadError } = useExtendedViewConfig(config, mergedActiveFilters);
+  const { extendedViewConfig } = useExtendedViewConfig(config, mergedActiveFilters);
   /*
   * useReducer table state
   * paginated table update data when state change
@@ -82,7 +82,6 @@ const TabView = (props) => {
       >
         <Grid container>
           <Grid item xs={12} id={config.tableID}>
-            {downloadError && <Typography role="alert" color="error">Unable to download table contents. Please try again.</Typography>}
             <TableView
               initState={initTblState}
               themeConfig={themeConfig}

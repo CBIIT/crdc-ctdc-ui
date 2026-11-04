@@ -257,16 +257,15 @@ describe('Explore Therapy CSV request', () => {
     expect(rows[0].race).toEqual(['Asian', 'White']);
   });
 
-  it('reports a failed export without downloading a file', async () => {
+  it('does not download a file when the export query fails', async () => {
     const errorLog = jest.spyOn(console, 'error').mockImplementation(() => {});
     client.query.mockRejectedValue(new Error('Backend unavailable'));
     const DownloadProbe = () => {
-      const { extendedViewConfig, downloadError } = useExtendedViewConfig(participants, filters());
-      return <><DownloadButton download={extendedViewConfig.download} queryVariables={{}} server /><span>{downloadError ? 'Download failed' : ''}</span></>;
+      const { extendedViewConfig } = useExtendedViewConfig(participants, filters());
+      return <DownloadButton download={extendedViewConfig.download} queryVariables={{}} server />;
     };
     const { container } = render(<DownloadProbe />);
     await act(async () => { container.querySelector('button').click(); });
-    expect(container.textContent).toContain('Download failed');
     expect(downloadCsvString).not.toHaveBeenCalled();
     errorLog.mockRestore();
   });

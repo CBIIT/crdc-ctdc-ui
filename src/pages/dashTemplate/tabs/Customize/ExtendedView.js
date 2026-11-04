@@ -1,10 +1,9 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useRef } from 'react';
 import { useApolloClient } from '@apollo/client';
 import { convertToCSV, createFileName, downloadCsvString } from '../../../fileCentricCart/utils';
 
 export const useExtendedViewConfig = (config, queryVariables) => {
   const client = useApolloClient();
-  const [downloadError, setDownloadError] = useState(false);
   const latest = useRef();
   latest.current = { config, queryVariables, client };
 
@@ -12,7 +11,6 @@ export const useExtendedViewConfig = (config, queryVariables) => {
   // when clicked instead of retaining the filters from the first render.
   const downloadTable = useCallback(async () => {
     const { config, queryVariables, client } = latest.current;
-    setDownloadError(false);
     try {
       const { applyActiveFilters = false } = config.extendedViewConfig.download;
       const { data } = await client.query({
@@ -37,14 +35,12 @@ export const useExtendedViewConfig = (config, queryVariables) => {
       downloadCsvString(csv, createFileName(config.extendedViewConfig.download.downloadFileName));
     } catch (error) {
       console.error('[Table download]', error);
-      setDownloadError(true);
     }
   }, []);
 
   const { extendedViewConfig } = config;
   const download = extendedViewConfig?.download;
   return {
-    downloadError,
     extendedViewConfig: download ? {
       ...extendedViewConfig,
       download: { ...download, downloadTable },
