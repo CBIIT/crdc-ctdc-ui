@@ -81,7 +81,7 @@ export const manifestData = {
     'race',
     'ethnicity',
     'carcinogen_exposure',
-    'targeted_therapy',
+    'therapy_name',
     'specimen_record_id',
     'anatomical_collection_site',
     'tissue_category',
@@ -108,7 +108,7 @@ export const manifestData = {
     'Race',
     'Ethnicity',
     'Carcinogen Exposure',
-    'Targeted Therapy',
+    'Therapy',
     'Specimen Record ID',
     'Anatomical Collection Site',
     'Tissue Category',
@@ -156,7 +156,7 @@ export const GET_MY_CART_DATA_QUERY = gql`
       data_file_checksum_value
       ethnicity
       carcinogen_exposure
-      targeted_therapy
+      therapy_name
       anatomical_collection_site
       tissue_category
       assessment_timepoint
@@ -202,7 +202,7 @@ export const GET_MY_CART_DATA_QUERY_DESC = gql` query filesInList(
     data_file_checksum_value
     ethnicity
     carcinogen_exposure
-    targeted_therapy
+    therapy_name
     anatomical_collection_site
     tissue_category
     assessment_timepoint

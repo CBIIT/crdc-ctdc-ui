@@ -45,7 +45,12 @@ const defaultQuery = `
     $race: [String], 
     $ethnicity: [String],
     $carcinogen_exposure: [String], 
-    $targeted_therapy: [String],
+    # Therapy uses exact combination strings supplied by the backend.
+    # Explore generates these combinations from individual name selections.
+    # Type and Category each match any selected value.
+    $therapy_string: [String],
+    $therapy_type: [String],
+    $therapy_category: [String],
     $anatomical_collection_site: [String],
     $specimen_type: [String],
     $tissue_category: [String],
@@ -60,7 +65,9 @@ const defaultQuery = `
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy: $targeted_therapy
+      therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
       anatomical_collection_site: $anatomical_collection_site
       specimen_type: $specimen_type
       tissue_category: $tissue_category
@@ -72,7 +79,7 @@ const defaultQuery = `
       numberOfStudies
       numberOfParticipants
       numberOfDiagnoses
-      numberOfTargetedTherapies
+      numberOfTherapies
       numberOfSpecimens
       numberOfFiles
     }
@@ -89,7 +96,9 @@ const defaultQuery = `
 #     $race: [String],
 #     $ethnicity: [String],
 #     $carcinogen_exposure: [String],
-#     $targeted_therapy: [String],
+#     $therapy_string: [String],
+#     $therapy_type: [String],
+#     $therapy_category: [String],
 #     $anatomical_collection_site: [String],
 #     $specimen_type: [String],
 #     $tissue_category: [String],
@@ -105,11 +114,12 @@ const defaultQuery = `
 #       participant_id: $participant_id
 #       ctep_disease_term: $ctep_disease_term
 #       sex: $sex
-#       reported_gender: $reported_gender
 #       race: $race
 #       ethnicity: $ethnicity
 #       carcinogen_exposure: $carcinogen_exposure
-#       targeted_therapy: $targeted_therapy
+#       therapy_string: $therapy_string
+#       therapy_type: $therapy_type
+#       therapy_category: $therapy_category
 #       anatomical_collection_site: $anatomical_collection_site
 #       specimen_type: $specimen_type
 #       tissue_category: $tissue_category
@@ -128,7 +138,9 @@ const defaultQuery = `
 #       race,
 #       ethnicity,
 #       carcinogen_exposure,
-#       targeted_therapy
+#       therapy_name
+#       therapy_type
+#       therapy_category
 #       data_file_uuid
 #     }
 #   }
@@ -198,7 +210,9 @@ const GraphqlView = ({ classes }) => (
           "race": [],
           "ethnicity": [],
           "carcinogen_exposure": [],
-          "targeted_therapy": []
+          "therapy_string": [],
+          "therapy_type": [],
+          "therapy_category": []
         }'
       />
     </div>

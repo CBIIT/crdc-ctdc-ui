@@ -10,6 +10,7 @@ import {
   defaultFilters,
 } from '../../bento/dashboardTabData';
 import { toTitleCase } from '../../utils/utils';
+import { formatTherapyValues } from '../../utils/therapy';
 
 const ParticipantDetailController = ({ match }) => {
   const participant_id = match.params.id;
@@ -74,10 +75,6 @@ const ParticipantDetailController = ({ match }) => {
   const overviewRecord = participantOverviewData.participantOverview[0];
   const biospecimenRecord = biospecimensData?.biospecimenOverview?.[0] || {};
 
-  const formatPipeList = (val) => (val && val !== '[]'
-    ? val.split('|').map((t) => t.trim()).join(', ')
-    : null);
-
   const participantData = {
     participant_id,
     age_at_enrollment: overviewRecord.age_at_enrollment,
@@ -87,8 +84,11 @@ const ParticipantDetailController = ({ match }) => {
     ethnicity: overviewRecord.ethnicity,
     stage_of_disease: overviewRecord.stage_of_disease,
     primary_diagnosis_disease_group: overviewRecord.ctep_disease_term,
-    targeted_therapy: formatPipeList(overviewRecord.targeted_therapy_string),
-    best_response_to_targeted_therapy: formatPipeList(overviewRecord.best_response_to_targeted_therapy),
+    therapy_name: formatTherapyValues(overviewRecord.therapy_name),
+    therapy_type: formatTherapyValues(overviewRecord.therapy_type),
+    therapy_category: formatTherapyValues(overviewRecord.therapy_category),
+    current_response_to_therapy: formatTherapyValues(overviewRecord.current_response_to_therapy),
+    best_response_to_therapy: formatTherapyValues(overviewRecord.best_response_to_therapy),
     primary_disease_site: biospecimenRecord.primary_disease_site,
     study_short_name: overviewRecord.study_short_name,
     study_id: overviewRecord.study_id,
@@ -99,7 +99,7 @@ const ParticipantDetailController = ({ match }) => {
     age_at_enrollment: overviewRecord.age_at_enrollment,
     sex: overviewRecord.sex,
     race: overviewRecord.race,
-    targeted_therapy: formatPipeList(overviewRecord.targeted_therapy_string),
+    therapy_name: formatTherapyValues(overviewRecord.therapy_name),
   }));
 
   return (

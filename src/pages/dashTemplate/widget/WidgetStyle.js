@@ -12,7 +12,7 @@ const styles = (theme) => ({
     backgroundColor: theme.palette.widgetBackground.main,
   },
   rightContent: {
-    maxWidth: 'calc(100% - 250px)',
+    maxWidth: 'calc(100% - 300px)',
     position: 'relative',
     borderRight: 'thin solid #B1B1B1',
   },
@@ -82,7 +82,7 @@ const styles = (theme) => ({
     background: theme.palette.widgetBackground.main,
   },
   sideBar: {
-    width: '250px',
+    width: '300px',
     overflowX: 'hidden',
     backgroundColor: 'transparent',
     borderRight: 'thin solid #B1B1B1',
