@@ -32,13 +32,14 @@ jest.mock('../fileCentricCart/utils', () => ({
 }));
 
 const client = { query: jest.fn() };
-const tabs = tabContainers.filter(({ name }) => ['Participants', 'Biospecimens', 'Files'].includes(name));
+const tabs = tabContainers.filter(({ name }) => ['Participants', 'Biospecimens', 'Files', 'Study Files'].includes(name));
 const participants = tabs.find(({ name }) => name === 'Participants');
 const containers = [];
 const filters = (therapy = ['A', 'A|B', 'B']) => ({
   therapy_string: therapy,
   therapy_type: ['Chemotherapy', 'Immunotherapy'],
   therapy_category: ['Targeted', 'Non-Targeted'],
+  best_response_to_therapy: ['Complete Response', 'Partial Response'],
   study_short_name: ['test-study'],
   participant_id: ['test-participant'],
   race: ['Asian', 'White'],
@@ -93,6 +94,24 @@ const TableProbe = ({ tab, activeFilters, page = 0, sortBy, sortOrder = 'asc' })
 };
 
 describe('Explore Therapy table requests', () => {
+  it.each(['asc', 'desc'])('sorts Best Response %s across pages while retaining the cohort', async (sortOrder) => {
+    client.query.mockResolvedValue({ data: { participantOverview: [] } });
+    const activeFilters = filters();
+    const view = (page) => <TableProbe tab={participants} activeFilters={activeFilters}
+      sortBy="best_response_to_therapy" sortOrder={sortOrder} page={page} />;
+    const { rerender } = render(view(0));
+    await act(async () => {});
+    expect(client.query).toHaveBeenLastCalledWith({
+      query: participants.api,
+      variables: { ...activeFilters, first: 10, offset: 0, order_by: 'best_response_to_therapy', sort_direction: sortOrder },
+    });
+    rerender(view(1));
+    await act(async () => {});
+    expect(client.query).toHaveBeenLastCalledWith({
+      query: participants.api,
+      variables: { ...activeFilters, first: 10, offset: 10, order_by: 'best_response_to_therapy', sort_direction: sortOrder },
+    });
+  });
   it.each(tabs.map((tab) => [tab.name, tab]))('%s retains combinations across pages and filter changes', async (_name, tab) => {
     client.query.mockResolvedValue({ data: { [tab.paginationAPIField]: [{ id: 'test-row' }] } });
     const activeFilters = { ...filters(), ...tab.defaultFilters };

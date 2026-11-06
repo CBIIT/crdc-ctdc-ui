@@ -4,6 +4,7 @@ import { act } from 'react-dom/test-utils';
 import { Provider } from 'react-redux';
 import { combineReducers, createStore } from 'redux';
 import { useApolloClient, useQuery } from '@apollo/client';
+import { getOperationAST } from 'graphql';
 import {
   clearAllFilters, clearFacetSection, getFilters,
   sideBarReducerGenerator, toggleCheckBox,
@@ -1079,6 +1080,7 @@ describe('Therapy Type and Category facets', () => {
   it.each([
     ['therapy_type', ['Chemotherapy', 'Immunotherapy']],
     ['therapy_category', ['Targeted', 'Non-Targeted']],
+    ['best_response_to_therapy', ['Complete Response', 'Partial Response']],
   ])('refreshes name vocabulary before applying a changed %s filter', async (field, values) => {
     mockClient.query.mockResolvedValue(response());
     const store = makeStore({ therapy_string: { A: true, B: true }, [field]: selectedNames(values) });
@@ -1139,6 +1141,7 @@ describe('Therapy Type and Category facets', () => {
   it.each([
     ['therapy_type', 'Chemotherapy', 'Therapy Type'],
     ['therapy_category', 'Non-Targeted', 'Therapy Category'],
+    ['best_response_to_therapy', 'Partial Response', 'Best Response'],
     ['therapy_type', '', 'Therapy Type'],
     ['therapy_category', '', 'Therapy Category'],
   ])('removes unavailable %s selection %j through the real query bar', async (field, value, label) => {
@@ -1174,5 +1177,120 @@ describe('Therapy Type and Category facets', () => {
     expect(dashboardRequests()[1].variables.sex).toEqual(['Male']);
     expect(getFilters(store.getState().statusReducer.filterState)[field]).toEqual([]);
     expect(lastProps(StatsView).data.numberOfParticipants).toBe(15);
+  });
+});
+
+describe('Explore Best Response', () => {
+  const field = 'best_response_to_therapy';
+  const currentCounts = 'participantCountByBestResponseToTherapy';
+  const optionCounts = 'filterParticipantCountByBestResponseToTherapy';
+  const bestResponseBuckets = [
+    { group: 'Complete Response', subjects: 2 },
+    { group: 'Partial Response', subjects: 3 },
+  ];
+  const bestResponseData = () => {
+    const result = response();
+    result.data.searchParticipants[currentCounts] = bestResponseBuckets;
+    result.data.searchParticipants[optionCounts] = bestResponseBuckets;
+    return result;
+  };
+
+  it('forwards Best Response to every active Explore request, including tab counts and file selection', () => {
+    const documents = new Set([
+      queries.DASHBOARD_QUERY_NEW,
+      queries.THERAPY_QUERY,
+      ...queries.tabContainers.flatMap((tab) => [tab.api, tab.addAllFileQuery, tab.addSelectedFilesQuery]),
+    ]);
+    documents.forEach((document) => {
+      const operation = getOperationAST(document);
+      const variable = operation.variableDefinitions.find(({ variable }) => variable.name.value === field);
+      expect(variable.type).toMatchObject({ kind: 'ListType', type: { name: { value: 'String' } } });
+      operation.selectionSet.selections.forEach((selection) => {
+        const argument = selection.arguments.find(({ name }) => name.value === field);
+        expect(argument).toMatchObject({ value: { kind: 'Variable', name: { value: field } } });
+      });
+    });
+  });
+
+  it('passes Best Response buckets and counts through unchanged', async () => {
+    const result = bestResponseData();
+    const sourceBuckets = Object.freeze([
+      ...bestResponseBuckets,
+      { group: 'Unknown', subjects: 1 },
+      { group: 'Not Reported', subjects: 2 },
+      { group: '', subjects: 7 },
+    ]);
+    result.data.searchParticipants[currentCounts] = sourceBuckets;
+    result.data.searchParticipants[optionCounts] = sourceBuckets;
+    result.data.searchParticipants.filterSpecimenCountByTissueCategory = [{ group: '', subjects: 4 }];
+    mockClient.query.mockResolvedValue(result);
+    mountDashboard(makeStore());
+    await waitForDashboard(1, []);
+    const sidebar = lastProps(BentoFacetFilter).searchData;
+    expect(sidebar[currentCounts]).toEqual(sourceBuckets);
+    expect(sidebar[optionCounts]).toEqual(sourceBuckets);
+    expect(sidebar.filterSpecimenCountByTissueCategory).toEqual([{ group: '', subjects: 4 }]);
+    expect(facetsConfig.find((facet) => facet.datafield === field)).toMatchObject({
+      section: 'Filter by Participants', label: 'Best Response', displayFacetCount: true,
+    });
+  });
+
+  it('passes single and multiple selections unchanged and refreshes counts and tabs on reset', async () => {
+    const single = bestResponseData();
+    single.data.searchParticipants.numberOfParticipants = 2;
+    single.data.searchParticipants.filterParticipantCountBySex = [{ group: 'Female', subjects: 2 }];
+    const multiple = bestResponseData();
+    multiple.data.searchParticipants.numberOfParticipants = 4;
+    multiple.data.searchParticipants.numberOfSpecimens = 6;
+    multiple.data.searchParticipants.filterParticipantCountBySex = [{ group: 'Female', subjects: 4 }];
+    multiple.data.filesTabCount.numberOfFiles = 7;
+    multiple.data.studyFilesTabCount.numberOfStudyFiles = 1;
+    mockClient.query.mockResolvedValueOnce(bestResponseData())
+      .mockResolvedValueOnce(single).mockResolvedValueOnce(multiple)
+      .mockResolvedValueOnce(bestResponseData());
+    const store = makeStore({ sex: { Female: true } });
+    mountDashboard(store);
+    await waitForDashboard(1, []);
+    act(() => { store.dispatch(toggleCheckBox({ datafield: field, name: 'Complete Response', isChecked: true })); });
+    await waitForDashboard(2, []);
+    expect(dashboardRequests()[1].variables).toMatchObject({ [field]: ['Complete Response'], sex: ['Female'] });
+    expect(lastProps(StatsView).data.numberOfParticipants).toBe(2);
+    act(() => { store.dispatch(toggleCheckBox({ datafield: field, name: 'Partial Response', isChecked: true })); });
+    await waitForDashboard(3, []);
+    expect(dashboardRequests()[2].variables).toMatchObject({
+      [field]: ['Complete Response', 'Partial Response'], sex: ['Female'],
+    });
+    expect(lastProps(TabsView).activeFilters[field]).toEqual(['Complete Response', 'Partial Response']);
+    expect(lastProps(TabsView).dashboardStats).toMatchObject({
+      numberOfParticipants: 4, numberOfSpecimens: 6, numberOfFiles: 7, numberOfStudyFiles: 1,
+    });
+    expect(lastProps(BentoFacetFilter).searchData.filterParticipantCountBySex)
+      .toEqual([{ group: 'Female', subjects: 4 }]);
+    act(() => { store.dispatch(clearFacetSection({ datafield: field })); });
+    await waitForDashboard(4, []);
+    expect(dashboardRequests()[3].variables).toMatchObject({ [field]: [], sex: ['Female'] });
+    expect(lastProps(StatsView).data.numberOfParticipants).toBe(15);
+  });
+
+  it('restores Best Response together with therapy names before loading the saved cohort', async () => {
+    const selected = ['Partial Response', 'Complete Response'];
+    saveState({ statusReducer: { filterState: {
+      therapy_string: { A: true, B: true },
+      [field]: selectedNames(selected),
+    } } });
+    const store = makeStore({}, loadState());
+    mockClient.query.mockResolvedValue(bestResponseData());
+    mountDashboard(store);
+    await waitForDashboard(1, ['A', 'A|B', 'B']);
+    expect(mockClient.query.mock.calls[0][0]).toMatchObject({
+      query: queries.THERAPY_QUERY, variables: { [field]: selected },
+    });
+    expect(dashboardRequests()[0].variables[field]).toEqual(selected);
+    expect(lastProps(TabsView).activeFilters[field]).toEqual(selected);
+    saveState(store.getState());
+    expect(loadState().statusReducer.filterState[field]).toEqual(selectedNames(selected));
+    act(() => { store.dispatch(clearAllFilters()); });
+    await waitForDashboard(2, []);
+    expect(dashboardRequests()[1].variables[field]).toBeUndefined();
   });
 });
