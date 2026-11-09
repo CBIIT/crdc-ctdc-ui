@@ -10,13 +10,7 @@ import {
 
 const byName = (a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
 
-const PortfolioView = ({
-  classes,
-  programs,
-  unaffiliatedStudies,
-  curatedContent = curatedProgramContent,
-  initiativesContent = initiativesCardContent,
-}) => {
+const PortfolioView = ({ classes, programs, unaffiliatedStudies }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   // Programs and the Initiatives card form one list, ordered alphabetically by displayed name.
@@ -32,9 +26,9 @@ const PortfolioView = ({
         description={program.program_short_description}
         externalUrl={program.program_external_url}
         studies={program.studies || []}
-        image={curatedContent[program.program_short_name]?.primaryImage}
+        image={curatedProgramContent[program.program_short_name]?.primaryImage}
         imageAlt={
-          curatedContent[program.program_short_name]?.primaryImageAlt
+          curatedProgramContent[program.program_short_name]?.primaryImageAlt
           || `${program.program_name} program image`
         }
       />
@@ -44,19 +38,19 @@ const PortfolioView = ({
   if ((unaffiliatedStudies || []).length > 0) {
     items.push({
       key: 'initiatives',
-      name: initiativesContent.name,
-      searchText: [initiativesContent.name, initiativesContent.description],
+      name: initiativesCardContent.name,
+      searchText: [initiativesCardContent.name, initiativesCardContent.description],
       card: (
         <PortfolioCard
           key="initiatives"
           isInitiatives
-          name={initiativesContent.name}
+          name={initiativesCardContent.name}
           identifier={null}
-          description={initiativesContent.description}
-          externalUrl={initiativesContent.externalUrl}
+          description={initiativesCardContent.description}
+          externalUrl={initiativesCardContent.externalUrl}
           studies={unaffiliatedStudies}
-          image={initiativesContent.primaryImage}
-          imageAlt={initiativesContent.primaryImageAlt}
+          image={initiativesCardContent.primaryImage}
+          imageAlt={initiativesCardContent.primaryImageAlt}
         />
       ),
     });

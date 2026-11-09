@@ -28,23 +28,16 @@ const getYouTubeEmbedUrl = (url) => {
 };
 
 const ProgramDetailsView = ({
-  classes,
-  isInitiatives,
-  program,
-  unaffiliatedStudies,
-  notFound,
-  studyRows,
-  curatedContent = curatedProgramDetailContent,
-  initiativesContent = initiativesDetailContent,
+  classes, isInitiatives, program, unaffiliatedStudies, notFound, studyRows,
 }) => {
   const [playingVideoTitle, setPlayingVideoTitle] = useState(null);
   const label = isInitiatives ? 'Initiative' : 'Program';
-  const displayShortName = isInitiatives ? initiativesContent.name : program?.program_short_name;
+  const displayShortName = isInitiatives ? initiativesDetailContent.name : program?.program_short_name;
   const displayFullName = isInitiatives ? '' : program?.program_name;
   const studies = (isInitiatives ? unaffiliatedStudies : program?.studies) || [];
   const curated = isInitiatives
-    ? initiativesContent
-    : (curatedContent[program?.program_short_name] || { hostVideos: [] });
+    ? initiativesDetailContent
+    : (curatedProgramDetailContent[program?.program_short_name] || { hostVideos: [] });
 
   const studyCount = studies.length;
   const studyCountLabel = `ASSOCIATED ${studyCount === 1 ? 'STUDY' : 'STUDIES'}`;
