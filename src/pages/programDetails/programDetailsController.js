@@ -37,7 +37,10 @@ const ProgramDetailsController = ({ match }) => {
 
   if (isInitiatives) {
     return (
-      <ProgramDetailsView isInitiatives unaffiliatedStudies={unaffiliatedData?.getAllStudies || []} />
+      <ProgramDetailsView
+        isInitiatives
+        unaffiliatedStudies={unaffiliatedData?.getAllPrograms?.[0]?.studies || []}
+      />
     );
   }
 

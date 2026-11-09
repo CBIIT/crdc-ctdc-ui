@@ -8,9 +8,11 @@ import {
 } from '../../bento/portfolioData';
 
 const PortfolioView = ({ classes, programs, unaffiliatedStudies }) => {
-  // Order comes from the backend query (getAllPrograms order_by/sort_direction, see portfolioData.js) -
-  // there is no program_sort_order field to sort by client-side.
-  const sortedPrograms = programs || [];
+  // program_sort_order now exists on ProgramNode (added to crdc-ctdc-backend PR #204 after our initial
+  // integration) - sort client-side for curated card ordering.
+  const sortedPrograms = [...(programs || [])].sort(
+    (a, b) => (a.program_sort_order ?? 0) - (b.program_sort_order ?? 0),
+  );
   const isEmpty = sortedPrograms.length === 0 && unaffiliatedStudies.length === 0;
 
   return (

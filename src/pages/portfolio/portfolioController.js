@@ -32,7 +32,7 @@ const PortfolioController = () => {
   return (
     <PortfolioView
       programs={programsData?.getAllPrograms || []}
-      unaffiliatedStudies={unaffiliatedData?.getAllStudies || []}
+      unaffiliatedStudies={unaffiliatedData?.getAllPrograms?.[0]?.studies || []}
     />
   );
 };

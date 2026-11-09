@@ -1,6 +1,10 @@
 import gql from 'graphql-tag';
 import headerIconAsset from '../assets/portfolio/portfolio-header-icon.svg';
 import externalLinkIconAsset from '../assets/portfolio/external-link-icon.svg';
+import nctnImage from '../assets/landing/LP_Cases.png';
+import nciMatchImage from '../assets/about/About_CTDC_Model.png';
+import cimacCidcImage from '../assets/landing/Studies-image.jpg';
+import initiativesImage from '../assets/landing/LP_Studies.png';
 
 // --------------- Icons configuration --------------
 export const portfolioHeaderIcon = {
@@ -30,9 +34,12 @@ export const pageData = {
 // --------------- Curated program content --------------
 // program_short_description/program_external_url come from the backend (CTDC-2067); image/alt text are not
 // modeled in the graph (confirmed out of scope in CTDC-2067/2069), so they're curated here, keyed by
-// program_short_name. Populate as real program images/alt text are supplied.
+// program_short_name. TEMPORARY: images below are reused from other existing site assets (landing/about
+// pages) purely to preview card layout with mock data - replace with real curated program images.
 export const curatedProgramContent = {
-  // PROGRAM_SHORT_NAME: { primaryImage: require('../assets/portfolio/example.png'), primaryImageAlt: '...' },
+  NCTN: { primaryImage: nctnImage, primaryImageAlt: 'NCI National Clinical Trials Network' },
+  'NCI-MATCH': { primaryImage: nciMatchImage, primaryImageAlt: 'NCI Molecular Analysis for Therapy Choice Trial' },
+  'CIMAC-CIDC': { primaryImage: cimacCidcImage, primaryImageAlt: 'Cancer Immune Monitoring and Analysis Centers, Cancer Immunologic Data Center Network' },
 };
 
 // --------------- Curated Initiatives card content --------------
@@ -41,7 +48,7 @@ export const curatedProgramContent = {
 export const initiativesCardContent = {
   name: 'Cancer Moonshot Biobank',
   description: '"Cancer Moonshot Biobank" is a longitudinal study. This means it collects and stores samples and information over time, throughout the course of a patient\'s cancer treatment. By looking at samples and information collected from the same people over time, researchers hope to better understand how cancer changes over time and over the course of medical treatments.',
-  primaryImage: '',
+  primaryImage: initiativesImage,
   primaryImageAlt: 'Initiatives',
   externalUrl: '',
 };
@@ -51,19 +58,21 @@ export const initiativesCardContent = {
 export const initiativesCardPosition = 1;
 
 // --------------- GraphQL query - Retrieve program list (CTDC-2067) --------------
-// Shape matches the backend contract delivered in crdc-ctdc-backend PR #204 (not yet merged - see
-// /memories/repo/portfolio-page-ctdc-2064.md): root field is `getAllPrograms`, not `program`. There is no
-// program_sort_order field - server-side order comes from order_by/sort_direction (defaults to alphabetical
-// by program_short_name). study_count is also available directly if the `studies` sub-list ever becomes
-// unnecessary to fetch in full.
+// Shape matches the current backend contract on crdc-ctdc-backend PR #204 (not yet merged - see
+// /memories/repo/portfolio-page-ctdc-2064.md): root field is `getAllPrograms`. `study_has_program:
+// ["has program"]` is required here - without it, getAllPrograms also mixes in a synthetic "no program"
+// grouping (per the schema's own doc comment: "an empty list includes both"), which would duplicate the
+// Initiatives data this page fetches separately below. program_sort_order now exists on ProgramNode (added
+// after our initial integration) - used by portfolioView.js for curated card ordering.
 export const GET_PORTFOLIO_PROGRAMS_QUERY = gql`
   query getPortfolioProgramsQuery {
-    getAllPrograms {
+    getAllPrograms(study_has_program: ["has program"]) {
       program_name
       program_short_name
       crdc_id
       program_short_description
       program_external_url
+      program_sort_order
       study_count
       studies {
         study_short_name
@@ -74,14 +83,17 @@ export const GET_PORTFOLIO_PROGRAMS_QUERY = gql`
 `;
 
 // --------------- GraphQL query - Retrieve unaffiliated studies (CTDC-2067 orphan-study query) --------------
-// Shape matches PR #204: there is no dedicated `unaffiliatedStudies` query - orphan studies are the existing
-// `getAllStudies` query filtered by the new `study_has_program` arg. Reused verbatim by CTDC-2069's no-program
-// detail variant.
+// `getAllStudies` no longer accepts a study_has_program arg (removed in PR #204) - the orphan/Initiatives
+// bucket is now reached through `getAllPrograms(study_has_program: ["has no program"])` instead, which
+// returns a synthetic no-program grouping whose `studies` sub-list is the unaffiliated studies. Reused
+// verbatim by CTDC-2069's no-program detail variant. The controller reads result[0]?.studies.
 export const GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY = gql`
   query getPortfolioUnaffiliatedStudiesQuery {
-    getAllStudies(study_has_program: ["has no program"]) {
-      study_short_name
-      study_name
+    getAllPrograms(study_has_program: ["has no program"]) {
+      studies {
+        study_short_name
+        study_name
+      }
     }
   }
 `;

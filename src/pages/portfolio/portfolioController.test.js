@@ -50,24 +50,24 @@ describe('PortfolioController', () => {
       unaffiliatedResult: {
         loading: false,
         error: undefined,
-        data: { getAllStudies: [{ study_short_name: 'NCT00980460', study_name: 'Unaffiliated Study One' }] },
+        data: { getAllPrograms: [{ studies: [{ study_short_name: 'NCT00980460', study_name: 'Unaffiliated Study One' }] }] },
       },
     });
     render(<PortfolioController />);
     expect(screen.getByText('NCI National Clinical Trials Network')).toBeInTheDocument();
   });
 
-  it('renders a loading state while either live query is in flight', () => {
+  it('renders a loading indicator while queries are in flight', () => {
     mockQueryResults({ programsResult: { loading: true, error: undefined, data: undefined } });
     render(<PortfolioController />);
     expect(screen.getByRole('progressbar')).toBeInTheDocument();
   });
 
-  it('renders an error state when a live query fails', () => {
-    mockQueryResults({ programsResult: { loading: false, error: { message: 'Network error' }, data: undefined } });
+  it('renders an error message when a query fails', () => {
+    mockQueryResults({
+      programsResult: { loading: false, error: new Error('boom'), data: undefined },
+    });
     render(<PortfolioController />);
-    expect(
-      screen.getByText(/An error has occurred in loading the Portfolio page: Network error/),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/An error has occurred in loading the Portfolio page: boom/)).toBeInTheDocument();
   });
 });

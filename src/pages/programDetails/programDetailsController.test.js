@@ -66,7 +66,7 @@ describe('ProgramDetailsController', () => {
       unaffiliatedResult: {
         loading: false,
         error: undefined,
-        data: { getAllStudies: [{ study_short_name: 'NCT00980460', study_name: 'Unaffiliated Study One' }] },
+        data: { getAllPrograms: [{ studies: [{ study_short_name: 'NCT00980460', study_name: 'Unaffiliated Study One' }] }] },
       },
     });
     render(<ProgramDetailsController match={{ params: {} }} />);
@@ -74,21 +74,17 @@ describe('ProgramDetailsController', () => {
     expect(screen.getByText('Unaffiliated Study One')).toBeInTheDocument();
   });
 
-  it('renders a loading state while the live query is in flight (IT7)', () => {
-    mockQueryResults({
-      programResult: { loading: true, error: undefined, data: undefined },
-    });
+  it('renders a loading indicator while the query is in flight', () => {
+    mockQueryResults({ programResult: { loading: true, error: undefined, data: undefined } });
     render(<ProgramDetailsController match={{ params: { programShortName: 'NCTN' } }} />);
     expect(screen.getByRole('progressbar')).toBeInTheDocument();
   });
 
-  it('renders an error state when the live query fails (IT8)', () => {
+  it('renders an error message when the query fails', () => {
     mockQueryResults({
-      programResult: { loading: false, error: { message: 'Network error' }, data: undefined },
+      programResult: { loading: false, error: new Error('boom'), data: undefined },
     });
     render(<ProgramDetailsController match={{ params: { programShortName: 'NCTN' } }} />);
-    expect(
-      screen.getByText(/An error has occurred in loading the Program Details page: Network error/),
-    ).toBeInTheDocument();
+    expect(screen.getByText(/An error has occurred in loading the Program Details page: boom/)).toBeInTheDocument();
   });
 });
