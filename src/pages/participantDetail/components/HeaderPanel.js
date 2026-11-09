@@ -1,10 +1,21 @@
 import React from 'react';
+import { Tooltip } from '@material-ui/core';
+import HelpIcon from '@material-ui/icons/Help';
 import CustomBreadcrumb from '../../../components/Breadcrumb/BreadcrumbView';
 import { headerIcon } from '../../../bento/participantDetailData';
 
-const InfoRow = ({ classes, label, value }) => (
+const InfoRow = ({ classes, label, value, tooltip }) => (
   <div className={classes.infoPanelRow}>
-    <span className={classes.infoPanelLabel}>{label}:</span>
+    {tooltip ? (
+      <Tooltip title={tooltip} classes={{ tooltip: classes.tooltipBody }} placement="top" interactive>
+        <span className={`${classes.infoPanelLabel} ${classes.infoPanelTooltipLabel}`} tabIndex={0}>
+          {label}:
+          <HelpIcon className={classes.infoPanelTooltipIcon} />
+        </span>
+      </Tooltip>
+    ) : (
+      <span className={classes.infoPanelLabel}>{label}:</span>
+    )}
     <span className={classes.infoPanelValue}>{value != null && value !== '' ? value : 'N/A'}</span>
   </div>
 );
@@ -52,12 +63,17 @@ const HeaderPanel = ({ classes, participant }) => {
         </div>
       </div>
 
-      {/* ---- Info panel: Demographics | Diagnosis | Targeted Therapy ---- */}
+      {/* ---- Info panel: Demographics | Diagnosis | Therapy ---- */}
       <div className={classes.infoPanelContainer}>
         {/* Demographics */}
         <div className={classes.infoPanelSection}>
           <div className={classes.infoPanelSectionTitle}>Demographics</div>
-          <InfoRow classes={classes} label="Age at Enrollment" value={participant.age_at_enrollment} />
+          <InfoRow
+            classes={classes}
+            label="Age at Enrollment"
+            value={participant.age_at_enrollment}
+            tooltip="The age of the participant as of enrollment, measured in days."
+          />
           <InfoRow classes={classes} label="Race" value={participant.race} />
           <InfoRow classes={classes} label="Ethnicity" value={participant.ethnicity} />
           <InfoRow classes={classes} label="Sex" value={participant.sex} />
@@ -72,11 +88,14 @@ const HeaderPanel = ({ classes, participant }) => {
           <InfoRow classes={classes} label="Stage of Disease" value={participant.stage_of_disease} />
         </div>
 
-        {/* Targeted Therapy */}
+        {/* Therapy */}
         <div className={classes.infoPanelSection}>
-          <div className={classes.infoPanelSectionTitle}>Targeted Therapy</div>
-          <InfoRow classes={classes} label="Targeted Therapy" value={participant.targeted_therapy} />
-          <InfoRow classes={classes} label="Response to Targeted Therapy" value={participant.best_response_to_targeted_therapy} />
+          <div className={classes.infoPanelSectionTitle}>THERAPY</div>
+          <InfoRow classes={classes} label="Therapy Name" value={participant.therapy_name} />
+          <InfoRow classes={classes} label="Therapy Type" value={participant.therapy_type} />
+          <InfoRow classes={classes} label="Therapy Category" value={participant.therapy_category} />
+          <InfoRow classes={classes} label="Current Response" value={participant.current_response_to_therapy} />
+          <InfoRow classes={classes} label="Best Response" value={participant.best_response_to_therapy} />
         </div>
       </div>
     </>

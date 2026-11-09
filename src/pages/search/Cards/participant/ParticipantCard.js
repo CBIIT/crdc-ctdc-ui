@@ -4,7 +4,7 @@ import {
 } from '@material-ui/core';
 import useStyles from './style';
 import { cn } from 'bento-components';
-import { removeSquareBracketsFromString } from '../../../../utils/utils';
+import { formatListValues } from '../../../../utils/formatListValues';
 
 const ParticipantCard = ({ data = {}, index })=> {
   const {
@@ -14,10 +14,12 @@ const ParticipantCard = ({ data = {}, index })=> {
     sex,
     race,
     ethnicity,
-    targeted_therapy: therapy,
+    therapy_name: therapy,
     // stage_of_disease: stageOfDisease,
   } = data;
   const classes = useStyles();
+
+  const therapyLabel = formatListValues(therapy) || '';
 
   const renderInfo = (label, value='') => (
     <div className={classes.keyAndValueRow}>
@@ -46,15 +48,15 @@ const ParticipantCard = ({ data = {}, index })=> {
         <div className={classes.row}>
           <div className={classes.column}>
             {renderInfo('Diagnosis:', ctepDiseaseTerm)}
-            {renderInfo('Age:', age)}
+            {renderInfo('Age at Enrollment:', age)}
             {renderInfo('Sex:', sex)}
-            {renderInfo('Race:', race)}
+            {renderInfo('Race:', formatListValues(race) || '')}
           </div>
 
           <div className={cn(classes.column, classes.leftColumn)}>
             
             {renderInfo('Ethnicity:', ethnicity)}
-            {renderInfo('Therapy:', removeSquareBracketsFromString(therapy))}
+            {renderInfo('Therapy:', therapyLabel)}
             {/* {renderInfo('Stage of Disease:', stageOfDisease)} */}
 
           </div>

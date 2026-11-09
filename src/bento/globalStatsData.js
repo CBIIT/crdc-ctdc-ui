@@ -112,7 +112,7 @@ export const statsStyling = {
 
 export const globalStatsData = [
   // Matches Figma design (node 1597:38231, "CTDC Statsbar - New Draft") exactly: Data Volume, Program,
-  // Studies, Participants, Biospecimens, Files - no Diagnoses/Targeted Therapies. This is a shared component
+  // Studies, Participants, Biospecimens, Files - no Diagnoses/Therapies. This is a shared component
   // so this also changes the Explore Dashboard and Study page counter strips, per design parity (AC#5).
   {
     // NOTE: statAPI 'volumeOfData' is not yet returned by GET_GLOBAL_STATS_DATA_QUERY below (no backend field
@@ -175,7 +175,9 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
     $race: [String],
     $ethnicity: [String],
     $carcinogen_exposure: [String],
-    $targeted_therapy_string: [String], # $targeted_therapy: [String],
+    $therapy_string: [String],
+    $therapy_type: [String],
+    $therapy_category: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -198,7 +200,9 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy_string: $targeted_therapy_string # targeted_therapy: $targeted_therapy
+      therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -211,7 +215,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
         numberOfStudies
         numberOfParticipants
         numberOfDiagnoses
-        numberOfTargetedTherapies
+        numberOfTherapies
         numberOfSpecimens
         numberOfFiles
         numberOfStudyFiles
@@ -227,7 +231,9 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy_string: $targeted_therapy_string
+      therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -250,7 +256,9 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       race: $race
       ethnicity: $ethnicity
       carcinogen_exposure: $carcinogen_exposure
-      targeted_therapy_string: $targeted_therapy_string
+      therapy_string: $therapy_string
+      therapy_type: $therapy_type
+      therapy_category: $therapy_category
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category

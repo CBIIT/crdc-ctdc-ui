@@ -1,5 +1,5 @@
 import { sortType, InputTypes } from '@bento-core/facet-filter';
-import { DEFAULT_VALUE } from './siteWideConfig';
+import { DEFAULT_VALUE, ENABLE_LOCAL_FIND } from './siteWideConfig';
 
 const CASES = 'Filter by Participants';
 const SAMPLES = 'Filter by Biospecimens';
@@ -19,7 +19,7 @@ export const resetIcon = {
 export const facetSectionVariables = {
   'Filter by Participants': {
     isExpanded: true,
-    hasSearch: true,
+    hasSearch: ENABLE_LOCAL_FIND,
     hasArrowDropDownIcon: false,
   },
   'Filter by Biospecimens': {
@@ -140,10 +140,10 @@ export const facetsConfig = [
   },
   {
     section: CASES,
-    label: 'Targeted Therapy',
-    apiPath: 'participantCountBySingleTargetedTherapyCombination',
-    apiForFiltering: 'filterParticipantCountBySingleTargetedTherapyCombination',
-    datafield: 'targeted_therapy_string',
+    label: 'Therapy',
+    apiPath: 'participantCountBySingleTherapyCombination',
+    apiForFiltering: 'filterParticipantCountBySingleTherapyCombination',
+    datafield: 'therapy_string',
     field: GROUP,
     count: COUNT,
     type: InputTypes.CHECKBOX,
@@ -152,6 +152,34 @@ export const facetsConfig = [
     defaultValue: DEFAULT_VALUE,
 
     displayFacetCount: false,
+  },
+  {
+    section: CASES,
+    label: 'Therapy Type',
+    apiPath: 'participantCountByTherapyType',
+    apiForFiltering: 'filterParticipantCountByTherapyType',
+    datafield: 'therapy_type',
+    field: GROUP,
+    count: COUNT,
+    type: InputTypes.CHECKBOX,
+    sort_type: sortType.ALPHABET,
+    show: true,
+    defaultValue: DEFAULT_VALUE,
+    displayFacetCount: false,
+  },
+  {
+    section: CASES,
+    label: 'Therapy Category',
+    apiPath: 'participantCountByTherapyCategory',
+    apiForFiltering: 'filterParticipantCountByTherapyCategory',
+    datafield: 'therapy_category',
+    field: GROUP,
+    count: COUNT,
+    type: InputTypes.CHECKBOX,
+    sort_type: sortType.ALPHABET,
+    show: true,
+    defaultValue: DEFAULT_VALUE,
+    displayFacetCount: true,
   },
   {
     section: SAMPLES,
@@ -275,9 +303,9 @@ export const widgetConfig = [
   },
   {
     type: 'donut',
-    title: 'Targeted Therapy',
+    title: 'Therapy',
     sliceTitle: "Participants",
-    dataName: 'participantCountByTargetedTherapy',
+    dataName: 'participantCountByTherapy',
   },
   {
     type: 'sunburst',

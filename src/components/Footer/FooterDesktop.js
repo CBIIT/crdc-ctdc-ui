@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import FooterData from '../../config/globalFooterData';
 import { Link } from 'react-router-dom';
 
-const FooterStyled = styled.footer`
+const FooterStyled = styled.div`
   background-color: #1B496E;
   border-top: 1px solid #6C727B;
   bottom: 0;
@@ -30,6 +30,7 @@ const FooterEmailSignupContainer = styled.form`
     font-size: 22.88px;
     line-height: 34px;
     color: #FFFFFF;
+    margin-top: 0;
     margin-bottom: 1rem;
   }
 
@@ -105,6 +106,7 @@ const FooterLinksContainer = styled.div`
     font-weight: 700;
     font-size: 16px;
     line-height: 22px;
+    margin-top: 0;
     margin-bottom: 10px;
   }
 
@@ -271,7 +273,7 @@ const FooterDesktop = () => {
   };
   return (
     <>
-      <FooterStyled role="contentinfo">
+      <FooterStyled>
         <FooterContainer>
           <FooterLinksContainer>
             {
@@ -279,7 +281,7 @@ const FooterDesktop = () => {
                         const linkkey = `link_${linkidx}`;
                         return (
                           <div className="footItem" key={linkkey}>
-                            <div className="footItemTitle">{linkItem.title}</div>
+                            <h2 className="footItemTitle">{linkItem.title}</h2>
                             {
                                     linkItem.items.map((item, itemidx) => {
                                         const itemkey = `item_${itemidx}`;
@@ -303,9 +305,9 @@ const FooterDesktop = () => {
           </FooterLinksContainer>
           <FooterEmailSignupContainer onSubmit={handleSubmit} ref={emailForm} action="https://public.govdelivery.com/accounts/USNIHNCI/subscribers/qualify" method="post" target="_blank" id="signup" noValidate>
             <input type="hidden" name="topic_id" id="topic_id" value="USNIHNCI_223" aria-label="topic_id"/>
-            <div className="signUpTitle">
+            <h2 className="signUpTitle">
               Sign up for email updates
-            </div>
+            </h2>
             <div className={errorClass !== "" ? 'ErrorBorder' : null}>
               <div className="enterTitle">
                

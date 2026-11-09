@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { useAuth } from '../Authentication';
 import AfterSignInComponent from './components/afterSignInComponent';
 import globalData, {enableAuthentication, loginPath, REDIRECT_AFTER_SIGN_OUT } from '../../bento/siteWideConfig';
+import { getAuthenticatedIdp } from '../../utils/authUtil';
 
 // styles
 const styles = () => ({
@@ -33,9 +34,10 @@ const IndexPage = ({ classes }) => {
     signOut,
   } = useAuth();
   // const classes = useStyles();
+  const authData = useSelector((state) => state.login);
   const {
     isSignedIn, email, firstName,
-  } = useSelector((state) => state.login);
+  } = authData;
   const history = useHistory();
   const redirectAfterSignOut = REDIRECT_AFTER_SIGN_OUT;
 
@@ -46,7 +48,8 @@ const IndexPage = ({ classes }) => {
   globalData.authProviders = globalData.authProviders.concat(['google']);
 
   const signOutLink = () => {
-    signOut(history, redirectAfterSignOut);
+    const idp = getAuthenticatedIdp(authData);
+    signOut(history, redirectAfterSignOut, idp);
   };
 
   return (

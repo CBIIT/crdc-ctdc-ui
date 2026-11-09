@@ -158,7 +158,7 @@ export const SEARCH_PAGE_RESULT_PARTICIPANTS = gql`
         stage_of_disease
         sex
         race
-        targeted_therapy
+        therapy_name
         ethnicity
         participant_id
         age_at_enrollment

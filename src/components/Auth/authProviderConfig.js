@@ -10,10 +10,11 @@ import { storeInLocalStorage, deleteFromLocalStorage } from '../../utils/localSt
 export const AUTHPROVIDER_CONFIG = {
   // Misc. Configuration Options
   config: {
-    GOOGLE_CLIENT_ID: env.REACT_APP_GOOGLE_CLIENT_ID || 'Sample Id',
-    NIH_CLIENT_ID: env.REACT_APP_NIH_CLIENT_ID || 'Sample Id',
+    GOOGLE_CLIENT_ID: env.REACT_APP_GOOGLE_CLIENT_ID || '',
+    NIH_CLIENT_ID: env.REACT_APP_NIH_CLIENT_ID || '',
     NIH_AUTH_URL: env.REACT_APP_NIH_AUTH_URL || 'https://stsstg.nih.gov/auth/oauth/v2/authorize',
     AUTH_API: env.REACT_APP_AUTH_SERVICE_API || '',
+    RAS_BROWSER_LOGOUT_URL: env.REACT_APP_RAS_BROWSER_LOGOUT_URL || '',
     GET_USER_DETAILS,
   },
 

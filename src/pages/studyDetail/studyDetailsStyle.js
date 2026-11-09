@@ -222,7 +222,7 @@ export default (theme) => ({
 
   headerButton: {
     fontFamily: theme.custom.fontFamilySans,
-    width: "273px",
+    width: "100%",
     height: "47px",
     textAlign: "center",
     background: "#E7E5E5",

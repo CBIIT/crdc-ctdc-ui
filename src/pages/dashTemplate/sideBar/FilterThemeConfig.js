@@ -128,10 +128,13 @@ const theme = {
   },
 };
 
+// The overrides are static. Reuse the theme when facet results change so every
+// checkbox does not receive a new theme and rebuild its Material-UI styles.
+const computedTheme = createTheme(theme);
+
 export default ({
   children,
 }) => {
-  const computedTheme = createTheme(theme);
   return (
     <ThemeProvider theme={computedTheme}>
       {children}

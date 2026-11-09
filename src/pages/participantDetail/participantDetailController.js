@@ -10,6 +10,7 @@ import {
   defaultFilters,
 } from '../../bento/dashboardTabData';
 import { toTitleCase } from '../../utils/utils';
+import { formatListValues } from '../../utils/formatListValues';
 
 const ParticipantDetailController = ({ match }) => {
   const participant_id = match.params.id;
@@ -74,21 +75,20 @@ const ParticipantDetailController = ({ match }) => {
   const overviewRecord = participantOverviewData.participantOverview[0];
   const biospecimenRecord = biospecimensData?.biospecimenOverview?.[0] || {};
 
-  const formatPipeList = (val) => (val && val !== '[]'
-    ? val.split('|').map((t) => t.trim()).join(', ')
-    : null);
-
   const participantData = {
     participant_id,
     age_at_enrollment: overviewRecord.age_at_enrollment,
     sex: overviewRecord.sex,
     survival_status: toTitleCase(overviewRecord.survival_status),
-    race: overviewRecord.race,
+    race: formatListValues(overviewRecord.race),
     ethnicity: overviewRecord.ethnicity,
     stage_of_disease: overviewRecord.stage_of_disease,
     primary_diagnosis_disease_group: overviewRecord.ctep_disease_term,
-    targeted_therapy: formatPipeList(overviewRecord.targeted_therapy_string),
-    best_response_to_targeted_therapy: formatPipeList(overviewRecord.best_response_to_targeted_therapy),
+    therapy_name: formatListValues(overviewRecord.therapy_name),
+    therapy_type: formatListValues(overviewRecord.therapy_type),
+    therapy_category: formatListValues(overviewRecord.therapy_category),
+    current_response_to_therapy: formatListValues(overviewRecord.current_response_to_therapy),
+    best_response_to_therapy: formatListValues(overviewRecord.best_response_to_therapy),
     primary_disease_site: biospecimenRecord.primary_disease_site,
     study_short_name: overviewRecord.study_short_name,
     study_id: overviewRecord.study_id,
@@ -98,8 +98,8 @@ const ParticipantDetailController = ({ match }) => {
     ...b,
     age_at_enrollment: overviewRecord.age_at_enrollment,
     sex: overviewRecord.sex,
-    race: overviewRecord.race,
-    targeted_therapy: formatPipeList(overviewRecord.targeted_therapy_string),
+    race: formatListValues(overviewRecord.race),
+    therapy_name: formatListValues(overviewRecord.therapy_name),
   }));
 
   return (

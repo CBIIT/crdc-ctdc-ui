@@ -10,7 +10,7 @@ export default {
 
 
 
-export const loginPath = '/login';
+export const loginPath = '/user/login';
 export const requestAccessPath = '/request';
 export const adminPortalPath = '/admin';
 export const userProfilePath = '/profile';
@@ -39,8 +39,21 @@ export const PING_INTERVAL = 10; // DEFAULT is 5 Seconds.
 // Value is required to be in Seconds format. DEFAULT is 300 Seconds (5 Minutes).
 export const SHOW_WARNING_BEFORE = 300;
 
+// Enable Explore participant ID search and participant-set uploads.
+// When disabled, saved Local Find selections are cleared at startup.
+export const ENABLE_LOCAL_FIND = false;
+
 // DEFAULT_VALUE serves as a fallback when facet or widget items are empty
 export const DEFAULT_VALUE = "No value";
 
+// Must match the backend/index encoding of therapy_string combinations.
+// Example: selecting A and B can send "A|B" with '|', or "A~B" with '~'.
+// Change this value only with a coordinated backend/index update and frontend rebuild.
+// It does not change displayed names, Type/Category values, or stored individual selections.
+export const THERAPY_COMBINATION_SEPARATOR = '|';
+
 // Constant for last visited hash key in localStorage
 export const LAST_VISITED_HASH_KEY = "lastVisitedHash";
+
+// Maximum file size in bytes for Blob downloads (50 MiB; displayed as 50 MB in tables).
+export const MAX_BLOB_SIZE = 50 * 1024 * 1024;

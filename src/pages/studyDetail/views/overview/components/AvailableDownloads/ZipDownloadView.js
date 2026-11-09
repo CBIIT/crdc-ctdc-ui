@@ -7,12 +7,14 @@ import ToolTip from "@bento-core/tool-tip";
 import { enableAuthentication } from "../../../../../../bento/siteWideConfig";
 import SessionTimeOutModal from "../../../../../../components/sessionTimeOutModal";
 import { useAuth } from "../../../../../../components/Authentication";
-import { fetchFileToDownload } from "../../../../../../components/DocumentDownload/DocumentDownloadView";
+import { fetchFileToDownload } from "../../../../../../components/DocumentDownload/downloadUtils";
 import { useGlobal } from "../../../../../../components/Global/GlobalProvider";
+import { getFileDownloadIdp } from "../../../../../../utils/authUtil";
 
 const DocumentDownload = ({
   classes,
   fileFormat = "",
+  fileSize,
   toolTipTextUnauthenticated = "You must be logged in and must already have been granted access to download a copy of this file",
   toolTipTextFileDownload = "Click to download a copy of this file if you have been approved by dbGaP",
   iconFileDownload = "",
@@ -22,9 +24,13 @@ const DocumentDownload = ({
   toolTipIcon,
   disabled = false, //  allow parent to fully disable the button (e.g., when no ZIP exists)
   buttonText = "ZIP FILE",
+  studyAccession = "",
+  idp: propIdp,
 }) => {
   const { signInWithAuthURL, signOut } = useAuth();
-  const { isSignedIn } = useSelector((state) => state.login);
+  const authData = useSelector((state) => state.login);
+  const { isSignedIn } = authData;
+  const idp = propIdp || getFileDownloadIdp(authData);
   const [showModal, setShowModal] = React.useState(false);
   const history = useHistory();
 
@@ -39,14 +45,35 @@ const DocumentDownload = ({
 
   const { Notification } = useGlobal();
   const showUnauthorizedNotification = () => {
+    const requestAccessLinkStyle = {
+      color: "#FFFFFF",
+      fontWeight: 600,
+      textDecoration: "underline",
+      fontSize: "16px",
+    };
     const customElem = (
       <span>
         You must be logged in and must already have been granted access to
         download a copy of this file.{" "}
-        <a className={classes.requestAccessLink} href="/#/request-access">
+        <a
+          className={classes.requestAccessLink}
+          href="/#/request-access"
+          style={requestAccessLinkStyle}
+        >
           Request access
         </a>{" "}
         through dbGaP to download this file.
+      </span>
+    );
+
+    Notification.show(customElem, 6000, classes.alertStyles);
+  };
+
+  const showDownloadErrorNotification = () => {
+    const customElem = (
+      <span>
+        Unable to download this file. Please try again.
+        If the problem continues, contact support.
       </span>
     );
 
@@ -101,14 +128,18 @@ const DocumentDownload = ({
           <Button
             classes={{ root: classes.downloadAllBtn }}
             onClick={() =>
-              fetchFileToDownload(
-                fileLocation,
+              fetchFileToDownload({
+                fileId: fileLocation,
                 signOut,
                 setShowModal,
                 fileName,
                 fileFormat,
+                fileSize,
                 showUnauthorizedNotification,
-              )
+                showDownloadErrorNotification,
+                studyAccession,
+                idp,
+              })
             }
             variant="contained"
           >

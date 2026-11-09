@@ -34,7 +34,7 @@ describe("ScopedStatsController", () => {
       numberOfStudies: 1,
       numberOfParticipants: 10,
       numberOfDiagnoses: 5,
-      numberOfTargetedTherapies: 3,
+      numberOfTherapies: 3,
       numberOfSpecimens: 20,
       numberOfFiles: 100,
     },
@@ -376,7 +376,7 @@ describe("ScopedStatsController", () => {
         numberOfStudies: 1,
         numberOfParticipants: 10,
         numberOfDiagnoses: 5,
-        numberOfTargetedTherapies: 3,
+        numberOfTherapies: 3,
         numberOfSpecimens: 20,
       });
     });
