@@ -185,6 +185,52 @@ describe('Explore Therapy file actions', () => {
 });
 
 describe('Explore Therapy CSV request', () => {
+  it.each(tabContainers.map((tab) => [tab.name, tab]))(
+    '%s exports every returned row for the current filters with its shipped configuration', async (_name, tab) => {
+      const rows = Array.from({ length: 25 }, (_, index) => ({ [tab.dataKey]: `filtered-${index}` }));
+      client.query.mockResolvedValue({ data: { [tab.paginationAPIField]: rows } });
+      const DownloadProbe = ({ queryVariables }) => {
+        const { extendedViewConfig } = useExtendedViewConfig(tab, queryVariables);
+        return <DownloadButton download={extendedViewConfig.download} queryVariables={queryVariables} server />;
+      };
+      const { container, rerender } = render(<DownloadProbe queryVariables={filters(['A'])} />);
+      const currentFilters = Object.freeze({ ...filters(['', 'A|B']), offset: 20, first: 10 });
+      rerender(<DownloadProbe queryVariables={currentFilters} />);
+      await act(async () => { container.querySelector('button').click(); });
+      expect(client.query).toHaveBeenCalledWith({
+        query: tab.api,
+        variables: { ...currentFilters, ...tab.defaultFilters, offset: 0, first: 10000 },
+      });
+      expect(downloadCsvString).toHaveBeenCalledTimes(1);
+      const [csv] = downloadCsvString.mock.calls[0];
+      const exported = csv2json(csv.replace(/\r\n$/, ''), {
+        delimiter: { eol: '\r\n' }, parseValue: (value) => value,
+      });
+      const idHeader = tab.columns.find(({ dataField }) => dataField === tab.dataKey).header;
+      expect(exported.map((row) => row[idHeader])).toEqual(rows.map((row) => row[tab.dataKey]));
+    },
+  );
+
+  it.each(tabContainers.map((tab) => [tab.name, tab]))(
+    '%s exports only headers when the active filters match no rows', async (_name, tab) => {
+      client.query.mockResolvedValue({ data: { [tab.paginationAPIField]: [] } });
+      const currentFilters = { study_short_name: ['study-with-no-matching-rows'] };
+      const DownloadProbe = () => {
+        const { extendedViewConfig } = useExtendedViewConfig(tab, currentFilters);
+        return <DownloadButton download={extendedViewConfig.download} queryVariables={currentFilters} server />;
+      };
+      const { container } = render(<DownloadProbe />);
+      await act(async () => { container.querySelector('button').click(); });
+      expect(client.query).toHaveBeenCalledWith({
+        query: tab.api,
+        variables: { ...currentFilters, ...tab.defaultFilters, offset: 0, first: 10000 },
+      });
+      expect(downloadCsvString).toHaveBeenCalledTimes(1);
+      const columns = tab.columns.filter((column) => column.dataField && (column.display || column.hiddenByDefault));
+      expect(downloadCsvString.mock.calls[0][0]).toBe(`${columns.map(({ header }) => header).join(',')}\r\n`);
+    },
+  );
+
   it.each(tabContainers.flatMap((tab) => [false, true, undefined].map((flag) => [tab.name, flag, tab])))(
     '%s honors applyActiveFilters=%s while keeping its table scope', async (_name, applyActiveFilters, tab) => {
       const config = {
