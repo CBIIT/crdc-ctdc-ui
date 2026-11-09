@@ -19,7 +19,7 @@ const PortfolioCard = ({
 }) => {
   const history = useHistory();
   const studyCount = studies?.length || 0;
-  const accentColor = isInitiatives ? portfolioColors.initiativeAccent : portfolioColors.programAccent;
+  const accentColor = portfolioColors.programAccent;
 
   const handleNavigateToDetails = () => {
     if (!PROGRAM_DETAILS_PAGE_READY) return;
@@ -42,22 +42,20 @@ const PortfolioCard = ({
     <div className={classes.card} style={{ borderLeftColor: accentColor }}>
       <div className={classes.header} style={{ backgroundColor: accentColor }}>
         <div className={classes.titleGroup}>
-          <span className={classes.label}>{isInitiatives ? 'Initiative:' : 'Program:'}</span>
           <span {...titleProps}>{name}</span>
         </div>
         <span
           className={`${classes.studiesCount} ${PROGRAM_DETAILS_PAGE_READY ? classes.clickable : ''}`}
           onClick={PROGRAM_DETAILS_PAGE_READY ? handleNavigateToDetails : undefined}
         >
-          {`${studyCount} STUDIES`}
+          <span className={classes.countNumber}>{studyCount}</span>
+          {' '}
+          <span className={classes.countLabel}>{`ASSOCIATED ${studyCount === 1 ? 'STUDY' : 'STUDIES'}`}</span>
         </span>
       </div>
       <div className={classes.body}>
         <div className={classes.descriptionActions}>
           <p className={classes.description}>{description || 'No description available.'}</p>
-          {isInitiatives && (
-            <p className={classes.description}>Program affiliation: Not Applicable (NA)</p>
-          )}
           <div className={classes.actions}>
             <button
               type="button"
@@ -68,12 +66,12 @@ const PortfolioCard = ({
             </button>
             {externalUrl && (
               <a
-                className={classes.goToSiteLink}
+                className={classes.resourceLink}
                 href={externalUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Go to site
+                Resource Link
                 <img
                   src={externalLinkIcon.src}
                   alt={externalLinkIcon.alt}
@@ -104,21 +102,16 @@ const styles = () => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: '60px',
-    padding: '0 35px',
+    minHeight: '60px',
+    padding: '10px 35px',
+    boxSizing: 'border-box',
     gap: '10px',
   },
   titleGroup: {
     display: 'flex',
     alignItems: 'center',
     gap: '15px',
-  },
-  label: {
-    fontFamily: 'Inter',
-    fontWeight: 300,
-    fontSize: '18px',
-    lineHeight: '21.78px',
-    color: '#fff',
+    maxWidth: '70%',
   },
   title: {
     fontFamily: 'Inter',
@@ -126,15 +119,12 @@ const styles = () => ({
     fontSize: '20px',
     lineHeight: '24.2px',
     color: '#fff',
+    overflowWrap: 'anywhere',
   },
   studiesCount: {
     color: '#FFF',
     fontFamily: 'Inter',
     fontSize: '20px',
-    fontStyle: 'normal',
-    fontWeight: 700,
-    lineHeight: 'normal',
-    letterSpacing: '0.1px',
     textDecorationLine: 'underline',
     textDecorationStyle: 'solid',
     textDecorationSkipInk: 'none',
@@ -142,6 +132,17 @@ const styles = () => ({
     textUnderlineOffset: 'auto',
     textUnderlinePosition: 'from-font',
     whiteSpace: 'nowrap',
+  },
+  countNumber: {
+    fontWeight: 700,
+    lineHeight: '24.2px',
+    letterSpacing: '0.1px',
+  },
+  countLabel: {
+    fontStyle: 'normal',
+    fontWeight: 400,
+    lineHeight: 'normal',
+    letterSpacing: '0.1px',
   },
   clickable: {
     cursor: 'pointer',
@@ -193,7 +194,7 @@ const styles = () => ({
       opacity: 0.9,
     },
   },
-  goToSiteLink: {
+  resourceLink: {
     display: 'flex',
     alignItems: 'center',
     gap: '12px',

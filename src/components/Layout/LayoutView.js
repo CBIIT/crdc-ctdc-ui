@@ -29,6 +29,8 @@ import ActivitiesController from '../ActivitiesController';
 import useVisitedPageSync from '../../utils/useVisitedPageSync';
 import StudiesContainer from '../../pages/studies/studiesController';
 import PortfolioContainer from '../../pages/portfolio/portfolioController';
+import PortfolioMockPage from '../../pages/portfolio/portfolioMockPage';
+import ProgramDetailsMockPage from '../../pages/programDetails/programDetailsMockPage';
 import ProgramDetailsContainer from '../../pages/programDetails/programDetailsController';
 import DataModelNavigator from '../../pages/dmn';
 import SysInfo from '../../pages/sysinfo/sysinfo';
@@ -61,6 +63,12 @@ const Layout = ({ classes, isSidebarOpened }) => {
             <Route exact path="/" component={Home} />
             <Route exact path="/home" component={Home} />
             <Route exact path="/portfolio" component={PortfolioContainer} />
+            {process.env.NODE_ENV !== 'production' && (
+              <Route exact path="/portfolio-mock" component={PortfolioMockPage} />
+            )}
+            {process.env.NODE_ENV !== 'production' && (
+              <Route exact path="/program-details-mock/:programShortName?" component={ProgramDetailsMockPage} />
+            )}
             <Route exact path="/program-details/:programShortName?" component={ProgramDetailsContainer} />
             <Route exact path="/studies" component={StudiesContainer} />
             <Route exact path="/study/:id" component={StudyDetail} />

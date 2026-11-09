@@ -31,20 +31,14 @@ export const navMobileList = [
   },
   {
     name: 'Portfolio',
-    link: '/portfolio',
-    id: 'navbar-link-portfolio',
-    className: 'navMobileItem',
-  },
-  {
-    name: 'Studies',
-    link: '/studies',
-    id: 'navbar-link-study',
-    className: 'navMobileItem',
-  },
-  {
-    name: 'Data',
     link: '',
-    id: 'navbar-dropdown-about',
+    id: 'navbar-dropdown-portfolio',
+    className: 'navMobileItem clickable',
+  },
+  {
+    name: 'Data Resources',
+    link: '',
+    id: 'navbar-dropdown-data-resources',
     className: 'navMobileItem clickable',
   },
   {
@@ -68,12 +62,25 @@ export const navMobileList = [
 ];
 
 export const navbarSublists = {
-  // Example of how to do a navMobileSubTitle and subtext
-  "Data": [
+  Portfolio: [
     {
-      name: 'Cloud Computing',
-      link: '/cloud-computing',
-      id: 'navbar-dropdown-item-data-harmonization',
+      name: 'Programs and Initiatives',
+      link: '/portfolio',
+      id: 'navbar-dropdown-item-programs-and-initiatives',
+      className: 'navMobileSubItem',
+    },
+    {
+      name: 'Studies',
+      link: '/studies',
+      id: 'navbar-dropdown-item-studies',
+      className: 'navMobileSubItem',
+    },
+  ],
+  'Data Resources': [
+    {
+      name: 'Data Submission',
+      link: '/submit',
+      id: 'navbar-dropdown-item-data-submission',
       className: 'navMobileSubItem',
     },
     {
@@ -95,9 +102,9 @@ export const navbarSublists = {
       className: 'navMobileSubItem',
     },
     {
-      name: 'Data Submission',
-      link: '/submit',
-      id: 'navbar-dropdown-item-data-submission',
+      name: 'Cloud Computing',
+      link: '/cloud-computing',
+      id: 'navbar-dropdown-item-cloud-computing',
       className: 'navMobileSubItem',
     },
   ],

@@ -21,14 +21,14 @@ export const externalLinkIcon = {
 export const portfolioColors = {
   heading: '#0D6F94',
   programAccent: '#0F4778',
-  initiativeAccent: '#05838F',
   buttonPrimary: '#285D89',
   cardBorder: '#D5D5D5',
 };
 
 // --------------- Page configuration --------------
 export const pageData = {
-  headerTitle: 'Portfolio of CTDC Programs and Initiatives',
+  headerTitle: 'CTDC Programs and Initiatives',
+  searchPlaceholder: 'CTDC Portfolio',
 };
 
 // --------------- Curated program content --------------
@@ -53,17 +53,13 @@ export const initiativesCardContent = {
   externalUrl: '',
 };
 
-// Where the Initiatives card renders among the program cards (0 = first, 1 = second, etc). Change this single
-// value to reposition it - portfolioView.js splices it into the card list at this index.
-export const initiativesCardPosition = 1;
-
 // --------------- GraphQL query - Retrieve program list (CTDC-2067) --------------
 // Shape matches the current backend contract on crdc-ctdc-backend PR #204 (not yet merged - see
 // /memories/repo/portfolio-page-ctdc-2064.md): root field is `getAllPrograms`. `study_has_program:
 // ["has program"]` is required here - without it, getAllPrograms also mixes in a synthetic "no program"
 // grouping (per the schema's own doc comment: "an empty list includes both"), which would duplicate the
-// Initiatives data this page fetches separately below. program_sort_order now exists on ProgramNode (added
-// after our initial integration) - used by portfolioView.js for curated card ordering.
+// Initiatives data this page fetches separately below. Cards are ordered alphabetically by name in
+// portfolioView.js, so program_sort_order is not used for ordering.
 export const GET_PORTFOLIO_PROGRAMS_QUERY = gql`
   query getPortfolioProgramsQuery {
     getAllPrograms(study_has_program: ["has program"]) {
@@ -75,6 +71,8 @@ export const GET_PORTFOLIO_PROGRAMS_QUERY = gql`
       program_sort_order
       study_count
       studies {
+        study_id
+        study_accession
         study_short_name
         study_name
       }
@@ -91,6 +89,8 @@ export const GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY = gql`
   query getPortfolioUnaffiliatedStudiesQuery {
     getAllPrograms(study_has_program: ["has no program"]) {
       studies {
+        study_id
+        study_accession
         study_short_name
         study_name
       }

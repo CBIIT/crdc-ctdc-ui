@@ -1,19 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core';
 import Stats from '../../components/Stats/AllStatsController';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import PortfolioCard from './components/PortfolioCard';
+import portfolioSearchIcon from '../../assets/portfolio/portfolio-search-icon.svg';
 import {
-  pageData, portfolioHeaderIcon, curatedProgramContent, initiativesCardContent, initiativesCardPosition,
+  pageData, portfolioHeaderIcon, curatedProgramContent, initiativesCardContent,
 } from '../../bento/portfolioData';
 
-const PortfolioView = ({ classes, programs, unaffiliatedStudies }) => {
-  // program_sort_order now exists on ProgramNode (added to crdc-ctdc-backend PR #204 after our initial
-  // integration) - sort client-side for curated card ordering.
-  const sortedPrograms = [...(programs || [])].sort(
-    (a, b) => (a.program_sort_order ?? 0) - (b.program_sort_order ?? 0),
-  );
-  const isEmpty = sortedPrograms.length === 0 && unaffiliatedStudies.length === 0;
+const byName = (a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
+
+const PortfolioView = ({
+  classes,
+  programs,
+  unaffiliatedStudies,
+  curatedContent = curatedProgramContent,
+  initiativesContent = initiativesCardContent,
+}) => {
+  const [searchTerm, setSearchTerm] = useState('');
+
+  // Programs and the Initiatives card form one list, ordered alphabetically by displayed name.
+  const items = (programs || []).map((program) => ({
+    key: program.program_short_name,
+    name: program.program_name || '',
+    searchText: [program.program_name, program.program_short_name, program.program_short_description],
+    card: (
+      <PortfolioCard
+        key={program.program_short_name}
+        name={program.program_name}
+        identifier={program.program_short_name}
+        description={program.program_short_description}
+        externalUrl={program.program_external_url}
+        studies={program.studies || []}
+        image={curatedContent[program.program_short_name]?.primaryImage}
+        imageAlt={
+          curatedContent[program.program_short_name]?.primaryImageAlt
+          || `${program.program_name} program image`
+        }
+      />
+    ),
+  }));
+
+  if ((unaffiliatedStudies || []).length > 0) {
+    items.push({
+      key: 'initiatives',
+      name: initiativesContent.name,
+      searchText: [initiativesContent.name, initiativesContent.description],
+      card: (
+        <PortfolioCard
+          key="initiatives"
+          isInitiatives
+          name={initiativesContent.name}
+          identifier={null}
+          description={initiativesContent.description}
+          externalUrl={initiativesContent.externalUrl}
+          studies={unaffiliatedStudies}
+          image={initiativesContent.primaryImage}
+          imageAlt={initiativesContent.primaryImageAlt}
+        />
+      ),
+    });
+  }
+
+  items.sort(byName);
+
+  const term = searchTerm.trim().toLowerCase();
+  const visibleItems = term
+    ? items.filter((item) => item.searchText.some((text) => (text || '').toLowerCase().includes(term)))
+    : items;
 
   return (
     <>
@@ -28,50 +82,34 @@ const PortfolioView = ({ classes, programs, unaffiliatedStudies }) => {
           <span className={classes.headerMainTitle}>{pageData.headerTitle}</span>
         </div>
 
+        {items.length > 0 && (
+          <div className={classes.searchRow}>
+            <div className={classes.searchBox}>
+              <input
+                type="search"
+                className={classes.searchInput}
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                placeholder={pageData.searchPlaceholder}
+                aria-label={pageData.searchPlaceholder}
+              />
+              <img src={portfolioSearchIcon} alt="" aria-hidden="true" className={classes.searchIcon} />
+            </div>
+          </div>
+        )}
+
         <div className={classes.cardList}>
-          {isEmpty ? (
+          {items.length === 0 && (
             <Typography className={classes.emptyState}>
               No programs are currently registered.
             </Typography>
-          ) : (
-            (() => {
-              const programCards = sortedPrograms.map((program) => (
-                <PortfolioCard
-                  key={program.program_short_name}
-                  name={program.program_name}
-                  identifier={program.program_short_name}
-                  description={program.program_short_description}
-                  externalUrl={program.program_external_url}
-                  studies={program.studies || []}
-                  image={curatedProgramContent[program.program_short_name]?.primaryImage}
-                  imageAlt={
-                    curatedProgramContent[program.program_short_name]?.primaryImageAlt
-                    || `${program.program_name} program image`
-                  }
-                />
-              ));
-
-              if (unaffiliatedStudies.length > 0) {
-                const initiativesCard = (
-                  <PortfolioCard
-                    key="initiatives"
-                    isInitiatives
-                    name={initiativesCardContent.name}
-                    identifier={null}
-                    description={initiativesCardContent.description}
-                    externalUrl={initiativesCardContent.externalUrl}
-                    studies={unaffiliatedStudies}
-                    image={initiativesCardContent.primaryImage}
-                    imageAlt={initiativesCardContent.primaryImageAlt}
-                  />
-                );
-                // Position configured via initiativesCardPosition (src/bento/portfolioData.js).
-                programCards.splice(initiativesCardPosition, 0, initiativesCard);
-              }
-
-              return programCards;
-            })()
           )}
+          {items.length > 0 && visibleItems.length === 0 && (
+            <Typography className={classes.emptyState}>
+              No programs or initiatives match your search.
+            </Typography>
+          )}
+          {visibleItems.map((item) => item.card)}
         </div>
       </div>
     </>
@@ -116,12 +154,55 @@ const styles = (theme) => ({
     fontSize: '26px',
     lineHeight: '31px',
   },
+  searchRow: {
+    margin: '30px auto 0',
+    maxWidth: '1500px',
+    paddingLeft: '40px',
+  },
+  searchBox: {
+    position: 'relative',
+    width: '580px',
+    maxWidth: '100%',
+  },
+  searchIcon: {
+    position: 'absolute',
+    top: '50%',
+    right: '18px',
+    width: '14px',
+    height: '14px',
+    transform: 'translateY(-50%)',
+    pointerEvents: 'none',
+  },
+  searchInput: {
+    boxSizing: 'border-box',
+    width: '100%',
+    height: '40px',
+    padding: '0 44px 0 20px',
+    border: '1px solid #1178AC',
+    borderRadius: '30px',
+    backgroundColor: '#FFFFFF',
+    fontFamily: 'Raleway',
+    fontSize: '14px',
+    color: '#000',
+    outline: 'none',
+    '&:focus': {
+      boxShadow: '0 0 0 2px rgba(17, 120, 172, 0.3)',
+    },
+    '&::placeholder': {
+      color: '#000',
+      opacity: 1,
+    },
+    // The native clear button would collide with the icon; typing is cleared by deleting text.
+    '&::-webkit-search-cancel-button': {
+      display: 'none',
+    },
+  },
   cardList: {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     gap: '34px',
-    paddingTop: '30px',
+    paddingTop: '25px',
     paddingBottom: '30px',
     margin: 'auto',
   },

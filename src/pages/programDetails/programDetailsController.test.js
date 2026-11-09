@@ -3,8 +3,16 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { useQuery } from '@apollo/client';
 import ProgramDetailsController from './programDetailsController';
-import { GET_PROGRAM_DETAIL_QUERY } from '../../bento/programDetailsData';
+import { GET_PROGRAM_DETAIL_QUERY, GET_PROGRAM_STUDY_TABLE_QUERY } from '../../bento/programDetailsData';
+import { GET_STUDY_DATA_INTEROPS_QUERY } from '../../bento/studiesData';
 import { GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY } from '../../bento/portfolioData';
+
+// bento-core pulls in an ESM-only dependency Jest can't parse; only these exports are used by the code under test.
+jest.mock('../../bento-core', () => ({
+  cellTypes: { CUSTOM_ELEM: 'CUSTOM_ELEM', DISPLAY: 'DISPLAY' },
+  headerTypes: { CUSTOM_ELEM: 'CUSTOM_ELEM' },
+  TableContextProvider: ({ children }) => children,
+}));
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -12,6 +20,16 @@ jest.mock('react-router-dom', () => ({
 }));
 
 jest.mock('@apollo/client', () => ({ useQuery: jest.fn() }));
+
+jest.mock('../../components/DataAvailabilityTable/StudiesTable', () => function MockStudiesTable({ data }) {
+  return (
+    <ul>
+      {data.map((row) => (
+        <li key={row.study_id}>{`${row.study_id}|${row.program_short_name}|${row.study_type || ''}`}</li>
+      ))}
+    </ul>
+  );
+});
 
 jest.mock('../../components/Stats/AllStatsController', () => function MockStats() {
   return <div data-testid="stats" />;
@@ -28,10 +46,14 @@ const NOT_CALLED = { loading: false, error: undefined, data: undefined };
 
 // Routes useQuery's return value by which query document it was called with, so each test can configure the
 // program query and the unaffiliated-studies query independently.
-const mockQueryResults = ({ programResult = NOT_CALLED, unaffiliatedResult = NOT_CALLED }) => {
+const mockQueryResults = ({
+  programResult = NOT_CALLED, unaffiliatedResult = NOT_CALLED, tableResult = NOT_CALLED,
+}) => {
   useQuery.mockImplementation((query) => {
     if (query === GET_PROGRAM_DETAIL_QUERY) return programResult;
     if (query === GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY) return unaffiliatedResult;
+    if (query === GET_PROGRAM_STUDY_TABLE_QUERY) return tableResult;
+    if (query === GET_STUDY_DATA_INTEROPS_QUERY) return NOT_CALLED;
     return NOT_CALLED;
   });
 };
@@ -66,12 +88,12 @@ describe('ProgramDetailsController', () => {
       unaffiliatedResult: {
         loading: false,
         error: undefined,
-        data: { getAllPrograms: [{ studies: [{ study_short_name: 'NCT00980460', study_name: 'Unaffiliated Study One' }] }] },
+        data: { getAllPrograms: [{ studies: [{ study_id: 'NCT00980460', study_short_name: 'NCT00980460', study_name: 'Unaffiliated Study One' }] }] },
       },
     });
     render(<ProgramDetailsController match={{ params: {} }} />);
     expect(screen.getByText('Initiatives')).toBeInTheDocument();
-    expect(screen.getByText('Unaffiliated Study One')).toBeInTheDocument();
+    expect(screen.getByText('NCT00980460|Not Applicable|')).toBeInTheDocument();
   });
 
   it('renders a loading indicator while the query is in flight', () => {
@@ -86,5 +108,34 @@ describe('ProgramDetailsController', () => {
     });
     render(<ProgramDetailsController match={{ params: { programShortName: 'NCTN' } }} />);
     expect(screen.getByText(/An error has occurred in loading the Program Details page: boom/)).toBeInTheDocument();
+  });
+
+  it('joins the program studies with the full per-study table fields by study_id', () => {
+    mockQueryResults({
+      programResult: {
+        loading: false,
+        error: undefined,
+        data: {
+          getAllPrograms: [{
+            program_name: 'NCI National Clinical Trial Network',
+            program_short_name: 'NCTN',
+            studies: [{ study_id: 'NCT001', study_name: 'Study One' }],
+          }],
+        },
+      },
+      tableResult: {
+        loading: false,
+        error: undefined,
+        data: {
+          getAllStudies: [
+            { study_id: 'NCT001', study_type: 'Interventional Study' },
+            { study_id: 'NCT002', study_type: 'Not In Program' },
+          ],
+        },
+      },
+    });
+    render(<ProgramDetailsController match={{ params: { programShortName: 'NCTN' } }} />);
+    expect(screen.getByText('NCT001|NCTN|Interventional Study')).toBeInTheDocument();
+    expect(screen.queryByText(/NCT002/)).not.toBeInTheDocument();
   });
 });

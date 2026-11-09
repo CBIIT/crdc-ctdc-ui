@@ -22,6 +22,10 @@ const baseProps = {
   imageAlt: 'Test Program image',
 };
 
+// The count is split into a bold number and a regular-weight label, so match on the combined text.
+const getCount = (text) => screen.getByText((_, element) => element.tagName === 'SPAN'
+  && element.children.length === 2 && element.textContent === text);
+
 describe('PortfolioCard', () => {
   beforeEach(() => {
     mockHistoryPush.mockClear();
@@ -32,9 +36,9 @@ describe('PortfolioCard', () => {
     expect(screen.getByText('Test Program')).toBeInTheDocument();
   });
 
-  it('renders the study count formatted as "{N} STUDIES"', () => {
+  it('renders the study count formatted as "{N} ASSOCIATED STUDIES"', () => {
     render(<PortfolioCard {...baseProps} />);
-    expect(screen.getByText('2 STUDIES')).toBeInTheDocument();
+    expect(getCount('2 ASSOCIATED STUDIES')).toBeInTheDocument();
   });
 
   it('renders the description paragraph', () => {
@@ -62,17 +66,17 @@ describe('PortfolioCard', () => {
     expect(screen.getByText('Associated Studies')).toBeInTheDocument();
   });
 
-  it('renders a Go to site link that opens in a new tab when an external URL is configured', () => {
+  it('renders a Resource Link link that opens in a new tab when an external URL is configured', () => {
     render(<PortfolioCard {...baseProps} />);
-    const link = screen.getByText('Go to site').closest('a');
+    const link = screen.getByText('Resource Link').closest('a');
     expect(link).toHaveAttribute('href', 'https://example.com');
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
-  it('hides the Go to site link when no external URL is configured', () => {
+  it('hides the Resource Link link when no external URL is configured', () => {
     render(<PortfolioCard {...baseProps} externalUrl="" />);
-    expect(screen.queryByText('Go to site')).not.toBeInTheDocument();
+    expect(screen.queryByText('Resource Link')).not.toBeInTheDocument();
   });
 
   it('navigates to the Study page with affiliated study identifiers when Associated Studies is clicked', () => {
@@ -89,7 +93,7 @@ describe('PortfolioCard', () => {
 
   it('navigates to the Program Details page when the study count is clicked', () => {
     render(<PortfolioCard {...baseProps} />);
-    fireEvent.click(screen.getByText('2 STUDIES'));
+    fireEvent.click(getCount('2 ASSOCIATED STUDIES'));
     expect(mockHistoryPush).toHaveBeenCalledWith('/program-details/TP');
   });
 
@@ -107,7 +111,7 @@ describe('PortfolioCard', () => {
       />,
     );
     expect(screen.getByText('Initiatives')).toBeInTheDocument();
-    expect(screen.getByText('1 STUDIES')).toBeInTheDocument();
+    expect(getCount('1 ASSOCIATED STUDY')).toBeInTheDocument();
   });
 
   it('navigates to the no-program Program Details route when the Initiatives title is clicked', () => {

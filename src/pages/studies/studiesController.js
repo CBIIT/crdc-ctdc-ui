@@ -5,13 +5,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Studies from './studiesView';
 import { Typography } from '../../components/Wrappers/Wrappers';
 import { GET_STUDY_DATA_INTEROPS_QUERY, GET_STUDY_DATA_QUERY } from '../../bento/studiesData';
-
-// TODO(CTDC-2175): Temporary fallback interop data for studies not yet loaded into OpenSearch. Remove once the missing studies are indexed.
-const INTEROP_FALLBACK = {
-  NCT00980460: {
-    unique_repository: ['TCIA']
-  },
-};
+import { mergeInteropData } from './studyRows';
 
 const studiesContainer = () => {
   // Portfolio's Associated Studies links pass affiliated study_short_name values via ?studyIds= (CTDC-2064)
@@ -46,21 +40,9 @@ const studiesContainer = () => {
   }
 
   // Transform and combine data
-  const interOpStudiesMap = (interOpData?.getInteropData || []).reduce((acc, entry) => {
-    const s = entry?.data?.getAllStudies;
-    if (s?.study_id) acc[s.study_id] = s;
-    return acc;
-  }, {});
   const updatedData = {
     ...data,
-    getAllStudies: data?.getAllStudies?.map((study) => {
-      const interOpStudy = interOpStudiesMap[study.study_id] || INTEROP_FALLBACK[study.study_id];
-      return {
-        ...study,
-        numberOfPublications: 0, // TODO: Fetch this value from the backend API when it's implemented
-        unique_repository: interOpStudy?.unique_repository || [],
-      };
-    }),
+    getAllStudies: mergeInteropData(data?.getAllStudies, interOpData),
   };
 
   const studyIdsParam = new URLSearchParams(location.search).get('studyIds');

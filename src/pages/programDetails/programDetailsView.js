@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
-import { withStyles, Grid } from '@material-ui/core';
+import { withStyles } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import Stats from '../../components/Stats/AllStatsController';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
-import { externalIcon } from '../../bento/studyDetailData';
+import StudiesThemeProvider from '../studies/studiesMuiThemConfig';
+import { TableContextProvider } from '../../bento-core';
+import StudiesTable from '../../components/DataAvailabilityTable/StudiesTable';
+import { tableLayOut } from '../../bento/studiesData';
 import {
   programDetailsHeaderIcon,
   programDetailsColors,
   curatedProgramDetailContent,
   initiativesDetailContent,
-  noVideosText,
-  noMaterialsText,
+  programStudiesTable,
 } from '../../bento/programDetailsData';
 
 // Extracts a YouTube video ID from a standard watch URL so it can be embedded inline via an iframe. CTDC
@@ -26,19 +28,38 @@ const getYouTubeEmbedUrl = (url) => {
 };
 
 const ProgramDetailsView = ({
-  classes, isInitiatives, program, unaffiliatedStudies, notFound,
+  classes,
+  isInitiatives,
+  program,
+  unaffiliatedStudies,
+  notFound,
+  studyRows,
+  curatedContent = curatedProgramDetailContent,
+  initiativesContent = initiativesDetailContent,
 }) => {
   const [playingVideoTitle, setPlayingVideoTitle] = useState(null);
   const label = isInitiatives ? 'Initiative' : 'Program';
-  const displayShortName = isInitiatives ? initiativesDetailContent.name : program?.program_short_name;
+  const displayShortName = isInitiatives ? initiativesContent.name : program?.program_short_name;
   const displayFullName = isInitiatives ? '' : program?.program_name;
   const studies = (isInitiatives ? unaffiliatedStudies : program?.studies) || [];
   const curated = isInitiatives
-    ? initiativesDetailContent
-    : (curatedProgramDetailContent[program?.program_short_name] || { hostVideos: [], materials: [] });
+    ? initiativesContent
+    : (curatedContent[program?.program_short_name] || { hostVideos: [] });
+
+  const studyCount = studies.length;
+  const studyCountLabel = `ASSOCIATED ${studyCount === 1 ? 'STUDY' : 'STUDIES'}`;
+  const tableRows = studyRows && studyRows.length > 0
+    ? studyRows
+    : studies.map((study) => ({ ...study, program_short_name: displayShortName }));
+  const scrollToStudies = () => {
+    const target = document.getElementById('associated-studies');
+    if (target && target.scrollIntoView) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
 
   const breadCrumbJson = [
-    { name: 'PORTFOLIO', to: '/portfolio', isALink: true },
+    { name: 'Programs & Initiatives', to: '/portfolio', isALink: true },
     { name: `${label}: ${displayShortName || 'Not found'}`, isALink: false },
   ];
 
@@ -58,6 +79,7 @@ const ProgramDetailsView = ({
           </p>
         ) : (
           <>
+            <div className={classes.headerWrap}>
             <div className={classes.header}>
               <img
                 src={programDetailsHeaderIcon.src}
@@ -66,159 +88,100 @@ const ProgramDetailsView = ({
               />
               <div className={classes.headerTitle}>
                 <div className={classes.headerMainTitle}>
-                  <span className={classes.label}>{`${label}:`}</span>
-                  <span>{displayShortName}</span>
+                  <span className={classes.label}>{displayFullName || displayShortName}</span>
                 </div>
-                {displayFullName && <div className={classes.subtitle}>{displayFullName}</div>}
+                {displayFullName && <div className={classes.subtitle}>{displayShortName}</div>}
               </div>
+            </div>
+            <button type="button" className={classes.countPill} onClick={scrollToStudies}>
+              <span className={classes.countNumber}>{studyCount}</span>
+              {' '}
+              <span className={classes.countLabel}>{studyCountLabel}</span>
+            </button>
             </div>
 
             <div className={classes.body}>
-              <Grid container spacing={0}>
-              <Grid item xs={12} sm={12} md={6} className={classes.leftColumn}>
-                <section>
-                  <h2 className={classes.sectionTitle}>
-                    {isInitiatives ? 'INITIATIVE DESCRIPTION' : 'PROGRAM DESCRIPTION'}
-                  </h2>
-                  <p className={classes.sectionText}>
-                    {isInitiatives
-                      ? 'Studies that are not affiliated with a defined CTDC program.'
-                      : (program?.program_full_description || 'No description available.')}
-                  </p>
-                </section>
-
-                {!isInitiatives && (
-                  <section>
-                    <h2 className={classes.sectionTitle}>PROGRAM METADATA</h2>
-                    {(program?.crdc_id || program?.program_external_url) ? (
-                      <dl className={classes.metadataList}>
-                        {program?.crdc_id && (
-                          <div className={classes.metadataRow}>
-                            <dt className={classes.metadataLabel}>CRDC ID</dt>
-                            <dd className={classes.metadataValue}>{program.crdc_id}</dd>
-                          </div>
-                        )}
-                        {program?.program_external_url && (
-                          <div className={classes.metadataRow}>
-                            <dt className={classes.metadataLabel}>External URL</dt>
-                            <dd className={classes.metadataValue}>
-                              <a href={program.program_external_url} target="_blank" rel="noopener noreferrer">
-                                {program.program_external_url}
-                              </a>
-                            </dd>
-                          </div>
-                        )}
-                      </dl>
-                    ) : (
-                      <p className={classes.emptyState}>
-                        No additional metadata is currently available.
+              <div className={classes.content}>
+                <div className={classes.descriptionRow}>
+                  <div className={classes.descriptionColumn}>
+                    <section>
+                      <h2 className={classes.sectionTitle}>
+                        {isInitiatives ? 'INITIATIVE DESCRIPTION' : 'PROGRAM DESCRIPTION'}
+                      </h2>
+                      <p className={classes.sectionText}>
+                        {isInitiatives
+                          ? 'Studies that are not affiliated with a defined CTDC program.'
+                          : (program?.program_full_description || 'No description available.')}
                       </p>
-                    )}
-                  </section>
-                )}
+                    </section>
+                  </div>
+                  {curated.hostVideos.length > 0 && (
+                    <div className={classes.videosColumn}>
+                      {curated.hostVideos.map((video) => {
+                        const embedUrl = getYouTubeEmbedUrl(video.videoUrl);
+                        const isPlaying = playingVideoTitle === video.title && embedUrl;
 
-                <section>
-                  <h2 className={classes.sectionTitle}>HOST VIDEOS</h2>
-                  {curated.hostVideos.length === 0 ? (
-                    <p className={classes.emptyState}>
-                      {noVideosText(label.toLowerCase())}
-                    </p>
-                  ) : (
-                    curated.hostVideos.map((video) => {
-                      const embedUrl = getYouTubeEmbedUrl(video.videoUrl);
-                      const isPlaying = playingVideoTitle === video.title && embedUrl;
-
-                      return (
-                        <div key={video.title} className={classes.videoItem}>
-                          {isPlaying ? (
-                            <iframe
-                              className={classes.videoThumbnail}
-                              src={embedUrl}
-                              title={video.title}
-                              frameBorder="0"
-                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                              allowFullScreen
-                            />
-                          ) : (
-                            <button
-                              type="button"
-                              className={classes.videoThumbnailButton}
-                              onClick={() => setPlayingVideoTitle(video.title)}
-                              disabled={!embedUrl}
-                            >
-                              {video.thumbnail && (
-                                <img src={video.thumbnail} alt={video.title} className={classes.videoThumbnail} />
-                              )}
-                              {embedUrl && <span className={classes.playButton} />}
-                            </button>
-                          )}
-                          <div className={classes.videoCopy}>
-                            <a
-                              href={video.videoUrl}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className={classes.videoTitle}
-                            >
-                              {video.title}
-                            </a>
-                            <span className={classes.videoDescription}>{video.description}</span>
+                        return (
+                          <div key={video.title} className={classes.videoItem}>
+                            {isPlaying ? (
+                              <iframe
+                                className={classes.videoThumbnail}
+                                src={embedUrl}
+                                title={video.title}
+                                frameBorder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowFullScreen
+                              />
+                            ) : (
+                              <button
+                                type="button"
+                                className={classes.videoThumbnailButton}
+                                onClick={() => setPlayingVideoTitle(video.title)}
+                                disabled={!embedUrl}
+                              >
+                                {video.thumbnail && (
+                                  <img src={video.thumbnail} alt={video.title} className={classes.videoThumbnail} />
+                                )}
+                                {embedUrl && <span className={classes.playButton} />}
+                              </button>
+                            )}
                           </div>
-                        </div>
-                      );
-                    })
+                        );
+                      })}
+                    </div>
                   )}
-                </section>
-              </Grid>
-
-              <Grid item xs={12} sm={12} md={6} className={classes.rightColumn}>
-                <section>
-                  <h2 className={classes.sectionTitle}>
-                    {isInitiatives ? 'INITIATIVE-RELATED MATERIALS' : 'PROGRAM-RELATED MATERIALS'}
-                  </h2>
-                  {curated.materials.length === 0 ? (
-                    <p className={classes.emptyState}>
-                      {noMaterialsText(label.toLowerCase())}
-                    </p>
-                  ) : (
-                    <ul className={classes.materialsList}>
-                      {curated.materials.map((material) => (
-                        <li key={material.title}>
-                          <a href={material.url} target="_blank" rel="noopener noreferrer">
-                            {material.title}
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </section>
-
-                <section>
-                  <h2 className={classes.sectionTitle}>
-                    {`STUDIES BELONGING TO THIS ${label.toUpperCase()}`}
-                  </h2>
-                  {studies.length === 0 ? (
-                    <p className={classes.emptyState}>
-                      {`No studies are currently linked to this ${label.toLowerCase()}.`}
-                    </p>
-                  ) : (
-                    <ul className={classes.studiesList}>
-                      {studies.map((study) => (
-                        <li key={study.study_short_name}>
-                          <Link to={`/study/${study.study_short_name}`} className={classes.studyLink}>
-                            {study.study_name || study.study_short_name}
-                            <img src={externalIcon} width={14} height={14} className={classes.studyLinkIcon} alt="" />
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </section>
-              </Grid>
-              </Grid>
+                </div>
+              </div>
             </div>
           </>
         )}
       </div>
+      {!(!isInitiatives && notFound) && (
+        <div className={classes.studiesBand} id="associated-studies">
+          <div className={classes.studiesBandInner}>
+            <div className={tableRows.length === 0 ? classes.tableAreaEmpty : classes.tableArea}>
+              <h2 className={classes.bandTitle}>ASSOCIATED STUDIES</h2>
+              {tableRows.length === 0 ? (
+                <p className={classes.emptyState}>
+                  {`No studies are currently linked to this ${label.toLowerCase()}.`}
+                </p>
+              ) : (
+                <StudiesThemeProvider>
+                  <TableContextProvider>
+                    <StudiesTable
+                      data={tableRows}
+                      interOpData={tableRows}
+                      table={programStudiesTable}
+                      tableLayOut={tableLayOut}
+                      rowsPerPage={programStudiesTable.numbOfRowPerPage || 10}
+                    />
+                  </TableContextProvider>
+                </StudiesThemeProvider>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
@@ -243,6 +206,7 @@ const styles = (theme) => ({
     borderBottom: '#0D6F94 12px solid',
     height: '118px',
     margin: 'auto',
+    paddingLeft: '10px',
   },
   logo: {
     position: 'absolute',
@@ -256,7 +220,7 @@ const styles = (theme) => ({
   headerTitle: {
     position: 'absolute',
     top: '50%',
-    left: '146px',
+    left: '150px',
     transform: 'translateY(-50%)',
   },
   headerMainTitle: {
@@ -284,29 +248,13 @@ const styles = (theme) => ({
   },
   body: {
     paddingTop: '40px',
-    marginLeft: '60px',
-    marginRight: '60px',
+    marginLeft: '30px',
+    marginRight: '30px',
   },
-  leftColumn: {
+  content: {
     display: 'flex',
     flexDirection: 'column',
     gap: '30px',
-    paddingRight: '63px',
-    [theme.breakpoints.down('sm')]: {
-      paddingRight: 0,
-    },
-  },
-  rightColumn: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '30px',
-    borderLeft: `1px solid ${programDetailsColors.cardBorder}`,
-    paddingLeft: '30px',
-    [theme.breakpoints.down('sm')]: {
-      borderLeft: 'none',
-      paddingLeft: 0,
-      marginTop: '30px',
-    },
   },
   sectionTitle: {
     margin: '0 0 8px 0',
@@ -333,40 +281,37 @@ const styles = (theme) => ({
     lineHeight: '24px',
     color: '#6B7280',
   },
-  metadataList: {
-    margin: 0,
+  descriptionRow: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '40px',
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+    },
+  },
+  descriptionColumn: {
+    flex: '7 1 0',
+    minWidth: 0,
+  },
+  videosColumn: {
+    flex: '3 1 0',
+    minWidth: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '20px',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+    },
+  },
+  videoItem: {
     display: 'flex',
     flexDirection: 'column',
     gap: '12px',
   },
-  metadataRow: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '2px',
-  },
-  metadataLabel: {
-    margin: 0,
-    fontFamily: 'Roboto',
-    fontWeight: 600,
-    fontSize: '12px',
-    color: '#6B7280',
-  },
-  metadataValue: {
-    margin: 0,
-    fontFamily: 'Roboto',
-    fontWeight: 400,
-    fontSize: '14px',
-    color: '#111827',
-  },
-  videoItem: {
-    display: 'flex',
-    gap: '18px',
-    marginBottom: '20px',
-  },
   videoThumbnailButton: {
     position: 'relative',
-    width: '310px',
-    height: '176px',
+    width: '100%',
+    aspectRatio: '16 / 9',
     flexShrink: 0,
     padding: 0,
     border: 'none',
@@ -399,65 +344,111 @@ const styles = (theme) => ({
     },
   },
   videoThumbnail: {
-    width: '310px',
-    height: '176px',
+    width: '100%',
+    aspectRatio: '16 / 9',
     objectFit: 'cover',
     flexShrink: 0,
     border: 'none',
   },
-  videoCopy: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '8px',
+  headerWrap: {
+    position: 'relative',
   },
-  videoTitle: {
-    fontFamily: 'Roboto',
-    fontWeight: 600,
-    fontSize: '16px',
-    lineHeight: '24px',
-    color: '#000',
-    textDecoration: 'none',
-    '&:hover': {
-      textDecoration: 'underline',
-    },
-  },
-  videoDescription: {
-    fontFamily: 'Roboto',
-    fontWeight: 400,
-    fontSize: '16px',
-    lineHeight: '24px',
-    color: '#000',
-  },
-  materialsList: {
-    margin: 0,
-    paddingLeft: '20px',
-  },
-  studiesList: {
-    listStyle: 'none',
-    margin: 0,
-    padding: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '12px',
-  },
-  studyLink: {
-    display: 'inline-flex',
-    alignItems: 'center',
-    color: '#9F109F',
-    fontFamily: 'Roboto',
-    fontSize: '16px',
-    fontStyle: 'normal',
-    fontWeight: 400,
-    lineHeight: '150%',
+  countPill: {
+    position: 'absolute',
+    top: '50%',
+    right: '18px',
+    transform: 'translateY(-50%)',
+    padding: '11px 20px',
+    border: 'none',
+    cursor: 'pointer',
+    backgroundColor: '#E6F5FB',
+    color: programDetailsColors.programAccent,
+    fontFamily: 'Inter',
+    fontSize: '20px',
     textDecorationLine: 'underline',
     textDecorationStyle: 'solid',
     textDecorationSkipInk: 'none',
     textDecorationThickness: 'auto',
     textUnderlineOffset: 'auto',
     textUnderlinePosition: 'from-font',
+    [theme.breakpoints.down('sm')]: {
+      position: 'static',
+      transform: 'none',
+      marginTop: '16px',
+    },
   },
-  studyLinkIcon: {
-    marginLeft: '5px',
+  countNumber: {
+    fontWeight: 700,
+    lineHeight: '24.2px',
+    letterSpacing: '0.1px',
+  },
+  countLabel: {
+    color: programDetailsColors.programAccent,
+    fontFamily: 'Inter',
+    fontSize: '20px',
+    fontStyle: 'normal',
+    fontWeight: 400,
+    lineHeight: 'normal',
+    letterSpacing: '0.1px',
+  },
+  studiesBand: {
+    backgroundColor: '#E8F4F8',
+    paddingTop: '59px',
+    paddingBottom: '133px',
+  },
+  studiesBandInner: {
+    margin: 'auto',
+    maxWidth: '1736px',
+    paddingLeft: '66px',
+    paddingRight: '66px',
+  },
+  // Title and the table's download/view-columns toolbar share one row (same pattern as the Participant Detail
+  // tables): the toolbar stays in the flow and defines the row height, the title is absolutely placed at the left.
+  tableArea: {
+    position: 'relative',
+    // Data Availability grouping row: navy band with white label, per the approved design.
+    '&& tr.column_grouping, && tr.column_grouping th, && tr.column_grouping td': {
+      backgroundColor: programDetailsColors.programAccent,
+      color: '#fff',
+    },
+    '&& tr.column_grouping svg': {
+      color: '#fff',
+      fill: '#fff',
+    },
+    // The tooltip "?" is a black <img>; invert it to white to match the design on the navy row.
+    '&& tr.column_grouping img': {
+      filter: 'brightness(0) invert(1)',
+    },
+    '&& .downloadAndColumnView': {
+      top: 0,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+      minHeight: '44px',
+      height: '44px',
+      maxHeight: '44px',
+      padding: '0 29px 0 0',
+      '& button': {
+        marginBottom: 0,
+      },
+    },
+  },
+  tableAreaEmpty: {
+    position: 'relative',
+    paddingTop: '44px',
+  },
+  bandTitle: {
+    position: 'absolute',
+    top: '11px',
+    left: '29px',
+    zIndex: 1,
+    margin: 0,
+    fontFamily: 'Inter',
+    fontWeight: 500,
+    fontSize: '18px',
+    lineHeight: '21.8px',
+    color: programDetailsColors.sectionTitle,
+    textTransform: 'uppercase',
   },
 });
 
