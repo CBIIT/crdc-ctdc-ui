@@ -1,6 +1,3 @@
-/**
-*
-*/
 import React from 'react';
 import { withStyles, Tooltip } from '@material-ui/core';
 import { FiberManualRecordRounded } from '@material-ui/icons';
@@ -21,42 +18,29 @@ export function studyDisposition(value) {
   return undefined;
 }
 
-const REPO_LINKS = {
-  IDC: 'https://portal.imaging.datacommons.cancer.gov/',
-  TCIA: 'https://nbia.cancerimagingarchive.net/',
-};
-
-const generateCRDCLinks = (reposArray, classes) => {
-  if (!Array.isArray(reposArray)) {
-    console.warn('generateCRDCLinks: reposArray is not an array', reposArray);
-    return <div>No repositories available</div>;
-  }
-
-  return (
-    <ul className={classes.crdcLinks}>
-      {reposArray.map((repo) => (
-        <li key={repo} className={classes.crdcLinksLi}>
+const generateRepositoryLinks = (repositories, classes) => (
+  <ul className={classes.crdcLinks}>
+    {repositories.map((repository) => (
+      <li key={repository.repository_name} className={classes.crdcLinksLi}>
+        {repository.repository_url ? (
           <a
             className={classes.crdcLinkStyle}
             target="_blank"
-            rel="noreferrer"
-            href={REPO_LINKS[repo] || '#'}
+            rel="noopener noreferrer"
+            href={repository.repository_url}
           >
-            {repo}
+            {repository.repository_name}
+            <img
+              style={{ width: '15px', marginLeft: '5px' }}
+              src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExternalLinkIcon.svg"
+              alt="External link icon"
+            />
           </a>
-          <img
-            style={{
-              width: '15px',
-              marginLeft: '5px',
-            }}
-            src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExternalLinkIcon.svg"
-            alt="External link icon"
-          />
-        </li>
-      ))}
-    </ul>
-  );
-};
+        ) : <span>{repository.repository_name}</span>}
+      </li>
+    ))}
+  </ul>
+);
 
 // Main component
 const DataAvailabilityCellView = (props) => {
@@ -67,6 +51,7 @@ const DataAvailabilityCellView = (props) => {
     study_file_count = 0,
     numberOfPublications = 0,
     image_collection_count = 0,
+    repositories = [],
   } = props;
   
   const value = props[dataField];
@@ -83,7 +68,7 @@ const DataAvailabilityCellView = (props) => {
       case customizeLandScapeView.PUBLICATIONS:
         return `${numberOfPublications} Publication(s)`;
       case customizeLandScapeView.ADDITIONAL_CRDC_NODES:
-        return generateCRDCLinks(value, classes);
+        return generateRepositoryLinks(repositories, classes);
       default:
         return '';
     }

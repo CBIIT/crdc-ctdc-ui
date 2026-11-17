@@ -46,7 +46,6 @@ const Studies = ({ classes, data}) => {
                 <TableContextProvider>
                   <StudiesTable
                     data={data.getAllStudies}
-                    interOpData={data.getAllStudies}
                     table={pageData.table}
                     tableLayOut={tableLayOut}
                     rowsPerPage={pageData.table.numbOfRowPerPage || 10}
