@@ -46,7 +46,8 @@ it('shows only the configured parent name linked to its general repository porta
 
   expect(tooltip.getAllByText('TCIA')).toHaveLength(1);
   expect(tooltip.getAllByRole('link')).toHaveLength(1);
-  const link = tooltip.getByRole('link', { name: /TCIA/ });
+  const link = tooltip.getByRole('link', { name: 'TCIA' });
+  expect(tooltip.getByRole('img', { name: 'External link icon' })).toBeInTheDocument();
   expect(link).toHaveAttribute('href', 'https://nbia.cancerimagingarchive.net/');
   expect(link).toHaveAttribute('target', '_blank');
   expect(link).toHaveAttribute('rel', 'noopener noreferrer');
@@ -70,6 +71,7 @@ it('displays a repository with no URL as text without a placeholder link', async
   const tooltip = await hoverIndicator();
   expect(tooltip.getByText('Other Archive')).toBeInTheDocument();
   expect(tooltip.queryByRole('link')).not.toBeInTheDocument();
+  expect(tooltip.queryByRole('img')).not.toBeInTheDocument();
 });
 
 it('does not show an indicator for an empty repository list', () => {

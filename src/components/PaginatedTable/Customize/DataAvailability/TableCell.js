@@ -23,19 +23,21 @@ const generateRepositoryLinks = (repositories, classes) => (
     {repositories.map((repository) => (
       <li key={repository.repository_name} className={classes.crdcLinksLi}>
         {repository.repository_url ? (
-          <a
-            className={classes.crdcLinkStyle}
-            target="_blank"
-            rel="noopener noreferrer"
-            href={repository.repository_url}
-          >
-            {repository.repository_name}
+          <>
+            <a
+              className={classes.crdcLinkStyle}
+              target="_blank"
+              rel="noopener noreferrer"
+              href={repository.repository_url}
+            >
+              {repository.repository_name}
+            </a>
             <img
               style={{ width: '15px', marginLeft: '5px' }}
               src="https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExternalLinkIcon.svg"
               alt="External link icon"
             />
-          </a>
+          </>
         ) : <span>{repository.repository_name}</span>}
       </li>
     ))}
