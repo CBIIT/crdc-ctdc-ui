@@ -132,6 +132,9 @@ const styles = (theme) => ({
     // Figma: the banner spans 96-1704 at 1800px, 28px inside the page content box on each side.
     margin: '0 28px',
     position: 'relative',
+    [theme.breakpoints.down('xs')]: {
+      margin: 0,
+    },
   },
   // The SVG's circle is 56.3% of the image box; at 137.4px it is the design's 77.35px circle, and the -29.9px offsets put
   // the circle's top-left corner on the banner's top-left corner.
@@ -165,6 +168,14 @@ const styles = (theme) => ({
     maxWidth: '1628px',
     paddingLeft: '104px',
     paddingRight: '64px',
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: '28px',
+      paddingRight: '28px',
+    },
+    [theme.breakpoints.down('xs')]: {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
   },
   searchBox: {
     position: 'relative',
@@ -215,6 +226,14 @@ const styles = (theme) => ({
     paddingLeft: '64px',
     paddingRight: '64px',
     margin: 'auto',
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: '28px',
+      paddingRight: '28px',
+    },
+    [theme.breakpoints.down('xs')]: {
+      paddingLeft: 0,
+      paddingRight: 0,
+    },
   },
   emptyState: {
     padding: '40px 0',

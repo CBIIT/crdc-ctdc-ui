@@ -57,6 +57,25 @@ describe('PortfolioController', () => {
     expect(screen.getByText('NCI National Clinical Trials Network')).toBeInTheDocument();
   });
 
+  it('counts unaffiliated studies from every returned grouping on the Initiatives card', () => {
+    mockQueryResults({
+      programsResult: { loading: false, error: undefined, data: { getAllPrograms: [] } },
+      unaffiliatedResult: {
+        loading: false,
+        error: undefined,
+        data: {
+          getAllPrograms: [
+            { studies: [{ study_id: 'NCT1', study_short_name: 'S1', study_name: 'No Program Study' }] },
+            { program_short_name: 'NA', studies: [{ study_id: 'NCT2', study_short_name: 'S2', study_name: 'Not Applicable Study' }] },
+          ],
+        },
+      },
+    });
+    render(<PortfolioController />);
+    expect(screen.getByText((_, element) => element.children.length === 2
+      && element.textContent.replace(/\s+/g, ' ') === '2 Associated Studies')).toBeInTheDocument();
+  });
+
   it('renders a loading indicator while queries are in flight', () => {
     mockQueryResults({ programsResult: { loading: true, error: undefined, data: undefined } });
     render(<PortfolioController />);

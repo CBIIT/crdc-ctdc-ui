@@ -89,7 +89,23 @@ export const GET_PORTFOLIO_PROGRAMS_QUERY = gql`
 // `getAllStudies` no longer accepts a program filter (removed in PR #204) - the orphan/Initiatives bucket is
 // reached through `getAllPrograms(is_program: ["is not program"])` instead (arg renamed from study_has_program
 // in backend PR #212), which returns a synthetic no-program grouping whose `studies` sub-list is the unaffiliated studies. Reused
-// verbatim by CTDC-2069's no-program detail variant. The controller reads result[0]?.studies.
+// verbatim by CTDC-2069's no-program detail variant. The backend can return more than one grouping (e.g. studies
+// with no program and studies under a "Not Applicable" program), so callers flatten every group with
+// flattenProgramStudies rather than reading only the first.
+// Studies from every returned program grouping, de-duplicated by study_id (falling back to study_short_name).
+export const flattenProgramStudies = (programs) => {
+  const seen = new Set();
+  return (programs || [])
+    .flatMap((program) => program?.studies || [])
+    .filter((study) => {
+      const key = study?.study_id || study?.study_short_name;
+      if (!key) return Boolean(study);
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+};
+
 export const GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY = gql`
   query getPortfolioUnaffiliatedStudiesQuery {
     getAllPrograms(is_program: ["is not program"]) {

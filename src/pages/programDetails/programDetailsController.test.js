@@ -96,6 +96,27 @@ describe('ProgramDetailsController', () => {
     expect(screen.getByText('NCT00980460|Not Applicable|')).toBeInTheDocument();
   });
 
+  it('includes the unaffiliated studies from every returned grouping in the Initiatives table', () => {
+    mockQueryResults({
+      unaffiliatedResult: {
+        loading: false,
+        error: undefined,
+        data: {
+          getAllPrograms: [
+            { studies: [{ study_id: 'NCT00980460', study_short_name: 'NCT00980460', study_name: 'No Program Study' }] },
+            {
+              program_short_name: 'NA',
+              studies: [{ study_id: 'NCT04314401', study_short_name: 'CMB', study_name: 'Not Applicable Study' }],
+            },
+          ],
+        },
+      },
+    });
+    render(<ProgramDetailsController match={{ params: {} }} />);
+    expect(screen.getByText('NCT00980460|Not Applicable|')).toBeInTheDocument();
+    expect(screen.getByText('NCT04314401|Not Applicable|')).toBeInTheDocument();
+  });
+
   it('renders a loading indicator while the query is in flight', () => {
     mockQueryResults({ programResult: { loading: true, error: undefined, data: undefined } });
     render(<ProgramDetailsController match={{ params: { programShortName: 'NCTN' } }} />);

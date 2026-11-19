@@ -1,6 +1,6 @@
 import React from 'react';
 import { withStyles } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { externalLinkIcon, portfolioColors } from '../../../bento/portfolioData';
 
 // CTDC-2065 (Program Details page) is now live - program name/study count navigate there.
@@ -21,37 +21,44 @@ const PortfolioCard = ({
   const studyCount = studies?.length || 0;
   const accentColor = portfolioColors.programAccent;
 
-  const handleNavigateToDetails = () => {
-    if (!PROGRAM_DETAILS_PAGE_READY) return;
-    history.push(isInitiatives ? '/program-details' : `/program-details/${identifier}`);
-  };
+  const detailsPath = isInitiatives ? '/program-details' : `/program-details/${identifier}`;
 
+  const studyIds = (studies || [])
+    .map((study) => study.study_short_name)
+    .filter(Boolean)
+    .join(',');
+
+  // No affiliated studies: the button is disabled, since an unfiltered /studies would list every study.
   const handleAssociatedStudies = () => {
-    const studyIds = (studies || [])
-      .map((study) => study.study_short_name)
-      .filter(Boolean)
-      .join(',');
-    history.push(studyIds ? `/studies?studyIds=${encodeURIComponent(studyIds)}` : '/studies');
+    if (!studyIds) return;
+    history.push(`/studies?studyIds=${encodeURIComponent(studyIds)}`);
   };
 
-  const titleProps = PROGRAM_DETAILS_PAGE_READY
-    ? { onClick: handleNavigateToDetails, className: `${classes.title} ${classes.clickable}` }
-    : { className: classes.title };
+  const countContent = (
+    <>
+      {/* Figma: the number and the two spaces after it are bold. */}
+      <span className={classes.countNumber}>{`${studyCount}\u00a0 `}</span>
+      <span className={classes.countLabel}>{`Associated ${studyCount === 1 ? 'Study' : 'Studies'}`}</span>
+    </>
+  );
 
   return (
     <div className={classes.card} style={{ borderLeftColor: accentColor }}>
       <div className={classes.header} style={{ backgroundColor: accentColor }}>
         <div className={classes.titleGroup}>
-          <span {...titleProps}>{name}</span>
+          {PROGRAM_DETAILS_PAGE_READY ? (
+            <Link to={detailsPath} className={`${classes.title} ${classes.clickable}`}>{name}</Link>
+          ) : (
+            <span className={classes.title}>{name}</span>
+          )}
         </div>
-        <span
-          className={`${classes.studiesCount} ${PROGRAM_DETAILS_PAGE_READY ? classes.clickable : ''}`}
-          onClick={PROGRAM_DETAILS_PAGE_READY ? handleNavigateToDetails : undefined}
-        >
-          {/* Figma: the number and the two spaces after it are bold. */}
-          <span className={classes.countNumber}>{`${studyCount}\u00a0 `}</span>
-          <span className={classes.countLabel}>{`Associated ${studyCount === 1 ? 'Study' : 'Studies'}`}</span>
-        </span>
+        {PROGRAM_DETAILS_PAGE_READY ? (
+          <Link to={detailsPath} className={`${classes.studiesCount} ${classes.clickable}`}>
+            {countContent}
+          </Link>
+        ) : (
+          <span className={classes.studiesCount}>{countContent}</span>
+        )}
       </div>
       <div className={classes.body}>
         <div className={classes.descriptionActions}>
@@ -61,6 +68,7 @@ const PortfolioCard = ({
               type="button"
               className={classes.associatedStudiesButton}
               onClick={handleAssociatedStudies}
+              disabled={!studyIds}
             >
               Associated Studies
             </button>
@@ -91,7 +99,7 @@ const PortfolioCard = ({
   );
 };
 
-const styles = () => ({
+const styles = (theme) => ({
   card: {
     width: '100%',
     maxWidth: '1500px',
@@ -111,12 +119,19 @@ const styles = () => ({
     padding: '10px 35px 10px 30px',
     boxSizing: 'border-box',
     gap: '10px',
+    [theme.breakpoints.down('sm')]: {
+      flexWrap: 'wrap',
+      padding: '12px 20px 12px 15px',
+    },
   },
   titleGroup: {
     display: 'flex',
     alignItems: 'center',
     gap: '15px',
     maxWidth: '70%',
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: '100%',
+    },
   },
   title: {
     fontFamily: 'Inter',
@@ -125,6 +140,7 @@ const styles = () => ({
     lineHeight: '20px',
     letterSpacing: 0,
     color: '#fff',
+    textDecoration: 'none',
     overflowWrap: 'anywhere',
   },
   studiesCount: {
@@ -157,6 +173,11 @@ const styles = () => ({
     '&:hover': {
       textDecoration: 'underline',
     },
+    // Visible keyboard focus on the navy header.
+    '&:focus-visible': {
+      outline: '2px solid #FFF',
+      outlineOffset: '3px',
+    },
   },
   body: {
     display: 'flex',
@@ -168,13 +189,23 @@ const styles = () => ({
     gap: '30px',
     borderRight: `3px solid ${portfolioColors.cardBorder}`,
     borderBottom: `3px solid ${portfolioColors.cardBorder}`,
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      padding: '20px 17px 22px 15px',
+    },
   },
   descriptionActions: {
     display: 'flex',
     flexDirection: 'column',
     gap: '45px',
-    flex: '1 1 auto',
+    // A 340px basis (not the 785px max) so on mid-size screens the description gives up width before the image does.
+    flex: '1 1 340px',
+    minWidth: 0,
     maxWidth: '785px',
+    [theme.breakpoints.down('sm')]: {
+      gap: '25px',
+      maxWidth: '100%',
+    },
   },
   description: {
     margin: 0,
@@ -187,8 +218,13 @@ const styles = () => ({
   },
   actions: {
     display: 'flex',
+    flexWrap: 'wrap',
     gap: '30px',
     padding: '0 10px',
+    [theme.breakpoints.down('sm')]: {
+      gap: '15px',
+      padding: 0,
+    },
   },
   associatedStudiesButton: {
     border: 'none',
@@ -204,6 +240,10 @@ const styles = () => ({
     cursor: 'pointer',
     '&:hover': {
       opacity: 0.9,
+    },
+    '&:disabled': {
+      cursor: 'not-allowed',
+      opacity: 0.5,
     },
   },
   resourceLink: {
@@ -227,10 +267,17 @@ const styles = () => ({
   },
   // Figma "Frame 703": inner shadow 0 0 40px rgba(0,0,0,0.25) over the image. An inset shadow on an <img> is hidden
   // by the image itself, so it is drawn by an overlay.
+  // The image shrinks with the card (keeping its 419:249 shape) instead of forcing horizontal overflow.
   imageFrame: {
     position: 'relative',
-    flexShrink: 0,
+    flex: '0 1 419px',
+    minWidth: 0,
     lineHeight: 0,
+    [theme.breakpoints.down('sm')]: {
+      flex: 'none',
+      width: '100%',
+      maxWidth: '419px',
+    },
     '&::after': {
       content: '""',
       position: 'absolute',
@@ -240,9 +287,10 @@ const styles = () => ({
     },
   },
   image: {
-    width: '419px',
-    height: '249px',
-    flexShrink: 0,
+    display: 'block',
+    width: '100%',
+    height: 'auto',
+    aspectRatio: '419 / 249',
     objectFit: 'cover',
   },
 });

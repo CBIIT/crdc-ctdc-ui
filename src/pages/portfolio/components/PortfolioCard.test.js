@@ -1,7 +1,11 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render as rtlRender, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { MemoryRouter } from 'react-router-dom';
 import PortfolioCard from './PortfolioCard';
+
+// The title and study count are router links, so the card needs a router.
+const render = (ui) => rtlRender(<MemoryRouter>{ui}</MemoryRouter>);
 
 const mockHistoryPush = jest.fn();
 jest.mock('react-router-dom', () => ({
@@ -24,8 +28,8 @@ const baseProps = {
 
 // The count is split into a bold number (with two trailing spaces) and a regular-weight label, so match on the
 // combined text with whitespace collapsed.
-const getCount = (text) => screen.getByText((_, element) => element.tagName === 'SPAN'
-  && element.children.length === 2 && element.textContent.replace(/\s+/g, ' ') === text);
+const getCount = (text) => screen.getByText((_, element) => element.children.length === 2
+  && element.textContent.replace(/\s+/g, ' ') === text);
 
 describe('PortfolioCard', () => {
   beforeEach(() => {
@@ -86,16 +90,25 @@ describe('PortfolioCard', () => {
     expect(mockHistoryPush).toHaveBeenCalledWith('/studies?studyIds=STUDY-1%2CSTUDY-2');
   });
 
-  it('navigates to the Program Details page when the program title is clicked', () => {
+  it('renders the program title as a keyboard-focusable link to Program Details', () => {
     render(<PortfolioCard {...baseProps} />);
-    fireEvent.click(screen.getByText('Test Program'));
-    expect(mockHistoryPush).toHaveBeenCalledWith('/program-details/TP');
+    const link = screen.getByText('Test Program').closest('a');
+    expect(link).toHaveAttribute('href', '/program-details/TP');
+    link.focus();
+    expect(link).toHaveFocus();
   });
 
-  it('navigates to the Program Details page when the study count is clicked', () => {
+  it('renders the study count as a link to Program Details', () => {
     render(<PortfolioCard {...baseProps} />);
-    fireEvent.click(getCount('2 Associated Studies'));
-    expect(mockHistoryPush).toHaveBeenCalledWith('/program-details/TP');
+    expect(getCount('2 Associated Studies').closest('a')).toHaveAttribute('href', '/program-details/TP');
+  });
+
+  it('disables Associated Studies when the program has no associated studies', () => {
+    render(<PortfolioCard {...baseProps} studies={[]} />);
+    const button = screen.getByRole('button', { name: 'Associated Studies' });
+    expect(button).toBeDisabled();
+    fireEvent.click(button);
+    expect(mockHistoryPush).not.toHaveBeenCalled();
   });
 
   it('renders the Initiatives card with its fixed heading and the unaffiliated study count', () => {
@@ -128,7 +141,6 @@ describe('PortfolioCard', () => {
         imageAlt="Initiatives"
       />,
     );
-    fireEvent.click(screen.getByText('Initiatives'));
-    expect(mockHistoryPush).toHaveBeenCalledWith('/program-details');
+    expect(screen.getByText('Initiatives').closest('a')).toHaveAttribute('href', '/program-details');
   });
 });

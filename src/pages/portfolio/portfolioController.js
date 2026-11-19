@@ -6,6 +6,7 @@ import { Typography } from '../../components/Wrappers/Wrappers';
 import {
   GET_PORTFOLIO_PROGRAMS_QUERY,
   GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY,
+  flattenProgramStudies,
 } from '../../bento/portfolioData';
 
 const PortfolioController = () => {
@@ -32,7 +33,7 @@ const PortfolioController = () => {
   return (
     <PortfolioView
       programs={programsData?.getAllPrograms || []}
-      unaffiliatedStudies={unaffiliatedData?.getAllPrograms?.[0]?.studies || []}
+      unaffiliatedStudies={flattenProgramStudies(unaffiliatedData?.getAllPrograms)}
     />
   );
 };

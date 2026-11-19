@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render as rtlRender, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
+import { MemoryRouter } from 'react-router-dom';
 import PortfolioView from './portfolioView';
 import { initiativesCardContent } from '../../bento/portfolioData';
 
@@ -41,9 +42,12 @@ const programs = [
 ];
 const unaffiliatedStudies = [{ study_id: 'NCT1', study_short_name: 'CMB', study_name: 'CM Biobank' }];
 
+// The cards' titles and counts are router links, so the page needs a router.
+const render = (ui) => rtlRender(<MemoryRouter>{ui}</MemoryRouter>);
+
 const renderedTitles = () => screen
   .getAllByText(/Cancer Immune|Cancer Moonshot|NCI Molecular|NCI National/)
-  .filter((el) => el.tagName === 'SPAN')
+  .filter((el) => el.tagName === 'A')
   .map((el) => el.textContent);
 
 describe('PortfolioView', () => {

@@ -8,7 +8,7 @@ import {
   GET_PROGRAM_STUDY_TABLE_QUERY,
   unaffiliatedProgramLabel,
 } from '../../bento/programDetailsData';
-import { GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY } from '../../bento/portfolioData';
+import { GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY, flattenProgramStudies } from '../../bento/portfolioData';
 import { GET_STUDY_DATA_INTEROPS_QUERY } from '../../bento/studiesData';
 import { mergeInteropData } from '../studies/studyRows';
 
@@ -48,7 +48,7 @@ const ProgramDetailsController = ({ match }) => {
   }
 
   const program = isInitiatives ? undefined : programData?.getAllPrograms?.[0];
-  const unaffiliatedStudies = unaffiliatedData?.getAllPrograms?.[0]?.studies || [];
+  const unaffiliatedStudies = flattenProgramStudies(unaffiliatedData?.getAllPrograms);
   const studies = (isInitiatives ? unaffiliatedStudies : program?.studies) || [];
 
   // Joins the program's studies (ids only) with the full per-study table fields; falls back to the bare study

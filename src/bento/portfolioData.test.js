@@ -6,6 +6,7 @@ import {
   initiativesCardContent,
   GET_PORTFOLIO_PROGRAMS_QUERY,
   GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY,
+  flattenProgramStudies,
 } from './portfolioData';
 
 describe('portfolioData configuration', () => {
@@ -63,5 +64,28 @@ describe('portfolioData configuration', () => {
       expect(body(GET_PORTFOLIO_PROGRAMS_QUERY)).toContain('study_id');
       expect(body(GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY)).toContain('study_id');
     });
+  });
+});
+
+describe('flattenProgramStudies', () => {
+  it('combines the studies of every returned grouping, not just the first', () => {
+    const groups = [
+      { studies: [{ study_id: 'NCT1', study_short_name: 'A' }] },
+      { program_short_name: 'NA', studies: [{ study_id: 'NCT2', study_short_name: 'B' }] },
+    ];
+    expect(flattenProgramStudies(groups).map((study) => study.study_id)).toEqual(['NCT1', 'NCT2']);
+  });
+
+  it('drops duplicate studies that appear in more than one grouping', () => {
+    const groups = [
+      { studies: [{ study_id: 'NCT1' }, { study_id: 'NCT2' }] },
+      { studies: [{ study_id: 'NCT2' }] },
+    ];
+    expect(flattenProgramStudies(groups)).toHaveLength(2);
+  });
+
+  it('handles missing data and groupings without studies', () => {
+    expect(flattenProgramStudies(undefined)).toEqual([]);
+    expect(flattenProgramStudies([{ studies: null }, {}])).toEqual([]);
   });
 });
