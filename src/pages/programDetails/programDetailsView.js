@@ -349,12 +349,21 @@ const styles = (theme) => ({
   headerWrap: {
     position: 'relative',
   },
+  // Figma "Frame 118": a fixed 290x47 frame (padding 12 top / 15 sides / 10 bottom) with the text centered in it, not a
+  // pill that hugs its text. Plain inline text (no flex), so the space between the number and the label is a real
+  // character and the underline runs through it. Its right edge lines up with the description/video row and the table's right edge, i.e.
+  // 30px in from the header line.
   countPill: {
     position: 'absolute',
     top: '50%',
-    right: '18px',
+    right: '30px',
     transform: 'translateY(-50%)',
-    padding: '11px 20px',
+    boxSizing: 'border-box',
+    width: '290px',
+    maxWidth: '100%',
+    height: '47px',
+    padding: '12px 15px 10px',
+    textAlign: 'center',
     border: 'none',
     cursor: 'pointer',
     backgroundColor: '#E6F5FB',
@@ -394,11 +403,13 @@ const styles = (theme) => ({
   },
   // Same width and side padding as .container, so the table spans the header line and the section title lines up
   // with the description above it (both 30px in).
+  // 36px page padding + 30px body margin (same as the description/video row), so the table's left and right edges
+  // line up with the description text and the video, not with the header line.
   studiesBandInner: {
     margin: 'auto',
     maxWidth: '1736px',
-    paddingLeft: '36px',
-    paddingRight: '36px',
+    paddingLeft: '66px',
+    paddingRight: '66px',
   },
   // Title and the table's download/view-columns toolbar share one row (same pattern as the Participant Detail
   // tables): the toolbar stays in the flow and defines the row height, the title is absolutely placed at the left.
@@ -407,7 +418,16 @@ const styles = (theme) => ({
     // Data Availability grouping row: navy band with white label, per the approved design.
     '&& tr.column_grouping, && tr.column_grouping th, && tr.column_grouping td': {
       backgroundColor: programDetailsColors.programAccent,
-      color: '#fff',
+    },
+    // "Data Availability" label: Nunito Sans 18px/16px, regular weight, white. Set on the cell and its children, since
+    // the shared theme styles the label on the group cell (Roboto 16px, weight 600).
+    '&& tr.column_grouping td, && tr.column_grouping td *, && tr.column_grouping th, && tr.column_grouping th *': {
+      color: '#FFF',
+      fontFamily: '"Nunito Sans", sans-serif',
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: 400,
+      lineHeight: '16px',
     },
     '&& tr.column_grouping svg': {
       color: '#fff',
@@ -423,6 +443,12 @@ const styles = (theme) => ({
     '&& tbody td:first-child, && thead tr:not(.column_grouping) th:first-child': {
       paddingLeft: '30px',
     },
+    // Horizontal space between the five text columns: 30px of padding on each side of every text column (the shared
+    // theme uses 15px), so the text of two neighbouring columns is 60px apart. Change the two values together.
+    '&& tbody td:nth-child(-n+5), && thead tr:not(.column_grouping) th:nth-child(-n+5)': {
+      paddingLeft: '30px',
+      paddingRight: '30px',
+    },
     // Keep each text header (and the sort arrow next to "Study Code") on one line; Study Name absorbs the width.
     '&& thead tr:not(.column_grouping) th:nth-child(-n+5)': {
       whiteSpace: 'nowrap',
@@ -437,23 +463,57 @@ const styles = (theme) => ({
       fontWeight: 400,
       lineHeight: '18px',
     },
+    // Data availability icons at the design's sizes (25/24/25/26/29px wide), 36px between neighbours, 53px tall header.
+    // The cells are table cells, not a flex container, so the layout comes from cell widths: every icon gets 18px of
+    // padding on each side (18 + 18 = the 36px gap). The first column adds 38.5px on its left (the design's block
+    // margin, (350 - (25+24+25+26+29) - 4 * 36) / 2), and the last column leaves 38px on its right, so the rightmost
+    // icon ends exactly 38px from the table's right edge.
+    // Widths = icon + padding: 81.5 + 60 + 61 + 62 + 85 = 349.5 (+1px separator on the first column). Dots center under icons.
     '&& td.participant_file_count, && td.study_file_count, && td.image_collection_count, && td.numberOfPublications, && td.unique_repository, && th.participant_file_count, && th.study_file_count, && th.image_collection_count, && th.numberOfPublications, && th.unique_repository': {
       boxSizing: 'border-box',
-      width: '64px',
-      minWidth: '64px',
-      padding: 0,
+      padding: '0 18px',
       textAlign: 'center',
     },
-    // Last column: 64px of icon space like the others, plus 16px so the 35px icon (centered in that space) ends 30px
-    // from the table's right edge: 32px (half the slot) + 16px padding - 17.5px (half the icon) = 30px.
-    '&& td.unique_repository, && th.unique_repository': {
-      width: '80px',
-      minWidth: '80px',
-      paddingRight: '16px',
+    '&& th.participant_file_count, && th.study_file_count, && th.image_collection_count, && th.numberOfPublications, && th.unique_repository': {
+      height: '53px',
+      verticalAlign: 'middle',
     },
-    // Keep the "Data Availability" label centered over the icons (the group cell spans the last column's padding).
+    // Header icons at the design's sizes (height follows each SVG's own aspect ratio). The shared header scales them to
+    // 35/38px and nudges the publications icon down 4px; reset both for this table.
+    '&& th.participant_file_count img': { width: '25px', paddingTop: 0 },
+    '&& th.study_file_count img': { width: '24px', paddingTop: 0 },
+    '&& th.image_collection_count img': { width: '25px', paddingTop: 0 },
+    '&& th.numberOfPublications img': { width: '26px', paddingTop: 0 },
+    '&& th.unique_repository img': { width: '29px', paddingTop: 0 },
+    // Vertical separator between the text columns and the data availability block: a 1px left border on the first
+    // data availability column. #808080 on the body rows and the icon header row; #EDF0F1 on the blue "Data
+    // Availability" row (Figma "Frame 698"/"Frame 687" vs "Frame 686"). The column is 1px wider to make room for it,
+    // so the icon spacing is unchanged.
+    '&& td.participant_file_count, && th.participant_file_count': {
+      width: '82.5px',
+      minWidth: '82.5px',
+      paddingLeft: '38.5px',
+      borderLeft: '1px solid #808080',
+    },
     '&& tr.column_grouping td.data_availability, && tr.column_grouping th.data_availability': {
-      paddingRight: '16px',
+      borderLeft: '1px solid #EDF0F1',
+    },
+    '&& td.study_file_count, && th.study_file_count': {
+      width: '60px',
+      minWidth: '60px',
+    },
+    '&& td.image_collection_count, && th.image_collection_count': {
+      width: '61px',
+      minWidth: '61px',
+    },
+    '&& td.numberOfPublications, && th.numberOfPublications': {
+      width: '62px',
+      minWidth: '62px',
+    },
+    '&& td.unique_repository, && th.unique_repository': {
+      width: '85px',
+      minWidth: '85px',
+      paddingRight: '38px',
     },
     '&& .downloadAndColumnView': {
       top: 0,
@@ -463,7 +523,8 @@ const styles = (theme) => ({
       minHeight: '44px',
       height: '44px',
       maxHeight: '44px',
-      padding: '0 30px 0 0',
+      padding: 0,
+      marginRight: '-12px', // the icon buttons have 12px internal padding; this puts the visible icon on the table edge
       '& button': {
         marginBottom: 0,
       },
