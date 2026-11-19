@@ -85,7 +85,7 @@ const studyColumn = (field) => studiesColumns.find((column) => column.dataField 
 export const programStudiesTable = {
   ...studiesPageData.table,
   title: 'Associated Studies',
-  defaultSortField: 'study_id',
+  defaultSortField: 'program_short_name',
   columns: [
     { dataField: 'program_short_name', header: 'Program', display: true, tooltipText: 'sort' },
     studyColumn('study_name'),

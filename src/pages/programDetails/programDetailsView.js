@@ -186,7 +186,7 @@ const styles = (theme) => ({
     paddingTop: '8px',
     paddingLeft: '36px',
     paddingRight: '36px',
-    paddingBottom: '60px',
+    paddingBottom: '75px',
   },
   breadCrumb: {
     paddingBottom: '18px',
@@ -200,6 +200,8 @@ const styles = (theme) => ({
     height: '118px',
     margin: 'auto',
     paddingLeft: '10px',
+    // TEMP FIX: Figma banner line spans 63-1727 at 1800px, 5px left of the page content box.
+    left: '-5px',
   },
   logo: {
     position: 'absolute',
@@ -207,13 +209,14 @@ const styles = (theme) => ({
     height: '200px',
     objectFit: 'contain',
     marginLeft: '-35px',
-    marginTop: '-45px',
+    marginTop: '-43.5px', // TEMP FIX: Figma badge circle top is level with the banner top
     pointerEvents: 'none',
   },
   headerTitle: {
     position: 'absolute',
-    top: '50%',
-    left: '150px',
+    // TEMP FIX: Figma title block sits 3px lower and 4px further left than centered at 150px.
+    top: 'calc(50% + 3px)',
+    left: '146px',
     transform: 'translateY(-50%)',
   },
   headerMainTitle: {
@@ -240,12 +243,15 @@ const styles = (theme) => ({
     fontStyle: 'normal',
     fontWeight: 500,
     lineHeight: 'normal',
-    marginTop: '10px',
+    marginTop: '4px',
   },
   body: {
     paddingTop: '40px',
-    marginLeft: '30px',
+    marginLeft: '59px', // description and the Associated Studies title both start 127px from the viewport's left edge at 1800px
     marginRight: '30px',
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: '30px',
+    },
   },
   content: {
     display: 'flex',
@@ -265,8 +271,8 @@ const styles = (theme) => ({
     margin: 0,
     fontFamily: 'Roboto',
     fontWeight: 400,
-    fontSize: '16px',
-    lineHeight: '24px',
+    fontSize: '18px',
+    lineHeight: '31.5px',
     color: '#000',
   },
   emptyState: {
@@ -280,22 +286,32 @@ const styles = (theme) => ({
   descriptionRow: {
     display: 'flex',
     alignItems: 'flex-start',
+    justifyContent: 'space-between',
     gap: '40px',
     [theme.breakpoints.down('sm')]: {
       flexDirection: 'column',
     },
   },
+  // Figma: description 965px wide, video 507px wide, free space between them (102px at 1800px).
   descriptionColumn: {
-    flex: '7 1 0',
+    flex: '1 1 0',
+    maxWidth: '965px',
     minWidth: 0,
+    [theme.breakpoints.down('sm')]: {
+      flex: 'none',
+      maxWidth: 'none',
+    },
   },
   videosColumn: {
-    flex: '3 1 0',
+    flex: '0 1 507px',
+    maxWidth: '35%',
     minWidth: 0,
     display: 'flex',
     flexDirection: 'column',
     gap: '20px',
     [theme.breakpoints.down('sm')]: {
+      flex: 'none',
+      maxWidth: 'none',
       width: '100%',
     },
   },
@@ -307,7 +323,7 @@ const styles = (theme) => ({
   videoThumbnailButton: {
     position: 'relative',
     width: '100%',
-    aspectRatio: '16 / 9',
+    aspectRatio: '507 / 290',
     flexShrink: 0,
     padding: 0,
     border: 'none',
@@ -340,8 +356,9 @@ const styles = (theme) => ({
     },
   },
   videoThumbnail: {
+    display: 'block',
     width: '100%',
-    aspectRatio: '16 / 9',
+    aspectRatio: '507 / 290',
     objectFit: 'cover',
     flexShrink: 0,
     border: 'none',
@@ -429,6 +446,17 @@ const styles = (theme) => ({
       fontWeight: 400,
       lineHeight: '16px',
     },
+    // Center the label (and its "?" tooltip) vertically in the 44px row; the 42px tooltip button otherwise stretches
+    // the line box and pushes the text up.
+    '&& tr.column_grouping th.data_availability > span, && tr.column_grouping td.data_availability > span': {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    '&& tr.column_grouping th.data_availability > span > button, && tr.column_grouping td.data_availability > span > button': {
+      paddingTop: 0,
+      paddingBottom: 0,
+    },
     '&& tr.column_grouping svg': {
       color: '#fff',
       fill: '#fff',
@@ -483,8 +511,24 @@ const styles = (theme) => ({
     '&& th.participant_file_count img': { width: '25px', paddingTop: 0 },
     '&& th.study_file_count img': { width: '24px', paddingTop: 0 },
     '&& th.image_collection_count img': { width: '25px', paddingTop: 0 },
-    '&& th.numberOfPublications img': { width: '26px', paddingTop: 0 },
-    '&& th.unique_repository img': { width: '29px', paddingTop: 0 },
+    // TEMP FIX: explicit heights from the design for the last two icons (Publications 23px, CRDC node 27px).
+    '&& th.numberOfPublications img': { width: '26px', height: '23px', paddingTop: 0 },
+    '&& th.unique_repository img': { width: '29px', height: '27px', paddingTop: 0 },
+    // Availability dots: the design draws 8x8 dots; the shared cell renders an 18px icon whose circle is 2/3 of the box
+    // (12px). A 12px icon gives the 8px circle (8 / (16/24) = 12).
+    '&& td.participant_file_count svg, && td.study_file_count svg, && td.image_collection_count svg, && td.numberOfPublications svg, && td.unique_repository svg': {
+      width: '12px',
+      height: '12px',
+      display: 'block',
+      margin: '0 auto',
+      color: '#00579E',
+      fill: '#00579E',
+    },
+    // The design's dots sit 0-3px right of the icon centers; mirror those offsets per column (keep or drop with the design).
+    '&& td.participant_file_count svg': { transform: 'translateX(2px)' },
+    '&& td.study_file_count svg': { transform: 'translateX(2.5px)' },
+    '&& td.image_collection_count svg': { transform: 'translateX(3px)' },
+    '&& td.numberOfPublications svg': { transform: 'translateX(2.5px)' },
     // Vertical separator between the text columns and the data availability block: a 1px left border on the first
     // data availability column. #808080 on the body rows and the icon header row; #EDF0F1 on the blue "Data
     // Availability" row (Figma "Frame 698"/"Frame 687" vs "Frame 686"). The column is 1px wider to make room for it,
@@ -495,8 +539,14 @@ const styles = (theme) => ({
       paddingLeft: '38.5px',
       borderLeft: '1px solid #808080',
     },
+    // On the blue row the separator is a 1px line inset 1px from the row's top and bottom (Figma), so it is drawn as a
+    // background instead of a border.
     '&& tr.column_grouping td.data_availability, && tr.column_grouping th.data_availability': {
-      borderLeft: '1px solid #EDF0F1',
+      borderLeft: 0,
+      backgroundImage: 'linear-gradient(#EDF0F1, #EDF0F1)',
+      backgroundSize: '1px calc(100% - 2px)',
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'left center',
     },
     '&& td.study_file_count, && th.study_file_count': {
       width: '60px',
@@ -515,6 +565,96 @@ const styles = (theme) => ({
       minWidth: '85px',
       paddingRight: '38px',
     },
+    // Figma geometry (1800px wide): blue row 44px, icon header row 53px with a 3px #686F7F rule under it, body rows
+    // 106px. The shared theme draws 3px #0E6292 borders above and below every header row; drop them here.
+    '&& thead tr': {
+      borderTop: 0,
+      borderBottom: 0,
+    },
+    '&& thead tr.column_grouping': {
+      height: '44px',
+    },
+    '&& thead tr.column_grouping th, && thead tr.column_grouping td': {
+      borderBottom: 0,
+      paddingTop: 0,
+      paddingBottom: 0,
+    },
+    '&& thead tr:not(.column_grouping) th': {
+      height: '53px',
+      paddingTop: 0,
+      paddingBottom: 0,
+      borderBottom: '3px solid #686F7F',
+    },
+    // Rows alternate #E0EEF2 / #FFFFFF, starting with #E0EEF2 on the first row.
+    '&& tbody tr': {
+      height: '106px',
+    },
+    '&& tbody tr:nth-child(odd), && tbody tr:nth-child(odd) td': {
+      backgroundColor: '#E0EEF2',
+    },
+    '&& tbody tr:nth-child(even), && tbody tr:nth-child(even) td': {
+      backgroundColor: '#FFFFFF',
+    },
+    // Body text: Open Sans 16px #323232 (Accession ID in Lato); Study Code link Roboto 16px/24px #9F109F underlined.
+    '&& tbody td': {
+      fontFamily: '"Open Sans", sans-serif',
+      fontSize: '16px',
+      fontStyle: 'normal',
+      fontWeight: 400,
+      lineHeight: '18px',
+      color: '#323232',
+    },
+    '&& tbody td:nth-child(1), && tbody td:nth-child(4)': {
+      lineHeight: '16px',
+    },
+    '&& tbody td:nth-child(4)': {
+      fontFamily: 'Lato, sans-serif',
+    },
+    '&& tbody td:nth-child(5) a, && tbody td:nth-child(5) a *': {
+      fontFamily: 'Roboto, sans-serif',
+      fontSize: '16px',
+      fontWeight: 400,
+      lineHeight: '24px',
+      color: '#9F109F',
+      textDecoration: 'underline',
+    },
+    // Pagination bar: 44px tall, 3px #686F7F rule on top only, white fill.
+    '&& [class*="MuiTablePagination-root"]': {
+      height: '44px',
+      boxSizing: 'border-box',
+      borderTop: '3px solid #686F7F',
+      borderBottom: 0,
+      paddingRight: '38px',
+      '&:last-child': { paddingRight: '38px' },
+      '& [class*="MuiTablePagination-caption"]': {
+        textTransform: 'none',
+      },
+      // The range label is a fixed 81px box in the design (text left aligned).
+      '& [class*="MuiTablePagination-caption"]:nth-of-type(2)': {
+        width: '81px',
+        textAlign: 'left',
+      },
+      '& [class*="MuiTablePagination-input"]': {
+        marginLeft: '28px',
+        marginRight: '32px',
+        width: '41px',
+      },
+      '& [class*="MuiTablePagination-select"]': {
+        paddingRight: '24px',
+        paddingLeft: 0,
+        textOverflow: 'clip',
+      },
+      '& [class*="MuiTablePagination-actions"]': {
+        marginLeft: '25px',
+        display: 'flex',
+        gap: '10px',
+        '& button': {
+          width: '24px',
+          height: '24px',
+          padding: 0,
+        },
+      },
+    },
     '&& .downloadAndColumnView': {
       top: 0,
       display: 'flex',
@@ -524,9 +664,12 @@ const styles = (theme) => ({
       height: '44px',
       maxHeight: '44px',
       padding: 0,
-      marginRight: '-12px', // the icon buttons have 12px internal padding; this puts the visible icon on the table edge
+      paddingRight: '15px', // 48px buttons with the glyphs centered: the columns glyph ends 30px from the table edge
       '& button': {
         marginBottom: 0,
+      },
+      '& button.download-icon': {
+        marginRight: '-8px',
       },
     },
   },
@@ -537,7 +680,7 @@ const styles = (theme) => ({
   bandTitle: {
     position: 'absolute',
     top: '11px',
-    left: '30px',
+    left: '29px',
     zIndex: 1,
     margin: 0,
     fontFamily: 'Inter',
