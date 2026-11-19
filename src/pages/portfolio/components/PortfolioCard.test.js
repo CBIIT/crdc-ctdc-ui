@@ -22,9 +22,10 @@ const baseProps = {
   imageAlt: 'Test Program image',
 };
 
-// The count is split into a bold number and a regular-weight label, so match on the combined text.
+// The count is split into a bold number (with two trailing spaces) and a regular-weight label, so match on the
+// combined text with whitespace collapsed.
 const getCount = (text) => screen.getByText((_, element) => element.tagName === 'SPAN'
-  && element.children.length === 2 && element.textContent === text);
+  && element.children.length === 2 && element.textContent.replace(/\s+/g, ' ') === text);
 
 describe('PortfolioCard', () => {
   beforeEach(() => {

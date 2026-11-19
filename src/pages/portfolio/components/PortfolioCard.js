@@ -48,8 +48,8 @@ const PortfolioCard = ({
           className={`${classes.studiesCount} ${PROGRAM_DETAILS_PAGE_READY ? classes.clickable : ''}`}
           onClick={PROGRAM_DETAILS_PAGE_READY ? handleNavigateToDetails : undefined}
         >
-          <span className={classes.countNumber}>{studyCount}</span>
-          {' '}
+          {/* Figma: the number and the two spaces after it are bold. */}
+          <span className={classes.countNumber}>{`${studyCount}\u00a0 `}</span>
           <span className={classes.countLabel}>{`Associated ${studyCount === 1 ? 'Study' : 'Studies'}`}</span>
         </span>
       </div>
@@ -81,7 +81,11 @@ const PortfolioCard = ({
             )}
           </div>
         </div>
-        {image && <img src={image} alt={imageAlt} className={classes.image} />}
+        {image && (
+          <div className={classes.imageFrame}>
+            <img src={image} alt={imageAlt} className={classes.image} />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -103,7 +107,8 @@ const styles = () => ({
     justifyContent: 'space-between',
     alignItems: 'center',
     minHeight: '60px',
-    padding: '10px 35px',
+    // 30px left + the card's 5px left border = text 35px from the card's outer edge (Figma's border sits inside).
+    padding: '10px 35px 10px 30px',
     boxSizing: 'border-box',
     gap: '10px',
   },
@@ -117,7 +122,8 @@ const styles = () => ({
     fontFamily: 'Inter',
     fontWeight: 600,
     fontSize: '20px',
-    lineHeight: '24.2px',
+    lineHeight: '20px',
+    letterSpacing: 0,
     color: '#fff',
     overflowWrap: 'anywhere',
   },
@@ -125,6 +131,7 @@ const styles = () => ({
     color: '#FFF',
     fontFamily: 'Inter',
     fontSize: '20px',
+    letterSpacing: '0.1px',
     textDecorationLine: 'underline',
     textDecorationStyle: 'solid',
     textDecorationSkipInk: 'none',
@@ -135,6 +142,7 @@ const styles = () => ({
   },
   countNumber: {
     fontWeight: 700,
+    whiteSpace: 'pre',
     lineHeight: '24.2px',
     letterSpacing: '0.1px',
   },
@@ -154,7 +162,9 @@ const styles = () => ({
     display: 'flex',
     justifyContent: 'space-between',
     alignItems: 'flex-start',
-    padding: '25px 35px 40px 35px',
+    // Figma draws the 3px right/bottom borders inside the box, so they come out of the padding: 30px left (5px card
+    // border), 32px right and 37px bottom keep the content where the design has it.
+    padding: '25px 32px 37px 30px',
     gap: '30px',
     borderRight: `3px solid ${portfolioColors.cardBorder}`,
     borderBottom: `3px solid ${portfolioColors.cardBorder}`,
@@ -172,11 +182,13 @@ const styles = () => ({
     fontWeight: 400,
     fontSize: '18px',
     lineHeight: '30px',
+    letterSpacing: 0,
     color: '#000',
   },
   actions: {
     display: 'flex',
     gap: '30px',
+    padding: '0 10px',
   },
   associatedStudiesButton: {
     border: 'none',
@@ -212,6 +224,20 @@ const styles = () => ({
   externalIcon: {
     width: '17px',
     height: '17px',
+  },
+  // Figma "Frame 703": inner shadow 0 0 40px rgba(0,0,0,0.25) over the image. An inset shadow on an <img> is hidden
+  // by the image itself, so it is drawn by an overlay.
+  imageFrame: {
+    position: 'relative',
+    flexShrink: 0,
+    lineHeight: 0,
+    '&::after': {
+      content: '""',
+      position: 'absolute',
+      inset: 0,
+      boxShadow: 'inset 0 0 40px rgba(0, 0, 0, 0.25)',
+      pointerEvents: 'none',
+    },
   },
   image: {
     width: '419px',

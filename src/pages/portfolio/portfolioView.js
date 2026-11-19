@@ -119,7 +119,7 @@ const styles = (theme) => ({
   container: {
     margin: 'auto',
     maxWidth: '1736px',
-    paddingTop: '28px',
+    paddingTop: '21px',
     paddingLeft: '36px',
     paddingRight: '36px',
     paddingBottom: '60px',
@@ -129,23 +129,27 @@ const styles = (theme) => ({
     paddingTop: '31px',
     borderBottom: '#0D6F94 12px solid',
     height: '83px',
-    margin: 'auto',
+    // Figma: the banner spans 96-1704 at 1800px, 28px inside the page content box on each side.
+    margin: '0 28px',
     position: 'relative',
   },
+  // The SVG's circle is 56.3% of the image box; at 137.4px it is the design's 77.35px circle, and the -29.9px offsets put
+  // the circle's top-left corner on the banner's top-left corner.
   logo: {
     position: 'absolute',
-    width: '140px',
-    height: '140px',
+    top: 0,
+    left: 0,
+    width: '137.4px',
+    height: '137.4px',
     objectFit: 'contain',
-    marginLeft: '-65px',
-    marginTop: '-65px',
+    marginLeft: '-29.9px',
+    marginTop: '-29.9px',
     pointerEvents: 'none',
   },
   headerMainTitle: {
     position: 'absolute',
-    top: '50%',
-    left: '96px',
-    transform: 'translateY(-50%)',
+    top: '23px',
+    left: '88px',
     fontFamily: 'Inter',
     fontWeight: 600,
     letterSpacing: '-0.52px',
@@ -154,9 +158,13 @@ const styles = (theme) => ({
     lineHeight: '31px',
   },
   searchRow: {
-    margin: '30px auto 0',
-    maxWidth: '1500px',
-    paddingLeft: '40px',
+    // Same box as the card list (1500px cards + 64px side margins), so the search box stays 40px inside the cards' left
+    // edge.
+    boxSizing: 'border-box',
+    margin: '34px auto 0',
+    maxWidth: '1628px',
+    paddingLeft: '104px',
+    paddingRight: '64px',
   },
   searchBox: {
     position: 'relative',
@@ -176,7 +184,7 @@ const styles = (theme) => ({
     boxSizing: 'border-box',
     width: '100%',
     height: '40px',
-    padding: '0 44px 0 20px',
+    padding: '0 44px 0 18px',
     border: '1px solid #1178AC',
     borderRadius: '30px',
     backgroundColor: '#FFFFFF',
@@ -202,7 +210,10 @@ const styles = (theme) => ({
     alignItems: 'center',
     gap: '34px',
     paddingTop: '25px',
-    paddingBottom: '30px',
+    paddingBottom: '60px', // with the container's 60px: 120px below the last card
+    // 36px inside the banner, which is itself 28px inside the page content box.
+    paddingLeft: '64px',
+    paddingRight: '64px',
     margin: 'auto',
   },
   emptyState: {
