@@ -5,7 +5,7 @@ import { Typography } from '../../components/Wrappers/Wrappers';
 import PortfolioCard from './components/PortfolioCard';
 import portfolioSearchIcon from '../../assets/portfolio/portfolio-search-icon.svg';
 import {
-  pageData, portfolioHeaderIcon, curatedProgramContent, initiativesCardContent,
+  pageData, portfolioHeaderIcon, curatedProgramContent, initiativesCardContent, TEMP_HIDDEN_PROGRAM_SHORT_NAMES,
 } from '../../bento/portfolioData';
 
 const byName = (a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
@@ -13,8 +13,13 @@ const byName = (a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 
 const PortfolioView = ({ classes, programs, unaffiliatedStudies }) => {
   const [searchTerm, setSearchTerm] = useState('');
 
+  // TEMP FIX: drop placeholder programs the backend currently returns (see TEMP_HIDDEN_PROGRAM_SHORT_NAMES).
+  const visiblePrograms = (programs || []).filter(
+    (program) => !TEMP_HIDDEN_PROGRAM_SHORT_NAMES.includes(program.program_short_name),
+  );
+
   // Programs and the Initiatives card form one list, ordered alphabetically by displayed name.
-  const items = (programs || []).map((program) => ({
+  const items = visiblePrograms.map((program) => ({
     key: program.program_short_name,
     name: program.program_name || '',
     searchText: [program.program_name, program.program_short_name, program.program_short_description],

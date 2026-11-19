@@ -50,7 +50,7 @@ const PortfolioCard = ({
         >
           <span className={classes.countNumber}>{studyCount}</span>
           {' '}
-          <span className={classes.countLabel}>{`ASSOCIATED ${studyCount === 1 ? 'STUDY' : 'STUDIES'}`}</span>
+          <span className={classes.countLabel}>{`Associated ${studyCount === 1 ? 'Study' : 'Studies'}`}</span>
         </span>
       </div>
       <div className={classes.body}>

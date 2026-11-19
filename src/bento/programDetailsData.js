@@ -40,7 +40,16 @@ export const GET_PROGRAM_DETAIL_QUERY = gql`
 // the player's accessible name.
 export const curatedProgramDetailContent = {
   NCTN: {
-    hostVideos: [],
+    // TEMP MOCK: stand-in video ("Driving Discovery", NCI) so the Host Video column and player can be reviewed on
+    // live dev data. The thumbnail is YouTube's own image for the video. Replace with the real curated video, or set
+    // hostVideos to [], before release.
+    hostVideos: [
+      {
+        title: 'Driving Discovery',
+        thumbnail: 'https://img.youtube.com/vi/SiFBZtkAwoI/maxresdefault.jpg',
+        videoUrl: 'https://www.youtube.com/watch?v=SiFBZtkAwoI',
+      },
+    ],
   },
 };
 

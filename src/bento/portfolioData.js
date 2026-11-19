@@ -42,6 +42,12 @@ export const curatedProgramContent = {
   'CIMAC-CIDC': { primaryImage: cimacCidcImage, primaryImageAlt: 'Cancer Immune Monitoring and Analysis Centers, Cancer Immunologic Data Center Network' },
 };
 
+// TEMP FIX: dev's backend returns a placeholder "Not Applicable" program node (0 studies, no crdc_id) flagged
+// "has program" (backend PR #212 now classifies it as "is not program", so this should be redundant once that is
+// deployed everywhere), which would render as an empty card. Hide it on the Portfolio page until the data is cleaned up
+// or the backend stops returning it, then delete this list and the filter in portfolioView.js.
+export const TEMP_HIDDEN_PROGRAM_SHORT_NAMES = ['Not Applicable'];
+
 // --------------- Curated Initiatives card content --------------
 // Initiatives is not a graph entity (CTDC-2067/2069 only provide the orphan-study list/count for it), so every
 // display field below is curated here rather than coming from a query.
@@ -54,15 +60,14 @@ export const initiativesCardContent = {
 };
 
 // --------------- GraphQL query - Retrieve program list (CTDC-2067) --------------
-// Shape matches the current backend contract on crdc-ctdc-backend PR #204 (not yet merged - see
-// /memories/repo/portfolio-page-ctdc-2064.md): root field is `getAllPrograms`. `study_has_program:
-// ["has program"]` is required here - without it, getAllPrograms also mixes in a synthetic "no program"
-// grouping (per the schema's own doc comment: "an empty list includes both"), which would duplicate the
-// Initiatives data this page fetches separately below. Cards are ordered alphabetically by name in
+// Shape matches the backend contract on crdc-ctdc-backend (PR #204, filter renamed in PR #212): root field is
+// `getAllPrograms`. `is_program: ["is program"]` is required here - without it, getAllPrograms also mixes in a
+// synthetic no-program grouping (per the schema's doc comment: "an empty list includes both"), which would
+// duplicate the Initiatives data this page fetches separately below. Cards are ordered alphabetically by name in
 // portfolioView.js, so program_sort_order is not used for ordering.
 export const GET_PORTFOLIO_PROGRAMS_QUERY = gql`
   query getPortfolioProgramsQuery {
-    getAllPrograms(study_has_program: ["has program"]) {
+    getAllPrograms(is_program: ["is program"]) {
       program_name
       program_short_name
       crdc_id
@@ -81,13 +86,13 @@ export const GET_PORTFOLIO_PROGRAMS_QUERY = gql`
 `;
 
 // --------------- GraphQL query - Retrieve unaffiliated studies (CTDC-2067 orphan-study query) --------------
-// `getAllStudies` no longer accepts a study_has_program arg (removed in PR #204) - the orphan/Initiatives
-// bucket is now reached through `getAllPrograms(study_has_program: ["has no program"])` instead, which
-// returns a synthetic no-program grouping whose `studies` sub-list is the unaffiliated studies. Reused
+// `getAllStudies` no longer accepts a program filter (removed in PR #204) - the orphan/Initiatives bucket is
+// reached through `getAllPrograms(is_program: ["is not program"])` instead (arg renamed from study_has_program
+// in backend PR #212), which returns a synthetic no-program grouping whose `studies` sub-list is the unaffiliated studies. Reused
 // verbatim by CTDC-2069's no-program detail variant. The controller reads result[0]?.studies.
 export const GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY = gql`
   query getPortfolioUnaffiliatedStudiesQuery {
-    getAllPrograms(study_has_program: ["has no program"]) {
+    getAllPrograms(is_program: ["is not program"]) {
       studies {
         study_id
         study_accession

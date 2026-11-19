@@ -40,7 +40,7 @@ const ProgramDetailsView = ({
     : (curatedProgramDetailContent[program?.program_short_name] || { hostVideos: [] });
 
   const studyCount = studies.length;
-  const studyCountLabel = `ASSOCIATED ${studyCount === 1 ? 'STUDY' : 'STUDIES'}`;
+  const studyCountLabel = `Associated ${studyCount === 1 ? 'Study' : 'Studies'}`;
   const tableRows = studyRows && studyRows.length > 0
     ? studyRows
     : studies.map((study) => ({ ...study, program_short_name: displayShortName }));
@@ -196,7 +196,7 @@ const styles = (theme) => ({
   },
   header: {
     position: 'relative',
-    borderBottom: '#0D6F94 12px solid',
+    borderBottom: '12px solid #0F4778',
     height: '118px',
     margin: 'auto',
     paddingLeft: '10px',
@@ -220,23 +220,26 @@ const styles = (theme) => ({
     display: 'flex',
     alignItems: 'baseline',
     gap: '8px',
+    color: '#0D6F94',
     fontFamily: 'Inter',
-    fontWeight: 600,
     fontSize: '26px',
+    fontStyle: 'normal',
+    fontWeight: 300,
     lineHeight: '31px',
     letterSpacing: '-0.52px',
-    color: '#0D6F94',
     wordBreak: 'break-word',
   },
   label: {
     fontWeight: 300,
   },
+  // New/Heading/H3 - short name under the title
   subtitle: {
-    fontFamily: 'Inter',
-    fontWeight: 500,
-    fontSize: '18px',
-    lineHeight: '21.78px',
     color: '#0D6F94',
+    fontFamily: 'Inter',
+    fontSize: '18px',
+    fontStyle: 'normal',
+    fontWeight: 500,
+    lineHeight: 'normal',
     marginTop: '10px',
   },
   body: {
@@ -389,11 +392,13 @@ const styles = (theme) => ({
     paddingTop: '59px',
     paddingBottom: '133px',
   },
+  // Same width and side padding as .container, so the table spans the header line and the section title lines up
+  // with the description above it (both 30px in).
   studiesBandInner: {
     margin: 'auto',
     maxWidth: '1736px',
-    paddingLeft: '66px',
-    paddingRight: '66px',
+    paddingLeft: '36px',
+    paddingRight: '36px',
   },
   // Title and the table's download/view-columns toolbar share one row (same pattern as the Participant Detail
   // tables): the toolbar stays in the flow and defines the row height, the title is absolutely placed at the left.
@@ -412,6 +417,44 @@ const styles = (theme) => ({
     '&& tr.column_grouping img': {
       filter: 'brightness(0) invert(1)',
     },
+    // 30px side margins on the header and body rows: text starts 30px from the left edge and the last icon ends 30px
+    // from the right edge. The shared theme gives the first/last data-availability columns 100px padding, so
+    // override those here (scoped to this table) with five equal-width icon columns instead.
+    '&& tbody td:first-child, && thead tr:not(.column_grouping) th:first-child': {
+      paddingLeft: '30px',
+    },
+    // Keep each text header (and the sort arrow next to "Study Code") on one line; Study Name absorbs the width.
+    '&& thead tr:not(.column_grouping) th:nth-child(-n+5)': {
+      whiteSpace: 'nowrap',
+    },
+    // Column header text: Nunito Sans 18px/18px, regular weight, Primary One (#0B3556). The sorted column's label is a
+    // button/link element that otherwise falls back to the default text color, so target the text and its children.
+    '&& thead tr:not(.column_grouping) th:not(.participant_file_count):not(.study_file_count):not(.image_collection_count):not(.numberOfPublications):not(.unique_repository), && thead tr:not(.column_grouping) th:not(.participant_file_count):not(.study_file_count):not(.image_collection_count):not(.numberOfPublications):not(.unique_repository) *': {
+      color: '#0B3556',
+      fontFamily: '"Nunito Sans", sans-serif',
+      fontSize: '18px',
+      fontStyle: 'normal',
+      fontWeight: 400,
+      lineHeight: '18px',
+    },
+    '&& td.participant_file_count, && td.study_file_count, && td.image_collection_count, && td.numberOfPublications, && td.unique_repository, && th.participant_file_count, && th.study_file_count, && th.image_collection_count, && th.numberOfPublications, && th.unique_repository': {
+      boxSizing: 'border-box',
+      width: '64px',
+      minWidth: '64px',
+      padding: 0,
+      textAlign: 'center',
+    },
+    // Last column: 64px of icon space like the others, plus 16px so the 35px icon (centered in that space) ends 30px
+    // from the table's right edge: 32px (half the slot) + 16px padding - 17.5px (half the icon) = 30px.
+    '&& td.unique_repository, && th.unique_repository': {
+      width: '80px',
+      minWidth: '80px',
+      paddingRight: '16px',
+    },
+    // Keep the "Data Availability" label centered over the icons (the group cell spans the last column's padding).
+    '&& tr.column_grouping td.data_availability, && tr.column_grouping th.data_availability': {
+      paddingRight: '16px',
+    },
     '&& .downloadAndColumnView': {
       top: 0,
       display: 'flex',
@@ -420,7 +463,7 @@ const styles = (theme) => ({
       minHeight: '44px',
       height: '44px',
       maxHeight: '44px',
-      padding: '0 29px 0 0',
+      padding: '0 30px 0 0',
       '& button': {
         marginBottom: 0,
       },
@@ -433,7 +476,7 @@ const styles = (theme) => ({
   bandTitle: {
     position: 'absolute',
     top: '11px',
-    left: '29px',
+    left: '30px',
     zIndex: 1,
     margin: 0,
     fontFamily: 'Inter',

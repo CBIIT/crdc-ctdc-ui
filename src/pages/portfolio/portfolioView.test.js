@@ -90,6 +90,18 @@ describe('PortfolioView', () => {
     expect(renderedTitles()).toHaveLength(4);
   });
 
+  it('temp fix: does not render the placeholder "Not Applicable" program card', () => {
+    const withPlaceholder = [
+      ...programs,
+      {
+        program_name: 'Not Applicable', program_short_name: 'Not Applicable', studies: [],
+      },
+    ];
+    render(<PortfolioView programs={withPlaceholder} unaffiliatedStudies={unaffiliatedStudies} />);
+    expect(screen.queryByText('Not Applicable')).not.toBeInTheDocument();
+    expect(renderedTitles()).toHaveLength(4);
+  });
+
   it('shows the empty message and no search box when nothing is registered', () => {
     render(<PortfolioView programs={[]} unaffiliatedStudies={[]} />);
     expect(screen.getByText('No programs are currently registered.')).toBeInTheDocument();

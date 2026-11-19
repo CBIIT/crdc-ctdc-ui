@@ -1,10 +1,10 @@
 import gql from 'graphql-tag';
-import dataVolumeIcon from '../assets/portfolio/stat-data-volume.svg';
-import programIcon from '../assets/portfolio/stat-program.svg';
-import studiesIcon from '../assets/portfolio/stat-studies.svg';
-import participantsIcon from '../assets/portfolio/stat-participants.svg';
-import biospecimensIcon from '../assets/portfolio/stat-biospecimens.svg';
-import filesIcon from '../assets/portfolio/stat-files.svg';
+import dataVolumeIcon from '../assets/statsbar/stat-data-volume.svg';
+import programIcon from '../assets/statsbar/stat-program.svg';
+import studiesIcon from '../assets/statsbar/stat-studies.svg';
+import participantsIcon from '../assets/statsbar/stat-participants.svg';
+import biospecimensIcon from '../assets/statsbar/stat-biospecimens.svg';
+import filesIcon from '../assets/statsbar/stat-files.svg';
 
 export const statsStyling = {
   global: {
@@ -85,9 +85,14 @@ export const statsStyling = {
   },
   statsIcon: {
     width: '40px',
-    height: '43px',
+    height: '45px',
     margin: '0px 0px 0px -40px',
     position: 'relative',
+    // statsGroup pads 4px top / 10px bottom, so lift the box 3px to put the icon on the bar's vertical center.
+    top: '-3px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   statCount: {
     color: '#062D4F',

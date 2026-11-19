@@ -36,9 +36,9 @@ describe('PortfolioCard', () => {
     expect(screen.getByText('Test Program')).toBeInTheDocument();
   });
 
-  it('renders the study count formatted as "{N} ASSOCIATED STUDIES"', () => {
+  it('renders the study count formatted as "{N} Associated Studies"', () => {
     render(<PortfolioCard {...baseProps} />);
-    expect(getCount('2 ASSOCIATED STUDIES')).toBeInTheDocument();
+    expect(getCount('2 Associated Studies')).toBeInTheDocument();
   });
 
   it('renders the description paragraph', () => {
@@ -63,7 +63,7 @@ describe('PortfolioCard', () => {
 
   it('renders an Associated Studies button', () => {
     render(<PortfolioCard {...baseProps} />);
-    expect(screen.getByText('Associated Studies')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Associated Studies' })).toBeInTheDocument();
   });
 
   it('renders a Resource Link link that opens in a new tab when an external URL is configured', () => {
@@ -81,7 +81,7 @@ describe('PortfolioCard', () => {
 
   it('navigates to the Study page with affiliated study identifiers when Associated Studies is clicked', () => {
     render(<PortfolioCard {...baseProps} />);
-    fireEvent.click(screen.getByText('Associated Studies'));
+    fireEvent.click(screen.getByRole('button', { name: 'Associated Studies' }));
     expect(mockHistoryPush).toHaveBeenCalledWith('/studies?studyIds=STUDY-1%2CSTUDY-2');
   });
 
@@ -93,7 +93,7 @@ describe('PortfolioCard', () => {
 
   it('navigates to the Program Details page when the study count is clicked', () => {
     render(<PortfolioCard {...baseProps} />);
-    fireEvent.click(getCount('2 ASSOCIATED STUDIES'));
+    fireEvent.click(getCount('2 Associated Studies'));
     expect(mockHistoryPush).toHaveBeenCalledWith('/program-details/TP');
   });
 
@@ -111,7 +111,7 @@ describe('PortfolioCard', () => {
       />,
     );
     expect(screen.getByText('Initiatives')).toBeInTheDocument();
-    expect(getCount('1 ASSOCIATED STUDY')).toBeInTheDocument();
+    expect(getCount('1 Associated Study')).toBeInTheDocument();
   });
 
   it('navigates to the no-program Program Details route when the Initiatives title is clicked', () => {

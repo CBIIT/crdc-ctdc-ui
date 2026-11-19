@@ -81,7 +81,7 @@ describe('ProgramDetailsView', () => {
 
   it('renders the associated study count pill in the banner', () => {
     render(<ProgramDetailsView program={program} />);
-    const pill = screen.getByRole('button', { name: '1 ASSOCIATED STUDY' });
+    const pill = screen.getByRole('button', { name: '1 Associated Study' });
     expect(pill).toBeInTheDocument();
   });
 
@@ -91,7 +91,7 @@ describe('ProgramDetailsView', () => {
         program={{ ...program, studies: [...program.studies, { study_id: 'NCT00000002', study_name: 'Second' }] }}
       />,
     );
-    expect(screen.getByRole('button', { name: '2 ASSOCIATED STUDIES' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '2 Associated Studies' })).toBeInTheDocument();
   });
 
   it('does not render a Program Metadata section', () => {
