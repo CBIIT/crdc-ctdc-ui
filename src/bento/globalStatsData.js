@@ -1,4 +1,10 @@
 import gql from 'graphql-tag';
+import dataVolumeIcon from '../assets/statsbar/stat-data-volume.svg';
+import programIcon from '../assets/statsbar/stat-program.svg';
+import studiesIcon from '../assets/statsbar/stat-studies.svg';
+import participantsIcon from '../assets/statsbar/stat-participants.svg';
+import biospecimensIcon from '../assets/statsbar/stat-biospecimens.svg';
+import filesIcon from '../assets/statsbar/stat-files.svg';
 
 export const statsStyling = {
   global: {
@@ -62,16 +68,6 @@ export const statsStyling = {
     margin: '0px',
     padding: '4px 80px 10px 40px',
 
-    '&:nth-child(2)': {
-      '& $statsIcon': { // Targeting statsIcon inside the second child
-        marginTop: '4px',
-      },
-    },
-    '&:nth-child(5)': {
-      '& $statsIcon': { // Targeting statsIcon inside the fifth child
-        marginTop: '2px',
-      },
-    },
     '&:last-child': {
       padding: '4px 0px 10px 40px'
     },
@@ -92,6 +88,11 @@ export const statsStyling = {
     height: '45px',
     margin: '0px 0px 0px -40px',
     position: 'relative',
+    // statsGroup pads 4px top / 10px bottom, so lift the box 3px to put the icon on the bar's vertical center.
+    top: '-3px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   statCount: {
     color: '#062D4F',
@@ -115,50 +116,56 @@ export const statsStyling = {
 };
 
 export const globalStatsData = [
-  // A maximum of 6 stats are allowed
+  // Matches Figma design (node 1597:38231, "CTDC Statsbar - New Draft") exactly: Data Volume, Program,
+  // Studies, Participants, Biospecimens, Files - no Diagnoses/Therapies. This is a shared component
+  // so this also changes the Explore Dashboard and Study page counter strips, per design parity (AC#5).
+  {
+    // NOTE: statAPI 'volumeOfData' is not yet returned by GET_GLOBAL_STATS_DATA_QUERY below (no backend field
+    // exists yet); StatsView defaults missing values to 0 until the query is updated to request this field.
+    statTitle: 'DATA VOLUME',
+    type: 'field',
+    statAPI: 'volumeOfData',
+    statIconSrc: dataVolumeIcon,
+    statIconAlt: 'Data Volume Stats Bar Icon',
+  },
+  {
+    statTitle: 'PROGRAM',
+    type: 'field',
+    statAPI: 'numberOfPrograms',
+    statIconSrc: programIcon,
+    statIconAlt: 'Programs Stats Bar Icon',
+  },
   {
     statTitle: 'STUDIES',
     type: 'field',
     statAPI: 'numberOfStudies',
-    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExploreStatsBarTrialsIcon.svg',
+    statIconSrc: studiesIcon,
     statIconAlt: 'Studies Stats Bar Icon',
   },
   {
     statTitle: 'PARTICIPANTS',
     type: 'field',
     statAPI: 'numberOfParticipants',
-    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExploreStatsBarParticipantsIcon.svg',
+    statIconSrc: participantsIcon,
     statIconAlt: 'Participants Stats Bar Icon',
-  },
-  {
-    statTitle: 'DIAGNOSES',
-    type: 'field',
-    statAPI: 'numberOfDiagnoses',
-    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExploreStatsBarDiagnosesIcon.svg',
-    statIconAlt: 'Diagnoses Stats Bar Icon',
-  },
-  {
-    statTitle: 'THERAPIES',
-    type: 'field',
-    statAPI: 'numberOfTherapies',
-    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExploreStatsBarTargetedTherapiesIcon.svg',
-    statIconAlt: 'Therapies Stats Bar Icon',
   },
   {
     statTitle: 'BIOSPECIMENS',
     type: 'field',
     statAPI: 'numberOfSpecimens',
-    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExploreStatsBarBiospecimensIcon.svg',
+    statIconSrc: biospecimensIcon,
     statIconAlt: 'Biospecimens Stats Bar Icon',
   },
   {
     statTitle: 'FILES',
     type: 'field',
     statAPI: 'numberOfFiles',
-    statIconSrc: 'https://raw.githubusercontent.com/CBIIT/datacommons-assets/main/ctdc/images/svg/ExploreStatsBarFilesIcon.svg',
+    statIconSrc: filesIcon,
     statIconAlt: 'Files Stats Bar Icon',
   },
 ];
+
+
 
 // --------------- GraphQL query - Retrieve stats details --------------
 export const GET_GLOBAL_STATS_DATA_QUERY = gql`
@@ -209,6 +216,7 @@ export const GET_GLOBAL_STATS_DATA_QUERY = gql`
       data_file_type: $data_file_type
       data_file_format: $data_file_format
     ) {
+        numberOfPrograms
         numberOfStudies
         numberOfParticipants
         numberOfDiagnoses

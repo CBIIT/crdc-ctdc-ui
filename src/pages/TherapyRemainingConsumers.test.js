@@ -16,7 +16,7 @@ import { myFileTablePaginationOptions } from './fileCentricCart/tableConfig/Pagi
 import { GET_MY_CART_DATA_QUERY, GET_MY_CART_DATA_QUERY_DESC, manifestData } from '../bento/fileCentricCartWorkflowData';
 import { SEARCH_PAGE_RESULT_PARTICIPANTS, queryResultAPI } from '../bento/search';
 import client from '../utils/graphqlClient';
-import { globalStatsData } from '../bento/globalStatsData';
+import { GET_GLOBAL_STATS_DATA_QUERY } from '../bento/globalStatsData';
 import { migrateTherapyFilters } from '../store/utils';
 
 jest.mock('@apollo/client', () => ({ ...jest.requireActual('@apollo/client'), useQuery: jest.fn() }));
@@ -206,6 +206,10 @@ describe('Remaining Therapy consumers (C7)', () => {
     expect(migrated.cartReducer).toBe(cartReducer);
     expect(migrated.statusReducer.filterState).toEqual({ therapy_string: { A: true }, sex: { Female: true } });
     expect(before.statusReducer.filterState).toHaveProperty('targeted_therapy_string');
-    expect(globalStatsData.find(({ statTitle }) => statTitle === 'THERAPIES').statAPI).toBe('numberOfTherapies');
+    // The Therapies stat is no longer shown in the stats bar (design parity), but the shared query must still
+    // request the renamed field and not the old one.
+    const statsQuery = GET_GLOBAL_STATS_DATA_QUERY.loc.source.body;
+    expect(statsQuery).toContain('numberOfTherapies');
+    expect(statsQuery).not.toContain('numberOfTargetedTherapies');
   });
 });
