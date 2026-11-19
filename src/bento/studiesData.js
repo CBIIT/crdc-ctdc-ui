@@ -197,7 +197,7 @@ export const textLabels = {
   },
 };
 
-// --------------- GraphQL query - Retrieve program info --------------
+// --------------- GraphQL query - Retrieve studies --------------
 export const GET_STUDY_DATA_QUERY = gql`{
   getAllStudies {
     study_id
@@ -205,49 +205,12 @@ export const GET_STUDY_DATA_QUERY = gql`{
     participant_file_count
     study_file_count
     image_collection_count
+    image_collection {
+      repository_name
+    }
     # numberOfPublications TODO: Fetch this value from the backend API when it's implemented
     study_type
 
     study_short_name
   }
 }`;
-
-export const GET_STUDY_DATA_INTEROPS_QUERY = gql`
-query search {
-  getInteropData {
-    data{
-      getAllStudies {
-        study_id
-        study_short_name
-        image_collection_count
-        unique_repository
-
-        image_collection: associated_links {
-          associated_link_name
-          associated_link_url
-          metadataIDC {
-            collection_id
-            cancer_type
-            date_updated
-            doi
-            description
-            image_types
-            location
-            species
-            subject_count
-            supporting_data
-          }
-          metadataTCIA{
-            collection
-            aggregate_PatientID
-            aggregate_Modality
-            aggregate_BodyPartExamined
-            aggregate_ImageCount
-            aggregate_ImageBool
-          }
-          }
-        }
-      }
-    }
-  }
-`;

@@ -1,39 +1,38 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Studies from './studiesView';
 import { Typography } from '../../components/Wrappers/Wrappers';
-import { GET_STUDY_DATA_INTEROPS_QUERY, GET_STUDY_DATA_QUERY } from '../../bento/studiesData';
-
-// TODO(CTDC-2175): Temporary fallback interop data for studies not yet loaded into OpenSearch. Remove once the missing studies are indexed.
-const INTEROP_FALLBACK = {
-  NCT00980460: {
-    unique_repository: ['TCIA']
-  },
-};
+import { GET_STUDY_DATA_QUERY } from '../../bento/studiesData';
+import env from '../../utils/env';
+import { getImageCollectionRepositories, loadRepositoryConfig } from '../../utils/repositories';
 
 const studiesContainer = () => {
   // Fetch study data
   const { loading: isDataLoading, error: dataError, data } = useQuery(GET_STUDY_DATA_QUERY);
+  const [repositoryLookup, setRepositoryLookup] = useState(() => new Map());
 
-  // Fetch interOp data
-  const { loading: isInterOpLoading, error: interOpError, data: interOpData } = useQuery(GET_STUDY_DATA_INTEROPS_QUERY);
+  useEffect(() => {
+    let active = true;
+    loadRepositoryConfig(env.REACT_APP_STATIC_CONTENT_URL)
+      .then((lookup) => {
+        if (active) setRepositoryLookup(lookup);
+      })
+      .catch((error) => {
+        // Keep the study data visible, with source repository names and no links.
+        if (active) console.warn('Repository configuration unavailable; displaying source names.', error);
+      });
+    return () => { active = false; };
+  }, []);
 
   // Handle loading state
-  if (isDataLoading || isInterOpLoading) {
+  if (isDataLoading) {
     return <CircularProgress />;
   }
-  // Ensure data and interOpData are available
-  if (!data || !interOpData) {
-    console.warn("Data or interOpData is missing.");
-    return (
-      <CircularProgress />
-    );
-  }
-
-  // Handle error state
-  if (dataError || interOpError) {
-    const errorMessage = `An error has occurred in loading stats component: ${dataError.message}`
+  if (dataError || !Array.isArray(data?.getAllStudies)) {
+    const errorMessage = dataError
+      ? `An error has occurred in loading studies: ${dataError.message}`
+      : 'Study data is unavailable.';
     return (
       <Typography variant="headline" color="error" size="sm">
         {errorMessage}
@@ -41,24 +40,20 @@ const studiesContainer = () => {
     );
   }
 
-  // Transform and combine data
-  const interOpStudiesMap = (interOpData?.getInteropData || []).reduce((acc, entry) => {
-    const s = entry?.data?.getAllStudies;
-    if (s?.study_id) acc[s.study_id] = s;
-    return acc;
-  }, {});
+  // Resolve parent repository display names and URLs using external static content.
   const updatedData = {
     ...data,
-    getAllStudies: data?.getAllStudies?.map((study) => {
-      const interOpStudy = interOpStudiesMap[study.study_id] || INTEROP_FALLBACK[study.study_id];
+    getAllStudies: data.getAllStudies.map((study) => {
+      const repositories = getImageCollectionRepositories(study?.image_collection, repositoryLookup);
       return {
         ...study,
         numberOfPublications: 0, // TODO: Fetch this value from the backend API when it's implemented
-        unique_repository: interOpStudy?.unique_repository || [],
+        unique_repository: repositories.map((repository) => repository.repository_name),
+        repositories,
       };
     }),
   };
-  
+
   // Render the Studies component
   return <Studies data={updatedData}/>;
 };
