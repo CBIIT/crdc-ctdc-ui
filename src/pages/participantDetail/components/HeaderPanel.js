@@ -7,7 +7,7 @@ import { headerIcon } from '../../../bento/participantDetailData';
 const InfoRow = ({ classes, label, value, tooltip }) => (
   <div className={classes.infoPanelRow}>
     {tooltip ? (
-      <Tooltip title={tooltip} classes={{ tooltip: classes.tooltipBody }} placement="top" interactive>
+      <Tooltip title={tooltip} classes={{ tooltip: classes.tooltipBody }} placement="top">
         <span className={`${classes.infoPanelLabel} ${classes.infoPanelTooltipLabel}`} tabIndex={0}>
           {label}:
           <HelpIcon className={classes.infoPanelTooltipIcon} />
@@ -72,7 +72,7 @@ const HeaderPanel = ({ classes, participant }) => {
             classes={classes}
             label="Age at Enrollment"
             value={participant.age_at_enrollment}
-            tooltip="The age of the participant as of enrollment, measured in days."
+            tooltip="The age of the participant as of enrollment, measured in years."
           />
           <InfoRow classes={classes} label="Race" value={participant.race} />
           <InfoRow classes={classes} label="Ethnicity" value={participant.ethnicity} />
