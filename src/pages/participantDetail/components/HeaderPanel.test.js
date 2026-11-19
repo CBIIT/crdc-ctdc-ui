@@ -430,11 +430,15 @@ describe('HeaderPanel', () => {
   // Label rendering
   // ────────────────────────────────────────────────────
   describe('Age at Enrollment tooltip', () => {
-    it.each(['label', 'icon'])('explains days on %s hover and closes when the pointer moves to the value', async (target) => {
-      renderComponent({ participant_id: 'TEST-PARTICIPANT', age_at_enrollment: 12345 });
+    it.each([
+      ['label', 'value'],
+      ['icon', 'value'],
+      ['label', 'tooltip'],
+    ])('explains years on %s hover and closes when the pointer moves to the %s', async (target, destination) => {
+      renderComponent({ participant_id: 'MSB-09348', age_at_enrollment: 59 });
       const label = container.querySelector('.infoPanelLabel');
       const value = container.querySelector('.infoPanelValue');
-      expect(value.textContent).toBe('12345');
+      expect(value.textContent).toBe('59');
       expect(document.querySelector('[role="tooltip"]')).toBeNull();
 
       const trigger = target === 'icon' ? label.querySelector('.infoPanelTooltipIcon') : label;
@@ -444,12 +448,14 @@ describe('HeaderPanel', () => {
         const tooltip = document.querySelector('[role="tooltip"]');
         expect(tooltip).not.toBeNull();
         expect(tooltip.textContent).toBe(
-          'The age of the participant as of enrollment, measured in days.',
+          'The age of the participant as of enrollment, measured in years.',
         );
       });
 
-      fireEvent.mouseOut(trigger, { relatedTarget: value });
-      fireEvent.mouseOver(value);
+      const nextTarget = destination === 'tooltip'
+        ? document.querySelector('[role="tooltip"]') : value;
+      fireEvent.mouseOut(trigger, { relatedTarget: nextTarget });
+      fireEvent.mouseOver(nextTarget);
       await waitFor(() => {
         expect(document.querySelector('[role="tooltip"]')).toBeNull();
       });
