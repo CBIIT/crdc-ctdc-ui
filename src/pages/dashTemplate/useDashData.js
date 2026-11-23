@@ -96,7 +96,7 @@ const useDashData = ({
     requestKey,
   ]);
 
-  // Type/Category use backend any-value matching and pass through unchanged.
+  // Type/Category/Best Response use backend any-value matching unchanged.
   // Only selected names need expansion into complete therapy_string combinations.
   const activeFilters = useMemo(() => {
     if (!hasSelectedNames || !vocabularyReady) return baseFilters;

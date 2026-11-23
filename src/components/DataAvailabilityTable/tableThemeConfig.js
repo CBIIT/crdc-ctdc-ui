@@ -255,17 +255,19 @@ export const extendedView = {
   },
   MuiTooltip: {
     tooltip: {
+      // Match the Studies data-availability tooltips.
       backgroundColor: '#ffffff',
       color: '#1c2023',
-      maxWidth: '220px',
-      fontSize: '0.75rem',
-      border: '2px solid #a7afb3',
+      maxWidth: 'none',
+      fontSize: '13px',
+      border: '1px solid #CECECE',
       fontFamily: 'Open Sans',
       fontWeight: '600',
       textAlign: 'left',
-      lineHeight: '1.6',
-      padding: '10px 12px',
-      borderRadius: '0px',
+      lineHeight: '19px',
+      padding: '10px 15px',
+      borderRadius: '5px',
+      boxShadow: '0px 4px 10px 0px #00000040',
     },
   },
   MuiList: {

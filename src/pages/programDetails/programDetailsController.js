@@ -9,12 +9,12 @@ import {
   unaffiliatedProgramLabel,
 } from '../../bento/programDetailsData';
 import { GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY, flattenProgramStudies } from '../../bento/portfolioData';
-import { GET_STUDY_DATA_INTEROPS_QUERY } from '../../bento/studiesData';
-import { mergeInteropData } from '../studies/studyRows';
+import { enrichStudyRows, useRepositoryLookup } from '../studies/studyRows';
 
 const ProgramDetailsController = ({ match }) => {
   const { programShortName } = match.params;
   const isInitiatives = !programShortName;
+  const repositoryLookup = useRepositoryLookup();
 
   const {
     loading: isProgramLoading, error: programError, data: programData,
@@ -30,15 +30,11 @@ const ProgramDetailsController = ({ match }) => {
   const {
     loading: isTableLoading, error: tableError, data: tableData,
   } = useQuery(GET_PROGRAM_STUDY_TABLE_QUERY);
-  const {
-    loading: isInterOpLoading, error: interOpError, data: interOpData,
-  } = useQuery(GET_STUDY_DATA_INTEROPS_QUERY);
-
-  if (isProgramLoading || isUnaffiliatedLoading || isTableLoading || isInterOpLoading) {
+  if (isProgramLoading || isUnaffiliatedLoading || isTableLoading) {
     return <CircularProgress />;
   }
 
-  const error = programError || unaffiliatedError || tableError || interOpError;
+  const error = programError || unaffiliatedError || tableError;
   if (error) {
     return (
       <Typography variant="headline" color="error" size="sm">
@@ -53,7 +49,7 @@ const ProgramDetailsController = ({ match }) => {
 
   // Joins the program's studies (ids only) with the full per-study table fields; falls back to the bare study
   // fields if a study isn't in the full list.
-  const rowsById = mergeInteropData(tableData?.getAllStudies, interOpData).reduce((acc, row) => {
+  const rowsById = enrichStudyRows(tableData?.getAllStudies, repositoryLookup).reduce((acc, row) => {
     acc[row.study_id] = row;
     return acc;
   }, {});

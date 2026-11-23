@@ -1,11 +1,16 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { useQuery } from '@apollo/client';
 import ProgramDetailsController from './programDetailsController';
 import { GET_PROGRAM_DETAIL_QUERY, GET_PROGRAM_STUDY_TABLE_QUERY } from '../../bento/programDetailsData';
-import { GET_STUDY_DATA_INTEROPS_QUERY } from '../../bento/studiesData';
 import { GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY } from '../../bento/portfolioData';
+import { loadRepositoryConfig } from '../../utils/repositories';
+
+jest.mock('../../utils/repositories', () => ({
+  ...jest.requireActual('../../utils/repositories'),
+  loadRepositoryConfig: jest.fn().mockResolvedValue(new Map()),
+}));
 
 // bento-core pulls in an ESM-only dependency Jest can't parse; only these exports are used by the code under test.
 jest.mock('../../bento-core', () => ({
@@ -25,7 +30,7 @@ jest.mock('../../components/DataAvailabilityTable/StudiesTable', () => function 
   return (
     <ul>
       {data.map((row) => (
-        <li key={row.study_id}>{`${row.study_id}|${row.program_short_name}|${row.study_type || ''}`}</li>
+        <li key={row.study_id}>{`${row.study_id}|${row.program_short_name}|${row.study_type || ''}${row.unique_repository?.length ? `|${row.unique_repository.join(',')}` : ''}`}</li>
       ))}
     </ul>
   );
@@ -53,7 +58,6 @@ const mockQueryResults = ({
     if (query === GET_PROGRAM_DETAIL_QUERY) return programResult;
     if (query === GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY) return unaffiliatedResult;
     if (query === GET_PROGRAM_STUDY_TABLE_QUERY) return tableResult;
-    if (query === GET_STUDY_DATA_INTEROPS_QUERY) return NOT_CALLED;
     return NOT_CALLED;
   });
 };
@@ -158,5 +162,22 @@ describe('ProgramDetailsController', () => {
     render(<ProgramDetailsController match={{ params: { programShortName: 'NCTN' } }} />);
     expect(screen.getByText('NCT001|NCTN|Interventional Study')).toBeInTheDocument();
     expect(screen.queryByText(/NCT002/)).not.toBeInTheDocument();
+  });
+
+  it('resolves repository names and links for associated studies', async () => {
+    loadRepositoryConfig.mockResolvedValue(new Map([['archive', {
+      repository_name: 'TCIA', repository_url: 'https://example.org/',
+    }]]));
+    mockQueryResults({
+      programResult: { data: { getAllPrograms: [{
+        program_name: 'Program', program_short_name: 'TEST', studies: [{ study_id: 'one' }],
+      }] } },
+      tableResult: { data: { getAllStudies: [{
+        study_id: 'one', image_collection: [{ repository_name: 'Archive' }],
+      }] } },
+    });
+    render(<ProgramDetailsController match={{ params: { programShortName: 'TEST' } }} />);
+    await waitFor(() => expect(screen.getByText('one|TEST||TCIA')).toBeInTheDocument());
+    expect(GET_PROGRAM_STUDY_TABLE_QUERY.loc.source.body).toMatch(/image_collection\s*\{\s*repository_name\s*\}/);
   });
 });

@@ -1,23 +1,31 @@
-// TODO(CTDC-2175): Temporary fallback interop data for studies not yet loaded into OpenSearch. Remove once the missing studies are indexed.
-export const INTEROP_FALLBACK = {
-  NCT00980460: {
-    unique_repository: ['TCIA'],
-  },
+import { useEffect, useState } from 'react';
+import env from '../../utils/env';
+import { getImageCollectionRepositories, loadRepositoryConfig } from '../../utils/repositories';
+
+export const useRepositoryLookup = () => {
+  const [repositoryLookup, setRepositoryLookup] = useState(() => new Map());
+
+  useEffect(() => {
+    let active = true;
+    loadRepositoryConfig(env.REACT_APP_STATIC_CONTENT_URL)
+      .then((lookup) => {
+        if (active) setRepositoryLookup(lookup);
+      })
+      .catch((error) => {
+        if (active) console.warn('Repository configuration unavailable; displaying source names.', error);
+      });
+    return () => { active = false; };
+  }, []);
+
+  return repositoryLookup;
 };
 
-// Adds the fields the Studies table needs (publications count, additional CRDC nodes) to each study row.
-export const mergeInteropData = (studies, interOpData) => {
-  const interOpStudiesMap = (interOpData?.getInteropData || []).reduce((acc, entry) => {
-    const s = entry?.data?.getAllStudies;
-    if (s?.study_id) acc[s.study_id] = s;
-    return acc;
-  }, {});
-  return (studies || []).map((study) => {
-    const interOpStudy = interOpStudiesMap[study.study_id] || INTEROP_FALLBACK[study.study_id];
-    return {
-      ...study,
-      numberOfPublications: 0, // TODO: Fetch this value from the backend API when it's implemented
-      unique_repository: interOpStudy?.unique_repository || [],
-    };
-  });
-};
+export const enrichStudyRows = (studies, repositoryLookup) => (studies || []).map((study) => {
+  const repositories = getImageCollectionRepositories(study?.image_collection, repositoryLookup);
+  return {
+    ...study,
+    numberOfPublications: 0,
+    unique_repository: repositories.map((repository) => repository.repository_name),
+    repositories,
+  };
+});

@@ -115,6 +115,7 @@ query search_for_therapy (
   $therapy_string: [String],
   $therapy_type: [String],
   $therapy_category: [String],
+  $best_response_to_therapy: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -136,6 +137,7 @@ query search_for_therapy (
     therapy_string: $therapy_string
     therapy_type: $therapy_type
     therapy_category: $therapy_category
+    best_response_to_therapy: $best_response_to_therapy
     
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -168,6 +170,7 @@ query search(
   $therapy_string: [String],
   $therapy_type: [String],
   $therapy_category: [String],
+  $best_response_to_therapy: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -191,6 +194,7 @@ query search(
     therapy_string: $therapy_string
     therapy_type: $therapy_type
     therapy_category: $therapy_category
+    best_response_to_therapy: $best_response_to_therapy
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -340,6 +344,14 @@ query search(
       group
       subjects
     }
+    participantCountByBestResponseToTherapy {
+      group
+      subjects
+    }
+    filterParticipantCountByBestResponseToTherapy {
+      group
+      subjects
+    }
     participantCountBySingleTherapyCombination {
       group
       subjects
@@ -419,6 +431,7 @@ query search(
     therapy_string: $therapy_string
     therapy_type: $therapy_type
     therapy_category: $therapy_category
+    best_response_to_therapy: $best_response_to_therapy
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -444,6 +457,7 @@ query search(
     therapy_string: $therapy_string
     therapy_type: $therapy_type
     therapy_category: $therapy_category
+    best_response_to_therapy: $best_response_to_therapy
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -473,6 +487,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
     $therapy_string: [String],
     $therapy_type: [String],
     $therapy_category: [String],
+    $best_response_to_therapy: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -499,6 +514,7 @@ export const GET_PARTICIPANTS_OVERVIEW_QUERY = gql`
       therapy_string: $therapy_string
       therapy_type: $therapy_type
       therapy_category: $therapy_category
+      best_response_to_therapy: $best_response_to_therapy
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -549,6 +565,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
     $therapy_string: [String],
     $therapy_type: [String],
     $therapy_category: [String],
+    $best_response_to_therapy: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -575,6 +592,7 @@ export const GET_BIOSPECIMENS_OVERVIEW_QUERY = gql`
       therapy_string: $therapy_string
       therapy_type: $therapy_type
       therapy_category: $therapy_category
+      best_response_to_therapy: $best_response_to_therapy
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -621,6 +639,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
     $therapy_string: [String],
     $therapy_type: [String],
     $therapy_category: [String],
+    $best_response_to_therapy: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -648,6 +667,7 @@ export const GET_FILES_OVERVIEW_QUERY = gql`
       therapy_string: $therapy_string
       therapy_type: $therapy_type
       therapy_category: $therapy_category
+      best_response_to_therapy: $best_response_to_therapy
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -693,6 +713,7 @@ query participant_data_files(
   $therapy_string: [String],
   $therapy_type: [String],
   $therapy_category: [String],
+  $best_response_to_therapy: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -719,6 +740,7 @@ query participant_data_files(
       therapy_string: $therapy_string
       therapy_type: $therapy_type
       therapy_category: $therapy_category
+      best_response_to_therapy: $best_response_to_therapy
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -755,6 +777,7 @@ query biospecimenAddAllToCart(
   $therapy_string: [String],
   $therapy_type: [String],
   $therapy_category: [String],
+  $best_response_to_therapy: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -783,6 +806,7 @@ query biospecimenAddAllToCart(
     therapy_string: $therapy_string
     therapy_type: $therapy_type
     therapy_category: $therapy_category
+    best_response_to_therapy: $best_response_to_therapy
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -818,6 +842,7 @@ query fileAddSelectedToCart(
   $therapy_string: [String],
   $therapy_type: [String],
   $therapy_category: [String],
+  $best_response_to_therapy: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -847,6 +872,7 @@ query fileAddSelectedToCart(
     therapy_string: $therapy_string
     therapy_type: $therapy_type
     therapy_category: $therapy_category
+    best_response_to_therapy: $best_response_to_therapy
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -881,6 +907,7 @@ query participant_data_files(
   $therapy_string: [String],
   $therapy_type: [String],
   $therapy_category: [String],
+  $best_response_to_therapy: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -907,6 +934,7 @@ query participant_data_files(
       therapy_string: $therapy_string
       therapy_type: $therapy_type
       therapy_category: $therapy_category
+      best_response_to_therapy: $best_response_to_therapy
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -940,6 +968,7 @@ export const GET_ALL_FILE_IDS_FOR_BIOSPECIMENS = gql`
     $therapy_string: [String],
     $therapy_type: [String],
     $therapy_category: [String],
+    $best_response_to_therapy: [String],
 
     $anatomical_collection_site: [String],
     $tissue_category: [String],
@@ -966,6 +995,7 @@ export const GET_ALL_FILE_IDS_FOR_BIOSPECIMENS = gql`
       therapy_string: $therapy_string
       therapy_type: $therapy_type
       therapy_category: $therapy_category
+      best_response_to_therapy: $best_response_to_therapy
 
       anatomical_collection_site: $anatomical_collection_site
       tissue_category: $tissue_category
@@ -999,6 +1029,7 @@ query fileAddAllToCart(
   $therapy_string: [String],
   $therapy_type: [String],
   $therapy_category: [String],
+  $best_response_to_therapy: [String],
 
   $anatomical_collection_site: [String],
   $tissue_category: [String],
@@ -1026,6 +1057,7 @@ query fileAddAllToCart(
     therapy_string: $therapy_string
     therapy_type: $therapy_type
     therapy_category: $therapy_category
+    best_response_to_therapy: $best_response_to_therapy
 
     anatomical_collection_site: $anatomical_collection_site
     tissue_category: $tissue_category
@@ -1282,7 +1314,7 @@ export const tabContainers = [
       },
       download: {
         downloadCsv: "Download Table Contents As CSV",
-        applyActiveFilters: false, // Set true to export only the current filtered results.
+        applyActiveFilters: true,
         downloadFileName: "CTDC_Participants_download",
       },
     },
@@ -1381,6 +1413,15 @@ export const tabContainers = [
         cellType: cellTypes.CUSTOM_ELEM,
         formatList: true,
       },
+      {
+        dataField: 'best_response_to_therapy',
+        header: 'Best Response',
+        display: true,
+        tooltipText: 'sort',
+        role: cellTypes.DISPLAY,
+        cellType: cellTypes.CUSTOM_ELEM,
+        formatList: true,
+      },
     ],
     id: 'participants_tab',
     tableID: 'participants_tab_table',
@@ -1415,7 +1456,7 @@ export const tabContainers = [
       },
       download: {
         downloadCsv: "Download Table Contents As CSV",
-        applyActiveFilters: false, // Set true to export only the current filtered results.
+        applyActiveFilters: true,
         downloadFileName: "CTDC_Biospecimens_download",
       },
     },
@@ -1549,7 +1590,7 @@ export const tabContainers = [
       },
       download: {
         downloadCsv: "Download Table Contents As CSV",
-        applyActiveFilters: false, // Set true to export only the current filtered results.
+        applyActiveFilters: true,
         downloadFileName: "CTDC_Data_Files_download",
       },
     },
@@ -1710,7 +1751,7 @@ export const tabContainers = [
       },
       download: {
         downloadCsv: "Download Table Contents As CSV",
-        applyActiveFilters: false, // Set true to export only the current filtered results.
+        applyActiveFilters: true,
         downloadFileName: "CTDC_Study_Files_download",
       },
     },

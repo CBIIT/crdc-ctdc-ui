@@ -73,6 +73,9 @@ export const GET_PROGRAM_STUDY_TABLE_QUERY = gql`
       participant_file_count
       study_file_count
       image_collection_count
+      image_collection {
+        repository_name
+      }
     }
   }
 `;
