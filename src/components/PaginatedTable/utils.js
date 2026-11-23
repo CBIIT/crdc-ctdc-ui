@@ -63,6 +63,8 @@ export function convertToCSV(jsonse, keysToInclude, header) {
       if (line !== '') line += ',';
       if (keyName === 'file_size') {
         line += entry[keyName] !== null ? `"${formatBytes(entry[keyName])}"` : ' ';
+      } else if (keyName === 'unique_repository' && Array.isArray(entry[keyName])) {
+        line += `"${entry[keyName].join(', ')}"`;
       } else {
         line += entry[keyName] !== null ? `"${entry[keyName] ||'Not Applicable'}"` : ' ';
       }

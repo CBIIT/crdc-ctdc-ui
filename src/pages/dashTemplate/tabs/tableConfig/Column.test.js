@@ -1,12 +1,36 @@
 import { renderToStaticMarkup } from 'react-dom/server';
 import { configColumn, CustomCellView } from './Column';
 import { cellTypes, headerTypes } from '@bento-core/table';
+import { tabContainers } from '../../../../bento/dashboardTabData';
 
 jest.mock("../../../../utils/graphqlClient", () => ({
   client: { query: jest.fn(), mutate: jest.fn() },
 }));
 
 describe('configColumn', () => {
+  const bestResponseColumn = tabContainers.find(({ name }) => name === 'Participants')
+    .columns.find(({ dataField }) => dataField === 'best_response_to_therapy');
+
+  it('renders backend Best Response values without changing the API row', () => {
+    const values = Object.freeze(['Partial Response', 'Complete Response', '', null]);
+    const [column] = configColumn([bestResponseColumn]);
+    expect(column.header).toBe('Best Response');
+    const cell = column.customCellRender({ ...column, best_response_to_therapy: values });
+    expect(renderToStaticMarkup(cell)).toContain('Partial Response, Complete Response');
+    expect(values).toEqual(['Partial Response', 'Complete Response', '', null]);
+  });
+
+  it.each([null, undefined, [], ['', null]])('renders an empty Best Response %j as a blank cell', (value) => {
+    const cell = CustomCellView({ ...bestResponseColumn, best_response_to_therapy: value });
+    expect(cell.props.children).toBe('');
+  });
+
+  it('preserves literal Best Response labels without splitting them', () => {
+    const values = ['Response, with punctuation|detail', 'Unknown'];
+    expect(CustomCellView({ ...bestResponseColumn, best_response_to_therapy: values }).props.children)
+      .toBe('Response, with punctuation|detail, Unknown');
+  });
+
   it('formats an arbitrary string-list field with the shared column option', () => {
     const values = Object.freeze([' Label, with comma|pipe ', '', null, 'Second label']);
     const [column] = configColumn([{
