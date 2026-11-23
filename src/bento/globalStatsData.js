@@ -1,5 +1,5 @@
 import gql from 'graphql-tag';
-import dataVolumeIcon from '../assets/statsbar/stat-data-volume.svg';
+// import dataVolumeIcon from '../assets/statsbar/stat-data-volume.svg';
 import programIcon from '../assets/statsbar/stat-program.svg';
 import studiesIcon from '../assets/statsbar/stat-studies.svg';
 import participantsIcon from '../assets/statsbar/stat-participants.svg';
@@ -116,18 +116,16 @@ export const statsStyling = {
 };
 
 export const globalStatsData = [
-  // Matches Figma design (node 1597:38231, "CTDC Statsbar - New Draft") exactly: Data Volume, Program,
-  // Studies, Participants, Biospecimens, Files - no Diagnoses/Therapies. This is a shared component
-  // so this also changes the Explore Dashboard and Study page counter strips, per design parity (AC#5).
-  {
-    // NOTE: statAPI 'volumeOfData' is not yet returned by GET_GLOBAL_STATS_DATA_QUERY below (no backend field
-    // exists yet); StatsView defaults missing values to 0 until the query is updated to request this field.
-    statTitle: 'DATA VOLUME',
-    type: 'field',
-    statAPI: 'volumeOfData',
-    statIconSrc: dataVolumeIcon,
-    statIconAlt: 'Data Volume Stats Bar Icon',
-  },
+  // Shared by global and scoped stats bars, including Explore and Study pages.
+  // TODO: Restore Data Volume when the API supports volumeOfData and both the global
+  // and dashboard stats queries request it. Hide it for now to avoid displaying a false zero.
+  // {
+  //   statTitle: 'DATA VOLUME',
+  //   type: 'field',
+  //   statAPI: 'volumeOfData',
+  //   statIconSrc: dataVolumeIcon,
+  //   statIconAlt: 'Data Volume Stats Bar Icon',
+  // },
   {
     statTitle: 'PROGRAM',
     type: 'field',
