@@ -86,6 +86,38 @@ export const programStudiesTable = {
   ...studiesPageData.table,
   title: 'Associated Studies',
   defaultSortField: 'program_short_name',
+  // Own download config (not the Studies table's) so the CSV has every visible column, in this table's order. A new
+  // object also keeps ExtendedViewConfig, which attaches downloadTable to it, from mutating the Studies page config.
+  extendedViewConfig: {
+    ...studiesPageData.table.extendedViewConfig,
+    download: {
+      ...studiesPageData.table.extendedViewConfig.download,
+      keysToInclude: [
+        'program_short_name',
+        'study_name',
+        'study_type',
+        'study_accession',
+        'study_id',
+        'participant_file_count',
+        'study_file_count',
+        'image_collection_count',
+        'numberOfPublications',
+        'unique_repository',
+      ],
+      header: [
+        'Program',
+        'Study Name',
+        'Study Type',
+        'Accession ID',
+        'Study Code',
+        'Participant File(s)',
+        'Study File(s)',
+        'Image Collection(s)',
+        'Publication(s)',
+        'Additional CRDC Nodes',
+      ],
+    },
+  },
   columns: [
     { dataField: 'program_short_name', header: 'Program', display: true, tooltipText: 'sort' },
     studyColumn('study_name'),
