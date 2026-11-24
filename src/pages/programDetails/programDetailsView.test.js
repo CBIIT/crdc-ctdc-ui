@@ -52,7 +52,7 @@ jest.mock('../../components/DataAvailabilityTable/StudiesTable', () => function 
   );
 });
 
-jest.mock('../../components/Stats/AllStatsController', () => function MockStats() {
+jest.mock('../../components/Stats/ScopedStatsController', () => function MockStats() {
   return <div data-testid="stats" />;
 });
 

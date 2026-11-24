@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { withStyles } from '@material-ui/core';
 import { Link } from 'react-router-dom';
-import Stats from '../../components/Stats/AllStatsController';
+import Stats from '../../components/Stats/ScopedStatsController';
+import StatsView from '../../components/Stats/StatsView';
 import CustomBreadcrumb from '../../components/Breadcrumb/BreadcrumbView';
 import StudiesThemeProvider from '../studies/studiesMuiThemConfig';
 import { TableContextProvider } from '../../bento-core';
@@ -39,6 +40,7 @@ const ProgramDetailsView = ({
     ? initiativesDetailContent
     : (curatedProgramDetailContent[program?.program_short_name] || { hostVideos: [] });
 
+  const studyShortNames = [...new Set(studies.map((study) => study?.study_short_name).filter(Boolean))];
   const studyCount = studies.length;
   const studyCountLabel = `Associated ${studyCount === 1 ? 'Study' : 'Studies'}`;
   const tableRows = studyRows && studyRows.length > 0
@@ -58,7 +60,12 @@ const ProgramDetailsView = ({
 
   return (
     <>
-      <Stats />
+      {studyShortNames.length > 0 ? (
+        <Stats variables={{ study_short_name: studyShortNames }} />
+      ) : (
+        // Empty filters return global totals, so do not query stats for an empty or unknown program.
+        <StatsView data={{ numberOfPrograms: !isInitiatives && program ? 1 : 0 }} />
+      )}
       <div className={classes.container}>
         <div className={classes.breadCrumb}>
           <CustomBreadcrumb separator=">" data={breadCrumbJson} />
