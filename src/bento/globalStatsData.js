@@ -3,6 +3,7 @@ import gql from 'graphql-tag';
 import programIcon from '../assets/statsbar/stat-program.svg';
 import studiesIcon from '../assets/statsbar/stat-studies.svg';
 import participantsIcon from '../assets/statsbar/stat-participants.svg';
+import therapiesIcon from '../assets/statsbar/stat-therapies.svg';
 import biospecimensIcon from '../assets/statsbar/stat-biospecimens.svg';
 import filesIcon from '../assets/statsbar/stat-files.svg';
 
@@ -146,6 +147,13 @@ export const globalStatsData = [
     statAPI: 'numberOfParticipants',
     statIconSrc: participantsIcon,
     statIconAlt: 'Participants Stats Bar Icon',
+  },
+  {
+    statTitle: 'THERAPIES',
+    type: 'field',
+    statAPI: 'numberOfTherapies',
+    statIconSrc: therapiesIcon,
+    statIconAlt: 'Therapies Stats Bar Icon',
   },
   {
     statTitle: 'BIOSPECIMENS',
