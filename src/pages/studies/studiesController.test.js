@@ -4,6 +4,7 @@ import { act } from 'react-dom/test-utils';
 import { screen } from '@testing-library/dom';
 import '@testing-library/jest-dom';
 import { useQuery } from '@apollo/client';
+import { MemoryRouter } from 'react-router-dom';
 import axios from 'axios';
 import env from '../../utils/env';
 import StudiesContainer from './studiesController';
@@ -26,8 +27,8 @@ const repositoryConfig = `repositories:
     aliases: [The Cancer Imaging Archive]
 `;
 let container;
-const render = async () => {
-  await act(async () => { ReactDOM.render(<StudiesContainer />, container); });
+const render = async (path = '/studies') => {
+  await act(async () => { ReactDOM.render(<MemoryRouter initialEntries={[path]}><StudiesContainer /></MemoryRouter>, container); });
 };
 const getRows = () => Studies.mock.calls[Studies.mock.calls.length - 1][0].data.getAllStudies;
 
@@ -205,6 +206,16 @@ it('renders a successful empty study list', async () => {
   useQuery.mockReturnValue({ data: { getAllStudies: [] } });
   await render();
   expect(getRows()).toEqual([]);
+});
+
+it('filters enriched study rows by portfolio study short names', async () => {
+  useQuery.mockReturnValue({ data: { getAllStudies: [
+    { study_id: 'one', study_short_name: 'FIRST', image_collection: [{ repository_name: 'The Cancer Imaging Archive' }] },
+    { study_id: 'two', study_short_name: 'SECOND' },
+  ] } });
+  await render('/studies?studyIds=FIRST');
+  expect(getRows()).toHaveLength(1);
+  expect(getRows()[0]).toEqual(expect.objectContaining({ study_id: 'one', unique_repository: ['TCIA'] }));
 });
 
 it.each([null, undefined, {}])('shows unavailable data when the study list is missing: %p', async (data) => {

@@ -1,0 +1,78 @@
+import React from 'react';
+import { useQuery } from '@apollo/client';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import ProgramDetailsView from './programDetailsView';
+import { Typography } from '../../components/Wrappers/Wrappers';
+import {
+  GET_PROGRAM_DETAIL_QUERY,
+  GET_PROGRAM_STUDY_TABLE_QUERY,
+  unaffiliatedProgramLabel,
+} from '../../bento/programDetailsData';
+import { GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY, flattenProgramStudies } from '../../bento/portfolioData';
+import { enrichStudyRows, useRepositoryLookup } from '../studies/studyRows';
+
+const ProgramDetailsController = ({ match }) => {
+  const { programShortName } = match.params;
+  const isInitiatives = !programShortName;
+  const repositoryLookup = useRepositoryLookup();
+
+  const {
+    loading: isProgramLoading, error: programError, data: programData,
+  } = useQuery(GET_PROGRAM_DETAIL_QUERY, {
+    variables: { programShortName: programShortName ? [programShortName] : [] },
+    skip: isInitiatives,
+  });
+  const {
+    loading: isUnaffiliatedLoading, error: unaffiliatedError, data: unaffiliatedData,
+  } = useQuery(GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY, {
+    skip: !isInitiatives,
+  });
+  const {
+    loading: isTableLoading, error: tableError, data: tableData,
+  } = useQuery(GET_PROGRAM_STUDY_TABLE_QUERY);
+  if (isProgramLoading || isUnaffiliatedLoading || isTableLoading) {
+    return <CircularProgress />;
+  }
+
+  const error = programError || unaffiliatedError || tableError;
+  if (error) {
+    return (
+      <Typography variant="headline" color="error" size="sm">
+        {`An error has occurred in loading the Program Details page: ${error.message}`}
+      </Typography>
+    );
+  }
+
+  const program = isInitiatives ? undefined : programData?.getAllPrograms?.[0];
+  const unaffiliatedStudies = flattenProgramStudies(unaffiliatedData?.getAllPrograms);
+  const studies = (isInitiatives ? unaffiliatedStudies : program?.studies) || [];
+
+  // Joins the program's studies (ids only) with the full per-study table fields; falls back to the bare study
+  // fields if a study isn't in the full list.
+  const rowsById = enrichStudyRows(tableData?.getAllStudies, repositoryLookup).reduce((acc, row) => {
+    acc[row.study_id] = row;
+    return acc;
+  }, {});
+  const programLabel = isInitiatives ? unaffiliatedProgramLabel : program?.program_short_name;
+  const studyRows = studies.map((study) => ({
+    ...study,
+    ...rowsById[study.study_id],
+    program_short_name: programLabel,
+  }));
+
+  if (isInitiatives) {
+    return (
+      <ProgramDetailsView
+        isInitiatives
+        unaffiliatedStudies={unaffiliatedStudies}
+        studyRows={studyRows}
+      />
+    );
+  }
+
+  return (
+    <ProgramDetailsView program={program} notFound={!program} studyRows={studyRows} />
+  );
+};
+
+export default ProgramDetailsController;
