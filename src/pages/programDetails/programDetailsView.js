@@ -625,9 +625,9 @@ const styles = (theme) => ({
       color: '#9F109F',
       textDecoration: 'underline',
     },
-    // Pagination bar: 44px tall, 3px #686F7F rule on top only, white fill.
+    // Let the toolbar and top border determine the height without an internal vertical scrollbar.
     '&& [class*="MuiTablePagination-root"]': {
-      height: '44px',
+      minHeight: '44px',
       boxSizing: 'border-box',
       borderTop: '3px solid #686F7F',
       borderBottom: 0,
