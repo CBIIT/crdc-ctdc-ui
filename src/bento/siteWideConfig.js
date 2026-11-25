@@ -41,7 +41,7 @@ export const SHOW_WARNING_BEFORE = 300;
 
 // Enable Explore participant ID search and participant-set uploads.
 // When disabled, saved Local Find selections are cleared at startup.
-export const ENABLE_LOCAL_FIND = false;
+export const ENABLE_LOCAL_FIND = true;
 
 // DEFAULT_VALUE serves as a fallback when facet or widget items are empty
 export const DEFAULT_VALUE = "No value";

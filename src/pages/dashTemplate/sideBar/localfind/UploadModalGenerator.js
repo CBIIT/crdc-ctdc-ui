@@ -29,6 +29,19 @@ const MODAL_STYLES = (theme) => ({
     marginLeft: '8px !important',
     cursor: 'pointer',
   },
+  // Render "or" as a zero-net-width flex item between the two sections so
+  // space-between keeps it centered in the gap at any zoom level.
+  // Longhand margins are required to override the bento-core longhand defaults.
+  orTitle: {
+    ...DEFAULT_STYLES(theme).orTitle,
+    position: 'relative',
+    zIndex: 1,
+    flexShrink: 0,
+    alignSelf: 'flex-start',
+    marginTop: 36,
+    marginLeft: -21,
+    marginRight: -21,
+  },
   modalCloseIcon: {
     height: '20px !important',
     width: '20px !important',
@@ -177,8 +190,8 @@ const UploadModalGenerator = (uiConfig = DEFAULT_CONFIG) => {
                   id="local_find_upload_textarea"
                 />
               </div>
+              <div className={classes.orTitle}>or</div>
               <div className={classes.uploadFile}>
-                <div className={classes.orTitle}>or</div>
                 <div className={classes.inputLabel}>
                   <Typography>
                     <p className={classes.listTitle}>Choose a file to upload:</p>
