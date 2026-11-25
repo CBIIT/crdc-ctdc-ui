@@ -27,7 +27,7 @@ export const portfolioColors = {
 
 // --------------- Page configuration --------------
 export const pageData = {
-  headerTitle: 'CTDC Programs and Initiatives',
+  headerTitle: 'Programs and Initiatives',
   searchPlaceholder: 'CTDC Portfolio',
 };
 
@@ -46,6 +46,11 @@ export const curatedProgramContent = {
 // "has program" (backend PR #212 now classifies it as "is not program", so this should be redundant once that is
 // deployed everywhere), which would render as an empty card. Hide it on the Portfolio page until the data is cleaned up
 // or the backend stops returning it, then delete this list and the filter in portfolioView.js.
+// The Initiatives card (currently the Cancer Moonshot Biobank card, built from studies with no program) is out of
+// scope for CTDC-2064: a follow-up story rebuilds each initiative from static content with its own card and details
+// page. Hidden until then; the card code is kept for that story. Set to true to show it again.
+export const SHOW_INITIATIVES_CARD = false;
+
 export const TEMP_HIDDEN_PROGRAM_SHORT_NAMES = ['Not Applicable'];
 
 // --------------- Curated Initiatives card content --------------

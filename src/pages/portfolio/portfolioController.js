@@ -7,15 +7,16 @@ import {
   GET_PORTFOLIO_PROGRAMS_QUERY,
   GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY,
   flattenProgramStudies,
+  SHOW_INITIATIVES_CARD,
 } from '../../bento/portfolioData';
 
-const PortfolioController = () => {
+const PortfolioController = ({ showInitiatives = SHOW_INITIATIVES_CARD }) => {
   const {
     loading: isProgramsLoading, error: programsError, data: programsData,
   } = useQuery(GET_PORTFOLIO_PROGRAMS_QUERY);
   const {
     loading: isUnaffiliatedLoading, error: unaffiliatedError, data: unaffiliatedData,
-  } = useQuery(GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY);
+  } = useQuery(GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY, { skip: !showInitiatives });
 
   if (isProgramsLoading || isUnaffiliatedLoading) {
     return <CircularProgress />;
@@ -34,6 +35,7 @@ const PortfolioController = () => {
     <PortfolioView
       programs={programsData?.getAllPrograms || []}
       unaffiliatedStudies={flattenProgramStudies(unaffiliatedData?.getAllPrograms)}
+      showInitiatives={showInitiatives}
     />
   );
 };

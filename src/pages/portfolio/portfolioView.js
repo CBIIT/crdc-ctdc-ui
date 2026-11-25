@@ -6,11 +6,14 @@ import PortfolioCard from './components/PortfolioCard';
 import portfolioSearchIcon from '../../assets/portfolio/portfolio-search-icon.svg';
 import {
   pageData, portfolioHeaderIcon, curatedProgramContent, initiativesCardContent, TEMP_HIDDEN_PROGRAM_SHORT_NAMES,
+  SHOW_INITIATIVES_CARD,
 } from '../../bento/portfolioData';
 
 const byName = (a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' });
 
-const PortfolioView = ({ classes, programs, unaffiliatedStudies }) => {
+const PortfolioView = ({
+  classes, programs, unaffiliatedStudies, showInitiatives = SHOW_INITIATIVES_CARD,
+}) => {
   const [searchTerm, setSearchTerm] = useState('');
 
   // TEMP FIX: drop placeholder programs the backend currently returns (see TEMP_HIDDEN_PROGRAM_SHORT_NAMES).
@@ -40,7 +43,7 @@ const PortfolioView = ({ classes, programs, unaffiliatedStudies }) => {
     ),
   }));
 
-  if ((unaffiliatedStudies || []).length > 0) {
+  if (showInitiatives && (unaffiliatedStudies || []).length > 0) {
     items.push({
       key: 'initiatives',
       name: initiativesCardContent.name,

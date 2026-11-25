@@ -37,7 +37,7 @@ const makeProgram = (shortName, studies) => ({
 });
 const statsResponse = (studies, participants, therapies, files) => ({
   searchParticipants: {
-    numberOfPrograms: 1, numberOfStudies: studies, numberOfParticipants: participants,
+    numberOfStudies: studies, numberOfParticipants: participants,
     numberOfTherapies: therapies, numberOfSpecimens: 0, numberOfFiles: files + 10,
   },
   filesTabCount: { numberOfFiles: files },
@@ -90,7 +90,6 @@ it('updates the actual stats bar and scoped query when navigating between progra
   setupQueries();
   const history = renderPage('ALPHA');
   await waitFor(() => expect(getCount('PARTICIPANTS')).toHaveTextContent(/^20$/));
-  expect(getCount('PROGRAM')).toHaveTextContent(/^1$/);
   expect(getCount('STUDIES')).toHaveTextContent(/^2$/);
   expect(getCount('THERAPIES')).toHaveTextContent(/^4$/);
   expect(getCount('FILES')).toHaveTextContent(/^100$/);
@@ -114,12 +113,11 @@ it('updates the actual stats bar and scoped query when navigating between progra
   expect(statsCalls().slice(-1)[0][1].variables.study_short_name).toEqual(['UNAFFILIATED']);
 });
 
-it('shows one program and zero study totals without querying global stats for an empty program', async () => {
+it('shows zero totals without querying global stats for an empty program', async () => {
   setupQueries();
   renderPage('EMPTY');
   await screen.findByText('Program EMPTY');
-  expect(getCount('PROGRAM')).toHaveTextContent(/^1$/);
-  ['STUDIES', 'PARTICIPANTS', 'THERAPIES', 'BIOSPECIMENS', 'FILES'].forEach((label) => {
+  ['STUDIES', 'PARTICIPANTS', 'DIAGNOSES', 'THERAPIES', 'BIOSPECIMENS', 'FILES'].forEach((label) => {
     expect(getCount(label)).toHaveTextContent(/^0$/);
   });
   expect(statsCalls()).toHaveLength(0);
@@ -129,7 +127,7 @@ it('shows zero totals without querying global stats when Initiatives has no stud
   setupQueries([]);
   renderPage(null);
   await screen.findByText('No studies are currently linked to this initiative.');
-  ['PROGRAM', 'STUDIES', 'PARTICIPANTS', 'THERAPIES', 'BIOSPECIMENS', 'FILES'].forEach((label) => {
+  ['STUDIES', 'PARTICIPANTS', 'DIAGNOSES', 'THERAPIES', 'BIOSPECIMENS', 'FILES'].forEach((label) => {
     expect(getCount(label)).toHaveTextContent(/^0$/);
   });
   expect(statsCalls()).toHaveLength(0);
@@ -139,7 +137,7 @@ it('does not display global totals for an unknown program', async () => {
   setupQueries();
   renderPage('UNKNOWN');
   await screen.findByText(/No program matches this identifier/);
-  expect(getCount('PROGRAM')).toHaveTextContent(/^0$/);
+  expect(getCount('STUDIES')).toHaveTextContent(/^0$/);
   expect(getCount('PARTICIPANTS')).toHaveTextContent(/^0$/);
   expect(statsCalls()).toHaveLength(0);
 });

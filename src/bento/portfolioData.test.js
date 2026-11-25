@@ -11,7 +11,7 @@ import {
 
 describe('portfolioData configuration', () => {
   it('should define the Portfolio page heading', () => {
-    expect(pageData.headerTitle).toBe('CTDC Programs and Initiatives');
+    expect(pageData.headerTitle).toBe('Programs and Initiatives');
   });
 
   it('should define a header icon with src and alt', () => {

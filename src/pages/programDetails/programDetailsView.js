@@ -63,8 +63,8 @@ const ProgramDetailsView = ({
       {studyShortNames.length > 0 ? (
         <Stats variables={{ study_short_name: studyShortNames }} />
       ) : (
-        // Empty filters return global totals, so do not query stats for an empty or unknown program.
-        <StatsView data={{ numberOfPrograms: !isInitiatives && program ? 1 : 0 }} />
+        // Empty filters return global totals, so do not query stats for an empty or unknown program; show zeros.
+        <StatsView data={{}} />
       )}
       <div className={classes.container}>
         <div className={classes.breadCrumb}>

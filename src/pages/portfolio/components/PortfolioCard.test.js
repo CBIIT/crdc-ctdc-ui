@@ -51,9 +51,10 @@ describe('PortfolioCard', () => {
     expect(screen.getByText('A curated description.')).toBeInTheDocument();
   });
 
-  it('falls back gracefully when no description is configured', () => {
+  it('renders without a description paragraph when no description is configured', () => {
     render(<PortfolioCard {...baseProps} description="" />);
-    expect(screen.getByText('No description available.')).toBeInTheDocument();
+    expect(screen.queryByText('No description available.')).not.toBeInTheDocument();
+    expect(screen.getByText('Test Program')).toBeInTheDocument();
   });
 
   it('renders the primary image with alt text', () => {
@@ -71,23 +72,28 @@ describe('PortfolioCard', () => {
     expect(screen.getByRole('button', { name: 'Associated Studies' })).toBeInTheDocument();
   });
 
-  it('renders a Resource Link link that opens in a new tab when an external URL is configured', () => {
+  it('renders a Go to site link that opens in a new tab when an external URL is configured', () => {
     render(<PortfolioCard {...baseProps} />);
-    const link = screen.getByText('Resource Link').closest('a');
+    const link = screen.getByText('Go to site').closest('a');
     expect(link).toHaveAttribute('href', 'https://example.com');
     expect(link).toHaveAttribute('target', '_blank');
     expect(link).toHaveAttribute('rel', 'noopener noreferrer');
   });
 
-  it('hides the Resource Link link when no external URL is configured', () => {
+  it('hides the Go to site link when no external URL is configured', () => {
     render(<PortfolioCard {...baseProps} externalUrl="" />);
-    expect(screen.queryByText('Resource Link')).not.toBeInTheDocument();
+    expect(screen.queryByText('Go to site')).not.toBeInTheDocument();
   });
 
   it('navigates to the Study page with affiliated study identifiers when Associated Studies is clicked', () => {
     render(<PortfolioCard {...baseProps} />);
     fireEvent.click(screen.getByRole('button', { name: 'Associated Studies' }));
     expect(mockHistoryPush).toHaveBeenCalledWith('/studies?studyIds=STUDY-1%2CSTUDY-2');
+  });
+
+  it('renders the program name as a heading', () => {
+    render(<PortfolioCard {...baseProps} />);
+    expect(screen.getByRole('heading', { name: 'Test Program' })).toBeInTheDocument();
   });
 
   it('renders the program title as a keyboard-focusable link to Program Details', () => {

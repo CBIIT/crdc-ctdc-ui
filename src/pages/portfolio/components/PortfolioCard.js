@@ -45,13 +45,13 @@ const PortfolioCard = ({
   return (
     <div className={classes.card} style={{ borderLeftColor: accentColor }}>
       <div className={classes.header} style={{ backgroundColor: accentColor }}>
-        <div className={classes.titleGroup}>
+        <h2 className={classes.titleGroup}>
           {PROGRAM_DETAILS_PAGE_READY ? (
             <Link to={detailsPath} className={`${classes.title} ${classes.clickable}`}>{name}</Link>
           ) : (
             <span className={classes.title}>{name}</span>
           )}
-        </div>
+        </h2>
         {PROGRAM_DETAILS_PAGE_READY ? (
           <Link to={detailsPath} className={`${classes.studiesCount} ${classes.clickable}`}>
             {countContent}
@@ -62,7 +62,7 @@ const PortfolioCard = ({
       </div>
       <div className={classes.body}>
         <div className={classes.descriptionActions}>
-          <p className={classes.description}>{description || 'No description available.'}</p>
+          {description && <p className={classes.description}>{description}</p>}
           <div className={classes.actions}>
             <button
               type="button"
@@ -79,7 +79,7 @@ const PortfolioCard = ({
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Resource Link
+                Go to site
                 <img
                   src={externalLinkIcon.src}
                   alt={externalLinkIcon.alt}
@@ -124,7 +124,11 @@ const styles = (theme) => ({
       padding: '12px 20px 12px 15px',
     },
   },
+  // The program name is the card's heading; reset the browser's h2 margin and size (the title sets its own type).
   titleGroup: {
+    margin: 0,
+    fontSize: 'inherit',
+    fontWeight: 'inherit',
     display: 'flex',
     alignItems: 'center',
     gap: '15px',

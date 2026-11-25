@@ -203,7 +203,6 @@ query search(
     data_file_type: $data_file_type
     data_file_format: $data_file_format
   ) {
-    numberOfPrograms
     numberOfStudies
     numberOfParticipants
     numberOfDiagnoses

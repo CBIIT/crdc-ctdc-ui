@@ -52,7 +52,7 @@ const renderedTitles = () => screen
 
 describe('PortfolioView', () => {
   it('orders program cards and the Initiatives card alphabetically by name', () => {
-    render(<PortfolioView programs={programs} unaffiliatedStudies={unaffiliatedStudies} />);
+    render(<PortfolioView programs={programs} unaffiliatedStudies={unaffiliatedStudies} showInitiatives />);
     expect(renderedTitles()).toEqual([
       'Cancer Immune Monitoring and Analysis Centers',
       initiativesCardContent.name,
@@ -62,31 +62,31 @@ describe('PortfolioView', () => {
   });
 
   it('filters cards by name as the user types, case-insensitively', () => {
-    render(<PortfolioView programs={programs} unaffiliatedStudies={unaffiliatedStudies} />);
+    render(<PortfolioView programs={programs} unaffiliatedStudies={unaffiliatedStudies} showInitiatives />);
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'moLEcular' } });
     expect(renderedTitles()).toEqual(['NCI Molecular Analysis for Therapy Choice Trial']);
   });
 
   it('filters cards by program short name', () => {
-    render(<PortfolioView programs={programs} unaffiliatedStudies={unaffiliatedStudies} />);
+    render(<PortfolioView programs={programs} unaffiliatedStudies={unaffiliatedStudies} showInitiatives />);
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'nctn' } });
     expect(renderedTitles()).toEqual(['NCI National Clinical Trials Network']);
   });
 
   it('filters cards by description text', () => {
-    render(<PortfolioView programs={programs} unaffiliatedStudies={unaffiliatedStudies} />);
+    render(<PortfolioView programs={programs} unaffiliatedStudies={unaffiliatedStudies} showInitiatives />);
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'precision medicine' } });
     expect(renderedTitles()).toEqual(['NCI Molecular Analysis for Therapy Choice Trial']);
   });
 
   it('can filter to the Initiatives card', () => {
-    render(<PortfolioView programs={programs} unaffiliatedStudies={unaffiliatedStudies} />);
+    render(<PortfolioView programs={programs} unaffiliatedStudies={unaffiliatedStudies} showInitiatives />);
     fireEvent.change(screen.getByRole('searchbox'), { target: { value: 'moonshot' } });
     expect(renderedTitles()).toEqual([initiativesCardContent.name]);
   });
 
   it('shows a no-match message and restores all cards when the search is cleared', () => {
-    render(<PortfolioView programs={programs} unaffiliatedStudies={unaffiliatedStudies} />);
+    render(<PortfolioView programs={programs} unaffiliatedStudies={unaffiliatedStudies} showInitiatives />);
     const search = screen.getByRole('searchbox');
     fireEvent.change(search, { target: { value: 'zzzz-no-match' } });
     expect(screen.getByText('No programs or initiatives match your search.')).toBeInTheDocument();
@@ -101,9 +101,15 @@ describe('PortfolioView', () => {
         program_name: 'Not Applicable', program_short_name: 'Not Applicable', studies: [],
       },
     ];
-    render(<PortfolioView programs={withPlaceholder} unaffiliatedStudies={unaffiliatedStudies} />);
+    render(<PortfolioView programs={withPlaceholder} unaffiliatedStudies={unaffiliatedStudies} showInitiatives />);
     expect(screen.queryByText('Not Applicable')).not.toBeInTheDocument();
     expect(renderedTitles()).toHaveLength(4);
+  });
+
+  it('hides the Initiatives card by default (out of scope for CTDC-2064)', () => {
+    render(<PortfolioView programs={programs} unaffiliatedStudies={unaffiliatedStudies} />);
+    expect(renderedTitles()).not.toContain(initiativesCardContent.name);
+    expect(renderedTitles()).toHaveLength(programs.length);
   });
 
   it('shows the empty message and no search box when nothing is registered', () => {

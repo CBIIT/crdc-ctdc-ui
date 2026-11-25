@@ -3,7 +3,9 @@ import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { useQuery } from '@apollo/client';
 import PortfolioController from './portfolioController';
-import { GET_PORTFOLIO_PROGRAMS_QUERY, GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY } from '../../bento/portfolioData';
+import {
+  GET_PORTFOLIO_PROGRAMS_QUERY, GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY, initiativesCardContent,
+} from '../../bento/portfolioData';
 
 jest.mock('react-router-dom', () => ({
   ...jest.requireActual('react-router-dom'),
@@ -40,7 +42,7 @@ describe('PortfolioController', () => {
     useQuery.mockReset();
   });
 
-  it('renders program and Initiatives cards from live query data', () => {
+  it('renders program cards from live query data', () => {
     mockQueryResults({
       programsResult: {
         loading: false,
@@ -71,9 +73,23 @@ describe('PortfolioController', () => {
         },
       },
     });
-    render(<PortfolioController />);
+    render(<PortfolioController showInitiatives />);
     expect(screen.getByText((_, element) => element.children.length === 2
       && element.textContent.replace(/\s+/g, ' ') === '2 Associated Studies')).toBeInTheDocument();
+  });
+
+  it('skips the Initiatives query and card by default', () => {
+    mockQueryResults({
+      programsResult: {
+        loading: false,
+        error: undefined,
+        data: { getAllPrograms: [{ program_name: 'NCI National Clinical Trials Network', program_short_name: 'NCTN', studies: [] }] },
+      },
+    });
+    render(<PortfolioController />);
+    const unaffiliatedCall = useQuery.mock.calls.find(([query]) => query === GET_PORTFOLIO_UNAFFILIATED_STUDIES_QUERY);
+    expect(unaffiliatedCall[1]).toEqual({ skip: true });
+    expect(screen.queryByText(initiativesCardContent.name)).not.toBeInTheDocument();
   });
 
   it('renders a loading indicator while queries are in flight', () => {
